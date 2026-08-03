@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.5.0  
+**Version:** 0.6.0  
 **Status:** Approved lead architecture baseline; package specifications pending  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2087,6 +2087,25 @@ A package does not leave beta until:
 4. Create the Checkpoint Build Plan and workflow-rules document.
 5. Define package versioning, repository, test, and release conventions.
 
+### Foundation Specification Pass — Documentation before runtime implementation
+
+Before any Foundation Wave runtime package enters implementation, complete and approve one full SFGSS-001 package specification for each package listed in Section 7.1:
+
+1. EchoLaunch — First Light.
+2. EchoDiagnostics — The Observatory.
+3. EchoSettings — The Accord.
+4. EchoSceneFlow — The Passage.
+5. EchoGameState — The Pulse.
+6. Jukebot — Resonance.
+7. EchoInput — The Will.
+8. EchoUI — The Looking Glass.
+9. EchoSave — The Chronicle.
+10. EchoGameStarter — The Workshop.
+
+After all ten specifications are approved, perform a cross-package consistency review covering authority, data ownership, lifecycle order, optional bridges, assembly direction, persistence boundaries, direct-scene behavior, Test Lab independence, diagnostics, and removal behavior. Implementation begins only after that review confirms there are no contradictory authorities or hidden hard dependencies.
+
+Specifications may identify later questions that do not affect the MVP or neighboring package contracts. Those questions remain visibly deferred rather than blocking the documentation pass. Package implementation order remains governed by the waves below after the documentation gate is complete.
+
 ### Wave 1 — Runtime origin and dual proof packages
 
 1. EchoLaunch.
@@ -2482,6 +2501,8 @@ The following decisions form the approved starting baseline for the suite:
 29. EchoSave owns local save authority and provider-neutral synchronization seams; cloud/platform implementations ship as separate EchoSave-family adapter packages.
 30. EchoInventory may own generic equipment slots and equip transactions; RPG statistics, restrictions, bonuses, and combat effects remain in project code or `EchoRPG.Foundation`.
 31. Suite documentation lives with development in Git and is opened directly as an Obsidian-compatible Markdown vault or folder. Every active repository maintains a linked `Current Notes.md` capture page; meaningful notes are reconciled into the proper authoritative documents at checkpoints, and major documentation changes are committed alongside or immediately adjacent to the code they describe.
+32. The complete Foundation Wave specification set must be drafted, reviewed, and approved before any Foundation Wave runtime implementation begins. A cross-package consistency review is the final documentation gate.
+33. The initial public Unity floor for Foundation packages is Unity 6000.0. Unity 6000.3.8f1 remains the primary development baseline; additional Unity 6 versions are listed as tested only after validation.
 
 ---
 
@@ -2490,13 +2511,12 @@ The following decisions form the approved starting baseline for the suite:
 These questions do not block approval of the overall architecture, but they must be resolved before affected releases.
 
 1. Final public title, icon, and restrained flavor vocabulary for each package.
-2. Minimum supported Unity version for public packages.
-3. Licensing model for package source and samples.
-4. Whether EchoControllers remains one modular UPM package or graduates into a small family of controller packages as dependencies and release cadence become clearer.
-5. The full EchoCrafting conceptual model and approved MVP after its dedicated design workshop.
-6. The first approved networking provider for EchoMultiplayer after dated research and comparison prototypes.
-7. Which platform/native providers, if any, extend the Observatory with desktop hardware sensors beyond Unity runtime counters.
-8. Whether EchoAI, EchoCombat, EchoAbilities, and EchoWorld graduate from candidates to committed packages.
+2. Licensing model for package source and samples.
+3. Whether EchoControllers remains one modular UPM package or graduates into a small family of controller packages as dependencies and release cadence become clearer.
+4. The full EchoCrafting conceptual model and approved MVP after its dedicated design workshop.
+5. The first approved networking provider for EchoMultiplayer after dated research and comparison prototypes.
+6. Which platform/native providers, if any, extend the Observatory with desktop hardware sensors beyond Unity runtime counters.
+7. Whether EchoAI, EchoCombat, EchoAbilities, and EchoWorld graduate from candidates to committed packages.
 
 ---
 
@@ -2521,6 +2541,8 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the thirty-one decisions in Section 21 are approved as the starting baseline. **SFGSS-001 — Package Specification Template** is complete. Use it next to produce the full **First Light (`EchoLaunch`) Package Specification**, followed by the **Observatory (`EchoDiagnostics`) diagnostic-overlay specification**.
+The suite identity and the thirty-three decisions in Section 21 are approved as the starting baseline. **SFGSS-001 — Package Specification Template** is complete, and the **First Light (`EchoLaunch`) Package Specification v1.0.0** is approved.
 
-First Light should then be implemented as the smallest reliable origin: one protected runtime root, ordered startup steps, splash sequencing, direct-scene development support, launch reporting, a readable startup-status view, and a final destination. Jukebot and the Looking Glass UI foundation become the first two independent proof packages developed side by side after that origin, each in its own Standalone Test Lab.
+Continue the Foundation Specification Pass by drafting and approving **The Observatory (`EchoDiagnostics`)**, followed by the remaining Foundation Wave specifications in the order recorded in the Foundation Wave Specification Roadmap. Do not begin runtime implementation until all ten specifications are approved and the cross-package consistency review passes.
+
+After the documentation gate, First Light becomes the first implementation package: one protected runtime root, ordered startup steps, splash sequencing, direct-scene development support, launch reporting, a readable startup-status view, and a final destination. Jukebot and the Looking Glass UI foundation then become the first two independent proof packages developed side by side after that origin, each in its own Standalone Test Lab.

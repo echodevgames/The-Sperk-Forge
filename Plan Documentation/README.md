@@ -37,19 +37,22 @@ When documents disagree, use this authority order:
 
 ## First Approved Objective
 
-The first design checkpoint is to draft and approve the complete **First Light — Startup and Launch (`EchoLaunch`) Package Specification** before implementing the package.
+The active design objective is the **Foundation Specification Pass**. Draft and approve a complete SFGSS-001 package specification for every package in SFGSS-000 Section 7.1 before beginning Foundation Wave runtime implementation.
 
-The first implementation checkpoint begins only after that specification defines:
+The ten required specifications are:
 
-- Package authority and exclusions
-- Smallest complete MVP
-- Initialization lifecycle and duplicate protection
-- Diagnostics contract
-- Isolated Test Lab scene
-- Setup and validation tooling
-- Test and release gates
+1. First Light (`EchoLaunch`)
+2. The Observatory (`EchoDiagnostics`)
+3. The Accord (`EchoSettings`)
+4. The Passage (`EchoSceneFlow`)
+5. The Pulse (`EchoGameState`)
+6. Resonance (`Jukebot`)
+7. The Will (`EchoInput`)
+8. The Looking Glass (`EchoUI`)
+9. The Chronicle (`EchoSave`)
+10. The Workshop (`EchoGameStarter`)
 
-Jukebot and EchoUI follow as independent proof packages and may be developed side by side after the minimum First Light foundation is stable.
+First Light v1.0.0 is the first approved package specification. The Observatory is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
 
 ## Folders Added Later
 
@@ -70,7 +73,7 @@ Do not add empty placeholder folders solely for appearance; Git does not preserv
 
 Upload the four initial source files and begin the new conversation with:
 
-> We are beginning development of The Sperk’s Forge — EchoDevGames Game Systems Suite in a clean Unity repository. Read every uploaded Markdown file completely. Treat SFGSS-000 as the suite-wide authority, treat Current Notes as working context rather than authority, and follow SFGSS-001 for all package specifications. Preserve package independence, isolated Test Lab scenes, neutral technical APIs, Verse-flavored user-facing names, and the repository/Obsidian documentation workflow. Before writing code, summarize the approved architecture, identify the current checkpoint from Current Notes, and help me draft the complete First Light (`EchoLaunch`) package specification. Do not invent or implement unresolved architecture without recording it for approval.
+> We are beginning development of The Sperk’s Forge — EchoDevGames Game Systems Suite in a clean Unity repository. Read every uploaded Markdown file completely. Treat SFGSS-000 as the suite-wide authority, treat Current Notes as working context rather than authority, and follow SFGSS-001 for all package specifications. Preserve package independence, isolated Test Lab scenes, neutral technical APIs, Verse-flavored user-facing names, and the repository/Obsidian documentation workflow. Before writing code, summarize the approved architecture, identify the current checkpoint from Current Notes, and continue the Foundation Specification Pass using SFGSS-001. Do not begin runtime implementation until every Foundation Wave specification and the cross-package consistency review are approved. Do not invent unresolved architecture without recording it for approval.
 
 ## Checkpoint Rule
 
