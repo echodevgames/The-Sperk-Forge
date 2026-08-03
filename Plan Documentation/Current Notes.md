@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-02 — Draft The Observatory (`EchoDiagnostics`) package specification
+**Current checkpoint:** FW-DOC-04 — Draft The Passage (`EchoSceneFlow`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -41,17 +41,19 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.6.0.
 - `SFGSS-001_Package_Specification_Template.md` — v1.1.0.
 - `Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Observatory — Diagnostics (`EchoDiagnostics`) Package Specification** using SFGSS-001. Reconcile its contracts against First Light’s launch report and optional diagnostics bridge without making either package depend on the other.
+Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specification** using SFGSS-001. Define normal scene-transition authority after First Light handoff, validated scene references, asynchronous loading phases, request locking/queueing, progress, activation, additive ownership, cancellation/failure policy, direct-scene behavior, and optional bridges without allowing EchoSceneFlow to absorb game-state rules, UI presentation, gameplay completion logic, audio playback, or multiplayer authority.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of the EchoDiagnostics specification.
+- None blocking the start of the EchoSettings specification.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -81,6 +83,46 @@ Draft the complete **The Observatory — Diagnostics (`EchoDiagnostics`) Package
 
 **Promoted to:** SFGSS-000 v0.6.0 decisions 32–33, First Light specification v1.0.0, and the Foundation Wave Specification Roadmap.
 
+### August 3, 2026 — The Observatory specification
+
+- `[DECISION]` The Observatory (`EchoDiagnostics`) specification v1.0.0 is approved as the Level 2 authority for diagnostics and validation; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoDiagnostics observes and reports package/runtime health but never becomes the source of truth for the behavior it observes and never silently repairs production state.
+- `[DECISION]` Runtime integrations use explicit provider registration with stable provider IDs and disposable registration handles. Reflection-based discovery is not required for normal operation.
+- `[DECISION]` Providers capture bounded, synchronous snapshots. Systems with asynchronous work cache their latest safe status rather than making the diagnostic sampler await or block gameplay.
+- `[DECISION]` Diagnostic snapshots use normalized availability, health, severity, and privacy classifications so unsupported information is reported as unavailable rather than as a misleading zero or success.
+- `[DECISION]` The runtime root is duplicate-safe, persists for the application session when enabled, and owns its sampler, histories, registry, event buffer, and overlay services. Editor validation can run without a runtime root.
+- `[DECISION]` Runtime metric/event histories use bounded buffers and configurable update rates; diagnostic failure must degrade diagnostics rather than gameplay.
+- `[DECISION]` The initial overlay uses uGUI and TextMeshPro but remains an isolated presenter over neutral diagnostic state. It does not own general UI navigation, the EventSystem, input contexts, game pause, or gameplay time scale.
+- `[DECISION]` Local support-snapshot export is explicit, versioned, privacy-filtered, and never transmitted automatically.
+- `[DECISION]` Editor validation supports manual, pre-Play, and pre-build execution. Repairs remain explicit and non-destructive; validation itself does not mutate production configuration.
+- `[DECISION]` First Light remains independent. A separate First Light–Observatory bridge maps concrete launch status and reports into the Observatory’s neutral launch model.
+- `[DECISION]` Package inventory is an Editor capability in the MVP. A Player-build package manifest is deferred until a safe build-time generation design is approved.
+- `[DECISION]` The Observatory does not replace Unity’s Console or Profiler, does not promise hardware sensor support, and does not globally intercept all logs in its MVP.
+
+**Promoted to:** The Observatory (`EchoDiagnostics`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved diagnostics authority without changing suite ownership boundaries.
+
+
+### August 3, 2026 — The Accord specification
+
+- `[DECISION]` The Accord (`EchoSettings`) specification v1.0.0 is approved as the Level 2 authority for global preferences; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoSettings owns global preference truth, defaults, committed/effective values, drafts, validation, application coordination, versioned persistence, migration, and safe display confirmation. It does not own production settings UI, audio playback, input execution, localization content, save-slot progress, pause, or gameplay rules.
+- `[DECISION]` The runtime model separates project defaults, committed settings, effective settings, editable drafts, and preserved unknown section records.
+- `[DECISION]` The package uses explicit stable-ID typed section registration with independent document and section schema versions. Reflection-based settings discovery is not approved.
+- `[DECISION]` Unknown optional-package section payloads are preserved when their definition or bridge is absent so clean package removal does not erase data.
+- `[DECISION]` Edit sessions record the committed revision they started from. A stale draft returns a conflict rather than overwriting a newer commit silently.
+- `[DECISION]` Settings application is transactional. Required appliers run provisionally in deterministic order and previously applied sections revert in reverse order when a required step fails.
+- `[DECISION]` Risky display changes remain provisional until confirmed. Cancel, unscaled timeout, shutdown, application failure, or persistence failure restores the previous effective platform state.
+- `[DECISION]` The default backend is a versioned structured JSON document stored beneath `Application.persistentDataPath`; `PlayerPrefs` is not the default backend.
+- `[DECISION]` Corrupt, unsupported-old, and newer files are preserved for recovery. Recovery/default use does not silently overwrite evidence or a newer schema.
+- `[DECISION]` The MVP built-in sections are Audio, Display, and basic Accessibility. EchoSettings stores audio/accessibility preference values; Jukebot, feedback, UI, input, and localization behavior remains in optional bridges or project adapters.
+- `[DECISION]` The built-in display adapter is replaceable and capability-aware. Unsupported platform fields report unavailable rather than false success.
+- `[DECISION]` Optional consumers may register appliers after settings initialization and receive the current effective values, avoiding circular startup requirements.
+- `[DECISION]` The core is nonvisual. A sample or EchoUI presenter owns controls, silent binding, prompts, navigation, and display-confirmation presentation.
+- `[DECISION]` Named profiles, import/export, monitor selection, HDR/dynamic-resolution options, cloud synchronization, and secure storage remain deferred or outside the MVP.
+- `[DECISION]` Public asynchronous operations use fresh Unity `Awaitable<T>` instances, consistent with the Foundation Unity 6 baseline.
+
+**Promoted to:** The Accord (`EchoSettings`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing global-preference authority and preserve the approved cross-package ownership matrix.
+
 ---
 
 ## Promotion Queue
@@ -91,6 +133,8 @@ Draft the complete **The Observatory — Diagnostics (`EchoDiagnostics`) Package
 | 2026-08-03 | Foundation Specification Pass before implementation | SFGSS-000 v0.6.0 and roadmap | Promoted |
 | 2026-08-03 | First Light implementation-shaping choices | First Light specification v1.0.0 | Promoted |
 | 2026-08-03 | Unity 6 package floor | SFGSS-000 v0.6.0 | Promoted |
+| 2026-08-03 | Observatory authority, provider, overlay, validation, privacy, and bridge decisions | EchoDiagnostics specification v1.0.0 | Promoted |
+| 2026-08-03 | Accord authority, section, transaction, display-safety, persistence, migration, and bridge decisions | EchoSettings specification v1.0.0 | Promoted |
 
 ---
 
@@ -98,10 +142,12 @@ Draft the complete **The Observatory — Diagnostics (`EchoDiagnostics`) Package
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved baseline updated | v0.6.0; decisions 32–33 added |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Accord decisions fit existing global-preference ownership |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
-| Foundation documentation gate | Active | 1 of 10 package specifications approved |
+| Observatory specification | Approved | v1.0.0; no release-blocking design questions |
+| Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
+| Foundation documentation gate | Active | 3 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -123,9 +169,9 @@ Draft the complete **The Observatory — Diagnostics (`EchoDiagnostics`) Package
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specification:** First Light (`EchoLaunch`) v1.0.0 Approved  
-**Current package:** The Observatory (`EchoDiagnostics`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved  
+**Current package:** The Passage (`EchoSceneFlow`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** First Light choices approved; documentation-first Foundation gate promoted into SFGSS-000 v0.6.0  
+**Last completed documentation change:** Accord global-preference authority, typed section model, transactional edit/apply/rollback workflow, display confirmation, versioned JSON persistence, migration/recovery, Test Lab, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-02 — Draft and review the complete EchoDiagnostics package specification
+**Next checkpoint:** FW-DOC-04 — Draft and review the complete EchoSceneFlow package specification
