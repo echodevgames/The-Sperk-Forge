@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoCamera - The Eye package specification
-**Current checkpoint:** SUITE-DOC-14 - EchoCamera: The Eye Package Specification
+**Current focus:** EchoCharacters - The Fellowship package specification
+**Current checkpoint:** SUITE-DOC-15 - EchoCharacters: The Fellowship Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,14 +45,14 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md` - v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md` - v1.0.0 Approved.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Draft and approve the complete **Eye (`EchoCamera`) Package Specification** using SFGSS-001, with SFGSS-002 through SFGSS-004 as cross-package guardrails. Define targets, groups, modes, priorities, bounds, zones, blends, request leases, provider adapters, direct-scene behavior, diagnostics, isolated Laboratories, and boundaries with characters, controllers, feedback, dialogue, scene flow, UI, multiplayer, and project camera logic. Keep all empirical evidence `Not run`.
+Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specification** using SFGSS-001, with SFGSS-002 through SFGSS-004 as guardrails. Define character identity, definitions and runtime instances, roster and availability, selection, spawning/despawning, switching, possession/control ownership, local-player assignment, party/grouping, respawn, save snapshots, diagnostics, isolated Laboratory, and explicit boundaries with input, controllers, camera, animation, inventory, combat, UI, saves, and multiplayer. Keep all empirical evidence `Not run`.
 ---
 
 ## Open Questions
@@ -60,11 +60,29 @@ Draft and approve the complete **Eye (`EchoCamera`) Package Specification** usin
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-12.
+- No question currently blocks SUITE-DOC-15.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Eye (`EchoCamera`) package specification
+
+- `[DECISION]` EchoCamera owns camera channels, target/group registration, provider-neutral modes, priority leases, blends, modifiers, bounds, zones, viewport metadata, impulses, backend capability negotiation, diagnostics, authoring, validation, and isolated 2D/3D Laboratories.
+- `[DECISION]` Camera channels are the unit of independent output authority. Main is the MVP path, while bounded secondary channels prevent a future split-screen breaking redesign.
+- `[DECISION]` The neutral core has no Cinemachine dependency and ships a built-in Unity Camera backend for true standalone operation. Cinemachine remains a separate provider adapter.
+- `[DECISION]` Modes, modifiers, bounds, targets, groups, and impulses use generational handles or leases. Out-of-order release recomputes from active truth rather than restoring stale snapshots.
+- `[DECISION]` Mode arbitration resolves higher priority, then later acquisition. Blend interruption begins from the current evaluated output.
+- `[DECISION]` Backends declare either root-driven or backend-driven tick ownership. Two systems may never write one Camera during the same channel tick.
+- `[DECISION]` Targets and groups supply provider-neutral snapshots and warp revisions so destruction, teleport, switching, and target loss remain explicit.
+- `[DECISION]` One effective bounds request per channel is the bounded MVP. 2D and 3D zones are optional adapter assemblies that own only their occupancy-derived leases.
+- `[DECISION]` Impact owns feedback recipes; The Eye owns final camera impulse application through an explicit bridge.
+- `[DECISION]` Active channels, targets, groups, modes, blends, modifiers, bounds, zones, impulses, and backend state are session-only and are not durable save truth.
+- `[DECISION]` EchoCamera does not own characters, controllers, input devices, dialogue, scene travel, UI, rendering pipelines, post-processing, level layout, multiplayer player assignment, or project cinematography.
+- `[TEST]` The specification registers 60 package-qualified Laboratory scenarios and 360 package-qualified planned tests. Every implementation-dependent result remains `Not run`.
+- `[HANDOFF]` SUITE-DOC-14 is complete. Continue with SUITE-DOC-15: The Fellowship (`EchoCharacters`) package specification.
+
+**Promoted to:** `Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md`, `Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md`, README, and roadmap.
 
 ### August 4, 2026 - The Hand (`EchoInteraction`) package specification
 
@@ -564,6 +582,7 @@ Draft and approve the complete **Eye (`EchoCamera`) Package Specification** usin
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoCamera channels, targets/groups, modes, blends, modifiers, bounds, zones, impulses, backends, diagnostics, and Laboratories | EchoCamera Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoInventory definitions, stacks, unique instances, containers, atomic transactions, equipment storage, persistence, diagnostics, and Laboratory | EchoInventory Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoObjectives objective graphs, progress, repeatability, reward ledgers, persistence, diagnostics, and Laboratory | EchoObjectives Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoDialogue speakers, conversation graph, lines, choices, conditions, commands, interruption, semantic history, safe snapshots, diagnostics, authoring, and Laboratory | EchoDialogue Package Specification v1.0.0 | Promoted |
@@ -600,11 +619,13 @@ Draft and approve the complete **Eye (`EchoCamera`) Package Specification** usin
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
 | EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
 | EchoLocalization package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 196 planned tests, all Not run |
-| Expansion specifications | 8 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, and The Vault |
+| Expansion specifications | 10 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, and The Eye |
 | EchoDialogue package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 217 planned tests, all Not run |
 | EchoObjectives package specification | Approved | v1.0.0; 30 sections; 48 Laboratory scenarios; 268 planned tests, all Not run |
 | EchoInventory package specification | Approved | v1.0.0; 30 sections; 52 Laboratory scenarios; 302 planned tests, all Not run |
-| Current checkpoint | Active | SUITE-DOC-13 - EchoInteraction: The Hand Package Specification |
+| EchoInteraction package specification | Approved | v1.0.0; 30 sections; 56 Laboratory scenarios; 336 planned tests, all Not run |
+| EchoCamera package specification | Approved | v1.0.0; 30 sections; 60 Laboratory scenarios; 360 planned tests, all Not run |
+| Current checkpoint | Active | SUITE-DOC-15 - EchoCharacters: The Fellowship Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -655,29 +676,29 @@ Draft and approve the complete **Eye (`EchoCamera`) Package Specification** usin
 ## Checkpoint Closeout Checklist
 
 - [x] Reconcile `Current Notes.md`.
-- [x] Approve EchoInteraction ownership, independence, data, lifecycle, failure, diagnostics, authoring, Laboratory, bridge, removal, and release contracts.
-- [x] Define interaction actions, endpoint offers, detector adapters, candidate freshness, deterministic focus, availability, prompts, semantic commands, sessions, cancellation, commit points, reservations, and local concurrency.
-- [x] Register 56 Laboratory scenarios and 336 package-qualified planned tests.
-- [x] Keep every unexecuted runtime, detection, offer, focus, prompt, session, cancellation, concurrency, adapter, migration, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Approve EchoCamera ownership, independence, data, lifecycle, failure, diagnostics, authoring, Laboratory, backend, bridge, removal, and release contracts.
+- [x] Define channels, targets, groups, modes, priorities, blends, modifiers, bounds, zones, viewports, impulses, backend capability negotiation, tick ownership, and direct-scene behavior.
+- [x] Register 60 Laboratory scenarios and 360 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, channel, target, group, mode, blend, modifier, bounds, zone, impulse, backend, performance, platform, compatibility, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
-- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, detector, interactor, endpoint, or gameplay implementation was created.
-- [x] Record SUITE-DOC-12 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-13.
-- [x] Stop before EchoCamera specification work.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, camera rig, target, zone, bounds, or gameplay implementation was created.
+- [x] Record SUITE-DOC-13 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-14.
+- [x] Stop before EchoCharacters specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-13 - The Hand (`EchoInteraction`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-14 - The Eye (`EchoCamera`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoCamera - The Eye  
-**Active checkpoint:** SUITE-DOC-14 - EchoCamera Package Specification  
-**Expansion specifications:** 9 of 13 approved  
+**Current focus:** EchoCharacters - The Fellowship  
+**Active checkpoint:** SUITE-DOC-15 - EchoCharacters Package Specification  
+**Expansion specifications:** 10 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-12 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-13 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, camera data, camera controller, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-13 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-14 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, character definition, roster, spawner, selector, possession system, or gameplay implementation

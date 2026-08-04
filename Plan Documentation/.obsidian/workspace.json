@@ -188,8 +188,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "0295d99b37131b83",
+  "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
+    "Test Reports/SUITE-DOC-13_Artifact_Manifest.json",
+    "SUITE-DOC-14_Artifact_Manifest.json",
+    "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
     "SUITE-DOC-13_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
@@ -214,17 +218,13 @@
     "Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-06_Artifact_Manifest.json",
     "Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-05_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
     "Package Specifications/SFGSS-Impact-EchoFeedback-Package-Specification.md",
     "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
-    "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Artifact_Manifest.json",
     "Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md",
     "SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md",
     "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
     "Test Reports/SUITE-DOC-03_Data_IDs_Serialization_Migration_Audit_Report.md",
-    "SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md",
-    "Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
-    "SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md"
+    "SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md"
   ]
 }
