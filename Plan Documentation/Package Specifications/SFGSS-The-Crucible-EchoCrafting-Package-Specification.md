@@ -1746,3 +1746,16 @@ each file and step so Jesse can enter and understand it himself.
 ## Template Completion Rule
 
 A new collaborator can identify the package authority, non-goals, MVP, standalone behavior, data/state separation, public API, provider transaction boundary, failure behavior, setup, Laboratory, bridges, later modules, and release evidence without consulting chat history. The specification is therefore complete as an approved pre-code authority.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

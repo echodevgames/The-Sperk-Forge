@@ -1679,3 +1679,14 @@ This standard is designed around Unity 6 behavior documented by Unity:
 - Managed-reference type/host behavior for `[SerializeReference]`.
 
 These references inform technical constraints. The approved suite ownership, format, migration, preservation, and transaction rules remain defined by SFGSS-000, the package specifications, and this standard.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

@@ -1671,3 +1671,16 @@ Before writing code:
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 4, 2026  
 **Conditions:** This approves the package architecture and documentation only. Implementation remains locked until SUITE-DOC-33. Exact Unity/Cinemachine compatibility, performance, platform, migration, installation and release evidence must be produced later under SFGSS-004.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

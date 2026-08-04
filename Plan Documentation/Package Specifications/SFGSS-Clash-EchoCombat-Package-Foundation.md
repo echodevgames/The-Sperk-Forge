@@ -1823,3 +1823,16 @@ enter and understand them himself.
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 4, 2026  
 **Conditions:** Implementation remains locked until SUITE-DOC-33. All empirical evidence remains `Not run` until executed and recorded.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/advanced #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

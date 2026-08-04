@@ -1083,3 +1083,20 @@ Run **SUITE-DOC-24 - Advanced Cross-Package and Research Review**. Reconcile Mul
 **Known blockers:** None for documentation; provider/prototype evidence remains Not run  
 **Commit/push:** SUITE-DOC-23 pending owner confirmation  
 **Stop point:** Before any Advanced integration implementation, provider prototype, package manifest, asmdef, C# file, asset, scene, prefab, setup facade, bridge, or test execution
+
+
+---
+
+## August 4, 2026 — Suite graph roadmap and package learning gate
+
+- `[DECISION]` The vault now maintains `Suite_Graph_Roadmap.md` as the primary Obsidian navigation and Graph View hub.
+- `[DECISION]` Every current package specification links back to the graph roadmap through a standardized Graph Navigation block.
+- `[DECISION]` The graph roadmap is navigation only and does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications.
+- `[DECISION]` Every package in Sections 7.1 through 7.3 receives an individual plain-language learning review before implementation is authorized.
+- `[DECISION]` Each learning review includes purpose, analogy, practical example, owns/does-not-own boundary, definitions versus runtime state, lifecycle, public concepts, bridges, Standalone Laboratory, and a teach-back check.
+- `[DECISION]` SUITE-DOC-33 now requires both documentation completion and all 28 package learning reviews.
+- `[DECISION]` SFGSS-005 advances to v1.2.0 and ADR-003 records the graph and learning-review workflow.
+- `[TEST]` The health check confirms 28 of 28 package foundations exist, Foundation and Expansion collision reviews pass, no architecture blocker is recorded, and empirical implementation evidence remains `Not run`.
+- `[HANDOFF]` The active numbered checkpoint remains SUITE-DOC-24 — Advanced Cross-Package and Research Review.
+
+**Promoted to:** `Suite_Graph_Roadmap.md`, `Package_Learning_Review_Catalog.md`, `Suite_Health_Check_and_Remaining_Documentation.md`, SFGSS-005 v1.2.0, ADR-003, README, and Full Suite Documentation Program Roadmap.

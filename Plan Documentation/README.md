@@ -2,7 +2,16 @@
 
 This folder is the living planning and architecture record for **The Sperk’s Forge — EchoDevGames Game Systems Suite**.
 
-The Markdown files are committed to Git and opened directly in Obsidian. Git is the durable history; Obsidian is the authoring and navigation surface. Do not maintain a second copied vault.
+The Markdown files are committed to Git and opened directly in Obsidian. Git is the durable history; Obsidian is the authoring, navigation, and Graph View surface. Do not maintain a second copied vault.
+
+## Start here
+
+1. [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+2. [[Suite_Health_Check_and_Remaining_Documentation|Suite Health Check]]
+3. [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+4. [[Current Notes]]
+5. [[Full_Suite_Documentation_Program_Roadmap|Full Suite Documentation Program Roadmap]]
+6. The active package, integration, research, or standard documents
 
 ## Authority order
 
@@ -12,44 +21,37 @@ The Markdown files are committed to Git and opened directly in Obsidian. Git is 
 4. Approved standards, roadmaps, checkpoint plans, test reports, and release records
 5. `Current Notes.md`
 
-When documents disagree, stop and reconcile the higher authority. Current Notes never silently overrides approved architecture.
-
-## Reading order
-
-1. This README.
-2. SFGSS-000.
-3. `Current Notes.md`.
-4. `Full_Suite_Documentation_Program_Roadmap.md`.
-5. SFGSS-002 through SFGSS-005.
-6. The package specifications and research records active for the checkpoint.
-7. Applicable ADRs and integration specifications.
-8. Relevant audit reports and prior closeouts.
-9. SFGSS-001 when drafting or revising a package specification.
+The graph roadmap is navigation, not authority.
 
 ## Current approved state
 
 ```text
 SFGSS-000: v0.13.0
+SFGSS-005: v1.2.0
 Foundation specifications: 10 of 10 approved
 Expansion specifications: 13 of 13 approved
 Advanced foundations: 5 of 5 approved
 Foundation collision matrix: approved
-Expansion collision matrix: SFGSS-INT-EXPANSION-001 v1.0.0 approved
-ADR-001 setup-facade protocol: v1.1.0
+Expansion collision matrix: approved
+Graph roadmap: active
+Package learning reviews: 0 of 28 complete
 Active checkpoint: SUITE-DOC-24 — Advanced Cross-Package and Research Review
 Implementation: locked
 First queued implementation: FL-M1-01 — First Light Package Skeleton
-Final unlock gate: SUITE-DOC-33
+Final unlock gate: SUITE-DOC-33, after documentation and learning reviews
 ```
 
 Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, ScriptableObjects, setup tools, samples, bridges, provider adapters, or executable prototypes before SUITE-DOC-33.
 
-## Important integration authorities
+## Important integration and workflow authorities
 
-- `Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md`
-- `Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix.md`
-- `Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md`
-- `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md`
+- [[Integration Specifications/Foundation_Cross-Package_Contract_Matrix|Foundation Cross-Package Contract Matrix]]
+- [[Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix|Expansion Cross-Package Contract Matrix]]
+- [[Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|ADR-001 Setup Facade Protocol]]
+- [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 Documentation Gate]]
+- [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 Graph and Learning Review]]
+- [[SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules|SFGSS-005 Checkpoint and Learning Workflow]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
 
 ## Learning-oriented implementation rule
 
@@ -62,7 +64,7 @@ When code is eventually authorized:
 - Jesse enters the code himself by default.
 - Stop at compile/test boundaries before continuing.
 
-Generated files may supplement the visible code only when Jesse explicitly requests them.
+Before implementation, every package receives a plain-language learning review with an analogy, practical example, ownership boundary, lifecycle, bridges, and teach-back check.
 
 ## Repository structure
 
@@ -74,21 +76,23 @@ Plan Documentation/
 ├── Checkpoint Build Plans/
 ├── Research Records/
 ├── Test Reports/
-└── Release Records/
+├── Release Records/
+├── Suite_Graph_Roadmap.md
+├── Suite_Health_Check_and_Remaining_Documentation.md
+└── Package_Learning_Review_Catalog.md
 ```
-
-Create folders only when the first real document exists.
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved package specifications, ADR-001/ADR-002, the Foundation and Expansion cross-package matrices, and the Advanced research records relevant to the checkpoint. Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-24 — Advanced Cross-Package and Research Review. Reconcile The Convergence, Instinct, Clash, Arcana, and The Atlas against Foundation and Expansion authorities without selecting a networking provider or inventing prototype evidence. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Begin with Suite_Graph_Roadmap.md, README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved package specifications, ADR-001 through ADR-003, and the Foundation and Expansion cross-package matrices. Package implementation is locked until SUITE-DOC-33 and all 28 package learning reviews are complete. Current checkpoint: SUITE-DOC-24 — Advanced Cross-Package and Research Review. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
 At every meaningful checkpoint:
 
 1. Reconcile `Current Notes.md`.
-2. Promote durable decisions into the correct authority.
-3. Update roadmap, tests, research, setup, changelog, or release records as applicable.
-4. Confirm documentation describes approved or observed truth accurately.
-5. Commit and push the checkpoint before advancing when practical.
+2. Update `Suite_Graph_Roadmap.md`.
+3. Promote durable decisions into the correct authority.
+4. Update roadmap, tests, research, setup, changelog, or release records as applicable.
+5. Confirm documentation describes approved or observed truth accurately.
+6. Commit and push the checkpoint before advancing when practical.

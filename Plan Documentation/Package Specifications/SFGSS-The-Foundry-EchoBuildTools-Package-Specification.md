@@ -1627,3 +1627,16 @@ Before any future code:
 ## Template Completion Rule
 
 A new collaborator can identify what Foundry owns, how it differs from Unity Build Profiles, how plans and fingerprints work, what may be mutated, how output deletion is constrained, how a build is validated and executed, when success is published, how evidence is generated, how providers connect, and what remains untested. The specification is therefore complete as a pre-code Level 2 authority.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

@@ -1,14 +1,14 @@
 # SFGSS-005 — Checkpoint Build Workflow and ChatGPT Collaboration Rules
 
 **Document ID:** SFGSS-005  
-**Version:** 1.1.0  
+**Version:** 1.2.0  
 **Status:** Approved workflow standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible  
-**Related standards:** SFGSS-001, SFGSS-ADR-002, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`  
+**Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > Build one proven span at a time. The Forge remembers what changed, why it changed, how it was tested, and where to stop.
 
@@ -18,6 +18,7 @@
 |---|---|---|---|
 | 1.0.0 | August 3, 2026 | Approved | Initial checkpoint workflow and collaboration rules |
 | 1.1.0 | August 3, 2026 | Approved | Added manual-entry learning workflow, mandatory visible complete code, file-by-file explanations, and evidence-based teaching stops |
+| 1.2.0 | August 4, 2026 | Approved | Added graph-roadmap navigation and mandatory package-by-package learning reviews before implementation authorization |
 
 
 ---
@@ -36,6 +37,7 @@ The workflow exists to ensure that:
 - Working project systems remain available until replacement parity is proven.
 - Code, Unity Editor setup, tests, and documentation describe the same committed state.
 - A fresh collaborator or ChatGPT conversation can continue from repository evidence instead of reconstructing decisions from chat history.
+- Jesse understands the purpose, boundaries, lifecycle, and practical use of each package before manually entering its implementation code.
 
 ---
 
@@ -160,6 +162,28 @@ Before drafting or executing a checkpoint, read in this order:
 The plan must list the exact authority set used. Chat history may supply context but is not a substitute for these repository sources.
 
 ---
+
+
+## 5A. Pre-implementation package learning review
+
+Before the final documentation readiness gate may authorize implementation, every package in SFGSS-000 Sections 7.1 through 7.3 receives an individual learning review.
+
+Each review must cover:
+
+1. Plain-English purpose.
+2. A real-world analogy.
+3. One practical game application.
+4. What the package owns and explicitly refuses to own.
+5. Definition/configuration versus mutable runtime state.
+6. Lifecycle and failure behavior.
+7. Important public concepts without requiring memorization of the whole API.
+8. Optional bridges and which authority remains in control.
+9. The package's Standalone Laboratory.
+10. A teach-back check in which Jesse explains the package in his own words.
+
+The review follows `Package_Learning_Review_Catalog.md` and SFGSS-ADR-003. It is documentation and education, not implementation authorization. Tiny pseudocode or diagrams may illustrate a concept, but complete production code waits for an approved Checkpoint Build Plan.
+
+The suite maintains `Suite_Graph_Roadmap.md` as the navigation hub for these reviews. Every current package specification must link back to that graph note.
 
 ## 6. Required Checkpoint Build Plan structure
 
@@ -562,3 +586,14 @@ Before writing code:
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 3, 2026  
 **Conditions:** SFGSS-005 governs implementation after the Full Suite Documentation Readiness Gate. A package specification or ADR remains required for architecture changes; a Checkpoint Build Plan cannot overrule higher authority. Code delivery follows the visible, complete, manual-entry learning workflow unless Jesse explicitly requests another delivery method.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

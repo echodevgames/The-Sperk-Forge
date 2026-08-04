@@ -2244,3 +2244,16 @@ The Workshop specification is complete and **Approved v1.0.0**. All ten Foundati
 The Workshop’s setup-facade integration contract is governed by [[../Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|SFGSS-ADR-001]].
 
 The Workshop verifies exact package ID/version, assembly-qualified facade type, protocol version, facade schema, setup schema, and six public static methods: `Describe`, `Plan`, `Apply`, `Validate`, `Compare`, and `RemovalGuidance`. Each method accepts and returns bounded detached JSON strings. Apply requires the matching approved plan hash and operation IDs. The Workshop never performs broad reflection discovery and never adds a runtime dependency to generated projects.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/foundation #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

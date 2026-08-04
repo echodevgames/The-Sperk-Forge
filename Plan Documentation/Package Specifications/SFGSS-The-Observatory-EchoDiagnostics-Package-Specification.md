@@ -1285,3 +1285,16 @@ Before code:
 ## Template Completion Review
 
 A new collaborator can determine what the package owns/refuses, its standalone MVP, configuration-versus-runtime data, public API/lifecycle/failure behavior, isolated Lab, bridge direction, privacy/export rules, and release evidence without consulting an old chat. This document is **Approved** as the Level 2 authority for The Observatory; implementation remains deferred by the Foundation documentation gate.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/foundation #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

@@ -1439,3 +1439,14 @@ SFGSS-004 is complete when a fresh collaborator can determine:
 8. Which Foundation specification wording still requires later consistency reconciliation.
 
 If a release claim cannot be traced to a requirement, test execution, evidence artifact, and gate decision, the claim remains unproven.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

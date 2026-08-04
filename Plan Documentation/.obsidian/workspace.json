@@ -190,6 +190,10 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Suite_Health_Check_and_Remaining_Documentation.md",
+    "Suite_Graph_Roadmap.md",
+    "SUITE-MAP-01_Artifact_Manifest.json",
+    "Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review.md",
     "SUITE-DOC-23_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Atlas-EchoWorld-Package-Foundation.md",
     "SUITE-DOC-22_Artifact_Manifest.json",
@@ -217,14 +221,10 @@
     "Research Records",
     "Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md",
     "Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-15_Artifact_Manifest.json",
-    "SUITE-DOC-16_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
     "Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
     "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
-    "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md"
+    "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md"
   ]
 }

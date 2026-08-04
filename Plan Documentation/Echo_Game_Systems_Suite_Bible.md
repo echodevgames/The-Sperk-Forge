@@ -2731,3 +2731,14 @@ SUITE-DOC-24 — Advanced Cross-Package and Research Review
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
 
 When implementation is eventually authorized, follow SFGSS-005 v1.1.0: show the complete code, explain each file and architectural choice, provide exact Unity Editor steps, let Jesse enter the code himself by default, compile/test at bounded stops, and reconcile evidence before advancing.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

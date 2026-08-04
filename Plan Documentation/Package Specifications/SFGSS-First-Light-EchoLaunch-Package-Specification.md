@@ -1511,3 +1511,16 @@ A new collaborator can determine from this approved specification:
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
 The document is **Approved** as the Level 2 authority for First Light. The Foundation documentation gate is complete; implementation is authorized only through the active SFGSS-005 Checkpoint Build Plan, beginning with FL-M1-01 Package Skeleton.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/foundation #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

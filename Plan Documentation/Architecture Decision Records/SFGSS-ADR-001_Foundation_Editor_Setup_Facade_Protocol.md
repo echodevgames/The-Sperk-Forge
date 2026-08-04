@@ -277,3 +277,14 @@ A package may expose fewer automated domains in its first release. Unsupported d
 2. The Workshop M5 facade-protocol milestone implements fake facades first, followed by First Light and Observatory reference facades.
 3. The Foundation contract matrix records every peer as `Manual until facade implemented`, then updates compatibility as each adapter passes.
 4. A later ADR may introduce a tiny Editor-only shared contract only after measured implementation evidence.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

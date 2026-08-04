@@ -1744,3 +1744,16 @@ Before changing this package:
 ## Template Completion Rule
 
 A new collaborator can identify The Vessel's exact authority, exclusions, MVP presets, standalone behavior, configuration/runtime separation, public seams, failure model, actor lifecycle, physics boundary, Laboratories, optional integrations, evidence state, and release gates without consulting an old chat. The specification is therefore complete and approved as a pre-code package foundation.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

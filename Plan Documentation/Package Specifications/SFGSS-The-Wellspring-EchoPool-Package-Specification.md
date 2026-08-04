@@ -1850,3 +1850,16 @@ A new collaborator can determine from this specification:
 8. The isolated Wellspring Laboratory proves the core without unrelated package code.
 9. Optional packages connect through bridges/providers and can be removed independently.
 10. No release claim exists until SFGSS-004 evidence is executed and recorded.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

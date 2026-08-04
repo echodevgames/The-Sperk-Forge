@@ -411,3 +411,14 @@ Rules:
 **Conditions:** Package implementation remains locked. This matrix authorizes no package manifest, asmdef, source file, asset, scene, prefab, setup facade, bridge, provider, or test execution.
 
 **Next checkpoint:** SUITE-DOC-24 — Advanced Cross-Package and Research Review.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

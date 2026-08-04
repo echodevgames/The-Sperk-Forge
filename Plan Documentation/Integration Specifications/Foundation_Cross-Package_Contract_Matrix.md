@@ -406,3 +406,14 @@ The collision test provides the following evidence to FW-DOC-12:
 - [ ] First Light M1 — Package Skeleton is written as a Checkpoint Build Plan.
 
 **FW-DOC-11 decision:** Approved. Proceed to FW-DOC-12. Runtime implementation remains locked until FW-DOC-12 explicitly authorizes First Light M1.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

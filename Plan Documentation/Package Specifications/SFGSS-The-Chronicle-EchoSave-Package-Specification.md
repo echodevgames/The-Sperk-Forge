@@ -1982,3 +1982,16 @@ A new collaborator can answer from this document:
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
 The Chronicle specification is complete and **Approved v1.0.0**. The next documentation checkpoint is **FW-DOC-10 - The Workshop (`EchoGameStarter`)**.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/foundation #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

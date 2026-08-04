@@ -3,7 +3,7 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; package implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.12.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.13.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
 **Workflow authority:** SFGSS-005 v1.1.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
@@ -78,7 +78,7 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 |---|---|---|
 | SUITE-DOC-05 | EchoFeedback - Impact - **Approved v1.0.0** | Coordinated camera shake, hit stop, rumble, flashes, response recipes, cancellation, accessibility scaling, and bridge boundaries |
 | SUITE-DOC-06 | EchoPool - The Wellspring - **Approved v1.0.0** | General-purpose pooling, definitions, ownership, lifecycle, capacity, exhaustion, return safety, scene transitions, and diagnostics |
-| SUITE-DOC-07 | EchoProgression - The Ascent - **Approved v1.0.0** | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
+| SUITE-DOC-07 | EchoProgression - The Ascent - **Approved v1.1.0** | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
 | SUITE-DOC-08 | EchoBuildTools - The Foundry - **Approved v1.0.0** | Build Profiles, recipes, versioning, preflight, scene validation, safe output, reports, checksums, and release preparation |
 | SUITE-DOC-09 | EchoLocalization - Many Tongues - **Approved v1.0.0** | Locale tables, localized references, fallbacks, fonts, formatting, pseudolocalization, and UI/dialogue boundaries |
 | SUITE-DOC-10 | EchoDialogue - Voices - **Approved v1.0.0** | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
@@ -127,8 +127,17 @@ These standards now follow the package foundations so they can describe the actu
 | Checkpoint | Deliverable | Exit condition |
 |---|---|---|
 | SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix | One owner per concern; no circular core dependency; installation/removal behavior explicit |
-| SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit | README, Current Notes, standards, package specs, ADRs, research, tests, and learning workflow agree |
-| **SUITE-DOC-33** | **Full Suite Documentation Readiness Gate** | Explicitly authorize or revise the first implementation checkpoint |
+| SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit | README, Current Notes, standards, package specs, ADRs, research, tests, graph roadmap, and learning workflow agree |
+| PKG-LEARN-001 through PKG-LEARN-028 | Individual Package Learning Reviews | Jesse can explain every package purpose, authority, lifecycle, practical use, and Laboratory before code |
+| **SUITE-DOC-33** | **Full Suite Documentation and Learning Readiness Gate** | Explicitly authorize or revise the first implementation checkpoint after all learning reviews |
+
+## 9A. Graph roadmap and learning orientation
+
+`Suite_Graph_Roadmap.md` is the living Obsidian navigation hub. It links all current package specifications, standards, ADRs, matrices, research records, status notes, and learning documents. Every package specification links back to it.
+
+`Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
+
+This orientation checkpoint does not replace SUITE-DOC-24. The active numbered checkpoint remains the Advanced Cross-Package and Research Review.
 
 ## 10. Current status
 
@@ -143,6 +152,8 @@ These standards now follow the package foundations so they can describe the actu
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |
+| Package learning reviews | 0 of 28 complete |
+| Graph roadmap | Active and linked from all package specifications |
 | Final unlock gate | SUITE-DOC-33 |
 
 ## 11. Checkpoint closeout rule
@@ -182,3 +193,8 @@ The Atlas (`EchoWorld`) Feasibility Foundation v1.0.0 is approved. The foundatio
 SFGSS-INT-EXPANSION-001 v1.0.0 passes the thirteen-package authority, lifecycle, dependency, persistence, transaction, diagnostics, Laboratory, setup-facade, and removal review. The Ascent advances to v1.1.0 to distinguish progression-node completion from objective-run completion. ADR-001 advances to v1.1.0 with all thirteen Expansion setup facades. No implementation evidence was produced.
 
 **Next checkpoint:** SUITE-DOC-24 - Advanced Cross-Package and Research Review.
+
+
+## SUITE-MAP-01 Closeout - Graph Roadmap and Learning Review Gate Approved
+
+The suite now maintains a central Obsidian graph roadmap, package navigation backlinks, a 28-package learning catalog, and ADR-003. SFGSS-005 advances to v1.2.0. The active numbered checkpoint remains SUITE-DOC-24.

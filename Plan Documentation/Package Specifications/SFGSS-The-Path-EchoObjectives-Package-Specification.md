@@ -1937,3 +1937,16 @@ Before writing code:
 ## Specification Completion Statement
 
 A new collaborator can determine what EchoObjectives owns, what it refuses to own, how availability and objective graphs work, how progress is mutated safely, how repeat runs and timers behave, why completion does not roll back when rewards fail, how reward idempotency works, how state is persisted and migrated, how optional packages connect, how the Standalone Laboratory proves the core, and what evidence is required before release without consulting an old conversation.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

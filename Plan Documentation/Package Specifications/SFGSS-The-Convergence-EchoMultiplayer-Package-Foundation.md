@@ -1744,3 +1744,16 @@ executed and recorded.
 **Approved by:** Jesse “Echo” Adams  
 **Date:** August 4, 2026  
 **Conditions:** No production provider, topology, SDK version, service, transport, provider adapter, or implementation is approved until required prototype evidence and a provider-selection ADR exist. Package implementation remains locked until SUITE-DOC-33.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/advanced #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

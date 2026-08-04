@@ -2006,3 +2006,16 @@ The implementation plan is grounded in these Unity 6 concepts, which must be rev
 - Unity `Awaitable` is the approved Unity 6 async primitive, and pooled awaitable instances must not be awaited more than once. Every public/provider operation returns a fresh instance.
 - The Input System exposes gamepad haptics through normalized dual-motor speeds and reset/pause/resume operations. EchoFeedback keeps this in a separate provider so unsupported devices and project device ownership remain explicit.
 - Application focus callbacks may vary by platform and Editor context. Focus-loss cleanup is tested as a provider safety behavior rather than assumed from one call pattern.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

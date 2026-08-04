@@ -1942,3 +1942,16 @@ Before code:
 A new collaborator can determine what EchoSettings owns and refuses, its standalone MVP, built-in sections, defaults-versus-runtime state, public API, persistence and migration model, apply/cancel/confirmation behavior, failure recovery, isolated Lab, bridge direction, and release evidence without consulting an old conversation.
 
 This document is **Approved** as the Level 2 authority for The Accord (`EchoSettings`). Implementation remains deferred by the Foundation documentation gate.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/foundation #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

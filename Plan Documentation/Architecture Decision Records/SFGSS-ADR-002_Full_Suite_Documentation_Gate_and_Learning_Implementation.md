@@ -98,3 +98,14 @@ Implementation may be unlocked only when:
 **Decision:** Accepted  
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 3, 2026
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

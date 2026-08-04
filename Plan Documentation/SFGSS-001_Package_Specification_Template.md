@@ -1092,3 +1092,14 @@ A package specification is complete when a new collaborator can answer all of th
 10. What evidence is required before the package can be released or adopted by an existing game?
 
 If any answer is still implicit, the specification remains **Proposed**.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/authority #sfgss/navigation
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Current Notes]]

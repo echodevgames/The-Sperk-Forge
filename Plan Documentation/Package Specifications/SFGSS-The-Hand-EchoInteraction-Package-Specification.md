@@ -1798,3 +1798,16 @@ Before writing code:
 **Approved by:** Jesse “Echo” Adams  
 **Date:** August 4, 2026  
 **Conditions or notes:** This approval authorizes documentation only. All implementation/test/platform/performance claims remain Not run until SUITE-DOC-33 and later checkpoints execute them.
+
+
+---
+
+## Graph Navigation
+
+#sfgss/package #sfgss/wave/expansion #sfgss/status/approved
+
+- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
+- [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
+- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
