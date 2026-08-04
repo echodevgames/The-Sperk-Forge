@@ -65,7 +65,7 @@ These remain visibly `Not run` or conditional until implementation or research e
 | SFGSS-004 | Approved v1.0.0 |
 | SFGSS-005 | Approved v1.1.0 |
 | Foundation package specifications | 10 of 10 approved |
-| Expansion package specifications | 11 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, and The Fellowship v1.0.0 |
+| Expansion package specifications | 12 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, and The Vessel v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
 | Package implementation | Not started |
@@ -87,7 +87,7 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 | SUITE-DOC-13 | EchoInteraction - The Hand - **Approved v1.0.0** | Detection, focus, range, priority, prompt data, availability, execution requests, cancellation, and 2D/3D adapters |
 | SUITE-DOC-14 | EchoCamera - The Eye - **Approved v1.0.0** | Targets, modes, requests, bounds, blends, zones, backend adapters, and camera/feedback/dialogue boundaries |
 | SUITE-DOC-15 | EchoCharacters - The Fellowship - **Approved v1.0.0** | Identity, roster, selection, spawning, switching, control ownership, possession, save snapshots, and multiplayer seams |
-| SUITE-DOC-16 | EchoControllers - The Vessel | Intent/motor contracts, controller families, capability modules, physics boundaries, adapters, and independent preset Laboratories |
+| SUITE-DOC-16 | EchoControllers - The Vessel - **Approved v1.0.0** | Intent/motor contracts, controller families, capability modules, physics boundaries, adapters, and independent preset Laboratories |
 | SUITE-DOC-17 | EchoCrafting - The Crucible | Dedicated design-workshop record plus recipes, requirements, stations, queues, transactions, repair/salvage boundaries, UI, persistence, and multiplayer seams |
 
 ## 6. Phase C - Advanced and adapter package foundations
@@ -134,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-15 - The Fellowship (`EchoCharacters`) Package Specification |
+| Completed checkpoint | SUITE-DOC-16 - The Vessel (`EchoControllers`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-16 - The Vessel (`EchoControllers`) Package Specification** |
+| Active checkpoint | **SUITE-DOC-17 - The Crucible (`EchoCrafting`) Design Workshop and Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 11 of 13 approved |
+| Expansion specifications | 12 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |

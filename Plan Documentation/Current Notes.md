@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** The Vessel (`EchoControllers`) package specification
-**Current checkpoint:** SUITE-DOC-16 - Draft The Vessel (`EchoControllers`) package specification
+**Current focus:** The Crucible (`EchoCrafting`) design workshop and package specification
+**Current checkpoint:** SUITE-DOC-17 - Conduct The Crucible (`EchoCrafting`) design workshop and draft its package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,14 +45,14 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md` - v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md` - v1.0.0 Approved.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specification** using SFGSS-001, with SFGSS-002 through SFGSS-004 as guardrails. Define character identity, definitions and runtime instances, roster and availability, selection, spawning/despawning, switching, possession/control ownership, local-player assignment, party/grouping, respawn, save snapshots, diagnostics, isolated Laboratory, and explicit boundaries with input, controllers, camera, animation, inventory, combat, UI, saves, and multiplayer. Keep all empirical evidence `Not run`.
+Conduct and document the required **Crucible (`EchoCrafting`) design workshop**, then draft and approve the complete package specification using SFGSS-001. Resolve the relationship among exact combine recipes, standard crafting, skills/professions, discovery, quality, stations, timing, queues, cancellation/refunds, failure, repair, salvage, upgrade, ingredient/output providers, inventory bridges, UI, persistence, and multiplayer authority before implementation. Preserve Hackulos's exact quest-combine bag as a small supported use case without allowing it to define the entire package. Keep all empirical evidence `Not run`.
 ---
 
 ## Open Questions
@@ -60,11 +60,28 @@ Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specifica
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-15.
+- No question currently blocks SUITE-DOC-17; the workshop exists to resolve crafting decisions before approval.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Vessel (`EchoControllers`) package specification
+
+- `[DECISION]` EchoControllers owns actor-bound controller hosts, family-specific normalized intent, stale-safe source/control leases, local motor execution, approved probes/capabilities, semantic locomotion state/events, warp/external-motion seams, diagnostics, setup, validation, and independent preset Laboratories.
+- `[DECISION]` The package is rootless. One controller host and one authoritative preset motor live with each actor; no persistent or global controller singleton exists.
+- `[DECISION]` Side-View 2D and Top-Down 2D are the two MVP controller families. Each has its own assembly boundary, configuration, scene, scripted intent driver, readout, and acceptance evidence.
+- `[DECISION]` Intent lifecycle is shared, but payloads are family-specific so the package does not create one universal locomotion action struct or mandatory input map.
+- `[DECISION]` The MVP physics path supports Dynamic Rigidbody2D and executes motor-owned motion on a declared fixed-step boundary. Other physics/navigation backends require later family design.
+- `[DECISION]` AlwaysControlled provides the simple single-pawn path; LeaseRequired provides stale-safe possession and local multiplayer integration.
+- `[DECISION]` Configuration assets remain immutable. Velocity, contacts, coyote/jump buffers, intent sequences, source/control generations, capability state, and diagnostics are runtime-only.
+- `[DECISION]` The package publishes semantic snapshots/events. Animation, camera, audio, VFX, UI, characters, input, combat, save, scene, and network systems retain their own authorities.
+- `[DECISION]` Scripted intent drivers are the mandatory standalone Lab controls so the core has no Input System dependency. Interactive input belongs to a separate adapter.
+- `[DECISION]` One modular UPM package remains approved for the MVP. A split into controller-family packages is reconsidered after a third distinct backend/family proves separate dependencies or release cadence.
+- `[TEST]` The specification registers 68 package-qualified Laboratory scenarios and 408 individually registered planned tests. Every implementation-dependent result remains `Not run`.
+- `[HANDOFF]` SUITE-DOC-16 is complete. Continue with SUITE-DOC-17: The Crucible (`EchoCrafting`) design workshop and package specification.
+
+**Promoted to:** `Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md`, `Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md`, README, and roadmap.
 
 ### August 4, 2026 - The Eye (`EchoCamera`) package specification
 
@@ -733,7 +750,7 @@ Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specifica
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
 - [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, character definition, roster, spawner, control system, or gameplay implementation was created.
 - [x] Record SUITE-DOC-14 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-15.
+- [x] Commit and push SUITE-DOC-15 - confirmed by owner.
 - [x] Stop before EchoControllers specification work.
 
 ---
@@ -750,5 +767,37 @@ Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specifica
 **Runtime authorization:** None  
 **Known blockers:** None  
 **Prior checkpoint:** SUITE-DOC-14 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-15 pending user confirmation  
+**Commit/push:** SUITE-DOC-15 confirmed committed/pushed by owner  
 **Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, input adapter, motor, controller preset, locomotion capability, or gameplay implementation
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-16
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve EchoControllers ownership, rootless independence, normalized family intent, control/source leases, fixed-step physics boundary, Side-View 2D and Top-Down 2D MVP presets, capabilities, diagnostics, authoring, Laboratories, bridges, removal, and release contracts.
+- [x] Register 68 Laboratory scenarios and 408 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, physics, input-adapter, controller, capability, platform, performance, compatibility, integration, migration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, intent source, motor, controller preset, or gameplay implementation was created.
+- [x] Record SUITE-DOC-15 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-16.
+- [x] Stop before The Crucible design workshop or implementation work.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-16
+
+**Completed checkpoint:** SUITE-DOC-16 - The Vessel (`EchoControllers`) Package Specification  
+**Result:** Approved v1.0.0  
+**Current focus:** EchoCrafting - The Crucible design workshop and package specification  
+**Active checkpoint:** SUITE-DOC-17 - EchoCrafting Design Workshop and Package Specification  
+**Expansion specifications:** 12 of 13 approved  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**Runtime authorization:** None  
+**Known blockers:** None; the crafting workshop exists to resolve design questions before approval  
+**Prior checkpoint:** SUITE-DOC-15 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-16 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, crafting recipe, ingredient provider, station, queue, transaction system, repair/salvage module, or gameplay implementation
+

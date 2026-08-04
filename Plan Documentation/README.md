@@ -30,12 +30,12 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 
 ## Current approved objective
 
-The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), Many Tongues (`EchoLocalization`), Voices (`EchoDialogue`), The Path (`EchoObjectives`), The Vault (`EchoInventory`), The Hand (`EchoInteraction`), The Eye (`EchoCamera`), and The Fellowship (`EchoCharacters`) are the first eleven approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
+The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), Many Tongues (`EchoLocalization`), Voices (`EchoDialogue`), The Path (`EchoObjectives`), The Vault (`EchoInventory`), The Hand (`EchoInteraction`), The Eye (`EchoCamera`), The Fellowship (`EchoCharacters`), and The Vessel (`EchoControllers`) are the first twelve approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
 
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
-Expansion specifications: 11 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, and The Fellowship v1.0.0
-Active checkpoint: SUITE-DOC-16 - EchoControllers: The Vessel Package Specification
+Expansion specifications: 12 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, and The Vessel v1.0.0
+Active checkpoint: SUITE-DOC-17 - EchoCrafting: The Crucible Design Workshop and Package Specification
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -73,7 +73,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation authorities, and the approved Expansion specifications through The Fellowship (`EchoCharacters`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-16 - EchoControllers (`The Vessel`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define a standalone controller library with normalized intent, motor/state contracts, focused capability modules, side-view 2D and top-down 2D MVP presets, independent Laboratories, and explicit input/character/camera/animation seams without absorbing roster, combat, camera, animation-graph, or mandatory input-map ownership. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation authorities, and the approved Expansion specifications through The Vessel (`EchoControllers`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-17 - EchoCrafting (`The Crucible`) Design Workshop and Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Conduct the required crafting design workshop before approving recipes, ingredient/output provider contracts, stations, skills/professions, discovery, quality, timing, queues, failure, repair, salvage, persistence, UI, and multiplayer seams. Preserve the exact quest-combine bag use case without reducing the long-term package to that one mechanic. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -88,18 +88,18 @@ At every meaningful checkpoint:
 ## Current Package-First Status - August 4, 2026
 
 - Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **11 of 13 approved**.
-- Latest approval: **The Fellowship (`EchoCharacters`) v1.0.0**.
-- Active checkpoint: **SUITE-DOC-16 - The Vessel (`EchoControllers`)**.
+- Expansion specifications: **12 of 13 approved**.
+- Latest approval: **The Vessel (`EchoControllers`) v1.0.0**.
+- Active checkpoint: **SUITE-DOC-17 - The Crucible (`EchoCrafting`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
-- All Fellowship runtime, roster, identity, availability, selection, group, spawn, actor, control, switch, snapshot, provider, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
+- All Vessel runtime, physics, intent, source, control, motor, grounding, jump, facing, constraint, capability, adapter, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
 
 Read the current work in this order:
 
 1. `Echo_Game_Systems_Suite_Bible.md`
 2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md`
-4. `Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md`
+3. `Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md`
+4. `Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md`
 5. `Current Notes.md`
 6. `Full_Suite_Documentation_Program_Roadmap.md`
 
