@@ -52,7 +52,7 @@ The ten required specifications are:
 9. The Chronicle (`EchoSave`)
 10. The Workshop (`EchoGameStarter`)
 
-First Light v1.0.0, The Observatory v1.0.0, and The Accord v1.0.0 are approved package specifications. The Passage (`EchoSceneFlow`) is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
+First Light v1.0.0, The Observatory v1.0.0, The Accord v1.0.0, and The Passage v1.0.0 are approved package specifications. The Pulse (`EchoGameState`) is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
 
 ## Folders Added Later
 

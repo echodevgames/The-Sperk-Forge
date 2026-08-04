@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-04 — Draft The Passage (`EchoSceneFlow`) package specification
+**Current checkpoint:** FW-DOC-05 — Draft The Pulse (`EchoGameState`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -43,17 +43,18 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specification** using SFGSS-001. Define normal scene-transition authority after First Light handoff, validated scene references, asynchronous loading phases, request locking/queueing, progress, activation, additive ownership, cancellation/failure policy, direct-scene behavior, and optional bridges without allowing EchoSceneFlow to absorb game-state rules, UI presentation, gameplay completion logic, audio playback, or multiplayer authority.
+Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Specification** using SFGSS-001. Define high-level runtime modes, validated state transitions, temporary override/stack behavior, nested pause reasons, time-scale policy, cursor and input-context coordination requests, state history, direct-scene behavior, and optional bridges without allowing EchoGameState to absorb UI presentation, input binding ownership, audio playback, scene-transition execution, gameplay character states, or project-specific victory/defeat rules.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of the EchoSettings specification.
+- None blocking the start of the EchoGameState specification.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -123,6 +124,26 @@ Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specif
 
 **Promoted to:** The Accord (`EchoSettings`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing global-preference authority and preserve the approved cross-package ownership matrix.
 
+### August 3, 2026 — The Passage specification
+
+- `[DECISION]` The Passage (`EchoSceneFlow`) specification v1.0.0 is approved as the Level 2 authority for normal scene travel after First Light handoff; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoSceneFlow owns destination validation, request admission, one serialized transition pipeline, progress, activation, route helpers, recovery results, and scene-flow diagnostics. It does not own startup orchestration, game-state rules, production UI, save policy, audio playback, gameplay completion, multiplayer authority, or scene content.
+- `[DECISION]` Runtime destinations use project-owned `SceneDefinition` and `SceneRouteDefinition` assets with stable IDs. Scene asset paths are backend locators maintained by Editor tooling, not durable identity or a public raw-string API.
+- `[DECISION]` One duplicate-safe application-session `EchoSceneFlowRoot` owns the service, backend, queue, runner, participants, presenter registration, status, and bounded history. Duplicate rejection occurs before subscriptions or scene-operation side effects.
+- `[DECISION]` The MVP backend uses Unity `SceneManager.LoadSceneAsync` for asynchronous single-scene loading behind an `ISceneLoadBackend` seam. Additive loading, owned unload, persistent scene sets, Addressables, and multiplayer providers remain deferred.
+- `[DECISION]` Public asynchronous operations use fresh Unity `Awaitable<T>` instances and execute Unity scene APIs on the main thread.
+- `[DECISION]` Only one scene operation may be active. The default admission policy is `RejectNew`; optional FIFO queuing is bounded, pending requests may be replaced by policy, and the active load is never replaced.
+- `[DECISION]` Equivalent active or queued requests coalesce to one operation. Explicit reload remains a distinct operation.
+- `[DECISION]` Cancellation is cooperative while queued or before the backend begins loading. After Unity loading starts, cancellation is reported as unsupported in the current phase and the operation continues to a safe terminal state or recovery.
+- `[DECISION]` Immediate scene activation is the default. Optional delayed activation is short, hard-bounded, and never permitted to stall Unity's async operation queue indefinitely.
+- `[DECISION]` Transition presenters and lifecycle participants register explicitly through disposable handles. No presenter is a valid core path; reflection discovery is not required.
+- `[DECISION]` The runtime core is nonvisual and does not depend on uGUI or TextMeshPro. The Standalone Test Lab may use a sample-only presenter, and EchoUI may provide a separate production presenter bridge.
+- `[DECISION]` Recovery may attempt one configured fallback only, with validation and runtime loop protection.
+- `[DECISION]` Reload, Main Menu, and Hub helpers resolve project-configured route assets rather than hidden scene names.
+- `[DECISION]` The direct-scene initializer is development-only by default and creates the minimum root only when an authority is absent.
+
+**Promoted to:** The Passage (`EchoSceneFlow`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing normal-scene-travel authority and preserve the approved cross-package ownership matrix.
+
 ---
 
 ## Promotion Queue
@@ -135,6 +156,7 @@ Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specif
 | 2026-08-03 | Unity 6 package floor | SFGSS-000 v0.6.0 | Promoted |
 | 2026-08-03 | Observatory authority, provider, overlay, validation, privacy, and bridge decisions | EchoDiagnostics specification v1.0.0 | Promoted |
 | 2026-08-03 | Accord authority, section, transaction, display-safety, persistence, migration, and bridge decisions | EchoSettings specification v1.0.0 | Promoted |
+| 2026-08-03 | Passage authority, stable scene/route data, transition pipeline, admission, cancellation, activation, recovery, and bridge decisions | EchoSceneFlow specification v1.0.0 | Promoted |
 
 ---
 
@@ -142,12 +164,13 @@ Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specif
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Accord decisions fit existing global-preference ownership |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Passage decisions fit existing normal-scene-travel ownership |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
 | Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Foundation documentation gate | Active | 3 of 10 package specifications approved |
+| Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
+| Foundation documentation gate | Active | 4 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -169,9 +192,9 @@ Draft the complete **The Passage — Scene Flow (`EchoSceneFlow`) Package Specif
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved  
-**Current package:** The Passage (`EchoSceneFlow`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved  
+**Current package:** The Pulse (`EchoGameState`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** Accord global-preference authority, typed section model, transactional edit/apply/rollback workflow, display confirmation, versioned JSON persistence, migration/recovery, Test Lab, and optional bridge boundaries approved  
+**Last completed documentation change:** Passage normal-scene-travel authority, stable scene/route data, serialized transition lifecycle, bounded admission, honest cancellation, activation safety, recovery, Test Lab, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-04 — Draft and review the complete EchoSceneFlow package specification
+**Next checkpoint:** FW-DOC-05 — Draft and review the complete EchoGameState package specification
