@@ -190,6 +190,10 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md",
+    "SUITE-DOC-21_Artifact_Manifest.json",
+    "Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md",
+    "Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation.md",
     "Test Reports/SUITE-DOC-20_EchoCombat_Feasibility_Foundation_Audit_Report.md",
     "SUITE-DOC-20_Artifact_Manifest.json",
     "Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md",
@@ -215,16 +219,12 @@
     "Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
     "Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-14_Artifact_Manifest.json",
-    "SUITE-DOC-15_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
     "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
     "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md",
-    "Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
-    "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md"
+    "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md"
   ]
 }

@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** Arcana (`EchoAbilities`) feasibility foundation
-**Current checkpoint:** SUITE-DOC-21 - Define EchoAbilities activation, costs, charges, cooldowns, casting, interruption, targeting, effects, persistence, and multiplayer seams
+**Current focus:** The Atlas (`EchoWorld`) feasibility foundation
+**Current checkpoint:** SUITE-DOC-22 - Define EchoWorld location identity, scene mapping, travel metadata, spawn markers, discovery, world-state seams, diagnostics, and integration boundaries
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -58,7 +58,8 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Produce the complete **Arcana (`EchoAbilities`) feasibility foundation**. Define ability definitions and runtime instances, activation validation, costs, charges, cooldowns, cast/channel timing, interruption, targeting, effect execution, loadouts, save boundaries, multiplayer authority, and explicit separation from Clash, The Vault, The Fellowship, The Will, and project content.
+Produce the complete **The Atlas (`EchoWorld`) feasibility foundation**. Define world, zone, and location identity; scene/location mapping; travel links and destination metadata; spawn and entry markers; discovery and fast-travel seams; persistent world-state contracts; diagnostics; and explicit separation from The Passage, The Fellowship, The Eye, The Path, The Chronicle, and project level content.
+
 ---
 
 ## Open Questions
@@ -71,6 +72,24 @@ Produce the complete **Arcana (`EchoAbilities`) feasibility foundation**. Define
 ---
 
 ## Active Notes
+
+
+### August 4, 2026 - Arcana (`EchoAbilities`) feasibility foundation
+
+- `[DECISION]` Arcana Feasibility Foundation v1.0.0 is approved as the Level 2 authority for provider-neutral ability definitions, owner state, grants, loadouts, activation requests/results, conditions, targeting contracts, costs, charges, cooldowns, casting, interruption, channels, effect execution, persistence seams, diagnostics, validation, and optional bridges.
+- `[DECISION]` One application-session root coordinates owner-scoped state. Definitions remain immutable; cooldowns, charges, activations, queues, targets, cost tokens, and effect tickets remain runtime state.
+- `[DECISION]` The MVP permits one mutation-capable cost provider per activation. Additional providers may contribute read-only requirements. A multi-provider transaction protocol is deferred.
+- `[DECISION]` Commit at cast start and commit at cast completion are both supported. Pre-commit interruption may avoid cost/state commitment; post-commit interruption never implies automatic rollback.
+- `[DECISION]` Effects use explicit stable executor IDs and typed payloads. Reflection, string method dispatch, and open assembly scanning are prohibited.
+- `[DECISION]` Clash remains the authority for instantaneous combat resolution. Arcana may submit Clash requests through a separate effect bridge after activation commitment.
+- `[DECISION]` Active targeting, casts, channels, queues, prepared costs, and effect tickets are never durable save state.
+- `[DECISION]` Shared-world activation defaults to authoritative host/server validation through a future Convergence bridge. Prediction remains presentation/provider-specific.
+- `[DECISION]` Status effects, passive/reactive abilities, per-tick channel costs, visual graphs, and provider-specific rollback prediction are deferred.
+- `[TEST]` The foundation contains all 30 SFGSS-001 sections, 96 Laboratory scenarios, and 600 individually registered planned tests. All executions remain `Not run`.
+- `[HANDOFF]` SUITE-DOC-22 drafts The Atlas (`EchoWorld`) next.
+
+**Promoted to:** `Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation.md`, `Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md`, `Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md`, README, roadmap, and artifact manifest.
+
 
 
 ### August 4, 2026 - The Convergence (`EchoMultiplayer`) provider-neutral foundation

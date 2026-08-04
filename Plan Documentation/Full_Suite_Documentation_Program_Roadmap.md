@@ -134,12 +134,12 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-20 - Clash (`EchoCombat`) Feasibility Foundation and Boundary Record |
+| Completed checkpoint | SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation and Boundary Record |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation** |
+| Active checkpoint | **SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
-| Advanced package foundations | 3 of 5 approved foundations |
+| Advanced package foundations | 4 of 5 approved foundations |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |
@@ -161,3 +161,10 @@ Every checkpoint must:
 Clash (`EchoCombat`) Feasibility Foundation v1.0.0 is approved. The foundation defines provider-neutral requests, targetability, relations, deterministic pure modifiers, target-owned receiver transactions, outcomes, events, logs, hit-adapter seams, save/multiplayer boundaries, 84 Laboratory scenarios, and 540 planned tests. All empirical evidence remains `Not run`.
 
 **Next checkpoint:** SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation.
+
+
+## SUITE-DOC-21 Closeout - Arcana Approved
+
+Arcana (`EchoAbilities`) Feasibility Foundation v1.0.0 is approved. The foundation defines provider-neutral ability definitions, owner state, grants, loadouts, activation validation, one mutation-capable cost transaction, charges, cooldowns, cast/channel timing, interruption, targeting contracts, typed effect execution, persistence and multiplayer seams, 96 Laboratory scenarios, and 600 planned tests. All empirical evidence remains `Not run`.
+
+**Next checkpoint:** SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation.

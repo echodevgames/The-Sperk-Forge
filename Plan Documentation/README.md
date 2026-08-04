@@ -35,8 +35,8 @@ The ten Foundation specifications and Foundation collision/readiness records are
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
 Expansion specifications: 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0
-Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0 feasibility foundation, and Clash (`EchoCombat`) v1.0.0 feasibility foundation; provider/adapters pending
-Active checkpoint: SUITE-DOC-21 - EchoAbilities: Arcana Feasibility Foundation
+Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0 feasibility foundation, Clash (`EchoCombat`) v1.0.0 feasibility foundation, and Arcana (`EchoAbilities`) v1.0.0 feasibility foundation; providers/adapters pending
+Active checkpoint: SUITE-DOC-22 - EchoWorld: The Atlas Feasibility Foundation
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -74,7 +74,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion authorities, and the approved Advanced foundations for The Convergence, Instinct, and Clash plus their research records. Package implementation is locked until SUITE-DOC-33. EchoMultiplayer has no selected production provider, EchoAI has no mandatory navigation/Behavior/inference backend, and EchoCombat owns no universal health/stat model or damage formula. Current checkpoint: SUITE-DOC-21 - EchoAbilities (`Arcana`) Feasibility Foundation. Define ability definitions and runtime instances, activation validation, costs, charges, cooldowns, cast/channel timing, interruption, targeting, effect execution, loadouts, save and multiplayer seams, and explicit separation from Clash and project content. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion authorities, and the approved Advanced foundations for The Convergence, Instinct, Clash, and Arcana plus their research records. Package implementation is locked until SUITE-DOC-33. EchoMultiplayer has no selected production provider, EchoAI has no mandatory navigation/Behavior/inference backend, EchoCombat owns no universal health/stat model or damage formula, and EchoAbilities owns no universal resource/stat model, specific spells/classes, or status-effect framework. Current checkpoint: SUITE-DOC-22 - EchoWorld (`The Atlas`) Feasibility Foundation. Define world, zone, and location identity; scene/location mapping; travel metadata; spawn and entry markers; discovery and fast-travel seams; persistent world-state contracts; diagnostics; and explicit separation from The Passage and project level content. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -117,3 +117,14 @@ Read the current work in this order:
 - Latest approval: **Clash (`EchoCombat`) Feasibility Foundation v1.0.0**.
 - Active checkpoint: **SUITE-DOC-21 - Arcana (`EchoAbilities`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
+
+
+## Current Package-First Status - Arcana Approved
+
+- Foundation specifications: **10 of 10 approved**.
+- Expansion specifications: **13 of 13 approved**.
+- Advanced foundations: **4 of 5 approved**.
+- Latest approval: **Arcana (`EchoAbilities`) Feasibility Foundation v1.0.0**.
+- Active checkpoint: **SUITE-DOC-22 - The Atlas (`EchoWorld`)**.
+- Package implementation remains locked until **SUITE-DOC-33**.
+- All Abilities runtime, provider, adapter, status-effect, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
