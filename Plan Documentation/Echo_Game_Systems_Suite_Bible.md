@@ -1,8 +1,8 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.7.0  
-**Status:** Approved lead architecture baseline; Foundation package specifications and cross-package contract matrix approved; implementation gate pending  
+**Version:** 0.9.0  
+**Status:** Approved lead architecture baseline; Foundation documentation readiness gate passed; First Light M1 skeleton authorized  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Current development baseline:** Unity 6000.3.8f1  
@@ -2106,6 +2106,25 @@ After all ten specifications are approved, perform a cross-package consistency r
 
 Specifications may identify later questions that do not affect the MVP or neighboring package contracts. Those questions remain visibly deferred rather than blocking the documentation pass. Package implementation order remains governed by the waves below after the documentation gate is complete.
 
+### Full Suite Documentation Pass — current implementation gate
+
+After the Foundation documentation gate passed, the owner elected to continue the documentation-first workflow across the complete planned suite before beginning package implementation.
+
+The active pre-code program therefore includes:
+
+1. The remaining architecture and workflow standards in Section 18.1.
+2. Every Expansion package specification in Section 18.3.
+3. The Crafting design workshop and package specification.
+4. The Multiplayer research plan, source-based provider comparison, provider-neutral contract design, and adapter strategy, while reserving final provider approval for disposable prototype evidence.
+5. The EchoAI, EchoCombat, EchoAbilities, and EchoWorld feasibility specifications.
+6. Expansion, advanced, and final full-suite authority/dependency collision reviews.
+7. A final Full Suite Documentation Readiness Gate.
+
+The Foundation specifications, matrix, ADRs, and readiness report remain approved. FL-M1-01 remains the first planned implementation checkpoint, but it is dormant and not executable until the final full-suite documentation gate passes.
+
+Documentation readiness is honest rather than theatrical. Before code, the suite can approve authority, lifecycle, public contracts, data models, failure behavior, setup designs, test registries, research plans, migration policies, and acceptance gates. Actual compile results, screenshots, measured performance, verified package versions, migration evidence, release notes, and provider-prototype findings remain explicitly pending until the relevant implementation or research checkpoint produces evidence.
+
+
 ### Wave 1 — Runtime origin and dual proof packages
 
 1. EchoLaunch.
@@ -2275,6 +2294,8 @@ After this lead bible is reviewed, create the following documents.
 9. **SFGSS-009 — Repository, Versioning, and Integration Workspace Standard**
 10. **SFGSS-010 — Living Documentation, Current Notes, and Obsidian Workflow Standard**
 
+**Current documentation status:** SFGSS-001 and SFGSS-005 are approved. SFGSS-ADR-001, SFGSS-ADR-002, and SFGSS-INT-FOUNDATION-001 are accepted/approved. The complete Foundation specification set is approved. The remaining architecture/workflow standards, Expansion specifications, Advanced design/research records, and final full-suite collision/readiness gates are now required before implementation begins.
+
 ### 18.2 Foundation package specifications
 
 1. EchoLaunch.
@@ -2316,7 +2337,7 @@ After this lead bible is reviewed, create the following documents.
 
 ## 19. Guided Workflow Principles
 
-The detailed workflow will live in SFGSS-005 and SFGSS-006. The following rules are already authoritative.
+The detailed implementation-checkpoint workflow is approved in SFGSS-005. SFGSS-006 will later define new-project guided pathways. The following principles remain authoritative.
 
 ### 19.1 Design before implementation
 
@@ -2338,7 +2359,7 @@ Each implementation checkpoint should state:
 - Starting conditions.
 - Scope and explicit exclusions.
 - Files to create or modify.
-- Complete scripts for that checkpoint when requested.
+- Complete, visible, compile-ready scripts for that checkpoint, followed by file-by-file and step-by-step explanations so Jesse can implement and understand the work himself.
 - Unity Editor setup steps in exact order.
 - Validation tests and expected results.
 - Common failure symptoms and fixes.
@@ -2508,6 +2529,11 @@ The following decisions form the approved starting baseline for the suite:
 36. Development initializers create only their own minimum missing authority. First Light startup bridges adopt an existing valid peer root and never instantiate a second authority blindly.
 37. The Workshop invokes package-specific setup only through exact, allowlisted, package-owned Editor facades governed by SFGSS-ADR-001. The protocol adds no runtime dependency and no mandatory shared core package; a missing facade produces a visible manual setup path.
 38. The ten Foundation package specifications and SFGSS-INT-FOUNDATION-001 pass the authority, lifecycle, dependency, settings/save, diagnostics, Test Lab, and removal collision review. FW-DOC-12 remains the final authorization gate before implementation.
+39. SFGSS-005 is the approved workflow authority for implementation checkpoints. A Checkpoint Build Plan authorizes only its named outcome, files, tests, and Editor work; it cannot overrule a package specification, ADR, integration specification, or SFGSS-000.
+40. FW-DOC-12 passes the Foundation Documentation Readiness Gate. First Light FL-M1-01 Package Skeleton is the first authorized implementation checkpoint. The gate authorizes no C# runtime behavior, scene, prefab, ScriptableObject, setup tool, sample, bridge, or peer-package implementation.
+41. The owner supersedes the immediate activation of FL-M1-01 and re-locks package implementation until the complete pre-code documentation program in Section 18 passes a final Full Suite Documentation Readiness Gate. Foundation approval remains valid; FL-M1-01 is queued rather than cancelled.
+42. Documentation readiness distinguishes planned truth from observed evidence. Architecture, specifications, contracts, research plans, acceptance tests, setup designs, and migration policies may be completed before code. Compile results, screenshots, measured performance, verified compatibility, release notes, and prototype-dependent findings must remain marked pending until evidence exists.
+43. Implementation is learning-oriented and user-driven. When code checkpoints begin, ChatGPT must show complete compile-ready files in the conversation, explain the purpose and architecture of each file, walk through important sections and Unity lifecycle behavior, provide exact Editor setup, and state how each test proves the concept. Jesse implements the code himself by default unless he explicitly requests generated files or direct editing.
 
 ---
 
@@ -2546,8 +2572,16 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the thirty-eight decisions in Section 21 are approved. All ten Foundation package specifications are approved, and **SFGSS-INT-FOUNDATION-001 — Foundation Cross-Package Contract Matrix and Findings Record** has passed FW-DOC-11.
+The suite identity and the forty-three decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-005, and the Foundation readiness evidence remain approved.
 
-Proceed to **FW-DOC-12 — Documentation Readiness Gate**. Confirm the corrected Pulse v1.1.0 identifier namespace, Workshop v1.1.0 facade integration, SFGSS-ADR-001, matrix findings, Current Notes, roadmap, and repository index are committed and mutually consistent. Then write the first implementation Checkpoint Build Plan.
+Package implementation is re-locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
-The expected first implementation checkpoint remains **First Light M1 — Package Skeleton**: create only the UPM manifest, assembly definitions, package folders, documentation shell, and compile-safe public skeleton approved by the plan. No launch behavior enters until that checkpoint explicitly authorizes it.
+Proceed to:
+
+```text
+SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard
+```
+
+Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
+
+When implementation is eventually authorized, follow SFGSS-005 v1.1.0: show the complete code, explain each file and architectural choice, provide exact Unity Editor steps, let Jesse enter the code himself by default, compile/test at bounded stops, and reconcile evidence before advancing.

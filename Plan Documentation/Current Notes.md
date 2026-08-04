@@ -1,11 +1,11 @@
 # The Sperk’s Forge — Current Notes
 
 **Document role:** Living development capture page  
-**Authority:** Working context only; SFGSS-000, approved package specifications, and accepted ADRs remain authoritative  
+**Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
-**Current focus:** Foundation documentation readiness review
-**Current checkpoint:** FW-DOC-12 — Documentation readiness gate
+**Current focus:** Full Suite Documentation Program  
+**Current checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -34,34 +34,31 @@ Do not leave durable decisions only on this page. At checkpoint closeout, promot
 
 ### Goal
 
-Verify the reconciled Foundation architecture, accepted setup-facade ADR, corrected diagnostic namespace, repository documentation, and first implementation entry conditions before authorizing any package code.
+Complete every responsible pre-code document in SFGSS-000 Section 18 before package implementation begins. Preserve honest `Not run` states for evidence that requires implementation.
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.7.0.
-- `SFGSS-001_Package_Specification_Template.md` — v1.1.0.
-- `Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.1.0 Approved.
-- `Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md` — v1.1.0 Approved.
-- `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
+- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.9.0.
+- `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` — v1.1.0 Approved.
+- `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` — Accepted.
+- `Full_Suite_Documentation_Program_Roadmap.md` — active roadmap.
+- `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` — SUITE-DOC-01 Passed.
+- Foundation package specifications, ADR-001, and the Foundation cross-package matrix — approved baseline.
+- `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` — approved but dormant.
 
 ### Next action
 
-Run **FW-DOC-12 — Documentation Readiness Gate**. Confirm the repository contains SFGSS-000 v0.7.0, Pulse v1.1.0, Workshop v1.1.0, SFGSS-ADR-001, and SFGSS-INT-FOUNDATION-001; resolve any repository mismatch; then draft First Light M1 as a Checkpoint Build Plan. Runtime implementation remains locked until FW-DOC-12 is explicitly approved.
+Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. Reconcile its canonical dependency types, assembly rules, optional integration packaging, provider adapters, test assemblies, compile guards, version compatibility, removal order, and failure behavior against all ten Foundation specifications and SFGSS-ADR-001.
+
 
 ---
 
 ## Open Questions
 
-- Licensing remains a later suite-wide release decision and does not block Foundation M1 planning.
-- No release-blocking Foundation architecture question remains after FW-DOC-11.
+- Licensing remains a later suite-wide release decision.
+- Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
+- Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
+- No question currently blocks SUITE-DOC-02.
 
 ---
 
@@ -313,26 +310,52 @@ Run **FW-DOC-12 — Documentation Readiness Gate**. Confirm the repository conta
 
 **Promoted to:** SFGSS-000 v0.7.0 decisions 34–38, The Pulse specification v1.1.0, The Workshop specification v1.1.0, SFGSS-ADR-001, and SFGSS-INT-FOUNDATION-001.
 
+
+
+### August 3, 2026 — Foundation Documentation Readiness Gate
+
+- `[TEST]` FW-DOC-12 verified ten Approved Foundation specifications with all thirty SFGSS-001 sections present.
+- `[TEST]` SFGSS-ADR-001 and SFGSS-INT-FOUNDATION-001 are present and aligned with Pulse v1.1.0 and Workshop v1.1.0.
+- `[BUG]` The repository referenced SFGSS-005 without containing the workflow document.
+- `[DECISION]` SFGSS-005 v1.0.0 is approved as the Checkpoint Build Workflow and ChatGPT Collaboration authority.
+- `[BUG]` First Light v1.0.0 still pointed to the completed documentation gate rather than the first implementation checkpoint.
+- `[DECISION]` First Light advances to v1.1.0 for status/workflow reconciliation only; runtime behavior and API intent are unchanged.
+- `[DECISION]` FW-DOC-12 passes. FL-M1-01 — First Light Package Skeleton is the first authorized implementation checkpoint.
+- `[DECISION]` FL-M1-01 authorizes package files and validation only. It authorizes no C# script, authority root, ScriptableObject, prefab, scene, sample, setup tool, or bridge.
+- `[HANDOFF]` Import this checkpoint, commit/push it, then execute `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md`.
+
+**Promoted to:** SFGSS-000 v0.8.0 decisions 39–40, SFGSS-005 v1.0.0, First Light v1.1.0, the Foundation Documentation Readiness Report, and FL-M1-01 Checkpoint Build Plan.
+
+---
+
+
+### August 3, 2026 — Full Suite Documentation Rebaseline
+
+- `[DECISION]` Extend the documentation-first gate from the Foundation Wave to the complete planned documentation program in SFGSS-000 Section 18.
+- `[DECISION]` Preserve all Foundation approvals and readiness evidence; FL-M1-01 remains the first queued implementation checkpoint but is dormant until SUITE-DOC-36.
+- `[DECISION]` Complete architecture standards, Expansion specifications, Advanced design/research records, and final full-suite collision/readiness reviews before code.
+- `[DECISION]` Distinguish design-complete documentation from implementation evidence. Do not invent compile results, screenshots, performance measurements, compatibility validation, migration evidence, release notes, or prototype findings.
+- `[DECISION]` When implementation begins, ChatGPT must show complete compile-ready code in the conversation, explain each file and important section, provide exact Unity Editor steps, and teach the architectural reason for the choice.
+- `[DECISION]` Jesse enters the code himself by default. Generated source files or direct edits occur only when explicitly requested and do not replace visible code/explanations.
+- `[HANDOFF]` The active checkpoint is SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard.
+
+**Promoted to:** SFGSS-000 v0.9.0 decisions 41–43, SFGSS-ADR-002, SFGSS-005 v1.1.0, Full Suite Documentation Program Roadmap, and the SUITE-DOC-01 Rebaseline Report.
+
+---
+
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-03 | Full Suite Documentation Gate and learning-oriented implementation | SFGSS-000 v0.9.0, SFGSS-ADR-002, SFGSS-005 v1.1.0, full-suite roadmap | Promoted |
+| 2026-08-03 | Foundation Documentation Readiness Gate | SFGSS-000 v0.8.0 and readiness report | Promoted |
+| 2026-08-03 | Checkpoint Build Workflow and ChatGPT collaboration rules | SFGSS-005 v1.0.0 | Promoted |
+| 2026-08-03 | First Light implementation handoff and FL-M1-01 selection | First Light v1.1.0 and FL-M1-01 plan | Promoted |
 | 2026-08-03 | Foundation authority/lifecycle/dependency/data/Test Lab/removal collision review | SFGSS-INT-FOUNDATION-001 and SFGSS-000 v0.7.0 | Promoted |
 | 2026-08-03 | Package-owned Editor setup facade protocol | SFGSS-ADR-001 and Workshop v1.1.0 | Promoted |
 | 2026-08-03 | EchoGameState/EchoGameStarter diagnostic namespace collision | Pulse v1.1.0 and SFGSS-000 v0.7.0 | Promoted |
-| 2026-08-03 | Repository/Obsidian living-documentation workflow | SFGSS-000 and SFGSS-001 | Promoted |
 | 2026-08-03 | Foundation Specification Pass before implementation | SFGSS-000 v0.6.0 and roadmap | Promoted |
-| 2026-08-03 | First Light implementation-shaping choices | First Light specification v1.0.0 | Promoted |
-| 2026-08-03 | Unity 6 package floor | SFGSS-000 v0.6.0 | Promoted |
-| 2026-08-03 | Observatory authority, provider, overlay, validation, privacy, and bridge decisions | EchoDiagnostics specification v1.0.0 | Promoted |
-| 2026-08-03 | Accord authority, section, transaction, display-safety, persistence, migration, and bridge decisions | EchoSettings specification v1.0.0 | Promoted |
-| 2026-08-03 | Passage authority, stable scene/route data, transition pipeline, admission, cancellation, activation, recovery, and bridge decisions | EchoSceneFlow specification v1.0.0 | Promoted |
-| 2026-08-03 | Pulse authority, primary/override model, nested pause, policy composition, Unity adapters, diagnostics, Test Lab, and bridge decisions | EchoGameState specification v1.0.0 | Promoted |
-| 2026-08-03 | Resonance authority, transport, voice-pool, handle, concurrency, routing, profile, diagnostics, Audio Laboratory, and bridge decisions | Jukebot specification v1.0.0 | Promoted |
-| 2026-08-03 | Will authority, runtime action ownership, contexts, locks, device/user, transactional rebind, override, prompt, privacy, Input Laboratory, and bridge decisions | EchoInput specification v1.0.0 | Promoted |
-| 2026-08-03 | Looking Glass authority, layers, screen/modal lifecycle, focus/EventSystem, HUD/notification/prompt, theme/accessibility, diagnostics, UI Laboratory, and bridge decisions | EchoUI specification v1.0.0 | Promoted |
-| 2026-08-03 | Chronicle authority, immutable generations, head publication, participant payloads, two-phase load, migration, recovery, autosave, security, Save Laboratory, and bridge decisions | EchoSave specification v1.0.0 | Promoted |
-| 2026-08-03 | Workshop Editor-only authority, dry-run planning, package/reload transactions, exact setup facades, generated ownership records, presets, repair/removal guidance, Laboratory, and release decisions | EchoGameStarter specification v1.0.0 | Promoted |
+| 2026-08-03 | Repository/Obsidian living-documentation workflow | SFGSS-000 and SFGSS-001 | Promoted |
 
 ---
 
@@ -340,43 +363,46 @@ Run **FW-DOC-12 — Documentation Readiness Gate**. Confirm the repository conta
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Updated and approved | v0.7.0; decisions 34–38 promote FW-DOC-11 findings |
-| Package specification template | Approved and unchanged | v1.1.0 |
-| First Light specification | Approved | v1.0.0; no release-blocking design questions |
-| Observatory specification | Approved | v1.0.0; no release-blocking design questions |
-| Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Pulse specification | Approved and reconciled | v1.1.0; `EGSTATE-*` identifier namespace removes the Workshop collision |
-| Resonance specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Will specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 70-test registry; no release-blocking design questions |
-| Looking Glass specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 42 Laboratory scenarios and 84-test registry; no release-blocking design questions |
-| Chronicle specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 32 Laboratory scenarios and 100-test registry; no release-blocking design questions |
-| Workshop specification | Approved and reconciled | v1.1.0; SFGSS-ADR-001 resolves the setup-facade contract |
-| Foundation documentation gate | Active | FW-DOC-11 approved; FW-DOC-12 remains |
-| Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
+| Suite bible | Approved and full-suite-reconciled | v0.9.0; decisions 41–43 re-lock implementation and define learning delivery |
+| Package specification template | Approved | SFGSS-001 v1.1.0 |
+| Checkpoint workflow | Approved | SFGSS-005 v1.1.0; complete visible code and teaching rules added |
+| Foundation package specifications | Approved | Ten of ten |
+| Foundation architecture/integration | Approved | ADR-001 and Foundation matrix |
+| Full-suite gate decision | Accepted | SFGSS-ADR-002 |
+| Active roadmap | Approved | `Full_Suite_Documentation_Program_Roadmap.md` |
+| Foundation readiness | Historically passed | Immediate activation superseded, evidence retained |
+| First implementation plan | Approved but dormant | FL-M1-01 v1.1.0 |
+| Package implementation | Not started | No package files or code authorized |
+| Current checkpoint | Active | SUITE-DOC-02 |
+| Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
 
 ## Checkpoint Closeout Checklist
 
-- [x] Review every note added during the checkpoint.
-- [x] Separate confirmed facts from proposals and unresolved questions.
-- [x] Promote architecture changes into the bible/specification and an ADR when needed.
-- [x] Move bugs and test evidence into their permanent records. No implementation defects exist yet.
-- [x] Update guides and changelog for user-visible changes. Not applicable before package implementation.
-- [x] Update the current checkpoint, blockers, and next action.
-- [x] Confirm documentation matches committed implementation and tests. Implementation has not started.
-- [ ] Commit and push the documentation update.
-- [x] Condense or remove resolved notes after promotion.
+- [x] Record the owner decision to continue documentation across the full suite.
+- [x] Preserve the Foundation readiness result without leaving implementation active.
+- [x] Define honest pre-code versus evidence-pending documentation.
+- [x] Promote the decision into SFGSS-000 and ADR-002.
+- [x] Update SFGSS-005 with the visible-code, manual-entry teaching workflow.
+- [x] Create the Full Suite Documentation Program Roadmap.
+- [x] Reconcile README, Foundation roadmap, readiness report, Current Notes, and FL-M1-01.
+- [x] Confirm no package implementation has started.
+- [ ] Commit and push SUITE-DOC-01.
+- [x] Stop before package files or C# code.
 
 ---
 
 ## Handoff Snapshot
 
-**Current program:** Foundation documentation gate  
-**Completed package specifications:** Ten approved; Pulse and Workshop reconciled at v1.1.0  
-**Current package:** Cross-package Foundation set  
-**Current stage:** FW-DOC-11 approved; FW-DOC-12 not yet completed  
-**Last completed documentation change:** Cross-package matrix, unique diagnostic namespace, bridge/removal rules, and accepted Workshop setup-facade ADR  
-**Known blockers:** None architectural; repository commit/push and FW-DOC-12 approval remain  
-**Next checkpoint:** FW-DOC-12 — Documentation Readiness Gate, followed by the First Light M1 Checkpoint Build Plan
+**Completed checkpoint:** SUITE-DOC-01 — Full Suite Documentation Rebaseline  
+**Result:** Passed  
+**Current focus:** Full Suite Documentation Program  
+**Active checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 — First Light Package Skeleton  
+**FL-M1 status:** Approved but dormant  
+**Runtime authorization:** None  
+**Known blockers:** None  
+**Commit/push:** Pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider adapter

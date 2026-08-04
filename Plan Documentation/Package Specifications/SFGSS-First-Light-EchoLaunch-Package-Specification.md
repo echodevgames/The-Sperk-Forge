@@ -1,7 +1,7 @@
 # First Light — Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0  
 **Status:** Approved  
 **Technical package name:** EchoLaunch  
 **Public title:** First Light — Startup and Launch  
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is approved as the authoritative package design. Runtime implementation remains intentionally deferred until the complete Foundation Wave specification pass and its cross-package consistency review are finished.
+> **Approval rule:** This specification is approved as the authoritative package design. FW-DOC-12 authorizes implementation only through approved SFGSS-005 Checkpoint Build Plans, beginning with FL-M1-01 — Package Skeleton. No launch behavior is authorized by the readiness gate itself.
 
 ---
 
@@ -27,6 +27,7 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete package specification draft derived from SFGSS-000 v0.5.0 and SFGSS-001 v1.1.0 | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Resolved implementation-shaping decisions, approved the full package contract, and deferred implementation until the Foundation Wave specification pass is complete | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-03 | Approved | Recorded FW-DOC-12 readiness approval, adopted SFGSS-005 as the implementation workflow authority, and selected FL-M1-01 Package Skeleton without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 
 ---
 
@@ -1401,18 +1402,22 @@ None. The implementation-shaping questions from specification 0.1.0 were resolve
 
 Every milestone is divided into small Checkpoint Build Plans. Each checkpoint reconciles Current Notes, promotes durable decisions, updates tests/issues/docs/changelog, verifies documentation against committed implementation, and commits/pushes documentation with or immediately adjacent to code.
 
-### 28.3 First recommended checkpoint
+### 28.3 First implementation checkpoint
 
-**Checkpoint FL-M0-01 — Resolve First Light’s four implementation-shaping contracts**
+**Checkpoint FL-M1-01 — Package Skeleton**
 
-Outcome:
+Authorized outcome:
 
-- Approve the custom startup-step authoring model.
-- Approve the async/cancellation primitive.
-- Approve the minimal presenter dependency/path.
-- Approve the root post-handoff lifetime default.
+- Create the installable UPM package directory and manifest.
+- Create compile-safe Runtime, Editor, and test assembly definitions.
+- Create the package README, changelog, development license notice, third-party notice, and documentation shell.
+- Verify the package is recognized by Unity and compiles without runtime behavior.
 
-This checkpoint creates no runtime code. It updates this specification, records an ADR only if a decision establishes a broader suite rule, reconciles `Current Notes.md`, and commits the approved M0 design changes.
+Explicit stop point:
+
+- Do not create `EchoLaunchRoot`, startup steps, ScriptableObjects, prefabs, scenes, presenters, setup tools, or launch behavior during FL-M1-01.
+
+The complete plan lives at `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` and is governed by SFGSS-005.
 
 ---
 
@@ -1424,9 +1429,8 @@ We are continuing development of The Sperk’s Forge — EchoDevGames Game Syste
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
 Treat the approved First Light — Startup and Launch (EchoLaunch) Package
 Specification as the authority for this package’s behavior, public API, data model,
-tooling, Standalone Test Lab, and release gates. Follow SFGSS-005 for implementation
-checkpoints once that workflow document exists; until then, follow the checkpoint
-rules already approved in SFGSS-000 and the repository README.
+tooling, Standalone Test Lab, and release gates. Follow SFGSS-005 for all implementation checkpoints and use the active approved
+Checkpoint Build Plan as the only implementation authorization.
 
 Current package: EchoLaunch / First Light
 Current specification version: <VERSION>
@@ -1450,14 +1454,14 @@ Before writing code:
 
 | Field | Current value |
 |---|---|
-| Package version | Not implemented; approved specification 1.0.0 |
-| Completed checkpoint | FL-M0 — First Light package specification approved |
-| Files/assets created | Specification draft only |
-| Tests passed | None; implementation not started |
+| Package version | Not implemented; approved specification 1.1.0 |
+| Completed checkpoint | FW-DOC-12 — Foundation Documentation Readiness Gate approved |
+| Files/assets created | Package specification and suite documentation authorities only; package implementation has not started |
+| Tests passed | Documentation structural and cross-package readiness audits only |
 | Tests failed | None |
-| Known issues | None blocking the package design; implementation intentionally held by the Foundation Wave documentation gate |
-| Decisions added | ELAUNCH-D-003 through D-012 approved |
-| Next checkpoint | Suite FW-DOC-02 — draft and approve EchoDiagnostics; EchoLaunch M1 remains deferred until FW-DOC-12 |
+| Known issues | No blocker to FL-M1-01; exact baseline package dependency versions must be recorded during M1 |
+| Decisions added | SFGSS-005 approved; FL-M1-01 selected as the first bounded implementation checkpoint |
+| Next checkpoint | FL-M1-01 — Package Skeleton |
 
 ---
 
@@ -1480,14 +1484,14 @@ Before writing code:
 - [x] Test and release gates are measurable.
 - [x] No Isekai Studios identity or ownership has been introduced.
 - [x] `Current Notes.md` has been reconciled after approval.
-- [x] Jesse has approved the specification as the package authority; implementation remains deferred by the suite documentation gate.
+- [x] Jesse has approved the specification as the package authority; implementation proceeds only through approved SFGSS-005 Checkpoint Build Plans.
 
 ### 30.2 Approval record
 
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams  
 **Date:** August 3, 2026  
-**Conditions or notes:** The design is approved. Do not begin M1 implementation until every Foundation Wave package specification is approved and the cross-package consistency gate FW-DOC-12 passes.
+**Conditions or notes:** The design is approved. FW-DOC-12 has passed. Begin only FL-M1-01 Package Skeleton under its approved Checkpoint Build Plan; later behavior remains unauthorized until a later checkpoint is approved.
 
 ---
 
@@ -1506,4 +1510,4 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. Implementation remains deliberately deferred until the Foundation Wave documentation gate is complete.
+The document is **Approved** as the Level 2 authority for First Light. The Foundation documentation gate is complete; implementation is authorized only through the active SFGSS-005 Checkpoint Build Plan, beginning with FL-M1-01 Package Skeleton.

@@ -1,9 +1,9 @@
 # The Sperk’s Forge — Foundation Wave Specification Roadmap
 
 **Document role:** Level 4 planning and checkpoint record  
-**Status:** Approved active plan  
+**Status:** Foundation documentation pass complete; implementation activation superseded by SFGSS-ADR-002  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.7.0 and SFGSS-001 v1.1.0  
+**Parent authority:** SFGSS-000 v0.9.0, SFGSS-001 v1.1.0, and SFGSS-ADR-002  
 **Unity baseline:** Unity 6000.3.8f1  
 **Public Unity floor:** Unity 6000.0  
 **Last updated:** August 3, 2026
@@ -53,7 +53,7 @@ The order follows the Foundation Wave ownership layers: origin and observability
 | FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Approved v1.0.0 |
 | FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Approved v1.1.0 |
 | FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, setup-facade, and removal matrix | Approved |
-| FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the reconciled set is committed and selects the first implementation checkpoint | Next |
+| FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the reconciled set is ready and selects the first implementation checkpoint | Approved |
 
 ---
 
@@ -180,8 +180,9 @@ The documentation gate passes only when:
 - [x] Settings/save ownership and serialization boundaries are coherent.
 - [x] The Workshop can describe every selectable package without inventing missing contracts; SFGSS-ADR-001 defines the facade boundary.
 - [x] SFGSS-000, Current Notes, roadmap, and package statuses agree in the generated checkpoint.
-- [ ] Documentation checkpoint is committed and pushed.
-- [ ] The first implementation checkpoint is selected and written as a Checkpoint Build Plan.
+- [x] Documentation checkpoint content is reconciled and ready for commit/push.
+- [x] The first implementation checkpoint is selected and written as a Checkpoint Build Plan.
+- [ ] FW-DOC-12 commit and push are confirmed by the user.
 
 The expected first implementation checkpoint after this gate is **First Light M1 — Package Skeleton**, unless the consistency review records a reason to revise that order.
 
@@ -195,9 +196,12 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | Approved | 10 |
 | In drafting | 0 |
 | Remaining | 0 |
-| Current checkpoint | FW-DOC-12 — Documentation readiness gate |
-| Runtime implementation | Intentionally not started |
-| Known finding | FW-DOC-11 resolved setup facades through SFGSS-ADR-001 and renamed Pulse identifiers to `EGSTATE-*` |
+| Completed documentation checkpoint | FW-DOC-12 — Documentation Readiness Gate |
+| Active documentation checkpoint | SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard |
+| Package implementation | Not started |
+| Runtime behavior authorization | None; all implementation re-locked until SUITE-DOC-36 |
+| Known blockers | None; owner intentionally extended the documentation gate |
+| Commit/push | Pending user confirmation |
 
 
 ---
@@ -212,3 +216,35 @@ The Foundation Cross-Package Contract Matrix found two blocking documentation co
 2. The Workshop lacked exact peer setup endpoints; SFGSS-ADR-001 now defines the package-owned Editor setup facade protocol.
 
 No duplicate runtime authority, circular core dependency, settings/save ownership conflict, Test Lab contradiction, or removal blocker remains. Proceed to FW-DOC-12. Runtime implementation is still locked.
+
+
+---
+
+## 11. FW-DOC-12 Result
+
+**Decision:** Approved.
+
+The Documentation Readiness Gate verified the ten package specifications, SFGSS-ADR-001, SFGSS-INT-FOUNDATION-001, repository status pages, identifier corrections, and implementation handoff. It found and resolved two documentation-readiness blockers:
+
+1. SFGSS-005 was referenced but absent; v1.0.0 is now approved.
+2. First Light still pointed to the completed documentation gate; v1.1.0 now records FL-M1-01.
+
+The first authorized implementation checkpoint is:
+
+```text
+FL-M1-01 — First Light Package Skeleton
+```
+
+Authorization is limited to package manifest, asmdefs, documentation shell, compile/import validation, and closeout evidence. No C# implementation or launch behavior is authorized.
+
+
+---
+
+## 12. Subsequent full-suite rebaseline
+
+SFGSS-ADR-002 preserves this roadmap as the completed Foundation documentation record but supersedes its immediate implementation activation.
+
+- FL-M1-01 remains approved but dormant.
+- The active roadmap is `Full_Suite_Documentation_Program_Roadmap.md`.
+- The active checkpoint is SUITE-DOC-02.
+- No package files or C# code may be created until SUITE-DOC-36 passes.
