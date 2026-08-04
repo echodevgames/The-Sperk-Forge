@@ -190,6 +190,7 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "SUITE-DOC-22_Artifact_Manifest.json",
     "Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md",
     "SUITE-DOC-21_Artifact_Manifest.json",
     "Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md",
@@ -224,7 +225,6 @@
     "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
-    "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md"
+    "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md"
   ]
 }

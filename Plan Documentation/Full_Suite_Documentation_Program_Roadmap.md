@@ -99,8 +99,8 @@ Advanced documents remain honest about research and provider uncertainty. “Fou
 | SUITE-DOC-18 | EchoMultiplayer - The Convergence - **Approved provider-neutral foundation v1.0.0; provider selection pending** | Research plan, dated provider matrix, disposable prototype protocol, provider-neutral session/player/authority contracts, security rules, adapter packaging, and explicit unknowns |
 | SUITE-DOC-19 | EchoAI - Instinct - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | Sensing, stimuli, perception memory, scoring, typed context, scheduling, behavior seams, navigation adapters, debugging, and explicit non-goals |
 | SUITE-DOC-20 | EchoCombat - Clash - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | Damage/healing messages, teams, targets, resolution contracts, hit adapters, combat events, and genre-neutral boundaries |
-| SUITE-DOC-21 | EchoAbilities - Arcana | Ability definitions/instances, activation, costs, charges, cooldowns, casting, interruption, targeting, effects, save, and multiplayer seams |
-| SUITE-DOC-22 | EchoWorld - The Atlas | World/zone/location IDs, travel metadata, spawn markers, scene mapping, world-state contracts, discovery, and map/provider seams |
+| SUITE-DOC-21 | EchoAbilities - Arcana - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | Ability definitions/instances, activation, costs, charges, cooldowns, casting, interruption, targeting, effects, save, and multiplayer seams |
+| SUITE-DOC-22 | EchoWorld - The Atlas - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | World/zone/location IDs, travel metadata, spawn markers, scene mapping, world-state contracts, discovery, and map/provider seams |
 
 ## 7. Phase D - Package collision reviews
 
@@ -134,12 +134,12 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation and Boundary Record |
+| Completed checkpoint | SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation and Boundary Record |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation** |
+| Active checkpoint | **SUITE-DOC-23 - Expansion Cross-Package Collision Review** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
-| Advanced package foundations | 4 of 5 approved foundations |
+| Advanced package foundations | 5 of 5 approved foundations |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |
@@ -168,3 +168,10 @@ Clash (`EchoCombat`) Feasibility Foundation v1.0.0 is approved. The foundation d
 Arcana (`EchoAbilities`) Feasibility Foundation v1.0.0 is approved. The foundation defines provider-neutral ability definitions, owner state, grants, loadouts, activation validation, one mutation-capable cost transaction, charges, cooldowns, cast/channel timing, interruption, targeting contracts, typed effect execution, persistence and multiplayer seams, 96 Laboratory scenarios, and 600 planned tests. All empirical evidence remains `Not run`.
 
 **Next checkpoint:** SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation.
+
+
+## SUITE-DOC-22 Closeout - The Atlas Approved
+
+The Atlas (`EchoWorld`) Feasibility Foundation v1.0.0 is approved. The foundation defines stable semantic world/zone/location identity, topology, current context, travel planning, scene-binding tokens, entry/spawn marker registries, discovery, visitation, fast-travel eligibility, map snapshots, world-state participant contracts, diagnostics, 104 Laboratory scenarios, and 624 planned tests. All empirical evidence remains `Not run`.
+
+**Next checkpoint:** SUITE-DOC-23 - Expansion Cross-Package Collision Review.

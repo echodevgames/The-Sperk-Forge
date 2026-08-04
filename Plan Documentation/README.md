@@ -35,8 +35,8 @@ The ten Foundation specifications and Foundation collision/readiness records are
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
 Expansion specifications: 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0
-Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0 feasibility foundation, Clash (`EchoCombat`) v1.0.0 feasibility foundation, and Arcana (`EchoAbilities`) v1.0.0 feasibility foundation; providers/adapters pending
-Active checkpoint: SUITE-DOC-22 - EchoWorld: The Atlas Feasibility Foundation
+Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0, Clash (`EchoCombat`) v1.0.0, Arcana (`EchoAbilities`) v1.0.0, and The Atlas (`EchoWorld`) v1.0.0 feasibility foundations; providers/adapters pending
+Active checkpoint: SUITE-DOC-23 - Expansion Cross-Package Collision Review
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -74,7 +74,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion authorities, and the approved Advanced foundations for The Convergence, Instinct, Clash, and Arcana plus their research records. Package implementation is locked until SUITE-DOC-33. EchoMultiplayer has no selected production provider, EchoAI has no mandatory navigation/Behavior/inference backend, EchoCombat owns no universal health/stat model or damage formula, and EchoAbilities owns no universal resource/stat model, specific spells/classes, or status-effect framework. Current checkpoint: SUITE-DOC-22 - EchoWorld (`The Atlas`) Feasibility Foundation. Define world, zone, and location identity; scene/location mapping; travel metadata; spawn and entry markers; discovery and fast-travel seams; persistent world-state contracts; diagnostics; and explicit separation from The Passage and project level content. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion specifications, and all five approved Advanced foundations plus their research records. Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-23 - Expansion Cross-Package Collision Review. Reconcile authority, identity, persistence, bridge direction, diagnostics, Laboratories, installation, removal, and lifecycle across all thirteen Expansion packages without changing package boundaries silently or inventing empirical evidence. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -128,3 +128,14 @@ Read the current work in this order:
 - Active checkpoint: **SUITE-DOC-22 - The Atlas (`EchoWorld`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
 - All Abilities runtime, provider, adapter, status-effect, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
+
+
+## Current Package-First Status - The Atlas Approved
+
+- Foundation specifications: **10 of 10 approved**.
+- Expansion specifications: **13 of 13 approved**.
+- Advanced foundations: **5 of 5 approved**.
+- Latest approval: **The Atlas (`EchoWorld`) Feasibility Foundation v1.0.0**.
+- Active checkpoint: **SUITE-DOC-23 - Expansion Cross-Package Collision Review**.
+- Package implementation remains locked until **SUITE-DOC-33**.
+- All World runtime, provider, scene, marker, map, persistence, multiplayer, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
