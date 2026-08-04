@@ -12,13 +12,13 @@ updated: 2026-08-04
 **Checkpoint:** SUITE-MAP-01  
 **Status:** Approved orientation checkpoint  
 **Active implementation gate:** Locked  
-**Next numbered documentation checkpoint:** SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log
+**Next numbered documentation checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry
 
 ## 1. Where the suite stands
 
 | Area | Current state | Health |
 |---|---|---|
-| Suite architecture | SFGSS-000 v0.15.0 | Green |
+| Suite architecture | SFGSS-000 v0.16.0 | Green |
 | Package catalog | 28 of 28 pre-code package foundations documented | Green |
 | Foundation packages | 10 of 10 approved | Green |
 | Expansion packages | 13 of 13 approved | Green |
@@ -26,8 +26,8 @@ updated: 2026-08-04
 | Foundation collision review | Passed | Green |
 | Expansion collision review | Passed | Green |
 | Advanced collision/research review | Passed | Green |
-| Core standards | SFGSS-001 through SFGSS-006 approved | Green |
-| Remaining standards | SFGSS-007 through SFGSS-010 not yet drafted | Yellow |
+| Core standards | SFGSS-001 through SFGSS-007 approved | Green |
+| Remaining standards | SFGSS-008 through SFGSS-010 not yet drafted | Yellow |
 | Full-suite matrix and handoff | Not yet completed | Yellow |
 | Package learning reviews | Planned, 0 of 28 completed | Yellow |
 | Runtime implementation | Not started by design | Gray |
@@ -50,7 +50,7 @@ updated: 2026-08-04
 
 | Order | Checkpoint | Result required |
 |---:|---|---|
-| 1 | SUITE-DOC-26 | SFGSS-007 ADR Template and Decision Log |
+| 1 | SUITE-DOC-26 | SFGSS-007 ADR Template and Decision Log - Approved |
 | 2 | SUITE-DOC-27 | SFGSS-008 Suite Glossary and Naming Registry |
 | 3 | SUITE-DOC-28 | SFGSS-009 Repository, Versioning, and Integration Workspace Standard |
 | 4 | SUITE-DOC-29 | SFGSS-010 Living Documentation and Obsidian Workflow Standard |
@@ -77,7 +77,7 @@ The following must remain `Not run` or conditional:
 
 The healthiest stopping point is after:
 
-1. SUITE-DOC-26 through SUITE-DOC-32 are complete.
+1. SUITE-DOC-27 through SUITE-DOC-32 are complete.
 2. Every package has received its individual learning review.
 3. Jesse can explain each package’s purpose, authority, most important data, runtime lifecycle, primary bridges, Test Lab, and one practical use case in his own words.
 4. SUITE-DOC-33 explicitly authorizes the first bounded implementation checkpoint.

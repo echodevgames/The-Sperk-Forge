@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log  
+**Current checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -37,7 +37,7 @@ flowchart LR
     D --> G[Foundation Collision Matrix]
     E --> H[Expansion Collision Matrix]
     F --> I[Advanced Collision and Research Matrix — Approved]
-    G --> J[Remaining Standards SFGSS-007 to 010]
+    G --> J[Remaining Standards SFGSS-008 to 010]
     H --> J
     I --> J
     J --> K[Full Suite Matrix and Handoff Audit]
@@ -138,6 +138,8 @@ flowchart LR
 - [[SFGSS-003_Data_IDs_Serialization_and_Migration_Standard|SFGSS-003 — Data, IDs, Serialization, and Migration]]
 - [[SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard|SFGSS-004 — Testing and Release Evidence]]
 - [[SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules|SFGSS-005 — Checkpoint and Learning Workflow]]
+- [[SFGSS-006_New-Project_Guided_Pathways|SFGSS-006 — New-Project Guided Pathways]]
+- [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007 — Architecture Decision Records]]
 - [[Full_Suite_Documentation_Program_Roadmap|Full Suite Documentation Program Roadmap]]
 - [[Current Notes|Current Notes]]
 
@@ -149,6 +151,8 @@ flowchart LR
 - [[Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|ADR-001 — Setup Facade Protocol]]
 - [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 — Documentation Gate and Learning Implementation]]
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]
+- [[Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log|Suite ADR Decision Log]]
+- [[Architecture Decision Records/SFGSS-ADR-TEMPLATE|Reusable ADR Template]]
 
 ## Package specification nodes
 

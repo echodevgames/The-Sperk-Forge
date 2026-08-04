@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.15.0  
+**Version:** 0.16.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2713,6 +2713,15 @@ The following decisions form the approved starting baseline for the suite:
 95. Advanced and provider-backed pathways remain research or experimental until provider, license, cost, hosting, platform, compatibility, security, performance, migration, and Laboratory evidence supports a stronger claim.
 96. Existing-project pathways preserve working systems until standalone proof, project integration, parity, rollback, migration, and removal evidence passes for the replacement.
 
+97. SFGSS-007 is the canonical Architecture Decision Record standard and decision register for the suite. It defines ADR requirement tests, scopes, identifiers, metadata, statuses, evidence maturity, revision, supersession, indexing, approval, and graph links.
+98. An ADR preserves reasoning and consequences but never silently overrides SFGSS-000 or an approved package specification. Any accepted decision that changes higher-authority truth updates that authority in the same checkpoint.
+99. Suite ADR IDs use the permanent `SFGSS-ADR-###` sequence. Package-local and integration ADRs use scoped sequences, remain owned by their repositories, and are linked into the central decision log when they affect suite compatibility or pathways.
+100. ADR status and evidence maturity are separate. An Accepted ADR may remain design-approved with runtime, compatibility, performance, migration, or provider evidence still `Not run`.
+101. Rejected, withdrawn, and superseded ADR IDs are never reused or deleted. Substantive reversals create a new superseding ADR; compatible clarification or registry expansion may revise the existing ADR.
+102. Jesse “Echo” Adams / EchoDevGames is the approval authority for suite ADRs. ChatGPT and collaborators may research, draft, compare, and recommend but do not silently approve architectural decisions.
+103. The central suite decision register currently contains SFGSS-ADR-001 through SFGSS-ADR-003. The next available suite ADR is SFGSS-ADR-004; candidate decisions receive no ID until they enter Proposed review.
+104. Every ADR defines concrete review triggers, affected authorities, implementation/migration impact, evidence plan, removal/reversal behavior, and Obsidian graph links.
+
 ---
 
 ## 22. Open Decisions Requiring Later Approval
@@ -2750,14 +2759,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the ninety-six decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred four decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log
+SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

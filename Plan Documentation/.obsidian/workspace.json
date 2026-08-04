@@ -190,6 +190,13 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-MAP-01_Suite_Graph_Roadmap_and_Learning_Review_Health_Check.md",
+    "Test Reports/SUITE-DOC-26_SFGSS-007_ADR_Standard_and_Decision_Log_Audit_Report.md",
+    "Test Reports/SUITE-DOC-25_SFGSS-006_New-Project_Guided_Pathways_Audit_Report.md",
+    "Test Reports/SUITE-DOC-24_Advanced_Cross-Package_and_Research_Review_Report.md",
+    "Test Reports/SUITE-DOC-23_Expansion_Cross-Package_Collision_Review_Report.md",
+    "SFGSS-007_Architecture_Decision_Record_Standard.md",
+    "Research Records/SUITE-DOC-22_EchoWorld_Feasibility_and_Boundary_Record.md",
     "SUITE-DOC-25_Artifact_Manifest.json",
     "SFGSS-006_New-Project_Guided_Pathways.md",
     "SUITE-DOC-24_Artifact_Manifest.json",
@@ -217,14 +224,7 @@
     "SUITE-DOC-19_Artifact_Manifest.json",
     "Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md",
     "Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md",
-    "Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md",
     "SUITE-DOC-18_Artifact_Manifest.json",
-    "Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md",
-    "Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md",
-    "Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md",
-    "Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-16_Artifact_Manifest.json",
-    "SUITE-DOC-17_Artifact_Manifest.json",
-    "Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md"
+    "Test Reports/SUITE-DOC-16_Artifact_Manifest.json"
   ]
 }
