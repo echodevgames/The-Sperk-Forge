@@ -1,7 +1,7 @@
 # The Pulse — Runtime State Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOGAMESTATE-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0  
 **Status:** Approved  
 **Technical package name:** EchoGameState  
 **Public title:** The Pulse — Runtime State  
@@ -28,6 +28,7 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification derived from SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and the four approved Foundation specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved the primary-state and leased-override model, nested pause authority, deterministic policy composition, Unity time/cursor adapters, diagnostics, tooling, and Test Lab | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-03 | Approved | Renamed the package diagnostic and package-local identifier namespace from `EGS-*` to `EGSTATE-*` to eliminate the Foundation collision with EchoGameStarter; no authority, lifecycle, API intent, or MVP behavior changed | Jesse “Echo” Adams |
 
 ---
 
@@ -314,29 +315,29 @@ The MVP runtime has no uGUI, TextMeshPro, Input System, Addressables, networking
 
 | ID | Capability | Description | Status | MVP? | Surface |
 |---|---|---|---|---:|---|
-| EGS-CAP-001 | Duplicate-safe authority | Claim one root before side effects | Approved | Yes | Runtime |
-| EGS-CAP-002 | Primary state | Hold exactly one configured state | Approved | Yes | Runtime |
-| EGS-CAP-003 | Transition validation | Check target, rules, duplicate policy, guards | Approved | Yes | Runtime |
-| EGS-CAP-004 | Structured results | Committed, warning, no-change, rejected, unavailable | Approved | Yes | Runtime |
-| EGS-CAP-005 | Override scopes | Acquire/release temporary modes via leases | Approved | Yes | Runtime |
-| EGS-CAP-006 | Nested pause | Aggregate simultaneous reasons | Approved | Yes | Runtime |
-| EGS-CAP-007 | Policy composition | Compose simulation/cursor/input/audio deterministically | Approved | Yes | Runtime |
-| EGS-CAP-008 | Time adapter | Apply running/paused time policy | Approved | Yes | Runtime |
-| EGS-CAP-009 | Cursor adapter | Apply visibility/lock and reapply after focus | Approved | Yes | Runtime |
-| EGS-CAP-010 | Neutral input intent | Gameplay/UI/Disabled/ProjectDefined | Approved | Yes | Runtime |
-| EGS-CAP-011 | Neutral audio intent | Running/GameplayPaused/AllPaused/ProjectDefined | Approved | Yes | Runtime |
-| EGS-CAP-012 | Guards | Explicit disposable transition guards | Approved | Yes | Runtime |
-| EGS-CAP-013 | Bounded history | Record changes/rejections without growth | Approved | Yes | Runtime |
-| EGS-CAP-014 | Structured snapshot | Current state, scopes, reasons, policy, health | Approved | Yes | Runtime |
-| EGS-CAP-015 | Direct initializer | Development-only initialization when absent | Approved | Yes | Runtime/Sample |
-| EGS-CAP-016 | Setup/repair | Generate and safely repair project assets | Approved | Yes | Editor |
-| EGS-CAP-017 | Validation | IDs, rules, policies, duplicates, release leakage | Approved | Yes | Editor |
-| EGS-CAP-018 | Test simulation | Invalid paths, nested pause, adapter failure | Approved | Yes | Editor/Sample |
-| EGS-CAP-019 | Optional bridges | Launch, Diagnostics, SceneFlow, Input, Audio, UI | Approved | No | Bridge |
-| EGS-CAP-020 | General time modifiers | Slow motion/hit stop arbitration | Deferred | No | Runtime/Bridge |
-| EGS-CAP-021 | Focus-loss auto-pause | Platform/application policy | Deferred | No | Runtime |
-| EGS-CAP-022 | Multiplayer authority | Shared/networked state semantics | Deferred | No | Adapter |
-| EGS-CAP-023 | Rich graph editor | Visual state graph authoring | Deferred | No | Editor |
+| EGSTATE-CAP-001 | Duplicate-safe authority | Claim one root before side effects | Approved | Yes | Runtime |
+| EGSTATE-CAP-002 | Primary state | Hold exactly one configured state | Approved | Yes | Runtime |
+| EGSTATE-CAP-003 | Transition validation | Check target, rules, duplicate policy, guards | Approved | Yes | Runtime |
+| EGSTATE-CAP-004 | Structured results | Committed, warning, no-change, rejected, unavailable | Approved | Yes | Runtime |
+| EGSTATE-CAP-005 | Override scopes | Acquire/release temporary modes via leases | Approved | Yes | Runtime |
+| EGSTATE-CAP-006 | Nested pause | Aggregate simultaneous reasons | Approved | Yes | Runtime |
+| EGSTATE-CAP-007 | Policy composition | Compose simulation/cursor/input/audio deterministically | Approved | Yes | Runtime |
+| EGSTATE-CAP-008 | Time adapter | Apply running/paused time policy | Approved | Yes | Runtime |
+| EGSTATE-CAP-009 | Cursor adapter | Apply visibility/lock and reapply after focus | Approved | Yes | Runtime |
+| EGSTATE-CAP-010 | Neutral input intent | Gameplay/UI/Disabled/ProjectDefined | Approved | Yes | Runtime |
+| EGSTATE-CAP-011 | Neutral audio intent | Running/GameplayPaused/AllPaused/ProjectDefined | Approved | Yes | Runtime |
+| EGSTATE-CAP-012 | Guards | Explicit disposable transition guards | Approved | Yes | Runtime |
+| EGSTATE-CAP-013 | Bounded history | Record changes/rejections without growth | Approved | Yes | Runtime |
+| EGSTATE-CAP-014 | Structured snapshot | Current state, scopes, reasons, policy, health | Approved | Yes | Runtime |
+| EGSTATE-CAP-015 | Direct initializer | Development-only initialization when absent | Approved | Yes | Runtime/Sample |
+| EGSTATE-CAP-016 | Setup/repair | Generate and safely repair project assets | Approved | Yes | Editor |
+| EGSTATE-CAP-017 | Validation | IDs, rules, policies, duplicates, release leakage | Approved | Yes | Editor |
+| EGSTATE-CAP-018 | Test simulation | Invalid paths, nested pause, adapter failure | Approved | Yes | Editor/Sample |
+| EGSTATE-CAP-019 | Optional bridges | Launch, Diagnostics, SceneFlow, Input, Audio, UI | Approved | No | Bridge |
+| EGSTATE-CAP-020 | General time modifiers | Slow motion/hit stop arbitration | Deferred | No | Runtime/Bridge |
+| EGSTATE-CAP-021 | Focus-loss auto-pause | Platform/application policy | Deferred | No | Runtime |
+| EGSTATE-CAP-022 | Multiplayer authority | Shared/networked state semantics | Deferred | No | Adapter |
+| EGSTATE-CAP-023 | Rich graph editor | Visual state graph authoring | Deferred | No | Editor |
 
 ### 7.2 MVP capability set
 
@@ -506,23 +507,23 @@ The cursor adapter applies visibility and lock requests, reports unsupported con
 
 | Failure | Detection | Result | Fallback | Code |
 |---|---|---|---|---|
-| Missing configuration | Initialization | Root unavailable; no global side effects | Setup guidance | EGS-001 |
-| Duplicate root | Claim | Duplicate removed | Existing authority | EGS-002 |
-| Invalid initial state | Validation | Initialization blocked | Explicit safe fallback only if configured | EGS-003 |
-| Duplicate stable ID | Validation | Initialization blocked | Resolve IDs | EGS-004 |
-| Invalid transition | Request | Rejected; no mutation | Remain current | EGS-101 |
-| Guard denial | Guard evaluation | Rejected with guard reason | Remain current | EGS-102 |
-| Guard exception | Guard evaluation | Required guard denies; optional guard warns | Policy-defined | EGS-103 |
-| Re-entrant request | Request | Rejected | Caller retries later | EGS-104 |
-| Invalid scope | Acquisition | Rejected; no mutation | Remain current | EGS-201 |
-| Released/unknown lease | Release | Safe no-op | Current truth retained | EGS-202 |
-| Scope limit | Acquisition | Rejected | Investigate leak or raise tested limit | EGS-203 |
-| Time adapter failure | Policy apply | State committed with degraded policy warning | Preserve last safe value | EGS-301 |
-| Cursor unsupported | Policy apply | Warning and fallback | Configured fallback | EGS-302 |
-| External drift | Reconciliation | Warning | Reapply at explicit lifecycle point | EGS-303 |
-| History full | Record | Oldest overwritten | Ring buffer | EGS-401 |
-| Direct helper in release | Build validation | Blocker/disabled | Canonical setup | EGS-501 |
-| Shutdown with leases | Shutdown | Handles invalidated; count recorded | Restore baselines | EGS-601 |
+| Missing configuration | Initialization | Root unavailable; no global side effects | Setup guidance | EGSTATE-001 |
+| Duplicate root | Claim | Duplicate removed | Existing authority | EGSTATE-002 |
+| Invalid initial state | Validation | Initialization blocked | Explicit safe fallback only if configured | EGSTATE-003 |
+| Duplicate stable ID | Validation | Initialization blocked | Resolve IDs | EGSTATE-004 |
+| Invalid transition | Request | Rejected; no mutation | Remain current | EGSTATE-101 |
+| Guard denial | Guard evaluation | Rejected with guard reason | Remain current | EGSTATE-102 |
+| Guard exception | Guard evaluation | Required guard denies; optional guard warns | Policy-defined | EGSTATE-103 |
+| Re-entrant request | Request | Rejected | Caller retries later | EGSTATE-104 |
+| Invalid scope | Acquisition | Rejected; no mutation | Remain current | EGSTATE-201 |
+| Released/unknown lease | Release | Safe no-op | Current truth retained | EGSTATE-202 |
+| Scope limit | Acquisition | Rejected | Investigate leak or raise tested limit | EGSTATE-203 |
+| Time adapter failure | Policy apply | State committed with degraded policy warning | Preserve last safe value | EGSTATE-301 |
+| Cursor unsupported | Policy apply | Warning and fallback | Configured fallback | EGSTATE-302 |
+| External drift | Reconciliation | Warning | Reapply at explicit lifecycle point | EGSTATE-303 |
+| History full | Record | Oldest overwritten | Ring buffer | EGSTATE-401 |
+| Direct helper in release | Build validation | Blocker/disabled | Canonical setup | EGSTATE-501 |
+| Shutdown with leases | Shutdown | Handles invalidated; count recorded | Restore baselines | EGSTATE-601 |
 
 ---
 
@@ -715,25 +716,25 @@ The novice path uses generated definitions/configuration/root plus `TryTransitio
 
 | Check | Condition | Severity | Auto-fix? |
 |---|---|---|---:|
-| EGS-VAL-001 | Missing configuration | Blocker | Only after target selection |
-| EGS-VAL-002 | Multiple production roots | Blocker | No; choose survivor |
-| EGS-VAL-003/004 | Empty/duplicate state or override IDs | Blocker | No |
-| EGS-VAL-005 | Missing/disabled initial state | Blocker | No |
-| EGS-VAL-006 | Missing direct-scene state | Error | No |
-| EGS-VAL-007 | Rule references unknown state | Error | No |
-| EGS-VAL-008 | Conflicting rules/wildcards | Error | No |
-| EGS-VAL-009 | Required state unreachable | Warning/Error | No |
-| EGS-VAL-010 | Override contributes no policy/purpose | Warning | No |
-| EGS-VAL-011 | Pause definition does not pause | Warning | No |
-| EGS-VAL-012 | Locked cursor plus interactive UI intent | Warning | Suggest only |
-| EGS-VAL-013 | Confined cursor on unsupported target | Warning | Fallback with approval |
-| EGS-VAL-014 | Invalid running time scale | Blocker | Explicit clamp only |
-| EGS-VAL-015 | Invalid/unbounded history capacity | Error | Documented default |
-| EGS-VAL-016 | Direct helper included in release | Blocker | Disable/remove with confirmation |
-| EGS-VAL-017 | Runtime references `UnityEditor` | Blocker | No |
-| EGS-VAL-018 | GUID/meta instability | Release blocker | No |
-| EGS-VAL-019 | Competing project time/cursor assignments | Advisory | Report only |
-| EGS-VAL-020 | Sample/bridge leaks into core | Blocker | No |
+| EGSTATE-VAL-001 | Missing configuration | Blocker | Only after target selection |
+| EGSTATE-VAL-002 | Multiple production roots | Blocker | No; choose survivor |
+| EGSTATE-VAL-003/004 | Empty/duplicate state or override IDs | Blocker | No |
+| EGSTATE-VAL-005 | Missing/disabled initial state | Blocker | No |
+| EGSTATE-VAL-006 | Missing direct-scene state | Error | No |
+| EGSTATE-VAL-007 | Rule references unknown state | Error | No |
+| EGSTATE-VAL-008 | Conflicting rules/wildcards | Error | No |
+| EGSTATE-VAL-009 | Required state unreachable | Warning/Error | No |
+| EGSTATE-VAL-010 | Override contributes no policy/purpose | Warning | No |
+| EGSTATE-VAL-011 | Pause definition does not pause | Warning | No |
+| EGSTATE-VAL-012 | Locked cursor plus interactive UI intent | Warning | Suggest only |
+| EGSTATE-VAL-013 | Confined cursor on unsupported target | Warning | Fallback with approval |
+| EGSTATE-VAL-014 | Invalid running time scale | Blocker | Explicit clamp only |
+| EGSTATE-VAL-015 | Invalid/unbounded history capacity | Error | Documented default |
+| EGSTATE-VAL-016 | Direct helper included in release | Blocker | Disable/remove with confirmation |
+| EGSTATE-VAL-017 | Runtime references `UnityEditor` | Blocker | No |
+| EGSTATE-VAL-018 | GUID/meta instability | Release blocker | No |
+| EGSTATE-VAL-019 | Competing project time/cursor assignments | Advisory | Report only |
+| EGSTATE-VAL-020 | Sample/bridge leaks into core | Blocker | No |
 
 Validation itself never mutates production data. Repair is a separate explicit action.
 
@@ -909,28 +910,28 @@ All production visuals are project-owned or supplied through optional UI integra
 
 | Code | Severity | Meaning | User action |
 |---|---|---|---|
-| EGS-001 | Blocker | Configuration missing | Create/assign valid configuration |
-| EGS-002 | Info/Warning | Duplicate root rejected | Remove unintended duplicate |
-| EGS-003 | Blocker | Initial state invalid/missing | Assign valid configured state |
-| EGS-004 | Blocker | Stable ID collision | Resolve IDs and migration implications |
-| EGS-005 | Error | Root initialization failed | Inspect nested diagnostics |
-| EGS-101 | Info/Warning | Transition not allowed | Review rules/caller |
-| EGS-102 | Info/Warning | Guard denied transition | Review guard reason |
-| EGS-103 | Error | Guard exception | Fix guard/criticality policy |
-| EGS-104 | Warning | Re-entrant request rejected | Defer request until current event completes |
-| EGS-105 | Warning | Unknown state target | Correct ID/configuration |
-| EGS-201 | Warning | Scope acquisition rejected | Validate override/request |
-| EGS-202 | Info/Warning | Lease unknown/already released | Fix owner lifecycle when repeated |
-| EGS-203 | Warning | Active-scope limit reached | Investigate leaks or raise tested limit |
-| EGS-204 | Warning | Shutdown invalidated active leases | Review owner cleanup |
-| EGS-301 | Error | Time adapter apply failed | Inspect adapter and competing authority |
-| EGS-302 | Warning | Cursor request unsupported/fallback | Choose supported policy/adapter |
-| EGS-303 | Warning | External time/cursor drift | Remove competing assignments or reapply |
-| EGS-304 | Warning | Policy composition conflict | Inspect priorities/definitions |
-| EGS-401 | Info | History rotated | Expected bounded behavior |
-| EGS-501 | Blocker | Development initializer in release path | Remove/disable or explicitly approve |
-| EGS-601 | Info | Shutdown completed with active scopes | Review leak count if unexpected |
-| EGS-701 | Warning | Optional bridge unavailable | Install bridge or accept standalone behavior |
+| EGSTATE-001 | Blocker | Configuration missing | Create/assign valid configuration |
+| EGSTATE-002 | Info/Warning | Duplicate root rejected | Remove unintended duplicate |
+| EGSTATE-003 | Blocker | Initial state invalid/missing | Assign valid configured state |
+| EGSTATE-004 | Blocker | Stable ID collision | Resolve IDs and migration implications |
+| EGSTATE-005 | Error | Root initialization failed | Inspect nested diagnostics |
+| EGSTATE-101 | Info/Warning | Transition not allowed | Review rules/caller |
+| EGSTATE-102 | Info/Warning | Guard denied transition | Review guard reason |
+| EGSTATE-103 | Error | Guard exception | Fix guard/criticality policy |
+| EGSTATE-104 | Warning | Re-entrant request rejected | Defer request until current event completes |
+| EGSTATE-105 | Warning | Unknown state target | Correct ID/configuration |
+| EGSTATE-201 | Warning | Scope acquisition rejected | Validate override/request |
+| EGSTATE-202 | Info/Warning | Lease unknown/already released | Fix owner lifecycle when repeated |
+| EGSTATE-203 | Warning | Active-scope limit reached | Investigate leaks or raise tested limit |
+| EGSTATE-204 | Warning | Shutdown invalidated active leases | Review owner cleanup |
+| EGSTATE-301 | Error | Time adapter apply failed | Inspect adapter and competing authority |
+| EGSTATE-302 | Warning | Cursor request unsupported/fallback | Choose supported policy/adapter |
+| EGSTATE-303 | Warning | External time/cursor drift | Remove competing assignments or reapply |
+| EGSTATE-304 | Warning | Policy composition conflict | Inspect priorities/definitions |
+| EGSTATE-401 | Info | History rotated | Expected bounded behavior |
+| EGSTATE-501 | Blocker | Development initializer in release path | Remove/disable or explicitly approve |
+| EGSTATE-601 | Info | Shutdown completed with active scopes | Review leak count if unexpected |
+| EGSTATE-701 | Warning | Optional bridge unavailable | Install bridge or accept standalone behavior |
 
 ### 15.4 Observatory bridge
 
@@ -1016,7 +1017,7 @@ EchoGameState initializes independently. Guards and bridges register explicitly.
 - Peer shutdown: registration disposes; neutral intent remains.
 - Input/audio application fails: bridge warns; state truth remains committed.
 - UI destroyed with active lease: explicit owner helper should dispose; leak remains diagnosable rather than guessed away.
-- Circular request from event callback: reject with `EGS-104`.
+- Circular request from event callback: reject with `EGSTATE-104`.
 - Bridge removal: core compiles/runs unchanged.
 
 ### 17.6 First Light contract
@@ -1317,51 +1318,51 @@ Clean installation, duplicate authorities, missing/invalid configuration, ID col
 
 | Test ID | Requirement | Action | Expected result | Automated? |
 |---|---|---|---|---:|
-| EGS-T-001 | Duplicate safety | Start with two roots | One authority; duplicate has no side effects | Yes |
-| EGS-T-002 | Missing config | Initialize invalid root | Safe failure, EGS-001 | Yes |
-| EGS-T-003 | Initial state | Initialize valid config | One initial state/policy commit | Yes |
-| EGS-T-004 | Valid transition | Request allowed target | Commit and ordered events | Yes |
-| EGS-T-005 | Invalid transition | Request denied target | Rejected; unchanged | Yes |
-| EGS-T-006 | Re-entry no-op | Request current with re-entry off | NoChange, no changed event | Yes |
-| EGS-T-007 | Rule specificity | Resolve explicit and wildcard rules | Most-specific wins | Yes |
-| EGS-T-008 | Guard denial | Required deny guard | Rejected with guard ID | Yes |
-| EGS-T-009 | Optional guard exception | Throw | Warning/isolation; no crash | Yes |
-| EGS-T-010 | Required guard exception | Throw | Rejected/error recorded | Yes |
-| EGS-T-011 | Re-entrant request | Request during callback | Rejected EGS-104 | Yes |
-| EGS-T-012 | Scope acquisition | Acquire valid override | Active and policy recomputed | Yes |
-| EGS-T-013 | Out-of-order release | Release middle of three | Remaining policy correct | Yes |
-| EGS-T-014 | Lease idempotence | Dispose twice | One release only | Yes |
-| EGS-T-015 | Nested pause | Release one of two | Still paused | Yes |
-| EGS-T-016 | Pause clear | Release all | Running policy restored | Yes |
-| EGS-T-017 | Dominance priority | Acquire two priorities | Higher priority dominant | Yes |
-| EGS-T-018 | Dominance tie | Equal priority sequential acquire | Later sequence dominant | Yes |
-| EGS-T-019 | Aggregate pause | Higher running scope over pause | Still paused | Yes |
-| EGS-T-020 | Input intent | Compose state/scopes | Highest explicit intent | Yes |
-| EGS-T-021 | Audio intent | Compose state/scopes | Highest explicit intent | Yes |
-| EGS-T-022 | Time apply | Pause/resume | Correct time result | Yes |
-| EGS-T-023 | Fixed-step default | Pause/resume | Baseline policy preserved | Yes |
-| EGS-T-024 | Fixed-step opt-in | Apply nondefault scale | Documented scaling | Yes |
-| EGS-T-025 | Time adapter failure | Fake failure | Degraded result; no crash | Yes |
-| EGS-T-026 | Cursor apply | Apply UI policy | Expected visibility/lock | Yes |
-| EGS-T-027 | Cursor fallback | Unsupported fake | Warning/fallback | Yes |
-| EGS-T-028 | Focus reapply | Simulate drift/focus | Current policy reapplied | Yes |
-| EGS-T-029 | Event order | Record callbacks | Matches spec | Yes |
-| EGS-T-030 | Listener exception | Throwing listener | Authority remains committed | Yes |
-| EGS-T-031 | History bounds | Exceed capacity | Oldest rotates | Yes |
-| EGS-T-032 | Snapshot safety | Mutate external copy | Internal state unchanged | Yes |
-| EGS-T-033 | Direct scene | Enter without root | One dev root/state | Yes |
-| EGS-T-034 | Direct scene with root | Enter with authority | Helper creates nothing | Yes |
-| EGS-T-035 | Shutdown | Active leases/guards | Handles invalid; baseline restored | Yes |
-| EGS-T-036 | Domain reload off | Repeat Play Mode | No stale state/handles | Yes |
-| EGS-T-037 | Scene duplicate | Load scene containing root | Duplicate rejected | Yes |
-| EGS-T-038 | Sample removal | Compile core only | No sample dependency | Yes |
-| EGS-T-039 | Peer absent | Initialize/use core | No error | Yes |
-| EGS-T-040 | Stress transitions | 1,000 requests | Deterministic/bounded | Yes |
-| EGS-T-041 | Stress scopes | Random 10,000 operations | Oracle match/no leak | Yes |
-| EGS-T-042 | Validation idempotence | Repeat validator | Same report/no mutation | Yes |
-| EGS-T-043 | Setup repeatability | Run setup twice | No duplicate/overwrite | Yes |
-| EGS-T-044 | Tarball install | Clean external project | Compile/setup/lab pass | Manual |
-| EGS-T-045 | Removal | Remove with no dependent bridge | Project compiles after reference cleanup | Manual |
+| EGSTATE-T-001 | Duplicate safety | Start with two roots | One authority; duplicate has no side effects | Yes |
+| EGSTATE-T-002 | Missing config | Initialize invalid root | Safe failure, EGSTATE-001 | Yes |
+| EGSTATE-T-003 | Initial state | Initialize valid config | One initial state/policy commit | Yes |
+| EGSTATE-T-004 | Valid transition | Request allowed target | Commit and ordered events | Yes |
+| EGSTATE-T-005 | Invalid transition | Request denied target | Rejected; unchanged | Yes |
+| EGSTATE-T-006 | Re-entry no-op | Request current with re-entry off | NoChange, no changed event | Yes |
+| EGSTATE-T-007 | Rule specificity | Resolve explicit and wildcard rules | Most-specific wins | Yes |
+| EGSTATE-T-008 | Guard denial | Required deny guard | Rejected with guard ID | Yes |
+| EGSTATE-T-009 | Optional guard exception | Throw | Warning/isolation; no crash | Yes |
+| EGSTATE-T-010 | Required guard exception | Throw | Rejected/error recorded | Yes |
+| EGSTATE-T-011 | Re-entrant request | Request during callback | Rejected EGSTATE-104 | Yes |
+| EGSTATE-T-012 | Scope acquisition | Acquire valid override | Active and policy recomputed | Yes |
+| EGSTATE-T-013 | Out-of-order release | Release middle of three | Remaining policy correct | Yes |
+| EGSTATE-T-014 | Lease idempotence | Dispose twice | One release only | Yes |
+| EGSTATE-T-015 | Nested pause | Release one of two | Still paused | Yes |
+| EGSTATE-T-016 | Pause clear | Release all | Running policy restored | Yes |
+| EGSTATE-T-017 | Dominance priority | Acquire two priorities | Higher priority dominant | Yes |
+| EGSTATE-T-018 | Dominance tie | Equal priority sequential acquire | Later sequence dominant | Yes |
+| EGSTATE-T-019 | Aggregate pause | Higher running scope over pause | Still paused | Yes |
+| EGSTATE-T-020 | Input intent | Compose state/scopes | Highest explicit intent | Yes |
+| EGSTATE-T-021 | Audio intent | Compose state/scopes | Highest explicit intent | Yes |
+| EGSTATE-T-022 | Time apply | Pause/resume | Correct time result | Yes |
+| EGSTATE-T-023 | Fixed-step default | Pause/resume | Baseline policy preserved | Yes |
+| EGSTATE-T-024 | Fixed-step opt-in | Apply nondefault scale | Documented scaling | Yes |
+| EGSTATE-T-025 | Time adapter failure | Fake failure | Degraded result; no crash | Yes |
+| EGSTATE-T-026 | Cursor apply | Apply UI policy | Expected visibility/lock | Yes |
+| EGSTATE-T-027 | Cursor fallback | Unsupported fake | Warning/fallback | Yes |
+| EGSTATE-T-028 | Focus reapply | Simulate drift/focus | Current policy reapplied | Yes |
+| EGSTATE-T-029 | Event order | Record callbacks | Matches spec | Yes |
+| EGSTATE-T-030 | Listener exception | Throwing listener | Authority remains committed | Yes |
+| EGSTATE-T-031 | History bounds | Exceed capacity | Oldest rotates | Yes |
+| EGSTATE-T-032 | Snapshot safety | Mutate external copy | Internal state unchanged | Yes |
+| EGSTATE-T-033 | Direct scene | Enter without root | One dev root/state | Yes |
+| EGSTATE-T-034 | Direct scene with root | Enter with authority | Helper creates nothing | Yes |
+| EGSTATE-T-035 | Shutdown | Active leases/guards | Handles invalid; baseline restored | Yes |
+| EGSTATE-T-036 | Domain reload off | Repeat Play Mode | No stale state/handles | Yes |
+| EGSTATE-T-037 | Scene duplicate | Load scene containing root | Duplicate rejected | Yes |
+| EGSTATE-T-038 | Sample removal | Compile core only | No sample dependency | Yes |
+| EGSTATE-T-039 | Peer absent | Initialize/use core | No error | Yes |
+| EGSTATE-T-040 | Stress transitions | 1,000 requests | Deterministic/bounded | Yes |
+| EGSTATE-T-041 | Stress scopes | Random 10,000 operations | Oracle match/no leak | Yes |
+| EGSTATE-T-042 | Validation idempotence | Repeat validator | Same report/no mutation | Yes |
+| EGSTATE-T-043 | Setup repeatability | Run setup twice | No duplicate/overwrite | Yes |
+| EGSTATE-T-044 | Tarball install | Clean external project | Compile/setup/lab pass | Manual |
+| EGSTATE-T-045 | Removal | Remove with no dependent bridge | Project compiles after reference cleanup | Manual |
 
 ---
 
@@ -1478,27 +1479,27 @@ Initial tooling scans for common `Time.timeScale`, cursor, and `isPaused` patter
 
 | ID | Decision | Status | Reason | Consequence |
 |---|---|---|---|---|
-| EGS-D-001 | Own high-level runtime state and pause only | Approved | Clear authority | Per-object/gameplay states remain outside |
-| EGS-D-002 | Exactly one primary plus leased overrides | Approved | Preserve underlying state | Snapshot exposes both layers |
-| EGS-D-003 | Overrides are keyed set, not strict LIFO | Approved | Out-of-order cleanup safety | Priority/sequence determines dominance |
-| EGS-D-004 | Pause derives from leases/policies, not bool/count | Approved | Prevent incorrect resume | Every caller owns a lease |
-| EGS-D-005 | Primary transitions synchronous/atomic | Approved | No half-complete state | Async prep stays outside |
-| EGS-D-006 | Guards explicit, synchronous, side-effect-free | Approved | Deterministic validation | Async work not a guard |
-| EGS-D-007 | Policy recomputed from current truth | Approved | Avoid stale restoration | Composer is deterministic/tested |
-| EGS-D-008 | Any active pause requirement wins | Approved | Running scope cannot cancel pause | Aggregate pause |
-| EGS-D-009 | Cursor/input/audio use highest explicit priority | Approved | Predictable override | Tie uses acquisition sequence |
-| EGS-D-010 | Package owns replaceable Unity time/cursor adapters | Approved | Suite assigns policy here | Integrated peers do not compete |
-| EGS-D-011 | Fixed-step scaling configurable, off by default | Approved | Game-specific behavior | Project opts in/tests |
-| EGS-D-012 | Timers/history use injected unscaled clock | Approved | Must work while paused | Unity adapter uses unscaled time |
-| EGS-D-013 | Input/audio are neutral intents | Approved | Independence | Bridges map intents |
-| EGS-D-014 | Core is nonvisual | Approved | EchoUI/project owns presentation | Lab readout removable |
-| EGS-D-015 | State/scopes/history not auto-saved | Approved | Leases should not survive blindly | Validated hints only later |
-| EGS-D-016 | Direct helper development-only | Approved | Testing without second production bootstrap | Build validation |
-| EGS-D-017 | Histories/scopes bounded | Approved | Resource safety | Rotate/reject safely |
-| EGS-D-018 | Drift reconciled at explicit lifecycle points, not per-frame combat | Approved | Avoid hidden polling/fights | Reapply on state/focus/manual request |
-| EGS-D-019 | Slow motion/hit stop deferred to Feedback consistency design | Approved | Avoid scope inflation | Reserve time-authority seam |
-| EGS-D-020 | Multiplayer semantics deferred to approved adapter | Approved | Authority varies | Core remains local application authority |
-| EGS-D-021 | No SFGSS-000 revision required | Approved | Refines existing authority | Promote to this spec/checkpoint docs |
+| EGSTATE-D-001 | Own high-level runtime state and pause only | Approved | Clear authority | Per-object/gameplay states remain outside |
+| EGSTATE-D-002 | Exactly one primary plus leased overrides | Approved | Preserve underlying state | Snapshot exposes both layers |
+| EGSTATE-D-003 | Overrides are keyed set, not strict LIFO | Approved | Out-of-order cleanup safety | Priority/sequence determines dominance |
+| EGSTATE-D-004 | Pause derives from leases/policies, not bool/count | Approved | Prevent incorrect resume | Every caller owns a lease |
+| EGSTATE-D-005 | Primary transitions synchronous/atomic | Approved | No half-complete state | Async prep stays outside |
+| EGSTATE-D-006 | Guards explicit, synchronous, side-effect-free | Approved | Deterministic validation | Async work not a guard |
+| EGSTATE-D-007 | Policy recomputed from current truth | Approved | Avoid stale restoration | Composer is deterministic/tested |
+| EGSTATE-D-008 | Any active pause requirement wins | Approved | Running scope cannot cancel pause | Aggregate pause |
+| EGSTATE-D-009 | Cursor/input/audio use highest explicit priority | Approved | Predictable override | Tie uses acquisition sequence |
+| EGSTATE-D-010 | Package owns replaceable Unity time/cursor adapters | Approved | Suite assigns policy here | Integrated peers do not compete |
+| EGSTATE-D-011 | Fixed-step scaling configurable, off by default | Approved | Game-specific behavior | Project opts in/tests |
+| EGSTATE-D-012 | Timers/history use injected unscaled clock | Approved | Must work while paused | Unity adapter uses unscaled time |
+| EGSTATE-D-013 | Input/audio are neutral intents | Approved | Independence | Bridges map intents |
+| EGSTATE-D-014 | Core is nonvisual | Approved | EchoUI/project owns presentation | Lab readout removable |
+| EGSTATE-D-015 | State/scopes/history not auto-saved | Approved | Leases should not survive blindly | Validated hints only later |
+| EGSTATE-D-016 | Direct helper development-only | Approved | Testing without second production bootstrap | Build validation |
+| EGSTATE-D-017 | Histories/scopes bounded | Approved | Resource safety | Rotate/reject safely |
+| EGSTATE-D-018 | Drift reconciled at explicit lifecycle points, not per-frame combat | Approved | Avoid hidden polling/fights | Reapply on state/focus/manual request |
+| EGSTATE-D-019 | Slow motion/hit stop deferred to Feedback consistency design | Approved | Avoid scope inflation | Reserve time-authority seam |
+| EGSTATE-D-020 | Multiplayer semantics deferred to approved adapter | Approved | Authority varies | Core remains local application authority |
+| EGSTATE-D-021 | No SFGSS-000 revision required | Approved | Refines existing authority | Promote to this spec/checkpoint docs |
 
 ### 27.2 Release-blocking questions
 
@@ -1524,7 +1525,7 @@ None. Jesse delegated implementation-shaping choices to the most durable long-te
 
 | Milestone | Outcome | Included | Evidence |
 |---|---|---|---|
-| M0 | Approved specification | This document | v1.0.0 approval |
+| M0 | Approved specification | This document | v1.1.0 reconciliation approval |
 | M1 | Installable skeleton | Manifest, assemblies, docs shell | Clean compile/install |
 | M2 | Primary state core | Root, definitions, rules, results, guards, snapshot | Unit/PlayMode tests |
 | M3 | Overrides and pause | Leases, composer, adapters | Nested/random tests |
@@ -1539,7 +1540,7 @@ Each milestone is divided into small SFGSS-005 Checkpoint Build Plans with one t
 
 ### 28.3 First recommended checkpoint after documentation gate
 
-**EGS-M1-01: Package Skeleton and Assembly Isolation**
+**EGSTATE-M1-01: Package Skeleton and Assembly Isolation**
 
 Create manifest, required repository files, Runtime/Editor/Tests/Documentation/Samples boundaries, empty compiling namespaces/asmdefs, and clean embedded/local/tarball installation proof. Add no state behavior. This begins only after all ten specifications and the consistency review. The expected first Foundation implementation remains First Light M1 unless review changes the order.
 
@@ -1551,12 +1552,12 @@ Create manifest, required repository files, Runtime/Editor/Tests/Documentation/S
 We are continuing development of The Sperk’s Forge — EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the suite-wide authority. Treat The Pulse — Runtime State
-Package Specification v1.0.0 as the authority for EchoGameState behavior,
+Package Specification v1.1.0 as the authority for EchoGameState behavior,
 public API, state/override model, pause leases, policy composition, tooling,
 Test Lab, and release gates. Follow SFGSS-005 when implementation opens.
 
 Current package: EchoGameState
-Specification: v1.0.0 Approved
+Specification: v1.1.0 Approved
 Current checkpoint: <CHECKPOINT>
 Unity: 6000.3.8f1
 Repository/project: <PROJECT>
@@ -1582,7 +1583,7 @@ Before code:
 | Tests passed | Documentation structure/consistency only |
 | Tests failed | None; runtime tests not started |
 | Known issues | None blocking documentation pass |
-| Decisions | EGS-D-001 through EGS-D-021 |
+| Decisions | EGSTATE-D-001 through EGSTATE-D-021 |
 | Next checkpoint | FW-DOC-06: Resonance (`Jukebot`) specification |
 
 ---
@@ -1620,3 +1621,24 @@ Before code:
 A new collaborator can determine that EchoGameState owns high-level runtime state, leased temporary overrides, nested pause, and resulting global time/cursor policy; refuses UI/input/audio/scene/save/gameplay ownership; works alone; separates immutable definitions from mutable runtime state; uses synchronous structured transitions, guards, snapshots, events, and leases; fails safely with stable codes; proves itself in an isolated Test Lab; integrates through explicit bridges; and requires clean installation, bounded performance, migration safety, accurate documentation, tarball verification, and repository checkpoint closeout before release.
 
 The specification is complete and **Approved**, while implementation remains intentionally deferred.
+
+
+---
+
+## Appendix A — Foundation Reconciliation Addendum
+
+### A.1 Unique diagnostic namespace
+
+FW-DOC-11 found that the original `EGS-*` Pulse diagnostic prefix collided with The Workshop (`EchoGameStarter`). This specification therefore uses `EGSTATE-*` for Pulse diagnostics, package test identifiers, decisions, risks, and related package-local records wherever the prior prefix appeared.
+
+The change occurs before implementation and release, so no shipped log, serialized record, API, or migration alias exists. Cross-package reports qualify other local IDs with `com.echodevgames.echo-game-state::<local-id>`.
+
+### A.2 Workshop setup facade
+
+Automated Workshop setup follows [[../Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|SFGSS-ADR-001]]. The future package-owned Editor endpoint is:
+
+```text
+EchoDevGames.EchoGameState.Editor.Workshop.EchoGameStateWorkshopSetupFacade
+```
+
+The facade is optional for standalone Pulse operation and required only before automated Workshop compatibility is advertised. It remains in the Pulse Editor assembly and introduces no runtime or core dependency on The Workshop.

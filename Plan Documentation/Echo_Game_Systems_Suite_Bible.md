@@ -1,8 +1,8 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.6.0  
-**Status:** Approved lead architecture baseline; package specifications pending  
+**Version:** 0.7.0  
+**Status:** Approved lead architecture baseline; Foundation package specifications and cross-package contract matrix approved; implementation gate pending  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Current development baseline:** Unity 6000.3.8f1  
@@ -2503,6 +2503,11 @@ The following decisions form the approved starting baseline for the suite:
 31. Suite documentation lives with development in Git and is opened directly as an Obsidian-compatible Markdown vault or folder. Every active repository maintains a linked `Current Notes.md` capture page; meaningful notes are reconciled into the proper authoritative documents at checkpoints, and major documentation changes are committed alongside or immediately adjacent to the code they describe.
 32. The complete Foundation Wave specification set must be drafted, reviewed, and approved before any Foundation Wave runtime implementation begins. A cross-package consistency review is the final documentation gate.
 33. The initial public Unity floor for Foundation packages is Unity 6000.0. Unity 6000.3.8f1 remains the primary development baseline; additional Unity 6 versions are listed as tested only after validation.
+34. Foundation diagnostic code namespaces must be globally unique. EchoGameState uses `EGSTATE-*`; EchoGameStarter retains `EGS-*`. Cross-package reports qualify package-local use-case, capability, Lab, and operation identifiers with the package ID.
+35. Foundation runtime bridges are optional translation artifacts. A separate two-package bridge declares compatible dependencies on both peers, is removed before either peer, owns no competing authority, and leaves both cores functional when absent.
+36. Development initializers create only their own minimum missing authority. First Light startup bridges adopt an existing valid peer root and never instantiate a second authority blindly.
+37. The Workshop invokes package-specific setup only through exact, allowlisted, package-owned Editor facades governed by SFGSS-ADR-001. The protocol adds no runtime dependency and no mandatory shared core package; a missing facade produces a visible manual setup path.
+38. The ten Foundation package specifications and SFGSS-INT-FOUNDATION-001 pass the authority, lifecycle, dependency, settings/save, diagnostics, Test Lab, and removal collision review. FW-DOC-12 remains the final authorization gate before implementation.
 
 ---
 
@@ -2541,8 +2546,8 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the thirty-three decisions in Section 21 are approved as the starting baseline. **SFGSS-001 — Package Specification Template** is complete, and the **First Light (`EchoLaunch`) Package Specification v1.0.0** is approved.
+The suite identity and the thirty-eight decisions in Section 21 are approved. All ten Foundation package specifications are approved, and **SFGSS-INT-FOUNDATION-001 — Foundation Cross-Package Contract Matrix and Findings Record** has passed FW-DOC-11.
 
-Continue the Foundation Specification Pass by drafting and approving **The Observatory (`EchoDiagnostics`)**, followed by the remaining Foundation Wave specifications in the order recorded in the Foundation Wave Specification Roadmap. Do not begin runtime implementation until all ten specifications are approved and the cross-package consistency review passes.
+Proceed to **FW-DOC-12 — Documentation Readiness Gate**. Confirm the corrected Pulse v1.1.0 identifier namespace, Workshop v1.1.0 facade integration, SFGSS-ADR-001, matrix findings, Current Notes, roadmap, and repository index are committed and mutually consistent. Then write the first implementation Checkpoint Build Plan.
 
-After the documentation gate, First Light becomes the first implementation package: one protected runtime root, ordered startup steps, splash sequencing, direct-scene development support, launch reporting, a readable startup-status view, and a final destination. Jukebot and the Looking Glass UI foundation then become the first two independent proof packages developed side by side after that origin, each in its own Standalone Test Lab.
+The expected first implementation checkpoint remains **First Light M1 — Package Skeleton**: create only the UPM manifest, assembly definitions, package folders, documentation shell, and compile-safe public skeleton approved by the plan. No launch behavior enters until that checkpoint explicitly authorizes it.

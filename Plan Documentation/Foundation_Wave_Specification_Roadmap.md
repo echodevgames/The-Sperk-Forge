@@ -3,7 +3,7 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Approved active plan  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.6.0 and SFGSS-001 v1.1.0  
+**Parent authority:** SFGSS-000 v0.7.0 and SFGSS-001 v1.1.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Public Unity floor:** Unity 6000.0  
 **Last updated:** August 3, 2026
@@ -46,14 +46,14 @@ The order follows the Foundation Wave ownership layers: origin and observability
 | FW-DOC-02 | `EchoDiagnostics` | The Observatory — Diagnostics | Defines the neutral status-provider model and diagnostic vocabulary used by later packages without becoming mandatory | Approved v1.0.0 |
 | FW-DOC-03 | `EchoSettings` | The Accord — Global Preferences | Establishes global preference ownership and change/application contracts used by audio, input, UI, localization, and feedback | Approved v1.0.0 |
 | FW-DOC-04 | `EchoSceneFlow` | The Passage — Scene Flow | Defines normal transition authority after First Light handoff, loading phases, progress, locking, and failure behavior | Approved v1.0.0 |
-| FW-DOC-05 | `EchoGameState` | The Pulse — Runtime State | Defines high-level modes, pause authority, time/cursor/input coordination requests, and nested state reasons | Approved v1.0.0 |
+| FW-DOC-05 | `EchoGameState` | The Pulse — Runtime State | Defines high-level modes, pause authority, time/cursor/input coordination requests, and nested state reasons | Approved v1.1.0 |
 | FW-DOC-06 | `Jukebot` | Resonance — Audio Runtime | Defines music, SFX, ambience, mixer routing, handles, runtime cue state, and settings/state bridges | Approved v1.0.0 |
 | FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Approved v1.0.0 |
 | FW-DOC-08 | `EchoUI` | The Looking Glass — UI Framework | Defines screen/HUD/modal ownership and presenter boundaries after settings, state, input, scene, and audio contracts are known | Approved v1.0.0 |
 | FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Approved v1.0.0 |
-| FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Approved v1.0.0 |
-| FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, setup-facade, and removal matrix | Next |
-| FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the complete set is coherent and identifies the first implementation checkpoint | Not started |
+| FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Approved v1.1.0 |
+| FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, setup-facade, and removal matrix | Approved |
+| FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the reconciled set is committed and selects the first implementation checkpoint | Next |
 
 ---
 
@@ -172,14 +172,14 @@ The consistency review produces one matrix and one findings record. It must chec
 The documentation gate passes only when:
 
 - [x] Ten package specifications are Approved.
-- [ ] No release-blocking question remains that changes another Foundation package’s MVP or authority.
-- [ ] The cross-package ownership matrix has no duplicate authority.
-- [ ] All core dependencies and optional bridges are explicit.
-- [ ] Each package has an isolated Test Lab plan.
-- [ ] Direct-scene and duplicate-root policies are coherent.
-- [ ] Settings/save ownership and serialization boundaries are coherent.
-- [ ] The Workshop can describe every selectable package without inventing missing contracts.
-- [ ] SFGSS-000, Current Notes, roadmap, and package statuses agree.
+- [x] No release-blocking question remains that changes another Foundation package’s MVP or authority.
+- [x] The cross-package ownership matrix has no duplicate authority.
+- [x] All core dependencies and optional bridges are explicit.
+- [x] Each package has an isolated Test Lab plan.
+- [x] Direct-scene and duplicate-root policies are coherent.
+- [x] Settings/save ownership and serialization boundaries are coherent.
+- [x] The Workshop can describe every selectable package without inventing missing contracts; SFGSS-ADR-001 defines the facade boundary.
+- [x] SFGSS-000, Current Notes, roadmap, and package statuses agree in the generated checkpoint.
 - [ ] Documentation checkpoint is committed and pushed.
 - [ ] The first implementation checkpoint is selected and written as a Checkpoint Build Plan.
 
@@ -195,6 +195,20 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | Approved | 10 |
 | In drafting | 0 |
 | Remaining | 0 |
-| Current checkpoint | FW-DOC-11 — Foundation contract matrix |
+| Current checkpoint | FW-DOC-12 — Documentation readiness gate |
 | Runtime implementation | Intentionally not started |
-| Known finding | Peer package Editor setup-facade contracts require cross-spec reconciliation |
+| Known finding | FW-DOC-11 resolved setup facades through SFGSS-ADR-001 and renamed Pulse identifiers to `EGSTATE-*` |
+
+
+---
+
+## 10. FW-DOC-11 Result
+
+**Decision:** Approved.
+
+The Foundation Cross-Package Contract Matrix found two blocking documentation collisions and resolved both before implementation:
+
+1. EchoGameState and EchoGameStarter shared `EGS-*`; Pulse v1.1.0 now uses `EGSTATE-*`.
+2. The Workshop lacked exact peer setup endpoints; SFGSS-ADR-001 now defines the package-owned Editor setup facade protocol.
+
+No duplicate runtime authority, circular core dependency, settings/save ownership conflict, Test Lab contradiction, or removal blocker remains. Proceed to FW-DOC-12. Runtime implementation is still locked.

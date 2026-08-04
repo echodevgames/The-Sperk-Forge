@@ -34,6 +34,7 @@ When documents disagree, use this authority order:
 3. Read `Current Notes.md` completely.
 4. Read `SFGSS-001_Package_Specification_Template.md` before drafting or changing a package specification.
 5. Read the active package specification and checkpoint plan once those files exist.
+6. For Foundation integration work, read `Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md` and applicable ADRs.
 
 ## First Approved Objective
 
@@ -52,7 +53,9 @@ The ten required specifications are:
 9. The Chronicle (`EchoSave`)
 10. The Workshop (`EchoGameStarter`)
 
-All ten Foundation package specifications are approved at v1.0.0: First Light, The Observatory, The Accord, The Passage, The Pulse, Resonance, The Will, The Looking Glass, The Chronicle, and The Workshop. The active checkpoint is FW-DOC-11, the cross-package contract matrix and findings record. Runtime implementation remains locked until FW-DOC-12 confirms the complete set is coherent and authorizes the first Checkpoint Build Plan.
+All ten Foundation package specifications are approved. The Pulse and The Workshop are reconciled at v1.1.0; the remaining eight are v1.0.0. FW-DOC-11 is approved through `Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md` and `Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md`.
+
+The active checkpoint is **FW-DOC-12 — Documentation Readiness Gate**. Runtime implementation remains locked until that gate verifies the repository checkpoint and authorizes the first Checkpoint Build Plan.
 
 ## Folders Added Later
 
@@ -62,6 +65,7 @@ Create subfolders only when the first real file for that category exists:
 Plan Documentation/
 ├── Package Specifications/
 ├── Architecture Decision Records/
+├── Integration Specifications/
 ├── Checkpoint Build Plans/
 ├── Test Reports/
 └── Release Records/
@@ -73,7 +77,7 @@ Do not add empty placeholder folders solely for appearance; Git does not preserv
 
 Upload the four initial source files and begin the new conversation with:
 
-> We are beginning development of The Sperk’s Forge — EchoDevGames Game Systems Suite in a clean Unity repository. Read every uploaded Markdown file completely. Treat SFGSS-000 as the suite-wide authority, treat Current Notes as working context rather than authority, and follow SFGSS-001 for all package specifications. Preserve package independence, isolated Test Lab scenes, neutral technical APIs, Verse-flavored user-facing names, and the repository/Obsidian documentation workflow. Before writing code, summarize the approved architecture, identify the current checkpoint from Current Notes, and continue the Foundation Specification Pass using SFGSS-001. Do not begin runtime implementation until every Foundation Wave specification and the cross-package consistency review are approved. Do not invent unresolved architecture without recording it for approval.
+> We are beginning development of The Sperk’s Forge — EchoDevGames Game Systems Suite in a clean Unity repository. Read every uploaded Markdown file completely. Treat SFGSS-000 as the suite-wide authority, treat Current Notes as working context rather than authority, and follow SFGSS-001 for all package specifications. Preserve package independence, isolated Test Lab scenes, neutral technical APIs, Verse-flavored user-facing names, and the repository/Obsidian documentation workflow. Before writing code, summarize the approved architecture, identify the current checkpoint from Current Notes, and continue from the active checkpoint recorded in Current Notes. Treat the Foundation cross-package matrix and accepted ADRs as Level 3 integration authority. Do not begin runtime implementation until FW-DOC-12 explicitly authorizes the first Checkpoint Build Plan. Do not invent unresolved architecture without recording it for approval.
 
 ## Checkpoint Rule
 

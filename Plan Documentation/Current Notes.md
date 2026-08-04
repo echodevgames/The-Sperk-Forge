@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, and accepted ADRs remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
-**Current focus:** Foundation cross-package contract reconciliation  
-**Current checkpoint:** FW-DOC-11 — Foundation cross-package contract matrix
+**Current focus:** Foundation documentation readiness review
+**Current checkpoint:** FW-DOC-12 — Documentation readiness gate
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -34,34 +34,34 @@ Do not leave durable decisions only on this page. At checkpoint closeout, promot
 
 ### Goal
 
-Reconcile the ten approved Foundation package specifications into one coherent authority, lifecycle, dependency, setup-facade, data, diagnostics, Test Lab, and removal contract before any Foundation Wave runtime implementation begins.
+Verify the reconciled Foundation architecture, accepted setup-facade ADR, corrected diagnostic namespace, repository documentation, and first implementation entry conditions before authorizing any package code.
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.6.0.
+- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.7.0.
 - `SFGSS-001_Package_Specification_Template.md` — v1.1.0.
 - `Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.1.0 Approved.
 - `Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md` — v1.0.0 Approved.
-- `Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md` — v1.1.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings record**. Reconcile all ten approved specifications across authority, lifecycle order, duplicate protection, setup-facade contracts, data ownership, settings/save boundaries, Editor/runtime assembly direction, optional bridges, direct-scene behavior, diagnostics, Test Labs, removal behavior, and Workshop composition. Update package specifications or create an ADR where the matrix reveals a real contract gap. Do not authorize implementation until FW-DOC-12 passes.
+Run **FW-DOC-12 — Documentation Readiness Gate**. Confirm the repository contains SFGSS-000 v0.7.0, Pulse v1.1.0, Workshop v1.1.0, SFGSS-ADR-001, and SFGSS-INT-FOUNDATION-001; resolve any repository mismatch; then draft First Light M1 as a Checkpoint Build Plan. Runtime implementation remains locked until FW-DOC-12 is explicitly approved.
 
 ---
 
 ## Open Questions
 
-- `[QUESTION]` FW-DOC-11 must decide how the nine peer package specifications expose and version their public Editor setup facades for The Workshop. The approved direction is exact, allowlisted facade endpoints with no runtime dependency and no open-ended discovery; package-specific addenda or an ADR may be required before implementation.
-- Licensing remains a later suite-wide release decision and does not block the documentation pass.
+- Licensing remains a later suite-wide release decision and does not block Foundation M1 planning.
+- No release-blocking Foundation architecture question remains after FW-DOC-11.
 
 ---
 
@@ -282,7 +282,7 @@ Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings 
 - `[DECISION]` Package Manager operations and asset generation are separate resumable phases. A transient journal under `Library/EchoGameStarter/Transactions` records recovery state across domain reload or Editor restart, but never auto-resumes mutation after restart.
 - `[DECISION]` Normal package changes use Unity Package Manager Client APIs rather than direct editing of `Packages/manifest.json`. Recommended sources use exact versions, tags, or commits; development branches remain visibly non-reproducible choices.
 - `[DECISION]` Package-specific setup remains owned by the selected package. The Workshop uses exact allowlisted, versioned Editor setup-facade adapter descriptors and does not perform open-ended assembly discovery or copy package setup logic.
-- `[DECISION]` FW-DOC-11 must reconcile the setup-facade contract across the nine peer specifications before implementation. A shared Editor-only contracts package is not silently introduced; it would require an ADR and evidence.
+- `[RESOLVED]` FW-DOC-11 reconciled the setup-facade contract through SFGSS-ADR-001. No shared Editor-only contracts package was introduced.
 - `[DECISION]` Generated output is project-owned. A durable manifest records logical IDs, GUIDs, paths, origins, versions, fingerprints, adoption, modification, and operation receipts without granting The Workshop perpetual control.
 - `[DECISION]` Create-only-safe behavior is the default. Existing, adopted, or modified assets are preserved. Any fingerprint drift removes automatic overwrite eligibility and moves upgrades to manual or side-by-side handling.
 - `[DECISION]` The MVP ships Blank Modular Starter and Game Jam Quickstart. Blank may select no peer packages. Game Jam shows every selected package and bridge; the Chronicle is an explicit save-model choice rather than a hidden requirement.
@@ -291,14 +291,35 @@ Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings 
 - `[DECISION]` UI Toolkit is the approved Editor UI. The core standalone proof is an isolated Workshop Laboratory and disposable clean-project fixtures rather than a meaningless runtime scene.
 - `[DECISION]` The Laboratory defines 40 acceptance scenarios and the specification registers 121 implementation tests spanning package resolution, reload recovery, planning, security, generation, setup facades, scenes, reports, migration, repeatability, removal, and performance.
 - `[DECISION]` The Workshop never commits or pushes source control in the MVP. It writes commit-friendly reports and leaves Git actions to the user or a future explicit provider.
-- `[DECISION]` No SFGSS-000 revision is required because these choices refine the already-approved Editor composer authority. The setup-facade contract is intentionally assigned to FW-DOC-11 for cross-spec reconciliation.
+- `[RESOLVED]` The Workshop package decisions originally required no SFGSS-000 revision. FW-DOC-11 later promoted the suite-wide facade and collision rules into SFGSS-000 v0.7.0.
 
 **Promoted to:** The Workshop (`EchoGameStarter`) Package Specification v1.0.0.
+
+
+### August 3, 2026 — Foundation cross-package collision review
+
+- `[DECISION]` SFGSS-INT-FOUNDATION-001 is approved as the Foundation authority/lifecycle/dependency/bridge/data/Test Lab/removal reconciliation record.
+- `[TEST]` All ten specifications retain exactly one Foundation authority per concern and no peer runtime dependency in core assemblies.
+- `[BUG]` The Pulse and The Workshop both used the `EGS-*` diagnostic namespace.
+- `[DECISION]` The Pulse specification advances to v1.1.0 and uses the globally unique `EGSTATE-*` namespace. EchoGameStarter retains `EGS-*`.
+- `[RISK]` The nine peer packages defined setup tools but no exact Editor endpoint for The Workshop.
+- `[DECISION]` SFGSS-ADR-001 accepts a package-owned exact Editor setup facade protocol with allowlisted types, six static JSON methods, plan/apply hashes, receipts, bounded reflection, and manual fallback.
+- `[DECISION]` The Workshop specification advances to v1.1.0 and records SFGSS-ADR-001 as the resolved facade contract.
+- `[DECISION]` Separate bridge packages declare dependencies on both peers and are removed before either peer. Core packages remain independently functional.
+- `[DECISION]` Direct-scene helpers create only their own minimum missing root; First Light bridges adopt existing valid peer authorities.
+- `[DECISION]` Cross-package reports qualify locally repeated `UC-*`, `CAP-*`, and `LAB-*` identifiers with the package ID.
+- `[TEST]` Settings/save boundaries, launch-to-Passage handoff, UI/input/state/audio boundaries, diagnostics bridges, standalone laboratories, and removal behavior pass the documentation collision review.
+- `[HANDOFF]` No runtime implementation is authorized yet. FW-DOC-12 is the final documentation gate.
+
+**Promoted to:** SFGSS-000 v0.7.0 decisions 34–38, The Pulse specification v1.1.0, The Workshop specification v1.1.0, SFGSS-ADR-001, and SFGSS-INT-FOUNDATION-001.
 
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-03 | Foundation authority/lifecycle/dependency/data/Test Lab/removal collision review | SFGSS-INT-FOUNDATION-001 and SFGSS-000 v0.7.0 | Promoted |
+| 2026-08-03 | Package-owned Editor setup facade protocol | SFGSS-ADR-001 and Workshop v1.1.0 | Promoted |
+| 2026-08-03 | EchoGameState/EchoGameStarter diagnostic namespace collision | Pulse v1.1.0 and SFGSS-000 v0.7.0 | Promoted |
 | 2026-08-03 | Repository/Obsidian living-documentation workflow | SFGSS-000 and SFGSS-001 | Promoted |
 | 2026-08-03 | Foundation Specification Pass before implementation | SFGSS-000 v0.6.0 and roadmap | Promoted |
 | 2026-08-03 | First Light implementation-shaping choices | First Light specification v1.0.0 | Promoted |
@@ -319,19 +340,19 @@ Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings 
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Workshop decisions refine the existing Editor composer authority without changing runtime ownership |
+| Suite bible | Updated and approved | v0.7.0; decisions 34–38 promote FW-DOC-11 findings |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
 | Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Pulse specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
+| Pulse specification | Approved and reconciled | v1.1.0; `EGSTATE-*` identifier namespace removes the Workshop collision |
 | Resonance specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Will specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 70-test registry; no release-blocking design questions |
 | Looking Glass specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 42 Laboratory scenarios and 84-test registry; no release-blocking design questions |
 | Chronicle specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 32 Laboratory scenarios and 100-test registry; no release-blocking design questions |
-| Workshop specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 40 Laboratory scenarios and 121-test registry; setup-facade cross-spec reconciliation assigned to FW-DOC-11 |
-| Foundation documentation gate | Active | 10 of 10 package specifications approved; FW-DOC-11 and FW-DOC-12 remain |
+| Workshop specification | Approved and reconciled | v1.1.0; SFGSS-ADR-001 resolves the setup-facade contract |
+| Foundation documentation gate | Active | FW-DOC-11 approved; FW-DOC-12 remains |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -352,10 +373,10 @@ Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings 
 
 ## Handoff Snapshot
 
-**Current program:** Foundation Specification Pass  
-**Completed package specifications:** All ten Foundation package specifications are Approved v1.0.0: First Light, The Observatory, The Accord, The Passage, The Pulse, Resonance, The Will, The Looking Glass, The Chronicle, and The Workshop  
+**Current program:** Foundation documentation gate  
+**Completed package specifications:** Ten approved; Pulse and Workshop reconciled at v1.1.0  
 **Current package:** Cross-package Foundation set  
-**Current stage:** Package specification pass complete; consistency review not yet completed  
-**Last completed documentation change:** EchoGameStarter Editor-only composition authority, immutable dry-run plans, UPM/reload transaction journal, exact setup-facade adapters, create-only project generation, manifests, presets, repair/removal guidance, Workshop Laboratory, and generated-project independence approved  
-**Known blocker/finding:** Peer package Editor setup-facade contracts must be reconciled across the approved specifications before implementation  
-**Next checkpoint:** FW-DOC-11 — Produce the Foundation cross-package contract matrix and findings record
+**Current stage:** FW-DOC-11 approved; FW-DOC-12 not yet completed  
+**Last completed documentation change:** Cross-package matrix, unique diagnostic namespace, bridge/removal rules, and accepted Workshop setup-facade ADR  
+**Known blockers:** None architectural; repository commit/push and FW-DOC-12 approval remain  
+**Next checkpoint:** FW-DOC-12 — Documentation Readiness Gate, followed by the First Light M1 Checkpoint Build Plan

@@ -1,7 +1,7 @@
 # The Workshop - Project Starter Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOGAMESTARTER-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0  
 **Status:** Approved  
 **Technical package name:** EchoGameStarter  
 **Public title:** The Workshop - Project Starter  
@@ -33,6 +33,7 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification based on SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and the nine previously approved Foundation package specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved Editor-only composition authority, package catalog, dry-run planning, resumable application, package setup-facade adapters, generated ownership records, repair/removal guidance, presets, diagnostics, and Workshop Laboratory | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-03 | Approved | Incorporated FW-DOC-11, accepted SFGSS-ADR-001 as the exact Foundation setup-facade protocol, and closed the peer-facade reconciliation blocker without adding a shared package dependency | Jesse “Echo” Adams |
 
 ---
 
@@ -1912,7 +1913,7 @@ This approved design registers **121 implementation test cases** in addition to 
 - [x] Ownership, conflict, manifest, repair, and removal rules are defined.
 - [x] Workshop Laboratory and clean-project proof are designed.
 - [x] Release-blocking design questions are resolved for this specification.
-- [ ] FW-DOC-11 reconciles facade/addenda requirements across all Foundation package specs.
+- [x] FW-DOC-11 reconciles facade requirements through SFGSS-ADR-001.
 
 ### 24.2 Implementation gate
 
@@ -2073,7 +2074,7 @@ On Workshop update:
 | EGS-D-005 | Normal package changes use Unity Package Manager Client APIs, not direct manifest editing | Approved | Supported resolution path and clearer error behavior | UPM request abstraction/test seam | No |
 | EGS-D-006 | Recommended sources use exact versions/tags/commits; branches are dev-only warnings | Approved | Reproducible starters | Record requested and resolved versions | No |
 | EGS-D-007 | Package-specific setup remains in the owning package | Approved | Prevent drift and authority theft | Workshop needs adapters/facades | No |
-| EGS-D-008 | MVP invokes exact allowlisted Editor setup facades through versioned descriptors | Approved | Avoid compile-time peer dependencies without open discovery | FW-DOC-11 must reconcile facade contract | Yes if cross-spec contract is suite-wide |
+| EGS-D-008 | MVP invokes exact allowlisted Editor setup facades through versioned descriptors | Approved | Avoid compile-time peer dependencies without open discovery | Resolved by SFGSS-ADR-001 and FW-DOC-11 | Yes if cross-spec contract is suite-wide |
 | EGS-D-009 | No open-ended reflection discovery | Approved | Security, determinism, versioning | Missing endpoint fails closed | No |
 | EGS-D-010 | A shared Editor setup-contracts package is not introduced by this spec | Approved | Avoid silent new mandatory package | Revisit only via ADR after implementation evidence | Future ADR only |
 | EGS-D-011 | Generated output is project-owned; manifest records origin but not perpetual control | Approved | Projects must be free to evolve | Modified/adopted assets preserved | No |
@@ -2093,11 +2094,9 @@ On Workshop update:
 
 ### 27.2 Release-blocking questions
 
-No unresolved question blocks approval of this package specification. The following **Foundation-set reconciliation item** blocks implementation:
+No unresolved question blocks this package or Foundation implementation planning. FW-DOC-11 resolved the peer setup-facade contract through **SFGSS-ADR-001 — Foundation Editor Setup Facade Protocol**.
 
-| Question | Why it blocks implementation | Approved direction | Owner | Due before |
-|---|---|---|---|---|
-| How do each of the nine peer package specs expose/record their Editor setup facade and setup schemas? | Workshop automation cannot be implemented against an implicit endpoint | Add cross-spec contract/addenda or approve a tiny alternative through ADR; no package runtime dependency | Jesse/FW-DOC-11 | First Workshop or peer setup implementation |
+The ADR fixes the exact facade identity, six-method static surface, detached JSON envelopes, plan/apply handshake, receipts, reload/cancellation rules, manual fallback, and compatibility gate. Peer packages remain independently releasable without a facade, but may not advertise automated Workshop setup until their facade and adapter tests pass.
 
 ### 27.3 Non-blocking later questions
 
@@ -2187,7 +2186,7 @@ Before writing code:
 | Files/assets created | Specification and documentation checkpoint files only |
 | Tests passed | Documentation structure/consistency checks only |
 | Tests failed | None; implementation tests not run |
-| Known issues | Setup facade contract requires cross-spec reconciliation in FW-DOC-11 |
+| Known issues | No release-blocking Workshop architecture issue; facade implementation remains milestone work under SFGSS-ADR-001 |
 | Decisions added | EGS-D-001 through EGS-D-024 |
 | Next checkpoint | FW-DOC-11 - Foundation cross-package contract matrix |
 
@@ -2216,7 +2215,7 @@ Before writing code:
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams  
 **Date:** August 3, 2026  
-**Conditions:** FW-DOC-11 must reconcile package Editor setup-facade requirements across the nine peer specifications. FW-DOC-12 must pass before any Foundation runtime implementation begins.
+**Conditions:** FW-DOC-11 resolved package Editor setup-facade requirements through SFGSS-ADR-001. FW-DOC-12 must still pass before any Foundation runtime implementation begins.
 
 ---
 
@@ -2236,3 +2235,12 @@ A new collaborator can answer:
 10. Release requires repeat-run, removal, clean-project, adapter, reload, security, and generated-project independence evidence.
 
 The Workshop specification is complete and **Approved v1.0.0**. All ten Foundation package specifications are now approved. Runtime implementation remains locked while FW-DOC-11 builds the cross-package contract matrix and FW-DOC-12 performs the documentation readiness/implementation authorization review.
+
+
+---
+
+## Appendix A — Accepted Foundation Facade Protocol
+
+The Workshop’s setup-facade integration contract is governed by [[../Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|SFGSS-ADR-001]].
+
+The Workshop verifies exact package ID/version, assembly-qualified facade type, protocol version, facade schema, setup schema, and six public static methods: `Describe`, `Plan`, `Apply`, `Validate`, `Compare`, and `RemovalGuidance`. Each method accepts and returns bounded detached JSON strings. Apply requires the matching approved plan hash and operation IDs. The Workshop never performs broad reflection discovery and never adds a runtime dependency to generated projects.
