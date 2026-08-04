@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.echodevgames.echo-launch": {
+      "version": "file:com.echodevgames.echo-launch",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
+    },
     "com.unity.burst": {
       "version": "1.8.27",
       "depth": 2,

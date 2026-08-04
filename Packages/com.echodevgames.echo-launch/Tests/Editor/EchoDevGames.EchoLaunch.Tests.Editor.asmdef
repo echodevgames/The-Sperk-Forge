@@ -1,0 +1,22 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Tests.Editor",
+  "rootNamespace": "EchoDevGames.EchoLaunch.Tests.Editor",
+  "references": [
+    "GUID:6370d00c0cfa8144795d367cb689f221",
+    "GUID:994a9bf984e48cc4a9c5139c901e11f6"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Runtime",
+  "rootNamespace": "EchoDevGames.EchoLaunch",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
