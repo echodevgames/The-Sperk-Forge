@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoBuildTools - The Foundry package specification
-**Current checkpoint:** SUITE-DOC-08 - EchoBuildTools: The Foundry Package Specification
+**Current focus:** EchoDialogue - Voices package specification
+**Current checkpoint:** SUITE-DOC-10 - EchoDialogue: Voices Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -51,7 +51,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Draft and approve the complete **EchoBuildTools - The Foundry Package Specification** using SFGSS-001. Define build profiles, version/build-number stamping, scene/build-profile validation, package/license reports, release preflight, output naming, safe clean-output policy, manifests/checksums, development/release defines, repeatable release records, and provider/deployment boundaries without absorbing runtime game flow or silently publishing builds.
+Draft and approve the complete **EchoDialogue - Voices Package Specification** using SFGSS-001. Define speaker and conversation identities, localized line references, sequences, branching choices, conditions, project commands, history, interruption and resume policy, save snapshots, diagnostics, authoring/validation, and explicit UI, Localization, Audio, Objectives, Camera, GameState, Input, Save, and Workshop boundaries without absorbing quest logic, cinematic direction, UI presentation, audio playback, or translation ownership.
 ---
 
 ## Open Questions
@@ -59,7 +59,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-08.
+- No question currently blocks SUITE-DOC-10.
 
 ---
 
@@ -487,6 +487,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoLocalization locale lifecycle, stable localized references, fallback/missing policy, formatting, asset leases, fonts/direction, pseudo-localization, diagnostics, and Laboratory | EchoLocalization Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoBuildTools recipes, Build Profile boundary, planning, validation, stamping, output safety, receipts, manifests, checksums, providers, CLI, and Laboratory | EchoBuildTools Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoPool definitions, generational leases, capacity, exhaustion, scopes, callbacks, automatic return, reconciliation, diagnostics, and Laboratory | EchoPool Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | Impact recipes, providers, timeline, cancellation, channel scales, time boundary, diagnostics, and Laboratory | EchoFeedback Package Specification v1.0.0 | Promoted |
@@ -518,8 +519,9 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 | EchoPool package specification | Approved | v1.0.0; 30 sections; 36 Laboratory scenarios; 118 planned tests, all Not run |
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
 | EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
-| Expansion specifications | 4 of 13 approved | Impact, The Wellspring, The Ascent, and The Foundry |
-| Current checkpoint | Active | SUITE-DOC-09 - EchoLocalization: Many Tongues Package Specification |
+| EchoLocalization package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 196 planned tests, all Not run |
+| Expansion specifications | 5 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, and Many Tongues |
+| Current checkpoint | Active | SUITE-DOC-10 - EchoDialogue: Voices Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -542,39 +544,60 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** EchoBuildTools Package Specification v1.0.0, the SUITE-DOC-08 audit report, README, and full-suite roadmap.
 
+### August 4, 2026 - Many Tongues package specification
+
+- `[DECISION]` Many Tongues (`EchoLocalization`) specification v1.0.0 is approved as the Level 2 authority for runtime locale lifecycle, suite-facing localized reference/result contracts, fallback and missing-content policy, regional formatting, font/script/direction profiles, localization diagnostics, setup, validation, pseudo-localization, and optional bridge seams.
+- `[DECISION]` EchoLocalization uses Unity's official Localization package as a declared platform backend. It does not implement a competing table, Smart String, localized asset, pseudo-locale, import/export, or Addressables system.
+- `[DECISION]` The planned implementation dependency is `com.unity.localization` 1.5.12. Compatibility with Unity 6000.3.8f1 remains Planned/Not run until a clean installation checkpoint verifies it.
+- `[DECISION]` One duplicate-safe application-session `EchoLocalizationRoot` claims authority before backend initialization, subscriptions, cache creation, or locale changes.
+- `[DECISION]` Initial locale selection follows explicit development override, persisted preference, system match, configured startup fallback, and source locale. Every rejected candidate and winning selection source is diagnosable.
+- `[DECISION]` Runtime locale changes are serialized transactions with validation, critical preload, commit, publication, cache invalidation, semantic notifications, and separate preference persistence. Cancellation is Too Late after publication begins.
+- `[DECISION]` The Accord or a project provider owns durable locale preference storage. EchoLocalization validates and applies the locale; preference failure leaves the successful session change intact with a warning.
+- `[DECISION]` Stable localized references use Unity Localization provider table-collection and entry identities rather than mutable display names. Generic AssetDatabase GUIDs are not treated as locale or content domain IDs.
+- `[DECISION]` Missing strings/assets, fallback use, formatting failures, and asset type mismatches produce structured results. Normal missing content does not throw by default.
+- `[DECISION]` Smart Strings and locale culture provide plural, select, list, number, date, time, percentage, and currency formatting. Currency formatting does not perform conversion.
+- `[DECISION]` Localized asset loading returns typed disposable generational leases so backend/Addressables ownership is explicit and bounded.
+- `[DECISION]` Project-owned font profiles map locales/scripts to primary fonts, fallback chains, direction metadata, and glyph fixtures. The neutral core does not promise bidirectional shaping or automatic layout mirroring.
+- `[DECISION]` Pseudo-localization is an MVP requirement and shipping profiles must exclude pseudo locales.
+- `[DECISION]` Native Unity component localizers and Unity 6 UI Toolkit bindings remain valid presentation paths. EchoLocalization does not require every surface to use a custom component.
+- `[DECISION]` UI, Dialogue, Audio, Settings, Startup, Diagnostics, Build, and Workshop integrations remain explicit bridges or package-owned Editor facades.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 44 package-qualified Laboratory scenarios, and 196 individually registered planned tests. All implementation evidence remains Not run.
+- `[DECISION]` No SFGSS-000 revision is required because the specification refines the already-approved EchoLocalization authority and preserves the suite ownership matrix.
+- `[HANDOFF]` SUITE-DOC-10 drafts Voices (`EchoDialogue`) next.
+
+**Promoted to:** Many Tongues (`EchoLocalization`) Package Specification v1.0.0, SUITE-DOC-09 audit report, README, and full-suite roadmap.
+
 ---
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoBuildTools against SFGSS-000 through SFGSS-005 and approved Foundation, Impact, Wellspring, and Ascent authorities.
-- [x] Approve an Editor-only authority without creating a runtime root, runtime assembly, deployment service, source-control client, or credential store.
-- [x] Preserve Unity Build Profiles as the target, scene, define, and platform-settings authority.
-- [x] Define immutable recipes, build plans, canonical fingerprints, validation gates, and stale-plan rejection.
-- [x] Define temporary version/platform stamping, settings snapshots, reverse restoration, and recovery journals.
-- [x] Define exact owned-leaf output cleaning, protected paths, traversal/symlink checks, and non-destructive failure behavior.
-- [x] Define BuildPipeline execution, detailed receipts, required artifact processors, package/license inventory, streaming checksums, manifests, and release checklists.
-- [x] Define explicit validator/provider registration and external Git, CI, signing, notarization, and deployment boundaries.
-- [x] Design the isolated Foundry Editor Laboratory and package-qualified planned test registry.
-- [x] Keep every unexecuted build, performance, platform, compatibility, provider, integration, and release result `Not run`.
+- [x] Reconcile EchoLocalization against SFGSS-000 through SFGSS-005 and every approved package authority available through The Foundry.
+- [x] Preserve Unity Localization as the backend authority rather than duplicating its tables, Smart Strings, localized assets, pseudo-locales, and import/export.
+- [x] Define one duplicate-safe locale authority, deterministic initial selection, transactional changes, cancellation, rollback, and semantic event ordering.
+- [x] Define provider-stable table/entry references, missing/fallback results, Smart String arguments, formatting, typed asset leases, font profiles, direction metadata, and privacy rules.
+- [x] Keep Accord, UI, Dialogue, Audio, First Light, Observatory, Foundry, and Workshop integrations optional and removable.
+- [x] Define setup, repair, completeness, fallback, font, pseudo, backend-version, and release validators.
+- [x] Design the isolated Many Tongues Laboratory and package-qualified planned test registry.
+- [x] Keep every unexecuted backend, platform, font, RTL, performance, integration, migration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
-- [x] Confirm no package manifest, asmdef, C# file, Build Profile asset, recipe asset, window, validator, output operation, build invocation, sample, bridge, provider, scene, or runtime implementation was created.
-- [x] Record SUITE-DOC-07 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-08.
-- [x] Stop before EchoLocalization specification work.
+- [x] Confirm no package manifest, asmdef, C# file, Locale asset, table, font profile, root, setup tool, bridge, provider, scene, sample, or runtime implementation was created.
+- [x] Record SUITE-DOC-08 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-09.
+- [x] Stop before EchoDialogue specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-08 - The Foundry (`EchoBuildTools`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-09 - Many Tongues (`EchoLocalization`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoLocalization - Many Tongues  
-**Active checkpoint:** SUITE-DOC-09 - EchoLocalization Package Specification  
-**Expansion specifications:** 4 of 13 approved  
+**Current focus:** EchoDialogue - Voices  
+**Active checkpoint:** SUITE-DOC-10 - EchoDialogue Package Specification  
+**Expansion specifications:** 5 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-07 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-08 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, build tool, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-08 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-09 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, Locale, table, font asset, scene, prefab, setup tool, sample, bridge, provider adapter, or gameplay implementation

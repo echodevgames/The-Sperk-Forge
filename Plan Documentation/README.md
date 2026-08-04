@@ -30,12 +30,12 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 
 ## Current approved objective
 
-The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), and The Ascent (`EchoProgression`) are the first three approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
+The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), and Many Tongues (`EchoLocalization`) are the first five approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
 
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
-Expansion specifications: 3 of 13 approved; Impact v1.0.0, The Wellspring v1.0.0, and The Ascent v1.0.0
-Active checkpoint: SUITE-DOC-08 - EchoBuildTools: The Foundry Package Specification
+Expansion specifications: 5 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, and Many Tongues v1.0.0
+Active checkpoint: SUITE-DOC-10 - EchoDialogue: Voices Package Specification
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -73,7 +73,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk’s Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, the approved Foundation package authorities, Impact (`EchoFeedback`), The Wellspring (`EchoPool`), and The Ascent (`EchoProgression`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-08 - EchoBuildTools (`The Foundry`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define an Editor-focused build preparation package for build profiles, versioning, scene/package/license validation, safe output handling, manifests/checksums, release preflight, and repeatable release records. Do not absorb runtime game flow, source-control authority, or automatic external deployment. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation package authorities, and the approved Expansion specifications through Many Tongues (`EchoLocalization`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-10 - EchoDialogue (`Voices`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define a standalone dialogue authority for speakers, localized line references, sequences, choices, conditions, commands, history, interruption, save snapshots, and explicit UI/audio/objective/camera bridges. Do not absorb localization, quest logic, cinematic direction, UI presentation, or audio playback. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -88,18 +88,18 @@ At every meaningful checkpoint:
 ## Current Package-First Status - August 4, 2026
 
 - Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **4 of 13 approved**.
-- Latest approval: **The Foundry (`EchoBuildTools`) v1.0.0**.
-- Active checkpoint: **SUITE-DOC-09 - Many Tongues (`EchoLocalization`)**.
+- Expansion specifications: **5 of 13 approved**.
+- Latest approval: **Many Tongues (`EchoLocalization`) v1.0.0**.
+- Active checkpoint: **SUITE-DOC-10 - Voices (`EchoDialogue`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
-- All Foundry runtime, platform, performance, compatibility, build, and release evidence remains **Not run** until implementation.
+- All Many Tongues runtime, backend, font, RTL, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
 
 Read the current work in this order:
 
 1. `Echo_Game_Systems_Suite_Bible.md`
 2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md`
-4. `Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md`
+3. `Package Specifications/SFGSS-Many-Tongues-EchoLocalization-Package-Specification.md`
+4. `Test Reports/SUITE-DOC-09_EchoLocalization_Package_Specification_Audit_Report.md`
 5. `Current Notes.md`
 6. `Full_Suite_Documentation_Program_Roadmap.md`
 

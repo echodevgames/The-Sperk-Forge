@@ -65,7 +65,7 @@ These remain visibly `Not run` or conditional until implementation or research e
 | SFGSS-004 | Approved v1.0.0 |
 | SFGSS-005 | Approved v1.1.0 |
 | Foundation package specifications | 10 of 10 approved |
-| Expansion package specifications | 4 of 13 approved; Impact, The Wellspring, The Ascent, and The Foundry v1.0.0 |
+| Expansion package specifications | 5 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, and Many Tongues v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
 | Package implementation | Not started |
@@ -80,7 +80,7 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 | SUITE-DOC-06 | EchoPool - The Wellspring - **Approved v1.0.0** | General-purpose pooling, definitions, ownership, lifecycle, capacity, exhaustion, return safety, scene transitions, and diagnostics |
 | SUITE-DOC-07 | EchoProgression - The Ascent - **Approved v1.0.0** | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
 | SUITE-DOC-08 | EchoBuildTools - The Foundry - **Approved v1.0.0** | Build Profiles, recipes, versioning, preflight, scene validation, safe output, reports, checksums, and release preparation |
-| SUITE-DOC-09 | EchoLocalization - Many Tongues | Locale tables, localized references, fallbacks, fonts, formatting, pseudolocalization, and UI/dialogue boundaries |
+| SUITE-DOC-09 | EchoLocalization - Many Tongues - **Approved v1.0.0** | Locale tables, localized references, fallbacks, fonts, formatting, pseudolocalization, and UI/dialogue boundaries |
 | SUITE-DOC-10 | EchoDialogue - Voices | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
 | SUITE-DOC-11 | EchoObjectives - The Path | Objectives, quests, tasks, progress graphs, conditions, rewards-as-requests, persistence, and tracked presentation data |
 | SUITE-DOC-12 | EchoInventory - The Vault | Item definitions/instances, containers, stacks, transactions, capacity, transfer, equipment-storage boundary, and persistence |
@@ -134,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-08 - The Foundry (`EchoBuildTools`) Package Specification |
+| Completed checkpoint | SUITE-DOC-09 - Many Tongues (`EchoLocalization`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-09 - Many Tongues (`EchoLocalization`) Package Specification** |
+| Active checkpoint | **SUITE-DOC-10 - Voices (`EchoDialogue`) Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 4 of 13 approved |
+| Expansion specifications | 5 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
