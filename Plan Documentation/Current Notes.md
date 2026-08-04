@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoCharacters - The Fellowship package specification
-**Current checkpoint:** SUITE-DOC-15 - EchoCharacters: The Fellowship Package Specification
+**Current focus:** The Vessel (`EchoControllers`) package specification
+**Current checkpoint:** SUITE-DOC-16 - Draft The Vessel (`EchoControllers`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -702,3 +702,53 @@ Draft and approve the complete **Fellowship (`EchoCharacters`) Package Specifica
 **Prior checkpoint:** SUITE-DOC-13 confirmed committed/pushed by owner  
 **Commit/push:** SUITE-DOC-14 pending user confirmation  
 **Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, character definition, roster, spawner, selector, possession system, or gameplay implementation
+
+---
+
+## August 4, 2026 - SUITE-DOC-15 The Fellowship approved
+
+- `[DECISION]` The Fellowship (`EchoCharacters`) Package Specification v1.0.0 is approved as the Level 2 authority for character identity, durable rosters, availability, selection contexts, groups, spawning, runtime actor registration, exclusive control ownership, switching, detached snapshots, diagnostics, authoring, validation, Laboratories, and optional bridge seams.
+- `[DECISION]` Character definition identity, durable CharacterId, and session RuntimeInstanceId are separate contracts.
+- `[DECISION]` Roster membership, availability/status, selection, spawn state, and control ownership are independent truths.
+- `[DECISION]` Availability uses a core disposition plus stable project-defined status IDs instead of a genre-locked public status enum.
+- `[DECISION]` Selection contexts are independent from ControlOwnerId assignments, supporting menus and multiple local players without implying possession.
+- `[DECISION]` MVP control ownership is exclusive, stale-safe, and lease-based. Shared possession is deferred.
+- `[DECISION]` Spawn does not imply selection or control. Switching prepares target spawn and handoff participants before committing selection/control truth.
+- `[DECISION]` Live GameObjects, RuntimeInstanceIds, pending operations, and control leases are not saved. Detached snapshots preserve durable roster truth, aliases, and opaque extension records.
+- `[DECISION]` Built-in prefab spawning proves standalone independence. Controllers, input, camera, UI, progression, inventory, interaction, saves, world spawn context, and multiplayer remain bridges/adapters.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 64 package-qualified Laboratory scenarios, and 384 individually registered planned tests. Every empirical result remains Not run.
+- `[DECISION]` No SFGSS-000 revision is required because this specification refines the already-approved EchoCharacters authority and preserves the ownership matrix.
+- `[HANDOFF]` SUITE-DOC-16 drafts The Vessel (`EchoControllers`) next.
+
+**Promoted to:** The Fellowship (`EchoCharacters`) Package Specification v1.0.0, SUITE-DOC-15 audit report, README, Current Notes, and full-suite roadmap.
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-15
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve EchoCharacters ownership, independence, identity, roster, availability, selection, group, spawn, actor, control, switching, persistence, diagnostics, authoring, Laboratory, bridge, removal, and release contracts.
+- [x] Register 64 Laboratory scenarios and 384 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, provider, platform, performance, compatibility, integration, migration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, character definition, roster, spawner, control system, or gameplay implementation was created.
+- [x] Record SUITE-DOC-14 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-15.
+- [x] Stop before EchoControllers specification work.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-15
+
+**Completed checkpoint:** SUITE-DOC-15 - The Fellowship (`EchoCharacters`) Package Specification  
+**Result:** Approved v1.0.0  
+**Current focus:** EchoControllers - The Vessel  
+**Active checkpoint:** SUITE-DOC-16 - EchoControllers Package Specification  
+**Expansion specifications:** 11 of 13 approved  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**Runtime authorization:** None  
+**Known blockers:** None  
+**Prior checkpoint:** SUITE-DOC-14 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-15 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, input adapter, motor, controller preset, locomotion capability, or gameplay implementation
