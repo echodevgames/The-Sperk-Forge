@@ -3,10 +3,10 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.9.0, SFGSS-001 v1.1.0, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.10.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-ADR-002  
 **Workflow authority:** SFGSS-005 v1.1.0  
 **Unity baseline:** Unity 6000.3.8f1  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > Complete the blueprint library before the first crate is opened.
 
@@ -65,8 +65,8 @@ These items may have prepared templates and explicit `Not run` states, but they 
 | Checkpoint | Deliverable | Outcome |
 |---|---|---|
 | SUITE-DOC-01 | Full Suite Documentation Rebaseline | Gate, roadmap, learning workflow, and dormant FL-M1 status approved |
-| **SUITE-DOC-02** | **SFGSS-002 — Dependency, Bridge, and Assembly Standard** | Canonical package/asmdef dependency direction, optional bridges, provider adapters, compile guards, removal, and test assembly rules |
-| SUITE-DOC-03 | SFGSS-003 — Data, IDs, Serialization, and Migration Standard | Stable IDs, aliases, DTOs, schema versions, migrations, unknown-data preservation, transactions, and asset-state safety |
+| SUITE-DOC-02 | SFGSS-002 — Dependency, Bridge, and Assembly Standard | **Approved v1.0.0:** canonical package/asmdef direction, optional bridges, provider adapters, compile guards, removal, and test assembly rules |
+| **SUITE-DOC-03** | **SFGSS-003 — Data, IDs, Serialization, and Migration Standard** | Stable IDs, aliases, DTOs, schema versions, migrations, unknown-data preservation, transactions, and asset-state safety |
 | SUITE-DOC-04 | SFGSS-004 — Testing, Validation, Test Labs, and Release Standard | Test taxonomy, evidence states, Lab rules, clean install, tarballs, repeatability, compatibility, and release gates |
 | SUITE-DOC-05 | SFGSS-006 — New-Project Guided Pathways | Package-selection pathways, starter combinations, decision trees, and Workshop-facing guidance |
 | SUITE-DOC-06 | SFGSS-007 — ADR Template and Decision Log | Reusable ADR format, status lifecycle, indexing, supersession, and current decision register |
@@ -126,10 +126,10 @@ The roadmap does not automatically add packages or standards beyond SFGSS-000 Se
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-01 — Full Suite Documentation Rebaseline |
-| Active checkpoint | **SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard** |
+| Completed checkpoint | SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard |
+| Active checkpoint | **SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard** |
 | Foundation specifications | 10 of 10 Approved |
-| Remaining standards checkpoints | 9 including consistency review |
+| Remaining standards checkpoints | 8 including consistency review |
 | Expansion specifications/review | 13 checkpoints |
 | Advanced design/research/review | 10 checkpoints |
 | Final reconciliation/readiness | 3 checkpoints |

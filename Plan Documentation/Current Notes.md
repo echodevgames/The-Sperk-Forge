@@ -3,9 +3,9 @@
 **Document role:** Living development capture page  
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Last reconciled:** August 3, 2026  
-**Current focus:** Full Suite Documentation Program  
-**Current checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard
+**Last reconciled:** August 4, 2026  
+**Current focus:** SFGSS-003 — Data, IDs, Serialization, and Migration Standard  
+**Current checkpoint:** SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -343,10 +343,32 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 
 ---
 
+
+### August 4, 2026 — Dependency, Bridge, and Assembly Standard
+
+- `[DECISION]` SFGSS-002 v1.0.0 is approved as the canonical package-manifest, assembly-direction, bridge/provider, compile-guard, sample/test dependency, compatibility, and clean-removal standard.
+- `[DECISION]` Core runtime packages do not reference optional peer Echo packages. A separate bridge declares dependencies on every peer it connects; peers never reference the bridge.
+- `[DECISION]` UPM manifests record concrete required dependency versions. Broader compatible/tested ranges live in documentation and the suite compatibility catalog and remain pending until evidenced.
+- `[DECISION]` Runtime assemblies cannot reference Editor, test, sample, Workshop, project, or optional-peer assemblies. Optional presentation/backend/provider technologies are isolated when they are not central hard dependencies.
+- `[DECISION]` Primary public Runtime assemblies may remain Auto Referenced for novice usability. Editor, tests, samples, and optional bridge/provider assemblies default to non-auto-referenced unless a documented public use case requires otherwise.
+- `[DECISION]` Compile symbols, version defines, `.asmref` files, and reflection cannot conceal dependency truth or replace a proper bridge/provider package.
+- `[DECISION]` Exact allowlisted Editor reflection remains permitted for ADR-001 setup facades; broad assembly scans remain prohibited.
+- `[DECISION]` Standalone Labs use only the package and hard dependencies. Integration Labs belong to the bridge/provider artifact.
+- `[DECISION]` Optional artifacts follow bridge-first teardown/removal and own all registrations, leases, subscriptions, and adapter resources they create.
+- `[TEST]` The standard was reconciled against SFGSS-000, SFGSS-001, ADR-001, ADR-002, the Foundation contract matrix, and all ten Foundation assembly/dependency tables.
+- `[RISK]` First Light’s approved assembly table still places proposed uGUI in the neutral Runtime assembly; SFGSS-002 prefers a separate presentation assembly. Reconcile during SUITE-DOC-10 before code.
+- `[RISK]` Several Foundation specifications list Editor assemblies as Auto Referenced or describe optional sample uGUI/TMP dependencies without a final compile-safe packaging decision. Reconcile during SUITE-DOC-10.
+- `[HANDOFF]` SUITE-DOC-03 must align stable IDs, DTOs, unknown-data preservation, aliases, migrations, transactions, and provider/package removal with SFGSS-002.
+
+**Promoted to:** SFGSS-000 v0.10.0 decisions 44–51, SFGSS-002 v1.0.0, the SUITE-DOC-02 audit report, README, and the full-suite roadmap.
+
+---
+
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | Dependency, bridge, provider, assembly, compile-guard, sample/test, and clean-removal rules | SFGSS-000 v0.10.0 and SFGSS-002 v1.0.0 | Promoted |
 | 2026-08-03 | Full Suite Documentation Gate and learning-oriented implementation | SFGSS-000 v0.9.0, SFGSS-ADR-002, SFGSS-005 v1.1.0, full-suite roadmap | Promoted |
 | 2026-08-03 | Foundation Documentation Readiness Gate | SFGSS-000 v0.8.0 and readiness report | Promoted |
 | 2026-08-03 | Checkpoint Build Workflow and ChatGPT collaboration rules | SFGSS-005 v1.0.0 | Promoted |
@@ -363,7 +385,7 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and full-suite-reconciled | v0.9.0; decisions 41–43 re-lock implementation and define learning delivery |
+| Suite bible | Approved and dependency-standard-reconciled | v0.10.0; decisions 44–51 approve SFGSS-002 rules |
 | Package specification template | Approved | SFGSS-001 v1.1.0 |
 | Checkpoint workflow | Approved | SFGSS-005 v1.1.0; complete visible code and teaching rules added |
 | Foundation package specifications | Approved | Ten of ten |
@@ -373,7 +395,8 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 | Foundation readiness | Historically passed | Immediate activation superseded, evidence retained |
 | First implementation plan | Approved but dormant | FL-M1-01 v1.1.0 |
 | Package implementation | Not started | No package files or code authorized |
-| Current checkpoint | Active | SUITE-DOC-02 |
+| Dependency/bridge/assembly standard | Approved | SFGSS-002 v1.0.0 |
+| Current checkpoint | Active | SUITE-DOC-03 |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -388,21 +411,21 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 - [x] Create the Full Suite Documentation Program Roadmap.
 - [x] Reconcile README, Foundation roadmap, readiness report, Current Notes, and FL-M1-01.
 - [x] Confirm no package implementation has started.
-- [ ] Commit and push SUITE-DOC-01.
+- [x] Commit and push SUITE-DOC-01.
 - [x] Stop before package files or C# code.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-01 — Full Suite Documentation Rebaseline  
+**Completed checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard  
 **Result:** Passed  
-**Current focus:** Full Suite Documentation Program  
-**Active checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard  
+**Current focus:** SFGSS-003 Data, IDs, Serialization, and Migration Standard  
+**Active checkpoint:** SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 — First Light Package Skeleton  
 **FL-M1 status:** Approved but dormant  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Commit/push:** Pending user confirmation  
+**Commit/push:** SUITE-DOC-01 confirmed pushed; SUITE-DOC-02 pending user confirmation  
 **Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider adapter

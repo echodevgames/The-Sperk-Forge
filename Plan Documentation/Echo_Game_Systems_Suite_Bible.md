@@ -1,12 +1,12 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.9.0  
-**Status:** Approved lead architecture baseline; Foundation documentation readiness gate passed; First Light M1 skeleton authorized  
+**Version:** 0.10.0  
+**Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Current development baseline:** Unity 6000.3.8f1  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
@@ -1881,6 +1881,8 @@ Example: an Audio Settings menu belongs visually to EchoUI, stores values throug
 
 ## 12. Dependency and Integration Policy
 
+**Canonical implementation standard:** SFGSS-002 — Dependency, Bridge, and Assembly Standard. This section owns the suite-level boundary; SFGSS-002 defines the package-manifest, asmdef, bridge/provider, compile-guard, test-assembly, and clean-removal rules that implement it.
+
 ### 12.1 Dependency types
 
 | Type | Meaning | Rule |
@@ -1934,7 +1936,30 @@ EchoDevGames.EchoCharacters.EchoMultiplayer
 
 The exact package-vs-assembly choice is decided in the relevant integration specification.
 
-### 12.5 Public API rules
+### 12.5 Canonical dependency and assembly direction
+
+- Core runtime packages do not directly reference optional peer packages.
+- A separate bridge declares concrete dependencies on every peer it connects; peers do not reference the bridge.
+- Provider adapters declare the provider-neutral core and provider SDK/package, and remain separately removable.
+- Project-specific translations remain in project-owned adapter assemblies.
+- Runtime assemblies cannot reference Editor, test, sample, Workshop, project, or optional-peer assemblies.
+- The public Runtime assembly may remain Auto Referenced for novice usability; Editor, tests, samples, and optional bridge/provider assemblies default to non-auto-referenced.
+- Optional presentation or backend technologies are isolated from the neutral Runtime assembly when they are not central hard dependencies.
+- Compile symbols and reflection cannot be used to conceal undeclared dependency truth.
+
+### 12.6 Manifest and compatibility truth
+
+UPM manifests declare concrete dependency versions. Tested compatibility ranges and additional verified combinations belong in documentation and the suite compatibility catalog. A claimed combination remains pending until observed in a clean project.
+
+### 12.7 Bridge-first removal
+
+A bridge/provider is detached and removed before either peer/core, or in the same approved package operation. The integration owns its registrations and teardown; removing it returns peers to documented standalone behavior.
+
+### 12.8 Assembly and sample isolation
+
+Runtime, Editor, presentation, provider, bridge, tests, samples, and platform-specific code use explicit assemblies whose references match authority direction. Standalone Labs use only the package and its hard dependencies. Integration Labs belong to the bridge/provider artifact.
+
+### 12.9 Public API rules
 
 - Prefer narrow interfaces and request/result objects.
 - Avoid exposing internal scene objects unnecessarily.
@@ -2534,6 +2559,15 @@ The following decisions form the approved starting baseline for the suite:
 41. The owner supersedes the immediate activation of FL-M1-01 and re-locks package implementation until the complete pre-code documentation program in Section 18 passes a final Full Suite Documentation Readiness Gate. Foundation approval remains valid; FL-M1-01 is queued rather than cancelled.
 42. Documentation readiness distinguishes planned truth from observed evidence. Architecture, specifications, contracts, research plans, acceptance tests, setup designs, and migration policies may be completed before code. Compile results, screenshots, measured performance, verified compatibility, release notes, and prototype-dependent findings must remain marked pending until evidence exists.
 43. Implementation is learning-oriented and user-driven. When code checkpoints begin, ChatGPT must show complete compile-ready files in the conversation, explain the purpose and architecture of each file, walk through important sections and Unity lifecycle behavior, provide exact Editor setup, and state how each test proves the concept. Jesse implements the code himself by default unless he explicitly requests generated files or direct editing.
+
+44. SFGSS-002 is the approved Dependency, Bridge, and Assembly Standard. It governs package manifests, assembly reference direction, optional integrations, provider adapters, compile guards, test/sample assemblies, compatibility records, and clean removal.
+45. Core runtime packages do not directly depend on optional peer Echo packages. Separate bridges depend on every peer they connect; peers never reference the bridge.
+46. A UPM package manifest declares concrete required dependency versions. Broader compatibility claims live in documentation/catalog records and require evidence.
+47. Runtime assemblies cannot reference Editor, test, sample, Workshop, project, or optional-peer assemblies. Optional presentation, backend, platform, and provider dependencies are isolated when they are not central hard dependencies.
+48. The primary public Runtime assembly may remain Auto Referenced for novice usability. Editor, test, sample, and optional bridge/provider assemblies default to non-auto-referenced unless their specification documents a public project-code use case.
+49. Compile guards, version defines, Assembly Definition References, or reflection must not hide undeclared package/SDK dependencies or replace a bridge that should declare both peers. Reflection is limited to exact versioned allowlists such as the ADR-001 Editor setup facade protocol.
+50. Standalone Labs use only the package and its declared hard dependencies. Integration Labs belong to the bridge/provider artifact and never substitute for either peer’s standalone proof.
+51. Optional integrations follow bridge-first teardown and removal. The integration owns every registration, lease, subscription, and adapter resource it creates, and removal returns peers/neutral cores to documented standalone behavior.
 
 ---
 

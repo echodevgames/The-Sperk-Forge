@@ -20,17 +20,19 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 2. SFGSS-000.
 3. `Current Notes.md`.
 4. `Full_Suite_Documentation_Program_Roadmap.md`.
-5. The standard, package specification, ADR, integration record, or research record active for the checkpoint.
-6. SFGSS-001 when drafting package specifications.
-7. SFGSS-005 before implementation planning or code.
-8. Relevant test/readiness reports and prior checkpoint closeout.
+5. SFGSS-002 when dependency, bridge, provider, assembly, sample, or removal behavior is relevant.
+6. The standard, package specification, ADR, integration record, or research record active for the checkpoint.
+7. SFGSS-001 when drafting package specifications.
+8. SFGSS-005 before implementation planning or code.
+9. Relevant test/readiness reports and prior checkpoint closeout.
 
 ## Current approved objective
 
 The ten Foundation specifications and Foundation collision/readiness records are approved. The owner has extended the documentation-first gate across the complete planned suite.
 
 ```text
-Active checkpoint: SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard
+Completed standard: SFGSS-002 v1.0.0 — Dependency, Bridge, and Assembly
+Active checkpoint: SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard
 Implementation: locked
 First queued implementation: FL-M1-01 — First Light Package Skeleton
 Final unlock gate: SUITE-DOC-36
@@ -68,7 +70,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing the documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, Full_Suite_Documentation_Program_Roadmap.md, SFGSS-001 or SFGSS-005 as applicable, and every authority named by the active checkpoint. Package implementation is locked until SUITE-DOC-36. Current checkpoint: SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard. Before drafting, summarize the existing dependency and bridge rules, identify conflicts or missing definitions, preserve package independence and clean removal, and produce the complete standard without inventing implementation evidence. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing the documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, Full_Suite_Documentation_Program_Roadmap.md, SFGSS-001 or SFGSS-005 as applicable, and every authority named by the active checkpoint. Package implementation is locked until SUITE-DOC-36. Current checkpoint: SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard. Treat approved SFGSS-002 as the dependency/assembly authority. Before drafting, reconcile stable IDs, definitions versus state, serialization DTOs, unknown-data preservation, migrations, aliases, transactions, and removal behavior across all approved package specifications without inventing implementation evidence. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
