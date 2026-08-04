@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix  
+**Current checkpoint:** SUITE-DOC-32 - Full Suite Documentation and Learning Handoff Audit  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -41,8 +41,9 @@ flowchart LR
     H --> J[All Standards SFGSS-001 to 010 Approved]
     H --> J
     I --> J
-    J --> K[Full Suite Matrix and Handoff Audit]
-    K --> L[28 Package Learning Reviews]
+    J --> K[Full Suite Matrix — Approved]
+    K --> Handoff[Documentation and Learning Handoff Audit]
+    Handoff --> L[28 Package Learning Reviews]
     L --> M[SUITE-DOC-33 Final Readiness Gate]
     M --> N[First Light FL-M1-01 Package Skeleton]
 ```
@@ -147,11 +148,16 @@ flowchart LR
 - [[Full_Suite_Documentation_Program_Roadmap|Full Suite Documentation Program Roadmap]]
 - [[Current Notes|Current Notes]]
 
+- [[Full_Suite_Documentation_and_Learning_Handoff_Guide|Full Suite Documentation and Learning Handoff Guide]]
+- [[Learning Reviews/README|Learning Reviews Index]]
+- [[Learning Reviews/PKG-LEARN-TEMPLATE|Package Learning Review Template]]
+
 ## Integration and decision hubs
 
 - [[Integration Specifications/Foundation_Cross-Package_Contract_Matrix|Foundation Cross-Package Contract Matrix]]
 - [[Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix|Expansion Cross-Package Contract Matrix]]
 - [[Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix|Advanced Cross-Package and Research Matrix]]
+- [[Integration Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix|Full Suite Authority, Dependency, Bridge, and Persistence Matrix]]
 - [[Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|ADR-001 — Setup Facade Protocol]]
 - [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 — Documentation Gate and Learning Implementation]]
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]
@@ -197,7 +203,10 @@ flowchart LR
 
 ## Learning and status nodes
 
+- [[Full_Suite_Documentation_and_Learning_Handoff_Guide|Full Suite Handoff Guide]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
+- [[Learning Reviews/README|Learning Reviews Index]]
+- [[Learning Reviews/PKG-LEARN-TEMPLATE|Learning Review Template]]
 - [[Suite_Health_Check_and_Remaining_Documentation|Suite Health Check and Remaining Documentation]]
 
 ## Maintenance rule
@@ -249,3 +258,20 @@ flowchart TB
 - [[SFGSS-009_Repository_Registry|Machine-readable repository registry]]
 
 - [[SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix|Standards and Package Consistency Matrix]]
+
+
+## Learning review flow
+
+```mermaid
+flowchart LR
+    H[Full Suite Handoff Guide] --> C[Package Learning Catalog]
+    C --> R1[PKG-LEARN-001 First Light]
+    R1 --> R2[PKG-LEARN-002 Observatory]
+    R2 --> D[Continue through PKG-LEARN-028]
+    D --> G[SUITE-DOC-33 Readiness Gate]
+    G -. only if approved .-> I[First implementation checkpoint]
+```
+
+- Active review: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
+- Tracker: `Learning Reviews/PKG-LEARN-TRACKER.json`
+- Implementation remains locked.

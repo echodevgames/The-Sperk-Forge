@@ -1,0 +1,1190 @@
+{
+  "documentId": "SFGSS-INT-SUITE-001-REGISTRY",
+  "version": "1.0.0",
+  "status": "Approved documentation companion",
+  "updated": "2026-08-04",
+  "suiteBibleVersion": "0.21.0",
+  "packageCount": 28,
+  "implementationLocked": true,
+  "packages": [
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoLaunch",
+      "shortTitle": "First Light",
+      "formalPublicTitle": "First Light – Startup and Launch",
+      "packageId": "com.echodevgames.echo-launch",
+      "namespaceFamily": "EchoDevGames.EchoLaunch",
+      "documentId": "SFGSS-PKG-ECHOLAUNCH-001",
+      "diagnosticPrefix": "ELAUNCH",
+      "testPrefix": "ELAUNCH",
+      "setupFacade": "EchoDevGames.EchoLaunch.Editor.Workshop.EchoLaunchWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoLaunch",
+      "version": "1.2.0",
+      "file": "SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+      "authority": "Initial startup claim, ordered initialization, launch reporting, launch-only presentation, and destination handoff",
+      "topology": "Until-handoff launch root",
+      "persistence": "Session-only launch report; configuration is project-owned",
+      "boundary": "First Light coordinates startup but never owns peer services",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoDiagnostics",
+      "shortTitle": "The Observatory",
+      "formalPublicTitle": "The Observatory – Diagnostics and Runtime Inspection",
+      "packageId": "com.echodevgames.echo-diagnostics",
+      "namespaceFamily": "EchoDevGames.EchoDiagnostics",
+      "documentId": "SFGSS-PKG-ECHODIAGNOSTICS-001",
+      "diagnosticPrefix": "EDIAG",
+      "testPrefix": "EDIAG",
+      "setupFacade": "EchoDevGames.EchoDiagnostics.Editor.Workshop.EchoDiagnosticsWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoDiagnostics",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
+      "authority": "Validation vocabulary, runtime inspection, bounded diagnostics, provider aggregation, and support snapshots",
+      "topology": "Optional application-session root",
+      "persistence": "Session/support diagnostics only; no gameplay save",
+      "boundary": "Observes peers and never becomes their repair or behavior authority",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoSettings",
+      "shortTitle": "The Accord",
+      "formalPublicTitle": "The Accord – Global Preferences",
+      "packageId": "com.echodevgames.echo-settings",
+      "namespaceFamily": "EchoDevGames.EchoSettings",
+      "documentId": "SFGSS-PKG-ECHOSETTINGS-001",
+      "diagnosticPrefix": "ESET",
+      "testPrefix": "ESET",
+      "setupFacade": "EchoDevGames.EchoSettings.Editor.Workshop.EchoSettingsWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoSettings",
+      "version": "1.1.0",
+      "file": "SFGSS-The-Accord-EchoSettings-Package-Specification.md",
+      "authority": "Global preferences, drafts, previews, apply/rollback transactions, validation, migration, and preference storage",
+      "topology": "Application-session root",
+      "persistence": "Own JSON document for global preferences; unknown sections/fields preserved",
+      "boundary": "Global preferences only, never save-slot gameplay progress",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoSceneFlow",
+      "shortTitle": "The Passage",
+      "formalPublicTitle": "The Passage – Scene Flow",
+      "packageId": "com.echodevgames.echo-scene-flow",
+      "namespaceFamily": "EchoDevGames.EchoSceneFlow",
+      "documentId": "SFGSS-PKG-ECHOSCENEFLOW-001",
+      "diagnosticPrefix": "ESF",
+      "testPrefix": "ESF",
+      "setupFacade": "EchoDevGames.EchoSceneFlow.Editor.Workshop.EchoSceneFlowWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoSceneFlow",
+      "version": "1.1.0",
+      "file": "SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
+      "authority": "Validated scene routes, transition admission, loading phases, activation, recovery, and travel results",
+      "topology": "Application-session root",
+      "persistence": "Session-only route/transition state; route definitions are project assets",
+      "boundary": "Owns Unity scene travel, not semantic world topology or gameplay outcomes",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoGameState",
+      "shortTitle": "The Pulse",
+      "formalPublicTitle": "The Pulse – Runtime State",
+      "packageId": "com.echodevgames.echo-game-state",
+      "namespaceFamily": "EchoDevGames.EchoGameState",
+      "documentId": "SFGSS-PKG-ECHOGAMESTATE-001",
+      "diagnosticPrefix": "EGSTATE",
+      "testPrefix": "EGSTATE",
+      "setupFacade": "EchoDevGames.EchoGameState.Editor.Workshop.EchoGameStateWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoGameState",
+      "version": "1.1.1",
+      "file": "SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
+      "authority": "Primary runtime mode, temporary override scopes, pause/time/cursor policy, and effective state history",
+      "topology": "Application-session root",
+      "persistence": "Session-only by default",
+      "boundary": "Coordinates policy; does not own UI screens, input maps, audio sources, or scene loads",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "Jukebot",
+      "shortTitle": "Resonance",
+      "formalPublicTitle": "Resonance – Audio Runtime",
+      "packageId": "com.echodevgames.jukebot",
+      "namespaceFamily": "EchoDevGames.Jukebot",
+      "documentId": "SFGSS-PKG-JUKEBOT-001",
+      "diagnosticPrefix": "JB",
+      "testPrefix": "JB",
+      "setupFacade": "EchoDevGames.Jukebot.Editor.Workshop.JukebotWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/Jukebot",
+      "version": "1.0.1",
+      "file": "SFGSS-Resonance-Jukebot-Package-Specification.md",
+      "authority": "Music, SFX, ambience, mixer routing, voices, transport, handles, and audio runtime diagnostics",
+      "topology": "Application-session root",
+      "persistence": "Session-only playback state; global audio preferences live in Accord",
+      "boundary": "Owns playback, not event meaning or preference persistence",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoInput",
+      "shortTitle": "The Will",
+      "formalPublicTitle": "The Will – Input Infrastructure",
+      "packageId": "com.echodevgames.echo-input",
+      "namespaceFamily": "EchoDevGames.EchoInput",
+      "documentId": "SFGSS-PKG-ECHOINPUT-001",
+      "diagnosticPrefix": "EIN",
+      "testPrefix": "EIN",
+      "setupFacade": "EchoDevGames.EchoInput.Editor.Workshop.EchoInputWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoInput",
+      "version": "1.1.0",
+      "file": "SFGSS-The-Will-EchoInput-Package-Specification.md",
+      "authority": "Input contexts, locks, device/control-scheme state, rebinding, binding overrides, and glyph data",
+      "topology": "Application-session root",
+      "persistence": "Overrides/preferences persist through Accord or project provider; live contexts are session-only",
+      "boundary": "Owns input infrastructure, not movement or gameplay meaning",
+      "platformDependency": "Unity Input System"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoUI",
+      "shortTitle": "The Looking Glass",
+      "formalPublicTitle": "The Looking Glass – UI Framework",
+      "packageId": "com.echodevgames.echo-ui",
+      "namespaceFamily": "EchoDevGames.EchoUI",
+      "documentId": "SFGSS-PKG-ECHOUI-001",
+      "diagnosticPrefix": "EUI",
+      "testPrefix": "EUI",
+      "setupFacade": "EchoDevGames.EchoUI.Editor.Workshop.EchoUIWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoUI",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
+      "authority": "Screen, HUD, modal, notification, prompt, focus, navigation, and transition presentation infrastructure",
+      "topology": "Application-session root",
+      "persistence": "Presentation state is session-only unless another authority persists domain data",
+      "boundary": "Presents peer truth and never becomes the game-rule authority",
+      "platformDependency": "uGUI and TextMeshPro presentation path"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoSave",
+      "shortTitle": "The Chronicle",
+      "formalPublicTitle": "The Chronicle – Save Infrastructure",
+      "packageId": "com.echodevgames.echo-save",
+      "namespaceFamily": "EchoDevGames.EchoSave",
+      "documentId": "SFGSS-PKG-ECHOSAVE-001",
+      "diagnosticPrefix": "ESV",
+      "testPrefix": "ESV",
+      "setupFacade": "EchoDevGames.EchoSave.Editor.Workshop.EchoSaveWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoSave",
+      "version": "1.1.0",
+      "file": "SFGSS-The-Chronicle-EchoSave-Package-Specification.md",
+      "authority": "Save files, slots, generations, manifests, participant routing, migration, backup, and recovery",
+      "topology": "Application-session root",
+      "persistence": "Owns save transport; package participants own their versioned payload meaning",
+      "boundary": "Does not invent gameplay schemas or global preferences",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Foundation",
+      "technicalIdentifier": "EchoGameStarter",
+      "shortTitle": "The Workshop",
+      "formalPublicTitle": "The Workshop – Project Starter",
+      "packageId": "com.echodevgames.echo-game-starter",
+      "namespaceFamily": "EchoDevGames.EchoGameStarter",
+      "documentId": "SFGSS-PKG-ECHOGAMESTARTER-001",
+      "diagnosticPrefix": "EGS",
+      "testPrefix": "EGS",
+      "setupFacade": "EchoDevGames.EchoGameStarter.Editor.Workshop.EchoGameStarterWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoGameStarter",
+      "version": "1.2.0",
+      "file": "SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md",
+      "authority": "Visible project composition, package selection, dry-run planning, setup-facade orchestration, receipts, repair, and removal guidance",
+      "topology": "Editor-only Workshop session",
+      "persistence": "Editor transaction journal and project-owned generation receipts; no runtime save",
+      "boundary": "Never becomes a runtime manager or duplicates peer setup logic",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoFeedback",
+      "shortTitle": "Impact",
+      "formalPublicTitle": "Impact – Coordinated Feedback",
+      "packageId": "com.echodevgames.echo-feedback",
+      "namespaceFamily": "EchoDevGames.EchoFeedback",
+      "documentId": "SFGSS-PKG-ECHOFEEDBACK-001",
+      "diagnosticPrefix": "EFB",
+      "testPrefix": "EFB",
+      "setupFacade": "EchoDevGames.EchoFeedback.Editor.Workshop.EchoFeedbackWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoFeedback",
+      "version": "1.0.1",
+      "file": "SFGSS-Impact-EchoFeedback-Package-Specification.md",
+      "authority": "Feedback recipes, timeline instances, channel arbitration, scaling, cancellation, and provider requests",
+      "topology": "Application-session root",
+      "persistence": "Session-only instances/handles; preferences external",
+      "boundary": "Coordinates feedback but does not move cameras, play audio, or own time/input/UI",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoPool",
+      "shortTitle": "The Wellspring",
+      "formalPublicTitle": "The Wellspring – Runtime Object Pooling",
+      "packageId": "com.echodevgames.echo-pool",
+      "namespaceFamily": "EchoDevGames.EchoPool",
+      "documentId": "SFGSS-PKG-ECHOPOOL-001",
+      "diagnosticPrefix": "EPOOL",
+      "testPrefix": "EPOOL",
+      "setupFacade": "EchoDevGames.EchoPool.Editor.Workshop.EchoPoolWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoPool",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
+      "authority": "Pool definitions, prewarm, reuse leases, bounded growth, retention, return safety, scopes, and diagnostics",
+      "topology": "Application-session root",
+      "persistence": "Session-only pool state",
+      "boundary": "Owns reuse, not spawn intent, gameplay rules, or network authority",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoProgression",
+      "shortTitle": "The Ascent",
+      "formalPublicTitle": "The Ascent – Progression, Unlocks, Passwords, and Checkpoints",
+      "packageId": "com.echodevgames.echo-progression",
+      "namespaceFamily": "EchoDevGames.EchoProgression",
+      "documentId": "SFGSS-PKG-ECHOPROGRESSION-001",
+      "diagnosticPrefix": "EPROG",
+      "testPrefix": "EPROG",
+      "setupFacade": "EchoDevGames.EchoProgression.Editor.Workshop.EchoProgressionWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoProgression",
+      "version": "1.1.1",
+      "file": "SFGSS-The-Ascent-EchoProgression-Package-Specification.md",
+      "authority": "Unlocks, progression access, progression-node completion, passwords, checkpoints, and local records",
+      "topology": "Application-session root",
+      "persistence": "Versioned progression state through Chronicle, standalone provider, or project, exactly one active source",
+      "boundary": "Does not own objective-run completion, scene travel, save transport, or RPG stats",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoBuildTools",
+      "shortTitle": "The Foundry",
+      "formalPublicTitle": "The Foundry – Build Preparation, Validation, and Release Output",
+      "packageId": "com.echodevgames.echo-build-tools",
+      "namespaceFamily": "EchoDevGames.EchoBuildTools",
+      "documentId": "SFGSS-PKG-ECHOBUILDTOOLS-001",
+      "diagnosticPrefix": "EBUILD",
+      "testPrefix": "EBUILD",
+      "setupFacade": "EchoDevGames.EchoBuildTools.Editor.Workshop.EchoBuildToolsWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoBuildTools",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md",
+      "authority": "Build recipes, preflight, versioning/stamping, output safety, build execution, receipts, checksums, and release preparation",
+      "topology": "Editor-only build session",
+      "persistence": "Project assets and build receipts/manifests; never gameplay save data",
+      "boundary": "Wraps Unity Build Profiles without replacing them or deploying silently",
+      "platformDependency": "Unity Editor Build Profiles / Build Pipeline"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoLocalization",
+      "shortTitle": "Many Tongues",
+      "formalPublicTitle": "Many Tongues – Localization, Locale, and Regional Content",
+      "packageId": "com.echodevgames.echo-localization",
+      "namespaceFamily": "EchoDevGames.EchoLocalization",
+      "documentId": "SFGSS-PKG-ECHOLOCALIZATION-001",
+      "diagnosticPrefix": "ELOC",
+      "testPrefix": "ELOC",
+      "setupFacade": "EchoDevGames.EchoLocalization.Editor.Workshop.EchoLocalizationWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoLocalization",
+      "version": "1.0.1",
+      "file": "SFGSS-Many-Tongues-EchoLocalization-Package-Specification.md",
+      "authority": "Locale selection, localized-reference facade, fallback/missing policy, formatting, script/font metadata, and invalidation",
+      "topology": "Application-session root",
+      "persistence": "Locale preference belongs to Accord; tables/assets are project content",
+      "boundary": "Does not own translation authorship, UI layout, dialogue flow, or audio playback",
+      "platformDependency": "Unity Localization package"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoDialogue",
+      "shortTitle": "Voices",
+      "formalPublicTitle": "Voices – Dialogue and Conversation Flow",
+      "packageId": "com.echodevgames.echo-dialogue",
+      "namespaceFamily": "EchoDevGames.EchoDialogue",
+      "documentId": "SFGSS-PKG-ECHODIALOGUE-001",
+      "diagnosticPrefix": "EDLG",
+      "testPrefix": "EDLG",
+      "setupFacade": "EchoDevGames.EchoDialogue.Editor.Workshop.EchoDialogueWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoDialogue",
+      "version": "1.0.1",
+      "file": "SFGSS-Voices-EchoDialogue-Package-Specification.md",
+      "authority": "Foreground conversation sessions, graph traversal, choices, conditions, typed commands, variables, and history",
+      "topology": "Application-session root",
+      "persistence": "Optional safe-point session snapshot through Chronicle; committed commands are not replayed",
+      "boundary": "Owns conversation flow, not localization, UI, audio, objectives, camera, or save transport",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoObjectives",
+      "shortTitle": "The Path",
+      "formalPublicTitle": "The Path – Objectives, Quests, and Tasks",
+      "packageId": "com.echodevgames.echo-objectives",
+      "namespaceFamily": "EchoDevGames.EchoObjectives",
+      "documentId": "SFGSS-PKG-ECHOOBJECTIVES-001",
+      "diagnosticPrefix": "EOBJ",
+      "testPrefix": "EOBJ",
+      "setupFacade": "EchoDevGames.EchoObjectives.Editor.Workshop.EchoObjectivesWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoObjectives",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Path-EchoObjectives-Package-Specification.md",
+      "authority": "Objective definitions, runs, steps, progress graphs, tracking, completion, and reward-delivery ledgers",
+      "topology": "Application-session root",
+      "persistence": "Objective state and reward ledger through Chronicle or project persistence",
+      "boundary": "Owns objective truth; reward executors own granted resources",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoInventory",
+      "shortTitle": "The Vault",
+      "formalPublicTitle": "The Vault – Inventory and Item Containers",
+      "packageId": "com.echodevgames.echo-inventory",
+      "namespaceFamily": "EchoDevGames.EchoInventory",
+      "documentId": "SFGSS-PKG-ECHOINVENTORY-001",
+      "diagnosticPrefix": "EINV",
+      "testPrefix": "EINV",
+      "setupFacade": "EchoDevGames.EchoInventory.Editor.Workshop.EchoInventoryWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoInventory",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Vault-EchoInventory-Package-Specification.md",
+      "authority": "Item definitions, stacks, unique instances, containers, equipment occupancy, and atomic inventory transactions",
+      "topology": "Application-session root",
+      "persistence": "Versioned inventory state through Chronicle or project persistence",
+      "boundary": "Does not own crafting, item effects, vendors, combat rules, or save transport",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoInteraction",
+      "shortTitle": "The Hand",
+      "formalPublicTitle": "The Hand – World Interaction",
+      "packageId": "com.echodevgames.echo-interaction",
+      "namespaceFamily": "EchoDevGames.EchoInteraction",
+      "documentId": "SFGSS-PKG-ECHOINTERACTION-001",
+      "diagnosticPrefix": "EITR",
+      "testPrefix": "EITR",
+      "setupFacade": "EchoDevGames.EchoInteraction.Editor.Workshop.EchoInteractionWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoInteraction",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
+      "authority": "Interaction offers, detection candidates, focus, prompts, reservations, sessions, cancellation, and commit policy",
+      "topology": "Application-session root",
+      "persistence": "Session-only focus/reservations; outcome owner persists durable consequences",
+      "boundary": "Routes interaction requests but does not own their gameplay result",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoCamera",
+      "shortTitle": "The Eye",
+      "formalPublicTitle": "The Eye – Camera Direction",
+      "packageId": "com.echodevgames.echo-camera",
+      "namespaceFamily": "EchoDevGames.EchoCamera",
+      "documentId": "SFGSS-PKG-ECHOCAMERA-001",
+      "diagnosticPrefix": "ECAM",
+      "testPrefix": "ECAM",
+      "setupFacade": "EchoDevGames.EchoCamera.Editor.Workshop.EchoCameraWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoCamera",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Eye-EchoCamera-Package-Specification.md",
+      "authority": "Camera channels, targets, groups, modes, blends, lens intent, bounds, zones, impulses, and backend execution",
+      "topology": "Application-session root",
+      "persistence": "Session-only camera state",
+      "boundary": "Owns the winning view intent, not characters, controllers, scene travel, or rendering policy",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoCharacters",
+      "shortTitle": "The Fellowship",
+      "formalPublicTitle": "The Fellowship – Character Identity and Roster",
+      "packageId": "com.echodevgames.echo-characters",
+      "namespaceFamily": "EchoDevGames.EchoCharacters",
+      "documentId": "SFGSS-PKG-ECHOCHARACTERS-001",
+      "diagnosticPrefix": "ECHR",
+      "testPrefix": "ECHR",
+      "setupFacade": "EchoDevGames.EchoCharacters.Editor.Workshop.EchoCharactersWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoCharacters",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
+      "authority": "Character definitions/IDs, rosters, availability, selection, spawning, runtime actors, control ownership, and switching",
+      "topology": "Application-session root",
+      "persistence": "Roster/availability/selection snapshot through Chronicle or project persistence",
+      "boundary": "Does not own movement, input devices, combat, inventory contents, or network provider authority",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoControllers",
+      "shortTitle": "The Vessel",
+      "formalPublicTitle": "The Vessel – Player Controller Foundations",
+      "packageId": "com.echodevgames.echo-controllers",
+      "namespaceFamily": "EchoDevGames.EchoControllers",
+      "documentId": "SFGSS-PKG-ECHOCONTROLLERS-001",
+      "diagnosticPrefix": "ECTR",
+      "testPrefix": "ECTR",
+      "setupFacade": "EchoDevGames.EchoControllers.Editor.Workshop.EchoControllersWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoControllers",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
+      "authority": "Normalized family intent, actor-local controller hosts, motors, locomotion state, capabilities, and semantic movement events",
+      "topology": "Actor-local host and motor",
+      "persistence": "Session-only locomotion, intents, contacts, and leases",
+      "boundary": "No global controller root; does not own roster, input devices, camera, combat, or saves",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Expansion",
+      "technicalIdentifier": "EchoCrafting",
+      "shortTitle": "The Crucible",
+      "formalPublicTitle": "The Crucible – Recipe Transformation and Production",
+      "packageId": "com.echodevgames.echo-crafting",
+      "namespaceFamily": "EchoDevGames.EchoCrafting",
+      "documentId": "SFGSS-PKG-ECHOCRAFTING",
+      "diagnosticPrefix": "ECRF",
+      "testPrefix": "ECRF",
+      "setupFacade": "EchoDevGames.EchoCrafting.Editor.Workshop.EchoCraftingWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoCrafting",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Crucible-EchoCrafting-Package-Specification.md",
+      "authority": "Recipes, previews, requirements, stations, exact combines, atomic transformation requests, idempotency, and recipe knowledge",
+      "topology": "Application-session root",
+      "persistence": "Recipe knowledge may persist; resources remain with provider such as Vault",
+      "boundary": "Owns transformation rules, not inventory storage, UI, skills, item art, or multiplayer authority",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Advanced",
+      "technicalIdentifier": "EchoMultiplayer",
+      "shortTitle": "The Convergence",
+      "formalPublicTitle": "The Convergence – Multiplayer Sessions and Authority",
+      "packageId": "com.echodevgames.echo-multiplayer",
+      "namespaceFamily": "EchoDevGames.EchoMultiplayer",
+      "documentId": "SFGSS-PKG-ECHOMULTIPLAYER",
+      "diagnosticPrefix": "EMUL",
+      "testPrefix": "EMUL",
+      "setupFacade": "EchoDevGames.EchoMultiplayer.Editor.Workshop.EchoMultiplayerWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoMultiplayer",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md",
+      "authority": "Session, participant, readiness, authority, reconnect, travel/spawn contracts, and provider capability facade",
+      "topology": "Application-session provider-neutral root",
+      "persistence": "Live network state is session-only; authoritative shared saves use Chronicle",
+      "boundary": "Does not replace networking SDKs or absorb gameplay-domain authority",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Advanced",
+      "technicalIdentifier": "EchoAI",
+      "shortTitle": "Instinct",
+      "formalPublicTitle": "Instinct – AI Perception, Decisions, and Behavior",
+      "packageId": "com.echodevgames.echo-ai",
+      "namespaceFamily": "EchoDevGames.EchoAI",
+      "documentId": "SFGSS-PKG-ECHOAI",
+      "diagnosticPrefix": "EAI",
+      "testPrefix": "EAI",
+      "setupFacade": "EchoDevGames.EchoAI.Editor.Workshop.EchoAIWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoAI",
+      "version": "1.0.1",
+      "file": "SFGSS-Instinct-EchoAI-Package-Foundation.md",
+      "authority": "Stimuli, observations, perception memory, scoring, scheduler budgets, blackboards, behavior seams, and navigation contracts",
+      "topology": "Actor-local hosts plus explicit world/scene registries",
+      "persistence": "Live AI state is session-only; optional approved snapshots at safe points",
+      "boundary": "Provides thinking infrastructure, not universal enemy design or a mandatory navigation backend",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Advanced",
+      "technicalIdentifier": "EchoCombat",
+      "shortTitle": "Clash",
+      "formalPublicTitle": "Clash – Combat Messages, Targets, and Resolution",
+      "packageId": "com.echodevgames.echo-combat",
+      "namespaceFamily": "EchoDevGames.EchoCombat",
+      "documentId": "SFGSS-PKG-ECHOCOMBAT",
+      "diagnosticPrefix": "ECLASH",
+      "testPrefix": "ECLASH",
+      "setupFacade": "EchoDevGames.EchoCombat.Editor.Workshop.EchoCombatWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoCombat",
+      "version": "1.0.1",
+      "file": "SFGSS-Clash-EchoCombat-Package-Foundation.md",
+      "authority": "Combat requests, targetability, relations, deterministic modifiers, receiver transactions, outcomes, and combat events",
+      "topology": "Optional application-session service/root",
+      "persistence": "Combat operations are session-only; target resource owners persist their own state",
+      "boundary": "Resolves combat operations but does not own every target resource or ability lifecycle",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Advanced",
+      "technicalIdentifier": "EchoAbilities",
+      "shortTitle": "Arcana",
+      "formalPublicTitle": "Arcana – Ability Activation and Effect Orchestration",
+      "packageId": "com.echodevgames.echo-abilities",
+      "namespaceFamily": "EchoDevGames.EchoAbilities",
+      "documentId": "SFGSS-PKG-ECHOABILITIES",
+      "diagnosticPrefix": "EABL",
+      "testPrefix": "EABL",
+      "setupFacade": "EchoDevGames.EchoAbilities.Editor.Workshop.EchoAbilitiesWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoAbilities",
+      "version": "1.0.1",
+      "file": "SFGSS-Arcana-EchoAbilities-Package-Foundation.md",
+      "authority": "Ability grants/loadouts, activation, costs, charges, cooldowns, casts, channels, interruption, targeting, and effect orchestration",
+      "topology": "Application-session root with owner-scoped state",
+      "persistence": "Grants/loadouts and optional charges/cooldowns may persist; active casts/effects never do",
+      "boundary": "Owns ability lifecycle, while Clash owns instantaneous combat resolution",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    },
+    {
+      "wave": "Advanced",
+      "technicalIdentifier": "EchoWorld",
+      "shortTitle": "The Atlas",
+      "formalPublicTitle": "The Atlas – World Identity, Topology, and Travel Metadata",
+      "packageId": "com.echodevgames.echo-world",
+      "namespaceFamily": "EchoDevGames.EchoWorld",
+      "documentId": "SFGSS-PKG-ECHOWORLD",
+      "diagnosticPrefix": "EWRLD",
+      "testPrefix": "EWRLD",
+      "setupFacade": "EchoDevGames.EchoWorld.Editor.Workshop.EchoWorldWorkshopSetupFacade",
+      "plannedRepository": "EchoDevGames/EchoWorld",
+      "version": "1.0.1",
+      "file": "SFGSS-The-Atlas-EchoWorld-Package-Foundation.md",
+      "authority": "World/zone/location identity, topology, travel plans, scene bindings, entry/spawn markers, discovery, visitation, and world-state routing",
+      "topology": "Application-session root",
+      "persistence": "Optional context/discovery/provider records through Chronicle; runtime markers/plans are session-only",
+      "boundary": "Owns semantic world truth, not scene loading, actor movement, or procedural content",
+      "platformDependency": "Unity core/modules only; optional providers isolated"
+    }
+  ],
+  "bridges": [
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoDiagnostics",
+      "purpose": "Publish launch graph, progress, timing, and report",
+      "commitOrTruthOwner": "EchoLaunch owns launch; EchoDiagnostics owns aggregation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoSettings",
+      "purpose": "Initialize/load global preferences",
+      "commitOrTruthOwner": "EchoSettings",
+      "artifactClass": "Separate/tiny approved bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoSave",
+      "purpose": "Initialize save catalog and expose continue candidates",
+      "commitOrTruthOwner": "EchoSave",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoSceneFlow",
+      "purpose": "Delegate final launch transition",
+      "commitOrTruthOwner": "EchoSceneFlow executes; EchoLaunch owns handoff",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoGameState",
+      "purpose": "Request Booting/Loading/handoff policy",
+      "commitOrTruthOwner": "EchoGameState",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "Jukebot",
+      "purpose": "Initialize audio and optional startup cues",
+      "commitOrTruthOwner": "Jukebot",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoInput",
+      "purpose": "Initialize input authority/startup context",
+      "commitOrTruthOwner": "EchoInput",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLaunch",
+      "peerB": "EchoUI",
+      "purpose": "Replace minimal status/splash presentation and allowed skip UI",
+      "commitOrTruthOwner": "EchoLaunch owns readiness; EchoUI owns presentation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSettings",
+      "peerB": "Jukebot",
+      "purpose": "Apply audio preference snapshot",
+      "commitOrTruthOwner": "EchoSettings persists; Jukebot applies",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSettings",
+      "peerB": "EchoInput",
+      "purpose": "Persist/apply binding overrides and input preferences",
+      "commitOrTruthOwner": "EchoSettings persists; EchoInput validates/applies",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSettings",
+      "peerB": "EchoLocalization",
+      "purpose": "Persist/apply preferred locale",
+      "commitOrTruthOwner": "EchoSettings persists; EchoLocalization selects/applies",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSettings",
+      "peerB": "EchoFeedback",
+      "purpose": "Apply reduced-motion/flash/shake scales",
+      "commitOrTruthOwner": "EchoSettings persists; EchoFeedback applies",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoSettings",
+      "peerB": "EchoUI",
+      "purpose": "Draft/apply/cancel/confirm settings presentation",
+      "commitOrTruthOwner": "EchoSettings",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSceneFlow",
+      "peerB": "EchoGameState",
+      "purpose": "Acquire/release Loading state or scope",
+      "commitOrTruthOwner": "EchoSceneFlow owns travel; EchoGameState owns state policy",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSceneFlow",
+      "peerB": "EchoUI",
+      "purpose": "Fade/loading/progress presentation",
+      "commitOrTruthOwner": "EchoSceneFlow owns transition; EchoUI presents",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSceneFlow",
+      "peerB": "EchoSave",
+      "purpose": "Prepared-load destination transition before participant apply",
+      "commitOrTruthOwner": "EchoSave owns load; EchoSceneFlow owns scene operation",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoSceneFlow",
+      "peerB": "EchoWorld",
+      "purpose": "Execute semantic world travel plan",
+      "commitOrTruthOwner": "EchoWorld plans/commits context after EchoSceneFlow succeeds",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSceneFlow",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Coordinate synchronized provider-authorized scene travel",
+      "commitOrTruthOwner": "EchoMultiplayer validates session; EchoSceneFlow executes local scene operation",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoGameState",
+      "peerB": "EchoInput",
+      "purpose": "Apply effective input context/lock intent",
+      "commitOrTruthOwner": "EchoGameState owns policy; EchoInput applies",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoGameState",
+      "peerB": "Jukebot",
+      "purpose": "Apply pause/mix policy intent",
+      "commitOrTruthOwner": "EchoGameState owns policy; Jukebot applies",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoGameState",
+      "peerB": "EchoUI",
+      "purpose": "Coordinate pause/modal/dialogue state with screen leases",
+      "commitOrTruthOwner": "EchoGameState owns state; EchoUI owns presentation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoGameState",
+      "peerB": "EchoDialogue",
+      "purpose": "Acquire/release dialogue state scope",
+      "commitOrTruthOwner": "EchoGameState owns state; EchoDialogue owns conversation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInput",
+      "peerB": "EchoUI",
+      "purpose": "Navigation, glyphs, rebinding, and focus-safe locks",
+      "commitOrTruthOwner": "EchoInput owns input; EchoUI owns focus/views",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInput",
+      "peerB": "EchoCharacters",
+      "purpose": "Map local input user/device to control owner",
+      "commitOrTruthOwner": "EchoCharacters owns control assignment",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInput",
+      "peerB": "EchoControllers",
+      "purpose": "Translate actions to normalized controller intent",
+      "commitOrTruthOwner": "EchoControllers owns motor; EchoInput owns device/action state",
+      "artifactClass": "Adapter package"
+    },
+    {
+      "peerA": "EchoInput",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Map local input user to network participant authority",
+      "commitOrTruthOwner": "EchoMultiplayer owns session participant; EchoInput owns device",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoSave",
+      "purpose": "Save-slot views, commands, recovery choices",
+      "commitOrTruthOwner": "EchoSave",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoProgression",
+      "purpose": "Progression/access/password presentation",
+      "commitOrTruthOwner": "EchoProgression",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoDialogue",
+      "purpose": "Conversation presenter and choice commands",
+      "commitOrTruthOwner": "EchoDialogue",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoObjectives",
+      "purpose": "Objective/tracking/reward status presentation",
+      "commitOrTruthOwner": "EchoObjectives",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoInventory",
+      "purpose": "Inventory/equipment views and transaction commands",
+      "commitOrTruthOwner": "EchoInventory",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoInteraction",
+      "purpose": "Interaction prompt and hold/timed presentation",
+      "commitOrTruthOwner": "EchoInteraction",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoAbilities",
+      "purpose": "Loadout, charge, cooldown, cast, and target presentation",
+      "commitOrTruthOwner": "EchoAbilities",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoUI",
+      "peerB": "EchoWorld",
+      "purpose": "World map, discovery, destination, and travel-plan presentation",
+      "commitOrTruthOwner": "EchoWorld",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoProgression",
+      "purpose": "Transport progression state participant",
+      "commitOrTruthOwner": "EchoProgression owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoDialogue",
+      "purpose": "Transport safe-point conversation snapshot",
+      "commitOrTruthOwner": "EchoDialogue owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoObjectives",
+      "purpose": "Transport objective runs and reward ledger",
+      "commitOrTruthOwner": "EchoObjectives owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoInventory",
+      "purpose": "Transport inventory state",
+      "commitOrTruthOwner": "EchoInventory owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoCharacters",
+      "purpose": "Transport roster/availability/selection snapshot",
+      "commitOrTruthOwner": "EchoCharacters owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoCrafting",
+      "purpose": "Transport recipe knowledge",
+      "commitOrTruthOwner": "EchoCrafting owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoAbilities",
+      "purpose": "Transport grants/loadouts and approved cooldown/charge state",
+      "commitOrTruthOwner": "EchoAbilities owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoWorld",
+      "purpose": "Transport world context/discovery/provider records",
+      "commitOrTruthOwner": "EchoWorld/provider owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoSave",
+      "peerB": "EchoAI",
+      "purpose": "Transport optional approved AI snapshot at safe point",
+      "commitOrTruthOwner": "EchoAI/project owns payload; EchoSave transports",
+      "artifactClass": "Separate bridge/project participant"
+    },
+    {
+      "peerA": "EchoFeedback",
+      "peerB": "EchoCamera",
+      "purpose": "Submit semantic camera impulse requests",
+      "commitOrTruthOwner": "EchoCamera executes camera motion",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoFeedback",
+      "peerB": "Jukebot",
+      "purpose": "Map semantic feedback signals to audio cues",
+      "commitOrTruthOwner": "Jukebot executes playback",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoFeedback",
+      "peerB": "EchoUI",
+      "purpose": "Map flash/UI impulse channels to presentation",
+      "commitOrTruthOwner": "EchoUI executes presentation",
+      "artifactClass": "Separate bridge/project provider"
+    },
+    {
+      "peerA": "EchoFeedback",
+      "peerB": "EchoInput",
+      "purpose": "Resolve haptic audience/device",
+      "commitOrTruthOwner": "EchoInput resolves device; haptics provider executes",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoFeedback",
+      "peerB": "EchoGameState",
+      "purpose": "Request bounded time modifiers",
+      "commitOrTruthOwner": "EchoGameState owns time policy",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoPool",
+      "peerB": "EchoSceneFlow",
+      "purpose": "Flush/close scene-scoped pools around transitions",
+      "commitOrTruthOwner": "EchoPool owns pools; EchoSceneFlow owns transition",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoPool",
+      "peerB": "EchoFeedback",
+      "purpose": "Provide reusable VFX objects",
+      "commitOrTruthOwner": "EchoPool owns reuse; EchoFeedback owns feedback instance",
+      "artifactClass": "Provider/project adapter"
+    },
+    {
+      "peerA": "EchoLocalization",
+      "peerB": "EchoUI",
+      "purpose": "Localized text/assets, direction, font profile, invalidation",
+      "commitOrTruthOwner": "EchoLocalization owns localized resolution; EchoUI presents",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLocalization",
+      "peerB": "EchoDialogue",
+      "purpose": "Resolve speaker/line/choice references and arguments",
+      "commitOrTruthOwner": "EchoLocalization resolves; EchoDialogue owns flow",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoLocalization",
+      "peerB": "Jukebot",
+      "purpose": "Resolve localized audio references",
+      "commitOrTruthOwner": "EchoLocalization resolves asset; Jukebot plays",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoLocalization",
+      "peerB": "EchoBuildTools",
+      "purpose": "Run locale/table/font/pseudo-locale release validation",
+      "commitOrTruthOwner": "EchoBuildTools owns build gate; EchoLocalization owns validation data",
+      "artifactClass": "Editor bridge"
+    },
+    {
+      "peerA": "EchoDialogue",
+      "peerB": "EchoObjectives",
+      "purpose": "Read objective conditions and submit explicit objective commands",
+      "commitOrTruthOwner": "Each authority owns its own state; command target commits",
+      "artifactClass": "Separate bridge/project handler"
+    },
+    {
+      "peerA": "EchoDialogue",
+      "peerB": "EchoCamera",
+      "purpose": "Submit speaker/cinematic view intents",
+      "commitOrTruthOwner": "EchoCamera",
+      "artifactClass": "Separate bridge/project handler"
+    },
+    {
+      "peerA": "EchoDialogue",
+      "peerB": "Jukebot",
+      "purpose": "Submit voice/audio cue requests",
+      "commitOrTruthOwner": "Jukebot",
+      "artifactClass": "Separate bridge/provider"
+    },
+    {
+      "peerA": "EchoObjectives",
+      "peerB": "EchoInventory",
+      "purpose": "Read item facts and deliver idempotent item rewards",
+      "commitOrTruthOwner": "EchoObjectives commits completion; EchoInventory commits grant",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoObjectives",
+      "peerB": "EchoProgression",
+      "purpose": "Submit idempotent progression rewards/conditions",
+      "commitOrTruthOwner": "EchoObjectives commits completion; EchoProgression commits mutation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInventory",
+      "peerB": "EchoCrafting",
+      "purpose": "Query ingredients and commit atomic consume/grant transaction",
+      "commitOrTruthOwner": "EchoInventory/resource provider commits resources; EchoCrafting owns recipe result",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInventory",
+      "peerB": "EchoCharacters",
+      "purpose": "Map character ownership to containers/equipment",
+      "commitOrTruthOwner": "EchoCharacters owns identity; EchoInventory owns containers",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoInventory",
+      "peerB": "EchoInteraction",
+      "purpose": "Pickup/drop availability and commands",
+      "commitOrTruthOwner": "EchoInteraction owns session; EchoInventory commits item transaction",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoInventory",
+      "peerB": "EchoAbilities",
+      "purpose": "Supply item/ammunition cost provider",
+      "commitOrTruthOwner": "EchoInventory commits cost; EchoAbilities commits activation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInteraction",
+      "peerB": "EchoDialogue",
+      "purpose": "Offer/execute Speak or conversation actions",
+      "commitOrTruthOwner": "EchoInteraction owns interaction session; EchoDialogue commits conversation start",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoInteraction",
+      "peerB": "EchoObjectives",
+      "purpose": "Expose objective-dependent offers and submit interaction progress",
+      "commitOrTruthOwner": "Each authority owns its own commit",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoInteraction",
+      "peerB": "EchoCharacters",
+      "purpose": "Use actor identity/availability for interactor and target",
+      "commitOrTruthOwner": "EchoCharacters owns identity; EchoInteraction owns offer/session",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoInteraction",
+      "peerB": "EchoControllers",
+      "purpose": "Acquire movement suspension and consume facing/origin snapshots",
+      "commitOrTruthOwner": "EchoInteraction owns session; EchoControllers owns locomotion",
+      "artifactClass": "Project adapter"
+    },
+    {
+      "peerA": "EchoCamera",
+      "peerB": "EchoCharacters",
+      "purpose": "Resolve character/runtime actor targets",
+      "commitOrTruthOwner": "EchoCharacters owns actor identity; EchoCamera owns view",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCamera",
+      "peerB": "EchoControllers",
+      "purpose": "Consume pose, velocity, facing, and warp revision",
+      "commitOrTruthOwner": "EchoControllers owns motor state; EchoCamera owns view",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCamera",
+      "peerB": "EchoWorld",
+      "purpose": "Resolve world camera bounds/zones/semantic locations",
+      "commitOrTruthOwner": "EchoWorld owns world identity; EchoCamera owns view",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoCharacters",
+      "peerB": "EchoControllers",
+      "purpose": "Assign control ownership to actor-local controller lease",
+      "commitOrTruthOwner": "EchoCharacters owns control assignment; EchoControllers owns motor",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCharacters",
+      "peerB": "EchoAbilities",
+      "purpose": "Map durable character to ability owner/loadout lifecycle",
+      "commitOrTruthOwner": "EchoCharacters owns identity; EchoAbilities owns ability state",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCharacters",
+      "peerB": "EchoAI",
+      "purpose": "Map actors/characters to AI agent lifecycle",
+      "commitOrTruthOwner": "EchoCharacters owns actor identity; EchoAI owns thinking",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCharacters",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Map network participant ownership to character spawn/control",
+      "commitOrTruthOwner": "EchoMultiplayer validates authority; EchoCharacters owns roster/spawn",
+      "artifactClass": "Separate provider bridge"
+    },
+    {
+      "peerA": "EchoControllers",
+      "peerB": "EchoAI",
+      "purpose": "Translate AI navigation/locomotion intent to motor",
+      "commitOrTruthOwner": "EchoAI chooses; EchoControllers moves",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoControllers",
+      "peerB": "EchoCombat",
+      "purpose": "Apply explicit post-commit external-motion/knockback request",
+      "commitOrTruthOwner": "EchoCombat reports outcome; EchoControllers applies motion",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoCrafting",
+      "peerB": "EchoObjectives",
+      "purpose": "Submit committed craft progress/results",
+      "commitOrTruthOwner": "EchoCrafting owns transform; EchoObjectives owns progress",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCrafting",
+      "peerB": "EchoProgression",
+      "purpose": "Check recipe knowledge/unlocks or submit progression result",
+      "commitOrTruthOwner": "Each authority owns its own state",
+      "artifactClass": "Separate bridge/project adapter"
+    },
+    {
+      "peerA": "EchoCrafting",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Validate authoritative crafting requests/results",
+      "commitOrTruthOwner": "EchoMultiplayer validates authority; EchoCrafting/resource provider commits",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoAI",
+      "peerB": "EchoCombat",
+      "purpose": "Use combat observations/threat and submit combat requests",
+      "commitOrTruthOwner": "EchoAI chooses; EchoCombat resolves",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoAI",
+      "peerB": "EchoAbilities",
+      "purpose": "Query and request ability activations",
+      "commitOrTruthOwner": "EchoAI chooses; EchoAbilities commits activation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoAI",
+      "peerB": "EchoWorld",
+      "purpose": "Consume zone/location context and patrol/tactical points",
+      "commitOrTruthOwner": "EchoWorld owns world identity; EchoAI owns behavior",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCombat",
+      "peerB": "EchoAbilities",
+      "purpose": "Resolve instantaneous combat effects submitted by committed abilities",
+      "commitOrTruthOwner": "EchoAbilities commits activation; EchoCombat receiver commits resource mutation",
+      "artifactClass": "Separate bridge"
+    },
+    {
+      "peerA": "EchoCombat",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Validate/replicate authoritative combat requests and results",
+      "commitOrTruthOwner": "EchoMultiplayer validates authority; EchoCombat/domain receiver owns result",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoAbilities",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Validate/replicate activation, sequence, and reconciliation",
+      "commitOrTruthOwner": "EchoMultiplayer validates authority; EchoAbilities owns ability state",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoWorld",
+      "peerB": "EchoMultiplayer",
+      "purpose": "Coordinate authoritative world context and synchronized travel",
+      "commitOrTruthOwner": "EchoMultiplayer validates session; EchoWorld owns semantic context",
+      "artifactClass": "Provider bridge"
+    },
+    {
+      "peerA": "EchoWorld",
+      "peerB": "EchoCharacters",
+      "purpose": "Resolve arrival/spawn marker then spawn/relocate actors",
+      "commitOrTruthOwner": "EchoWorld selects metadata; EchoCharacters/project performs actor operation",
+      "artifactClass": "Separate bridge"
+    }
+  ],
+  "persistenceAuthorities": {
+    "globalPreferences": "EchoSettings",
+    "saveTransport": "EchoSave",
+    "packagePayloadSchema": "Owning package participant/provider",
+    "sessionState": "Owning runtime authority",
+    "editorRecords": "Owning Editor tool/project"
+  },
+  "nextCheckpoint": "SUITE-DOC-32"
+}

@@ -1,7 +1,7 @@
 # SFGSS-005 — Checkpoint Build Workflow and ChatGPT Collaboration Rules
 
 **Document ID:** SFGSS-005  
-**Version:** 1.2.0  
+**Version:** 1.3.0  
 **Status:** Approved workflow standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -19,6 +19,7 @@
 | 1.0.0 | August 3, 2026 | Approved | Initial checkpoint workflow and collaboration rules |
 | 1.1.0 | August 3, 2026 | Approved | Added manual-entry learning workflow, mandatory visible complete code, file-by-file explanations, and evidence-based teaching stops |
 | 1.2.0 | August 4, 2026 | Approved | Added graph-roadmap navigation and mandatory package-by-package learning reviews before implementation authorization |
+| 1.3.0 | August 4, 2026 | Approved | Added permanent PKG-LEARN-001 through 028 IDs, review artifact naming, progressive source delivery, template/tracker use, and explicit teach-back completion records |
 
 
 ---
@@ -184,6 +185,18 @@ Each review must cover:
 The review follows `Package_Learning_Review_Catalog.md` and SFGSS-ADR-003. It is documentation and education, not implementation authorization. Tiny pseudocode or diagrams may illustrate a concept, but complete production code waits for an approved Checkpoint Build Plan.
 
 The suite maintains `Suite_Graph_Roadmap.md` as the navigation hub for these reviews. Every current package specification must link back to that graph note.
+
+Each review uses the permanent ID sequence `PKG-LEARN-001` through `PKG-LEARN-028` and creates one artifact only when the review begins:
+
+```text
+Learning Reviews/PKG-LEARN-###_<TechnicalIdentifier>_Learning_Review.md
+```
+
+The artifact begins from `Learning Reviews/PKG-LEARN-TEMPLATE.md`. `Package_Learning_Review_Catalog.md` is the human-readable route, while `Learning Reviews/PKG-LEARN-TRACKER.json` is the machine-readable status source.
+
+The reviewer reads the complete authority set, but the teaching session uses progressive disclosure. Jesse receives purpose and a practical example first, followed by authority, lifecycle, data, bridges, and Laboratory design. A large package specification must not be dumped on him as a substitute for explanation.
+
+A review is complete only after its sources, teach-back, remaining questions, and completion decision are recorded. Learning completion is educational evidence only and never changes SFGSS-004 implementation evidence from `Not run`.
 
 ## 6. Required Checkpoint Build Plan structure
 

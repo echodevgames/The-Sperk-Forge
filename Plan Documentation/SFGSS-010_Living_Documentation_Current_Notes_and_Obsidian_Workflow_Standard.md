@@ -1,16 +1,23 @@
 # The Sperk’s Forge – Living Documentation, Current Notes, and Obsidian Workflow Standard
 
 **Document ID:** SFGSS-010  
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Status:** Approved living-documentation and knowledge-navigation standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.19.0  
+**Parent authority:** SFGSS-000 v0.21.0  
 **Related authorities:** SFGSS-001 through SFGSS-009, SFGSS-ADR-001 through SFGSS-ADR-003, the Foundation, Expansion, and Advanced integration matrices, and approved package specifications  
 **Current development baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
 
 > Keep the workbench clear, the map legible, and the durable truth in the document that owns it.
+
+### Revision history
+
+| Version | Date | Status | Summary |
+|---|---|---|---|
+| 1.0.0 | August 4, 2026 | Approved | Initial living-documentation, Current Notes, Obsidian, and handoff standard |
+| 1.1.0 | August 4, 2026 | Approved | Added the canonical full-suite handoff guide and Learning Reviews folder, template, tracker, artifact naming, and review-handoff scan order |
 
 ---
 
@@ -203,7 +210,12 @@ Plan Documentation/
 ├── Foundation_Wave_Specification_Roadmap.md
 ├── Suite_Graph_Roadmap.md
 ├── Suite_Health_Check_and_Remaining_Documentation.md
+├── Full_Suite_Documentation_and_Learning_Handoff_Guide.md
 ├── Package_Learning_Review_Catalog.md
+├── Learning Reviews/
+│   ├── README.md
+│   ├── PKG-LEARN-TEMPLATE.md
+│   └── PKG-LEARN-TRACKER.json
 ├── SFGSS-001_Package_Specification_Template.md
 ├── SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md
 ├── SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md
@@ -267,6 +279,8 @@ The Integration Lab records exact package sources, compatibility snapshots, brid
 | Guide | Setup, use, troubleshooting, migration | User/developer instruction | Package `Documentation~` or approved central guide |
 | README/index | Entry point and routing | Navigation only | Repository/folder root |
 | Graph Roadmap/MOC | Visual and linked navigation | Navigation only | Vault root or domain folder |
+| Full Suite Handoff Guide | Fresh-collaborator recovery and learning-phase entry | Approved guidance; navigation only | Vault root |
+| Package learning review | Educational understanding record and teach-back | Learning evidence; not implementation evidence | `Learning Reviews/` |
 | Current Notes | Fast active capture and handoff | Working context only | Repository documentation root |
 | Changelog | User-visible released changes | Release record | Package root |
 
@@ -281,13 +295,14 @@ A document must not claim two incompatible roles. A navigation hub may summarize
 A new collaborator or ChatGPT conversation reads:
 
 1. `README.md`
-2. `Suite_Graph_Roadmap.md`
-3. `Suite_Health_Check_and_Remaining_Documentation.md`
-4. `Echo_Game_Systems_Suite_Bible.md`
-5. `Current Notes.md`
-6. `Full_Suite_Documentation_Program_Roadmap.md`
-7. Applicable standards and ADRs
-8. Active package, integration, research, test, or checkpoint documents
+2. `Full_Suite_Documentation_and_Learning_Handoff_Guide.md`
+3. `Suite_Graph_Roadmap.md`
+4. `Suite_Health_Check_and_Remaining_Documentation.md`
+5. `Echo_Game_Systems_Suite_Bible.md`
+6. `Current Notes.md`
+7. `Full_Suite_Documentation_Program_Roadmap.md`
+8. Applicable standards and ADRs
+9. Active package, integration, research, test, checkpoint, or learning-review documents
 
 ### 7.2 Package repository
 
@@ -1121,6 +1136,12 @@ The SUITE-DOC-29 static audit found:
 5. Existing package repositories are planned rather than created; package-local Current Notes and `Documentation~` evidence remain `Not run` until those repositories exist.
 6. The stale Crafting open-decision wording, grandfathered document IDs, public-title punctuation variants, and missing repository fields remain queued for SUITE-DOC-30.
 7. No runtime, package, repository, Obsidian-plugin, or empirical evidence was created by this standard.
+
+---
+
+## 38A. SUITE-DOC-32 reconciliation finding
+
+The full-suite handoff audit approved one canonical handoff guide and a dedicated `Learning Reviews/` folder. Learning IDs are normalized to `PKG-LEARN-001` through `PKG-LEARN-028`. Review artifacts are created only when work begins, use one template and tracker, and remain educational evidence rather than implementation proof.
 
 ---
 

@@ -3,7 +3,7 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; package implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.20.0, SFGSS-001 v1.2.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.2.0, SFGSS-005 v1.2.0, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.21.0, SFGSS-001 v1.2.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.2.0, SFGSS-005 v1.2.0, SFGSS-ADR-002  
 **Workflow authority:** SFGSS-005 v1.2.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
@@ -124,14 +124,14 @@ These standards now follow the package foundations so they can describe the actu
 | SUITE-DOC-27 | SFGSS-008 - Suite Glossary and Naming Registry - **Approved v1.0.0** | Public titles, technical IDs, namespaces, diagnostics, stable terminology, and reserved names |
 | SUITE-DOC-28 | SFGSS-009 - Repository, Versioning, and Integration Workspace Standard - **Approved v1.0.0** | Multi-repo workflow, tags, releases, compatibility catalog, local development, and distribution |
 | SUITE-DOC-29 | SFGSS-010 - Living Documentation, Current Notes, and Obsidian Workflow Standard - **Approved v1.0.0** | Vault structure, links, note promotion, archives, handoff, and documentation commits |
-| SUITE-DOC-30 | Standards and Package Consistency Review | Reconcile SFGSS-002–010 with all Foundation, Expansion, and Advanced package authorities |
+| SUITE-DOC-30 | Standards and Package Consistency Review – **Passed** | Reconciled SFGSS-001–010 with all twenty-eight package authorities |
 
 ## 9. Phase F - Final suite reconciliation
 
 | Checkpoint | Deliverable | Exit condition |
 |---|---|---|
-| SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix | One owner per concern; no circular core dependency; installation/removal behavior explicit |
-| SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit | README, Current Notes, standards, package specs, ADRs, research, tests, graph roadmap, and learning workflow agree |
+| SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix – **Approved** | SFGSS-INT-SUITE-001 approved; one owner per concern; no circular core dependency; persistence and removal explicit |
+| SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit – **Passed** | README, Current Notes, standards, package specs, ADRs, research, tests, graph roadmap, handoff guide, template, tracker, and learning workflow agree |
 | PKG-LEARN-001 through PKG-LEARN-028 | Individual Package Learning Reviews | Jesse can explain every package purpose, authority, lifecycle, practical use, and Laboratory before code |
 | **SUITE-DOC-33** | **Full Suite Documentation and Learning Readiness Gate** | Explicitly authorize or revise the first implementation checkpoint after all learning reviews |
 
@@ -141,15 +141,15 @@ These standards now follow the package foundations so they can describe the actu
 
 `Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
 
-The graph and learning orientation remains active. SUITE-DOC-30 is now complete; the active numbered checkpoint is SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix.
+The graph and learning orientation remains active. SUITE-DOC-32 is complete; the active work item is PKG-LEARN-001 – First Light (`EchoLaunch`).
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-29 - SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard |
+| Completed checkpoint | SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix** |
+| Active checkpoint | **PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
@@ -157,7 +157,7 @@ The graph and learning orientation remains active. SUITE-DOC-30 is now complete;
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |
 | Package learning reviews | 0 of 28 complete |
-| Graph roadmap | Active and linked from all package specifications |
+| Graph roadmap | Active and linked from all package specifications and learning hubs |
 | Final unlock gate | SUITE-DOC-33 |
 
 ## 11. Checkpoint closeout rule
@@ -244,3 +244,17 @@ SFGSS-010 v1.0.0 is approved as the canonical living-documentation, Current Note
 SFGSS-INT-CONSISTENCY-001 v1.0.0 passes the standards/package review after documented repairs. SFGSS-000 advances to v0.20.0; SFGSS-001 to v1.2.0; SFGSS-002 to v1.1.0; SFGSS-003 to v1.1.0; SFGSS-004 to v1.2.0; and SFGSS-008 to v1.1.0. All twenty-eight package authorities receive canonical formal-title metadata, a versioned consistency addendum, and current evidence/test interpretation. Current Notes is compacted. No code or empirical evidence was produced.
 
 **Next checkpoint:** SUITE-DOC-31 – Full Suite Authority, Dependency, Bridge, and Persistence Matrix.
+
+
+## SUITE-DOC-31 Closeout – Full Suite Matrix Approved
+
+SFGSS-INT-SUITE-001 v1.0.0 passes the full-suite authority, dependency, bridge, commit, persistence, identity, diagnostics, Laboratory, and removal review across all twenty-eight package authorities. SFGSS-000 advances to v0.21.0. No package implementation or empirical evidence was produced.
+
+**Next checkpoint:** SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit.
+
+
+## SUITE-DOC-32 Closeout – Documentation and Learning Handoff Audit Passed
+
+The full vault handoff passes after validating canonical entry points, authority order, standards, package authorities, ADRs, matrices, research records, test reports, graph navigation, one-current-copy rules, and evidence honesty. SFGSS-005 advances to v1.3.0 and SFGSS-010 to v1.1.0. One canonical Handoff Guide, Learning Reviews folder, template, and tracker are approved. Learning IDs are normalized to `PKG-LEARN-001` through `PKG-LEARN-028` before any review executes.
+
+**Next work item:** PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review.

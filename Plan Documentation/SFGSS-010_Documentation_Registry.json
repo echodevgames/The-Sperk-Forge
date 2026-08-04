@@ -1,10 +1,11 @@
 {
   "documentId": "SFGSS-010-COMPANION",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "Approved documentation companion",
   "updated": "2026-08-04",
   "canonicalEntryPoints": [
     "README.md",
+    "Full_Suite_Documentation_and_Learning_Handoff_Guide.md",
     "Suite_Graph_Roadmap.md",
     "Suite_Health_Check_and_Remaining_Documentation.md",
     "Echo_Game_Systems_Suite_Bible.md",
@@ -19,6 +20,7 @@
     "Research Records",
     "Test Reports",
     "Release Records",
+    "Learning Reviews",
     "Documentation Assets"
   ],
   "currentNotesLabels": [
@@ -74,8 +76,25 @@
     "README.md",
     "Suite_Graph_Roadmap.md",
     "Suite_Health_Check_and_Remaining_Documentation.md",
-    "Package_Learning_Review_Catalog.md"
+    "Package_Learning_Review_Catalog.md",
+    "Full_Suite_Documentation_and_Learning_Handoff_Guide.md",
+    "Learning Reviews/README.md"
   ],
   "currentNotesCompactedAt": "SUITE-DOC-30",
-  "packageAuthorityCount": 28
+  "packageAuthorityCount": 28,
+  "learningReview": {
+    "idPattern": "PKG-LEARN-###",
+    "count": 28,
+    "artifactPattern": "Learning Reviews/PKG-LEARN-###_<TechnicalIdentifier>_Learning_Review.md",
+    "template": "Learning Reviews/PKG-LEARN-TEMPLATE.md",
+    "tracker": "Learning Reviews/PKG-LEARN-TRACKER.json",
+    "statusValues": [
+      "Not started",
+      "In progress",
+      "Needs revisit",
+      "Complete",
+      "Superseded"
+    ],
+    "implementationEvidence": false
+  }
 }

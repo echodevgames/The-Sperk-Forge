@@ -1,58 +1,46 @@
----
-tags:
-  - sfgss/status
-  - sfgss/review
-  - sfgss/learning
-status: approved
-updated: 2026-08-04
----
-
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Completed checkpoint:** SUITE-DOC-30  
-**Active checkpoint:** SUITE-DOC-31  
-**Implementation gate:** Locked
+**Updated:** August 4, 2026  
+**Completed checkpoint:** SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit  
+**Active work item:** PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review  
+**Implementation:** Locked
 
 ## Current health
 
-| Area | Current state | Health |
-|---|---|---|
-| Suite architecture | SFGSS-000 v0.20.0 | Green |
-| Standards | SFGSS-001 through SFGSS-010 complete and reconciled | Green |
-| Package catalog | 28 of 28 approved and consistency-reviewed | Green |
-| Foundation matrix | Passed | Green |
-| Expansion matrix | Passed | Green |
-| Advanced matrix | Passed | Green |
-| Standards/package matrix | Passed after repairs | Green |
-| Full-suite matrix | Next checkpoint | Yellow |
-| Documentation/learning handoff | Not yet audited | Yellow |
-| Package learning reviews | 0 of 28 | Yellow |
-| Runtime implementation | Not started by design | Gray |
-| Empirical evidence | Not run by design | Gray |
-| Known architecture blocker | None recorded | Green |
+| Area | Status |
+|---|---|
+| Suite Bible | Approved v0.21.0 |
+| Standards | SFGSS-001 through SFGSS-010 complete; SFGSS-005 v1.3.0 and SFGSS-010 v1.1.0 |
+| Package authorities | 28 of 28 approved |
+| Cross-package matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
+| Documentation handoff | **Passed** |
+| Canonical handoff guide | Approved |
+| Learning template and tracker | Ready |
+| Package learning reviews | 0 of 28 complete |
+| Runtime implementation | Not started |
+| Empirical evidence | `Not run` unless a retained evidence record states otherwise |
+| Release-blocking architecture conflicts | None recorded |
 
-## Remaining path
+## Remaining pre-code work
 
-1. **SUITE-DOC-31:** Full Suite Authority, Dependency, Bridge, and Persistence Matrix.
-2. **SUITE-DOC-32:** Full Suite Documentation and Learning Handoff Audit.
-3. **PKG-LEARN-001 through PKG-LEARN-028:** individual package learning reviews.
-4. **SUITE-DOC-33:** final documentation and learning readiness gate.
-5. **FL-M1-01:** First Light package skeleton, only if SUITE-DOC-33 explicitly authorizes it.
+1. Complete PKG-LEARN-001 through PKG-LEARN-028.
+2. Record each package teach-back and remaining questions.
+3. Keep the catalog, tracker, Current Notes, roadmap, graph, and health check synchronized.
+4. Run SUITE-DOC-33 after all reviews are complete.
+5. Revisit FL-M1-01 in plain English before any implementation authorization.
 
-## Evidence that remains unavailable before implementation
+## Honest evidence boundary
 
-- Clean Unity compilation and Package Manager installation.
-- Automated/manual Laboratory results.
-- Performance and allocation measurements.
-- Platform/device/provider compatibility.
-- Migrations, upgrades, removal, reinstall, and real-project parity.
-- Networking provider prototype results.
-- Beta, release-candidate, and stable release evidence.
+The documentation proves approved design, static consistency, navigation, and handoff readiness. It does not prove compilation, runtime behavior, performance, platform compatibility, provider compatibility, migration, multiplayer prototypes, packaging, or release readiness.
+
+## Current stop point
+
+Do not begin package code. Begin **PKG-LEARN-001 – First Light (`EchoLaunch`)** using the approved learning template and progressive handoff guide.
 
 ## Navigation
 
-- [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
-- [[SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix|Consistency Matrix]]
-- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
-- [[Full_Suite_Documentation_Program_Roadmap|Program Roadmap]]
-- [[Current Notes]]
+- [Full Suite Handoff Guide](Full_Suite_Documentation_and_Learning_Handoff_Guide.md)
+- [Package Learning Review Catalog](Package_Learning_Review_Catalog.md)
+- [Learning Reviews Index](Learning%20Reviews/README.md)
+- [Full Suite Matrix](Integration%20Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md)
+- [Current Notes](Current%20Notes.md)

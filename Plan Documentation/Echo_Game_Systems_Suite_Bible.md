@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.20.0
+**Version:** 0.21.0
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2767,6 +2767,16 @@ The following decisions form the approved starting baseline for the suite:
 138. Package parent-authority headers preserve approval provenance. A SUITE-DOC-30 consistency addendum in each package identifies the standards currently governing implementation.
 139. The central Current Notes page is compacted at SUITE-DOC-30. Git history and promoted records preserve earlier checkpoint detail; only active context and one current handoff remain on the workbench.
 140. Package implementation remains locked. SUITE-DOC-31 creates the full-suite authority, dependency, bridge, and persistence matrix using the reconciled standards and package versions.
+141. SFGSS-INT-SUITE-001 is the approved full-suite authority, dependency, bridge, commit, persistence, identity, diagnostics, Laboratory, and removal matrix for all twenty-eight packages. It summarizes approved contracts and never overrides a higher authority.
+142. Core Echo runtime packages retain standalone ownership and do not acquire hidden peer dependencies through the full-suite matrix. Optional cross-package behavior remains in visible bridges, provider adapters, or project adapters.
+143. Every multi-package workflow names one commit owner for each mutation. A bridge may coordinate or validate, but it cannot promise rollback after a foreign authority has committed unless it owns a real transaction across those resources.
+144. Global preferences belong to The Accord; save files, slots, generations, backup, and recovery transport belong to The Chronicle; each package participant/provider owns the schema and meaning of its durable payload.
+145. Session-only roots, handles, leases, provider objects, scene references, runtime actor objects, active casts, active interactions, camera blends, pool contents, and network session objects are never treated as durable state without an explicitly approved detached snapshot.
+146. Package identities remain qualified by domain. Input users, multiplayer participants, characters, control owners, controller leases, AI agents, ability owners, combat targets, inventory items, objective runs, world locations, scenes, UI focus, and interaction focus are related only through explicit mappings.
+147. The recommended composition order is an initialization plan, not a hard dependency graph. Package cores initialize independently; optional bridges register after both peers are Ready and reconcile current snapshots without replaying unsafe history.
+148. Bridge and provider artifacts are removed before their peers. Project-owned definitions, configuration, durable payloads, aliases, receipts, and migration evidence remain preserved unless an explicit destructive prune is approved.
+149. Standalone Laboratories remain package-owned proof, Integration Laboratories remain bridge/provider proof, and the Integration Lab remains the authority for tested package combinations and compatibility snapshots.
+150. SUITE-DOC-31 passes with twenty-eight package authority rows, a canonical bridge catalog, explicit persistence layers, zero approved core dependency cycles, zero authority collisions, and no promoted empirical evidence. Package implementation remains locked pending SUITE-DOC-32, the learning reviews, and SUITE-DOC-33.
 
 ---
 
@@ -2804,14 +2814,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred forty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred fifty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix
+SUITE-DOC-32 - Full Suite Documentation and Learning Handoff Audit
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
@@ -2826,5 +2836,6 @@ When implementation is eventually authorized, follow SFGSS-005 v1.2.0: show the 
 #sfgss/authority #sfgss/navigation
 
 - [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
+- [[Integration Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix|Full Suite Integration Matrix]]
 - [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
 - [[Current Notes]]
