@@ -2,53 +2,68 @@
 
 First Light is the startup coordination package for The Sperk's Forge - EchoDevGames Game Systems Suite.
 
-It coordinates ordered application initialization, launch reporting, launch-only presentation, direct-scene development initialization, and final handoff without owning the internal behavior of peer packages.
+It coordinates ordered application initialization and final handoff without owning the internal behavior of peer packages.
 
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Package skeleton complete
-- Runtime behavior: Not implemented
+- Development stage: Early runtime implementation
+- Completed runtime slice: Authority Claim and Static Reset Core
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
 
-## Current Scope
+## Implemented Runtime Scope
 
-This checkpoint establishes only the package boundary:
+First Light now provides:
 
-- Unity Package Manager manifest
-- Runtime assembly
-- Editor assembly
-- Runtime test assembly
-- Editor test assembly
-- Package documentation shell
+- One process-wide launch-authority claim
+- `EchoLaunchRoot.Current`
+- `EchoLaunchRoot.IsAuthoritative`
+- `EchoLaunchRoot.WasRejectedAsDuplicate`
+- Immediate duplicate rejection in `Awake`
+- Stable duplicate diagnostic code `ELAUNCH-ROOT-001`
+- Duplicate-component disabling before future startup behavior
+- Owner-only authority release
+- Static reset through Unity subsystem registration
+- Runtime test access through `InternalsVisibleTo`
 
-No C# runtime behavior, scenes, prefabs, ScriptableObjects, startup steps, presenters, setup tools, or bridges are included.
+## Verified Behavior
 
-## Responsibility
+The Runtime Play Mode suite proves:
 
-First Light will eventually own:
+- The first root claims authority.
+- A second root is rejected without replacing the first.
+- Destroying a duplicate does not release the real authority.
+- Destroying the authoritative root releases the claim.
+- Static reset clears the current authority.
+- A fresh root can claim after reset.
+- Deferred Unity destruction allows a fresh root to claim.
 
-- Claiming one startup authority
-- Validating startup configuration
-- Running startup steps in an intentional order
-- Applying required and optional failure policies
-- Producing structured launch reports
-- Supporting direct-scene development initialization
-- Handing control to the initial destination
+Test result:
 
-First Light will not own:
+- Passed: `7`
+- Failed: `0`
+- Ignored: `0`
 
-- Audio playback
-- Global preferences
-- Save files or slots
-- Production menus
-- Normal scene travel after startup
-- Input bindings
-- Pause state
-- Gameplay rules
-- Peer package internals
+The two `ELAUNCH-ROOT-001` warnings are expected diagnostic evidence from duplicate-root tests.
+
+## Not Implemented Yet
+
+First Light does not yet provide:
+
+- Startup configuration assets
+- Startup sequences or step definitions
+- Startup executors
+- Launch sessions or reports
+- Progress snapshots
+- Splash presentation
+- Scene loading
+- `DontDestroyOnLoad` lifetime policy
+- Direct-scene development initialization
+- Editor setup tools
+- Standalone Laboratory
+- Bridges to peer packages
 
 ## Assembly Layout
 
@@ -64,7 +79,7 @@ First Light will not own:
     Tests/Editor/
         EchoDevGames.EchoLaunch.Tests.Editor
 
-The dependency direction is:
+The dependency direction remains:
 
     Editor -> Runtime
     Runtime Tests -> Runtime
@@ -76,31 +91,29 @@ The Runtime assembly must never reference the Editor or test assemblies.
 
 Package documentation lives under `Documentation~`.
 
-The suite-wide architectural authority and approved First Light specification live in the repository's `Plan Documentation` vault.
-
-## Installation
-
-This package is currently embedded directly in the Unity project at:
-
-    Packages/com.echodevgames.echo-launch
-
-External Git, tarball, registry, and public Package Manager installation evidence has not yet been collected.
+The suite-wide architecture and approved First Light specification live in the repository's `Plan Documentation` vault.
 
 ## Evidence Status
 
-The following evidence is available:
+Available evidence:
 
-- Unity recognizes the embedded package.
-- `package.json` parses successfully.
-- Unity resolves uGUI `2.0.0`.
-- All four assembly definitions parse and compile successfully.
-- Unity restart verification passed.
-- Embedded-package removal and reinstallation passed.
-- Runtime and Editor asmdef GUIDs survived reinstallation unchanged.
-- Package-local Markdown links resolve.
-- No C# implementation files exist.
+- Embedded package recognition
+- Clean Unity compilation
+- Unity restart
+- Embedded-package removal and reinstallation
+- Stable assembly-definition GUIDs
+- Seven passing Runtime Play Mode tests
+- Expected duplicate diagnostic warnings
+- No out-of-scope First Light runtime features
 
-All runtime behavior, migration, performance, broad compatibility, public distribution, and behavioral test evidence remains `Not run`.
+Still `Not run`:
+
+- Git URL installation
+- Tarball installation
+- Separate clean-project installation
+- Player builds
+- Startup sequencing
+- Performance measurements
 
 ## License
 

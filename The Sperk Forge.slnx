@@ -1,2 +1,4 @@
 ﻿<Solution>
+  <Project Path="EchoDevGames.EchoLaunch.Runtime.csproj" />
+  <Project Path="EchoDevGames.EchoLaunch.Tests.Runtime.csproj" />
 </Solution>

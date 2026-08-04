@@ -1,84 +1,64 @@
 # First Light Quick Start
 
-## Current Package Stage
+## Current Capability
 
-First Light version `0.1.0` contains the package skeleton only.
+First Light version `0.1.0` contains the package skeleton and its first runtime slice.
 
-Unity can recognize, resolve, and compile the package, but First Light does not yet provide runtime startup behavior.
+The implemented runtime behavior is limited to launch-authority ownership.
 
-There is currently no component to add to a scene and no startup sequence to configure.
+## Adding a Root
 
-## Verify the Package
+Add `EchoLaunchRoot` to one GameObject in a scene.
 
-Open Unity Package Manager and select:
+The first valid component becomes:
 
-    First Light - Startup and Launch
+    EchoLaunchRoot.Current
 
-Confirm:
+For that component:
 
-- Package ID: `com.echodevgames.echo-launch`
-- Version: `0.1.0`
-- Source: Custom or Embedded
-- Unity requirement: `6000.0`
-- uGUI dependency: `2.0.0`
+    IsAuthoritative == true
+    WasRejectedAsDuplicate == false
+    enabled == true
 
-The Unity Console should contain zero First Light errors.
+## Duplicate Behavior
 
-## Current Assembly Boundaries
+If another `EchoLaunchRoot` awakens while an authority already exists:
 
-The package currently defines four assemblies:
+- The first root remains authoritative.
+- The duplicate sets `WasRejectedAsDuplicate` to `true`.
+- The duplicate disables itself.
+- First Light logs diagnostic code `ELAUNCH-ROOT-001`.
 
-    EchoDevGames.EchoLaunch.Runtime
-    EchoDevGames.EchoLaunch.Editor
-    EchoDevGames.EchoLaunch.Tests.Runtime
-    EchoDevGames.EchoLaunch.Tests.Editor
+The duplicate does not perform startup behavior.
 
-Their intended dependency direction is:
+## Authority Release
 
-    Editor -> Runtime
-    Runtime Tests -> Runtime
-    Editor Tests -> Editor + Runtime
+Destroying the authoritative root releases the claim.
 
-No C# scripts currently exist inside these assemblies.
+Destroying a rejected duplicate does not affect the authoritative root.
 
-## What You Cannot Do Yet
+Unity subsystem registration also clears stale static authority before runtime startup.
 
-Version `0.1.0` cannot yet:
+## What This Does Not Do Yet
 
-- Create an `EchoLaunchRoot`
-- Author a startup sequence
+The current component does not:
+
 - Run startup steps
-- Display a startup splash
-- Produce a runtime launch report
-- Initialize a directly opened development scene
-- Load an initial destination
-- Validate First Light configuration
-- Run a Standalone Laboratory
+- Load settings
+- Initialize audio
+- Display a splash
+- Produce a launch report
+- Load an initial scene
+- Persist between scenes
+- Create project setup automatically
 
-These capabilities belong to later implementation checkpoints.
+Those features belong to later approved checkpoints.
 
-## Current Developer Workflow
+## Automated Evidence
 
-At this stage, the useful workflow is:
+The Runtime Play Mode suite contains seven passing tests with zero failures.
 
-1. Confirm Unity recognizes the package.
-2. Confirm all assembly definitions compile.
-3. Review the package documentation.
-4. Preserve all generated `.meta` files.
-5. Commit the package skeleton with `Packages/packages-lock.json`.
-6. Stop before adding runtime C# behavior.
+See:
 
-## Next Development Milestone
-
-The next implementation milestone will be authorized only after FL-M1-01 closes successfully.
-
-That later milestone will introduce a small, explicitly approved portion of the First Light runtime architecture.
-
-Do not create startup scripts, components, assets, scenes, prefabs, or setup tools during the package-skeleton checkpoint.
-
-## More Information
-
-- [Installation](Installation.md)
-- [Package Documentation Index](../Index.md)
-- [Package README](../../README.md)
-- [Changelog](../../CHANGELOG.md)
+- [FL-M2-01 Runtime Test Report](../Developer/Test%20Reports/FL-M2-01_Authority_Runtime_Test_Report.md)
+- [Developer Architecture](../Developer/Architecture.md)

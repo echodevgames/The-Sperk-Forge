@@ -6,18 +6,48 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ## [Unreleased]
 
-### Planned
+### Added
 
-- Runtime startup authority
-- Ordered startup sequence execution
-- Structured launch-step results
-- Required and optional failure policies
+- Internal `LaunchAuthorityClaim` kernel
+- Public `EchoLaunchRoot` scene component
+- Single-authority claim behavior
+- Duplicate rejection before future startup side effects
+- Stable duplicate diagnostic code `ELAUNCH-ROOT-001`
+- Owner-only authority release
+- Static reset using `RuntimeInitializeLoadType.SubsystemRegistration`
+- Runtime test access through `InternalsVisibleTo`
+- Seven Runtime Play Mode authority tests
+
+### Tested
+
+- First root claims authority
+- Second root is rejected without replacing authority
+- Duplicate destruction does not release authority
+- Authority destruction releases the claim
+- Static reset clears current authority
+- Fresh root claims after reset
+- Deferred Unity destruction permits a fresh claim
+
+Result:
+
+- Passed: `7`
+- Failed: `0`
+- Ignored: `0`
+
+The two duplicate-root warnings were expected and matched through `LogAssert.Expect`.
+
+### Not Included
+
+- Startup configuration
+- Startup sequence execution
 - Launch reports
-- Direct-scene development initialization
-- Launch-only presentation
-- Editor setup and validation tools
+- Splash presentation
+- Scene loading
+- Persistent root lifetime
+- Direct-scene initialization
+- Editor tooling
 - Standalone Laboratory
-- Runtime and Editor tests
+- Peer-package bridges
 
 ## [0.1.0] - 2026-08-04
 
@@ -29,33 +59,15 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Editor assembly boundary
 - Runtime test assembly boundary
 - Editor test assembly boundary
-- Initial package README
-- Initial changelog
-- Development license notice
-- Third-party notices
-- User and developer documentation shell
-- FL-M1-01 checkpoint record
+- Initial package documentation shell
 
 ### Evidence
 
 - Unity recognized the embedded package in Unity `6000.3.8f1`.
 - Unity resolved `com.unity.ugui` version `2.0.0`.
-- All four assembly definition files parsed successfully.
+- All four assembly definitions parsed successfully.
 - The package compiled with zero Console errors.
 - Unity restart verification passed.
 - Embedded-package removal and reinstallation passed.
 - Assembly-definition GUIDs remained stable after reinstallation.
-- Package-local Markdown links resolved.
-- No C# implementation files were included.
-
-### Not Included
-
-- Runtime startup behavior
-- Editor tools
-- ScriptableObject definitions
-- Scenes
-- Prefabs
-- Presentation components
-- Automated behavioral tests
-- Bridges
-- Samples
+- No C# implementation files were included in FL-M1-01.

@@ -109,3 +109,11 @@ Execute **FL-M1-01 – First Light Package Skeleton** exactly as authorized. Beg
 - Stable asmdef GUID preservation: Pass
 - C# implementation files: 0
 - Runtime implementation remains locked.
+
+## FL-M2-01 First Light Authority Claim and Static Reset Core
+
+- Status: Complete, pending commit and push
+- Package version: `0.1.0`
+- Runtime tests: 7 passed, 0 failed, 0 ignored
+- Duplicate diagnostic `ELAUNCH-ROOT-001`: Expected and verified
+- Next runtime work remains locked pending approval.
