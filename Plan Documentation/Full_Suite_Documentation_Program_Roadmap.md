@@ -134,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-06 — The Wellspring (`EchoPool`) Package Specification |
+| Completed checkpoint | SUITE-DOC-07 — The Ascent (`EchoProgression`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline — approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-07 — EchoProgression: The Ascent Package Specification** |
+| Active checkpoint | **SUITE-DOC-08 — EchoBuildTools: The Foundry Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 2 of 13 approved |
+| Expansion specifications | 3 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 — First Light Package Skeleton |

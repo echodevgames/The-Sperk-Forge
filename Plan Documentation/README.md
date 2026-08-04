@@ -30,12 +30,12 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 
 ## Current approved objective
 
-The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`) and The Wellspring (`EchoPool`) are the first two approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
+The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), and The Ascent (`EchoProgression`) are the first three approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
 
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
-Expansion specifications: 2 of 13 approved; Impact v1.0.0 and The Wellspring v1.0.0
-Active checkpoint: SUITE-DOC-07 — EchoProgression: The Ascent Package Specification
+Expansion specifications: 3 of 13 approved; Impact v1.0.0, The Wellspring v1.0.0, and The Ascent v1.0.0
+Active checkpoint: SUITE-DOC-08 — EchoBuildTools: The Foundry Package Specification
 Implementation: locked
 First queued implementation: FL-M1-01 — First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -73,7 +73,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk’s Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, the approved Foundation package authorities, Impact (`EchoFeedback`), and The Wellspring (`EchoPool`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-07 - EchoProgression (`The Ascent`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define a neutral progression package for unlocks, passwords, checkpoints, level access, completion records, rankings, snapshots, project-defined conditions, and persistence contracts. Do not absorb inventory, character statistics, platform achievements, general save-file transport, or scene/UI authority. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk’s Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, the approved Foundation package authorities, Impact (`EchoFeedback`), The Wellspring (`EchoPool`), and The Ascent (`EchoProgression`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-08 - EchoBuildTools (`The Foundry`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define an Editor-focused build preparation package for build profiles, versioning, scene/package/license validation, safe output handling, manifests/checksums, release preflight, and repeatable release records. Do not absorb runtime game flow, source-control authority, or automatic external deployment. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 

@@ -1,0 +1,234 @@
+{
+  "checkpoint": "SUITE-DOC-07",
+  "date": "2026-08-04",
+  "status": "Approved documentation; implementation locked",
+  "package": "EchoProgression",
+  "specification_version": "1.0.0",
+  "foundation_specifications_approved": "10/10",
+  "expansion_specifications_approved": "3/13",
+  "advanced_foundations_approved": "0/5",
+  "laboratory_scenarios": 40,
+  "planned_test_cases": 144,
+  "files": [
+    {
+      "path": "Plan Documentation/Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md",
+      "sha256": "ca4d01df4bdb3208d5307a0ebf67bfc5af51aaf62952bdc5d3cfae050e5b3e00",
+      "bytes": 14833
+    },
+    {
+      "path": "Plan Documentation/Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md",
+      "sha256": "5fd64aa264216c43ab6f0d71463a3012639ddfd7f32472eb1f9296303cf45f77",
+      "bytes": 6354
+    },
+    {
+      "path": "Plan Documentation/Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md",
+      "sha256": "95e62d3efa1b9a86a3355ebf43261ebb0c5c236ad6bf1b7579de971cdbe35b59",
+      "bytes": 18989
+    },
+    {
+      "path": "Plan Documentation/Current Notes.md",
+      "sha256": "50a7d0e23e9eea9cc9a00b91b635541cb94d3c77d7cb589b6714ba3668b0f450",
+      "bytes": 68449
+    },
+    {
+      "path": "Plan Documentation/Echo_Game_Systems_Suite_Bible.md",
+      "sha256": "3a09922178da1073bd9c76b09d476f89c5cb5a05f41eeefba457882d5b7839e6",
+      "bytes": 144641
+    },
+    {
+      "path": "Plan Documentation/Foundation_Wave_Specification_Roadmap.md",
+      "sha256": "71d342af2282ef417d0c204e4f38d2a7c05f8c8f56cef6af39cf95f3367d24ef",
+      "bytes": 14120
+    },
+    {
+      "path": "Plan Documentation/Full_Suite_Documentation_Program_Roadmap.md",
+      "sha256": "9ea3439f4ad6a59f06f9b862b9b9d6ee18350d35e5f00fd0e228b64df1256e3e",
+      "bytes": 10687
+    },
+    {
+      "path": "Plan Documentation/Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md",
+      "sha256": "deed269ddb3c45118ae138a5807fc9055423186513ac958aa846fb453e744e0e",
+      "bytes": 27886
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+      "sha256": "694e04bb7e1dee703a949117268f48564845291efd7028393b6562e4c7e6758a",
+      "bytes": 96419
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-Impact-EchoFeedback-Package-Specification.md",
+      "sha256": "d44a7f3177ef35d79fcba4367f0d594798d7c3be9c706023661944c0849c712a",
+      "bytes": 128803
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
+      "sha256": "19be8138b556c51ed62894aafe34f0ae266992fff034e1c253b4ee5a76bc56c5",
+      "bytes": 118158
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md",
+      "sha256": "435083f099da5cc5c0f5041f36edcd646c7f8a5e152559a0969c7ec942d85510",
+      "bytes": 126286
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Ascent-EchoProgression-Package-Specification.md",
+      "sha256": "de908d63d06acece4a5f4148aadaee362e3673e4565256349d4c02c8c02a3868",
+      "bytes": 124923
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md",
+      "sha256": "82b9b3bb575ead12234a0241eec9afea32f2679cd5a86974d111cab6857f9fab",
+      "bytes": 121997
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
+      "sha256": "e9ecf16f74b24d73ea52caa11137755653e4fae85ad24abea12b8c178e34d8c4",
+      "bytes": 113667
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
+      "sha256": "2285931fd13a16bb2f422dc260243041abf020232d336612108f15a0ba05b575",
+      "bytes": 74638
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
+      "sha256": "693cee6b8d657bb4d81c80df0d55648fe2a5e31b5cfa9fcd9299920af524f983",
+      "bytes": 127650
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
+      "sha256": "cd5fc157ac236c4bf0dc48b4f52bd7b970abc62c794870b8036a2760c0d41e91",
+      "bytes": 98396
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
+      "sha256": "8431a64bdb4e7c4174e082343a42d4eb6acc774aaa42946128d9feffc5f74577",
+      "bytes": 130179
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md",
+      "sha256": "ef797848c4736a5d58d716f8e8c182a08267fde4da9ad355db985539c845e9d6",
+      "bytes": 154900
+    },
+    {
+      "path": "Plan Documentation/Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md",
+      "sha256": "b3dfddbac440fe8adb734783085c0d4e86793a548e574ce8b7f261dbc3329785",
+      "bytes": 152024
+    },
+    {
+      "path": "Plan Documentation/README.md",
+      "sha256": "215e227ebd666fb944492d79fd16938075360ff658f0103f3220654e46841550",
+      "bytes": 4874
+    },
+    {
+      "path": "Plan Documentation/SFGSS-001_Package_Specification_Template.md",
+      "sha256": "71284dfb42cc5cb93acf33169ebf49ca64e42133a2a87f9226cc91b360a7c30c",
+      "bytes": 36659
+    },
+    {
+      "path": "Plan Documentation/SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md",
+      "sha256": "58ba82806ca9cc79d3e72271b11e451728638be7ffa934cdccdf301044dc6df0",
+      "bytes": 51080
+    },
+    {
+      "path": "Plan Documentation/SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md",
+      "sha256": "6e836d732d21fe9a15bd40751b05cb0bc298cccf7c2f578f304c09b9d2e12359",
+      "bytes": 66429
+    },
+    {
+      "path": "Plan Documentation/SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md",
+      "sha256": "f2b46998e016f1bab4d37f9c777dbbaad63fa99333069af3b76b1f59c85559d2",
+      "bytes": 61359
+    },
+    {
+      "path": "Plan Documentation/SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md",
+      "sha256": "790f0ad16bb4262c750895f561b1fc8b31f7d996ec9ded72d933b2a4d621d99b",
+      "bytes": 21306
+    },
+    {
+      "path": "Plan Documentation/Test Reports/FW-DOC-12_Artifact_Manifest.json",
+      "sha256": "cb892216cb7561e938ff3021716ab6c4a4034438bd0d1f9a93cbc051f353bd1b",
+      "bytes": 4429
+    },
+    {
+      "path": "Plan Documentation/Test Reports/Foundation_Documentation_Readiness_Report.md",
+      "sha256": "e5abd3908b11ae21f4481717e4adf70d5331430a50d800850845bebf2430031e",
+      "bytes": 9329
+    },
+    {
+      "path": "Plan Documentation/Test Reports/Full_Suite_Documentation_Rebaseline_Report.md",
+      "sha256": "2f9232e54f3ee60e5752b46ba3b8d7e91d426b64922262a8a8adad3f4d30fead",
+      "bytes": 2866
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-01_Artifact_Manifest.json",
+      "sha256": "1e626b0b73b8b1c76f696e36e66ddf83d1a73b5124680f061e63fa8482f0f044",
+      "bytes": 5523
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-02_Artifact_Manifest.json",
+      "sha256": "0ac8b87f7fbcd42130d92145d49fc31b366d752d1587ae0a47a019f1d0bd01a4",
+      "bytes": 6446
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
+      "sha256": "7b802ac51e769ec90fa6a7c39cf38cb05edea626c34f7430528add8059e7a5b6",
+      "bytes": 3181
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-03_Artifact_Manifest.json",
+      "sha256": "e59219742fa0ccd0f00a7654ab322621c1a7f08bcb0ebf2340810e95ba00b2cc",
+      "bytes": 6682
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-03_Data_IDs_Serialization_Migration_Audit_Report.md",
+      "sha256": "eea3d5d3d41088a60d18a2e483d38771bbb1783f1b6b875e1098cff78874771e",
+      "bytes": 5285
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-04_Artifact_Manifest.json",
+      "sha256": "a1a3880051fb21d71c10cbccac2a0b826e51a660e3ad226dd04da0066a9beffe",
+      "bytes": 7334
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md",
+      "sha256": "22f88ff138b79b5aab42b4526e47c9aee2368a0b5cf9717248bcd7e93810ed14",
+      "bytes": 5977
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-05_Artifact_Manifest.json",
+      "sha256": "096f8c2d3a2f1176deab0fb9af340528270e5f162c47782a3b95662f498e4326",
+      "bytes": 8675
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
+      "sha256": "26894f10a91cd96130515add31f75965ce27c7350a7bf02d4562dbc3cb627a95",
+      "bytes": 5056
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Artifact_Manifest.json",
+      "sha256": "d6dccf13b22241dbd124cb7d4df35af541a8d969f108df1ef8e4f31cdef7c9c7",
+      "bytes": 7825
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
+      "sha256": "9e6bb476666a672a131f9bbc3739637469acadd2c13557681ac6703ee2d71a0b",
+      "bytes": 2273
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-06_Artifact_Manifest.json",
+      "sha256": "963986a14ecfffb1327ba3dcfef9a236a6213f6570b2ccde088fd406713442a3",
+      "bytes": 9223
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
+      "sha256": "c6f519e131ceb9de92a2e772f99841cf5ebcde889adf9a813c9951f97f25254c",
+      "bytes": 4954
+    },
+    {
+      "path": "Plan Documentation/Test Reports/SUITE-DOC-07_EchoProgression_Package_Specification_Audit_Report.md",
+      "sha256": "634f26a0b1df733f6eb3f50d9293de11f9368c208c8ef34021b9bfa9460bb589",
+      "bytes": 2416
+    }
+  ]
+}

@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoProgression - The Ascent package specification
-**Current checkpoint:** SUITE-DOC-07 - EchoProgression: The Ascent Package Specification
+**Current focus:** EchoBuildTools - The Foundry package specification
+**Current checkpoint:** SUITE-DOC-08 - EchoBuildTools: The Foundry Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -51,8 +51,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Draft and approve the complete **EchoProgression - The Ascent Package Specification** using SFGSS-001. Define unlocks, passwords, checkpoints, level access, completion records, ranking snapshots, project-defined conditions, standalone persistence boundaries, Chronicle participation, UI/scene integrations, stable progression IDs, migration, diagnostics, and an isolated Standalone Laboratory without absorbing inventory, character statistics, platform achievements, or general save-file transport.
-
+Draft and approve the complete **EchoBuildTools - The Foundry Package Specification** using SFGSS-001. Define build profiles, version/build-number stamping, scene/build-profile validation, package/license reports, release preflight, output naming, safe clean-output policy, manifests/checksums, development/release defines, repeatable release records, and provider/deployment boundaries without absorbing runtime game flow or silently publishing builds.
 ---
 
 ## Open Questions
@@ -60,11 +59,31 @@ Draft and approve the complete **EchoProgression - The Ascent Package Specificat
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-06.
+- No question currently blocks SUITE-DOC-08.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Ascent (`EchoProgression`) package specification
+
+- `[DECISION]` The Ascent (`EchoProgression`) Package Specification v1.0.0 is approved as the Level 2 authority for neutral progression definitions, unlocks, access evaluation, checkpoints, completion records, local rank snapshots, authored password grants, atomic progression mutations, versioned state documents, migration, and diagnostics; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoProgression does not own save-file transport, scene loading, production UI, inventory, character statistics/XP, objective logic, platform achievements, online leaderboards, multiplayer authority, or the gameplay events that earn progression.
+- `[DECISION]` The runtime uses one duplicate-safe application-session `EchoProgressionRoot` exposing an injectable `IEchoProgressionService`.
+- `[DECISION]` Project-defined categories use stable domain IDs rather than a fixed public enum. Unity asset GUIDs and display names never become durable progression identity.
+- `[DECISION]` Access evaluation uses bounded built-in condition trees plus explicit provider registration. Missing/failed providers return `Unavailable` and never imply access granted.
+- `[DECISION]` Mutation batches validate completely and publish atomically. Events occur after state publication.
+- `[DECISION]` Completion records support counts, latest/best bounded numeric metrics, and project-authored local rank tables without becoming analytics or online leaderboard authority.
+- `[DECISION]` Checkpoints store stable identity and opaque resume tokens. Passage/project adapters map them to travel; the core never loads a scene.
+- `[DECISION]` The MVP password system uses authored normalized entries, redacted diagnostics, exact-state generation, preview, freshness validation, and atomic grant application. Passwords are convenience codes, not security, DRM, credentials, or entitlements.
+- `[DECISION]` Core persistence is explicit versioned export/import. Chronicle participation and a small progression-only local backend remain optional separate integrations/providers.
+- `[DECISION]` Unknown/orphan durable records are preserved but inactive until their definitions return or an explicit backed-up prune operation removes them.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 40 unique Laboratory scenarios, and 144 unique package-qualified planned test cases.
+- `[TEST]` Every runtime, installation, migration, compatibility, performance, provider, platform, bridge, removal, and release result remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because this package specification refines the already-approved EchoProgression authority without changing a suite-wide ownership boundary.
+- `[HANDOFF]` SUITE-DOC-08 drafts EchoBuildTools (`The Foundry`) next. Preserve build preparation/validation authority without absorbing runtime game flow, source control, or automatic external deployment.
+
+**Promoted to:** The Ascent (`EchoProgression`) Package Specification v1.0.0, SUITE-DOC-07 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
 
 ### August 4, 2026 - The Wellspring (`EchoPool`) package specification
 
@@ -489,53 +508,48 @@ Draft and approve the complete **EchoProgression - The Ascent Package Specificat
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and test-standard-reconciled | v0.12.0; decisions 62–71 approve SFGSS-004 rules |
-| Package specification template | Approved | SFGSS-001 v1.1.0 |
-| Checkpoint workflow | Approved | SFGSS-005 v1.1.0; complete visible code and teaching rules added |
-| Foundation package specifications | Approved | Ten of ten |
-| Foundation architecture/integration | Approved | ADR-001 and Foundation matrix |
-| Full-suite gate decision | Accepted | SFGSS-ADR-002 |
-| Active roadmap | Approved | `Full_Suite_Documentation_Program_Roadmap.md` |
-| Foundation readiness | Historically passed | Immediate activation superseded, evidence retained |
-| First implementation plan | Approved but dormant | FL-M1-01 v1.1.0 |
+| Foundation package specifications | Approved | 10 of 10 |
 | Package implementation | Not started | No package files or code authorized |
 | Dependency/bridge/assembly standard | Approved | SFGSS-002 v1.0.0 |
 | Data/IDs/serialization/migration standard | Approved | SFGSS-003 v1.0.0 |
 | Testing/validation/Laboratory/release standard | Approved | SFGSS-004 v1.0.0 |
 | Impact package specification | Approved | v1.0.0; 30 sections; 32 Laboratory scenarios; 92 planned tests, all Not run |
 | EchoPool package specification | Approved | v1.0.0; 30 sections; 36 Laboratory scenarios; 118 planned tests, all Not run |
-| Current checkpoint | Active | SUITE-DOC-07 |
+| EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
+| Expansion specifications | 3 of 13 approved | Impact, The Wellspring, and The Ascent |
+| Current checkpoint | Active | SUITE-DOC-08 — EchoBuildTools: The Foundry Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoPool against SFGSS-000 through SFGSS-005 and approved Foundation/Impact authorities.
-- [x] Approve reuse authority without absorbing gameplay spawn intent or peer-owned internal pools.
-- [x] Separate immutable definitions from runtime pool, record, lease, schedule, scope, and diagnostic state.
-- [x] Define generational handles, callback order, capacity, growth, exhaustion, overflow, retention, automatic return, and external-destruction behavior.
-- [x] Define application, scene, and owner-lease scopes plus standalone scene reconciliation and optional Passage coordination.
-- [x] Design the isolated Wellspring Laboratory and package-qualified planned test registry.
-- [x] Keep every unexecuted runtime, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Reconcile EchoProgression against SFGSS-000 through SFGSS-005 and approved Foundation, Impact, and Wellspring authorities.
+- [x] Approve progression authority without absorbing save transport, scene travel, UI, objectives, inventory, characters, RPG statistics, platform services, or multiplayer authority.
+- [x] Separate immutable definitions from runtime unlock, completion, checkpoint, provider, history, password, and import state.
+- [x] Define stable IDs, prerequisite graphs, access evaluation, atomic mutation batches, completion metrics, local ranks, checkpoints, and authored passwords.
+- [x] Define explicit export/import, migration, alias, unknown/orphan preservation, Chronicle bridge, and optional local-provider boundaries.
+- [x] Define password privacy/security limits and prohibit credential, DRM, entitlement, or anti-cheat claims.
+- [x] Design the isolated Ascent Laboratory and package-qualified planned test registry.
+- [x] Keep every unexecuted runtime, performance, platform, compatibility, migration, provider, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
 - [x] Confirm no manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider implementation was created.
-- [ ] Commit and push SUITE-DOC-06.
-- [x] Stop before EchoProgression specification work.
+- [ ] Commit and push SUITE-DOC-07.
+- [x] Stop before EchoBuildTools specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-06 - The Wellspring (`EchoPool`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-07 — The Ascent (`EchoProgression`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoProgression - The Ascent  
-**Active checkpoint:** SUITE-DOC-07 - EchoProgression Package Specification  
-**Expansion specifications:** 2 of 13 approved  
+**Current focus:** EchoBuildTools — The Foundry  
+**Active checkpoint:** SUITE-DOC-08 — EchoBuildTools Package Specification  
+**Expansion specifications:** 3 of 13 approved  
 **Package implementation:** Not started  
-**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**First queued implementation:** FL-M1-01 — First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-05 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-06 pending user confirmation  
+**Prior checkpoint:** SUITE-DOC-06 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-07 pending user confirmation  
 **Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, provider adapter, or gameplay implementation
