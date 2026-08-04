@@ -3,8 +3,8 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; package implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.13.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
-**Workflow authority:** SFGSS-005 v1.1.0  
+**Parent authority:** SFGSS-000 v0.14.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
+**Workflow authority:** SFGSS-005 v1.2.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
 
@@ -58,12 +58,12 @@ These remain visibly `Not run` or conditional until implementation or research e
 
 | Area | Status |
 |---|---|
-| SFGSS-000 | Approved v0.12.0 |
+| SFGSS-000 | Approved v0.14.0 |
 | SFGSS-001 | Approved v1.1.0 |
 | SFGSS-002 | Approved v1.0.0 |
 | SFGSS-003 | Approved v1.0.0 |
 | SFGSS-004 | Approved v1.0.0 |
-| SFGSS-005 | Approved v1.1.0 |
+| SFGSS-005 | Approved v1.2.0 |
 | Foundation package specifications | 10 of 10 approved |
 | Expansion package specifications | 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0 |
 | Foundation cross-package matrix | Approved |
@@ -107,7 +107,7 @@ Advanced documents remain honest about research and provider uncertainty. “Fou
 | Checkpoint | Deliverable | Exit condition |
 |---|---|---|
 | SUITE-DOC-23 | Expansion Cross-Package Collision Review — **Approved** | SFGSS-INT-EXPANSION-001 approved; Ascent v1.1.0 and ADR-001 v1.1.0 repairs complete |
-| SUITE-DOC-24 | Advanced Cross-Package and Research Review | Crafting, Multiplayer, AI, Combat, Abilities, and World fit Foundation/Expansion authorities without fabricated provider evidence |
+| SUITE-DOC-24 | Advanced Cross-Package and Research Review — **Approved** | SFGSS-INT-ADVANCED-001 and ADR-001 v1.2.0 approved; provider claims remain evidence-gated |
 
 ## 8. Phase E - Remaining suite standards and guided documentation
 
@@ -137,15 +137,15 @@ These standards now follow the package foundations so they can describe the actu
 
 `Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
 
-This orientation checkpoint does not replace SUITE-DOC-24. The active numbered checkpoint remains the Advanced Cross-Package and Research Review.
+The graph and learning orientation remains active. SUITE-DOC-24 is now complete; the active numbered checkpoint is SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways.
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-23 - Expansion Cross-Package Collision Review |
+| Completed checkpoint | SUITE-DOC-24 - Advanced Cross-Package and Research Review |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-24 - Advanced Cross-Package and Research Review** |
+| Active checkpoint | **SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
@@ -195,6 +195,13 @@ SFGSS-INT-EXPANSION-001 v1.0.0 passes the thirteen-package authority, lifecycle,
 **Next checkpoint:** SUITE-DOC-24 - Advanced Cross-Package and Research Review.
 
 
+## SUITE-DOC-24 Closeout - Advanced Review Approved
+
+SFGSS-INT-ADVANCED-001 v1.0.0 passes the five-package authority, identity, lifecycle, dependency, provider, persistence, transaction, diagnostics, Laboratory, research-honesty, and removal review. ADR-001 advances to v1.2.0 with all five Advanced setup facades and their minimum planning domains. SFGSS-000 advances to v0.14.0. No provider was selected and no empirical claim was promoted.
+
+**Next checkpoint:** SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways.
+
+
 ## SUITE-MAP-01 Closeout - Graph Roadmap and Learning Review Gate Approved
 
-The suite now maintains a central Obsidian graph roadmap, package navigation backlinks, a 28-package learning catalog, and ADR-003. SFGSS-005 advances to v1.2.0. The active numbered checkpoint remains SUITE-DOC-24.
+The suite maintains a central Obsidian graph roadmap, package navigation backlinks, a 28-package learning catalog, and ADR-003. SFGSS-005 is v1.2.0. SUITE-DOC-24 is now complete; SUITE-DOC-25 is active.

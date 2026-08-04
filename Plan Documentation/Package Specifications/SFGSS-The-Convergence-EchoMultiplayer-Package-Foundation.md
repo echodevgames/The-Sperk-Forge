@@ -1754,6 +1754,7 @@ executed and recorded.
 
 - [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
 - [[Full_Suite_Documentation_Program_Roadmap|Documentation Program Roadmap]]
+- [[Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix|Advanced Cross-Package and Research Matrix]]
 - [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
 - [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]

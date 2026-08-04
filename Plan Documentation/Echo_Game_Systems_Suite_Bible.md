@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.13.0  
+**Version:** 0.14.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2681,6 +2681,20 @@ The following decisions form the approved starting baseline for the suite:
 77. UI focus, interaction focus, camera targets/shots, selected characters, tracked objectives, and other selection concepts remain qualified package-local truths. Public APIs and diagnostics must not imply one global focus authority.
 78. SFGSS-ADR-001 v1.1.0 extends the exact Workshop setup-facade registry and minimum planning domains through all thirteen Expansion packages while preserving manual setup and package independence.
 
+
+79. The five Advanced package foundations pass SFGSS-INT-ADVANCED-001 after the SUITE-DOC-24 authority, identity, lifecycle, dependency, provider, persistence, transaction, diagnostics, Laboratory, research, and removal review.
+80. Multiplayer semantic travel follows one ordered authority chain: Atlas prepares the semantic plan; Convergence/provider coordinates authority and readiness; Passage executes the Unity scene transition; Atlas commits semantic context only after approved success; Atlas selects arrival metadata; Fellowship or project code spawns or relocates actors.
+81. Session participant, provider network entity, durable character, runtime actor, control owner, input user, AI agent, ability owner, combat target, world location, scene binding, and marker identities remain qualified and separate. Bridges store explicit mappings rather than collapsing them into one generic player, actor, target, or location ID.
+82. Instinct owns perception, scoring, scheduling, and semantic AI choice. Arcana owns ability activation and effect orchestration. Clash owns instantaneous combat resolution and target-receiver transaction coordination. A decision request, ability commit, and combat-resource commit are separate authority events.
+83. Clash combat relation and targetability may be consumed read-only by Instinct and Arcana. AI scoring and ability targeting must not create competing team, faction, targetability, damage, healing, or defeat truth.
+84. Arcana permits one mutation-capable cost provider per MVP activation. Cross-system atomicity requires a real coordinating transaction owner; configurations that promise rollback across independent foreign authorities are rejected.
+85. Clash defeat outcomes do not directly mutate Fellowship availability, Path objectives, Ascent progression, Vault loot, Atlas world state, or respawn behavior. Those authorities receive separate idempotent requests or observe committed events.
+86. Atlas semantic travel routes, Instinct local navigation paths, Passage scene transitions, and Vessel actor movement commands are distinct contracts and cannot substitute for one another.
+87. Shared multiplayer save publication belongs to The Chronicle on the authoritative host/server. Advanced packages contribute only their versioned payloads. Live sessions, AI observations, combat requests, active abilities, markers, and prepared travel operations remain session-only unless the package explicitly defines a safe detached snapshot.
+88. Advanced cores remain provider-neutral. Networking, navigation, behavior, inference, hit, world, hosting, and platform providers require separate adapters, explicit dependencies, Integration Laboratories, and retained compatibility evidence.
+89. SFGSS-ADR-001 v1.2.0 extends the exact Workshop setup-facade registry and minimum planning domains through all five Advanced package foundations. Provider installation remains an explicit selected operation and is never inferred from the neutral core.
+90. No networking or AI provider, topology, hosting service, prediction model, navigation backend, behavior graph, inference engine, hit provider, status-effect framework, scene-streaming backend, or large-world strategy is approved by documentation alone. Candidate and research language remains visible until executed evidence supports a stronger claim.
+
 ---
 
 ## 22. Open Decisions Requiring Later Approval
@@ -2718,19 +2732,19 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the seventy-eight decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the ninety decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-24 — Advanced Cross-Package and Research Review
+SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
 
-When implementation is eventually authorized, follow SFGSS-005 v1.1.0: show the complete code, explain each file and architectural choice, provide exact Unity Editor steps, let Jesse enter the code himself by default, compile/test at bounded stops, and reconcile evidence before advancing.
+When implementation is eventually authorized, follow SFGSS-005 v1.2.0: show the complete code, explain each file and architectural choice, provide exact Unity Editor steps, let Jesse enter the code himself by default, compile/test at bounded stops, and reconcile evidence before advancing.
 
 
 ---

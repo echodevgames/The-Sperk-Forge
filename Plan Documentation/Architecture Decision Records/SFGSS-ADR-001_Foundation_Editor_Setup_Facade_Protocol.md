@@ -7,7 +7,7 @@
 **Parent authorities:** SFGSS-000, approved package specifications, SFGSS-001, and SFGSS-002  
 **Supersedes:** No prior ADR  
 **Protocol version:** 1  
-**ADR revision:** 1.1.0  
+**ADR revision:** 1.2.0  
 
 ### Revision history
 
@@ -15,6 +15,7 @@
 |---|---|---|---|
 | 1.0.0 | 2026-08-03 | Accepted | Foundation package facade protocol |
 | 1.1.0 | 2026-08-04 | Accepted | Extended the exact facade registry and minimum setup domains through all thirteen Expansion packages |
+| 1.2.0 | 2026-08-04 | Accepted | Extended the exact facade registry and minimum setup domains through all five Advanced package foundations; provider installation remains explicitly selected and evidence-gated |
 
 > Package setup remains with the package that understands its own assets. The Workshop may coordinate the work, but it may not counterfeit another package’s hands.
 
@@ -83,6 +84,11 @@ The exact assembly-qualified type remains recorded in The Workshop’s reviewed 
 | The Fellowship (`EchoCharacters`) | `EchoDevGames.EchoCharacters.Editor.Workshop.EchoCharactersWorkshopSetupFacade` |
 | The Vessel (`EchoControllers`) | `EchoDevGames.EchoControllers.Editor.Workshop.EchoControllersWorkshopSetupFacade` |
 | The Crucible (`EchoCrafting`) | `EchoDevGames.EchoCrafting.Editor.Workshop.EchoCraftingWorkshopSetupFacade` |
+| The Convergence (`EchoMultiplayer`) | `EchoDevGames.EchoMultiplayer.Editor.Workshop.EchoMultiplayerWorkshopSetupFacade` |
+| Instinct (`EchoAI`) | `EchoDevGames.EchoAI.Editor.Workshop.EchoAIWorkshopSetupFacade` |
+| Clash (`EchoCombat`) | `EchoDevGames.EchoCombat.Editor.Workshop.EchoCombatWorkshopSetupFacade` |
+| Arcana (`EchoAbilities`) | `EchoDevGames.EchoAbilities.Editor.Workshop.EchoAbilitiesWorkshopSetupFacade` |
+| The Atlas (`EchoWorld`) | `EchoDevGames.EchoWorld.Editor.Workshop.EchoWorldWorkshopSetupFacade` |
 
 The facade belongs to the package Editor assembly. It must not be placed in the runtime assembly, sample assembly, project code, or The Workshop package.
 
@@ -227,6 +233,11 @@ Each package owns and versions its own setup schema. Protocol version 1 requires
 | EchoCharacters | Configuration, root, character catalogs, roster defaults, spawn provider, control policy, Laboratory |
 | EchoControllers | Controller presets, host/config assets, intent adapters, family-specific Laboratories; no persistent root |
 | EchoCrafting | Configuration, root, recipe catalogs, provider/station schemas, knowledge policy, Laboratory |
+| EchoMultiplayer | Neutral configuration, simulated provider, session/readiness/authority policies, metadata schemas, provider-selection report, Laboratory; production providers remain explicit package selections |
+| EchoAI | Agent configuration, sensor/memory/scoring/blackboard/scheduler/behavior schemas, simulated providers, navigation-adapter choice, Laboratories |
+| EchoCombat | Resolver configuration, operation/channel/relation/modifier definitions, simulated receivers, hit-adapter choices, Laboratories |
+| EchoAbilities | Ability catalogs, owner/loadout defaults, condition/cost/target/effect schemas, clocks and policies, Laboratory |
+| EchoWorld | World catalogs, hierarchy/topology, scene bindings, marker schemas, discovery/fast-travel policy, map metadata, Laboratory |
 
 A package may expose fewer automated domains in its first release. Unsupported domains must appear as manual actions, not fabricated generic operations.
 
@@ -275,7 +286,7 @@ A package may expose fewer automated domains in its first release. Unsupported d
 
 1. Peer package implementation plans include facade work in their Editor tooling milestone, not necessarily their runtime skeleton milestone.
 2. The Workshop M5 facade-protocol milestone implements fake facades first, followed by First Light and Observatory reference facades.
-3. The Foundation contract matrix records every peer as `Manual until facade implemented`, then updates compatibility as each adapter passes.
+3. The Foundation, Expansion, and Advanced contract matrices record every peer as `Manual until facade implemented`, then update compatibility as each adapter passes.
 4. A later ADR may introduce a tiny Editor-only shared contract only after measured implementation evidence.
 
 

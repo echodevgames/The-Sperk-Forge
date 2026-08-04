@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** Advanced Cross-Package and Research Review
-**Current checkpoint:** SUITE-DOC-24 - Reconcile The Convergence, Instinct, Clash, Arcana, The Atlas, and their research/provider seams against Foundation and Expansion authorities
+**Current focus:** SFGSS-006 New-Project Guided Pathways
+**Current checkpoint:** SUITE-DOC-25 - Define understandable, removable package-selection pathways using all 28 package foundations and the three approved cross-package matrices
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -38,13 +38,15 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.13.0.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.14.0.
 - `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
 - `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
 - `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.0.0 Approved.
-- `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
+- `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.2.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
+- `Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix.md` - v1.0.0 Approved.
+- `Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md` - v1.2.0 Accepted.
 - `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md` - v1.0.0 Approved provider-neutral foundation; provider selection pending.
 - `Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md` - v1.0.0 Approved feasibility foundation; implementation and adapters pending.
 - `Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md` - approved dated feasibility/provider record.
@@ -58,7 +60,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Run **SUITE-DOC-24 - Advanced Cross-Package and Research Review**. Reconcile Multiplayer, AI, Combat, Abilities, and World foundations plus their provider/research records against every approved Foundation and Expansion authority. Preserve all prototype-dependent findings as `Not run`.
+Run **SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways**. Define practical package-selection pathways for blank modular projects, game jams, audiovisual prototypes, save-based adventures, narrative games, puzzle/tabletop games, 2D controller projects, RPG foundations, local multiplayer, online multiplayer research, and custom compositions. Every pathway must expose package authority, optionality, removal, generated assets, learning order, and honest evidence states.
 
 ---
 
@@ -73,6 +75,25 @@ Run **SUITE-DOC-24 - Advanced Cross-Package and Research Review**. Reconcile Mul
 
 ## Active Notes
 
+
+
+
+### August 4, 2026 — Advanced cross-package and research review
+
+- `[DECISION]` SFGSS-INT-ADVANCED-001 v1.0.0 is approved after reviewing The Convergence, Instinct, Clash, Arcana, and The Atlas against all Foundation and Expansion authorities.
+- `[DECISION]` Multiplayer world travel follows the ordered Atlas plan -> Convergence authority/readiness -> Passage scene execution -> Atlas context commit -> Fellowship/project placement workflow.
+- `[DECISION]` Participant, network entity, character, runtime actor, control owner, input user, AI agent, ability owner, combat target, world location, scene binding, and marker identities remain separate and explicitly mapped.
+- `[DECISION]` Instinct proposes semantic actions, Arcana owns ability activation, and Clash owns instantaneous combat resolution and target-receiver transaction coordination.
+- `[DECISION]` Clash relation and targetability are read-only inputs to AI and ability targeting; neither Instinct nor Arcana creates competing combat truth.
+- `[DECISION]` Arcana permits one mutation-capable cost provider per MVP activation and rejects fictional cross-authority atomicity.
+- `[DECISION]` Atlas semantic routes, Instinct navigation paths, Passage scene transitions, and Vessel movement commands are distinct contracts.
+- `[DECISION]` Chronicle publishes shared multiplayer saves on the authoritative host/server; Advanced packages contribute only their versioned payloads.
+- `[DECISION]` ADR-001 advances to v1.2.0 and registers exact Workshop setup facades and minimum planning domains for all five Advanced package foundations.
+- `[DECISION]` No provider, topology, backend, or performance claim was promoted. Multiplayer prototypes remain 0 executed and all empirical evidence remains `Not run`.
+- `[TEST]` SUITE-DOC-24 passes authority, lifecycle, dependency, identity, transaction, persistence, diagnostics, Laboratory, research-honesty, and removal review.
+- `[HANDOFF]` SUITE-DOC-25 drafts SFGSS-006 New-Project Guided Pathways using all 28 package foundations and the three approved cross-package matrices.
+
+**Promoted to:** SFGSS-INT-ADVANCED-001 v1.0.0, SFGSS-ADR-001 v1.2.0, SFGSS-000 v0.14.0, SUITE-DOC-24 review report, README, graph roadmap, health check, program roadmap, and artifact manifest.
 
 ### August 4, 2026 - The Atlas (`EchoWorld`) feasibility foundation
 

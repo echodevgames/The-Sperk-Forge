@@ -12,7 +12,8 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-24 — Advanced Cross-Package and Research Review
+**Current checkpoint:** SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways  
+**Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
 
@@ -35,7 +36,7 @@ flowchart LR
     B --> F[5 Advanced Foundations]
     D --> G[Foundation Collision Matrix]
     E --> H[Expansion Collision Matrix]
-    F --> I[Advanced Collision and Research Review]
+    F --> I[Advanced Collision and Research Matrix — Approved]
     G --> J[Remaining Standards SFGSS-006 to 010]
     H --> J
     I --> J
@@ -144,6 +145,7 @@ flowchart LR
 
 - [[Integration Specifications/Foundation_Cross-Package_Contract_Matrix|Foundation Cross-Package Contract Matrix]]
 - [[Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix|Expansion Cross-Package Contract Matrix]]
+- [[Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix|Advanced Cross-Package and Research Matrix]]
 - [[Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|ADR-001 — Setup Facade Protocol]]
 - [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 — Documentation Gate and Learning Implementation]]
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]

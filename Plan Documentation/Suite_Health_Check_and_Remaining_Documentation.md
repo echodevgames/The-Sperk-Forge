@@ -12,20 +12,20 @@ updated: 2026-08-04
 **Checkpoint:** SUITE-MAP-01  
 **Status:** Approved orientation checkpoint  
 **Active implementation gate:** Locked  
-**Next numbered documentation checkpoint:** SUITE-DOC-24 — Advanced Cross-Package and Research Review
+**Next numbered documentation checkpoint:** SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways
 
 ## 1. Where the suite stands
 
 | Area | Current state | Health |
 |---|---|---|
-| Suite architecture | SFGSS-000 v0.13.0 | Green |
+| Suite architecture | SFGSS-000 v0.14.0 | Green |
 | Package catalog | 28 of 28 pre-code package foundations documented | Green |
 | Foundation packages | 10 of 10 approved | Green |
 | Expansion packages | 13 of 13 approved | Green |
 | Advanced foundations | 5 of 5 approved; empirical provider work pending | Green for documentation, gray for evidence |
 | Foundation collision review | Passed | Green |
 | Expansion collision review | Passed | Green |
-| Advanced collision/research review | Next checkpoint | Yellow |
+| Advanced collision/research review | Passed | Green |
 | Core standards | SFGSS-001 through SFGSS-005 approved | Green |
 | Remaining standards | SFGSS-006 through SFGSS-010 not yet drafted | Yellow |
 | Full-suite matrix and handoff | Not yet completed | Yellow |
@@ -49,17 +49,16 @@ updated: 2026-08-04
 
 | Order | Checkpoint | Result required |
 |---:|---|---|
-| 1 | SUITE-DOC-24 | Advanced Cross-Package and Research Review |
-| 2 | SUITE-DOC-25 | SFGSS-006 New-Project Guided Pathways |
-| 3 | SUITE-DOC-26 | SFGSS-007 ADR Template and Decision Log |
-| 4 | SUITE-DOC-27 | SFGSS-008 Suite Glossary and Naming Registry |
-| 5 | SUITE-DOC-28 | SFGSS-009 Repository, Versioning, and Integration Workspace Standard |
-| 6 | SUITE-DOC-29 | SFGSS-010 Living Documentation and Obsidian Workflow Standard |
-| 7 | SUITE-DOC-30 | Standards and Package Consistency Review |
-| 8 | SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix |
-| 9 | SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit |
-| 10 | PKG-LEARN-001 through PKG-LEARN-028 | Individual package understanding reviews |
-| 11 | SUITE-DOC-33 | Final Documentation and Learning Readiness Gate |
+| 1 | SUITE-DOC-25 | SFGSS-006 New-Project Guided Pathways |
+| 2 | SUITE-DOC-26 | SFGSS-007 ADR Template and Decision Log |
+| 3 | SUITE-DOC-27 | SFGSS-008 Suite Glossary and Naming Registry |
+| 4 | SUITE-DOC-28 | SFGSS-009 Repository, Versioning, and Integration Workspace Standard |
+| 5 | SUITE-DOC-29 | SFGSS-010 Living Documentation and Obsidian Workflow Standard |
+| 6 | SUITE-DOC-30 | Standards and Package Consistency Review |
+| 7 | SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix |
+| 8 | SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit |
+| 9 | PKG-LEARN-001 through PKG-LEARN-028 | Individual package understanding reviews |
+| 10 | SUITE-DOC-33 | Final Documentation and Learning Readiness Gate |
 
 ## 4. Evidence that cannot be completed before code
 
@@ -78,7 +77,7 @@ The following must remain `Not run` or conditional:
 
 The healthiest stopping point is after:
 
-1. SUITE-DOC-24 through SUITE-DOC-32 are complete.
+1. SUITE-DOC-25 through SUITE-DOC-32 are complete.
 2. Every package has received its individual learning review.
 3. Jesse can explain each package’s purpose, authority, most important data, runtime lifecycle, primary bridges, Test Lab, and one practical use case in his own words.
 4. SUITE-DOC-33 explicitly authorizes the first bounded implementation checkpoint.

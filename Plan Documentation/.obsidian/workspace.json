@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Suite_Health_Check_and_Remaining_Documentation.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Echo_Game_Systems_Suite_Bible"
+              "title": "Suite_Health_Check_and_Remaining_Documentation"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Suite_Health_Check_and_Remaining_Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Suite_Health_Check_and_Remaining_Documentation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Suite_Health_Check_and_Remaining_Documentation.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -190,8 +190,14 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
-    "Suite_Health_Check_and_Remaining_Documentation.md",
+    "SUITE-DOC-24_Artifact_Manifest.json",
+    "Package_Learning_Review_Catalog.md",
+    "Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix.md",
+    "Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix.md",
     "Suite_Graph_Roadmap.md",
+    "Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
+    "Echo_Game_Systems_Suite_Bible.md",
+    "Suite_Health_Check_and_Remaining_Documentation.md",
     "SUITE-MAP-01_Artifact_Manifest.json",
     "Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review.md",
     "SUITE-DOC-23_Artifact_Manifest.json",
@@ -219,12 +225,6 @@
     "SUITE-DOC-17_Artifact_Manifest.json",
     "Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md",
     "Research Records",
-    "Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md",
-    "Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
-    "Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
-    "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md"
+    "Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md"
   ]
 }
