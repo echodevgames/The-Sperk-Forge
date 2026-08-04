@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoDialogue - Voices package specification
-**Current checkpoint:** SUITE-DOC-10 - EchoDialogue: Voices Package Specification
+**Current focus:** EchoObjectives - The Path package specification
+**Current checkpoint:** SUITE-DOC-11 - EchoObjectives: The Path Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -51,7 +51,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Draft and approve the complete **EchoDialogue - Voices Package Specification** using SFGSS-001. Define speaker and conversation identities, localized line references, sequences, branching choices, conditions, project commands, history, interruption and resume policy, save snapshots, diagnostics, authoring/validation, and explicit UI, Localization, Audio, Objectives, Camera, GameState, Input, Save, and Workshop boundaries without absorbing quest logic, cinematic direction, UI presentation, audio playback, or translation ownership.
+Draft and approve the complete **EchoObjectives - The Path Package Specification** using SFGSS-001. Define objective, quest, and task identities; sequential, parallel, optional, hidden, repeatable, counter, flag, timer, and provider-driven steps; prerequisite graphs; transactional progress; tracked presentation snapshots; rewards expressed as requests/results; save snapshots, migration, diagnostics, authoring, validation, and explicit UI, Dialogue, Inventory, Progression, Save, Interaction, and Multiplayer boundaries without absorbing dialogue rendering, inventory storage, reward execution, or save-file transport.
 ---
 
 ## Open Questions
@@ -59,11 +59,29 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-10.
+- No question currently blocks SUITE-DOC-11.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - Voices (`EchoDialogue`) package specification
+
+- `[DECISION]` Voices (`EchoDialogue`) Package Specification v1.0.0 is approved as the Level 2 authority for stable speaker and conversation definitions, one deterministic foreground conversation session, node traversal, lines, choices, read-only conditions, explicit project commands, local variables, interruption, suspension, cancellation, semantic history, safe active-session snapshots, diagnostics, authoring, validation, and optional bridge seams; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoDialogue does not own translation tables, production UI, player input, audio playback, quest/objective truth, inventory/character state, camera movement, global game state/pause, scene travel, save-file transport, cinematic direction, or the game's complete narrative database.
+- `[DECISION]` The runtime uses one duplicate-safe application-session `EchoDialogueRoot` exposing injectable `IDialogueService`; the MVP supports one foreground session with RejectNew, bounded QueueLatest, and opt-in ReplaceActive for interruptible conversations.
+- `[DECISION]` Conversation definitions use stable explicit records for Line, Choice, Branch, Command, LocalMutation, Wait, and End rather than reflection-discovered method/node types.
+- `[DECISION]` Conditions are read-only and synchronous in the MVP. Commands are explicit typed asynchronous handlers with timeout, cancellation, authored failure policy, and an honest commit point.
+- `[DECISION]` Source fallback text permits standalone use. Many Tongues, Looking Glass, Resonance, Pulse, Will, Path, Eye, Chronicle, First Light, Observatory, and Workshop integrations remain explicit optional bridges/providers.
+- `[DECISION]` Session, presentation, and choice generations reject stale or foreign requests. Semantic history stores IDs/references rather than resolved production text by default.
+- `[DECISION]` Active-session state may be exported/imported only at declared safe points; committed commands are never replayed merely to reconstruct presentation.
+- `[DECISION]` The diagnostic namespace `EDLG-*` is reserved for Voices.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 44 unique Laboratory scenarios, and 217 unique package-qualified planned test cases.
+- `[TEST]` Every runtime, installation, provider, presenter, command, persistence, compatibility, performance, platform, bridge, removal, and release result remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because the specification refines the already-approved EchoDialogue authority without changing a suite-wide ownership boundary.
+- `[HANDOFF]` SUITE-DOC-11 drafts EchoObjectives (`The Path`) next. Preserve objective/quest progress authority without absorbing dialogue rendering, inventory storage, reward execution, or save-file transport.
+
+**Promoted to:** Voices (`EchoDialogue`) Package Specification v1.0.0, SUITE-DOC-10 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
 
 ### August 4, 2026 - The Ascent (`EchoProgression`) package specification
 
@@ -431,8 +449,8 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 - `[DECISION]` Standalone Labs use only the package and hard dependencies. Integration Labs belong to the bridge/provider artifact.
 - `[DECISION]` Optional artifacts follow bridge-first teardown/removal and own all registrations, leases, subscriptions, and adapter resources they create.
 - `[TEST]` The standard was reconciled against SFGSS-000, SFGSS-001, ADR-001, ADR-002, the Foundation contract matrix, and all ten Foundation assembly/dependency tables.
-- `[RISK]` First Light’s approved assembly table still places proposed uGUI in the neutral Runtime assembly; SFGSS-002 prefers a separate presentation assembly. Reconcile during SUITE-DOC-10 before code.
-- `[RISK]` Several Foundation specifications list Editor assemblies as Auto Referenced or describe optional sample uGUI/TMP dependencies without a final compile-safe packaging decision. Reconcile during SUITE-DOC-10.
+- `[RISK]` First Light’s approved assembly table still places proposed uGUI in the neutral Runtime assembly; SFGSS-002 prefers a separate presentation assembly. Reconcile during SUITE-DOC-30 before code.
+- `[RISK]` Several Foundation specifications list Editor assemblies as Auto Referenced or describe optional sample uGUI/TMP dependencies without a final compile-safe packaging decision. Reconcile during SUITE-DOC-30.
 - `[HANDOFF]` SUITE-DOC-03 must align stable IDs, DTOs, unknown-data preservation, aliases, migrations, transactions, and provider/package removal with SFGSS-002.
 
 **Promoted to:** SFGSS-000 v0.10.0 decisions 44–51, SFGSS-002 v1.0.0, the SUITE-DOC-02 audit report, README, and the full-suite roadmap.
@@ -453,9 +471,9 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 - `[DECISION]` Unknown optional settings, save, provider, and generated records remain bounded, opaque, preserved, and non-executable through package absence/reinstallation.
 - `[DECISION]` Data-changing operations validate and stage before one documented publication point. Each package states its real rollback class and never labels a partial apply as atomic.
 - `[TEST]` SFGSS-003 was reconciled against SFGSS-000, SFGSS-001, SFGSS-002, ADR-001, ADR-002, the Foundation matrix, and all ten Foundation package data sections.
-- `[RISK]` Accord and Chronicle use “Asset GUID” wording for configuration identity. Clarify Unity asset identity versus runtime domain identity during SUITE-DOC-10.
+- `[RISK]` Accord and Chronicle use “Asset GUID” wording for configuration identity. Clarify Unity asset identity versus runtime domain identity during SUITE-DOC-30.
 - `[RISK]` Accord and Will unknown-field preservation requires an explicit opaque-record or extension-capable serializer strategy before implementation.
-- `[RISK]` Foundation public serialized enums and fingerprints require compatibility/canonicalization review during SUITE-DOC-10.
+- `[RISK]` Foundation public serialized enums and fingerprints require compatibility/canonicalization review during SUITE-DOC-30.
 - `[HANDOFF]` SUITE-DOC-04 must turn existing package test lists into one canonical evidence, laboratory, compatibility, defect, and release standard without claiming tests have run.
 
 **Promoted to:** SFGSS-000 v0.11.0 decisions 52–61, SFGSS-003 v1.0.0, the SUITE-DOC-03 audit report, README, and the full-suite roadmap.
@@ -476,7 +494,7 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 - `[DECISION]` Flaky/quarantined required tests and retry-hidden failures cannot count as passing stable release evidence.
 - `[DECISION]` Beta, release-candidate, and stable gates require progressively stronger evidence.
 - `[TEST]` SFGSS-004 was reconciled against SFGSS-000, SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, ADR-001, ADR-002, the Foundation matrix, and all ten Foundation package test/release sections.
-- `[RISK]` Bare Laboratory IDs, mixed automation fields, compressed Will test ranges, broad platform wording, combined distribution gates, and missing evidence/issue columns require normalization during SUITE-DOC-10.
+- `[RISK]` Bare Laboratory IDs, mixed automation fields, compressed Will test ranges, broad platform wording, combined distribution gates, and missing evidence/issue columns require normalization during SUITE-DOC-30.
 - `[HANDOFF]` SUITE-DOC-05 must turn package-selection guidance into explicit user pathways without creating hidden hard dependencies or pretending every project needs the full Foundation set.
 
 **Promoted to:** SFGSS-000 v0.12.0 decisions 62–71, SFGSS-004 v1.0.0, the SUITE-DOC-04 audit report, README, and the full-suite roadmap.
@@ -487,6 +505,7 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoDialogue speakers, conversation graph, lines, choices, conditions, commands, interruption, semantic history, safe snapshots, diagnostics, authoring, and Laboratory | EchoDialogue Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoLocalization locale lifecycle, stable localized references, fallback/missing policy, formatting, asset leases, fonts/direction, pseudo-localization, diagnostics, and Laboratory | EchoLocalization Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoBuildTools recipes, Build Profile boundary, planning, validation, stamping, output safety, receipts, manifests, checksums, providers, CLI, and Laboratory | EchoBuildTools Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoPool definitions, generational leases, capacity, exhaustion, scopes, callbacks, automatic return, reconciliation, diagnostics, and Laboratory | EchoPool Package Specification v1.0.0 | Promoted |
@@ -520,8 +539,9 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
 | EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
 | EchoLocalization package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 196 planned tests, all Not run |
-| Expansion specifications | 5 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, and Many Tongues |
-| Current checkpoint | Active | SUITE-DOC-10 - EchoDialogue: Voices Package Specification |
+| Expansion specifications | 6 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, and Voices |
+| EchoDialogue package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 217 planned tests, all Not run |
+| Current checkpoint | Active | SUITE-DOC-11 - EchoObjectives: The Path Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -571,33 +591,34 @@ Draft and approve the complete **EchoDialogue - Voices Package Specification** u
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoLocalization against SFGSS-000 through SFGSS-005 and every approved package authority available through The Foundry.
-- [x] Preserve Unity Localization as the backend authority rather than duplicating its tables, Smart Strings, localized assets, pseudo-locales, and import/export.
-- [x] Define one duplicate-safe locale authority, deterministic initial selection, transactional changes, cancellation, rollback, and semantic event ordering.
-- [x] Define provider-stable table/entry references, missing/fallback results, Smart String arguments, formatting, typed asset leases, font profiles, direction metadata, and privacy rules.
-- [x] Keep Accord, UI, Dialogue, Audio, First Light, Observatory, Foundry, and Workshop integrations optional and removable.
-- [x] Define setup, repair, completeness, fallback, font, pseudo, backend-version, and release validators.
-- [x] Design the isolated Many Tongues Laboratory and package-qualified planned test registry.
-- [x] Keep every unexecuted backend, platform, font, RTL, performance, integration, migration, and release result `Not run`.
+- [x] Reconcile EchoDialogue against SFGSS-000 through SFGSS-005 and every approved package authority available through Many Tongues.
+- [x] Preserve one foreground conversation authority without absorbing UI, localization, audio, input, game state, objectives, camera, scene travel, or save transport.
+- [x] Define stable speaker, conversation, node, choice, provider, condition, and command identities.
+- [x] Define line, choice, branch, local mutation, wait, command, and end-node flow.
+- [x] Define read-only conditions and explicit asynchronous command handlers with timeout, cancellation, failure policy, and commit boundaries.
+- [x] Define interruption, suspension, cancellation, semantic history, and safe active-session snapshot rules.
+- [x] Define setup, authoring, validation, diagnostics, privacy, removal, migration, and Laboratory contracts.
+- [x] Register 44 Laboratory scenarios and 217 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, provider, presenter, command, persistence, performance, platform, compatibility, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
-- [x] Confirm no package manifest, asmdef, C# file, Locale asset, table, font profile, root, setup tool, bridge, provider, scene, sample, or runtime implementation was created.
-- [x] Record SUITE-DOC-08 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-09.
-- [x] Stop before EchoDialogue specification work.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, or runtime implementation was created.
+- [x] Record SUITE-DOC-09 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-10.
+- [x] Stop before EchoObjectives specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-09 - Many Tongues (`EchoLocalization`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-10 - Voices (`EchoDialogue`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoDialogue - Voices  
-**Active checkpoint:** SUITE-DOC-10 - EchoDialogue Package Specification  
-**Expansion specifications:** 5 of 13 approved  
+**Current focus:** EchoObjectives - The Path  
+**Active checkpoint:** SUITE-DOC-11 - EchoObjectives Package Specification  
+**Expansion specifications:** 6 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-08 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-09 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, Locale, table, font asset, scene, prefab, setup tool, sample, bridge, provider adapter, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-09 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-10 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, objective data, or gameplay implementation

@@ -81,7 +81,7 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 | SUITE-DOC-07 | EchoProgression - The Ascent - **Approved v1.0.0** | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
 | SUITE-DOC-08 | EchoBuildTools - The Foundry - **Approved v1.0.0** | Build Profiles, recipes, versioning, preflight, scene validation, safe output, reports, checksums, and release preparation |
 | SUITE-DOC-09 | EchoLocalization - Many Tongues - **Approved v1.0.0** | Locale tables, localized references, fallbacks, fonts, formatting, pseudolocalization, and UI/dialogue boundaries |
-| SUITE-DOC-10 | EchoDialogue - Voices | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
+| SUITE-DOC-10 | EchoDialogue - Voices - **Approved v1.0.0** | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
 | SUITE-DOC-11 | EchoObjectives - The Path | Objectives, quests, tasks, progress graphs, conditions, rewards-as-requests, persistence, and tracked presentation data |
 | SUITE-DOC-12 | EchoInventory - The Vault | Item definitions/instances, containers, stacks, transactions, capacity, transfer, equipment-storage boundary, and persistence |
 | SUITE-DOC-13 | EchoInteraction - The Hand | Detection, focus, range, priority, prompt data, availability, execution requests, cancellation, and 2D/3D adapters |
@@ -134,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-09 - Many Tongues (`EchoLocalization`) Package Specification |
+| Completed checkpoint | SUITE-DOC-10 - Voices (`EchoDialogue`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-10 - Voices (`EchoDialogue`) Package Specification** |
+| Active checkpoint | **SUITE-DOC-11 - The Path (`EchoObjectives`) Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 5 of 13 approved |
+| Expansion specifications | 6 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
