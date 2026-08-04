@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-06 — Draft Resonance (`Jukebot`) package specification
+**Current checkpoint:** FW-DOC-07 — Draft The Will (`EchoInput`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,17 +45,18 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specification** using SFGSS-001. Define the duplicate-safe audio authority, music/SFX/ambience ownership, immutable cue and profile assets, runtime playback state, pooled voices, crossfades, looping handles, concurrency and voice stealing, mixer routing, diagnostics, isolated Audio Laboratory, and optional bridges without allowing Jukebot to absorb settings persistence, game-state rules, UI navigation, scene logic, or project-specific decisions about when sounds occur.
+Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Specification** using SFGSS-001. Define input-context authority, active-device and control-scheme state, reason-based locks, rebinding and conflict policy, binding-override persistence boundaries, glyph data, local-player seams, diagnostics, an isolated Input Laboratory, and optional bridges without allowing EchoInput to absorb movement physics, gameplay action meaning, UI screen ownership, game-state truth, or project-specific controller rules.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of the EchoGameState specification.
+- None blocking the start of the EchoInput specification.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -169,6 +170,28 @@ Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specificati
 
 **Promoted to:** The Pulse (`EchoGameState`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved runtime-state and pause authority without changing the suite ownership matrix.
 
+### August 3, 2026 — Resonance specification
+
+- `[DECISION]` Resonance (`Jukebot`) specification v1.0.0 is approved as the Level 2 authority for runtime music, SFX, ambience, voice-pool, playback-handle, and mixer-routing execution; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` One duplicate-safe application-session `JukebotRoot` owns ordinary music, SFX, ambience, bus, diagnostics, and runtime-state children. `Awake` claims authority only; initialization performs side effects later.
+- `[DECISION]` Music, SFX, and ambience remain independent services and transports so one channel cannot accidentally stop, pause, replace, or duplicate another.
+- `[DECISION]` The MVP music player uses exactly two owned sources and a deterministic transport state machine for play, pause, resume, stop, playlist navigation, rapid replacement, and crossfade behavior.
+- `[DECISION]` Music starts and handoffs use Unity DSP time where scheduling improves consistency, but the package makes no universal gapless-playback claim across all clips, import settings, and platforms.
+- `[DECISION]` SFX playback uses a bounded owned voice pool rather than relying on one untracked `PlayOneShot` source for the production path.
+- `[DECISION]` SFX playback handles are generational so stale handles cannot stop or modify a later sound that reused the same voice.
+- `[DECISION]` Cue cooldown and concurrency are validated before allocation where possible. Cue and group limits use explicit reject-or-steal policies.
+- `[DECISION]` Voice stealing is deterministic by configured priority, audibility estimate, age, and stable voice index as the final tie-break.
+- `[DECISION]` `MusicTrack`, `MusicPlaylist`, `SfxCue`, variations, ambience profiles, routing, and audio-profile assets remain immutable. Playlist indexes, shuffle bags, cooldown timestamps, active counts, handles, queues, and transition state are runtime-owned.
+- `[DECISION]` Audio profiles use a hybrid schema-and-instance model: package/project schemas define stable semantic slots, project profiles map those slots to cues, and profile sets compose only the groups a game needs.
+- `[DECISION]` Project-owned mixer routing exposes stable bus bindings. Jukebot applies normalized values and mute state but never persists global preferences; The Accord retains persistence authority.
+- `[DECISION]` Jukebot does not own the project AudioListener, scene-to-music mapping, pause truth, production settings UI, gameplay triggers, or save files.
+- `[DECISION]` The runtime core is nonvisual and has no uGUI, TextMeshPro, or peer Echo-package dependency. Editor preview tools and the standalone Audio Laboratory may use removable presentation dependencies.
+- `[DECISION]` Mixer snapshot/ducking graphs, random ambience one-shots, segmented tracks, custom loop regions, adaptive stems, Addressables/provider clips, and reverse playback remain deferred or experimental.
+- `[DECISION]` First Light, Observatory, Accord, Pulse, Passage, Looking Glass, and later gameplay connections remain explicit bridges or project adapters with clean missing-peer and removal behavior.
+- `[DECISION]` The standalone Resonance Audio Laboratory must prove music transport races, pooled voices, stale handles, concurrency, ambience independence, routing, domain pause, diagnostics, reset, shutdown, and definition immutability without unrelated Echo packages.
+
+**Promoted to:** Resonance (`Jukebot`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved audio authority without changing the suite ownership matrix.
+
 ---
 
 ## Promotion Queue
@@ -183,6 +206,7 @@ Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specificati
 | 2026-08-03 | Accord authority, section, transaction, display-safety, persistence, migration, and bridge decisions | EchoSettings specification v1.0.0 | Promoted |
 | 2026-08-03 | Passage authority, stable scene/route data, transition pipeline, admission, cancellation, activation, recovery, and bridge decisions | EchoSceneFlow specification v1.0.0 | Promoted |
 | 2026-08-03 | Pulse authority, primary/override model, nested pause, policy composition, Unity adapters, diagnostics, Test Lab, and bridge decisions | EchoGameState specification v1.0.0 | Promoted |
+| 2026-08-03 | Resonance authority, transport, voice-pool, handle, concurrency, routing, profile, diagnostics, Audio Laboratory, and bridge decisions | Jukebot specification v1.0.0 | Promoted |
 
 ---
 
@@ -197,7 +221,8 @@ Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specificati
 | Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Pulse specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Foundation documentation gate | Active | 5 of 10 package specifications approved |
+| Resonance specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
+| Foundation documentation gate | Active | 6 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -219,9 +244,9 @@ Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specificati
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved  
-**Current package:** Resonance (`Jukebot`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved  
+**Current package:** The Will (`EchoInput`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** Pulse primary-state and leased-override architecture, nested pause authority, deterministic policy composition, Unity time/cursor adapters, diagnostics, isolated Test Lab, and optional bridge boundaries approved  
+**Last completed documentation change:** Resonance duplicate-safe audio authority, deterministic music transport, pooled SFX voices, generational handles, concurrency and stealing, independent ambience, mixer routing, profile schemas, diagnostics, isolated Audio Laboratory, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-06 — Draft and review the complete Jukebot package specification
+**Next checkpoint:** FW-DOC-07 — Draft and review the complete EchoInput package specification

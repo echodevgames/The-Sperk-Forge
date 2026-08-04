@@ -52,7 +52,7 @@ The ten required specifications are:
 9. The Chronicle (`EchoSave`)
 10. The Workshop (`EchoGameStarter`)
 
-First Light v1.0.0, The Observatory v1.0.0, The Accord v1.0.0, The Passage v1.0.0, and The Pulse v1.0.0 are approved package specifications. Resonance (`Jukebot`) is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
+First Light v1.0.0, The Observatory v1.0.0, The Accord v1.0.0, The Passage v1.0.0, The Pulse v1.0.0, and Resonance v1.0.0 are approved package specifications. The Will (`EchoInput`) is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
 
 ## Folders Added Later
 

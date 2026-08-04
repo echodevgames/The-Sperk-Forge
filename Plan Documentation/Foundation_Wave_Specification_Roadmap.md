@@ -47,8 +47,8 @@ The order follows the Foundation Wave ownership layers: origin and observability
 | FW-DOC-03 | `EchoSettings` | The Accord — Global Preferences | Establishes global preference ownership and change/application contracts used by audio, input, UI, localization, and feedback | Approved v1.0.0 |
 | FW-DOC-04 | `EchoSceneFlow` | The Passage — Scene Flow | Defines normal transition authority after First Light handoff, loading phases, progress, locking, and failure behavior | Approved v1.0.0 |
 | FW-DOC-05 | `EchoGameState` | The Pulse — Runtime State | Defines high-level modes, pause authority, time/cursor/input coordination requests, and nested state reasons | Approved v1.0.0 |
-| FW-DOC-06 | `Jukebot` | Resonance — Audio Runtime | Defines music, SFX, ambience, mixer routing, handles, runtime cue state, and settings/state bridges | Next |
-| FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Not started |
+| FW-DOC-06 | `Jukebot` | Resonance — Audio Runtime | Defines music, SFX, ambience, mixer routing, handles, runtime cue state, and settings/state bridges | Approved v1.0.0 |
+| FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Next |
 | FW-DOC-08 | `EchoUI` | The Looking Glass — UI Framework | Defines screen/HUD/modal ownership and presenter boundaries after settings, state, input, scene, and audio contracts are known | Not started |
 | FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Not started |
 | FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Not started |
@@ -192,9 +192,9 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | Metric | Current value |
 |---|---|
 | Foundation specifications required | 10 |
-| Approved | 5 |
+| Approved | 6 |
 | In drafting | 0 |
-| Remaining | 5 |
-| Current checkpoint | FW-DOC-06 — Jukebot |
+| Remaining | 4 |
+| Current checkpoint | FW-DOC-07 — EchoInput |
 | Runtime implementation | Intentionally not started |
 | Known blocker | None |
