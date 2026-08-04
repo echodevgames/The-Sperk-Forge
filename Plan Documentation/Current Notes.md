@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, and accepted ADRs remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
-**Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-10 — Draft The Workshop (`EchoGameStarter`) package specification
+**Current focus:** Foundation cross-package contract reconciliation  
+**Current checkpoint:** FW-DOC-11 — Foundation cross-package contract matrix
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -34,7 +34,7 @@ Do not leave durable decisions only on this page. At checkpoint closeout, promot
 
 ### Goal
 
-Draft, reconcile, and approve complete SFGSS-001 package specifications for all ten Foundation Wave packages before any Foundation Wave runtime implementation begins.
+Reconcile the ten approved Foundation package specifications into one coherent authority, lifecycle, dependency, setup-facade, data, diagnostics, Test Lab, and removal contract before any Foundation Wave runtime implementation begins.
 
 ### Active source documents
 
@@ -49,17 +49,18 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Package Specification** using SFGSS-001. Define the Editor-only composer authority, package and bridge selection, dry-run planning, project-owned generated assets, safe create/repair behavior, preset contracts, scene/configuration output, dependency and compatibility reporting, rollback/removal guidance, an isolated generation laboratory, and release gates without allowing The Workshop to become a runtime manager, overwrite project content silently, conceal installed dependencies, or invent package contracts that the approved specifications do not provide.
+Build **FW-DOC-11 — the Foundation cross-package contract matrix and findings record**. Reconcile all ten approved specifications across authority, lifecycle order, duplicate protection, setup-facade contracts, data ownership, settings/save boundaries, Editor/runtime assembly direction, optional bridges, direct-scene behavior, diagnostics, Test Labs, removal behavior, and Workshop composition. Update package specifications or create an ADR where the matrix reveals a real contract gap. Do not authorize implementation until FW-DOC-12 passes.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of The Workshop specification.
+- `[QUESTION]` FW-DOC-11 must decide how the nine peer package specifications expose and version their public Editor setup facades for The Workshop. The approved direction is exact, allowlisted facade endpoints with no runtime dependency and no open-ended discovery; package-specific addenda or an ADR may be required before implementation.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -272,6 +273,28 @@ Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Packag
 
 **Promoted to:** The Chronicle (`EchoSave`) Package Specification v1.0.0.
 
+
+### August 3, 2026 — The Workshop specification
+
+- `[DECISION]` The Workshop (`EchoGameStarter`) specification v1.0.0 is approved as the Level 2 authority for Editor-time package selection, composition planning, package-operation coordination, safe project generation, generation records, repair planning, removal guidance, and readiness reporting. Implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` The Workshop is Editor-only and ships no runtime assembly, persistent root, `GameManager`, service locator, or Player dependency. Generated projects must remain valid after The Workshop is removed.
+- `[DECISION]` Every apply operation begins from an immutable dry-run plan that exposes package changes, bridges, scenes, folders, assets, project settings, risk, ownership, and reversibility. A materially changed resolved package graph invalidates approval and requires review.
+- `[DECISION]` Package Manager operations and asset generation are separate resumable phases. A transient journal under `Library/EchoGameStarter/Transactions` records recovery state across domain reload or Editor restart, but never auto-resumes mutation after restart.
+- `[DECISION]` Normal package changes use Unity Package Manager Client APIs rather than direct editing of `Packages/manifest.json`. Recommended sources use exact versions, tags, or commits; development branches remain visibly non-reproducible choices.
+- `[DECISION]` Package-specific setup remains owned by the selected package. The Workshop uses exact allowlisted, versioned Editor setup-facade adapter descriptors and does not perform open-ended assembly discovery or copy package setup logic.
+- `[DECISION]` FW-DOC-11 must reconcile the setup-facade contract across the nine peer specifications before implementation. A shared Editor-only contracts package is not silently introduced; it would require an ADR and evidence.
+- `[DECISION]` Generated output is project-owned. A durable manifest records logical IDs, GUIDs, paths, origins, versions, fingerprints, adoption, modification, and operation receipts without granting The Workshop perpetual control.
+- `[DECISION]` Create-only-safe behavior is the default. Existing, adopted, or modified assets are preserved. Any fingerprint drift removes automatic overwrite eligibility and moves upgrades to manual or side-by-side handling.
+- `[DECISION]` The MVP ships Blank Modular Starter and Game Jam Quickstart. Blank may select no peer packages. Game Jam shows every selected package and bridge; the Chronicle is an explicit save-model choice rather than a hidden requirement.
+- `[DECISION]` The MVP provides repeat-run analysis, safe repair plans for eligible missing outputs, a basic upgrade diff, and a removal guide. Full automatic uninstall remains deferred.
+- `[DECISION]` Unity 6 global scene lists and Build Profile overrides are handled through an explicit adapter with complete before/after reporting; ambiguity blocks modification.
+- `[DECISION]` UI Toolkit is the approved Editor UI. The core standalone proof is an isolated Workshop Laboratory and disposable clean-project fixtures rather than a meaningless runtime scene.
+- `[DECISION]` The Laboratory defines 40 acceptance scenarios and the specification registers 121 implementation tests spanning package resolution, reload recovery, planning, security, generation, setup facades, scenes, reports, migration, repeatability, removal, and performance.
+- `[DECISION]` The Workshop never commits or pushes source control in the MVP. It writes commit-friendly reports and leaves Git actions to the user or a future explicit provider.
+- `[DECISION]` No SFGSS-000 revision is required because these choices refine the already-approved Editor composer authority. The setup-facade contract is intentionally assigned to FW-DOC-11 for cross-spec reconciliation.
+
+**Promoted to:** The Workshop (`EchoGameStarter`) Package Specification v1.0.0.
+
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
@@ -288,6 +311,7 @@ Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Packag
 | 2026-08-03 | Will authority, runtime action ownership, contexts, locks, device/user, transactional rebind, override, prompt, privacy, Input Laboratory, and bridge decisions | EchoInput specification v1.0.0 | Promoted |
 | 2026-08-03 | Looking Glass authority, layers, screen/modal lifecycle, focus/EventSystem, HUD/notification/prompt, theme/accessibility, diagnostics, UI Laboratory, and bridge decisions | EchoUI specification v1.0.0 | Promoted |
 | 2026-08-03 | Chronicle authority, immutable generations, head publication, participant payloads, two-phase load, migration, recovery, autosave, security, Save Laboratory, and bridge decisions | EchoSave specification v1.0.0 | Promoted |
+| 2026-08-03 | Workshop Editor-only authority, dry-run planning, package/reload transactions, exact setup facades, generated ownership records, presets, repair/removal guidance, Laboratory, and release decisions | EchoGameStarter specification v1.0.0 | Promoted |
 
 ---
 
@@ -295,7 +319,7 @@ Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Packag
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Chronicle decisions refine the existing save authority without changing suite ownership or the settings/save boundary |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Workshop decisions refine the existing Editor composer authority without changing runtime ownership |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
@@ -306,7 +330,8 @@ Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Packag
 | Will specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 70-test registry; no release-blocking design questions |
 | Looking Glass specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 42 Laboratory scenarios and 84-test registry; no release-blocking design questions |
 | Chronicle specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 32 Laboratory scenarios and 100-test registry; no release-blocking design questions |
-| Foundation documentation gate | Active | 9 of 10 package specifications approved |
+| Workshop specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 40 Laboratory scenarios and 121-test registry; setup-facade cross-spec reconciliation assigned to FW-DOC-11 |
+| Foundation documentation gate | Active | 10 of 10 package specifications approved; FW-DOC-11 and FW-DOC-12 remain |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -328,9 +353,9 @@ Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Packag
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved; The Will (`EchoInput`) v1.0.0 Approved; The Looking Glass (`EchoUI`) v1.0.0 Approved; The Chronicle (`EchoSave`) v1.0.0 Approved  
-**Current package:** The Workshop (`EchoGameStarter`)  
-**Current stage:** Specification not yet drafted  
-**Last completed documentation change:** EchoSave duplicate-safe root, immutable generation/head publication model, independent manifests, versioned participant payloads, unknown payload preservation, two-phase load, serializer/storage seams, migration, autosave admission, corruption recovery, security limits, isolated Save Laboratory, and optional bridge boundaries approved  
-**Known blockers:** None  
-**Next checkpoint:** FW-DOC-10 — Draft and review the complete EchoGameStarter package specification
+**Completed package specifications:** All ten Foundation package specifications are Approved v1.0.0: First Light, The Observatory, The Accord, The Passage, The Pulse, Resonance, The Will, The Looking Glass, The Chronicle, and The Workshop  
+**Current package:** Cross-package Foundation set  
+**Current stage:** Package specification pass complete; consistency review not yet completed  
+**Last completed documentation change:** EchoGameStarter Editor-only composition authority, immutable dry-run plans, UPM/reload transaction journal, exact setup-facade adapters, create-only project generation, manifests, presets, repair/removal guidance, Workshop Laboratory, and generated-project independence approved  
+**Known blocker/finding:** Peer package Editor setup-facade contracts must be reconciled across the approved specifications before implementation  
+**Next checkpoint:** FW-DOC-11 — Produce the Foundation cross-package contract matrix and findings record

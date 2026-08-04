@@ -51,8 +51,8 @@ The order follows the Foundation Wave ownership layers: origin and observability
 | FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Approved v1.0.0 |
 | FW-DOC-08 | `EchoUI` | The Looking Glass — UI Framework | Defines screen/HUD/modal ownership and presenter boundaries after settings, state, input, scene, and audio contracts are known | Approved v1.0.0 |
 | FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Approved v1.0.0 |
-| FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Next |
-| FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, and removal matrix | Not started |
+| FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Approved v1.0.0 |
+| FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, setup-facade, and removal matrix | Next |
 | FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the complete set is coherent and identifies the first implementation checkpoint | Not started |
 
 ---
@@ -171,7 +171,7 @@ The consistency review produces one matrix and one findings record. It must chec
 
 The documentation gate passes only when:
 
-- [ ] Ten package specifications are Approved.
+- [x] Ten package specifications are Approved.
 - [ ] No release-blocking question remains that changes another Foundation package’s MVP or authority.
 - [ ] The cross-package ownership matrix has no duplicate authority.
 - [ ] All core dependencies and optional bridges are explicit.
@@ -192,9 +192,9 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | Metric | Current value |
 |---|---|
 | Foundation specifications required | 10 |
-| Approved | 9 |
+| Approved | 10 |
 | In drafting | 0 |
-| Remaining | 1 |
-| Current checkpoint | FW-DOC-10 — EchoGameStarter |
+| Remaining | 0 |
+| Current checkpoint | FW-DOC-11 — Foundation contract matrix |
 | Runtime implementation | Intentionally not started |
-| Known blocker | None |
+| Known finding | Peer package Editor setup-facade contracts require cross-spec reconciliation |

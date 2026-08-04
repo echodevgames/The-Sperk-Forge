@@ -52,7 +52,7 @@ The ten required specifications are:
 9. The Chronicle (`EchoSave`)
 10. The Workshop (`EchoGameStarter`)
 
-First Light v1.0.0, The Observatory v1.0.0, The Accord v1.0.0, The Passage v1.0.0, The Pulse v1.0.0, Resonance v1.0.0, The Will v1.0.0, The Looking Glass v1.0.0, and The Chronicle v1.0.0 are approved package specifications. The Workshop (`EchoGameStarter`) is next. After all ten are approved, run the cross-package consistency review before creating runtime package code.
+All ten Foundation package specifications are approved at v1.0.0: First Light, The Observatory, The Accord, The Passage, The Pulse, Resonance, The Will, The Looking Glass, The Chronicle, and The Workshop. The active checkpoint is FW-DOC-11, the cross-package contract matrix and findings record. Runtime implementation remains locked until FW-DOC-12 confirms the complete set is coherent and authorizes the first Checkpoint Build Plan.
 
 ## Folders Added Later
 
