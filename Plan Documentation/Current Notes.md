@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** SFGSS-006 New-Project Guided Pathways
-**Current checkpoint:** SUITE-DOC-25 - Define understandable, removable package-selection pathways using all 28 package foundations and the three approved cross-package matrices
+**Current focus:** SFGSS-007 ADR Template and Decision Log
+**Current checkpoint:** SUITE-DOC-26 - Define the suite ADR template, lifecycle, index, supersession rules, and current decision register
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -38,11 +38,12 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.14.0.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.15.0.
 - `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
 - `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
 - `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.0.0 Approved.
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.2.0 Approved.
+- `SFGSS-006_New-Project_Guided_Pathways.md` - v1.0.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
 - `Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix.md` - v1.0.0 Approved.
@@ -60,7 +61,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Run **SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways**. Define practical package-selection pathways for blank modular projects, game jams, audiovisual prototypes, save-based adventures, narrative games, puzzle/tabletop games, 2D controller projects, RPG foundations, local multiplayer, online multiplayer research, and custom compositions. Every pathway must expose package authority, optionality, removal, generated assets, learning order, and honest evidence states.
+Run **SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log**. Define the canonical ADR structure, lifecycle, indexing, status transitions, supersession rules, review/approval expectations, Graph View links, and a current decision register covering ADR-001 through ADR-003 and future decisions.
 
 ---
 
@@ -74,6 +75,21 @@ Run **SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways**. Define practical p
 ---
 
 ## Active Notes
+
+### August 4, 2026 - SFGSS-006 New-Project Guided Pathways
+
+- `[DECISION]` SFGSS-006 v1.0.0 is approved as the canonical package-selection and staged-composition standard.
+- `[DECISION]` A pathway is visible guidance, not a hidden bundle. It lists minimum, recommended, optional, and explicitly excluded selections.
+- `[DECISION]` Package selection begins from the authority a project needs rather than from a fixed all-suite template.
+- `[DECISION]` Every pathway records its first vertical slice, persistence choice, scene/world choice, bridges/providers, project-owned work, evidence path, and removal story.
+- `[DECISION]` The Workshop may implement a pathway as a versioned preset only through an immutable dry-run plan and exact package-owned setup facades. Manual composition remains supported.
+- `[DECISION]` Advanced/provider-backed pathways remain research or experimental until executed evidence and an ADR support stronger claims.
+- `[DECISION]` Existing-project adoption preserves working systems until standalone proof, project parity, migration, rollback, and removal evidence passes.
+- `[DECISION]` Twelve approved guidance pathways now cover Blank Modular, package Laboratories, minimal audiovisual prototypes, Game Jam Quickstart, puzzle/tabletop, password platformers, save adventures, narrative games, action combat, RPG staging, local multiplayer, online multiplayer research, and incremental adoption.
+- `[TEST]` Documentation audit confirms all 28 package authorities appear in the selection map, all three cross-package matrices are respected, and no implementation or compatibility result was promoted.
+- `[HANDOFF]` SUITE-DOC-26 drafts SFGSS-007 ADR Template and Decision Log next.
+
+**Promoted to:** SFGSS-006 v1.0.0, SFGSS-000 v0.15.0 decisions 91-96, SUITE-DOC-25 audit report, README, graph roadmap, health check, program roadmap, and artifact manifest.
 
 
 

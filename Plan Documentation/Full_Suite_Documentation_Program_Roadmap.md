@@ -3,7 +3,7 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; package implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.14.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.15.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
 **Workflow authority:** SFGSS-005 v1.2.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
@@ -115,7 +115,7 @@ These standards now follow the package foundations so they can describe the actu
 
 | Checkpoint | Deliverable | Outcome |
 |---|---|---|
-| SUITE-DOC-25 | SFGSS-006 - New-Project Guided Pathways | Package-selection pathways and Workshop guidance built from the full approved package catalog |
+| SUITE-DOC-25 | SFGSS-006 - New-Project Guided Pathways - **Approved v1.0.0** | Package-selection pathways and Workshop guidance built from the full approved package catalog |
 | SUITE-DOC-26 | SFGSS-007 - ADR Template and Decision Log | ADR format, lifecycle, indexing, supersession, and current decision register |
 | SUITE-DOC-27 | SFGSS-008 - Suite Glossary and Naming Registry | Public titles, technical IDs, namespaces, diagnostics, stable terminology, and reserved names |
 | SUITE-DOC-28 | SFGSS-009 - Repository, Versioning, and Integration Workspace Standard | Multi-repo workflow, tags, releases, compatibility catalog, local development, and distribution |
@@ -137,15 +137,15 @@ These standards now follow the package foundations so they can describe the actu
 
 `Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
 
-The graph and learning orientation remains active. SUITE-DOC-24 is now complete; the active numbered checkpoint is SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways.
+The graph and learning orientation remains active. SUITE-DOC-25 is now complete; the active numbered checkpoint is SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log.
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-24 - Advanced Cross-Package and Research Review |
+| Completed checkpoint | SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-25 - SFGSS-006 New-Project Guided Pathways** |
+| Active checkpoint | **SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
@@ -205,3 +205,10 @@ SFGSS-INT-ADVANCED-001 v1.0.0 passes the five-package authority, identity, lifec
 ## SUITE-MAP-01 Closeout - Graph Roadmap and Learning Review Gate Approved
 
 The suite maintains a central Obsidian graph roadmap, package navigation backlinks, a 28-package learning catalog, and ADR-003. SFGSS-005 is v1.2.0. SUITE-DOC-24 is now complete; SUITE-DOC-25 is active.
+
+
+## SUITE-DOC-25 Closeout - SFGSS-006 Approved
+
+SFGSS-006 v1.0.0 is approved as the canonical new-project and existing-project composition standard. It defines authority-first selection, visible minimum/recommended/optional/excluded tiers, twelve staged pathways, Workshop dry-run mapping, persistence choices, bridge/provider selection, evidence order, removal, Graph View links, and honest Advanced research language. SFGSS-000 advances to v0.15.0. No preset, provider, Laboratory, compatibility, or implementation result was claimed as executed.
+
+**Next checkpoint:** SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log.

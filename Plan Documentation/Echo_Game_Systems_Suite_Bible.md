@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.14.0  
+**Version:** 0.15.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2446,7 +2446,7 @@ After this lead bible is reviewed, create the following documents.
 
 ## 19. Guided Workflow Principles
 
-The detailed implementation-checkpoint workflow is approved in SFGSS-005. SFGSS-006 will later define new-project guided pathways. The following principles remain authoritative.
+The detailed implementation-checkpoint workflow is approved in SFGSS-005. New-project and existing-project composition guidance is approved in SFGSS-006. The following principles remain authoritative.
 
 ### 19.1 Design before implementation
 
@@ -2530,6 +2530,18 @@ At checkpoint closeout:
 5. Commit and push the documentation update with the checkpoint.
 
 This rule makes a repository scan the default way to rebuild context. Chat history may help, but it must not be the only place where a technical decision survives.
+
+### 19.6 Guided composition pathways
+
+SFGSS-006 is the canonical standard for selecting and staging packages in new and existing projects.
+
+- A pathway is an approved composition guide, not a hidden bundle or runtime dependency.
+- Every pathway separates minimum, recommended, optional, and explicitly excluded selections.
+- Every selected package, bridge, provider, adapter, scene, persistence choice, and generated asset remains visible in the plan.
+- Pathways begin with one bounded vertical slice and add later systems only after the current stage is proven.
+- The Workshop may implement a pathway as a versioned preset, but manual composition remains supported and package-owned setup facades remain authoritative.
+- Provider-backed and Advanced pathways preserve research, license, cost, compatibility, security, and evidence uncertainty until executed proof and an ADR support a stronger claim.
+- Existing projects adopt packages incrementally and preserve working systems until replacement parity is verified.
 
 ---
 
@@ -2694,6 +2706,12 @@ The following decisions form the approved starting baseline for the suite:
 88. Advanced cores remain provider-neutral. Networking, navigation, behavior, inference, hit, world, hosting, and platform providers require separate adapters, explicit dependencies, Integration Laboratories, and retained compatibility evidence.
 89. SFGSS-ADR-001 v1.2.0 extends the exact Workshop setup-facade registry and minimum planning domains through all five Advanced package foundations. Provider installation remains an explicit selected operation and is never inferred from the neutral core.
 90. No networking or AI provider, topology, hosting service, prediction model, navigation backend, behavior graph, inference engine, hit provider, status-effect framework, scene-streaming backend, or large-world strategy is approved by documentation alone. Candidate and research language remains visible until executed evidence supports a stronger claim.
+91. SFGSS-006 is the canonical guided-composition standard. A pathway recommends a visible staged package selection and never creates a hidden bundle, implicit runtime dependency, or silent authority transfer.
+92. Every pathway distinguishes minimum, recommended, optional, and explicitly excluded selections; names its first vertical slice, persistence choice, bridges/providers, project-owned work, evidence path, and removal story.
+93. Package selection begins from the authority the project needs. Recommended packages remain removable unless an approved artifact declares a real dependency, and bridges are selected only for named cross-authority behavior.
+94. The Workshop may implement approved pathways as versioned presets only through immutable dry-run plans and exact package-owned setup facades. Manual composition remains supported, and material plan drift requires reapproval.
+95. Advanced and provider-backed pathways remain research or experimental until provider, license, cost, hosting, platform, compatibility, security, performance, migration, and Laboratory evidence supports a stronger claim.
+96. Existing-project pathways preserve working systems until standalone proof, project integration, parity, rollback, migration, and removal evidence passes for the replacement.
 
 ---
 
@@ -2732,14 +2750,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the ninety decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the ninety-six decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways
+SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-25 — SFGSS-006 New-Project Guided Pathways  
+**Current checkpoint:** SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -37,7 +37,7 @@ flowchart LR
     D --> G[Foundation Collision Matrix]
     E --> H[Expansion Collision Matrix]
     F --> I[Advanced Collision and Research Matrix — Approved]
-    G --> J[Remaining Standards SFGSS-006 to 010]
+    G --> J[Remaining Standards SFGSS-007 to 010]
     H --> J
     I --> J
     J --> K[Full Suite Matrix and Handoff Audit]
@@ -201,3 +201,20 @@ At each checkpoint closeout:
 3. Confirm every current package specification links back to this note.
 4. Remove or redirect superseded duplicate nodes from the active vault.
 5. Keep empirical work marked `Not run` until evidence exists.
+
+
+## Guided pathway nodes
+
+- [[SFGSS-006_New-Project_Guided_Pathways#17. PATH-000 - Blank Modular Starter|PATH-000 Blank Modular Starter]]
+- [[SFGSS-006_New-Project_Guided_Pathways#18. PATH-001 - Package Laboratory and Portfolio System|PATH-001 Package Laboratory]]
+- [[SFGSS-006_New-Project_Guided_Pathways#19. PATH-010 - Minimal Audiovisual Prototype|PATH-010 Minimal Audiovisual Prototype]]
+- [[SFGSS-006_New-Project_Guided_Pathways#20. PATH-020 - Game Jam Quickstart|PATH-020 Game Jam Quickstart]]
+- [[SFGSS-006_New-Project_Guided_Pathways#21. PATH-030 - Puzzle and Tabletop Game|PATH-030 Puzzle and Tabletop]]
+- [[SFGSS-006_New-Project_Guided_Pathways#22. PATH-040 - Password-Based Puzzle Platformer|PATH-040 Password Platformer]]
+- [[SFGSS-006_New-Project_Guided_Pathways#23. PATH-050 - Save-Based Adventure|PATH-050 Save-Based Adventure]]
+- [[SFGSS-006_New-Project_Guided_Pathways#24. PATH-060 - Narrative Game|PATH-060 Narrative Game]]
+- [[SFGSS-006_New-Project_Guided_Pathways#25. PATH-070 - Action Combat Prototype|PATH-070 Action Combat Prototype]]
+- [[SFGSS-006_New-Project_Guided_Pathways#26. PATH-080 - RPG Foundation|PATH-080 RPG Foundation]]
+- [[SFGSS-006_New-Project_Guided_Pathways#27. PATH-090 - Local Multiplayer Prototype|PATH-090 Local Multiplayer]]
+- [[SFGSS-006_New-Project_Guided_Pathways#28. PATH-100 - Online Multiplayer Research Prototype|PATH-100 Online Multiplayer Research]]
+- [[SFGSS-006_New-Project_Guided_Pathways#29. PATH-110 - Existing-Project Incremental Adoption|PATH-110 Existing-Project Adoption]]
