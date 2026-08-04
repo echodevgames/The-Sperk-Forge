@@ -1,4 +1,4 @@
-# The Sperk’s Forge — Current Notes
+# The Sperk’s Forge - Current Notes
 
 **Document role:** Living development capture page  
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
@@ -15,14 +15,14 @@
 
 Use this page for information discovered while designing, implementing, testing, or reviewing the suite:
 
-- `[NOTE]` — useful observation or context.
-- `[QUESTION]` — unresolved question requiring research or approval.
-- `[PROPOSAL]` — suggested change that is not yet authoritative.
-- `[DECISION]` — approved decision awaiting or confirming documentation promotion.
-- `[TEST]` — test result, reproduction, or validation evidence.
-- `[BUG]` — defect or regression awaiting issue-log placement.
-- `[RISK]` — dependency, compatibility, schedule, or architecture concern.
-- `[HANDOFF]` — context the next work session must see.
+- `[NOTE]` - useful observation or context.
+- `[QUESTION]` - unresolved question requiring research or approval.
+- `[PROPOSAL]` - suggested change that is not yet authoritative.
+- `[DECISION]` - approved decision awaiting or confirming documentation promotion.
+- `[TEST]` - test result, reproduction, or validation evidence.
+- `[BUG]` - defect or regression awaiting issue-log placement.
+- `[RISK]` - dependency, compatibility, schedule, or architecture concern.
+- `[HANDOFF]` - context the next work session must see.
 
 Keep entries dated. Link to the affected specification, ADR, checkpoint, test, issue, guide, or source file whenever possible.
 
@@ -38,16 +38,16 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.12.0.
-- `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` — v1.0.0 Approved.
-- `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` — v1.0.0 Approved.
-- `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` — v1.0.0 Approved.
-- `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` — v1.1.0 Approved.
-- `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` — Accepted.
-- `Full_Suite_Documentation_Program_Roadmap.md` — active roadmap.
-- `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` — SUITE-DOC-01 Passed.
-- Foundation package specifications, ADR-001, and the Foundation cross-package matrix — approved baseline.
-- `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` — approved but dormant.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.12.0.
+- `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
+- `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
+- `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.0.0 Approved.
+- `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
+- `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
+- `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
+- `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
+- Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
+- `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
@@ -106,7 +106,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** The Wellspring (`EchoPool`) Package Specification v1.0.0, SUITE-DOC-06 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
 
-### August 4, 2026 — Impact (`EchoFeedback`) package specification
+### August 4, 2026 - Impact (`EchoFeedback`) package specification
 
 - `[DECISION]` Impact (`EchoFeedback`) Package Specification v1.0.0 is approved as the Level 2 authority for coordinated transient feedback; implementation remains locked until SUITE-DOC-33.
 - `[DECISION]` EchoFeedback owns immutable feedback recipes, transient instance execution, unscaled scheduling, channel scaling, arbitration, cancellation, provider coordination, and bounded diagnostics.
@@ -127,7 +127,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** Impact (`EchoFeedback`) Package Specification v1.0.0, SUITE-DOC-05 audit report, README, roadmap, and Current Notes handoff.
 
-### August 4, 2026 — Package specification priority clarification
+### August 4, 2026 - Package specification priority clarification
 
 - `[DECISION]` The owner clarified that “continue until all documentation is ready instead of just 7.1” primarily means completing the package foundations in SFGSS-000 Sections 7.2 Expansion and 7.3 Advanced before implementation.
 - `[DECISION]` Remaining general standards no longer block the start of Expansion package specifications. They move after the package foundations, except where a standard is directly required to resolve an active package decision.
@@ -139,7 +139,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** Full Suite Documentation Program Roadmap, Package Specification Priority Rebaseline Report, README, and Current Notes handoff.
 
-### August 3, 2026 — Living repository documentation
+### August 3, 2026 - Living repository documentation
 
 - `[DECISION]` Suite and package documentation will live in the Git repository beside development work.
 - `[DECISION]` The repository documentation folder will be opened directly in Obsidian rather than copied into a separate vault.
@@ -149,7 +149,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** SFGSS-000 v0.5.0 decision 31 and SFGSS-001 v1.1.0 documentation requirements.
 
-### August 3, 2026 — Foundation Specification Pass
+### August 3, 2026 - Foundation Specification Pass
 
 - `[DECISION]` Complete and approve all ten Foundation Wave package specifications before beginning Foundation Wave runtime implementation.
 - `[DECISION]` Run a cross-package consistency review after the tenth specification and before opening any M1 package skeleton checkpoint.
@@ -162,7 +162,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** SFGSS-000 v0.6.0 decisions 32–33, First Light specification v1.0.0, and the Foundation Wave Specification Roadmap.
 
-### August 3, 2026 — The Observatory specification
+### August 3, 2026 - The Observatory specification
 
 - `[DECISION]` The Observatory (`EchoDiagnostics`) specification v1.0.0 is approved as the Level 2 authority for diagnostics and validation; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoDiagnostics observes and reports package/runtime health but never becomes the source of truth for the behavior it observes and never silently repairs production state.
@@ -181,7 +181,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** The Observatory (`EchoDiagnostics`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved diagnostics authority without changing suite ownership boundaries.
 
 
-### August 3, 2026 — The Accord specification
+### August 3, 2026 - The Accord specification
 
 - `[DECISION]` The Accord (`EchoSettings`) specification v1.0.0 is approved as the Level 2 authority for global preferences; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoSettings owns global preference truth, defaults, committed/effective values, drafts, validation, application coordination, versioned persistence, migration, and safe display confirmation. It does not own production settings UI, audio playback, input execution, localization content, save-slot progress, pause, or gameplay rules.
@@ -202,7 +202,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** The Accord (`EchoSettings`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing global-preference authority and preserve the approved cross-package ownership matrix.
 
-### August 3, 2026 — The Passage specification
+### August 3, 2026 - The Passage specification
 
 - `[DECISION]` The Passage (`EchoSceneFlow`) specification v1.0.0 is approved as the Level 2 authority for normal scene travel after First Light handoff; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoSceneFlow owns destination validation, request admission, one serialized transition pipeline, progress, activation, route helpers, recovery results, and scene-flow diagnostics. It does not own startup orchestration, game-state rules, production UI, save policy, audio playback, gameplay completion, multiplayer authority, or scene content.
@@ -223,7 +223,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** The Passage (`EchoSceneFlow`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing normal-scene-travel authority and preserve the approved cross-package ownership matrix.
 
 
-### August 3, 2026 — The Pulse specification
+### August 3, 2026 - The Pulse specification
 
 - `[DECISION]` The Pulse (`EchoGameState`) specification v1.0.0 is approved as the Level 2 authority for high-level runtime state, validated primary transitions, temporary override scopes, nested pause reasons, and resulting global time/cursor policy; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoGameState owns exactly one primary application state plus zero or more leased override scopes. It does not own menu presentation, input bindings, audio playback, scene loading, character/enemy state machines, save transport, or project-specific victory/defeat rules.
@@ -246,7 +246,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 **Promoted to:** The Pulse (`EchoGameState`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved runtime-state and pause authority without changing the suite ownership matrix.
 
-### August 3, 2026 — Resonance specification
+### August 3, 2026 - Resonance specification
 
 - `[DECISION]` Resonance (`Jukebot`) specification v1.0.0 is approved as the Level 2 authority for runtime music, SFX, ambience, voice-pool, playback-handle, and mixer-routing execution; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` One duplicate-safe application-session `JukebotRoot` owns ordinary music, SFX, ambience, bus, diagnostics, and runtime-state children. `Awake` claims authority only; initialization performs side effects later.
@@ -269,7 +269,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** Resonance (`Jukebot`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved audio authority without changing the suite ownership matrix.
 
 
-### August 3, 2026 — The Will specification
+### August 3, 2026 - The Will specification
 
 - `[DECISION]` The Will (`EchoInput`) specification v1.0.0 is approved as the Level 2 authority for input contexts, reason-based locks, active-device/control-scheme awareness, primary-user pairing, rebinding, binding-override models, prompt/glyph data, and input diagnostics; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoInput owns input infrastructure but does not own movement physics, gameplay action meaning, controller behavior, production UI screens, high-level game state, audio feedback, scene travel, or durable preference storage.
@@ -300,7 +300,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 ---
 
 
-### August 3, 2026 — The Looking Glass specification
+### August 3, 2026 - The Looking Glass specification
 
 - `[DECISION]` The Looking Glass (`EchoUI`) specification v1.0.0 is approved as the Level 2 authority for reusable runtime UI presentation infrastructure; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoUI owns its persistent layer root, screen history, modal ordering/results, HUD region coordination, bounded notifications, prompts/tooltips, EventSystem/focus coordination, view lifecycles, theme application, accessibility-aware presentation, and UI diagnostics. It does not own settings truth, save files, input-context authority, scene travel, pause/time, audio playback, localization content, or gameplay rules.
@@ -321,7 +321,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** The Looking Glass (`EchoUI`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing UI presentation authority and preserve the approved cross-package ownership matrix.
 
 
-### August 3, 2026 — The Chronicle specification
+### August 3, 2026 - The Chronicle specification
 
 - `[DECISION]` The Chronicle (`EchoSave`) specification v1.0.0 is approved as the Level 2 authority for durable local game-save documents, slots, generations, participant payload transport, migration, recovery, and save-operation diagnostics; implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` EchoSave owns save files, slot and generation management, save/load orchestration, participant contracts, serializer/storage seams, integrity checks, backup retention, corruption recovery, and save-specific tooling. It does not own global preferences, project gameplay schemas, automatic scene-object serialization, production save UI, game-state rules, scene travel, cloud synchronization, or platform accounts.
@@ -346,7 +346,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** The Chronicle (`EchoSave`) Package Specification v1.0.0.
 
 
-### August 3, 2026 — The Workshop specification
+### August 3, 2026 - The Workshop specification
 
 - `[DECISION]` The Workshop (`EchoGameStarter`) specification v1.0.0 is approved as the Level 2 authority for Editor-time package selection, composition planning, package-operation coordination, safe project generation, generation records, repair planning, removal guidance, and readiness reporting. Implementation remains deferred by the Foundation documentation gate.
 - `[DECISION]` The Workshop is Editor-only and ships no runtime assembly, persistent root, `GameManager`, service locator, or Player dependency. Generated projects must remain valid after The Workshop is removed.
@@ -368,7 +368,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 **Promoted to:** The Workshop (`EchoGameStarter`) Package Specification v1.0.0.
 
 
-### August 3, 2026 — Foundation cross-package collision review
+### August 3, 2026 - Foundation cross-package collision review
 
 - `[DECISION]` SFGSS-INT-FOUNDATION-001 is approved as the Foundation authority/lifecycle/dependency/bridge/data/Test Lab/removal reconciliation record.
 - `[TEST]` All ten specifications retain exactly one Foundation authority per concern and no peer runtime dependency in core assemblies.
@@ -387,7 +387,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 
 
-### August 3, 2026 — Foundation Documentation Readiness Gate
+### August 3, 2026 - Foundation Documentation Readiness Gate
 
 - `[TEST]` FW-DOC-12 verified ten Approved Foundation specifications with all thirty SFGSS-001 sections present.
 - `[TEST]` SFGSS-ADR-001 and SFGSS-INT-FOUNDATION-001 are present and aligned with Pulse v1.1.0 and Workshop v1.1.0.
@@ -395,7 +395,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 - `[DECISION]` SFGSS-005 v1.0.0 is approved as the Checkpoint Build Workflow and ChatGPT Collaboration authority.
 - `[BUG]` First Light v1.0.0 still pointed to the completed documentation gate rather than the first implementation checkpoint.
 - `[DECISION]` First Light advances to v1.1.0 for status/workflow reconciliation only; runtime behavior and API intent are unchanged.
-- `[DECISION]` FW-DOC-12 passes. FL-M1-01 — First Light Package Skeleton is the first authorized implementation checkpoint.
+- `[DECISION]` FW-DOC-12 passes. FL-M1-01 - First Light Package Skeleton is the first authorized implementation checkpoint.
 - `[DECISION]` FL-M1-01 authorizes package files and validation only. It authorizes no C# script, authority root, ScriptableObject, prefab, scene, sample, setup tool, or bridge.
 - `[HANDOFF]` Import this checkpoint, commit/push it, then execute `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md`.
 
@@ -404,7 +404,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 ---
 
 
-### August 3, 2026 — Full Suite Documentation Rebaseline
+### August 3, 2026 - Full Suite Documentation Rebaseline
 
 - `[DECISION]` Extend the documentation-first gate from the Foundation Wave to the complete planned documentation program in SFGSS-000 Section 18.
 - `[DECISION]` Preserve all Foundation approvals and readiness evidence; FL-M1-01 remains the first queued implementation checkpoint but is dormant until SUITE-DOC-36.
@@ -412,14 +412,14 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 - `[DECISION]` Distinguish design-complete documentation from implementation evidence. Do not invent compile results, screenshots, performance measurements, compatibility validation, migration evidence, release notes, or prototype findings.
 - `[DECISION]` When implementation begins, ChatGPT must show complete compile-ready code in the conversation, explain each file and important section, provide exact Unity Editor steps, and teach the architectural reason for the choice.
 - `[DECISION]` Jesse enters the code himself by default. Generated source files or direct edits occur only when explicitly requested and do not replace visible code/explanations.
-- `[HANDOFF]` The active checkpoint is SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard.
+- `[HANDOFF]` The active checkpoint is SUITE-DOC-02 - SFGSS-002 Dependency, Bridge, and Assembly Standard.
 
 **Promoted to:** SFGSS-000 v0.9.0 decisions 41–43, SFGSS-ADR-002, SFGSS-005 v1.1.0, Full Suite Documentation Program Roadmap, and the SUITE-DOC-01 Rebaseline Report.
 
 ---
 
 
-### August 4, 2026 — Dependency, Bridge, and Assembly Standard
+### August 4, 2026 - Dependency, Bridge, and Assembly Standard
 
 - `[DECISION]` SFGSS-002 v1.0.0 is approved as the canonical package-manifest, assembly-direction, bridge/provider, compile-guard, sample/test dependency, compatibility, and clean-removal standard.
 - `[DECISION]` Core runtime packages do not reference optional peer Echo packages. A separate bridge declares dependencies on every peer it connects; peers never reference the bridge.
@@ -440,7 +440,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 ---
 
 
-### August 4, 2026 — Data, IDs, Serialization, and Migration Standard
+### August 4, 2026 - Data, IDs, Serialization, and Migration Standard
 
 - `[DECISION]` SFGSS-003 v1.0.0 is approved as the canonical data classification, identity, Unity GUID, serialization, migration, unknown-data, transaction, recovery, and durable-removal standard.
 - `[DECISION]` Unity asset GUIDs, package/project domain stable IDs, and runtime instance IDs are separate contracts. AssetDatabase identity is Editor-only unless explicitly copied into a runtime-safe build record.
@@ -487,6 +487,7 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoBuildTools recipes, Build Profile boundary, planning, validation, stamping, output safety, receipts, manifests, checksums, providers, CLI, and Laboratory | EchoBuildTools Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoPool definitions, generational leases, capacity, exhaustion, scopes, callbacks, automatic return, reconciliation, diagnostics, and Laboratory | EchoPool Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | Impact recipes, providers, timeline, cancellation, channel scales, time boundary, diagnostics, and Laboratory | EchoFeedback Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | Testing taxonomy, evidence states, Laboratories, compatibility, defects, performance, and release gates | SFGSS-000 v0.12.0 and SFGSS-004 v1.0.0 | Promoted |
@@ -516,40 +517,64 @@ Draft and approve the complete **EchoBuildTools - The Foundry Package Specificat
 | Impact package specification | Approved | v1.0.0; 30 sections; 32 Laboratory scenarios; 92 planned tests, all Not run |
 | EchoPool package specification | Approved | v1.0.0; 30 sections; 36 Laboratory scenarios; 118 planned tests, all Not run |
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
-| Expansion specifications | 3 of 13 approved | Impact, The Wellspring, and The Ascent |
-| Current checkpoint | Active | SUITE-DOC-08 — EchoBuildTools: The Foundry Package Specification |
+| EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
+| Expansion specifications | 4 of 13 approved | Impact, The Wellspring, The Ascent, and The Foundry |
+| Current checkpoint | Active | SUITE-DOC-09 - EchoLocalization: Many Tongues Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
+
+---
+
+### August 4, 2026 - The Foundry (`EchoBuildTools`) Package Specification
+
+- `[DECISION]` The Foundry Package Specification v1.0.0 is approved as the Level 2 authority for EchoBuildTools.
+- `[DECISION]` EchoBuildTools is Editor-only. It has no runtime root, runtime assembly, Player state, or gameplay authority.
+- `[DECISION]` Unity Build Profile assets own target platform, effective scenes, profile scripting defines, and platform/Player overrides. Foundry recipes wrap one explicit profile with release identity, output, validation, build, and evidence policy.
+- `[DECISION]` Every attempt resolves an immutable BuildPlan and SHA-256 plan fingerprint before validation and approval.
+- `[DECISION]` Foundry never changes scripting defines during execution because compilation changes require a domain reload. Define mismatch blocks before BuildPipeline.
+- `[DECISION]` Version and platform build stamps are temporary by default, captured before mutation, restored after every attempt, and backed by a recovery journal.
+- `[DECISION]` The MVP does not automatically increment, commit, tag, or push version/source-control state.
+- `[DECISION]` Output cleaning is allowed only for an exact empty or Foundry-owned leaf whose marker matches the project and recipe. Protected roots, ancestors, traversal, symlink escape, and unowned nonempty folders block.
+- `[DECISION]` Unity BuildPipeline success is not final release publication. Required artifact processors, inventory, checksums, manifest, restoration, and receipt publication must complete.
+- `[DECISION]` Git metadata, CI vendors, signing, notarization, itch/store deployment, and external network operations remain optional provider adapters.
+- `[DECISION]` Peer-package validators connect through explicit bridges/providers and retain ownership of package-specific truth and repair.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 40 Laboratory scenarios, and 156 package-qualified planned tests. All implementation evidence remains Not run.
+- `[HANDOFF]` SUITE-DOC-09 drafts Many Tongues (`EchoLocalization`) next.
+
+**Promoted to:** EchoBuildTools Package Specification v1.0.0, the SUITE-DOC-08 audit report, README, and full-suite roadmap.
 
 ---
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoProgression against SFGSS-000 through SFGSS-005 and approved Foundation, Impact, and Wellspring authorities.
-- [x] Approve progression authority without absorbing save transport, scene travel, UI, objectives, inventory, characters, RPG statistics, platform services, or multiplayer authority.
-- [x] Separate immutable definitions from runtime unlock, completion, checkpoint, provider, history, password, and import state.
-- [x] Define stable IDs, prerequisite graphs, access evaluation, atomic mutation batches, completion metrics, local ranks, checkpoints, and authored passwords.
-- [x] Define explicit export/import, migration, alias, unknown/orphan preservation, Chronicle bridge, and optional local-provider boundaries.
-- [x] Define password privacy/security limits and prohibit credential, DRM, entitlement, or anti-cheat claims.
-- [x] Design the isolated Ascent Laboratory and package-qualified planned test registry.
-- [x] Keep every unexecuted runtime, performance, platform, compatibility, migration, provider, integration, and release result `Not run`.
+- [x] Reconcile EchoBuildTools against SFGSS-000 through SFGSS-005 and approved Foundation, Impact, Wellspring, and Ascent authorities.
+- [x] Approve an Editor-only authority without creating a runtime root, runtime assembly, deployment service, source-control client, or credential store.
+- [x] Preserve Unity Build Profiles as the target, scene, define, and platform-settings authority.
+- [x] Define immutable recipes, build plans, canonical fingerprints, validation gates, and stale-plan rejection.
+- [x] Define temporary version/platform stamping, settings snapshots, reverse restoration, and recovery journals.
+- [x] Define exact owned-leaf output cleaning, protected paths, traversal/symlink checks, and non-destructive failure behavior.
+- [x] Define BuildPipeline execution, detailed receipts, required artifact processors, package/license inventory, streaming checksums, manifests, and release checklists.
+- [x] Define explicit validator/provider registration and external Git, CI, signing, notarization, and deployment boundaries.
+- [x] Design the isolated Foundry Editor Laboratory and package-qualified planned test registry.
+- [x] Keep every unexecuted build, performance, platform, compatibility, provider, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
-- [x] Confirm no manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider implementation was created.
-- [ ] Commit and push SUITE-DOC-07.
-- [x] Stop before EchoBuildTools specification work.
+- [x] Confirm no package manifest, asmdef, C# file, Build Profile asset, recipe asset, window, validator, output operation, build invocation, sample, bridge, provider, scene, or runtime implementation was created.
+- [x] Record SUITE-DOC-07 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-08.
+- [x] Stop before EchoLocalization specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-07 — The Ascent (`EchoProgression`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-08 - The Foundry (`EchoBuildTools`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoBuildTools — The Foundry  
-**Active checkpoint:** SUITE-DOC-08 — EchoBuildTools Package Specification  
-**Expansion specifications:** 3 of 13 approved  
+**Current focus:** EchoLocalization - Many Tongues  
+**Active checkpoint:** SUITE-DOC-09 - EchoLocalization Package Specification  
+**Expansion specifications:** 4 of 13 approved  
 **Package implementation:** Not started  
-**First queued implementation:** FL-M1-01 — First Light Package Skeleton  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-06 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-07 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, provider adapter, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-07 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-08 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, build tool, or gameplay implementation

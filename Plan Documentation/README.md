@@ -1,6 +1,6 @@
 # Plan Documentation
 
-This folder is the living planning and architecture record for **The Sperk’s Forge — EchoDevGames Game Systems Suite**.
+This folder is the living planning and architecture record for **The Sperk’s Forge - EchoDevGames Game Systems Suite**.
 
 The Markdown files are committed to Git and opened directly in Obsidian. Git is the durable history; Obsidian is the authoring and navigation surface. Do not maintain a second copied vault.
 
@@ -35,9 +35,9 @@ The ten Foundation specifications and Foundation collision/readiness records are
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
 Expansion specifications: 3 of 13 approved; Impact v1.0.0, The Wellspring v1.0.0, and The Ascent v1.0.0
-Active checkpoint: SUITE-DOC-08 — EchoBuildTools: The Foundry Package Specification
+Active checkpoint: SUITE-DOC-08 - EchoBuildTools: The Foundry Package Specification
 Implementation: locked
-First queued implementation: FL-M1-01 — First Light Package Skeleton
+First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
 ```
 
@@ -84,3 +84,22 @@ At every meaningful checkpoint:
 3. Update roadmap, tests, research, setup, changelog, or release records as applicable.
 4. Confirm documentation describes approved or observed truth accurately.
 5. Commit and push the checkpoint before advancing when practical.
+
+## Current Package-First Status - August 4, 2026
+
+- Foundation specifications: **10 of 10 approved**.
+- Expansion specifications: **4 of 13 approved**.
+- Latest approval: **The Foundry (`EchoBuildTools`) v1.0.0**.
+- Active checkpoint: **SUITE-DOC-09 - Many Tongues (`EchoLocalization`)**.
+- Package implementation remains locked until **SUITE-DOC-33**.
+- All Foundry runtime, platform, performance, compatibility, build, and release evidence remains **Not run** until implementation.
+
+Read the current work in this order:
+
+1. `Echo_Game_Systems_Suite_Bible.md`
+2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
+3. `Package Specifications/SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md`
+4. `Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md`
+5. `Current Notes.md`
+6. `Full_Suite_Documentation_Program_Roadmap.md`
+
