@@ -190,6 +190,14 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-20_EchoCombat_Feasibility_Foundation_Audit_Report.md",
+    "SUITE-DOC-20_Artifact_Manifest.json",
+    "Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md",
+    "Package Specifications/SFGSS-Clash-EchoCombat-Package-Foundation.md",
+    "Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md",
+    "SUITE-DOC-19_Artifact_Manifest.json",
+    "Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md",
+    "Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md",
     "Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md",
     "SUITE-DOC-18_Artifact_Manifest.json",
     "Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md",
@@ -210,8 +218,6 @@
     "SUITE-DOC-15_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
     "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-13_Artifact_Manifest.json",
-    "SUITE-DOC-14_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
@@ -219,12 +225,6 @@
     "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md",
     "Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
-    "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-Voices-EchoDialogue-Package-Specification.md",
-    "Test Reports/SUITE-DOC-09_EchoLocalization_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-07_EchoProgression_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md",
-    "Package Specifications/SFGSS-Many-Tongues-EchoLocalization-Package-Specification.md",
-    "Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md"
+    "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md"
   ]
 }

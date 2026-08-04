@@ -35,8 +35,8 @@ The ten Foundation specifications and Foundation collision/readiness records are
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
 Expansion specifications: 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0
-Completed advanced foundation: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation; provider selection pending
-Active checkpoint: SUITE-DOC-19 - EchoAI: Instinct Feasibility Foundation
+Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0 feasibility foundation, and Clash (`EchoCombat`) v1.0.0 feasibility foundation; provider/adapters pending
+Active checkpoint: SUITE-DOC-21 - EchoAbilities: Arcana Feasibility Foundation
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -74,7 +74,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation and Expansion authorities, `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md`, and both SUITE-DOC-18 Multiplayer research records. Package implementation is locked until SUITE-DOC-33. The Convergence provider-neutral foundation is approved, but no production networking provider, topology, transport, service, or adapter has been selected. Current checkpoint: SUITE-DOC-19 - EchoAI (`Instinct`) Feasibility Foundation. Define sensing, stimuli, perception memory, target scoring, behavior seams, blackboard/context data, navigation-provider adapters, diagnostics, Laboratories, and explicit non-goals. Do not create one universal enemy brain or select one mandatory navigation backend. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion authorities, and the approved Advanced foundations for The Convergence, Instinct, and Clash plus their research records. Package implementation is locked until SUITE-DOC-33. EchoMultiplayer has no selected production provider, EchoAI has no mandatory navigation/Behavior/inference backend, and EchoCombat owns no universal health/stat model or damage formula. Current checkpoint: SUITE-DOC-21 - EchoAbilities (`Arcana`) Feasibility Foundation. Define ability definitions and runtime instances, activation validation, costs, charges, cooldowns, cast/channel timing, interruption, targeting, effect execution, loadouts, save and multiplayer seams, and explicit separation from Clash and project content. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -90,19 +90,30 @@ At every meaningful checkpoint:
 
 - Foundation specifications: **10 of 10 approved**.
 - Expansion specifications: **13 of 13 approved**.
-- Latest approval: **The Convergence (`EchoMultiplayer`) provider-neutral foundation v1.0.0**. No provider adapter is approved.
-- Latest advanced foundation: **The Convergence (`EchoMultiplayer`) v1.0.0**, provider selection pending.
-- Active checkpoint: **SUITE-DOC-19 - Instinct (`EchoAI`)**.
+- Latest approval: **Clash (`EchoCombat`) feasibility foundation v1.0.0**. No combat implementation, universal health/stat model, damage formula, or adapter is approved.
+- Latest advanced foundations: **The Convergence (`EchoMultiplayer`) v1.0.0**, **Instinct (`EchoAI`) v1.0.0**, and **Clash (`EchoCombat`) v1.0.0**.
+- Active checkpoint: **SUITE-DOC-21 - Arcana (`EchoAbilities`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
-- All Convergence provider prototypes, provider selection, topology, transport, service, license, performance, platform, migration, hosting, compatibility, integration, and release evidence remains **Not run** until executed and recorded.
+- All Combat and AI runtime, provider, adapter, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
 
 Read the current work in this order:
 
 1. `Echo_Game_Systems_Suite_Bible.md`
 2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md`
-4. `Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md` and `Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md`
-5. `Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md`
-6. `Current Notes.md`
-7. `Full_Suite_Documentation_Program_Roadmap.md`
+3. `Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md`
+4. `Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md`
+5. `Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md`
+6. `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md` and its research records as the prior Advanced authority
+7. `Current Notes.md`
+8. `Full_Suite_Documentation_Program_Roadmap.md`
 
+
+
+## Current Package-First Status - Clash Approved
+
+- Foundation specifications: **10 of 10 approved**.
+- Expansion specifications: **13 of 13 approved**.
+- Advanced foundations: **3 of 5 approved**.
+- Latest approval: **Clash (`EchoCombat`) Feasibility Foundation v1.0.0**.
+- Active checkpoint: **SUITE-DOC-21 - Arcana (`EchoAbilities`)**.
+- Package implementation remains locked until **SUITE-DOC-33**.

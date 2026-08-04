@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** Instinct (`EchoAI`) feasibility foundation
-**Current checkpoint:** SUITE-DOC-19 - Define EchoAI sensing, memory, scoring, behavior, navigation seams, diagnostics, and explicit non-goals
+**Current focus:** Arcana (`EchoAbilities`) feasibility foundation
+**Current checkpoint:** SUITE-DOC-21 - Define EchoAbilities activation, costs, charges, cooldowns, casting, interruption, targeting, effects, persistence, and multiplayer seams
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -46,6 +46,9 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
 - `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md` - v1.0.0 Approved provider-neutral foundation; provider selection pending.
+- `Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md` - v1.0.0 Approved feasibility foundation; implementation and adapters pending.
+- `Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md` - approved dated feasibility/provider record.
+- `Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md` - documentation gate passed.
 - `Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md` - approved dated research foundation.
 - `Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md` - approved comparison protocol; all executions Not run.
 - `Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md` - provider-neutral documentation gate passed.
@@ -55,7 +58,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Produce the complete **Instinct (`EchoAI`) feasibility foundation**. Define sensing and stimuli, perception memory, target scoring, behavior/state seams, blackboard/context data, navigation-provider adapters, debugging, Laboratories, and package boundaries. Do not create one universal enemy brain or select one mandatory navigation technology.
+Produce the complete **Arcana (`EchoAbilities`) feasibility foundation**. Define ability definitions and runtime instances, activation validation, costs, charges, cooldowns, cast/channel timing, interruption, targeting, effect execution, loadouts, save boundaries, multiplayer authority, and explicit separation from Clash, The Vault, The Fellowship, The Will, and project content.
 ---
 
 ## Open Questions
@@ -876,3 +879,105 @@ Produce the complete **Instinct (`EchoAI`) feasibility foundation**. Define sens
 **Prior checkpoint:** SUITE-DOC-16 confirmed committed/pushed by owner  
 **Commit/push:** SUITE-DOC-17 pending user confirmation  
 **Stop point:** Before any provider selection claim, network SDK install, package manifest, asmdef, C# file, scene, prefab, sample, adapter, bridge, prototype, or runtime implementation
+
+
+## August 4, 2026 - SUITE-DOC-19 Instinct feasibility foundation approved
+
+- `[DECISION]` Instinct (`EchoAI`) Feasibility Foundation v1.0.0 is approved as the Level 2 pre-code authority for actor-local AI coordination, semantic observations, bounded perception memory, target scoring, typed blackboards, decision scheduling, lightweight behavior/state-machine contracts, navigation request/status abstractions, diagnostics, validation, Laboratories, and adapter boundaries.
+- `[DECISION]` EchoAI remains an Advanced candidate. This checkpoint does not authorize implementation, a mandatory navigation backend, a Unity Behavior dependency, neural inference, measured performance, or production compatibility.
+- `[DECISION]` Agent authority is actor-local. Shared world registries and schedulers are explicit scene/world services rather than one persistent global AI manager.
+- `[DECISION]` Definition/configuration assets remain immutable. Memory, confidence, target selection, blackboard values, behavior state, tickets, paths, schedules, and traces are runtime-owned and bounded.
+- `[DECISION]` The core includes a lightweight state-machine and utility-selection foundation but explicitly rejects one universal enemy brain or mandatory behavior-tree architecture.
+- `[DECISION]` Navigation technology remains optional. Unity AI Navigation, 2D/custom pathfinding, Unity Behavior, and Inference Engine connect through separately versioned adapters.
+- `[DECISION]` Target selection uses deterministic filters, score contributions, thresholds, hysteresis, stable ties, seeded random sources, and explainable results.
+- `[DECISION]` Live observations, provider handles, behavior actions, navigation tickets, and paths are not saved. Projects may opt into detached, versioned, safe-point durable snapshots.
+- `[DECISION]` Multiplayer AI defaults to authoritative host/server decisions through The Convergence bridge; clients do not authoritatively commit shared AI outcomes.
+- `[TEST]` The foundation contains all 30 SFGSS-001 sections, 80 package-qualified Laboratory scenarios, and 512 individually registered planned tests. Every empirical result remains `Not run`.
+- `[RESEARCH]` The dated provider record reviews Unity AI Navigation 2.0.14, Unity Behavior 1.0.16, and Unity Inference Engine 2.6.1 as optional adapter candidates, not implementation pins.
+- `[HANDOFF]` SUITE-DOC-20 drafts Clash (`EchoCombat`) next.
+
+**Promoted to:** `Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md`, `Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md`, SUITE-DOC-19 audit report, README, roadmap, and artifact manifest.
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-19
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve EchoAI ownership, independence, data, lifecycle, observation, memory, scoring, blackboard, scheduling, behavior, navigation, diagnostics, Laboratory, provider, bridge, removal, and release contracts.
+- [x] Keep AI Navigation, Unity Behavior, custom navigation, and inference optional.
+- [x] Register 80 Laboratory scenarios and 512 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, provider, navigation, behavior, inference, platform, performance, compatibility, integration, migration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, feasibility/provider record, audit report, and artifact manifest.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, sensor, scorer, behavior, navigation provider, bridge, or gameplay implementation was created.
+- [x] Record SUITE-DOC-18 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-19.
+- [x] Stop before EchoCombat specification or implementation work.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-19
+
+**Completed checkpoint:** SUITE-DOC-19 - Instinct (`EchoAI`) Feasibility Foundation  
+**Result:** Approved v1.0.0 feasibility foundation  
+**Current focus:** EchoCombat - Clash  
+**Active checkpoint:** SUITE-DOC-20 - EchoCombat Feasibility Foundation  
+**Foundation specifications:** 10 of 10 approved  
+**Expansion specifications:** 13 of 13 approved  
+**Advanced foundations:** 2 of 5 approved  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**Runtime authorization:** None  
+**Known blockers:** None for documentation; all implementation and provider evidence remains Not run  
+**Prior checkpoint:** SUITE-DOC-18 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-19 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, combat message, resolver, hit adapter, or gameplay implementation
+
+
+## August 4, 2026 - SUITE-DOC-20 Clash feasibility foundation approved
+
+- `[DECISION]` Clash (`EchoCombat`) Feasibility Foundation v1.0.0 is approved as the Level 2 pre-code authority for combat requests/results, source and target identity, targetability, relation seams, fixed-point magnitudes, pure modifier ordering, receiver prepare/commit transactions, outcomes, defeat/recovery events, bounded combat records, diagnostics, validation, Laboratories, and hit-adapter boundaries.
+- `[DECISION]` Mutable health, shields, stats, durability, posture, and defeated state remain target/project-owned. EchoCombat never reaches into those models directly.
+- `[DECISION]` Damage and healing are separate semantic operation kinds. Healing is not negative damage.
+- `[DECISION]` Resolution modifiers are pure ordered transforms; target mutation occurs only through one explicit receiver transaction.
+- `[DECISION]` Successful combat events publish after receiver commit. Listener failure cannot undo a committed result.
+- `[DECISION]` Physics2D, Physics3D, abilities, AI, characters, equipment/stat rules, feedback, objectives, saves, and networking connect through optional adapters or project code.
+- `[DECISION]` Area effects use per-target transactions connected by causality and batch IDs. The core does not promise cross-target atomic rollback.
+- `[DECISION]` Multiplayer clients do not authoritatively apply shared combat. The selected Convergence/provider bridge validates evidence and submits authoritative requests.
+- `[TEST]` The foundation contains all 30 SFGSS-001 sections, 84 package-qualified Laboratory scenarios, and 540 individually registered planned tests. Every empirical result remains `Not run`.
+- `[HANDOFF]` SUITE-DOC-21 drafts Arcana (`EchoAbilities`) next.
+
+**Promoted to:** `Package Specifications/SFGSS-Clash-EchoCombat-Package-Foundation.md`, `Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md`, SUITE-DOC-20 audit report, README, roadmap, and artifact manifest.
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-20
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve EchoCombat ownership, identities, requests, targetability, relations, fixed-point magnitude, pure modifiers, receiver transactions, outcomes, events, diagnostics, Laboratories, bridges, removal, and release contracts.
+- [x] Keep health/stats, abilities, AI, hit detection, presentation, save, and multiplayer transport outside the neutral core.
+- [x] Register 84 Laboratory scenarios and 540 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, adapter, multiplayer, platform, performance, compatibility, integration, migration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, feasibility/boundary record, audit report, and artifact manifest.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, target, receiver, resolver, hit adapter, bridge, or gameplay implementation was created.
+- [x] Record SUITE-DOC-19 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-20.
+- [x] Stop before EchoAbilities specification or implementation work.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-20
+
+**Completed checkpoint:** SUITE-DOC-20 - Clash (`EchoCombat`) Feasibility Foundation  
+**Result:** Approved v1.0.0 feasibility foundation  
+**Current focus:** EchoAbilities - Arcana  
+**Active checkpoint:** SUITE-DOC-21 - EchoAbilities Feasibility Foundation  
+**Foundation specifications:** 10 of 10 approved  
+**Expansion specifications:** 13 of 13 approved  
+**Advanced foundations:** 3 of 5 approved  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**Runtime authorization:** None  
+**Known blockers:** None for documentation; all implementation and provider evidence remains Not run  
+**Prior checkpoint:** SUITE-DOC-19 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-20 pending user confirmation  
+**Stop point:** Before any EchoAbilities package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, ability, targeting provider, effect executor, bridge, or gameplay implementation

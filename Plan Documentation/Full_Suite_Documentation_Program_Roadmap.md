@@ -97,8 +97,8 @@ Advanced documents remain honest about research and provider uncertainty. “Fou
 | Checkpoint | Package foundation | Responsible pre-code outcome |
 |---|---|---|
 | SUITE-DOC-18 | EchoMultiplayer - The Convergence - **Approved provider-neutral foundation v1.0.0; provider selection pending** | Research plan, dated provider matrix, disposable prototype protocol, provider-neutral session/player/authority contracts, security rules, adapter packaging, and explicit unknowns |
-| SUITE-DOC-19 | EchoAI - Instinct | Sensing, stimuli, perception memory, scoring, behavior seams, navigation adapters, debugging, and explicit non-goals |
-| SUITE-DOC-20 | EchoCombat - Clash | Damage/healing messages, teams, targets, resolution contracts, hit adapters, combat events, and genre-neutral boundaries |
+| SUITE-DOC-19 | EchoAI - Instinct - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | Sensing, stimuli, perception memory, scoring, typed context, scheduling, behavior seams, navigation adapters, debugging, and explicit non-goals |
+| SUITE-DOC-20 | EchoCombat - Clash - **Approved feasibility foundation v1.0.0; implementation/adapters pending** | Damage/healing messages, teams, targets, resolution contracts, hit adapters, combat events, and genre-neutral boundaries |
 | SUITE-DOC-21 | EchoAbilities - Arcana | Ability definitions/instances, activation, costs, charges, cooldowns, casting, interruption, targeting, effects, save, and multiplayer seams |
 | SUITE-DOC-22 | EchoWorld - The Atlas | World/zone/location IDs, travel metadata, spawn markers, scene mapping, world-state contracts, discovery, and map/provider seams |
 
@@ -134,12 +134,12 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-18 - The Convergence (`EchoMultiplayer`) Provider-Neutral Foundation and Research Records |
+| Completed checkpoint | SUITE-DOC-20 - Clash (`EchoCombat`) Feasibility Foundation and Boundary Record |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-19 - Instinct (`EchoAI`) Feasibility Foundation** |
+| Active checkpoint | **SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
-| Advanced package foundations | 1 of 5 approved provider-neutral foundations |
+| Advanced package foundations | 3 of 5 approved foundations |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |
@@ -154,3 +154,10 @@ Every checkpoint must:
 3. Update this roadmap and README.
 4. Validate links, IDs, statuses, versions, authorities, and evidence states.
 5. Commit and push the documentation checkpoint before advancing when practical.
+
+
+## SUITE-DOC-20 Closeout - Clash Approved
+
+Clash (`EchoCombat`) Feasibility Foundation v1.0.0 is approved. The foundation defines provider-neutral requests, targetability, relations, deterministic pure modifiers, target-owned receiver transactions, outcomes, events, logs, hit-adapter seams, save/multiplayer boundaries, 84 Laboratory scenarios, and 540 planned tests. All empirical evidence remains `Not run`.
+
+**Next checkpoint:** SUITE-DOC-21 - Arcana (`EchoAbilities`) Feasibility Foundation.
