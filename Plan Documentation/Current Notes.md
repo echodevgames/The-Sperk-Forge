@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** SFGSS-003 — Data, IDs, Serialization, and Migration Standard  
-**Current checkpoint:** SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard
+**Current focus:** EchoFeedback — Impact package specification  
+**Current checkpoint:** SUITE-DOC-05 — EchoFeedback: Impact Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -34,11 +34,14 @@ Do not leave durable decisions only on this page. At checkpoint closeout, promot
 
 ### Goal
 
-Complete every responsible pre-code document in SFGSS-000 Section 18 before package implementation begins. Preserve honest `Not run` states for evidence that requires implementation.
+Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7.2 and 7.3 before package implementation begins, then finish the remaining standards and final reconciliation. Preserve honest `Not run` states for evidence that requires implementation.
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.9.0.
+- `Echo_Game_Systems_Suite_Bible.md` — SFGSS-000 v0.12.0.
+- `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` — v1.0.0 Approved.
+- `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` — v1.0.0 Approved.
+- `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` — v1.0.0 Approved.
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` — v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` — Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` — active roadmap.
@@ -48,8 +51,7 @@ Complete every responsible pre-code document in SFGSS-000 Section 18 before pack
 
 ### Next action
 
-Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. Reconcile its canonical dependency types, assembly rules, optional integration packaging, provider adapters, test assemblies, compile guards, version compatibility, removal order, and failure behavior against all ten Foundation specifications and SFGSS-ADR-001.
-
+Draft and approve the complete **EchoFeedback — Impact Package Specification** using SFGSS-001. Define coordinated feedback recipes, channel request contracts, cancellation, concurrency, accessibility scaling, performance limits, diagnostics, optional bridges, and an isolated Standalone Test Lab without absorbing camera, audio, input, UI, or gameplay authority.
 
 ---
 
@@ -58,11 +60,23 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-02.
+- No question currently blocks SUITE-DOC-05.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 — Package specification priority clarification
+
+- `[DECISION]` The owner clarified that “continue until all documentation is ready instead of just 7.1” primarily means completing the package foundations in SFGSS-000 Sections 7.2 Expansion and 7.3 Advanced before implementation.
+- `[DECISION]` Remaining general standards no longer block the start of Expansion package specifications. They move after the package foundations, except where a standard is directly required to resolve an active package decision.
+- `[DECISION]` SFGSS-002, SFGSS-003, and SFGSS-004 remain approved and become the dependency, data, and evidence guardrails for every remaining package specification.
+- `[DECISION]` Expansion specifications follow the owner’s listed order beginning with EchoFeedback, then EchoPool, EchoProgression, EchoBuildTools, EchoLocalization, EchoDialogue, EchoObjectives, EchoInventory, EchoInteraction, EchoCamera, EchoCharacters, EchoControllers, and EchoCrafting.
+- `[DECISION]` Advanced package foundations follow with EchoMultiplayer, EchoAI, EchoCombat, EchoAbilities, and EchoWorld.
+- `[DECISION]` EchoCrafting’s checkpoint must include its required design-workshop record before approving the package contract. EchoMultiplayer remains evidence-honest and may approve research, neutral contracts, and prototype criteria without claiming unperformed provider prototypes.
+- `[DECISION]` The final documentation unlock gate is renumbered to SUITE-DOC-33 after the roadmap is condensed around package-first work.
+
+**Promoted to:** Full Suite Documentation Program Roadmap, Package Specification Priority Rebaseline Report, README, and Current Notes handoff.
 
 ### August 3, 2026 — Living repository documentation
 
@@ -364,10 +378,56 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 
 ---
 
+
+### August 4, 2026 — Data, IDs, Serialization, and Migration Standard
+
+- `[DECISION]` SFGSS-003 v1.0.0 is approved as the canonical data classification, identity, Unity GUID, serialization, migration, unknown-data, transaction, recovery, and durable-removal standard.
+- `[DECISION]` Unity asset GUIDs, package/project domain stable IDs, and runtime instance IDs are separate contracts. AssetDatabase identity is Editor-only unless explicitly copied into a runtime-safe build record.
+- `[DECISION]` Stable domain IDs use either approved opaque generated IDs or package/project-qualified semantic IDs. Names, paths, indexes, timestamps alone, runtime instance IDs, and CLR type names are not durable identity.
+- `[DECISION]` Shared ScriptableObjects and configuration assets remain immutable runtime inputs. Mutable session state lives in authority-owned runtime records; durable state uses detached DTOs or opaque payloads.
+- `[DECISION]` Durable documents declare a format ID and schema version independently from package SemVer. Serializer providers state supported shapes, bounds, unknown-field behavior, determinism, and failure behavior.
+- `[DECISION]` Unity JsonUtility is approved for simple DTOs only. It does not by itself provide dictionary, general polymorphism, or unknown-field round-trip guarantees.
+- `[DECISION]` Supported migrations are explicit contiguous forward steps on staged data. They preserve the source until verified publication, report changes, and do not promise downgrade.
+- `[DECISION]` Released ID changes use aliases or tombstones. Alias cycles, ambiguous mappings, and reuse of retired IDs are prohibited.
+- `[DECISION]` Unknown optional settings, save, provider, and generated records remain bounded, opaque, preserved, and non-executable through package absence/reinstallation.
+- `[DECISION]` Data-changing operations validate and stage before one documented publication point. Each package states its real rollback class and never labels a partial apply as atomic.
+- `[TEST]` SFGSS-003 was reconciled against SFGSS-000, SFGSS-001, SFGSS-002, ADR-001, ADR-002, the Foundation matrix, and all ten Foundation package data sections.
+- `[RISK]` Accord and Chronicle use “Asset GUID” wording for configuration identity. Clarify Unity asset identity versus runtime domain identity during SUITE-DOC-10.
+- `[RISK]` Accord and Will unknown-field preservation requires an explicit opaque-record or extension-capable serializer strategy before implementation.
+- `[RISK]` Foundation public serialized enums and fingerprints require compatibility/canonicalization review during SUITE-DOC-10.
+- `[HANDOFF]` SUITE-DOC-04 must turn existing package test lists into one canonical evidence, laboratory, compatibility, defect, and release standard without claiming tests have run.
+
+**Promoted to:** SFGSS-000 v0.11.0 decisions 52–61, SFGSS-003 v1.0.0, the SUITE-DOC-03 audit report, README, and the full-suite roadmap.
+
+---
+
+### August 4, 2026 – SFGSS-004 Testing, Validation, Test Labs, and Release Standard
+
+- `[DECISION]` SFGSS-004 v1.0.0 is approved as the suite test, evidence, Laboratory, compatibility, defect, and release-quality authority.
+- `[DECISION]` Durable test results use Not run, Pass, Pass with advisory, Fail, Blocked, or Not applicable.
+- `[DECISION]` Compatibility language uses Unknown, Planned, Tested, Supported, Experimental, or Unsupported and must name the exact environment covered.
+- `[DECISION]` Stable test IDs are package/bridge/provider-qualified and are never recycled.
+- `[DECISION]` Test definitions and executions are separate records. A planned registry is not passing evidence.
+- `[DECISION]` Standalone Laboratories prove one package; Integration Laboratories belong to bridges/providers; Showcases do not replace either proof.
+- `[DECISION]` Clean import/compile must be followed by the smallest functional workflow for each advertised installation route.
+- `[DECISION]` Setup, repair, migration, removal, reinstall, failure recovery, performance, platform, accessibility, privacy, and security evidence are explicit release concerns when applicable.
+- `[DECISION]` Defect severity is Blocker, Critical, Major, Minor, or Advisory and remains separate from priority.
+- `[DECISION]` Flaky/quarantined required tests and retry-hidden failures cannot count as passing stable release evidence.
+- `[DECISION]` Beta, release-candidate, and stable gates require progressively stronger evidence.
+- `[TEST]` SFGSS-004 was reconciled against SFGSS-000, SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, ADR-001, ADR-002, the Foundation matrix, and all ten Foundation package test/release sections.
+- `[RISK]` Bare Laboratory IDs, mixed automation fields, compressed Will test ranges, broad platform wording, combined distribution gates, and missing evidence/issue columns require normalization during SUITE-DOC-10.
+- `[HANDOFF]` SUITE-DOC-05 must turn package-selection guidance into explicit user pathways without creating hidden hard dependencies or pretending every project needs the full Foundation set.
+
+**Promoted to:** SFGSS-000 v0.12.0 decisions 62–71, SFGSS-004 v1.0.0, the SUITE-DOC-04 audit report, README, and the full-suite roadmap.
+
+---
+
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | Testing taxonomy, evidence states, Laboratories, compatibility, defects, performance, and release gates | SFGSS-000 v0.12.0 and SFGSS-004 v1.0.0 | Promoted |
+| 2026-08-04 | Data classification, stable IDs, Unity GUIDs, DTOs, serializers, migrations, aliases, unknown data, transactions, and recovery | SFGSS-000 v0.11.0 and SFGSS-003 v1.0.0 | Promoted |
 | 2026-08-04 | Dependency, bridge, provider, assembly, compile-guard, sample/test, and clean-removal rules | SFGSS-000 v0.10.0 and SFGSS-002 v1.0.0 | Promoted |
 | 2026-08-03 | Full Suite Documentation Gate and learning-oriented implementation | SFGSS-000 v0.9.0, SFGSS-ADR-002, SFGSS-005 v1.1.0, full-suite roadmap | Promoted |
 | 2026-08-03 | Foundation Documentation Readiness Gate | SFGSS-000 v0.8.0 and readiness report | Promoted |
@@ -385,7 +445,7 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and dependency-standard-reconciled | v0.10.0; decisions 44–51 approve SFGSS-002 rules |
+| Suite bible | Approved and test-standard-reconciled | v0.12.0; decisions 62–71 approve SFGSS-004 rules |
 | Package specification template | Approved | SFGSS-001 v1.1.0 |
 | Checkpoint workflow | Approved | SFGSS-005 v1.1.0; complete visible code and teaching rules added |
 | Foundation package specifications | Approved | Ten of ten |
@@ -396,7 +456,9 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 | First implementation plan | Approved but dormant | FL-M1-01 v1.1.0 |
 | Package implementation | Not started | No package files or code authorized |
 | Dependency/bridge/assembly standard | Approved | SFGSS-002 v1.0.0 |
-| Current checkpoint | Active | SUITE-DOC-03 |
+| Data/IDs/serialization/migration standard | Approved | SFGSS-003 v1.0.0 |
+| Testing/validation/Laboratory/release standard | Approved | SFGSS-004 v1.0.0 |
+| Current checkpoint | Active | SUITE-DOC-05 |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -418,14 +480,14 @@ Draft and approve **SFGSS-002 — Dependency, Bridge, and Assembly Standard**. R
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard  
+**Completed checkpoint:** SUITE-DOC-04 — SFGSS-004 Testing, Validation, Test Labs, and Release Standard  
 **Result:** Passed  
-**Current focus:** SFGSS-003 Data, IDs, Serialization, and Migration Standard  
-**Active checkpoint:** SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard  
+**Current focus:** SFGSS-006 New-Project Guided Pathways  
+**Active checkpoint:** SUITE-DOC-05 — SFGSS-006 New-Project Guided Pathways  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 — First Light Package Skeleton  
 **FL-M1 status:** Approved but dormant  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Commit/push:** SUITE-DOC-01 confirmed pushed; SUITE-DOC-02 pending user confirmation  
+**Commit/push:** SUITE-DOC-03 confirmed pushed; SUITE-DOC-04 pending user confirmation  
 **Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider adapter

@@ -21,24 +21,26 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 3. `Current Notes.md`.
 4. `Full_Suite_Documentation_Program_Roadmap.md`.
 5. SFGSS-002 when dependency, bridge, provider, assembly, sample, or removal behavior is relevant.
-6. The standard, package specification, ADR, integration record, or research record active for the checkpoint.
-7. SFGSS-001 when drafting package specifications.
-8. SFGSS-005 before implementation planning or code.
-9. Relevant test/readiness reports and prior checkpoint closeout.
+6. SFGSS-003 when definitions, IDs, Unity GUIDs, serialization, versions, migrations, unknown data, transactions, or durable removal behavior is relevant.
+7. SFGSS-004 when tests, validators, Laboratories, evidence, compatibility, defects, performance, or release gates are relevant.
+8. The standard, package specification, ADR, integration record, or research record active for the checkpoint.
+9. SFGSS-001 when drafting package specifications.
+10. SFGSS-005 before implementation planning or code.
+11. Relevant test/readiness reports and prior checkpoint closeout.
 
 ## Current approved objective
 
-The ten Foundation specifications and Foundation collision/readiness records are approved. The owner has extended the documentation-first gate across the complete planned suite.
+The ten Foundation specifications and Foundation collision/readiness records are approved. The owner has clarified that Expansion and Advanced package foundations are the next priority before the remaining general standards.
 
 ```text
-Completed standard: SFGSS-002 v1.0.0 — Dependency, Bridge, and Assembly
-Active checkpoint: SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard
+Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
+Active checkpoint: SUITE-DOC-05 — EchoFeedback: Impact Package Specification
 Implementation: locked
 First queued implementation: FL-M1-01 — First Light Package Skeleton
-Final unlock gate: SUITE-DOC-36
+Final unlock gate: SUITE-DOC-33
 ```
 
-Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, ScriptableObjects, setup tools, samples, bridges, or provider adapters before SUITE-DOC-36.
+Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, ScriptableObjects, setup tools, samples, bridges, or provider adapters before SUITE-DOC-33.
 
 ## Learning-oriented implementation rule
 
@@ -70,7 +72,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing the documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, Full_Suite_Documentation_Program_Roadmap.md, SFGSS-001 or SFGSS-005 as applicable, and every authority named by the active checkpoint. Package implementation is locked until SUITE-DOC-36. Current checkpoint: SUITE-DOC-03 — SFGSS-003 Data, IDs, Serialization, and Migration Standard. Treat approved SFGSS-002 as the dependency/assembly authority. Before drafting, reconcile stable IDs, definitions versus state, serialization DTOs, unknown-data preservation, migrations, aliases, transactions, and removal behavior across all approved package specifications without inventing implementation evidence. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing the documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, Full_Suite_Documentation_Program_Roadmap.md, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-001 or SFGSS-005 as applicable, and every authority named by the active checkpoint. Package implementation is locked until SUITE-DOC-36. Current checkpoint: SUITE-DOC-05 — EchoFeedback: Impact Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Design package-selection pathways, decision trees, recommended combinations, exclusions, visible dependencies, save/settings choices, controller choices, and Workshop-facing guidance without turning a pathway into a hidden mandatory framework. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 

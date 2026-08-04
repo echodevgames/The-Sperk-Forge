@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Foundation_Wave_Specification_Roadmap"
+              "title": "Echo_Game_Systems_Suite_Bible"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -190,6 +190,15 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
+    "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Artifact_Manifest.json",
+    "Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md",
+    "Test Reports/SUITE-DOC-04_Artifact_Manifest.json",
+    "SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md",
+    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+    "Test Reports/SUITE-DOC-03_Data_IDs_Serialization_Migration_Audit_Report.md",
+    "Test Reports/SUITE-DOC-03_Artifact_Manifest.json",
+    "SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md",
     "Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
     "Test Reports/SUITE-DOC-02_Artifact_Manifest.json",
     "SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md",
@@ -214,15 +223,8 @@
     "Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md",
     "Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
     "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
-    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
     "Foundation_Wave_Specification_Roadmap.md",
     "Current Notes.md",
-    "SFGSS-001_Package_Specification_Template.md",
-    "Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
-    "Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
-    "Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md",
-    "Package Specifications",
-    "Checkpoint Build Plans",
-    "README.md"
+    "Package Specifications"
   ]
 }

@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.10.0  
+**Version:** 0.12.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -1977,43 +1977,123 @@ Runtime, Editor, presentation, provider, bridge, tests, samples, and platform-sp
 
 ## 13. Data, Persistence, and Serialization Rules
 
-### 13.1 Definitions versus state
+**Canonical implementation standard:** SFGSS-003 — Data, IDs, Serialization, and Migration Standard. This section owns the suite-level boundary; SFGSS-003 defines the identifier domains, Unity GUID policy, DTO and serializer contracts, schema versions, migrations, aliases, unknown-data preservation, transactions, recovery, and removal behavior that implement it.
+
+### 13.1 Data classification
 
 | Data kind | Typical storage | Example |
 |---|---|---|
 | Immutable/shared definition | ScriptableObject | Music track, item definition, crafting recipe, character definition |
 | Project configuration | ScriptableObject or project asset | Launch configuration, save configuration, UI theme |
 | Mutable runtime state | Runtime class/struct | Current health, active track state, current objective count |
-| Durable game state | Serializable save model | Inventory contents, unlocked characters, checkpoint |
-| Global preference | EchoSettings model | Master volume, resolution, subtitles |
-| Diagnostic history | Bounded development record | Launch report, validation results |
+| Durable game state | Detached serializable DTO/payload | Inventory contents, unlocked characters, checkpoint |
+| Global preference | Accord document/section DTO | Master volume, resolution, subtitles |
+| Generated project record | Manifest, receipt, journal | Workshop generation history |
+| Diagnostic history | Bounded immutable record | Launch report, validation results |
+| Unknown optional data | Bounded opaque record | Absent settings section or save participant payload |
 
-Shared ScriptableObjects must not be used as the live mutable player state.
+Shared ScriptableObjects must not be used as live mutable player/session state.
 
-### 13.2 Stable identity
+### 13.2 Identity domains
 
-Definitions referenced by saves or network messages need stable IDs that do not depend only on asset names or scene hierarchy paths. Renaming a display label must not destroy save compatibility.
+The suite distinguishes:
 
-Stable IDs must be validated for emptiness and collisions. If an ID changes after release, the owning package or project must provide an alias or migration map rather than silently orphaning saved state.
+1. **Unity asset GUID:** project/package asset identity stored in `.meta`, primarily resolved by Editor tooling.
+2. **Domain stable ID:** runtime/save/export/network-safe identity owned by a package or project.
+3. **Runtime instance ID:** temporary identity for one handle, lease, voice, request, transition, or operation.
+4. **Display name/path/index:** presentation or location data, never sole durable identity.
 
-### 13.2.1 Mutable state associated with definitions
+A Unity asset GUID does not automatically become a Player-runtime or save identifier. Definitions referenced by saves, exports, reports, or network messages require an explicit runtime-safe domain ID or another approved catalog/address contract.
 
-When behavior needs changing state per definition—such as an audio cue’s sequential index or cooldown—the active runtime owns that state in a runtime model keyed by the definition reference or stable ID. The ScriptableObject remains safe to share across scenes, objects, tests, and concurrent consumers.
+### 13.3 Stable identity
 
-### 13.3 Migration
+- Stable IDs do not depend on asset names, scene hierarchy paths, localized labels, registration order, indexes, timestamps alone, or CLR type names.
+- IDs are validated for emptiness, format, collision, and unsafe path characters.
+- Renaming or moving content preserves its stable identity.
+- Released ID changes require aliases, tombstones, or an explicit migration map.
+- Alias cycles and ID reuse are prohibited.
+- Duplicate copied assets do not silently regenerate IDs; Editor repair asks which identity is retained.
 
-Every durable format must declare:
+### 13.4 Definitions versus mutable state
 
-- Current schema version.
-- Supported older versions.
-- Migration path.
-- Failure behavior.
-- Backup/recovery behavior.
-- Whether downgrade is supported.
+ScriptableObjects and configuration assets describe rules, references, defaults, limits, and authoring data. Active indexes, cooldowns, queues, drafts, handles, current progress, selected slots, runtime references, and operation state live in authority-owned runtime models keyed by definition ID/reference.
 
-### 13.4 Transactions
+Runtime services must not write active state back into shared assets.
 
-Operations involving multiple durable or gameplay changes—such as crafting ingredients into an output—should validate first and commit as one transaction where practical. A failed output grant must not permanently consume inputs.
+### 13.5 Unity asset compatibility
+
+- Public package/project asset identity preserves committed `.meta` files and GUIDs.
+- Move/rename preserves identity; delete/recreate does not.
+- Serialized field/type/enum changes follow Unity-compatible migration rules and fixtures.
+- Asset GUIDs may be recorded in Editor manifests, but AssetDatabase lookup is not a Player runtime dependency.
+- Direct Unity asset references and domain IDs serve different contracts and may coexist.
+
+### 13.6 Durable document contracts
+
+Every durable/upgradeable document declares:
+
+- format ID;
+- schema version;
+- producer package/project identity and version;
+- document/revision identity when meaningful;
+- bounded payload/entry model;
+- serializer/provider identity when replaceable;
+- unsupported older/newer behavior;
+- integrity/recovery policy where applicable.
+
+Durable DTOs remain detached from live Unity objects, services, scene references, tasks, delegates, and provider SDK objects.
+
+### 13.7 Serialization providers
+
+A serializer documents supported DTO shapes, collections, polymorphism, unknown-field behavior, determinism, limits, threading, and error results.
+
+Unity `JsonUtility` is acceptable for simple package-owned DTOs under Unity serialization rules. It is not assumed to preserve unknown fields, support dictionaries, or provide a universal polymorphic format. Formats requiring unknown-data round trips preserve opaque records or use an explicit extension-capable provider.
+
+### 13.8 Migration
+
+Every durable format declares:
+
+- current schema version;
+- supported older versions;
+- contiguous forward migration path;
+- migration owner;
+- failure behavior;
+- source preservation and backup/recovery behavior;
+- whether an automatic upgrade write occurs;
+- unsupported newer behavior;
+- whether downgrade is supported.
+
+Migration occurs on detached/staged data before authoritative apply/publication. Downgrade is not promised. Newer unsupported data remains preserved and unavailable/read-only.
+
+### 13.9 Aliases and unknown data
+
+- Aliases map old stable IDs to one current canonical ID.
+- Tombstones reserve intentionally retired IDs and prevent reuse.
+- Unknown optional-package settings/save/provider records are bounded, integrity-checked where possible, preserved opaquely, and never executed.
+- Removing an optional package does not silently delete valid project-owned durable records.
+- Reinstallation may reclaim preserved records only after identity, schema, and migration validation.
+
+### 13.10 Transactions and publication
+
+Operations involving multiple durable or gameplay changes validate and stage first, then publish one authoritative result where practical.
+
+The owning package documents whether it guarantees:
+
+- full rollback;
+- compensating rollback;
+- publish-last safety;
+- honest partial apply;
+- or an explicitly irreversible operation with backup/confirmation.
+
+Authoritative events occur after publication. Cancellation is honored only through safe documented boundaries.
+
+### 13.11 Integrity and recovery
+
+Integrity hashes detect corruption; they do not prove trust unless a separate security design adds authentication. Backups, immutable generations, staging files, replacement, or provider transactions are package-specific strategies. The package must define the publication point, fallback, quarantine, and recovery order without silently overwriting the only failed/unsupported evidence.
+
+### 13.12 Removal and replacement
+
+Removing package code does not imply deleting project-owned configuration, preferences, saves, generated records, migration backups, or unknown optional payloads. SFGSS-002 owns bridge/provider teardown direction; SFGSS-003 owns durable-data survival and reclamation.
 
 ---
 
@@ -2032,6 +2112,10 @@ Operations involving multiple durable or gameplay changes—such as crafting ing
 ---
 
 ## 15. Testing and Release Standard
+
+SFGSS-004 is the detailed suite authority for test taxonomy, evidence states, validators, Laboratories, clean-project proof, compatibility claims, defects, performance evidence, and release gates.
+
+Every planned test begins as **Not run**. A design target is **Planned**, not **Tested** or **Supported**, until the exact environment passes the required evidence matrix. Durable results use the canonical states **Not run**, **Pass**, **Pass with advisory**, **Fail**, **Blocked**, or **Not applicable**.
 
 Every package specification must define tests in these categories.
 
@@ -2319,7 +2403,7 @@ After this lead bible is reviewed, create the following documents.
 9. **SFGSS-009 — Repository, Versioning, and Integration Workspace Standard**
 10. **SFGSS-010 — Living Documentation, Current Notes, and Obsidian Workflow Standard**
 
-**Current documentation status:** SFGSS-001 and SFGSS-005 are approved. SFGSS-ADR-001, SFGSS-ADR-002, and SFGSS-INT-FOUNDATION-001 are accepted/approved. The complete Foundation specification set is approved. The remaining architecture/workflow standards, Expansion specifications, Advanced design/research records, and final full-suite collision/readiness gates are now required before implementation begins.
+**Current documentation status:** SFGSS-001, SFGSS-002, SFGSS-003, and SFGSS-005 are approved. SFGSS-ADR-001, SFGSS-ADR-002, and SFGSS-INT-FOUNDATION-001 are accepted/approved. The complete Foundation specification set is approved. The remaining architecture/workflow standards, Expansion specifications, Advanced design/research records, and final full-suite collision/readiness gates are required before implementation begins.
 
 ### 18.2 Foundation package specifications
 
@@ -2568,6 +2652,26 @@ The following decisions form the approved starting baseline for the suite:
 49. Compile guards, version defines, Assembly Definition References, or reflection must not hide undeclared package/SDK dependencies or replace a bridge that should declare both peers. Reflection is limited to exact versioned allowlists such as the ADR-001 Editor setup facade protocol.
 50. Standalone Labs use only the package and its declared hard dependencies. Integration Labs belong to the bridge/provider artifact and never substitute for either peer’s standalone proof.
 51. Optional integrations follow bridge-first teardown and removal. The integration owns every registration, lease, subscription, and adapter resource it creates, and removal returns peers/neutral cores to documented standalone behavior.
+52. SFGSS-003 is the approved Data, IDs, Serialization, and Migration Standard. It governs data classification, identifier domains, Unity asset identity, definition/runtime separation, DTOs, serializer providers, versions, migrations, aliases, unknown data, transactions, recovery, and durable-data survival.
+53. Unity asset GUIDs, domain stable IDs, and runtime instance IDs are distinct contracts. Editor AssetDatabase identity must not be used implicitly as a Player runtime, save, export, or network identity.
+54. Shared ScriptableObjects and configuration assets remain immutable runtime inputs. Changing state lives in authority-owned runtime models or detached durable DTOs.
+55. Durable documents declare a stable format ID and schema version independently from package SemVer. Durable DTOs contain no live Unity object graph, service, scene object, provider object, task, delegate, or runtime handle.
+56. Serializer providers document supported data shapes, limits, unknown-field behavior, determinism, and failure behavior. Unity JsonUtility is approved for simple DTOs only and does not by itself satisfy unknown-field round-trip preservation.
+57. Supported migrations are explicit forward steps on staged data, preserve the source until verified publication, report every conversion, and do not promise downgrade. Unsupported newer data remains preserved and unavailable/read-only.
+58. Released identity changes use validated aliases or tombstones. Alias cycles, ambiguous mappings, and reuse of retired IDs are prohibited.
+59. Unknown optional settings sections, save participant payloads, provider records, and generated receipts are bounded, preserved opaquely where required, never executed, and reclaimed only after the owner returns with a compatible schema.
+60. Data-changing operations validate and stage before publication. Each package states its real rollback class and must not describe partial application as atomic.
+61. Removing package or bridge code does not authorize deletion of project-owned configuration, preferences, saves, generated records, or migration evidence. Reinstallation validates and migrates preserved data before reclaiming it.
+62. SFGSS-004 is the approved Testing, Validation, Test Labs, and Release Standard. It governs evidence states, compatibility language, test registries, validators, Laboratories, installation routes, migration proof, defects, performance, platform evidence, and release gates.
+63. Planned tests and approved acceptance criteria are not execution evidence. Every pre-code test remains Not run until an exact environment produces retained evidence.
+64. Durable test executions use the canonical states Not run, Pass, Pass with advisory, Fail, Blocked, or Not applicable. Framework skips and retries must be translated honestly and do not erase failures.
+65. Public compatibility claims use Unknown, Planned, Tested, Supported, Experimental, or Unsupported. A claim names the exact Unity, dependency, platform, build, device, or provider dimensions that its evidence covers.
+66. Standalone Laboratories prove one package with only declared hard dependencies. Integration Laboratories belong to bridge/provider artifacts. Showcases demonstrate composition only after standalone and integration evidence passes.
+67. Clean-project proof includes the claimed installation route plus the smallest functional workflow. Compilation alone does not satisfy package independence or release readiness.
+68. Setup, generation, repair, migration, removal, and reinstall tools must pass dry-run/apply/report/repeat/conflict/interruption/recovery evidence appropriate to their real rollback guarantees.
+69. Defect severity is independent from schedule priority. Blocker, Critical, Major, Minor, and Advisory findings have explicit release effects; flaky or quarantined required tests cannot silently count as passes.
+70. Beta, release-candidate, and stable gates require progressively stronger clean-install, Laboratory, compatibility, performance, migration, removal, documentation, license, and issue evidence. No percentage score overrides a failed mandatory gate.
+71. Release reports preserve traceability from requirement to test case, execution, evidence, issue, fix, regression, and gate decision. Compatibility and measured-performance claims remain pending until observed.
 
 ---
 
@@ -2606,14 +2710,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the forty-three decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the seventy-one decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
-Package implementation is re-locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
+Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard
+SUITE-DOC-05 — SFGSS-006 New-Project Guided Pathways
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
