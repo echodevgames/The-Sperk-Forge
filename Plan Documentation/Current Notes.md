@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** The Crucible (`EchoCrafting`) design workshop and package specification
-**Current checkpoint:** SUITE-DOC-17 - Conduct The Crucible (`EchoCrafting`) design workshop and draft its package specification
+**Current focus:** The Convergence (`EchoMultiplayer`) research and provider-neutral foundation
+**Current checkpoint:** SUITE-DOC-18 - Produce the EchoMultiplayer research plan, provider matrix, prototype protocol, and provider-neutral contract foundation
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,14 +45,15 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md` - v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md` - v1.0.0 Approved.
+- `Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md` - approved workshop conclusions.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Conduct and document the required **Crucible (`EchoCrafting`) design workshop**, then draft and approve the complete package specification using SFGSS-001. Resolve the relationship among exact combine recipes, standard crafting, skills/professions, discovery, quality, stations, timing, queues, cancellation/refunds, failure, repair, salvage, upgrade, ingredient/output providers, inventory bridges, UI, persistence, and multiplayer authority before implementation. Preserve Hackulos's exact quest-combine bag as a small supported use case without allowing it to define the entire package. Keep all empirical evidence `Not run`.
+Produce the complete **Convergence (`EchoMultiplayer`) pre-code foundation**. Define a dated provider research matrix and sources, disposable comparison prototype protocol, provider-neutral session/player/authority contracts, connection and scene-travel seams, security boundaries, adapter packaging, diagnostics, testing, and explicit unknowns. Do not select or claim a production provider without executed prototype evidence. Keep all empirical evidence `Not run`.
 ---
 
 ## Open Questions
@@ -60,7 +61,7 @@ Conduct and document the required **Crucible (`EchoCrafting`) design workshop**,
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-17; the workshop exists to resolve crafting decisions before approval.
+- Final provider selection intentionally blocks any production-provider approval in SUITE-DOC-18 until disposable comparison prototypes are executed and reviewed.
 
 ---
 
@@ -801,3 +802,56 @@ Conduct and document the required **Crucible (`EchoCrafting`) design workshop**,
 **Commit/push:** SUITE-DOC-16 pending user confirmation  
 **Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, crafting recipe, ingredient provider, station, queue, transaction system, repair/salvage module, or gameplay implementation
 
+
+
+## August 4, 2026 - SUITE-DOC-17 The Crucible approved
+
+- `[DECISION]` The required EchoCrafting design workshop is complete and promoted to `Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md`.
+- `[DECISION]` The Crucible (`EchoCrafting`) Package Specification v1.0.0 is approved as the Level 2 authority for recipe definitions, Simple Combine and standard immediate crafting, deterministic preview, provider-neutral requirements, one-provider atomic resource transactions, idempotency, recipe knowledge, stations, diagnostics, authoring, validation, Laboratories, and extension seams.
+- `[DECISION]` Hackulos's exact combine bag is represented as a strict Simple Combine recipe profile over the common transaction engine. The bag UI and resource container remain project/Vault concerns.
+- `[DECISION]` One mutation-capable resource provider owns both input consumption and output grants for an MVP request. Arbitrary distributed mutation across unrelated providers is not promised.
+- `[DECISION]` Multiple read-only requirement providers may evaluate skills, professions, tools, context, or project conditions without mutating their authorities.
+- `[DECISION]` Preview is side-effect-free, deterministic, revision-aware, and fingerprinted. Execution revalidates stale resource/provider revisions.
+- `[DECISION]` CraftingRequestId and bounded idempotency records prevent duplicate output grants.
+- `[DECISION]` Recipe knowledge is crafting-specific state; broader progression, quest, dialogue, item, and world systems may trigger discovery through bridges.
+- `[DECISION]` Timed jobs, queues, quality, failure, salvage, repair, upgrades, offline production, multi-provider coordination, and multiplayer adapters are explicit later capabilities, not hidden MVP scope.
+- `[DECISION]` Live reservations, providers, stations, scene objects, and active tasks are not saved. Chronicle owns transport for detached knowledge/idempotency state.
+- `[TEST]` The specification registers 74 package-qualified Laboratory scenarios and 444 individually registered planned tests. Every empirical result remains `Not run`.
+- `[DECISION]` Expansion package specifications are now 13 of 13 approved.
+- `[HANDOFF]` SUITE-DOC-18 begins The Convergence (`EchoMultiplayer`) research and provider-neutral foundation. Final provider approval remains blocked on executed disposable prototypes.
+
+**Promoted to:** `Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md`, `Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md`, `Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md`, README, and roadmap.
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-17
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Complete the required crafting design workshop.
+- [x] Approve EchoCrafting ownership, independence, recipe, provider, transaction, knowledge, station, persistence, diagnostics, authoring, Laboratory, bridge, removal, and release contracts.
+- [x] Preserve the exact combine bag without reducing the package to that mechanic.
+- [x] Register 74 Laboratory scenarios and 444 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, provider, transaction, timed, quality, failure, repair, salvage, platform, performance, compatibility, integration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, workshop record, audit report, and artifact manifest.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, provider, bridge, adapter, recipe asset, station, queue, or gameplay implementation was created.
+- [x] Record SUITE-DOC-16 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-17.
+- [x] Stop before EchoMultiplayer provider research execution or implementation.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-17
+
+**Completed checkpoint:** SUITE-DOC-17 - The Crucible (`EchoCrafting`) Design Workshop and Package Specification  
+**Result:** Approved v1.0.0  
+**Current focus:** EchoMultiplayer - The Convergence  
+**Active checkpoint:** SUITE-DOC-18 - Research and Provider-Neutral Foundation  
+**Expansion specifications:** 13 of 13 approved  
+**Advanced foundations:** 0 of 5 approved  
+**Package implementation:** Not started  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
+**Runtime authorization:** None  
+**Known blocker:** Final networking provider approval requires executed prototype evidence  
+**Prior checkpoint:** SUITE-DOC-16 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-17 pending user confirmation  
+**Stop point:** Before any provider selection claim, network SDK install, package manifest, asmdef, C# file, scene, prefab, sample, adapter, bridge, prototype, or runtime implementation

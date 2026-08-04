@@ -190,6 +190,12 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md",
+    "Test Reports/SUITE-DOC-16_Artifact_Manifest.json",
+    "SUITE-DOC-17_Artifact_Manifest.json",
+    "Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md",
+    "Research Records",
+    "Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md",
     "Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-15_Artifact_Manifest.json",
     "SUITE-DOC-16_Artifact_Manifest.json",
@@ -206,13 +212,10 @@
     "SUITE-DOC-13_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
     "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-12_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md",
     "Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-11_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
     "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-10_Artifact_Manifest.json",
     "Package Specifications/SFGSS-Voices-EchoDialogue-Package-Specification.md",
     "Test Reports/SUITE-DOC-09_EchoLocalization_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-07_EchoProgression_Package_Specification_Audit_Report.md",
@@ -222,9 +225,6 @@
     "Package Specifications/SFGSS-The-Ascent-EchoProgression-Package-Specification.md",
     "Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
-    "Package Specifications/SFGSS-Impact-EchoFeedback-Package-Specification.md",
-    "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
-    "Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md"
+    "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md"
   ]
 }
