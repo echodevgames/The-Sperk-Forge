@@ -1,6 +1,6 @@
 {
   "documentId": "SFGSS-010-COMPANION",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "status": "Approved documentation companion",
   "updated": "2026-08-04",
   "canonicalEntryPoints": [
@@ -91,10 +91,20 @@
     "statusValues": [
       "Not started",
       "In progress",
+      "Paused",
       "Needs revisit",
       "Complete",
       "Superseded"
     ],
-    "implementationEvidence": false
-  }
+    "implementationEvidence": false,
+    "gateMode": "Just-in-time before each package implementation",
+    "initialImplementationGate": "SUITE-DOC-33",
+    "initialImplementationGateStatus": "Passed with advisory",
+    "activeImplementationCheckpoint": "FL-M1-01"
+  },
+  "activeCheckpoint": "FL-M1-01",
+  "completedGate": "SUITE-DOC-33",
+  "implementationProgramStatus": "Activated under checkpoint control",
+  "activeGateReport": "Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md",
+  "activeCheckpointPlan": "Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md"
 }

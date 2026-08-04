@@ -13,7 +13,7 @@ updated: 2026-08-04
 **Authority:** Index only; each ADR and its affected higher-authority documents remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Standard:** [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007]]  
-**Next available suite ADR:** `SFGSS-ADR-004`
+**Next available suite ADR:** `SFGSS-ADR-005`
 
 > The log tells us which doors were chosen. The ADRs explain why, and the specifications define what lies beyond them.
 
@@ -23,7 +23,8 @@ updated: 2026-08-04
 |---|---|---:|---|---|---|
 | [[SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|SFGSS-ADR-001]] | Suite Package Editor Setup Facade Protocol | 1.2.0 | Design approved; evidence pending | Workshop/package setup integration | Three real facades reveal the need for compiled shared contracts, or protocol/version/removal tests fail |
 | [[SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|SFGSS-ADR-002]] | Full Suite Documentation Gate and Learning-Oriented Implementation | 1.0.0 | Not applicable to runtime evidence | Suite governance and implementation workflow | Final readiness gate, owner workflow change, or learning reviews change implementation order |
-| [[SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|SFGSS-ADR-003]] | Graph Roadmap and Pre-Implementation Package Learning Review | 1.0.0 | Not applicable to runtime evidence | Documentation navigation and learning | Graph becomes unmanageable, package grouping changes, or reviews expose a better order |
+| [[SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|SFGSS-ADR-003]] | Graph Roadmap and Package Learning Review | 1.0.0 | Not applicable to runtime evidence | Documentation navigation and learning; sequencing partially superseded by ADR-004 | Graph becomes unmanageable, package grouping changes, or reviews expose a better order |
+| [[SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|SFGSS-ADR-004]] | Just-in-Time Package Learning Gate | 1.0.0 | Not applicable to runtime evidence | Package-local learning and implementation authorization | Package learning cadence changes or multi-package implementation makes the local gate impractical |
 
 ## Proposed suite ADRs
 

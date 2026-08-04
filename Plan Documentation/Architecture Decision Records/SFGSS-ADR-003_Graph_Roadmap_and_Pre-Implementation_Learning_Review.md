@@ -6,6 +6,8 @@
 **Decision scope:** Suite documentation navigation and implementation-readiness workflow  
 **Related authorities:** SFGSS-000, SFGSS-005, SFGSS-ADR-002, Full Suite Documentation Program Roadmap
 
+> **Supersession note:** SFGSS-ADR-004 supersedes only the requirement that all twenty-eight reviews finish before any implementation. Graph navigation, progressive teaching, package review existence, and teach-back requirements remain accepted.
+
 ## Context
 
 The package-first documentation program has produced twenty-eight substantial package specifications or foundations plus standards, ADRs, matrices, research records, and test reports. The documents preserve architecture accurately, but their volume makes the suite difficult to understand as one connected system.

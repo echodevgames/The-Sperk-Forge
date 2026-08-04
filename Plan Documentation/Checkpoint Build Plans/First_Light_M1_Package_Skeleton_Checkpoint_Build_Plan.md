@@ -1,21 +1,21 @@
 # First Light M1 — Package Skeleton Checkpoint Build Plan
 
 **Checkpoint ID:** FL-M1-01  
-**Version:** 1.1.0  
-**Status:** Approved but dormant; not authorized until SUITE-DOC-36  
+**Version:** 1.3.0  
+**Status:** Active and authorized by SUITE-DOC-33; implementation not started  
 **Package:** First Light (`EchoLaunch`)  
-**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.1.0  
+**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.3.0  
 **Milestone:** M1 — Skeleton  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Repository/workspace:** Clean Sperk’s Forge Unity development repository  
 **Unity baseline:** Unity 6000.3.8f1  
 **Public Unity floor:** Unity 6000.0  
-**Workflow authority:** SFGSS-005 v1.1.0  
+**Workflow authority:** SFGSS-005 v1.4.0  
 **Last updated:** August 3, 2026
 
 > This checkpoint creates the labeled crate, shelves, and inventory card. It does not yet place a launch engine inside.
 
-> **Dormant checkpoint notice:** SFGSS-ADR-002 re-locks implementation until the Full Suite Documentation Readiness Gate. This plan remains the first queued implementation checkpoint, but it must not be executed yet.
+> **Activation notice:** SUITE-DOC-33 passed with advisory on August 4, 2026 and explicitly activated this checkpoint. Execute only the scope below. Later package checkpoints require their own just-in-time learning reviews under SFGSS-ADR-004.
 
 
 ---
@@ -38,9 +38,10 @@ The user-visible result is a package that appears correctly in Package Manager a
 
 ## 2. Starting conditions
 
-- SUITE-DOC-36 — Full Suite Documentation Readiness Gate has passed and explicitly reactivated FL-M1-01.
-- SFGSS-000 v0.9.0 is present.
-- SFGSS-005 v1.1.0 is present.
+- SUITE-DOC-33 — Initial Implementation Readiness Gate passed with advisory and explicitly activated FL-M1-01.
+- PKG-LEARN-001 — First Light learning review is complete.
+- The current approved SFGSS-000 is present.
+- SFGSS-005 v1.4.0 or later is present.
 - First Light specification v1.1.0 is present.
 - SFGSS-ADR-001 and SFGSS-INT-FOUNDATION-001 are present.
 - The Unity project opens in Unity 6000.3.8f1 with no existing compile error.
@@ -442,9 +443,9 @@ Expected future outcome: define only the authority-claim state, duplicate reject
 |---|---|
 | Package | First Light (`EchoLaunch`) |
 | Package version | `0.1.0` skeleton |
-| Specification | v1.1.0 |
+| Specification | v1.3.0 |
 | Checkpoint | FL-M1-01 — Package Skeleton |
-| Implementation status | Not started |
+| Implementation status | Authorized; not started |
 | Tests | Defined, not run |
 | Known blockers | None; exact uGUI version resolved during execution |
 | Stop point | Before any C# script or runtime behavior |
@@ -454,7 +455,7 @@ Expected future outcome: define only the authority-claim state, duplicate reject
 
 ## 20. Approval
 
-**Decision:** Approved but dormant  
+**Decision:** Active and authorized  
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 3, 2026  
-**Conditions:** Do not execute until SUITE-DOC-36 explicitly reactivates this checkpoint. Once reactivated, execute only the file manifest and tests in this plan. No launch behavior, scene setup, prefab, ScriptableObject, sample, setup tool, or bridge may enter FL-M1-01.
+**Conditions:** SUITE-DOC-33 has activated this checkpoint. PKG-LEARN-001 must remain complete. Execute only the file manifest and tests in this plan. Verify the live Unity project, working tree, package path, and exact uGUI version before file creation. No launch behavior, scene setup, prefab, ScriptableObject, sample, setup tool, bridge, or C# file may enter FL-M1-01.

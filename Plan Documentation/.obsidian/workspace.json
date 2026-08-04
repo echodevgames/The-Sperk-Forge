@@ -190,6 +190,10 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "SUITE-DOC-32_Artifact_Manifest.json",
+    "SUITE-DOC-31_Artifact_Manifest.json",
+    "SUITE-DOC-30_Artifact_Manifest.json",
+    "Full_Suite_Documentation_and_Learning_Handoff_Guide.md",
     "Test Reports/SUITE-DOC-32_Full_Suite_Documentation_and_Learning_Handoff_Audit_Report.md",
     "Test Reports/SUITE-DOC-31_Full_Suite_Authority_Dependency_Bridge_Persistence_Matrix_Audit_Report.md",
     "Test Reports/SUITE-DOC-30_Standards_and_Package_Consistency_Review_Report.md",
@@ -213,8 +217,6 @@
     "SFGSS-009_Repository_Registry.json",
     "Test Reports/SUITE-DOC-22_EchoWorld_Feasibility_Foundation_Audit_Report.md",
     "SUITE-DOC-28_Artifact_Manifest.json",
-    "SUITE-DOC-27_Artifact_Manifest.json",
-    "SUITE-DOC-26_Artifact_Manifest.json",
     "SFGSS-008_Suite_Glossary_and_Naming_Registry.md",
     "Architecture Decision Records/SFGSS-ADR-TEMPLATE.md",
     "Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log.md",
@@ -223,8 +225,6 @@
     "Test Reports/SUITE-DOC-25_SFGSS-006_New-Project_Guided_Pathways_Audit_Report.md",
     "Test Reports/SUITE-DOC-24_Advanced_Cross-Package_and_Research_Review_Report.md",
     "Test Reports/SUITE-DOC-23_Expansion_Cross-Package_Collision_Review_Report.md",
-    "SFGSS-007_Architecture_Decision_Record_Standard.md",
-    "Research Records/SUITE-DOC-22_EchoWorld_Feasibility_and_Boundary_Record.md",
-    "SFGSS-006_New-Project_Guided_Pathways.md"
+    "SFGSS-007_Architecture_Decision_Record_Standard.md"
   ]
 }

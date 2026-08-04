@@ -11,8 +11,9 @@ updated: 2026-08-04
 **Document role:** Learning-phase index and operating guide  
 **Authority:** Navigation and educational workflow only  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current progress:** 0 of 28 complete  
-**First review:** PKG-LEARN-001 – First Light (`EchoLaunch`)
+**Current progress:** 1 of 28 complete  
+**Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`)
+**Active review:** None; PKG-LEARN-002 is paused until EchoDiagnostics implementation
 
 ## Purpose
 
@@ -65,3 +66,10 @@ Create a review file from `PKG-LEARN-TEMPLATE.md`. Do not create twenty-eight em
 ## Stop rule
 
 A review may use diagrams, examples, and tiny pseudocode for teaching. It must not authorize or supply production implementation code.
+
+
+## Current gate mode
+
+- PKG-LEARN-001 is complete.
+- PKG-LEARN-002 is paused until EchoDiagnostics implementation approaches.
+- SUITE-DOC-33 may activate First Light only; other packages remain locally locked.

@@ -1,46 +1,68 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 4, 2026  
-**Completed checkpoint:** SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit  
-**Active work item:** PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review  
-**Implementation:** Locked
+**Completed checkpoint:** SUITE-DOC-33 – Initial Implementation Readiness Gate  
+**Active checkpoint:** FL-M1-01 – First Light Package Skeleton  
+**Implementation:** First Light authorized; not started
 
 ## Current health
 
 | Area | Status |
 |---|---|
-| Suite Bible | Approved v0.21.0 |
-| Standards | SFGSS-001 through SFGSS-010 complete; SFGSS-005 v1.3.0 and SFGSS-010 v1.1.0 |
+| Suite Bible | Approved v0.23.0 |
+| Standards | SFGSS-001 through SFGSS-010 complete; SFGSS-005 v1.4.0 |
 | Package authorities | 28 of 28 approved |
 | Cross-package matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
-| Documentation handoff | **Passed** |
-| Canonical handoff guide | Approved |
-| Learning template and tracker | Ready |
-| Package learning reviews | 0 of 28 complete |
-| Runtime implementation | Not started |
+| Documentation handoff | Passed |
+| Initial implementation gate | Passed with advisory |
+| Learning workflow | Just-in-time package-local gate |
+| Package learning reviews | 1 complete, 1 paused, 26 not started |
+| First Light local learning gate | Passed |
+| FL-M1-01 | Active and authorized |
+| First Light implementation | Not started |
+| Other package implementations | Locked |
 | Empirical evidence | `Not run` unless a retained evidence record states otherwise |
 | Release-blocking architecture conflicts | None recorded |
 
-## Remaining pre-code work
+## Required checks before the first skeleton file
 
-1. Complete PKG-LEARN-001 through PKG-LEARN-028.
-2. Record each package teach-back and remaining questions.
-3. Keep the catalog, tracker, Current Notes, roadmap, graph, and health check synchronized.
-4. Run SUITE-DOC-33 after all reviews are complete.
-5. Revisit FL-M1-01 in plain English before any implementation authorization.
+1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
+2. Review Git status and preserve unrelated work.
+3. Confirm `Packages/com.echodevgames.echo-launch/` is absent or safely reviewed.
+4. Inspect the exact baseline `com.unity.ugui` version.
+5. Stop if any current authority contradicts FL-M1-01.
+
+These are implementation-start conditions, not documentation blockers.
+
+## Authorized First Light work
+
+FL-M1-01 may create:
+
+- The UPM package manifest.
+- Four assembly definitions.
+- Root package documentation.
+- The minimal `Documentation~` shell.
+- Stable Unity `.meta` files.
+- Skeleton validation and retained evidence.
+
+It may not create C#, scenes, prefabs, ScriptableObjects, samples, setup tools, bridges, or launch behavior.
+
+## Later package rule
+
+Before any other package begins implementation, complete or refresh its own `PKG-LEARN-###` review and activate an approved package-local checkpoint. Observatory remains paused until EchoDiagnostics reaches the front of the implementation queue.
 
 ## Honest evidence boundary
 
-The documentation proves approved design, static consistency, navigation, and handoff readiness. It does not prove compilation, runtime behavior, performance, platform compatibility, provider compatibility, migration, multiplayer prototypes, packaging, or release readiness.
+The documentation proves approved design, static consistency, navigation, learning status, handoff readiness, and checkpoint authorization. It does not prove compilation, package import, runtime behavior, performance, platform compatibility, provider compatibility, migration, multiplayer prototypes, packaging, or release readiness.
 
 ## Current stop point
 
-Do not begin package code. Begin **PKG-LEARN-001 – First Light (`EchoLaunch`)** using the approved learning template and progressive handoff guide.
+Begin FL-M1-01 at its starting-condition checks. Stop before the first `.cs` file and before FL-M2-01.
 
 ## Navigation
 
-- [Full Suite Handoff Guide](Full_Suite_Documentation_and_Learning_Handoff_Guide.md)
-- [Package Learning Review Catalog](Package_Learning_Review_Catalog.md)
-- [Learning Reviews Index](Learning%20Reviews/README.md)
-- [Full Suite Matrix](Integration%20Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md)
+- [SUITE-DOC-33 Readiness Report](Test%20Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md)
+- [FL-M1-01 Checkpoint Build Plan](Checkpoint%20Build%20Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md)
+- [First Light Learning Review](Learning%20Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review.md)
 - [Current Notes](Current%20Notes.md)
+- [Suite Graph Roadmap](Suite_Graph_Roadmap.md)

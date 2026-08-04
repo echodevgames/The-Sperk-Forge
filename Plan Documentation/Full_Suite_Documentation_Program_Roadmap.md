@@ -1,10 +1,10 @@
 # The Sperk’s Forge - Full Suite Documentation Program Roadmap
 
 **Document role:** Level 4 planning and checkpoint record  
-**Status:** Active; package implementation locked  
+**Status:** Active; implementation program activated under checkpoint control  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.21.0, SFGSS-001 v1.2.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.2.0, SFGSS-005 v1.2.0, SFGSS-ADR-002  
-**Workflow authority:** SFGSS-005 v1.2.0  
+**Parent authority:** SFGSS-000 v0.23.0, SFGSS-001 v1.2.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.2.0, SFGSS-005 v1.4.0, SFGSS-ADR-002, and SFGSS-ADR-004
+**Workflow authority:** SFGSS-005 v1.4.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
 
@@ -22,15 +22,15 @@ The owner’s intended meaning of “continue until all documentation is ready�
 2. Complete the responsible pre-code foundation for every Advanced package.
 3. Run Expansion, Advanced, and full-suite collision reviews.
 4. Finish the remaining suite standards and handoff documents using the completed package set as evidence.
-5. Pass one final readiness gate before any package implementation begins.
+5. Pass one initial implementation readiness gate, then enforce a just-in-time learning gate before each package begins implementation.
 
 SFGSS-002, SFGSS-003, and SFGSS-004 remain approved and immediately useful. They guide dependencies, assemblies, data, IDs, serialization, migration, testing, Laboratories, and release evidence for every package specification below.
 
 ## 2. Gate rule
 
-No package manifest, assembly definition, C# script, Unity scene, prefab, ScriptableObject, setup tool, sample, bridge, provider adapter, or runtime implementation may begin until the final full-suite documentation readiness gate passes.
+SUITE-DOC-33 has activated the implementation program only through FL-M1-01. Each package remains individually locked until its own learning review is complete and an approved package-local checkpoint is activated.
 
-FL-M1-01 remains approved but dormant.
+FL-M1-01 is active. It authorizes only the package skeleton and explicitly excludes C# and launch behavior.
 
 ## 3. Honest completeness boundary
 
@@ -58,12 +58,12 @@ These remain visibly `Not run` or conditional until implementation or research e
 
 | Area | Status |
 |---|---|
-| SFGSS-000 | Approved v0.16.0 |
+| SFGSS-000 | Approved v0.23.0 |
 | SFGSS-001 | Approved v1.1.0 |
 | SFGSS-002 | Approved v1.0.0 |
 | SFGSS-003 | Approved v1.0.0 |
 | SFGSS-004 | Approved v1.1.0 |
-| SFGSS-005 | Approved v1.2.0 |
+| SFGSS-005 | Approved v1.4.0 |
 | SFGSS-006 | Approved v1.0.0 |
 | SFGSS-007 | Approved v1.0.0 |
 | SFGSS-008 | Approved v1.0.0 |
@@ -72,7 +72,7 @@ These remain visibly `Not run` or conditional until implementation or research e
 | Expansion package specifications | 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
-| Package implementation | Not started |
+| Package implementation | FL-M1-01 active; First Light implementation not started |
 
 ## 5. Phase B - Expansion package specifications
 
@@ -132,33 +132,33 @@ These standards now follow the package foundations so they can describe the actu
 |---|---|---|
 | SUITE-DOC-31 | Full Suite Authority, Dependency, Bridge, and Persistence Matrix – **Approved** | SFGSS-INT-SUITE-001 approved; one owner per concern; no circular core dependency; persistence and removal explicit |
 | SUITE-DOC-32 | Full Suite Documentation and Learning Handoff Audit – **Passed** | README, Current Notes, standards, package specs, ADRs, research, tests, graph roadmap, handoff guide, template, tracker, and learning workflow agree |
-| PKG-LEARN-001 through PKG-LEARN-028 | Individual Package Learning Reviews | Jesse can explain every package purpose, authority, lifecycle, practical use, and Laboratory before code |
-| **SUITE-DOC-33** | **Full Suite Documentation and Learning Readiness Gate** | Explicitly authorize or revise the first implementation checkpoint after all learning reviews |
+| PKG-LEARN-001 through PKG-LEARN-028 | Just-in-Time Individual Package Learning Reviews | Each package review occurs immediately before that package's first implementation checkpoint |
+| **SUITE-DOC-33** | **Initial Implementation Readiness Gate – Passed with advisory** | FL-M1-01 activated; live Unity, Git, package-path, and uGUI checks deferred to execution start |
 
 ## 9A. Graph roadmap and learning orientation
 
 `Suite_Graph_Roadmap.md` is the living Obsidian navigation hub. It links all current package specifications, standards, ADRs, matrices, research records, status notes, and learning documents. Every package specification links back to it.
 
-`Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
+`Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. PKG-LEARN-001 is complete. The remaining reviews occur just before their related package implementation checkpoints.
 
-The graph and learning orientation remains active. SUITE-DOC-32 is complete; the active work item is PKG-LEARN-001 – First Light (`EchoLaunch`).
+The graph and learning orientation remains active. SUITE-DOC-33 and PKG-LEARN-001 are complete. PKG-LEARN-002 is paused until EchoDiagnostics implementation approaches. The active checkpoint is FL-M1-01.
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit |
+| Completed checkpoint | SUITE-DOC-33 – Initial Implementation Readiness Gate passed with advisory |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review** |
+| Active checkpoint | **FL-M1-01 – First Light Package Skeleton** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
-| Package implementation | Not started |
-| First queued implementation | FL-M1-01 - First Light Package Skeleton |
-| Runtime authorization | None |
-| Package learning reviews | 0 of 28 complete |
+| Package implementation | First Light authorized; not started |
+| Active implementation plan | FL-M1-01 v1.3.0 |
+| Runtime authorization | None; FL-M1-01 contains no C# or launch behavior |
+| Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
 | Graph roadmap | Active and linked from all package specifications and learning hubs |
-| Final unlock gate | SUITE-DOC-33 |
+| Initial implementation gate | SUITE-DOC-33 passed |
 
 ## 11. Checkpoint closeout rule
 
@@ -257,4 +257,20 @@ SFGSS-INT-SUITE-001 v1.0.0 passes the full-suite authority, dependency, bridge, 
 
 The full vault handoff passes after validating canonical entry points, authority order, standards, package authorities, ADRs, matrices, research records, test reports, graph navigation, one-current-copy rules, and evidence honesty. SFGSS-005 advances to v1.3.0 and SFGSS-010 to v1.1.0. One canonical Handoff Guide, Learning Reviews folder, template, and tracker are approved. Learning IDs are normalized to `PKG-LEARN-001` through `PKG-LEARN-028` before any review executes.
 
-**Next work item:** PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review.
+**Next work item:** PKG-LEARN-002 – The Observatory (`EchoDiagnostics`) Learning Review.
+
+
+## Just-in-Time Learning Rebaseline Closeout
+
+SFGSS-ADR-004 is accepted. The full documentation program remains complete, but package learning reviews now occur immediately before each related package implementation. PKG-LEARN-001 remains complete. PKG-LEARN-002 is paused without being marked complete. SUITE-DOC-33 is the active checkpoint and may authorize only FL-M1-01; later packages remain locally locked until their reviews pass.
+
+
+## SUITE-DOC-33 Closeout – Initial Implementation Readiness
+
+**Decision:** Passed with advisory.
+
+The complete documentation program, full-suite matrices, handoff audit, SFGSS-ADR-004, and PKG-LEARN-001 satisfy the initial implementation gate. FL-M1-01 v1.3.0 is active and may begin at its starting-condition checks.
+
+The live Unity compile, Git state, existing package path, and exact uGUI version remain `Not run` and must be verified before file creation. Every package other than First Light remains locally locked.
+
+**Next checkpoint:** FL-M1-01 – First Light Package Skeleton.

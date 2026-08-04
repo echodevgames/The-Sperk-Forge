@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001  
-**Specification version:** 1.2.0
+**Specification version:** 1.3.0
 **Status:** Approved  
 **Technical package name:** EchoLaunch  
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is approved as the authoritative package design. FW-DOC-12 authorizes implementation only through approved SFGSS-005 Checkpoint Build Plans, beginning with FL-M1-01 — Package Skeleton. No launch behavior is authorized by the readiness gate itself.
+> **Approval rule:** This specification is approved as the authoritative package design. SUITE-DOC-33 activates implementation only through the active SFGSS-005 Checkpoint Build Plan, FL-M1-01 — Package Skeleton. No C# or launch behavior is authorized by the gate or by FL-M1-01.
 
 ---
 
@@ -29,6 +29,7 @@
 | 1.0.0 | 2026-08-03 | Approved | Resolved implementation-shaping decisions, approved the full package contract, and deferred implementation until the Foundation Wave specification pass is complete | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-03 | Approved | Recorded FW-DOC-12 readiness approval, adopted SFGSS-005 as the implementation workflow authority, and selected FL-M1-01 Package Skeleton without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-04 | Approved | Separated the default uGUI presenter from the neutral Runtime assembly; Set the Editor assembly to `autoReferenced: false`; Canonicalized immutable `StartupStepDefinition` versus runtime executor terminology. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
+| 1.3.0 | 2026-08-04 | Approved | Recorded SUITE-DOC-33 activation of FL-M1-01, adopted the just-in-time package learning gate, and updated implementation status without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 
 ---
 
@@ -1459,14 +1460,14 @@ Before writing code:
 
 | Field | Current value |
 |---|---|
-| Package version | Not implemented; approved specification 1.1.0 |
-| Completed checkpoint | FW-DOC-12 — Foundation Documentation Readiness Gate approved |
-| Files/assets created | Package specification and suite documentation authorities only; package implementation has not started |
-| Tests passed | Documentation structural and cross-package readiness audits only |
+| Package version | Not implemented; approved specification 1.3.0 |
+| Completed checkpoint | SUITE-DOC-33 — Initial Implementation Readiness Gate passed with advisory |
+| Files/assets created | Package specification, learning review, and suite documentation authorities only; package implementation has not started |
+| Tests passed | Documentation, consistency, handoff, learning-gate, and checkpoint-scope audits only |
 | Tests failed | None |
-| Known issues | No blocker to FL-M1-01; exact baseline package dependency versions must be recorded during M1 |
-| Decisions added | SFGSS-005 approved; FL-M1-01 selected as the first bounded implementation checkpoint |
-| Next checkpoint | FL-M1-01 — Package Skeleton |
+| Known issues | No architecture blocker; live Unity compile, Git state, package path, and exact uGUI dependency remain execution-start checks |
+| Decisions added | SFGSS-ADR-004 accepted; PKG-LEARN-001 complete; FL-M1-01 activated under checkpoint control |
+| Next checkpoint | FL-M1-01 — Package Skeleton, active and authorized |
 
 ---
 
@@ -1496,7 +1497,7 @@ Before writing code:
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams  
 **Date:** August 3, 2026  
-**Conditions or notes:** The design is approved. FW-DOC-12 has passed. Begin only FL-M1-01 Package Skeleton under its approved Checkpoint Build Plan; later behavior remains unauthorized until a later checkpoint is approved.
+**Conditions or notes:** The design is approved. SUITE-DOC-33 has passed with advisory and activated only FL-M1-01 Package Skeleton under its approved Checkpoint Build Plan. Verify all live-project starting conditions before file creation. Later behavior and every other package remain unauthorized until their own gates pass.
 
 ---
 
@@ -1515,7 +1516,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. The Foundation documentation gate is complete; implementation is authorized only through the active SFGSS-005 Checkpoint Build Plan, beginning with FL-M1-01 Package Skeleton.
+The document is **Approved** as the Level 2 authority for First Light. SUITE-DOC-33 has activated only the active SFGSS-005 Checkpoint Build Plan, FL-M1-01 Package Skeleton. No C# or launch behavior is authorized until a later checkpoint.
 
 
 ---
@@ -1525,7 +1526,7 @@ The document is **Approved** as the Level 2 authority for First Light. The Found
 
 **Review status:** Passed  
 **Review date:** August 4, 2026  
-**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.4.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-004; and the approved Foundation, Expansion, and Advanced integration matrices.
 
 The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
 

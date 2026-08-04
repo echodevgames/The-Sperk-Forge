@@ -197,11 +197,11 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | In drafting | 0 |
 | Remaining | 0 |
 | Completed documentation checkpoint | FW-DOC-12 — Documentation Readiness Gate |
-| Active documentation checkpoint | SUITE-DOC-02 — SFGSS-002 Dependency, Bridge, and Assembly Standard |
-| Package implementation | Not started |
-| Runtime behavior authorization | None; all implementation re-locked until SUITE-DOC-36 |
-| Known blockers | None; owner intentionally extended the documentation gate |
-| Commit/push | Pending user confirmation |
+| Active implementation checkpoint | FL-M1-01 — First Light Package Skeleton |
+| Package implementation | First Light authorized; not started |
+| Runtime behavior authorization | None; FL-M1-01 authorizes skeleton files only, while later packages require their own just-in-time learning review |
+| Known blockers | None; live Unity, Git, package-path, and uGUI checks remain before file creation |
+| Commit/push | SUITE-DOC-33 pending user confirmation |
 
 
 ---
@@ -244,7 +244,16 @@ Authorization is limited to package manifest, asmdefs, documentation shell, comp
 
 SFGSS-ADR-002 preserves this roadmap as the completed Foundation documentation record but supersedes its immediate implementation activation.
 
-- FL-M1-01 remains approved but dormant.
+- SUITE-DOC-33 has activated FL-M1-01.
 - The active roadmap is `Full_Suite_Documentation_Program_Roadmap.md`.
-- The active checkpoint is SUITE-DOC-02.
-- No package files or C# code may be created until SUITE-DOC-36 passes.
+- The active checkpoint is FL-M1-01.
+- FL-M1-01 may create only its package skeleton. No C# or launch behavior is authorized. Later packages remain individually locked until their learning review passes.
+
+
+---
+
+## 13. SUITE-DOC-33 Result
+
+**Decision:** Passed with advisory.
+
+PKG-LEARN-001 satisfies the First Light learning gate and FL-M1-01 v1.3.0 is active. The checkpoint must begin by verifying the live Unity compile, Git state, package path, and exact uGUI version. No C# or launch behavior is authorized.

@@ -1,12 +1,12 @@
 # SFGSS-005 — Checkpoint Build Workflow and ChatGPT Collaboration Rules
 
 **Document ID:** SFGSS-005  
-**Version:** 1.3.0  
+**Version:** 1.4.0  
 **Status:** Approved workflow standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible  
-**Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`  
+**Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-ADR-004, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
 
@@ -20,6 +20,7 @@
 | 1.1.0 | August 3, 2026 | Approved | Added manual-entry learning workflow, mandatory visible complete code, file-by-file explanations, and evidence-based teaching stops |
 | 1.2.0 | August 4, 2026 | Approved | Added graph-roadmap navigation and mandatory package-by-package learning reviews before implementation authorization |
 | 1.3.0 | August 4, 2026 | Approved | Added permanent PKG-LEARN-001 through 028 IDs, review artifact naming, progressive source delivery, template/tracker use, and explicit teach-back completion records |
+| 1.4.0 | August 4, 2026 | Approved | Replaced the all-packages-first learning gate with a just-in-time package-local gate immediately before each package implementation |
 
 
 ---
@@ -165,11 +166,22 @@ The plan must list the exact authority set used. Chat history may supply context
 ---
 
 
-## 5A. Pre-implementation package learning review
+## 5A. Just-in-time package learning review
 
-Before the final documentation readiness gate may authorize implementation, every package in SFGSS-000 Sections 7.1 through 7.3 receives an individual learning review.
+Every package in SFGSS-000 Sections 7.1 through 7.3 retains an individual learning review, but the reviews are not required as one twenty-eight-package block.
 
-Each review must cover:
+Before a package's **first implementation checkpoint** may be authorized, that package's learning review must be complete. The default sequence is:
+
+```text
+Approved package authority
+    -> package learning review
+        -> package-local readiness decision
+            -> first implementation checkpoint
+```
+
+The initial suite implementation gate may authorize First Light because the full documentation program has passed and `PKG-LEARN-001` is complete. A later package remains locally locked until its own review is complete.
+
+Each review covers:
 
 1. Plain-English purpose.
 2. A real-world analogy.
@@ -182,11 +194,9 @@ Each review must cover:
 9. The package's Standalone Laboratory.
 10. A teach-back check in which Jesse explains the package in his own words.
 
-The review follows `Package_Learning_Review_Catalog.md` and SFGSS-ADR-003. It is documentation and education, not implementation authorization. Tiny pseudocode or diagrams may illustrate a concept, but complete production code waits for an approved Checkpoint Build Plan.
+The review follows `Package_Learning_Review_Catalog.md`, SFGSS-ADR-003, and SFGSS-ADR-004. It is education and package-local readiness evidence, not implementation evidence. Tiny pseudocode or diagrams may illustrate a concept, but complete production code waits for an approved Checkpoint Build Plan.
 
-The suite maintains `Suite_Graph_Roadmap.md` as the navigation hub for these reviews. Every current package specification must link back to that graph note.
-
-Each review uses the permanent ID sequence `PKG-LEARN-001` through `PKG-LEARN-028` and creates one artifact only when the review begins:
+Each review uses the permanent ID sequence `PKG-LEARN-001` through `PKG-LEARN-028` and creates:
 
 ```text
 Learning Reviews/PKG-LEARN-###_<TechnicalIdentifier>_Learning_Review.md
@@ -194,9 +204,11 @@ Learning Reviews/PKG-LEARN-###_<TechnicalIdentifier>_Learning_Review.md
 
 The artifact begins from `Learning Reviews/PKG-LEARN-TEMPLATE.md`. `Package_Learning_Review_Catalog.md` is the human-readable route, while `Learning Reviews/PKG-LEARN-TRACKER.json` is the machine-readable status source.
 
-The reviewer reads the complete authority set, but the teaching session uses progressive disclosure. Jesse receives purpose and a practical example first, followed by authority, lifecycle, data, bridges, and Laboratory design. A large package specification must not be dumped on him as a substitute for explanation.
+The reviewer reads the complete authority set, but teaching uses progressive disclosure. Jesse receives purpose and a practical example first, followed by authority, lifecycle, data, bridges, and Laboratory design.
 
-A review is complete only after its sources, teach-back, remaining questions, and completion decision are recorded. Learning completion is educational evidence only and never changes SFGSS-004 implementation evidence from `Not run`.
+A review is complete only after its sources, teach-back, remaining questions, and completion decision are recorded. If the package specification or authority changes materially after completion, the review is marked `Needs revisit` before implementation continues.
+
+A review may be started early, but a paused early review is not complete and does not authorize implementation. Learning completion never changes SFGSS-004 evidence from `Not run`.
 
 ## 6. Required Checkpoint Build Plan structure
 

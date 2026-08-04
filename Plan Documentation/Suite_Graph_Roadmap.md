@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-32 - Full Suite Documentation and Learning Handoff Audit  
+**Current work item:** FL-M1-01 - First Light Package Skeleton  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -43,9 +43,10 @@ flowchart LR
     I --> J
     J --> K[Full Suite Matrix — Approved]
     K --> Handoff[Documentation and Learning Handoff Audit]
-    Handoff --> L[28 Package Learning Reviews]
-    L --> M[SUITE-DOC-33 Final Readiness Gate]
-    M --> N[First Light FL-M1-01 Package Skeleton]
+    Handoff --> R1[PKG-LEARN-001 First Light Complete]
+    R1 --> M[SUITE-DOC-33 Gate — Passed]
+    M --> I1[FL-M1-01 First Light Skeleton — Active]
+    I1 --> J[Just-in-Time Review Before Each Later Package]
 ```
 
 ## Package waves
@@ -161,6 +162,7 @@ flowchart LR
 - [[Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol|ADR-001 — Setup Facade Protocol]]
 - [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 — Documentation Gate and Learning Implementation]]
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]
+- [[Architecture Decision Records/SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|ADR-004 — Just-in-Time Package Learning Gate]]
 - [[Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log|Suite ADR Decision Log]]
 - [[Architecture Decision Records/SFGSS-ADR-TEMPLATE|Reusable ADR Template]]
 
@@ -255,23 +257,30 @@ flowchart TB
 ```
 
 - [[SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard|Repository and versioning authority]]
-- [[SFGSS-009_Repository_Registry|Machine-readable repository registry]]
+- [Machine-readable repository registry](SFGSS-009_Repository_Registry.json)
 
 - [[SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix|Standards and Package Consistency Matrix]]
 
+
+## Active implementation route
+
+- [[Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report|SUITE-DOC-33 Initial Implementation Readiness Gate]]
+- [[Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan|FL-M1-01 First Light Package Skeleton Plan]]
+- [[Learning Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review|PKG-LEARN-001 First Light Learning Review]]
 
 ## Learning review flow
 
 ```mermaid
 flowchart LR
     H[Full Suite Handoff Guide] --> C[Package Learning Catalog]
-    C --> R1[PKG-LEARN-001 First Light]
-    R1 --> R2[PKG-LEARN-002 Observatory]
-    R2 --> D[Continue through PKG-LEARN-028]
-    D --> G[SUITE-DOC-33 Readiness Gate]
-    G -. only if approved .-> I[First implementation checkpoint]
+    C --> R1[PKG-LEARN-001 First Light — Complete]
+    R1 --> G[SUITE-DOC-33 — Passed]
+    G --> I[FL-M1-01 First Light Skeleton — Active]
+    I --> R2[PKG-LEARN-002 Observatory when EchoDiagnostics is next]
+    R2 --> D[Repeat just-in-time through PKG-LEARN-028]
 ```
 
-- Active review: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
+- Completed review: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
+- Paused review: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
 - Tracker: `Learning Reviews/PKG-LEARN-TRACKER.json`
-- Implementation remains locked.
+- Implementation is activated only for FL-M1-01; every later package remains locally locked.

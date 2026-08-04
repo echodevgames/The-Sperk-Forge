@@ -1,8 +1,8 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.21.0
-**Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
+**Version:** 0.23.0
+**Status:** Approved lead architecture baseline; implementation program activated under checkpoint control  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Current development baseline:** Unity 6000.3.8f1  
@@ -2777,6 +2777,11 @@ The following decisions form the approved starting baseline for the suite:
 148. Bridge and provider artifacts are removed before their peers. Project-owned definitions, configuration, durable payloads, aliases, receipts, and migration evidence remain preserved unless an explicit destructive prune is approved.
 149. Standalone Laboratories remain package-owned proof, Integration Laboratories remain bridge/provider proof, and the Integration Lab remains the authority for tested package combinations and compatibility snapshots.
 150. SUITE-DOC-31 passes with twenty-eight package authority rows, a canonical bridge catalog, explicit persistence layers, zero approved core dependency cycles, zero authority collisions, and no promoted empirical evidence. Package implementation remains locked pending SUITE-DOC-32, the learning reviews, and SUITE-DOC-33.
+151. Package learning reviews use a just-in-time local gate. Each package must complete its own learning review immediately before its first implementation checkpoint; all twenty-eight reviews are no longer required before First Light implementation. SUITE-DOC-33 may authorize FL-M1-01 because PKG-LEARN-001 is complete, while every other package remains individually locked until its review passes.
+152. SUITE-DOC-33 passes with advisory and activates the implementation program only through FL-M1-01 – First Light Package Skeleton.
+153. Initial implementation activation is checkpoint-specific. It does not authorize a milestone, package family, later First Light behavior, or another package.
+154. FL-M1-01 must verify the live Unity compile, working tree, package path, and exact baseline uGUI version before creating files; these empirical checks remain `Not run` at documentation-gate closeout.
+155. First Light may proceed because PKG-LEARN-001 is complete. Every later package remains locally locked until its own just-in-time learning review and readiness decision activate an approved Checkpoint Build Plan.
 
 ---
 
@@ -2814,19 +2819,27 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred fifty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred fifty-five decisions in Section 21 are approved. The complete documentation program, integration matrices, handoff audit, SFGSS-ADR-004, and PKG-LEARN-001 support the initial implementation gate.
 
-Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
-
-Proceed to:
+SUITE-DOC-33 passes with advisory and activates only:
 
 ```text
-SUITE-DOC-32 - Full Suite Documentation and Learning Handoff Audit
+FL-M1-01 – First Light Package Skeleton
 ```
 
-Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.
+Follow `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` v1.3.0 and SFGSS-005 v1.4.0.
 
-When implementation is eventually authorized, follow SFGSS-005 v1.2.0: show the complete code, explain each file and architectural choice, provide exact Unity Editor steps, let Jesse enter the code himself by default, compile/test at bounded stops, and reconcile evidence before advancing.
+Before creating files:
+
+1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
+2. Review Git status and preserve unrelated work.
+3. Confirm the First Light package path is absent or safely reviewed.
+4. Inspect the exact baseline `com.unity.ugui` version.
+5. Stop if any starting condition conflicts with the approved plan.
+
+FL-M1-01 authorizes only the package manifest, four assembly definitions, documentation shell, generated `.meta` files, and bounded validation. It authorizes no C# file or launch behavior.
+
+After FL-M1-01 closes, do not begin FL-M2-01 automatically. Create and approve its Checkpoint Build Plan. Before another package begins implementation, complete that package's own just-in-time learning review.
 
 
 ---

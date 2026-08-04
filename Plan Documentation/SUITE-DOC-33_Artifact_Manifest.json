@@ -1,0 +1,775 @@
+{
+  "documentId": "SUITE-DOC-33-ARTIFACT-MANIFEST",
+  "version": "1.0.0",
+  "status": "Approved checkpoint artifact manifest",
+  "updated": "2026-08-04",
+  "checkpoint": "SUITE-DOC-33",
+  "decision": "Pass with advisory",
+  "activeCheckpoint": "FL-M1-01",
+  "fileCountExcludingManifest": 152,
+  "markdownFileCount": 109,
+  "prohibitedImplementationArtifacts": [],
+  "brokenLocalLinks": [],
+  "files": [
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md",
+      "bytes": 19963,
+      "sha256": "ad149df51ec6f2710e1279ddf64072c92b305abeeeb833e18bc802fe6c0687df"
+    },
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md",
+      "bytes": 6561,
+      "sha256": "37b3782d2f2325a1191ddbc1433d5cb9daa2055a4c9d662b098d264c27c2b40b"
+    },
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review.md",
+      "bytes": 3917,
+      "sha256": "e0f5d2672870b1bedd525ece985694760cff73e5473961b0523e8dbd997df904"
+    },
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate.md",
+      "bytes": 4050,
+      "sha256": "6da05192e7bb9ff6dadc7c0e551559bb99f58e997de0bd0d2f539135cf32c1be"
+    },
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log.md",
+      "bytes": 4177,
+      "sha256": "29c8eeae026055854eb8b44a626e44221b606cc902887b559c7c98d42858b28a"
+    },
+    {
+      "path": "Architecture Decision Records/SFGSS-ADR-TEMPLATE.md",
+      "bytes": 4085,
+      "sha256": "7a1f7f12362ceea7e5ed183ed548ef942dfae7bcad108b819a50fdf8a9527d8d"
+    },
+    {
+      "path": "Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md",
+      "bytes": 19230,
+      "sha256": "7d258e037bb6ec2524214ec5ed7a9a0f95088c0ca5434ff5ffa0563a301e5bcc"
+    },
+    {
+      "path": "Current Notes.md",
+      "bytes": 4226,
+      "sha256": "fbdb9579f8dfd082311eb189340f4ef70919cad3876a7586e2b55cee1ff95a28"
+    },
+    {
+      "path": "Echo_Game_Systems_Suite_Bible.md",
+      "bytes": 166900,
+      "sha256": "4321988a2d539e489f3dc5418b77735c65c5ce8e17dd8e4f0360a0892c421056"
+    },
+    {
+      "path": "Foundation_Wave_Specification_Roadmap.md",
+      "bytes": 14613,
+      "sha256": "639f63ebbd033fcd383359c6259d6b2551e37b44daa6ac51d08985f9af7eb883"
+    },
+    {
+      "path": "Full_Suite_Documentation_Program_Roadmap.md",
+      "bytes": 21283,
+      "sha256": "bc9fda9c1e8fd53ce1c4c904e6c89fee54ff6125c3f52102297c1f446f7060ec"
+    },
+    {
+      "path": "Full_Suite_Documentation_and_Learning_Handoff_Guide.md",
+      "bytes": 10186,
+      "sha256": "7228fa02a1a7e804d669eacc1d557aa2524100b4db3b4a708f079b5b82a27790"
+    },
+    {
+      "path": "Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md",
+      "bytes": 28093,
+      "sha256": "52c9fc8d1070d0befaaa5ce400315f8393ea1390c346832b3ef6a89bc7f720c4"
+    },
+    {
+      "path": "Integration Specifications/SFGSS-INT-ADVANCED-001_Advanced_Cross-Package_and_Research_Contract_Matrix.md",
+      "bytes": 34112,
+      "sha256": "fe2aa82bcf7b1be8c81bf14c4989dda150180ed31c0692fc89644839ee738fa5"
+    },
+    {
+      "path": "Integration Specifications/SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix.md",
+      "bytes": 7337,
+      "sha256": "45f74c13d54e18c0a59e254720ad794d837d43a6cfc865e1af63cf0d5214a841"
+    },
+    {
+      "path": "Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix.md",
+      "bytes": 27940,
+      "sha256": "9430b15f5ea74aaffda72251a8c0e1a625a36bd48364e28a6f8cd80a6b3584dc"
+    },
+    {
+      "path": "Integration Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md",
+      "bytes": 49198,
+      "sha256": "f3c2c2e8eabd939c399f18d56981c040fa4642cc407f1baaa47eafe16019b184"
+    },
+    {
+      "path": "Integration Specifications/SFGSS-INT-SUITE-001_Registry.json",
+      "bytes": 54825,
+      "sha256": "4f539a07b89012c2f4ca75048629adb9ebc80abfb65606a98de9cc782c1bbb2b"
+    },
+    {
+      "path": "LEARN-GATE-01_Artifact_Manifest.json",
+      "bytes": 30009,
+      "sha256": "a78b73ff0c7abc9b3ab5aca94dee60ebb3b8666217aa70a9b4874bc8eb1385de"
+    },
+    {
+      "path": "Learning Reviews/PKG-LEARN-001_Artifact_Manifest.json",
+      "bytes": 32198,
+      "sha256": "53dd088c096aa606bae8141351f8c49310a662f264c17b7986c22321524d357f"
+    },
+    {
+      "path": "Learning Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review.md",
+      "bytes": 8616,
+      "sha256": "e30b7a39266211f1615cbf70540131768cb6728873a618504ab128d4b3c293e4"
+    },
+    {
+      "path": "Learning Reviews/PKG-LEARN-TEMPLATE.md",
+      "bytes": 4304,
+      "sha256": "0c14a275abd98dcfcfc8c5114f1374b427764e04deb75cfda5c5c1dd005e37cc"
+    },
+    {
+      "path": "Learning Reviews/PKG-LEARN-TRACKER.json",
+      "bytes": 25667,
+      "sha256": "230d760d93b244f64fb910cd02046fbf9014bac8cca3ece851831711d23fcd21"
+    },
+    {
+      "path": "Learning Reviews/README.md",
+      "bytes": 2403,
+      "sha256": "866cfab1c9a1851eac563968e67caba370be0bd142655a5aa51152b21fd73204"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation.md",
+      "bytes": 231076,
+      "sha256": "2ffe1fa83bda1b432f1df6f8accbf7614c392dab2077ee2a9ee008fc925c5070"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Clash-EchoCombat-Package-Foundation.md",
+      "bytes": 198488,
+      "sha256": "ea943f191c5f8939ef8e3be3965011432c8f36e641a51b464092410bfe40e02d"
+    },
+    {
+      "path": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+      "bytes": 100164,
+      "sha256": "7e3758b686ee1237492946b4546f7a4ea179075d5cb5b9e53727ca9ff1b563c6"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Impact-EchoFeedback-Package-Specification.md",
+      "bytes": 131221,
+      "sha256": "e8f15baf422ac22e461b770fa034e54fe8c5fb5576d7562710af1c6adc96a38c"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md",
+      "bytes": 285426,
+      "sha256": "4d6d59e79c164f8f24c9641961325ef0c75ef16566a7bb0851b9306b8160c672"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Many-Tongues-EchoLocalization-Package-Specification.md",
+      "bytes": 149173,
+      "sha256": "f226c39896f3789344553351c1b7cbf66978e068df9dc691cc728fb2cd3dccf0"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
+      "bytes": 120577,
+      "sha256": "2150745b53e10a21c01314b7fef303b25891fe4ff8ac7fa20540a919d6eeb036"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md",
+      "bytes": 129646,
+      "sha256": "3b791d44080a513b7bc3d19921c94a187c73e50c7b385f8a678067789da67a76"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Ascent-EchoProgression-Package-Specification.md",
+      "bytes": 129826,
+      "sha256": "8fedf719b97d6c481527f29e892f1e895d772531c61b554639a840920c8b4863"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Atlas-EchoWorld-Package-Foundation.md",
+      "bytes": 237593,
+      "sha256": "fdc653266a8cd58036623a1f5b66c0b7be35bd37248a3997b780b7afac581e95"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md",
+      "bytes": 124593,
+      "sha256": "1c9705a8c83d8790385017f8fbb93f2174fb3120e9f67001470c11b06559afa0"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md",
+      "bytes": 257048,
+      "sha256": "41cc08887e9e4b1066214bb3b1c023fcb006a52bd8c7fdbba8b662de82202b64"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md",
+      "bytes": 208464,
+      "sha256": "2877918f20564534361295f3d63eb8f27f9b7e7000faaa57701f0d0a7533c618"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
+      "bytes": 161870,
+      "sha256": "73a512f21c977bf2e39871c177882ed42185dd5215580d09315d34ff06100f50"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
+      "bytes": 129641,
+      "sha256": "ff1da597063220eb5c30b5959485a797d9ca20533f618e8ed281d185effb221e"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md",
+      "bytes": 138547,
+      "sha256": "aa30c065dc2d1b1cb4785354be1d475f3f18109295ba3ae4e0a39ba8dd2396b6"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
+      "bytes": 147400,
+      "sha256": "2433982406dc130dadc7a97b26b3e6e1fbff3474d67f1fb57b74c3bf375e4e93"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
+      "bytes": 116086,
+      "sha256": "cd520d6caa66309b6981675be37e08d0ec06d10fd89eec5b74f0a6bd0fb4e96d"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
+      "bytes": 77120,
+      "sha256": "6cee7c5cb102603706eae18c08afc90b92b0c1c41a837deec2112469886b99af"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
+      "bytes": 130208,
+      "sha256": "d6839180f7a6820e812a735da1073ee684a29c819051762933e9947a221cd041"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
+      "bytes": 132574,
+      "sha256": "e737d713c180213581250fbacb929ae645dc2f5a2c1d51f215e01286281d96f9"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
+      "bytes": 100809,
+      "sha256": "d5e3b108df986f6ee707f3b5c9f19b5cd37339b73e60c3db69da87a3eafa7858"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md",
+      "bytes": 153673,
+      "sha256": "bebd2c196ebf081c1cdb9aae5c0c745d3c86dddef273e6fba88383130f4882b2"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
+      "bytes": 232394,
+      "sha256": "86e2bdbcb008e8199a77d27d4472bcbe6d7322e26871471f7a532c9a1b625665"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
+      "bytes": 132660,
+      "sha256": "18072580bf245a71fdc0e32024a2eb086d4d88208b24fbdc0388b84d581766ae"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md",
+      "bytes": 157989,
+      "sha256": "e78e9d42dbf5970e2cd468c43d713f9c21f72f61eeafb2c6d132c83758fd3636"
+    },
+    {
+      "path": "Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md",
+      "bytes": 154522,
+      "sha256": "5bd0dbc7693d6fe14e44b800bb60695f1bf821e1604ce24cc7efa397e5264c0e"
+    },
+    {
+      "path": "Package Specifications/SFGSS-Voices-EchoDialogue-Package-Specification.md",
+      "bytes": 127601,
+      "sha256": "dd8bc5a0a44c12c8c7d9dd60653b89b87ae47905a6591dfb20320aa5e356c571"
+    },
+    {
+      "path": "Package_Learning_Review_Catalog.md",
+      "bytes": 15025,
+      "sha256": "dcde5a005e0787e5950fd216ac421dbc560515454ea9661cf35cf7949d75df0a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3605,
+      "sha256": "58085a5dda0386f79344d3af7c2feff1c2b357860c99e4440b15109361b9fb27"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md",
+      "bytes": 14133,
+      "sha256": "a13bc9cff4400350feaa9e14b26207fc424f8c0b516c6ef3e50b867f8f2240e7"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md",
+      "bytes": 4757,
+      "sha256": "cc91ac24a08bf19806abb2b975da37df6eb2057573c8206730631c3438cd21ce"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md",
+      "bytes": 11550,
+      "sha256": "903f06aadabf22a82643723b4c8009068ffc07b10ae3fb830791ed553ad2a1f6"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md",
+      "bytes": 6245,
+      "sha256": "8ce0984c08c1d771ba3e2adbe61e797182e3b20f12fbae7056ecb92985a968b5"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md",
+      "bytes": 6120,
+      "sha256": "d906bac217e8f18a024c1d9aea39dd966bb61a9918532e601734ee9823c3b09b"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md",
+      "bytes": 5979,
+      "sha256": "18c5c38c70beedfde04077cbdac8db29c3e03738d3a663d26bd733c7fbd0b341"
+    },
+    {
+      "path": "Research Records/SUITE-DOC-22_EchoWorld_Feasibility_and_Boundary_Record.md",
+      "bytes": 5372,
+      "sha256": "8ce0efe5f78522b66657836bf28abb6ba9162239e297bf4691fa8841f64f740c"
+    },
+    {
+      "path": "SFGSS-001_Package_Specification_Template.md",
+      "bytes": 38112,
+      "sha256": "1b4961c4638628818d12d42359c0f3eae6eab8d3ddfecf55e32a4112b87a0138"
+    },
+    {
+      "path": "SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md",
+      "bytes": 51917,
+      "sha256": "3a8c7f4a32ab7f6e631cc2541001f61fd5889c9b709541d7ab3f9f7bb498c378"
+    },
+    {
+      "path": "SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md",
+      "bytes": 65692,
+      "sha256": "0d10171091f1ddf979ff279494dce764e42eda578998f6b1a734d4af674f39ea"
+    },
+    {
+      "path": "SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md",
+      "bytes": 62800,
+      "sha256": "a6d82d47e1ea674da07096ba5d385df70cc1041a9ed705cdae99d2521dc0da6a"
+    },
+    {
+      "path": "SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md",
+      "bytes": 24837,
+      "sha256": "ce152eda18f0e59413213993249db8e21094244de5832ebbbe7c742572eb57ed"
+    },
+    {
+      "path": "SFGSS-006_New-Project_Guided_Pathways.md",
+      "bytes": 48809,
+      "sha256": "65000193e22941303a294f39c9c9dd0a41948bd47de00fc674f8ed03964ae368"
+    },
+    {
+      "path": "SFGSS-007_Architecture_Decision_Record_Standard.md",
+      "bytes": 21503,
+      "sha256": "e2546eebb66d178f826f042ddbd385a9d782263d499c2e333550e17b266276dd"
+    },
+    {
+      "path": "SFGSS-008_Package_Naming_Registry.json",
+      "bytes": 17693,
+      "sha256": "33e28e472db104b31a231dc130988690b2aeeb6b9983164f936475e21713f023"
+    },
+    {
+      "path": "SFGSS-008_Suite_Glossary_and_Naming_Registry.md",
+      "bytes": 55353,
+      "sha256": "b90b8423d6f638f4e7967e63dbf91d6d05895998ff8b794a170fdbbc53d071a5"
+    },
+    {
+      "path": "SFGSS-009_Repository_Registry.json",
+      "bytes": 16053,
+      "sha256": "ee810395c40c42ed7570c9cec7b430527972689d40eb297c83ddfde923c1dc5b"
+    },
+    {
+      "path": "SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard.md",
+      "bytes": 48367,
+      "sha256": "cc067364d2c66bb1bff4ec23f809846461539d9438e058f4f089924bd2ecb972"
+    },
+    {
+      "path": "SFGSS-010_Checkpoint_Handoff_Template.md",
+      "bytes": 1563,
+      "sha256": "6e3f8a30e482a659a8f265d78ed0e1e8803e524e9fdaed602b2c7c05d12767b4"
+    },
+    {
+      "path": "SFGSS-010_Current_Notes_Template.md",
+      "bytes": 2425,
+      "sha256": "eadd8b921420633dc9efe559c793fb8dffc075449364aff0938864f5698116cb"
+    },
+    {
+      "path": "SFGSS-010_Documentation_Registry.json",
+      "bytes": 3050,
+      "sha256": "292c0d545338f899c399a8e8f8e97a946b64d23007bb53deb43e9647d818713c"
+    },
+    {
+      "path": "SFGSS-010_Living_Documentation_Current_Notes_and_Obsidian_Workflow_Standard.md",
+      "bytes": 44797,
+      "sha256": "19229213c0ed97ca4248ffee1ffb162ea04e987499e8beba288531f46cb2eef7"
+    },
+    {
+      "path": "SFGSS-030_Package_Consistency_Registry.json",
+      "bytes": 20744,
+      "sha256": "018595b117ede77cd32293408a5d3c2d6b542b9eb75603e4f172936fdf3c2bdb"
+    },
+    {
+      "path": "SUITE-DOC-17_Artifact_Manifest.json",
+      "bytes": 15537,
+      "sha256": "3b61be87ab767bd7dc4e4d41b18e78ae7b7f324d9ef7a7f76493ee6d89160f2c"
+    },
+    {
+      "path": "SUITE-DOC-18_Artifact_Manifest.json",
+      "bytes": 16809,
+      "sha256": "13c78d1068fad1900fca309f1f730079db0e253ee52353f03dcb0d944d4a3837"
+    },
+    {
+      "path": "SUITE-DOC-19_Artifact_Manifest.json",
+      "bytes": 17423,
+      "sha256": "22fcc62a683f9668755898f26cabc8cfc15dacb4f428840e52095ac294425967"
+    },
+    {
+      "path": "SUITE-DOC-20_Artifact_Manifest.json",
+      "bytes": 18123,
+      "sha256": "b71cb4ee5cb71dbae80bf40f8ccd0210ba5ba6b7cdb9655f2b263208885833ff"
+    },
+    {
+      "path": "SUITE-DOC-21_Artifact_Manifest.json",
+      "bytes": 18984,
+      "sha256": "8f87c2ba1ae172eb9d45965a9e37e971e1804a479e5da904b3665cce62903436"
+    },
+    {
+      "path": "SUITE-DOC-22_Artifact_Manifest.json",
+      "bytes": 19776,
+      "sha256": "8db3ff986dbfd8bc234f22c84848557761e66ff22281ebbf119d6ca497a07a7a"
+    },
+    {
+      "path": "SUITE-DOC-23_Artifact_Manifest.json",
+      "bytes": 20178,
+      "sha256": "f32d29a4c09fd6f3bd6f2788ea03db6f27d655a32e7d962c03f4c4025844bd1e"
+    },
+    {
+      "path": "SUITE-DOC-24_Artifact_Manifest.json",
+      "bytes": 24057,
+      "sha256": "64767de85820f3b4546766db6eb8bd53dd6709f14e22f7ce27ab4e93a86cc9f3"
+    },
+    {
+      "path": "SUITE-DOC-25_Artifact_Manifest.json",
+      "bytes": 22486,
+      "sha256": "3024054fafcbf1841ff8f815d7dff40bfd43917c9377886a1c4a365bb4a1abb6"
+    },
+    {
+      "path": "SUITE-DOC-26_Artifact_Manifest.json",
+      "bytes": 23561,
+      "sha256": "bbc809928679db147c6b5efbceac5bf0e056028006838385999ecae80d62d313"
+    },
+    {
+      "path": "SUITE-DOC-27_Artifact_Manifest.json",
+      "bytes": 26404,
+      "sha256": "9d8c356eaf777017899273c75b6af6482df1a0dcf1909d1b0118f3be647b0d5b"
+    },
+    {
+      "path": "SUITE-DOC-28_Artifact_Manifest.json",
+      "bytes": 25184,
+      "sha256": "6410e5ccdf9649b6400b673af07616a6b8d2846e7df3eb568691a208cda4b329"
+    },
+    {
+      "path": "SUITE-DOC-29_Artifact_Manifest.json",
+      "bytes": 26265,
+      "sha256": "f30b324961f1f3ed635c1a3f1bac5305b88c3e98d64df3d011c8b609f3e61808"
+    },
+    {
+      "path": "SUITE-DOC-30_Artifact_Manifest.json",
+      "bytes": 27033,
+      "sha256": "3cea807f9fe4fcabaced9eba85a00e03abff969b4c1134d8388a13b1890f2ab1"
+    },
+    {
+      "path": "SUITE-DOC-31_Artifact_Manifest.json",
+      "bytes": 30352,
+      "sha256": "2d0f3f732cca5433fd29f21c8846f8a2c92ab5a467ed1a1fe68c8cf388cc0071"
+    },
+    {
+      "path": "SUITE-DOC-32_Artifact_Manifest.json",
+      "bytes": 31672,
+      "sha256": "836b798541ca9e68ce494c79afce5adb1eedf5e731d48be2c29310229ae5caeb"
+    },
+    {
+      "path": "SUITE-MAP-01_Artifact_Manifest.json",
+      "bytes": 23374,
+      "sha256": "5426b43aa23c522feadbb2f51a148dfafe93484ec6e315ce7f44dc9d8910bfd7"
+    },
+    {
+      "path": "Suite_Graph_Roadmap.md",
+      "bytes": 14557,
+      "sha256": "6299f11b1bf1cc8f14ac804173f3ea90ba4346553751d4f56b34bca7484348b4"
+    },
+    {
+      "path": "Suite_Health_Check_and_Remaining_Documentation.md",
+      "bytes": 3123,
+      "sha256": "42a55b471e0a722e7437404bf36bb84427182495ad5f4f333d723cdac2251a84"
+    },
+    {
+      "path": "Test Reports/FW-DOC-12_Artifact_Manifest.json",
+      "bytes": 4429,
+      "sha256": "cb892216cb7561e938ff3021716ab6c4a4034438bd0d1f9a93cbc051f353bd1b"
+    },
+    {
+      "path": "Test Reports/Foundation_Documentation_Readiness_Report.md",
+      "bytes": 9329,
+      "sha256": "e5abd3908b11ae21f4481717e4adf70d5331430a50d800850845bebf2430031e"
+    },
+    {
+      "path": "Test Reports/Full_Suite_Documentation_Rebaseline_Report.md",
+      "bytes": 2866,
+      "sha256": "2f9232e54f3ee60e5752b46ba3b8d7e91d426b64922262a8a8adad3f4d30fead"
+    },
+    {
+      "path": "Test Reports/LEARN-GATE-01_Just-in-Time_Package_Learning_Rebaseline_Report.md",
+      "bytes": 1178,
+      "sha256": "abba51a46c017c30c1d459854ffbb8a4cd921d75a724bdf57a3320c61f0f0d95"
+    },
+    {
+      "path": "Test Reports/PKG-LEARN-001_First_Light_Learning_Review_Closeout_Report.md",
+      "bytes": 1091,
+      "sha256": "bfed2c76e6331e9c51b0fa6cb9214573cbff9897902c3ae3330c420db8cfc472"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-01_Artifact_Manifest.json",
+      "bytes": 5523,
+      "sha256": "1e626b0b73b8b1c76f696e36e66ddf83d1a73b5124680f061e63fa8482f0f044"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-02_Artifact_Manifest.json",
+      "bytes": 6446,
+      "sha256": "0ac8b87f7fbcd42130d92145d49fc31b366d752d1587ae0a47a019f1d0bd01a4"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
+      "bytes": 3181,
+      "sha256": "7b802ac51e769ec90fa6a7c39cf38cb05edea626c34f7430528add8059e7a5b6"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-03_Artifact_Manifest.json",
+      "bytes": 6682,
+      "sha256": "e59219742fa0ccd0f00a7654ab322621c1a7f08bcb0ebf2340810e95ba00b2cc"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-03_Data_IDs_Serialization_Migration_Audit_Report.md",
+      "bytes": 5285,
+      "sha256": "eea3d5d3d41088a60d18a2e483d38771bbb1783f1b6b875e1098cff78874771e"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-04_Artifact_Manifest.json",
+      "bytes": 7334,
+      "sha256": "a1a3880051fb21d71c10cbccac2a0b826e51a660e3ad226dd04da0066a9beffe"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md",
+      "bytes": 5977,
+      "sha256": "22f88ff138b79b5aab42b4526e47c9aee2368a0b5cf9717248bcd7e93810ed14"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-05_Artifact_Manifest.json",
+      "bytes": 8675,
+      "sha256": "096f8c2d3a2f1176deab0fb9af340528270e5f162c47782a3b95662f498e4326"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
+      "bytes": 5056,
+      "sha256": "26894f10a91cd96130515add31f75965ce27c7350a7bf02d4562dbc3cb627a95"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Artifact_Manifest.json",
+      "bytes": 7825,
+      "sha256": "d6dccf13b22241dbd124cb7d4df35af541a8d969f108df1ef8e4f31cdef7c9c7"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
+      "bytes": 2273,
+      "sha256": "9e6bb476666a672a131f9bbc3739637469acadd2c13557681ac6703ee2d71a0b"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-06_Artifact_Manifest.json",
+      "bytes": 9223,
+      "sha256": "963986a14ecfffb1327ba3dcfef9a236a6213f6570b2ccde088fd406713442a3"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
+      "bytes": 4954,
+      "sha256": "c6f519e131ceb9de92a2e772f99841cf5ebcde889adf9a813c9951f97f25254c"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-07_Artifact_Manifest.json",
+      "bytes": 10036,
+      "sha256": "9f3c900bbf46a0a112fd4780dae3333afd9215fc3bc922dca0fa1c4def497b38"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-07_EchoProgression_Package_Specification_Audit_Report.md",
+      "bytes": 2416,
+      "sha256": "634f26a0b1df733f6eb3f50d9293de11f9368c208c8ef34021b9bfa9460bb589"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-08_Artifact_Manifest.json",
+      "bytes": 10558,
+      "sha256": "ada3b79fc76b63112ccbcb6d95d9a3006e51111c8eedc2b5f2c395cfa926227b"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md",
+      "bytes": 3406,
+      "sha256": "8f3d97d1fa33b7eafa6df850dcb72c347984d7a96f52a4f7fe377f05985d2375"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-09_Artifact_Manifest.json",
+      "bytes": 11409,
+      "sha256": "cb07d740bd149befb88718cc1a87115aaf8574d9afaa3c8c1dc70324fc7abca4"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-09_EchoLocalization_Package_Specification_Audit_Report.md",
+      "bytes": 7337,
+      "sha256": "23ff2473a80fd3059c4705a4c3e84445b438b87ea9978e44f088ba79568143d4"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-10_Artifact_Manifest.json",
+      "bytes": 11050,
+      "sha256": "0f8b3923905b7b1097ccf70db7760c5b6da105d0a729d2c104a457537ddf7da1"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md",
+      "bytes": 3261,
+      "sha256": "89bf05d55dff5f6057d67dd3fc07f780c8790db2b7a0dff1fd2651fb8b5f6968"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-11_Artifact_Manifest.json",
+      "bytes": 1598,
+      "sha256": "cd54c40122f9a166f96c9875a51bf3ddbd58405a7079f9adecd3f3cb19489fc7"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
+      "bytes": 5372,
+      "sha256": "46976eb9e47b0886854860c4725fe722171d7e9f5a2315d472c762f39e499b27"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-12_Artifact_Manifest.json",
+      "bytes": 13331,
+      "sha256": "76b347e289b4e73d1dba9531db1afe32747743913a3aaca17536bb897a17518c"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md",
+      "bytes": 2430,
+      "sha256": "9d3c5a9348b8967b588e418a4590be2c1a61f06df6534784435e31183c2d3a0e"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-13_Artifact_Manifest.json",
+      "bytes": 13565,
+      "sha256": "b40eebca9ba596420c794e8791b810ba1d6a8fe5f733805f10af9b27ebab097c"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
+      "bytes": 6916,
+      "sha256": "646d9492f0af494f7386f4890c1f574c06b157127c14dcc74403cc49a4d117cb"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-14_Artifact_Manifest.json",
+      "bytes": 14161,
+      "sha256": "e36701e689bd5657c63be5f8128b9063a6bb3a481b219b51b18c7f16a15cdd9b"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
+      "bytes": 7105,
+      "sha256": "5f9e063fe990f8b390a3b2860add73437adac69fb465f2d647fe343d07aa30ad"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-15_Artifact_Manifest.json",
+      "bytes": 14089,
+      "sha256": "6e12fb684f441b675bfcb3180adcdd4ef0f05e1beeda7d665eccaa19030681f1"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md",
+      "bytes": 3393,
+      "sha256": "d55a7d6362aa073aa572277b3ee238602b2f9f6aa2cd7f422373b1882baaa46b"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-16_Artifact_Manifest.json",
+      "bytes": 16131,
+      "sha256": "bcc6e7cf8efca78f87c5f480037183ba43df8e9c92e337ead29f8a356e878a09"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-16_EchoControllers_Package_Specification_Audit_Report.md",
+      "bytes": 4380,
+      "sha256": "668334c607ce9fbad51765da43f615a94c19ca91070d76d26f33c8969e7a47ee"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md",
+      "bytes": 2884,
+      "sha256": "37184914a0496fc4ba55e1c0d8b9b70b7c36620246c96a40b2339fd90052a1c7"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md",
+      "bytes": 2666,
+      "sha256": "e9e59b3bd25cfcea1af1b495b2e6535b82ae932a855f65946e9cb945e91c198e"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md",
+      "bytes": 3079,
+      "sha256": "81871872f2aa050bb8df0f647d8ade4a57f0c14acef072ea04e343c51a10bf41"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-20_EchoCombat_Feasibility_Foundation_Audit_Report.md",
+      "bytes": 2798,
+      "sha256": "8beb529308d1ca5bf767841516edcea012bbfa2f8514160ee6c6f058fcb37ff1"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md",
+      "bytes": 2399,
+      "sha256": "334e0dda9e94813c9a1c4d8669f66d0a60258002ec3209104bc7dba75f20f6f3"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-22_EchoWorld_Feasibility_Foundation_Audit_Report.md",
+      "bytes": 2404,
+      "sha256": "75bbc212eca0526df4f31aae66b710cbf2002f3c70b39cbb03964d4198378f10"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-23_Expansion_Cross-Package_Collision_Review_Report.md",
+      "bytes": 4375,
+      "sha256": "f5d217f7dbb13f36ba2f0cdbd4aecb535b6d861b3abd0ed799c5cc92004a9bd6"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-24_Advanced_Cross-Package_and_Research_Review_Report.md",
+      "bytes": 5942,
+      "sha256": "0dcc64b4551d72156ef52afa6afd00077c5d5d886f14b13e7338caae388b52c8"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-25_SFGSS-006_New-Project_Guided_Pathways_Audit_Report.md",
+      "bytes": 3306,
+      "sha256": "c4068eda2f4a2635814371b3bb011ca4b4636802cdbf65b59d8f674393535d85"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-26_SFGSS-007_ADR_Standard_and_Decision_Log_Audit_Report.md",
+      "bytes": 3444,
+      "sha256": "cc0d9c982f4d7cf04d22828588219e1d2b45e0a493da6703d7ec33f09c10dc29"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-27_SFGSS-008_Suite_Glossary_and_Naming_Registry_Audit_Report.md",
+      "bytes": 2992,
+      "sha256": "fe4e3d36deccc45579a34ce80a8f53f5515e781ab6448013242ab699917b9156"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-28_SFGSS-009_Repository_Versioning_Integration_Workspace_Audit_Report.md",
+      "bytes": 2688,
+      "sha256": "f5a3e8856a731ba438b7fef945034bc82bc8aaf25b1fa8ce24bef5b73f57f3a7"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-29_SFGSS-010_Living_Documentation_Current_Notes_Obsidian_Workflow_Audit_Report.md",
+      "bytes": 3094,
+      "sha256": "fdec1260c57b2fa45134ab9d9abb417dcf1865aa0cd43b5d3c91637ade19fb8a"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-30_Standards_and_Package_Consistency_Review_Report.md",
+      "bytes": 2606,
+      "sha256": "f4ac9ea4ab500ab8dcf1a2be2bd804f74eee67d258de3f0a7ad0b1ba560564c0"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-31_Full_Suite_Authority_Dependency_Bridge_Persistence_Matrix_Audit_Report.md",
+      "bytes": 1656,
+      "sha256": "e77cc67332aa9824aa6cafe210ec77b32e188fa009f0c58ccc63c4bcc08c382c"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-32_Full_Suite_Documentation_and_Learning_Handoff_Audit_Report.md",
+      "bytes": 4053,
+      "sha256": "50176ab7806c555f1dd2beae039942b29de69a8b067a4ab60b2d06d88d3aa27a"
+    },
+    {
+      "path": "Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md",
+      "bytes": 8058,
+      "sha256": "06c0b47b941e0dfe8a6e97d08cc59d4dc43ddf43a588444adfaa52fd750fcaf6"
+    },
+    {
+      "path": "Test Reports/SUITE-MAP-01_Suite_Graph_Roadmap_and_Learning_Review_Health_Check.md",
+      "bytes": 1414,
+      "sha256": "fcfc9b1cf85d4125d173013c5a89e29cac11dd046f99cfdd7792ac4925910dfc"
+    }
+  ]
+}

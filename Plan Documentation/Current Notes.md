@@ -4,108 +4,97 @@
 **Authority:** Working context only  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** First Light package learning review  
-**Current checkpoint:** PKG-LEARN-001
+**Current focus:** First Light package skeleton  
+**Current checkpoint:** FL-M1-01
 
-> Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted documentation-program record.
+> Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ## How to Use This Page
 
-- `[NOTE]` useful context.
-- `[QUESTION]` unresolved decision.
-- `[PROPOSAL]` suggested but unapproved change.
-- `[DECISION]` approved item awaiting or confirming promotion.
-- `[TEST]` executed evidence only; planned tests remain in registries.
-- `[BUG]` defect awaiting permanent issue placement.
-- `[RISK]` architecture, compatibility, schedule, or dependency concern.
-- `[HANDOFF]` context required by the next work session.
-
-Durable truth moves into the Bible, standards, package specifications, ADRs, integration records, research records, test reports, guides, learning reviews, changelogs, or release records.
+- Record only active facts, questions, risks, tests, and handoff details.
+- Prefix durable entries with the approved SFGSS-010 labels.
+- Promote lasting truth into the owning authority before checkpoint closeout.
+- Keep one current Handoff Snapshot.
 
 ## Current Focus
 
 ### Goal
 
-Complete **PKG-LEARN-001 – First Light (`EchoLaunch`)** using the approved progressive learning workflow and teach-back record. Do not begin implementation.
+Execute **FL-M1-01 – First Light Package Skeleton** exactly as authorized. Begin with the live Unity project, Git, package-path, and uGUI-version checks. Stop before any C# file or launch behavior.
 
 ### Starting state
 
-- SUITE-DOC-32 handoff audit passed.
-- SFGSS-000 v0.21.0.
-- SFGSS-001 through SFGSS-010 complete.
-- Twenty-eight package authorities approved.
-- Full Suite Matrix approved.
-- Handoff Guide, Learning Reviews index, template, catalog, and tracker ready.
-- Package learning reviews remain 0 of 28.
-
-## Open Questions
-
-- `[QUESTION]` What parts of First Light remain hardest to visualize after the plain-language and lifecycle review?
-- `[QUESTION]` Multiplayer provider selection remains intentionally unresolved until disposable prototypes execute.
-- `[QUESTION]` Actual central/package repository remotes remain unverified until repositories are created.
+- SUITE-DOC-33 passed with advisory.
+- The implementation program is activated under checkpoint control.
+- PKG-LEARN-001 First Light is complete.
+- FL-M1-01 v1.3.0 is active and authorized.
+- First Light implementation has not started.
+- PKG-LEARN-002 Observatory is paused until EchoDiagnostics implementation approaches.
+- Every package other than First Light remains locally locked.
 
 ## Active Notes
 
-### August 4, 2026 – SUITE-DOC-32 closeout
+### August 4, 2026 – Initial implementation readiness
 
-- `[DECISION]` The Full Suite Documentation and Learning Handoff Guide is the canonical fresh-collaborator entry after the README.
-- `[DECISION]` Learning reviews use permanent IDs `PKG-LEARN-001` through `PKG-LEARN-028`.
-- `[DECISION]` Review artifacts live under `Learning Reviews/` and are created only when work begins.
-- `[DECISION]` SFGSS-005 advances to v1.3.0 and SFGSS-010 to v1.1.0.
-- `[DECISION]` Progressive explanation replaces specification dumping during learning reviews.
-- `[TEST]` Static handoff audit passed for entry points, links, IDs, tracker counts, one-current-copy rules, evidence language, and implementation-artifact absence.
-- `[RISK]` Runtime, migration, compatibility, performance, provider, platform, and release evidence remains `Not run`.
-- `[HANDOFF]` Begin PKG-LEARN-001 with the First Light specification, full-suite matrix, learning template, and Handoff Guide.
+- `[DECISION]` SUITE-DOC-33 passed with advisory.
+- `[DECISION]` Only FL-M1-01 is active.
+- `[NOTE]` The gate validates documentation and learning readiness, not the live Unity project.
+- `[TEST]` Unity compile, Git state, package-path inspection, and exact uGUI version remain `Not run`.
+- `[HANDOFF]` Start FL-M1-01 at Section 2 starting conditions. Do not create files until those checks pass.
 
-**Promoted to:** SFGSS-005 v1.3.0; SFGSS-010 v1.1.0; Full Suite Handoff Guide; Learning Reviews index/template/tracker; learning catalog; SUITE-DOC-32 audit report; README; roadmap; graph; health check.
+**Promoted to:** SUITE-DOC-33 report; SFGSS-000 v0.23.0; First Light specification v1.3.0; FL-M1-01 plan v1.3.0; roadmap; README; graph; health check; learning tracker.
+
+## Open Questions
+
+- `[QUESTION]` What exact `com.unity.ugui` version is resolved by the Unity 6000.3.8f1 project?
+- `[QUESTION]` Is `Packages/com.echodevgames.echo-launch/` absent, or does it contain work requiring review?
+- `[QUESTION]` Multiplayer provider selection remains intentionally unresolved until disposable prototypes execute.
 
 ## Promotion Queue
 
-| Date | Entry | Destination | Status |
-|---|---|---|---|
-| 2026-08-04 | Documentation and learning handoff workflow | SFGSS-005, SFGSS-010, Handoff Guide, learning artifacts | Promoted |
+| Entry | Destination | State |
+|---|---|---|
+| SUITE-DOC-33 decision | Readiness report, Bible, First Light spec, FL-M1-01 plan | Promoted |
+| Live Unity and Git checks | FL-M1-01 test report | Pending execution |
+| Exact uGUI version | `package.json` and FL-M1-01 evidence | Pending execution |
 
 ## Latest Validation Snapshot
 
-| Area | Result | Evidence |
-|---|---|---|
-| Canonical entry points | Pass | README and SFGSS-010 scan order |
-| Package authorities | Pass | 28 current authorities |
-| Learning IDs | Pass | PKG-LEARN-001 through 028 |
-| Learning tracker | Pass | 28 entries; 0 complete |
-| Markdown and wikilinks | Pass | SUITE-DOC-32 static audit |
-| One-current-copy rule | Pass | No active version-suffixed authority duplicates |
-| Implementation artifacts | Pass | None present |
-| Empirical evidence | Not run | Implementation remains locked |
+| Area | Result |
+|---|---|
+| Documentation and authority gate | Pass |
+| First Light learning gate | Pass |
+| FL-M1-01 scope review | Pass |
+| Package implementation | Authorized, not started |
+| Unity compile | Not run |
+| Git working tree review | Not run |
+| Exact uGUI version | Not run |
+| Other packages | Locked |
 
 ## Checkpoint Closeout Checklist
 
-- [ ] Complete the First Light learning artifact.
-- [ ] Record Jesse’s teach-back and remaining questions.
-- [ ] Update the catalog and tracker.
-- [ ] Reconcile Current Notes, roadmap, graph, and health check.
-- [ ] Commit and push the learning review.
+- [ ] Verify FL-M1-01 starting conditions.
+- [ ] Show and explain every authorized file before creation.
+- [ ] Create only the approved skeleton.
+- [ ] Run FL-M1-T-001 through FL-M1-T-012.
+- [ ] Reconcile package and suite documentation.
+- [ ] Commit and push the completed FL-M1-01 checkpoint.
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit  
-**Result:** Passed  
-**Suite Bible:** v0.21.0  
-**Active checkpoint:** PKG-LEARN-001 – First Light (`EchoLaunch`) Learning Review  
-**Package foundations:** 28 of 28 approved  
-**Package learning reviews:** 0 of 28 complete  
-**Package implementation:** Not started  
-**Runtime authorization:** None  
-**Known blockers:** None for beginning PKG-LEARN-001  
-**Evidence state:** Empirical implementation evidence remains `Not run`  
-**Commit/push:** SUITE-DOC-32 pending owner confirmation  
-**Stop point:** Before creating First Light code or advancing to PKG-LEARN-002
+**Completed checkpoint:** SUITE-DOC-33 – Initial Implementation Readiness Gate  
+**Active checkpoint:** FL-M1-01 – First Light Package Skeleton  
+**First Light learning:** PKG-LEARN-001 complete  
+**First Light implementation:** Authorized, not started  
+**Package learning reviews:** 1 of 28 complete  
+**Other package implementations:** Locked  
+**Known blockers:** None recorded; four live-project starting conditions remain unverified  
+**Evidence state:** Implementation evidence remains `Not run`
+
 
 ## Graph Navigation
 
-- [[Full_Suite_Documentation_and_Learning_Handoff_Guide|Full Suite Handoff Guide]]
 - [[Suite_Graph_Roadmap|Suite Graph Roadmap]]
-- [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
-- [[Learning Reviews/README|Learning Reviews Index]]
-- [[Learning Reviews/PKG-LEARN-TEMPLATE|Learning Review Template]]
-- [[Integration Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix|Full Suite Matrix]]
+- [[Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report|SUITE-DOC-33 Readiness Report]]
+- [[Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan|FL-M1-01 Checkpoint Build Plan]]
+- [[Learning Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review|First Light Learning Review]]

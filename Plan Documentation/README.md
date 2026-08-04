@@ -6,28 +6,32 @@ This folder is the live Git-backed Obsidian vault for **The Sperk’s Forge – 
 
 | Area | Current authority |
 |---|---|
-| Suite Bible | `Echo_Game_Systems_Suite_Bible.md` v0.21.0 |
-| Standards | SFGSS-001 through SFGSS-010 complete and handoff-audited |
+| Suite Bible | `Echo_Game_Systems_Suite_Bible.md` v0.23.0 |
+| Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved and consistency-reviewed |
 | Integration matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
-| Documentation handoff | **SUITE-DOC-32 passed** |
-| Package implementation | Locked |
-| Active phase | **Package learning reviews** |
-| Active review | **PKG-LEARN-001 – First Light (`EchoLaunch`)** |
-| Package learning reviews | 0 of 28 complete |
-| Final unlock gate | SUITE-DOC-33 |
+| Documentation handoff | SUITE-DOC-32 passed |
+| Learning workflow | Just-in-time package-local gate under ADR-004 |
+| Package learning reviews | 1 of 28 complete |
+| First Light learning | Complete |
+| Observatory learning | Paused until EchoDiagnostics implementation |
+| Package implementation | Activated only for FL-M1-01; not started |
+| Active checkpoint | **FL-M1-01 – First Light Package Skeleton** |
+| Active implementation plan | **FL-M1-01 v1.3.0 – First Light Package Skeleton** |
 
 ## Start here
 
-1. [Full Suite Documentation and Learning Handoff Guide](Full_Suite_Documentation_and_Learning_Handoff_Guide.md)
-2. [Suite Graph Roadmap](Suite_Graph_Roadmap.md)
-3. [Suite Health Check](Suite_Health_Check_and_Remaining_Documentation.md)
-4. [Suite Bible](Echo_Game_Systems_Suite_Bible.md)
-5. [Current Notes](Current%20Notes.md)
-6. [Documentation Program Roadmap](Full_Suite_Documentation_Program_Roadmap.md)
-7. [Full Suite Integration Matrix](Integration%20Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md)
-8. [Package Learning Review Catalog](Package_Learning_Review_Catalog.md)
-9. [Learning Reviews Index](Learning%20Reviews/README.md)
+1. [SUITE-DOC-33 Initial Implementation Readiness Gate](Test%20Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md)
+2. [FL-M1-01 First Light Package Skeleton Plan](Checkpoint%20Build%20Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md)
+3. [Full Suite Documentation and Learning Handoff Guide](Full_Suite_Documentation_and_Learning_Handoff_Guide.md)
+4. [Suite Graph Roadmap](Suite_Graph_Roadmap.md)
+5. [Suite Health Check](Suite_Health_Check_and_Remaining_Documentation.md)
+6. [Suite Bible](Echo_Game_Systems_Suite_Bible.md)
+7. [Current Notes](Current%20Notes.md)
+8. [Documentation Program Roadmap](Full_Suite_Documentation_Program_Roadmap.md)
+9. [Full Suite Integration Matrix](Integration%20Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md)
+10. [Package Learning Review Catalog](Package_Learning_Review_Catalog.md)
+11. [Learning Reviews Index](Learning%20Reviews/README.md)
 
 ## Authority order
 
@@ -37,15 +41,17 @@ This folder is the live Git-backed Obsidian vault for **The Sperk’s Forge – 
 4. Standards, checkpoint plans, guides, test reports, research records, and release records according to their owned concern.
 5. Current Notes and navigation hubs.
 
-When documents appear to conflict, stop and reconcile the higher authority. Do not choose the newest file silently.
+## Just-in-time learning rule
+
+Every package must pass its own learning review immediately before its first implementation checkpoint. The suite no longer requires all twenty-eight reviews before First Light begins. Completing one review never unlocks another package.
 
 ## Current checkpoint result
 
-SUITE-DOC-32 verified that the README, Current Notes, roadmap, graph, health check, standards, package authorities, ADRs, matrices, research records, test reports, and learning workflow provide one coherent fresh-collaborator handoff.
+SUITE-DOC-33 passed with advisory and activated only FL-M1-01. PKG-LEARN-001 satisfies First Light's local learning gate. PKG-LEARN-002 remains paused, and every package other than First Light remains locally locked.
 
-The learning catalog now uses the permanent `PKG-LEARN-001` through `PKG-LEARN-028` IDs. The approved guide, template, and tracker are ready for the first package review.
+FL-M1-01 authorizes the embedded UPM package manifest, four assembly definitions, package documentation shell, generated `.meta` files, and bounded validation. It authorizes no C# file, scene, prefab, ScriptableObject, sample, setup tool, bridge, or launch behavior.
 
-No C# scripts, asmdefs, Unity scenes, prefabs, ScriptableObjects, packages, repositories, or provider prototypes are authorized or included.
+The live Unity compile, Git state, package path, and exact uGUI version must be verified before the first skeleton file is created.
 
 ## Checkpoint rule
 

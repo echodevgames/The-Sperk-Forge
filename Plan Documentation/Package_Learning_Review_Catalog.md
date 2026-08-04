@@ -33,7 +33,7 @@ The review is educational, not an implementation checkpoint. Code may appear onl
 
 ## Permanent ID rule
 
-Learning reviews use one suite-wide sequence: `PKG-LEARN-001` through `PKG-LEARN-028`.
+Learning reviews use one permanent ID sequence, `PKG-LEARN-001` through `PKG-LEARN-028`, but occur just in time before each package's first implementation checkpoint.
 
 Earlier planning aliases such as `PKG-LEARN-F01`, `PKG-LEARN-E01`, and `PKG-LEARN-A01` are retired before execution. They were never completed review records and must not be used for new artifacts.
 
@@ -43,8 +43,8 @@ Earlier planning aliases such as `PKG-LEARN-F01`, `PKG-LEARN-E01`, and `PKG-LEAR
 
 | Review ID | Package | Status | Plain purpose | Practical application example |
 |---|---|---|---|---|
-| PKG-LEARN-001 | [[Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification|First Light (`EchoLaunch`)]] | Not started | Coordinates the one reliable beginning of the application, ordered startup, launch status, diagnostics, and final handoff. | A Rescuers2D build opens through one Boot scene, validates configuration, shows the startup sequence, then hands off to the Main Menu. |
-| PKG-LEARN-002 | [[Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification|The Observatory (`EchoDiagnostics`)]] | Not started | Collects and presents validation, runtime health, performance, and package diagnostics without owning the systems being observed. | A development overlay reveals a duplicate persistent root, the active scene, frame time, and why First Light failed a startup step. |
+| PKG-LEARN-001 | [[Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification|First Light (`EchoLaunch`)]] | Complete | Coordinates the one reliable beginning of the application, ordered startup, launch status, diagnostics, and final handoff. | A Rescuers2D build opens through one Boot scene, validates configuration, shows the startup sequence, then hands off to the Main Menu. |
+| PKG-LEARN-002 | [[Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification|The Observatory (`EchoDiagnostics`)]] | Paused until implementation | Collects and presents validation, runtime health, performance, and package diagnostics without owning the systems being observed. | A development overlay reveals a duplicate persistent root, the active scene, frame time, and why First Light failed a startup step. |
 | PKG-LEARN-003 | [[Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification|The Accord (`EchoSettings`)]] | Not started | Owns global preferences, defaults, edit/apply/cancel transactions, validation, persistence, migration, and safe display rollback. | A player changes master volume, resolution, subtitles, and reduced motion; Cancel restores the previous effective settings safely. |
 | PKG-LEARN-004 | [[Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification|The Passage (`EchoSceneFlow`)]] | Not started | Owns normal runtime scene-transition requests, loading phases, progress, locking, recovery, and destination validation. | The player leaves the Main Menu, sees a fade and loading status, enters Level 1, and cannot trigger a second conflicting load. |
 | PKG-LEARN-005 | [[Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification|The Pulse (`EchoGameState`)]] | Not started | Owns high-level runtime state, temporary override scopes, nested pause reasons, time policy, and cursor coordination intent. | Opening a pause menu adds a pause scope; a confirmation modal adds another; closing them out of order does not unpause gameplay early. |
@@ -82,33 +82,35 @@ Earlier planning aliases such as `PKG-LEARN-F01`, `PKG-LEARN-E01`, and `PKG-LEAR
 | PKG-LEARN-027 | [[Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation|Arcana (`EchoAbilities`)]] | Not started | Defines ability grants, loadouts, activation, costs, charges, cooldowns, casting, interruption, targeting, effects, persistence, and authority seams. | A Necromancer begins Life Drain, commits mana at the chosen point, channels repeated effects, and can be interrupted under authored rules. |
 | PKG-LEARN-028 | [[Package Specifications/SFGSS-The-Atlas-EchoWorld-Package-Foundation|The Atlas (`EchoWorld`)]] | Not started | Defines durable worlds, zones, locations, travel graphs, scene bindings, entry/spawn markers, discovery, fast travel, map snapshots, and world-state routing. | Devroth contains semantic towns and wilderness locations that survive scene renames and route travel through The Passage. |
 
-## Suggested learning order
+## Just-in-time learning order
 
-The permanent numeric IDs already encode the approved order:
+The numeric IDs remain permanent navigation identities. They no longer force one uninterrupted study sequence.
 
-1. First Light, Observatory, Accord, Passage, Pulse.
-2. Resonance, Will, Looking Glass, Chronicle, Workshop.
-3. Impact, Wellspring, Ascent, Foundry, Many Tongues.
-4. Voices, Path, Vault, Hand, Eye.
-5. Fellowship, Vessel, Crucible.
-6. Convergence, Instinct, Clash, Arcana, Atlas.
+The normal rule is:
 
-This sequence moves from application shell to user-facing systems, then reusable gameplay, then advanced authority and provider boundaries.
+1. Choose the next approved implementation checkpoint.
+2. Complete or refresh the related package review.
+3. Record the teach-back and remaining questions.
+4. Authorize only that package's checkpoint.
+5. Repeat when the implementation roadmap reaches another package.
+
+PKG-LEARN-001 is complete for First Light. PKG-LEARN-002 is paused until EchoDiagnostics implementation approaches.
 
 ## Completion tracking
 
 | Wave | Complete | Total |
 |---|---:|---:|
-| Foundation | 0 | 10 |
+| Foundation | 1 | 10 |
 | Expansion | 0 | 13 |
 | Advanced | 0 | 5 |
-| **Total** | **0** | **28** |
+| **Total** | **1** | **28** |
 
-## First active review
+## Current learning state
 
-> **PKG-LEARN-001 – First Light (`EchoLaunch`)**
-
-The review begins from the template and the progressive reading path in the Full Suite Documentation and Learning Handoff Guide.
+- Complete: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
+- Paused: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
+- Next review trigger: immediately before EchoDiagnostics implementation
+- Active suite checkpoint: **SUITE-DOC-33 – Initial Implementation Readiness Gate**
 
 ## Navigation
 

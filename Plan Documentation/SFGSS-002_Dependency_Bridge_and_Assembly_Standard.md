@@ -1,12 +1,12 @@
 # The Sperk’s Forge — Dependency, Bridge, and Assembly Standard
 
 **Document ID:** SFGSS-002  
-**Version:** 1.1.0
+**Version:** 1.1.1
 **Status:** Approved architecture standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.20.0  
-**Related authorities:** SFGSS-001, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001  
+**Parent authority:** SFGSS-000 v0.22.0  
+**Related authorities:** SFGSS-001, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-004, SFGSS-INT-FOUNDATION-001  
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
 **Last updated:** August 4, 2026
@@ -1247,7 +1247,7 @@ No package code is authorized by this queue.
 - [x] Clean removal and bridge-first teardown are defined.
 - [x] Foundation specifications have an explicit reconciliation queue.
 - [x] No implementation evidence has been invented.
-- [x] Package implementation remains locked until SUITE-DOC-36.
+- [x] Package implementation remains locked until SUITE-DOC-33 activates the program; each later package remains locally locked until its just-in-time learning review passes.
 
 ### 30.2 Approval record
 

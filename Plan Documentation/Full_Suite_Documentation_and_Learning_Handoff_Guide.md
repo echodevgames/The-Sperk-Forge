@@ -26,7 +26,7 @@ It provides:
 - The shortest safe orientation path.
 - The full authority scan order.
 - The exact boundary between approved design and unexecuted evidence.
-- The package-learning workflow that occurs before implementation.
+- The just-in-time package-learning workflow that occurs immediately before each package implementation.
 - A reusable fresh-conversation handoff prompt.
 - The stop conditions that prevent documentation from quietly becoming code authorization.
 
@@ -38,12 +38,12 @@ It provides:
 | Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
 | Cross-package reviews | Foundation, Expansion, Advanced, Standards/Package, and Full Suite passed |
-| Package learning reviews | 0 of 28 complete |
+| Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
 | Runtime implementation | Not started |
 | Empirical evidence | `Not run` unless an evidence record says otherwise |
-| Active phase after SUITE-DOC-32 | Package learning reviews |
-| First learning review | PKG-LEARN-001 – First Light (`EchoLaunch`) |
-| Final implementation gate | SUITE-DOC-33 |
+| Active phase after SUITE-DOC-32 | Initial implementation activation, then interleaved learning and implementation |
+| Completed learning review | PKG-LEARN-001 – First Light (`EchoLaunch`) |
+| Initial implementation gate | SUITE-DOC-33 |
 
 ## 3. Authority versus navigation
 
@@ -111,6 +111,22 @@ A package review is complete only when:
 
 Completion does not require memorizing every API member. It requires understanding the shape of the system well enough to recognize what belongs inside it, what belongs outside it, and how it proves itself.
 
+
+## 5A. Just-in-time learning gate
+
+A package review is required immediately before that package's first implementation checkpoint. The suite does not require all twenty-eight reviews before First Light begins.
+
+```text
+Package authority
+    -> package learning review
+        -> package-local readiness
+            -> implementation checkpoint
+```
+
+PKG-LEARN-001 is complete. PKG-LEARN-002 was introduced but is paused until EchoDiagnostics implementation approaches. A paused review does not count as complete.
+
+If a completed package authority changes materially before implementation, mark its review `Needs revisit` and refresh it before code proceeds.
+
 ## 6. Review states
 
 | State | Meaning |
@@ -156,9 +172,10 @@ Read in this order:
 7. SFGSS-005 and SFGSS-010
 8. The active package specification/foundation and applicable ADRs, matrices, research records, and tests
 
-Current phase: package learning reviews.
-Current review: <PKG-LEARN-### – PACKAGE>.
-Implementation remains locked until all twenty-eight package reviews are complete and SUITE-DOC-33 explicitly authorizes a Checkpoint Build Plan.
+Current phase: checkpoint-controlled implementation with just-in-time learning.
+Current checkpoint: FL-M1-01 – First Light Package Skeleton.
+First Light learning review: complete.
+Other packages remain locally locked until their own learning review and readiness decision activate a Checkpoint Build Plan.
 
 For the active review:
 - Preserve the source terminology and authority boundaries.
@@ -177,17 +194,23 @@ For the active review:
 5. Continue at the first unchecked template section.
 6. Reconcile the review, tracker, catalog, Current Notes, health check, and roadmap at completion.
 
-## 10. Final unlock boundary
+## 10. Package-local unlock boundary
 
-SUITE-DOC-33 may consider implementation only after:
+SUITE-DOC-33 has activated only FL-M1-01 because:
 
-- PKG-LEARN-001 through PKG-LEARN-028 are complete.
-- No learning review has an unresolved release-blocking source conflict.
-- The tracker, catalog, Current Notes, roadmap, graph, and health check agree.
-- The first implementation checkpoint is reviewed again in plain English.
-- Jesse confirms he is ready to receive complete visible code and enter it himself.
+- The complete documentation program passed.
+- PKG-LEARN-001 is complete.
+- The tracker, Current Notes, roadmap, graph, health check, package specification, and checkpoint plan agree.
+- FL-M1-01 is bounded to a package skeleton and excludes C# or launch behavior.
 
-Even then, SUITE-DOC-33 may revise or defer implementation. It is not an automatic unlock.
+Every later package remains locked until:
+
+- Its own `PKG-LEARN-###` review is complete or refreshed.
+- No unresolved source conflict blocks that package.
+- A package-local readiness decision activates one approved Checkpoint Build Plan.
+- Jesse is ready to receive the complete visible files or code and implement them himself.
+
+Learning completion never authorizes an entire milestone or another package.
 
 ## 11. Navigation
 
@@ -197,3 +220,15 @@ Even then, SUITE-DOC-33 may revise or defer implementation. It is not an automat
 - [[Integration Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix|Full Suite Matrix]]
 - [[SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules|Checkpoint and Learning Workflow]]
 - [[SFGSS-010_Living_Documentation_Current_Notes_and_Obsidian_Workflow_Standard|Living Documentation Standard]]
+
+
+---
+
+## SUITE-DOC-33 Activation Addendum
+
+SUITE-DOC-33 passed with advisory on August 4, 2026.
+
+- FL-M1-01 is active.
+- First Light implementation is authorized but not started.
+- The live Unity compile, Git state, package path, and exact uGUI version must be verified before file creation.
+- Every other package remains locally locked until its just-in-time learning review and package-local readiness decision pass.
