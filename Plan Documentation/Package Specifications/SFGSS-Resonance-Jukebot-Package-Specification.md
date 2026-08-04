@@ -1,20 +1,20 @@
-# Resonance - Audio Runtime Package Specification
+# Resonance – Audio Runtime Package Specification
 
 **Working document ID:** SFGSS-PKG-JUKEBOT-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.0.1
 **Status:** Approved  
 **Technical package name:** Jukebot  
-**Public title:** Resonance - Audio Runtime  
+**Public title:** Resonance – Audio Runtime
 **Package ID:** `com.echodevgames.jukebot`  
 **Runtime namespace:** `EchoDevGames.Jukebot`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/Jukebot`  
+**Planned repository:** `EchoDevGames/Jukebot`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum supported Unity version:** Unity 6000.0  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Give every world a voice without letting the soundtrack become the game’s hidden ruler.”
 
@@ -28,12 +28,13 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification derived from SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and the five previously approved Foundation specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved the duplicate-safe audio root, independent music/SFX/ambience services, DSP-aware music scheduling, pooled SFX voices, generational handles, deterministic concurrency, mixer routing, profile schema model, diagnostics, tooling, and isolated Audio Laboratory | Jesse “Echo” Adams |
+| 1.0.1 | 2026-08-04 | Approved | Normalized registry metadata and formal title; added the SUITE-DOC-30 governing-authority, evidence, test-registry, and compatibility clarification without authorizing implementation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** Resonance - Audio Runtime  
+**Public title:** Resonance – Audio Runtime
 **Technical identifier:** Jukebot  
 **Flavor line:** Tune the music, effects, ambience, and mix without binding the game to one genre.  
 **Plain-language subtitle:** Persistent music, sound-effect, ambience, routing, playback-handle, and audio-runtime infrastructure.
@@ -1843,6 +1844,22 @@ The Resonance (`Jukebot`) package specification is therefore complete and **Appr
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
 
 ## Graph Navigation
 

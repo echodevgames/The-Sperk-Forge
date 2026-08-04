@@ -2,7 +2,7 @@
 
 **Document ID:** SFGSS-001
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 
 **Status:** Approved documentation standard
 
@@ -10,11 +10,11 @@
 
 **Project boundary:** Independent solo project; not an Isekai Studios product
 
-**Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible
+**Parent authority:** SFGSS-000 v0.20.0 — The Sperk’s Forge Game Systems Suite Bible
 
 **Current development baseline:** Unity 6000.3.8f1
 
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
@@ -1095,6 +1095,20 @@ If any answer is still implicit, the specification remains **Proposed**.
 
 
 ---
+
+
+## SUITE-DOC-30 Template Consistency Amendment
+
+This template now assumes the complete standards set SFGSS-002 through SFGSS-010.
+
+- Formal public titles use the SFGSS-008 canonical spaced en dash; ASCII-only surfaces may use the registered spaced-hyphen fallback.
+- Package metadata must include the registered document ID, package ID, namespace family, diagnostic/test prefix, setup facade, and planned repository.
+- Parent-authority headers record approval provenance. Later standards alignment is recorded through revision history and a consistency addendum rather than rewriting historical approval context.
+- Editor, test, sample, bridge, provider, and internal-support assemblies default to `autoReferenced: false`; primary public Runtime assemblies default to `true` under SFGSS-002.
+- Test definitions separate automation class, execution status, evidence reference, and issue reference under SFGSS-004.
+- Unity asset GUIDs, domain IDs, and runtime instance IDs remain distinct under SFGSS-003.
+- Unknown optional data and unknown fields require explicit opaque-record or extension-capable preservation strategies.
+- Every approved package maintains Graph Navigation and participates in the pre-implementation learning review.
 
 ## Graph Navigation
 

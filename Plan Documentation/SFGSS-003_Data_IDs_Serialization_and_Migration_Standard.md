@@ -1,11 +1,11 @@
 # The Sperk’s Forge — Data, IDs, Serialization, and Migration Standard
 
 **Document ID:** SFGSS-003  
-**Version:** 1.0.0  
+**Version:** 1.1.0
 **Status:** Approved architecture standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.11.0  
+**Parent authority:** SFGSS-000 v0.20.0  
 **Related authorities:** SFGSS-001, SFGSS-002, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001  
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
@@ -45,7 +45,7 @@
 26. Editor authoring and migration tooling
 27. Validation, testing, and release gates
 28. Foundation application matrix
-29. Reconciliation queue
+29. SUITE-DOC-30 reconciliation result
 30. Approval
 
 ---
@@ -1620,23 +1620,20 @@ The reconciliation queue below records wording/API refinements rather than autho
 
 ---
 
-## 29. Reconciliation queue
+## 29. SUITE-DOC-30 Reconciliation Result
 
-The following items are approved for correction during **SUITE-DOC-10 Standards Consistency Review** before implementation:
+The consistency review resolved the former queue:
 
-1. **Accord configuration identity:** `EchoSettingsConfiguration` and `SettingsDefaultsProfile` currently list “Asset GUID” as stable identity. Clarify that the Unity GUID is Editor/project asset identity; add a domain/configuration ID only where runtime reports, exports, or external references require one.
-2. **Chronicle configuration identity:** `EchoSaveConfiguration` currently lists “Asset GUID only.” Apply the same Unity-GUID versus domain-ID distinction.
-3. **Passage scene authoring:** Confirm every `SceneDefinition` stores a runtime-safe `SceneId` separate from Editor source GUID/path metadata. AssetDatabase GUID resolution remains Editor/build-time tooling.
-4. **First Light naming:** Reconcile `StartupStep` versus `StartupStepDefinition` terminology while preserving the approved definition/executor separation.
-5. **Unknown JSON fields:** Accord’s “byte-for-byte or semantically equivalent” rule must select an explicit opaque-record/provider strategy. JsonUtility DTO round trips alone cannot satisfy unknown-field preservation.
-6. **Will binding document:** Specify whether `extensionData` uses opaque raw records or a serializer provider with extension-data support.
-7. **Workshop fingerprints:** Record canonicalization and algorithm version for every fingerprint used to compare generated project outputs.
-8. **Serialized enums:** Review all Foundation public asset/document enums for explicit stable numeric/token values and no-reorder/no-reuse rules.
-9. **Schema field naming:** Standardize `schemaVersion`, `formatId`, serializer/provider IDs, and compatibility-state terminology where package-specific reasons do not require variation.
-10. **Migration evidence:** Keep every migration/test result `Not run` until fixtures and implementation exist.
+1. Accord, Chronicle, and Will now distinguish Unity asset GUIDs from runtime/export domain identity.
+2. Passage explicitly treats `SceneId` as durable domain identity and source GUID/path as Editor metadata.
+3. First Light uses `StartupStepDefinition` plus per-run executor terminology.
+4. Accord and Will require opaque raw records or extension-data-capable serializers for unknown-field preservation; `JsonUtility` round-tripping alone is insufficient.
+5. Workshop fingerprint algorithms remain versioned and canonicalized as specified; implementation evidence is pending.
+6. Serialized enums/tokens remain subject to no-reorder/no-reuse rules and implementation-time static validation.
+7. Schema field names remain package-qualified where needed; shared envelope concepts retain the SFGSS-003 vocabulary.
+8. Every migration, serializer, corruption, removal, and recovery result remains `Not run` until fixtures execute.
 
-No item changes package authority or unlocks code.
-
+No package authority changed.
 ---
 
 ## 30. Approval
@@ -1664,7 +1661,7 @@ No item changes package authority or unlocks code.
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams / EchoDevGames through the approved documentation-first delegation to select the most effective long-term architecture  
 **Date:** August 4, 2026  
-**Conditions:** Reconcile the Section 29 wording/API items during SUITE-DOC-10. Empirical serializer, platform, migration, compatibility, and performance claims remain `Not run` until implementation evidence exists.
+**Conditions:** SUITE-DOC-30 resolved the Section 29 wording/API items. Empirical serializer, platform, migration, compatibility, and performance claims remain `Not run` until implementation evidence exists.
 
 ---
 

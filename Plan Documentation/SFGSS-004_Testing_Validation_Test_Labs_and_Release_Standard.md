@@ -1,7 +1,7 @@
 # The Sperk’s Forge – Testing, Validation, Test Labs, and Release Standard
 
 **Document ID:** SFGSS-004  
-**Version:** 1.1.0  
+**Version:** 1.2.0
 **Status:** Approved architecture and quality standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -1377,7 +1377,7 @@ If an environment cannot execute a required visual, device, service, or platform
 | Chronicle | Generations, manifests, migrations, recovery | Save Laboratory | Interrupted writes, corruption recovery, unknown payloads, external clean install |
 | Workshop | Plan/fingerprint/receipt/facade policy | Editor Laboratory and disposable projects | Reload recovery, conflict safety, repeat runs, generated-project survival after removal |
 
-### 29.2 Reconciliation findings for SUITE-DOC-10
+### 29.2 Reconciliation findings for SUITE-DOC-30
 
 The Foundation specifications remain architecturally compatible, but the standards consistency review must normalize:
 
@@ -1414,7 +1414,7 @@ All Foundation implementation, clean-install, performance, migration, platform, 
 - [x] Defect severity, flaky-test, quarantine, retry, and exclusion policies are defined.
 - [x] Test report and evidence requirements are defined.
 - [x] Beta, release-candidate, and stable gates are measurable.
-- [x] Foundation reconciliation items are recorded for SUITE-DOC-10.
+- [x] Foundation reconciliation items are recorded for SUITE-DOC-30.
 - [x] No implementation evidence has been invented.
 - [x] Package implementation remains locked by SFGSS-ADR-002.
 
@@ -1423,7 +1423,7 @@ All Foundation implementation, clean-install, performance, migration, platform, 
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 4, 2026  
-**Conditions:** Reconcile the Foundation package specifications and SFGSS-001/SFGSS-005 terminology during SUITE-DOC-10. Exact Unity Test Framework/package versions and all execution evidence remain pending until implementation.
+**Conditions:** Reconcile the Foundation package specifications and SFGSS-001/SFGSS-005 terminology during SUITE-DOC-30. Exact Unity Test Framework/package versions and all execution evidence remain pending until implementation.
 
 ---
 
@@ -1444,6 +1444,22 @@ If a release claim cannot be traced to a requirement, test execution, evidence a
 
 
 ---
+
+
+## 31. SUITE-DOC-30 Registry and Compatibility Resolution
+
+The consistency review resolved the Foundation-wide test-shape queue without claiming execution:
+
+- Package and Laboratory IDs are package-qualified in durable records.
+- Older range summaries remain planning shorthand; implementation registries expand them into individual cases.
+- Automation class and execution status are separate fields.
+- Evidence and issue references are mandatory in execution records.
+- Older platform-table `Yes` values are interpreted as `Planned`, never `Tested` or `Supported`, until retained evidence exists.
+- Beta, release-candidate, and stable gates remain distinct even when an older package checklist grouped distribution tasks.
+- Workshop’s Editor Laboratory remains valid standalone proof for an Editor-only package.
+- Real device/provider/platform evidence is required wherever simulation cannot prove the public claim.
+
+All package tests, Laboratories, compatibility claims, and release gates remain `Not run`.
 
 ## Graph Navigation
 

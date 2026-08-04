@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.19.0  
+**Version:** 0.20.0
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2757,6 +2757,17 @@ The following decisions form the approved starting baseline for the suite:
 129. Every meaningful checkpoint reconciles Current Notes, updates affected authorities and navigation hubs, verifies one current handoff, validates links/status/evidence, and commits documentation with or immediately adjacent to the work it describes.
 130. Git history, checkpoint reports, ADRs, research records, test reports, changelogs, and release records are the durable archive. Current Notes is compacted rather than allowed to grow indefinitely; checkpoint ZIPs are transport artifacts, not competing sources of truth.
 
+131. SUITE-DOC-30 passes the Standards and Package Consistency Review across SFGSS-001 through SFGSS-010, all twenty-eight package foundations, ADR-001 through ADR-003, and the Foundation, Expansion, and Advanced integration matrices.
+132. SFGSS-008 formal public titles use the canonical spaced en dash in current package metadata. Historical typography variants remain aliases and do not create new product identities.
+133. Existing package document IDs are permanent. The Crucible and the five Advanced foundations retain their grandfathered non-`-001` IDs rather than receiving retroactive replacements.
+134. Primary public Runtime assemblies default to `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` unless an approved specification records a justified exception.
+135. First Light keeps launch authority and presenter contracts in its neutral Runtime assembly while the default uGUI implementation lives in `EchoDevGames.EchoLaunch.Presentation.UGUI`.
+136. Accord, Chronicle, Passage, and Will explicitly distinguish Unity asset GUIDs from runtime-safe domain identities, fingerprints, and source metadata.
+137. Accord and Will preserve unknown optional data and unknown fields through opaque records or extension-data-capable serializers; Unity JSON round-tripping alone is not accepted as preservation proof.
+138. Package parent-authority headers preserve approval provenance. A SUITE-DOC-30 consistency addendum in each package identifies the standards currently governing implementation.
+139. The central Current Notes page is compacted at SUITE-DOC-30. Git history and promoted records preserve earlier checkpoint detail; only active context and one current handoff remain on the workbench.
+140. Package implementation remains locked. SUITE-DOC-31 creates the full-suite authority, dependency, bridge, and persistence matrix using the reconciled standards and package versions.
+
 ---
 
 ## 22. Open Decisions Requiring Later Approval
@@ -2766,10 +2777,9 @@ These questions do not block approval of the overall architecture, but they must
 1. Final package icons, art treatments, and restrained package-specific flavor vocabulary. Public package titles are registered by SFGSS-008.
 2. Licensing model for package source and samples.
 3. Whether EchoControllers remains one modular UPM package or graduates into a small family of controller packages as dependencies and release cadence become clearer.
-4. The full EchoCrafting conceptual model and approved MVP after its dedicated design workshop.
-5. The first approved networking provider for EchoMultiplayer after dated research and comparison prototypes.
-6. Which platform/native providers, if any, extend the Observatory with desktop hardware sensors beyond Unity runtime counters.
-7. Whether EchoAI, EchoCombat, EchoAbilities, and EchoWorld graduate from candidates to committed packages.
+4. The first approved networking provider for EchoMultiplayer after dated research and comparison prototypes.
+5. Which platform/native providers, if any, extend the Observatory with desktop hardware sensors beyond Unity runtime counters.
+6. Whether EchoAI, EchoCombat, EchoAbilities, and EchoWorld graduate from candidates to committed packages.
 
 ---
 
@@ -2794,14 +2804,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred thirty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred forty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-30 - Standards and Package Consistency Review
+SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

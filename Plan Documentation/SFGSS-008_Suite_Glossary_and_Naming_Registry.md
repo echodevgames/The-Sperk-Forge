@@ -1,11 +1,11 @@
 # The Sperk’s Forge – Suite Glossary and Naming Registry
 
 **Document ID:** SFGSS-008  
-**Version:** 1.0.0  
+**Version:** 1.1.0
 **Status:** Approved naming and terminology standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.17.0  
+**Parent authority:** SFGSS-000 v0.20.0  
 **Related authorities:** SFGSS-001 through SFGSS-007, SFGSS-ADR-001 through SFGSS-ADR-003, and the Foundation, Expansion, and Advanced integration matrices  
 **Current development baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
@@ -841,6 +841,17 @@ The SUITE-DOC-27 audit produced these results:
 **Next checkpoint:** SUITE-DOC-28 – SFGSS-009 Repository, Versioning, and Integration Workspace Standard
 
 ---
+
+
+## SUITE-DOC-30 Registry Reconciliation
+
+The naming registry was compared with all twenty-eight current package foundations and SFGSS-009.
+
+- Formal public-title metadata now uses the canonical spaced en dash in every package authority.
+- Older em-dash and spaced-hyphen forms remain searchable typography aliases, not separate product identities.
+- The six grandfathered package document IDs for The Crucible and the five Advanced foundations remain canonical and permanent; they are not retroactively renamed.
+- Planned repository fields now match SFGSS-009 while actual remotes remain `Not run` until created and verified.
+- Package IDs, namespace families, diagnostic prefixes, test/Laboratory prefixes, and setup facades remain collision-free.
 
 ## Graph Navigation
 

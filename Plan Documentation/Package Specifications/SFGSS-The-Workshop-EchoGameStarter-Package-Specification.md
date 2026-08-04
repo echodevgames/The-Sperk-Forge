@@ -1,16 +1,16 @@
-# The Workshop - Project Starter Package Specification
+# The Workshop – Project Starter Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOGAMESTARTER-001  
-**Specification version:** 1.1.0  
+**Specification version:** 1.2.0
 **Status:** Approved  
 **Technical package name:** EchoGameStarter  
-**Public title:** The Workshop - Project Starter  
+**Public title:** The Workshop – Project Starter
 **Package ID:** `com.echodevgames.echo-game-starter`  
 **Editor namespace:** `EchoDevGames.EchoGameStarter`  
 **Runtime namespace:** Not applicable; the MVP is Editor-only  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/EchoGameStarter`  
+**Planned repository:** `EchoDevGames/EchoGameStarter`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum supported Unity version:** Unity 6000.0  
@@ -19,7 +19,7 @@
 **Transient transaction root:** `Library/EchoGameStarter/Transactions/`  
 **Durable generation record:** Project-owned `WorkshopGenerationManifest` beneath the generated project root  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Choose the tools, inspect every strike, and leave the new project knowing exactly how it was forged.”
 
@@ -34,12 +34,13 @@
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification based on SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and the nine previously approved Foundation package specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved Editor-only composition authority, package catalog, dry-run planning, resumable application, package setup-facade adapters, generated ownership records, repair/removal guidance, presets, diagnostics, and Workshop Laboratory | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-03 | Approved | Incorporated FW-DOC-11, accepted SFGSS-ADR-001 as the exact Foundation setup-facade protocol, and closed the peer-facade reconciliation blocker without adding a shared package dependency | Jesse “Echo” Adams |
+| 1.2.0 | 2026-08-04 | Approved | Set the Editor-only Workshop assembly to `autoReferenced: false`. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** The Workshop - Project Starter  
+**Public title:** The Workshop – Project Starter
 **Technical identifier:** EchoGameStarter  
 **Flavor line:** Assemble the foundation in plain sight; every generated piece keeps its name, owner, and exit route.  
 **Plain-language subtitle:** Editor-only project composition, package selection, dry-run planning, safe generation, repair guidance, and readiness reporting.
@@ -1519,7 +1520,7 @@ Editor/
 
 | Assembly | Platform | References | Auto referenced? | Purpose |
 |---|---|---|---:|---|
-| `EchoDevGames.EchoGameStarter.Editor` | Editor only | Unity Editor, UI Toolkit Editor modules, package management APIs | Yes | Workshop core and UI |
+| `EchoDevGames.EchoGameStarter.Editor` | Editor only | Unity Editor, UI Toolkit Editor modules, package management APIs | No | Workshop core, UI, and exact setup-facade orchestration |
 | `EchoDevGames.EchoGameStarter.Tests.Editor` | Editor tests | Workshop Editor assembly, Unity Test Framework | No | Unit/integration/Laboratory tests |
 
 No runtime assembly is produced. Package-specific adapter code, when required, ships in separate Editor-only bridge assemblies/packages or project adapters.
@@ -2247,6 +2248,26 @@ The Workshop verifies exact package ID/version, assembly-qualified facade type, 
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
+
+**Package-specific repairs:**
+
+- Set the Editor-only Workshop assembly to `autoReferenced: false`.
 
 ## Graph Navigation
 

@@ -1,11 +1,11 @@
 # The Sperk’s Forge — Dependency, Bridge, and Assembly Standard
 
 **Document ID:** SFGSS-002  
-**Version:** 1.0.0  
+**Version:** 1.1.0
 **Status:** Approved architecture standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.10.0  
+**Parent authority:** SFGSS-000 v0.20.0  
 **Related authorities:** SFGSS-001, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001  
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
@@ -45,7 +45,7 @@
 26. Documentation and compatibility records
 27. Validation and release gates
 28. Foundation application matrix
-29. Reconciliation queue
+29. Reconciliation history
 30. Approval
 
 ---
@@ -1189,19 +1189,20 @@ This table applies the standard to the ten approved Foundation packages without 
 | Chronicle | None | Unity core/filesystem; default serializer | UI/Passage/Pulse participant bridges; cloud/platform providers separate |
 | Workshop | No runtime package dependencies; Editor composer behavior governed by descriptors | Unity Editor, Package Manager APIs, UI Toolkit Editor | Invokes package-owned facades through ADR-001; generated selections are not Workshop manifest dependencies |
 
-### 28.1 Foundation assembly advisories promoted for later reconciliation
+### 28.1 SUITE-DOC-30 Foundation assembly resolution
 
-The following are not implementation blockers today because no code exists, but SUITE-DOC-10 must reconcile the package tables with this standard:
+The consistency review resolved the Foundation assembly advisories:
 
-- First Light’s neutral Runtime should not directly carry the optional/default uGUI presenter. Split `EchoDevGames.EchoLaunch.Presentation.UGUI` unless implementation evidence justifies another arrangement.
-- Foundation Editor assemblies should default to `autoReferenced: false`; specifications currently containing `Yes` must be reviewed.
-- Sample-only optional uGUI/TMP dependencies must be made compile-safe without turning them into hidden core dependencies.
-- Bridge package IDs and assembly ordering must be fixed in each future integration specification.
-- The exact Input System, uGUI, TMP, Test Framework, and other Unity package versions remain evidence-pending until implementation validation.
+- First Light’s neutral Runtime assembly is uGUI-free; the default presenter moves to `EchoDevGames.EchoLaunch.Presentation.UGUI`.
+- Foundation Editor assemblies use `autoReferenced: false`.
+- Samples and Laboratories keep optional presentation dependencies outside core runtime assemblies.
+- Public primary Runtime assemblies remain `autoReferenced: true` for ordinary project usability.
+- Bridge/provider package IDs and exact assembly ordering remain owned by their integration/provider specifications.
+- Exact Unity package versions remain evidence-pending until implementation validation.
 
 ---
 
-## 29. Reconciliation queue
+## 29. Reconciliation history
 
 ### 29.1 SUITE-DOC-03 input
 
@@ -1277,6 +1278,20 @@ Official references:
 
 
 ---
+
+
+## 31. SUITE-DOC-30 Consistency Resolution
+
+SFGSS-002 was checked against all twenty-eight package foundations and the three approved integration matrices.
+
+- No circular core dependency was found.
+- No package gained a hidden peer dependency.
+- Editor, test, sample, internal, bridge, and provider assembly defaults are consistent.
+- First Light’s default uGUI presenter is isolated from the neutral Runtime assembly.
+- Workshop invokes exact package-owned Editor facades through ADR-001 rather than open reflection discovery.
+- Git-distributed peer packages remain visible project-level selections under SFGSS-009.
+
+All compile, removal, installation, provider, and compatibility evidence remains `Not run`.
 
 ## Graph Navigation
 

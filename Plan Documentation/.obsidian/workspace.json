@@ -190,6 +190,12 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "SFGSS-030_Package_Consistency_Registry.json",
+    "SFGSS-010_Living_Documentation_Current_Notes_and_Obsidian_Workflow_Standard.md",
+    "SFGSS-010_Documentation_Registry.json",
+    "SFGSS-010_Current_Notes_Template.md",
+    "SFGSS-010_Checkpoint_Handoff_Template.md",
+    "Integration Specifications/SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix.md",
     "SUITE-DOC-29_Artifact_Manifest.json",
     "SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard.md",
     "SFGSS-009_Repository_Registry.json",
@@ -219,12 +225,6 @@
     "Echo_Game_Systems_Suite_Bible.md",
     "Suite_Health_Check_and_Remaining_Documentation.md",
     "SUITE-MAP-01_Artifact_Manifest.json",
-    "Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review.md",
-    "SUITE-DOC-23_Artifact_Manifest.json",
-    "Package Specifications/SFGSS-The-Atlas-EchoWorld-Package-Foundation.md",
-    "SUITE-DOC-22_Artifact_Manifest.json",
-    "Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md",
-    "Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md",
-    "Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation.md"
+    "Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review.md"
   ]
 }

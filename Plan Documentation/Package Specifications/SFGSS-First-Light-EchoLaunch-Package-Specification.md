@@ -1,19 +1,19 @@
-# First Light — Startup and Launch Package Specification
+# First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001  
-**Specification version:** 1.1.0  
+**Specification version:** 1.2.0
 **Status:** Approved  
 **Technical package name:** EchoLaunch  
-**Public title:** First Light — Startup and Launch  
+**Public title:** First Light – Startup and Launch
 **Package ID:** `com.echodevgames.echo-launch`  
 **Runtime namespace:** `EchoDevGames.EchoLaunch`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/EchoLaunch`  
+**Planned repository:** `EchoDevGames/EchoLaunch`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Awaken the systems this project needs.”
 
@@ -28,12 +28,13 @@
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete package specification draft derived from SFGSS-000 v0.5.0 and SFGSS-001 v1.1.0 | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Resolved implementation-shaping decisions, approved the full package contract, and deferred implementation until the Foundation Wave specification pass is complete | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-03 | Approved | Recorded FW-DOC-12 readiness approval, adopted SFGSS-005 as the implementation workflow authority, and selected FL-M1-01 Package Skeleton without changing runtime behavior or public API intent | Jesse “Echo” Adams |
+| 1.2.0 | 2026-08-04 | Approved | Separated the default uGUI presenter from the neutral Runtime assembly; Set the Editor assembly to `autoReferenced: false`; Canonicalized immutable `StartupStepDefinition` versus runtime executor terminology. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** First Light — Startup and Launch  
+**Public title:** First Light – Startup and Launch
 **Technical identifier:** EchoLaunch  
 **Flavor line:** Awaken the systems this project needs.  
 **Plain-language subtitle:** Startup sequencing, launch diagnostics, splash presentation, and initial destination handoff.
@@ -1041,12 +1042,12 @@ Runtime/
 ├── Steps/
 │   ├── StartupSequence.cs
 │   ├── StartupSequenceEntry.cs
-│   ├── StartupStep.cs
+│   ├── StartupStepDefinition.cs
+│   ├── IStartupStepExecutor.cs
 │   ├── StartupStepContext.cs
 │   ├── StartupStepPolicy.cs
 │   ├── StartupStepResult.cs
-│   ├── StartupSequenceRunner.cs
-│   └── StartupStepExecution.cs
+│   └── StartupSequenceRunner.cs
 ├── Reporting/
 │   ├── LaunchProgressSnapshot.cs
 │   ├── LaunchReport.cs
@@ -1054,17 +1055,19 @@ Runtime/
 │   └── LaunchReportBuilder.cs
 ├── Presentation/
 │   ├── ILaunchStatusPresenter.cs
-│   ├── EchoLaunchStatusView.cs
 │   ├── SplashSequence.cs
-│   ├── SplashEntry.cs
-│   └── SplashSequencePlayer.cs
+│   └── SplashEntry.cs
 ├── SceneLoading/
 │   ├── LaunchDestination.cs
 │   ├── IInitialDestinationLoader.cs
 │   ├── UnityInitialDestinationLoader.cs
 │   └── InitialDestinationLoadResult.cs
-├── Development/
-│   └── EchoDirectSceneInitializer.cs
+└── Development/
+    └── EchoDirectSceneInitializer.cs
+
+Presentation.UGUI/
+├── EchoLaunchStatusView.cs
+├── SplashSequencePlayer.cs
 └── Prefabs/
     ├── EchoLaunchRoot.prefab
     └── EchoLaunchStatusView.prefab
@@ -1076,10 +1079,12 @@ The exact file list is not implementation authorization. It is a proposed owners
 
 | Assembly | Platform | References | Auto referenced? | Purpose |
 |---|---|---|---:|---|
-| `EchoDevGames.EchoLaunch.Runtime` | Runtime | Unity core, scene management, proposed uGUI | Yes | Public runtime/configuration/presentation API |
-| `EchoDevGames.EchoLaunch.Editor` | Editor | Runtime assembly, UnityEditor APIs | Yes | Setup, validation, inspectors, simulation, migration |
-| `EchoDevGames.EchoLaunch.Tests.Runtime` | Editor test runner/player test as configured | Runtime assembly, Unity Test Framework | No | EditMode/PlayMode runtime tests |
-| `EchoDevGames.EchoLaunch.Tests.Editor` | Editor | Runtime + Editor assemblies, Unity Test Framework | No | Setup/validation/migration tests |
+| `EchoDevGames.EchoLaunch.Runtime` | Runtime | Unity core and scene management only | Yes | Neutral launch authority, definitions, reports, destination contracts, and presentation interfaces |
+| `EchoDevGames.EchoLaunch.Presentation.UGUI` | Runtime presentation | Runtime assembly and Unity UI | Yes | Default status/splash presenter and prefabs; removable without changing launch authority |
+| `EchoDevGames.EchoLaunch.Editor` | Editor | Runtime, optional UGUI presentation metadata, and UnityEditor APIs | No | Setup, validation, inspectors, simulation, migration, and Workshop facade |
+| `EchoDevGames.EchoLaunch.Tests.Runtime` | Editor test runner/player test as configured | Runtime assembly and Unity Test Framework | No | EditMode/PlayMode neutral runtime tests |
+| `EchoDevGames.EchoLaunch.Tests.Presentation.UGUI` | Runtime presentation tests | Runtime, UGUI presentation, and Unity Test Framework | No | Presenter, splash, and removal-boundary tests |
+| `EchoDevGames.EchoLaunch.Tests.Editor` | Editor | Runtime + Editor assemblies and Unity Test Framework | No | Setup/validation/migration tests |
 
 ### 20.4 Repository files
 
@@ -1094,7 +1099,7 @@ The repository must include README, package documentation, visible Current Notes
 | Dependency | Minimum | Tested | Notes |
 |---|---|---|---|
 | Unity | 6000.0 | 6000.3.8f1 primary development baseline; additional Unity 6 versions added only after validation | The package manifest uses the Unity 6 floor without claiming untested versions |
-| Unity UI (uGUI) | Baseline-compatible Unity 6 package | Version shipped with/tested against 6000.3.8f1 | Required for the default presenter; isolated from the core runtime assembly |
+| Unity UI (uGUI) | Baseline-compatible Unity 6 package | Version shipped with/tested against 6000.3.8f1 | Required only by `EchoDevGames.EchoLaunch.Presentation.UGUI`; the neutral Runtime assembly remains uGUI-free |
 | Unity Test Framework | Baseline-compatible | Baseline version | Development/test only |
 
 ### 21.2 Semantic versioning policy
@@ -1514,6 +1519,28 @@ The document is **Approved** as the Level 2 authority for First Light. The Found
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
+
+**Package-specific repairs:**
+
+- Separated the default uGUI presenter from the neutral Runtime assembly.
+- Set the Editor assembly to `autoReferenced: false`.
+- Canonicalized immutable `StartupStepDefinition` versus runtime executor terminology.
 
 ## Graph Navigation
 

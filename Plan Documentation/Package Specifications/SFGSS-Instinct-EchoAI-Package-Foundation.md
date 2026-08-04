@@ -1,14 +1,14 @@
-# Instinct - EchoAI Feasibility Foundation Specification
+# Instinct – AI Perception, Decisions, and Behavior Package Foundation
 
 **Document ID:** SFGSS-PKG-ECHOAI  
-**Specification version:** 1.0.0  
+**Specification version:** 1.0.1
 **Status:** Approved feasibility foundation; EchoAI remains an Advanced candidate and implementation remains locked  
 **Technical package name:** EchoAI  
-**Public title:** Instinct - AI Perception, Decisions, and Behavior  
+**Public title:** Instinct – AI Perception, Decisions, and Behavior
 **Package ID:** `com.echodevgames.echo-ai`  
 **Runtime namespace:** `EchoDevGames.EchoAI`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Repository:** Planned `EchoDevGames/EchoAI`  
+**Repository:** Planned `EchoDevGames/EchoAI`; actual remote not yet evidenced
 **Current Notes:** `../Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1; optional backend package versions are research observations, not approved implementation pins  
 **Parent authority:** SFGSS-000 v0.12.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, and SFGSS-005 v1.1.0  
@@ -27,12 +27,13 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-04 | Proposed | Initial feasibility foundation | Pending |
 | 1.0.0 | 2026-08-04 | Approved | Approved provider-neutral sensing, memory, scoring, blackboard, scheduling, behavior, navigation, diagnostics, adapter, Laboratory, and explicit non-goal contracts | Jesse “Echo” Adams |
+| 1.0.1 | 2026-08-04 | Approved | Normalized registry metadata and formal title; added the SUITE-DOC-30 governing-authority, evidence, test-registry, and compatibility clarification without authorizing implementation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** Instinct - AI Perception, Decisions, and Behavior  
+**Public title:** Instinct – AI Perception, Decisions, and Behavior
 **Technical identifier:** EchoAI  
 **Flavor line:** Instinct notices, remembers, weighs, and acts.  
 **Plain-language subtitle:** A provider-neutral Unity package foundation for actor-local AI sensing, perception memory, target scoring, typed context, decision scheduling, lightweight behavior execution, navigation requests, debugging, and optional backend adapters.
@@ -1811,6 +1812,22 @@ This feasibility foundation is complete because a new collaborator can determine
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
 
 ## Graph Navigation
 

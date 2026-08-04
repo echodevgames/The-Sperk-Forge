@@ -1,20 +1,20 @@
 # The Accord – Global Preferences Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSETTINGS-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0
 **Status:** Approved  
 **Technical package name:** EchoSettings  
-**Public title:** The Accord – Global Preferences  
+**Public title:** The Accord – Global Preferences
 **Package ID:** `com.echodevgames.echo-settings`  
 **Runtime namespace:** `EchoDevGames.EchoSettings`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/EchoSettings`  
+**Planned repository:** `EchoDevGames/EchoSettings`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum public Unity version:** Unity 6000.0  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Let the player establish the terms by which the game meets them.”
 
@@ -28,12 +28,13 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification derived from SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, First Light v1.0.0, and The Observatory v1.0.0 | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved global-preference authority, section model, transactional editing, display confirmation, storage, migration, validation, Test Lab, and bridge boundaries | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID versus optional runtime/export configuration IDs; Required opaque or extension-capable preservation for unknown fields inside known settings sections; Set the Editor assembly to `autoReferenced: false`. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** The Accord – Global Preferences  
+**Public title:** The Accord – Global Preferences
 **Technical identifier:** EchoSettings  
 **Flavor line:** Let the player establish the terms by which the game meets them.  
 **Plain-language subtitle:** Versioned global preferences, safe editing and application, validation, persistence, and optional integration contracts.
@@ -538,6 +539,8 @@ SettingsFileDocument
 
 When a section definition is absent, its record remains opaque and is preserved on the next successful save. When the definition registers later, the service decodes, migrates, validates, merges defaults, and applies it.
 
+For a **known section**, the registered codec must also preserve unrecognized members through either an opaque raw section envelope or an extension-data-capable serializer. A `JsonUtility` decode/re-encode alone is not sufficient evidence of unknown-field preservation. Unsupported newer known-section payloads remain protected and are not destructively rewritten.
+
 ### 8.6 Edit and apply transaction
 
 1. Caller begins an edit session from committed revision `R`.
@@ -628,8 +631,8 @@ Reference material for implementation checkpoints:
 
 | Type | Purpose | Stable ID? | Mutable at runtime? | Project-owned instance? |
 |---|---|---:|---:|---:|
-| `EchoSettingsConfiguration` | Root startup, storage, fallback, confirmation, path, and validation policy | Asset GUID | No | Yes |
-| `SettingsDefaultsProfile` | Default built-in section values and registered default references | Asset GUID | No | Yes |
+| `EchoSettingsConfiguration` | Root startup, storage, fallback, confirmation, path, and validation policy | Unity asset GUID for Editor identity; optional `ConfigurationId` only when exported/runtime-addressed | No | Yes |
+| `SettingsDefaultsProfile` | Default built-in section values and registered default references | Unity asset GUID for Editor identity; optional `DefaultsProfileId` only when exported/runtime-addressed | No | Yes |
 | `AudioPreferences` | Global audio category values/mutes/dynamic range | Section ID | Draft copies only | Embedded/default/project data |
 | `DisplayPreferences` | Window, resolution, quality, VSync, frame-cap preferences | Section ID | Draft copies only | Embedded/default/project data |
 | `AccessibilityPreferences` | Basic subtitle, motion, shake, flash, contrast, interaction, and text-speed preferences | Section ID | Draft copies only | Embedded/default/project data |
@@ -1458,7 +1461,7 @@ Names may be consolidated when implementation proves a smaller file set clearer,
 | Assembly | Platform | References | Auto referenced? | Purpose |
 |---|---|---|---:|---|
 | `EchoDevGames.EchoSettings.Runtime` | Runtime | Unity core modules only | Yes | Authority, data, editing, application, persistence, diagnostics |
-| `EchoDevGames.EchoSettings.Editor` | Editor | Runtime, UnityEditor | Yes | Setup, validation, migration, simulation, inspectors |
+| `EchoDevGames.EchoSettings.Editor` | Editor | Runtime, UnityEditor | No | Setup, validation, migration, simulation, inspectors, and Workshop facade |
 | `EchoDevGames.EchoSettings.Tests.Runtime` | Tests | Runtime, Test Framework | No | EditMode/PlayMode package tests |
 | `EchoDevGames.EchoSettings.Tests.Editor` | Editor tests | Runtime, Editor, Test Framework | No | Setup/validation/file-tool tests |
 | Sample assembly | Sample | Runtime, optional uGUI/TMP | No | Lab presenter and test utilities |
@@ -1945,6 +1948,28 @@ This document is **Approved** as the Level 2 authority for The Accord (`EchoSett
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
+
+**Package-specific repairs:**
+
+- Clarified Unity asset GUID versus optional runtime/export configuration IDs.
+- Required opaque or extension-capable preservation for unknown fields inside known settings sections.
+- Set the Editor assembly to `autoReferenced: false`.
 
 ## Graph Navigation
 

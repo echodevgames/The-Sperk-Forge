@@ -1,21 +1,21 @@
-# The Will - Input Infrastructure Package Specification
+# The Will – Input Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOINPUT-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0
 **Status:** Approved  
 **Technical package name:** EchoInput  
-**Public title:** The Will - Input Infrastructure  
+**Public title:** The Will – Input Infrastructure
 **Package ID:** `com.echodevgames.echo-input`  
 **Runtime namespace:** `EchoDevGames.EchoInput`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/EchoInput`  
+**Planned repository:** `EchoDevGames/EchoInput`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum supported Unity version:** Unity 6000.0  
 **Required Unity package:** Input System `com.unity.inputsystem` 1.17.0 or later within the supported 1.x line  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Let intention cross the threshold cleanly, without mistaking the hand for the hero.”
 
@@ -29,12 +29,13 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification derived from SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and the six previously approved Foundation specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved the duplicate-safe input root, owned runtime action clone, primary and override contexts, reason-based locks, meaningful-device detection, transactional rebinding, conflict analysis, versioned override documents, glyph resolution, controls-display data, diagnostics, tooling, and isolated Input Laboratory | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID, Input System GUID, and project-authored domain identity roles; Made unknown extension-data preservation an explicit serializer/opaque-record requirement. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** The Will - Input Infrastructure  
+**Public title:** The Will – Input Infrastructure
 **Technical identifier:** EchoInput  
 **Flavor line:** Translate the player’s intent without deciding the game’s response.  
 **Plain-language subtitle:** Input contexts, device state, rebinding, binding overrides, glyphs, lock reasons, and controller-independent input infrastructure.
@@ -773,16 +774,16 @@ The runtime returns neutral prompt data. It does not instantiate UI. The package
 
 | Type | Purpose | Stable identity | Mutable at runtime? | Project-owned instance? |
 |---|---|---:|---:|---:|
-| `EchoInputConfiguration` | Selects source action asset, runtime ownership mode, context catalog, device rules, rebind policy, glyph libraries, limits, and diagnostics options | Asset GUID | No | Yes |
-| `InputContextCatalog` | Defines primary and override contexts plus map directives and dominance values | Asset GUID plus context ID | No | Yes |
+| `EchoInputConfiguration` | Selects source action asset, runtime ownership mode, context catalog, device rules, rebind policy, glyph libraries, limits, and diagnostics options | Unity asset GUID for Editor identity plus project-authored source identity/fingerprint | No | Yes |
+| `InputContextCatalog` | Defines primary and override contexts plus map directives and dominance values | Unity asset GUID plus domain `InputContextId` values | No | Yes |
 | `InputContextDefinition` | Describes one semantic input mode such as Gameplay, Menu, Dialogue, Cutscene, or Rebinding | Stable string/GUID ID | No | Yes |
 | `InputMapDirective` | Declares Enable, Disable, or Unchanged for one action-map GUID | Map GUID | No | Yes |
 | `InputLockPolicy` | Defines lock targets, exempt actions, and reason metadata | Stable policy ID | No | Yes |
-| `InputDevicePolicy` | Defines supported layouts, meaningful-activity thresholds, pairing rules, and fallback order | Asset GUID | No | Yes |
-| `InputRebindPolicy` | Defines candidate filters, timeout, conflict strategy, reserved controls, and composite behavior | Asset GUID | No | Yes |
+| `InputDevicePolicy` | Defines supported layouts, meaningful-activity thresholds, pairing rules, and fallback order | Unity asset GUID for Editor identity; optional policy ID when externally referenced | No | Yes |
+| `InputRebindPolicy` | Defines candidate filters, timeout, conflict strategy, reserved controls, and composite behavior | Unity asset GUID for Editor identity; optional policy ID when externally referenced | No | Yes |
 | `InputBindingMetadataCatalog` | Adds project-authored labels, shareability, reservation, display grouping, and migration aliases to action/binding GUIDs | Action/binding GUID | No | Yes |
-| `InputGlyphLibrary` | Maps control paths and device families to project-owned glyph references and text fallbacks | Asset GUID plus mapping key | No | Yes |
-| `ControlDisplayDefinition` | Defines pages, groups, labels, and action references for a controls guide | Asset GUID plus page/group IDs | No | Yes |
+| `InputGlyphLibrary` | Maps control paths and device families to project-owned glyph references and text fallbacks | Unity asset GUID plus stable mapping keys | No | Yes |
+| `ControlDisplayDefinition` | Defines pages, groups, labels, and action references for a controls guide | Unity asset GUID plus domain page/group IDs | No | Yes |
 | `BindingOverrideDocument` | Serializable, versioned record of project/user override entries | Document ID plus action/binding GUID | Loaded into runtime model | Created by project/settings integration |
 | `BindingOverrideMigrationMap` | Declares aliases or replacements for released action/binding IDs | Stable migration ID | No | Yes |
 
@@ -877,7 +878,7 @@ Rules:
 1. Empty fields mean “no override,” not “guess from the current index.”
 2. Entries are normalized and validated before application.
 3. Import produces a report with applied, skipped, migrated, orphaned, conflicting, and invalid counts.
-4. Unknown extension data is preserved where practical.
+4. Unknown extension data is preserved through an opaque raw record or an extension-data-capable serializer; `JsonUtility` round-tripping alone does not satisfy this rule.
 5. Newer unsupported documents are not destructively rewritten.
 6. A partial import never silently discards entries that could not be applied.
 7. Export is deterministic enough for useful diffing and support review.
@@ -2608,6 +2609,27 @@ The Will package specification is therefore complete and **Approved v1.0.0**. Ru
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
+
+**Package-specific repairs:**
+
+- Clarified Unity asset GUID, Input System GUID, and project-authored domain identity roles.
+- Made unknown extension-data preservation an explicit serializer/opaque-record requirement.
 
 ## Graph Navigation
 

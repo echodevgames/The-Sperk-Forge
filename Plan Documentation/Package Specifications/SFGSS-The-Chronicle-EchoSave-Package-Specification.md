@@ -1,22 +1,22 @@
-# The Chronicle - Save Infrastructure Package Specification
+# The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0
 **Status:** Approved  
 **Technical package name:** EchoSave  
-**Public title:** The Chronicle - Save Infrastructure  
+**Public title:** The Chronicle – Save Infrastructure
 **Package ID:** `com.echodevgames.echo-save`  
 **Runtime namespace:** `EchoDevGames.EchoSave`  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Planned repository:** `EchoDevGames/EchoSave`  
+**Planned repository:** `EchoDevGames/EchoSave`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum supported Unity version:** Unity 6000.0  
 **Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`  
 **Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers  
 **Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 3, 2026
+**Last updated:** August 4, 2026
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
@@ -30,11 +30,12 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification based on SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and eight approved Foundation specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved slot models, immutable save generations, participant payloads, two-phase load, metadata, serialization, migration, recovery, autosave, diagnostics, tooling, and the isolated Save Laboratory | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID versus optional runtime/export save-configuration identity. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
 
-**Public title:** The Chronicle - Save Infrastructure  
+**Public title:** The Chronicle – Save Infrastructure
 **Technical identifier:** EchoSave  
 **Flavor line:** Record the state that must endure, then prove the record can be trusted.  
 **Plain-language subtitle:** Reliable local game-save files, slots, metadata, participants, migrations, backups, recovery, and save-operation diagnostics.
@@ -562,7 +563,7 @@ Rules:
 
 | Type | Purpose | Stable ID? | Mutable at runtime? | Project-owned instance? |
 |---|---|---:|---:|---:|
-| `EchoSaveConfiguration` | Root path, slot mode, limits, retention, policies, providers | Asset GUID only | No | Yes |
+| `EchoSaveConfiguration` | Root path, slot mode, limits, retention, policies, providers | Unity asset GUID for Editor identity; optional `SaveConfigurationId` only when exported/runtime-addressed | No | Yes |
 | `SaveSlotTemplate` | Fixed-slot labels/order/default IDs | Yes | No | Yes |
 | `SaveRetentionPolicy` | Prior generation/autosave/trash bounds | No | No | Yes |
 | `SaveLimitPolicy` | File, payload, participant, slot, migration limits | No | No | Yes |
@@ -1985,6 +1986,26 @@ The Chronicle specification is complete and **Approved v1.0.0**. The next docume
 
 
 ---
+
+
+## SUITE-DOC-30 Consistency Addendum
+
+**Review status:** Passed  
+**Review date:** August 4, 2026  
+**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+
+The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
+
+- The formal public title, technical identifier, package ID, namespace family, document ID, diagnostic/test prefix, setup facade, and planned repository were checked against SFGSS-008 and SFGSS-009.
+- All implementation, compatibility, platform, performance, migration, Laboratory, provider, and release evidence remains `Not run` unless a retained execution record says otherwise.
+- Package-qualified test and Laboratory IDs are authoritative. Pre-code range tables are planning shorthand only; implementation registries must expand them into individual definitions with separate automation class, execution status, evidence reference, and issue reference fields.
+- A platform cell written as `Yes` in an older pre-code table means **planned design support**, not `Tested` or `Supported`, until SFGSS-004 evidence exists.
+- Primary public Runtime assemblies may remain `autoReferenced: true`; Editor, test, sample, internal support, bridge, and provider assemblies default to `false` under SFGSS-002 unless this specification explicitly records a justified exception.
+- Current Notes captures future discoveries, but durable changes return to this specification or an ADR before implementation advances.
+
+**Package-specific repairs:**
+
+- Clarified Unity asset GUID versus optional runtime/export save-configuration identity.
 
 ## Graph Navigation
 

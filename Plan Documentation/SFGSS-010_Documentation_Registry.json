@@ -1,6 +1,6 @@
 {
   "documentId": "SFGSS-010-COMPANION",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "Approved documentation companion",
   "updated": "2026-08-04",
   "canonicalEntryPoints": [
@@ -75,5 +75,7 @@
     "Suite_Graph_Roadmap.md",
     "Suite_Health_Check_and_Remaining_Documentation.md",
     "Package_Learning_Review_Catalog.md"
-  ]
+  ],
+  "currentNotesCompactedAt": "SUITE-DOC-30",
+  "packageAuthorityCount": 28
 }

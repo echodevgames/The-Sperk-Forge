@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-30 - Standards and Package Consistency Review  
+**Current checkpoint:** SUITE-DOC-31 - Full Suite Authority, Dependency, Bridge, and Persistence Matrix  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -247,3 +247,5 @@ flowchart TB
 
 - [[SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard|Repository and versioning authority]]
 - [[SFGSS-009_Repository_Registry|Machine-readable repository registry]]
+
+- [[SFGSS-INT-CONSISTENCY-001_Standards_and_Package_Consistency_Matrix|Standards and Package Consistency Matrix]]
