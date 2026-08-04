@@ -190,6 +190,9 @@
   },
   "active": "0295d99b37131b83",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
+    "Test Reports/SUITE-DOC-11_Artifact_Manifest.json",
+    "Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
     "Test Reports/SUITE-DOC-10_EchoDialogue_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-10_Artifact_Manifest.json",
     "Package Specifications/SFGSS-Voices-EchoDialogue-Package-Specification.md",
@@ -218,13 +221,10 @@
     "Test Reports/SUITE-DOC-03_Artifact_Manifest.json",
     "SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md",
     "Test Reports/SUITE-DOC-02_Dependency_Bridge_Assembly_Audit_Report.md",
-    "Test Reports/SUITE-DOC-02_Artifact_Manifest.json",
     "SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md",
     "Test Reports/Foundation_Documentation_Readiness_Report.md",
     "Test Reports/Full_Suite_Documentation_Rebaseline_Report.md",
     "SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md",
-    "Full_Suite_Documentation_Program_Roadmap.md",
-    "Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md",
-    "Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md"
+    "Full_Suite_Documentation_Program_Roadmap.md"
   ]
 }

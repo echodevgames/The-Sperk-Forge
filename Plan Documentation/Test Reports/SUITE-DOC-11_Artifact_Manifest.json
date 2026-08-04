@@ -1,0 +1,45 @@
+{
+  "checkpoint": "SUITE-DOC-11",
+  "package": "EchoObjectives",
+  "public_title": "The Path",
+  "status": "Approved v1.0.0",
+  "date": "2026-08-04",
+  "implementation_authorized": false,
+  "counts": {
+    "required_sections": 30,
+    "laboratory_scenarios": 48,
+    "planned_tests": 268,
+    "package_specifications_in_vault": 17,
+    "foundation_specifications_approved": 10,
+    "expansion_specifications_approved": 7,
+    "advanced_foundations_approved": 0
+  },
+  "evidence_state": "All implementation evidence Not run",
+  "artifacts": [
+    {
+      "repository_path": "Plan Documentation/Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md",
+      "bytes": 130156,
+      "sha256": "27d907f40d4f74060c0142f8b9c92f456dba241cb602337c93011933aaa6dc0e"
+    },
+    {
+      "repository_path": "Plan Documentation/Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md",
+      "bytes": 5372,
+      "sha256": "46976eb9e47b0886854860c4725fe722171d7e9f5a2315d472c762f39e499b27"
+    },
+    {
+      "repository_path": "Plan Documentation/Current Notes.md",
+      "bytes": 82387,
+      "sha256": "b9058d2418e08908a845baba93a44fb2ca3329e654b062c17f543048c914683a"
+    },
+    {
+      "repository_path": "Plan Documentation/Full_Suite_Documentation_Program_Roadmap.md",
+      "bytes": 10787,
+      "sha256": "bb3ddd7aeb7636977454ed21317d11c0e39156bb7bb283fae51271014c4ab4a2"
+    },
+    {
+      "repository_path": "Plan Documentation/README.md",
+      "bytes": 6009,
+      "sha256": "3600f5fbaf6fbc41bacf050a100d34267122f3b4e89044f46b925b3a452ccf07"
+    }
+  ]
+}

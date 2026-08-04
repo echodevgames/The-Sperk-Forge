@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoObjectives - The Path package specification
-**Current checkpoint:** SUITE-DOC-11 - EchoObjectives: The Path Package Specification
+**Current focus:** EchoInventory - The Vault package specification
+**Current checkpoint:** SUITE-DOC-12 - EchoInventory: The Vault Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,13 +45,14 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
+- `Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md` - v1.0.0 Approved.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Draft and approve the complete **EchoObjectives - The Path Package Specification** using SFGSS-001. Define objective, quest, and task identities; sequential, parallel, optional, hidden, repeatable, counter, flag, timer, and provider-driven steps; prerequisite graphs; transactional progress; tracked presentation snapshots; rewards expressed as requests/results; save snapshots, migration, diagnostics, authoring, validation, and explicit UI, Dialogue, Inventory, Progression, Save, Interaction, and Multiplayer boundaries without absorbing dialogue rendering, inventory storage, reward execution, or save-file transport.
+Draft and approve the complete **EchoInventory - The Vault Package Specification** using SFGSS-001. Define stable item definitions and mutable item instances; containers, slots, stacks, capacity, weight, filters, tags, queries, transactions, add/remove/move/split/merge/transfer behavior, generic equipment-storage mechanics, serialization, diagnostics, authoring, validation, and explicit Crafting, Combat, Abilities, Characters, Objectives, UI, Save, Dialogue, Vendor, World, and Multiplayer boundaries without absorbing crafting transformations, RPG statistics, combat effects, vendor economics, or save-file transport.
 ---
 
 ## Open Questions
@@ -59,11 +60,31 @@ Draft and approve the complete **EchoObjectives - The Path Package Specification
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-11.
+- No question currently blocks SUITE-DOC-12.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Path (`EchoObjectives`) package specification
+
+- `[DECISION]` The Path (`EchoObjectives`) Package Specification v1.0.0 is approved as the Level 2 authority for objective definitions, availability, prerequisite graphs, objective runs, sequential/parallel/threshold groups, manual/counter/flag/timer/provider steps, optional and hidden policies, repeatability, tracking, transactional progress, completion, reward ledgers, state export/import, migrations, diagnostics, authoring, validation, and optional bridge seams; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoObjectives does not own gameplay facts, production UI, localization, dialogue, inventory, progression, characters, crafting, scene travel, camera, audio, save-file transport, multiplayer authority, or concrete reward execution.
+- `[DECISION]` One duplicate-safe application-session `EchoObjectivesRoot` exposes injectable `IEchoObjectivesService`; duplicate rejection occurs before subscriptions, clocks, providers, or state mutation.
+- `[DECISION]` Objective definitions are immutable project-owned assets. Runtime runs use stable `ObjectiveRunId` identities, allowing sequential repeat runs without stale requests mutating a new run.
+- `[DECISION]` The MVP graph vocabulary is Ordered, AllRequired, AnyRequired, and Threshold groups plus Manual, Counter, Flag, Timer, and Provider leaf steps. Optional and hidden are independent policies.
+- `[DECISION]` Availability evaluation is read-only and distinguishes Available, Locked, and Unavailable. Missing or failed providers never imply success.
+- `[DECISION]` Progress uses typed requests, atomic batches, run generations, and a bounded request-id dedupe window. Events publish only after state commits.
+- `[DECISION]` Completion commits before reward delivery. Each authored reward receives a deterministic grant ID and an independent Pending/InProgress/Succeeded/Failed/Unavailable/Skipped ledger. Reward failure never rolls completed objective truth backward.
+- `[DECISION]` The MVP supports one active run per definition, sequential repeatability, bounded terminal history, one primary tracked objective, and bounded pins. Concurrent repeated runs remain deferred.
+- `[DECISION]` State export/import is core and provider-neutral. Chronicle persistence is optional. Missing definitions/providers/reward executors preserve orphaned or pending records until they return or an explicit backed-up prune occurs.
+- `[DECISION]` The diagnostic namespace `EOBJ-*` is reserved for The Path.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 48 unique Laboratory scenarios, and 268 unique package-qualified planned tests.
+- `[TEST]` Every runtime, provider, reward, persistence, migration, compatibility, performance, platform, bridge, removal, and release result remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because the specification refines the already-approved EchoObjectives authority without changing a suite-wide ownership boundary.
+- `[HANDOFF]` SUITE-DOC-12 drafts EchoInventory (`The Vault`) next. Preserve item/container authority without absorbing crafting transformations, RPG statistics, combat effects, vendor economics, or save-file transport.
+
+**Promoted to:** The Path (`EchoObjectives`) Package Specification v1.0.0, SUITE-DOC-11 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
 
 ### August 4, 2026 - Voices (`EchoDialogue`) package specification
 
@@ -539,9 +560,10 @@ Draft and approve the complete **EchoObjectives - The Path Package Specification
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
 | EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
 | EchoLocalization package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 196 planned tests, all Not run |
-| Expansion specifications | 6 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, and Voices |
+| Expansion specifications | 7 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, and The Path |
 | EchoDialogue package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 217 planned tests, all Not run |
-| Current checkpoint | Active | SUITE-DOC-11 - EchoObjectives: The Path Package Specification |
+| EchoObjectives package specification | Approved | v1.0.0; 30 sections; 48 Laboratory scenarios; 268 planned tests, all Not run |
+| Current checkpoint | Active | SUITE-DOC-12 - EchoInventory: The Vault Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -591,34 +613,33 @@ Draft and approve the complete **EchoObjectives - The Path Package Specification
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoDialogue against SFGSS-000 through SFGSS-005 and every approved package authority available through Many Tongues.
-- [x] Preserve one foreground conversation authority without absorbing UI, localization, audio, input, game state, objectives, camera, scene travel, or save transport.
-- [x] Define stable speaker, conversation, node, choice, provider, condition, and command identities.
-- [x] Define line, choice, branch, local mutation, wait, command, and end-node flow.
-- [x] Define read-only conditions and explicit asynchronous command handlers with timeout, cancellation, failure policy, and commit boundaries.
-- [x] Define interruption, suspension, cancellation, semantic history, and safe active-session snapshot rules.
-- [x] Define setup, authoring, validation, diagnostics, privacy, removal, migration, and Laboratory contracts.
-- [x] Register 44 Laboratory scenarios and 217 package-qualified planned tests.
-- [x] Keep every unexecuted runtime, provider, presenter, command, persistence, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Reconcile EchoObjectives against SFGSS-000 through SFGSS-005 and every approved package authority available through Voices.
+- [x] Preserve one objective authority without absorbing gameplay facts, UI, localization, dialogue, inventory, progression, save transport, or reward execution.
+- [x] Define stable objective, run, node, reward, provider, request, and grant identities.
+- [x] Define availability, prerequisites, groups, leaf progress, optional/hidden behavior, timers, suspension, repeatability, tracking, completion, and failure.
+- [x] Define completion-first reward delivery with deterministic grant IDs and retry ledgers.
+- [x] Define versioned export/import, aliases, migrations, orphan retention, diagnostics, authoring, validation, removal, and Laboratory contracts.
+- [x] Register 48 Laboratory scenarios and 268 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, provider, reward, persistence, migration, performance, platform, compatibility, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
 - [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, or runtime implementation was created.
-- [x] Record SUITE-DOC-09 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-10.
-- [x] Stop before EchoObjectives specification work.
+- [x] Record SUITE-DOC-10 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-11.
+- [x] Stop before EchoInventory specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-10 - Voices (`EchoDialogue`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-11 - The Path (`EchoObjectives`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoObjectives - The Path  
-**Active checkpoint:** SUITE-DOC-11 - EchoObjectives Package Specification  
-**Expansion specifications:** 6 of 13 approved  
+**Current focus:** EchoInventory - The Vault  
+**Active checkpoint:** SUITE-DOC-12 - EchoInventory Package Specification  
+**Expansion specifications:** 7 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-09 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-10 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, objective data, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-10 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-11 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, item data, inventory state, or gameplay implementation
