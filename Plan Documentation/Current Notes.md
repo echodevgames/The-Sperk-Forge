@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoInventory - The Vault package specification
-**Current checkpoint:** SUITE-DOC-12 - EchoInventory: The Vault Package Specification
+**Current focus:** EchoInteraction - The Hand package specification
+**Current checkpoint:** SUITE-DOC-13 - EchoInteraction: The Hand Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,14 +45,14 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md` - v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md` - v1.0.0 Approved.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Draft and approve the complete **EchoInventory - The Vault Package Specification** using SFGSS-001. Define stable item definitions and mutable item instances; containers, slots, stacks, capacity, weight, filters, tags, queries, transactions, add/remove/move/split/merge/transfer behavior, generic equipment-storage mechanics, serialization, diagnostics, authoring, validation, and explicit Crafting, Combat, Abilities, Characters, Objectives, UI, Save, Dialogue, Vendor, World, and Multiplayer boundaries without absorbing crafting transformations, RPG statistics, combat effects, vendor economics, or save-file transport.
+Draft and approve the complete **EchoInteraction - The Hand Package Specification** using SFGSS-001. Define 2D and 3D detection adapters; stable interactor/interactable identities; candidate collection; deterministic focused selection; range, angle, line-of-sight, priority, and availability evaluation; prompt data; tap, hold, toggle, timed, and repeated interaction lifecycles; cancellation; explicit execution requests/results; diagnostics; authoring; validation; and UI, Input, Inventory, Objectives, Dialogue, Audio, Feedback, World, Characters, Save, and Multiplayer boundaries without deciding the unique result of opening a door, rescuing a survivor, placing an explosive, collecting an item, or completing a quest.
 ---
 
 ## Open Questions
@@ -65,6 +65,24 @@ Draft and approve the complete **EchoInventory - The Vault Package Specification
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Vault (`EchoInventory`) package specification
+
+- `[DECISION]` The Vault (`EchoInventory`) Package Specification v1.0.0 is approved as the Level 2 authority for immutable item definitions, stable catalogs/tags, fungible stacks, unique mutable item instances, list/fixed/equipment containers, quantities, deterministic weight, filters, queries, atomic transactions, revisions, generic equipment occupancy, state export/import, unknown-data preservation, diagnostics, authoring, validation, and optional bridge seams; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoInventory does not own crafting transformations, vendor economics, combat or RPG effects, item-use gameplay, world spawning, production UI, save-file transport, objective/dialogue/character truth, or multiplayer authority.
+- `[DECISION]` One duplicate-safe application-session `EchoInventoryRoot` exposes injectable `IEchoInventoryService`; duplicate rejection occurs before catalogs, providers, containers, subscriptions, or mutable state.
+- `[DECISION]` Fungible stacks and unique item instances are separate entry species. Fungible units have no individual IDs; unique mutable items keep durable `ItemInstanceId` values and default to quantity one.
+- `[DECISION]` Fixed-slot and bounded-list containers are the MVP. Quantity, stack, entry-count, slot, filter, and checked integer weight-unit rules are evaluated before commit.
+- `[DECISION]` Add, remove, move, split, merge, swap, transfer, equip, unequip, and batch operations touching local containers are atomic. Expected container revisions reject stale requests.
+- `[DECISION]` Generic equipment owns named slots and occupancy only. Combat effects, class restrictions, attributes, set bonuses, and item abilities remain external.
+- `[DECISION]` State export/import is provider-neutral. Chronicle persistence is optional. Missing item definitions and unknown item-state component providers preserve opaque bounded records until restored or explicitly pruned.
+- `[DECISION]` The diagnostic namespace `EINV-*` is reserved for The Vault.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 52 unique Laboratory scenarios, and 302 unique package-qualified planned tests.
+- `[TEST]` Every runtime, transaction, equipment, provider, persistence, migration, compatibility, performance, platform, bridge, removal, and release result remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because the specification refines the already-approved EchoInventory authority and equipment boundary without changing suite-wide ownership.
+- `[HANDOFF]` SUITE-DOC-13 drafts EchoInteraction (`The Hand`) next. Preserve interaction discovery/selection/execution-request authority without deciding project-specific interaction results.
+
+**Promoted to:** The Vault (`EchoInventory`) Package Specification v1.0.0, SUITE-DOC-12 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
 
 ### August 4, 2026 - The Path (`EchoObjectives`) package specification
 
@@ -526,6 +544,8 @@ Draft and approve the complete **EchoInventory - The Vault Package Specification
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoInventory definitions, stacks, unique instances, containers, atomic transactions, equipment storage, persistence, diagnostics, and Laboratory | EchoInventory Package Specification v1.0.0 | Promoted |
+| 2026-08-04 | EchoObjectives objective graphs, progress, repeatability, reward ledgers, persistence, diagnostics, and Laboratory | EchoObjectives Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoDialogue speakers, conversation graph, lines, choices, conditions, commands, interruption, semantic history, safe snapshots, diagnostics, authoring, and Laboratory | EchoDialogue Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoLocalization locale lifecycle, stable localized references, fallback/missing policy, formatting, asset leases, fonts/direction, pseudo-localization, diagnostics, and Laboratory | EchoLocalization Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | EchoBuildTools recipes, Build Profile boundary, planning, validation, stamping, output safety, receipts, manifests, checksums, providers, CLI, and Laboratory | EchoBuildTools Package Specification v1.0.0 | Promoted |
@@ -560,10 +580,11 @@ Draft and approve the complete **EchoInventory - The Vault Package Specification
 | EchoProgression package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 144 planned tests, all Not run |
 | EchoBuildTools package specification | Approved | v1.0.0; 30 sections; 40 Laboratory scenarios; 156 planned tests, all Not run |
 | EchoLocalization package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 196 planned tests, all Not run |
-| Expansion specifications | 7 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, and The Path |
+| Expansion specifications | 8 of 13 approved | Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, and The Vault |
 | EchoDialogue package specification | Approved | v1.0.0; 30 sections; 44 Laboratory scenarios; 217 planned tests, all Not run |
 | EchoObjectives package specification | Approved | v1.0.0; 30 sections; 48 Laboratory scenarios; 268 planned tests, all Not run |
-| Current checkpoint | Active | SUITE-DOC-12 - EchoInventory: The Vault Package Specification |
+| EchoInventory package specification | Approved | v1.0.0; 30 sections; 52 Laboratory scenarios; 302 planned tests, all Not run |
+| Current checkpoint | Active | SUITE-DOC-13 - EchoInteraction: The Hand Package Specification |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
@@ -613,33 +634,31 @@ Draft and approve the complete **EchoInventory - The Vault Package Specification
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoObjectives against SFGSS-000 through SFGSS-005 and every approved package authority available through Voices.
-- [x] Preserve one objective authority without absorbing gameplay facts, UI, localization, dialogue, inventory, progression, save transport, or reward execution.
-- [x] Define stable objective, run, node, reward, provider, request, and grant identities.
-- [x] Define availability, prerequisites, groups, leaf progress, optional/hidden behavior, timers, suspension, repeatability, tracking, completion, and failure.
-- [x] Define completion-first reward delivery with deterministic grant IDs and retry ledgers.
-- [x] Define versioned export/import, aliases, migrations, orphan retention, diagnostics, authoring, validation, removal, and Laboratory contracts.
-- [x] Register 48 Laboratory scenarios and 268 package-qualified planned tests.
-- [x] Keep every unexecuted runtime, provider, reward, persistence, migration, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Reconcile EchoInventory against SFGSS-000 through SFGSS-005 and approved package authorities through The Path.
+- [x] Preserve one item/container authority without absorbing crafting, vendors, combat/RPG effects, UI, save transport, objectives, dialogue, characters, world spawning, or multiplayer authority.
+- [x] Define immutable item definitions, fungible stacks, unique instances, stable identities, fixed/list/equipment containers, capacity, filters, queries, and atomic transactions.
+- [x] Define revision conflicts, idempotency, equipment occupancy, export/import, migrations, aliases, unknown-data preservation, diagnostics, authoring, validation, removal, and Laboratory contracts.
+- [x] Register 52 Laboratory scenarios and 302 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, transaction, equipment, provider, persistence, migration, performance, platform, compatibility, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
 - [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, or runtime implementation was created.
-- [x] Record SUITE-DOC-10 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-11.
-- [x] Stop before EchoInventory specification work.
+- [x] Record SUITE-DOC-11 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-12.
+- [x] Stop before EchoInteraction specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-11 - The Path (`EchoObjectives`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-12 - The Vault (`EchoInventory`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoInventory - The Vault  
-**Active checkpoint:** SUITE-DOC-12 - EchoInventory Package Specification  
-**Expansion specifications:** 7 of 13 approved  
+**Current focus:** EchoInteraction - The Hand  
+**Active checkpoint:** SUITE-DOC-13 - EchoInteraction Package Specification  
+**Expansion specifications:** 8 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-10 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-11 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, item data, inventory state, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-11 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-12 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, interaction data, detector, interactor, or gameplay implementation

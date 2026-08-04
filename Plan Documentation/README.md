@@ -30,12 +30,12 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 
 ## Current approved objective
 
-The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), Many Tongues (`EchoLocalization`), Voices (`EchoDialogue`), and The Path (`EchoObjectives`) are the first seven approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
+The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), Many Tongues (`EchoLocalization`), Voices (`EchoDialogue`), The Path (`EchoObjectives`), and The Vault (`EchoInventory`) are the first eight approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
 
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
-Expansion specifications: 7 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, and The Path v1.0.0
-Active checkpoint: SUITE-DOC-12 - EchoInventory: The Vault Package Specification
+Expansion specifications: 8 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, and The Vault v1.0.0
+Active checkpoint: SUITE-DOC-13 - EchoInteraction: The Hand Package Specification
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -73,7 +73,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation package authorities, and the approved Expansion specifications through The Path (`EchoObjectives`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-12 - EchoInventory (`The Vault`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define a standalone inventory authority for item definitions and instances, containers, slots, stacks, capacity, weight, filters, atomic add/remove/move/split/merge/transfer operations, equipment-storage mechanics, serialization, diagnostics, authoring, and explicit crafting/combat/UI/save boundaries. Do not absorb crafting transformations, RPG statistics, combat effects, vendor rules, or save-file transport. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation package authorities, and the approved Expansion specifications through The Vault (`EchoInventory`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-13 - EchoInteraction (`The Hand`) Package Specification. Treat SFGSS-002 as the dependency/assembly authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Define a standalone interaction authority for 2D/3D detection adapters, candidates, focused selection, range/angle/line-of-sight/priority/availability evaluation, prompt data, tap/hold/toggle/timed/repeated interactions, cancellation, execution requests/results, diagnostics, authoring, and explicit UI/input/audio/objective/inventory/world/multiplayer boundaries. Do not decide the unique result of opening doors, rescuing survivors, placing devices, picking up items, or completing objectives. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -88,18 +88,18 @@ At every meaningful checkpoint:
 ## Current Package-First Status - August 4, 2026
 
 - Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **7 of 13 approved**.
-- Latest approval: **The Path (`EchoObjectives`) v1.0.0**.
-- Active checkpoint: **SUITE-DOC-12 - The Vault (`EchoInventory`)**.
+- Expansion specifications: **8 of 13 approved**.
+- Latest approval: **The Vault (`EchoInventory`) v1.0.0**.
+- Active checkpoint: **SUITE-DOC-13 - The Hand (`EchoInteraction`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
-- All The Path runtime, provider, reward, persistence, migration, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
+- All The Vault runtime, transaction, equipment, provider, persistence, migration, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
 
 Read the current work in this order:
 
 1. `Echo_Game_Systems_Suite_Bible.md`
 2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-The-Path-EchoObjectives-Package-Specification.md`
-4. `Test Reports/SUITE-DOC-11_EchoObjectives_Package_Specification_Audit_Report.md`
+3. `Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md`
+4. `Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md`
 5. `Current Notes.md`
 6. `Full_Suite_Documentation_Program_Roadmap.md`
 
