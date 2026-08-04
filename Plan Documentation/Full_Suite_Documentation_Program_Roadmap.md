@@ -65,6 +65,7 @@ These remain visibly `Not run` or conditional until implementation or research e
 | SFGSS-004 | Approved v1.0.0 |
 | SFGSS-005 | Approved v1.1.0 |
 | Foundation package specifications | 10 of 10 approved |
+| Expansion package specifications | 2 of 13 approved; Impact v1.0.0 and The Wellspring v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
 | Package implementation | Not started |
@@ -75,9 +76,9 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 
 | Checkpoint | Package specification | Core design focus |
 |---|---|---|
-| **SUITE-DOC-05** | **EchoFeedback — Impact** | Coordinated camera shake, hit stop, rumble, flashes, response recipes, cancellation, accessibility scaling, and bridge boundaries |
-| SUITE-DOC-06 | EchoPool — The Wellspring | General-purpose pooling, definitions, ownership, lifecycle, capacity, exhaustion, return safety, scene transitions, and diagnostics |
-| SUITE-DOC-07 | EchoProgression — The Ascent | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
+| SUITE-DOC-05 | EchoFeedback — Impact — **Approved v1.0.0** | Coordinated camera shake, hit stop, rumble, flashes, response recipes, cancellation, accessibility scaling, and bridge boundaries |
+| SUITE-DOC-06 | EchoPool — The Wellspring — **Approved v1.0.0** | General-purpose pooling, definitions, ownership, lifecycle, capacity, exhaustion, return safety, scene transitions, and diagnostics |
+| **SUITE-DOC-07** | **EchoProgression — The Ascent** | Unlocks, passwords, checkpoints, level access, completion records, storage boundary, and UI/save bridges |
 | SUITE-DOC-08 | EchoBuildTools — The Foundry | Build profiles, versioning, preflight, scene validation, safe output, reports, and release preparation |
 | SUITE-DOC-09 | EchoLocalization — Many Tongues | Locale tables, localized references, fallbacks, fonts, formatting, pseudolocalization, and UI/dialogue boundaries |
 | SUITE-DOC-10 | EchoDialogue — Voices | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
@@ -133,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-04 — SFGSS-004 Testing, Validation, Test Labs, and Release Standard |
+| Completed checkpoint | SUITE-DOC-06 — The Wellspring (`EchoPool`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline — approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-05 — EchoFeedback: Impact Package Specification** |
+| Active checkpoint | **SUITE-DOC-07 — EchoProgression: The Ascent Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 0 of 13 approved |
+| Expansion specifications | 2 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 — First Light Package Skeleton |

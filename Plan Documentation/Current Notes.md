@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoFeedback — Impact package specification  
-**Current checkpoint:** SUITE-DOC-05 — EchoFeedback: Impact Package Specification
+**Current focus:** EchoProgression - The Ascent package specification
+**Current checkpoint:** SUITE-DOC-07 - EchoProgression: The Ascent Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -51,7 +51,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Draft and approve the complete **EchoFeedback — Impact Package Specification** using SFGSS-001. Define coordinated feedback recipes, channel request contracts, cancellation, concurrency, accessibility scaling, performance limits, diagnostics, optional bridges, and an isolated Standalone Test Lab without absorbing camera, audio, input, UI, or gameplay authority.
+Draft and approve the complete **EchoProgression - The Ascent Package Specification** using SFGSS-001. Define unlocks, passwords, checkpoints, level access, completion records, ranking snapshots, project-defined conditions, standalone persistence boundaries, Chronicle participation, UI/scene integrations, stable progression IDs, migration, diagnostics, and an isolated Standalone Laboratory without absorbing inventory, character statistics, platform achievements, or general save-file transport.
 
 ---
 
@@ -60,11 +60,53 @@ Draft and approve the complete **EchoFeedback — Impact Package Specification**
 - Licensing remains a later suite-wide release decision.
 - Final Multiplayer provider approval requires disposable prototype evidence and cannot be truthfully completed during the pre-code documentation gate.
 - Empirical compatibility, performance, migration, screenshot, and release evidence remains `Not run` until implementation.
-- No question currently blocks SUITE-DOC-05.
+- No question currently blocks SUITE-DOC-06.
 
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Wellspring (`EchoPool`) package specification
+
+- `[DECISION]` The Wellspring (`EchoPool`) Package Specification v1.0.0 is approved as the Level 2 authority for general-purpose GameObject and Component reuse; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoPool owns pool definitions, runtime pool instances, prewarming, acquisition, generational leases, validated return, capacity/growth/exhaustion policy, scope ownership, lifecycle callbacks, automatic return, external-destruction reconciliation, and diagnostics.
+- `[DECISION]` EchoPool does not own spawn intent, encounters, projectile behavior, audio voices, UI virtualization, network spawning authority, save truth, or project-specific reset semantics.
+- `[DECISION]` The default runtime uses one duplicate-safe application-session `EchoPoolRoot` implementing an injectable `IEchoPoolService`; scene and owner pools remain explicit child scopes.
+- `[DECISION]` Every successful spawn returns a session-local generational handle. Stale, foreign, double-returned, lost, and destroyed handles fail without mutating the current instance use.
+- `[DECISION]` `PoolDefinition` and catalog assets are immutable project-owned definitions with stable domain IDs. Active counts, records, generations, schedules, scenes, scopes, and statistics remain runtime state.
+- `[DECISION]` Exhaustion defaults to safe rejection. Bounded temporary overflow is opt-in and is destroyed rather than retained on return. Forced reclamation of active instances is deferred.
+- `[DECISION]` The core resets only generic parent, transform, active state, scene, and lease metadata. Project-specific state resets through `IPoolable` or explicit optional adapters; reflection-based universal reset is rejected.
+- `[DECISION]` Application, scene, and owner-lease scopes are approved. Standalone scene-unload reconciliation remains available, while a separate Passage bridge may coordinate pre-unload cleanup.
+- `[DECISION]` Manual, scaled-duration, unscaled-duration, and generic completion-signal returns are approved. Every schedule/signal binds to the current generation.
+- `[DECISION]` Active pool handles and runtime instances are never saved. Gameplay authorities save semantic state and reconstruct objects through their own factories.
+- `[DECISION]` Jukebot retains its internal audio voice pool, and network object reuse requires a provider-specific adapter.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 36 unique Laboratory scenarios, and 118 unique planned package test IDs.
+- `[TEST]` Every runtime, installation, scene, performance, compatibility, provider, removal, and release test remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because the specification refines the already-approved EchoPool authority without changing a suite-wide ownership boundary.
+- `[HANDOFF]` SUITE-DOC-07 drafts EchoProgression (`The Ascent`) next. Preserve unlock/checkpoint/progression authority without absorbing save-file transport, inventory, character statistics, or platform achievements.
+
+**Promoted to:** The Wellspring (`EchoPool`) Package Specification v1.0.0, SUITE-DOC-06 audit report, README, roadmap, artifact manifest, and Current Notes handoff.
+
+### August 4, 2026 — Impact (`EchoFeedback`) package specification
+
+- `[DECISION]` Impact (`EchoFeedback`) Package Specification v1.0.0 is approved as the Level 2 authority for coordinated transient feedback; implementation remains locked until SUITE-DOC-33.
+- `[DECISION]` EchoFeedback owns immutable feedback recipes, transient instance execution, unscaled scheduling, channel scaling, arbitration, cancellation, provider coordination, and bounded diagnostics.
+- `[DECISION]` EchoFeedback does not own gameplay results, camera movement, audio playback, UI state, input-device assignment, settings persistence, save data, or final pause/time-scale authority.
+- `[DECISION]` The MVP uses a flat semantic timeline. Parallel and sequential behavior are expressed through start offsets rather than a branching graph or general visual-scripting language.
+- `[DECISION]` Production effects execute only through explicitly registered channel providers. The core remains independent of EchoCamera, Jukebot, EchoUI, EchoInput, The Accord, and The Pulse.
+- `[DECISION]` Recipe and signal ScriptableObjects are immutable definitions with stable domain IDs. Active instances, handles, clocks, providers, scales, and histories are runtime-owned state.
+- `[DECISION]` Public feedback handles are generational so stale handles cannot cancel recycled instances.
+- `[DECISION]` Scheduling, cancellation, restoration, and diagnostics use an unscaled clock so feedback remains controllable while scaled game time is zero.
+- `[DECISION]` A standalone Unity time provider is opt-in and exclusive. When The Pulse is installed, a separate bridge preserves The Pulse as the final time authority.
+- `[DECISION]` Input System haptics belong to a separate provider artifact rather than the core package.
+- `[DECISION]` Project safety caps, accessibility scales, and channel suppression apply before provider execution. Providers receive already-resolved effective values.
+- `[DECISION]` The isolated Impact Laboratory uses simulated providers. Simulation proves the core package but does not count as support evidence for optional bridges or hardware providers.
+- `[TEST]` The specification contains all 30 SFGSS-001 sections, 32 unique Laboratory scenarios, and 92 unique planned test IDs.
+- `[TEST]` Every runtime, provider, compatibility, performance, platform, removal, and release test remains `Not run` under SFGSS-004.
+- `[NOTE]` SFGSS-000 remains v0.12.0 because the Impact specification refines the already-approved EchoFeedback authority without changing suite-wide ownership.
+- `[HANDOFF]` SUITE-DOC-06 drafts EchoPool (`The Wellspring`) next. Preserve general-purpose object reuse authority without absorbing enemy spawning, projectile rules, audio voice pooling, or other package-owned behavior.
+
+**Promoted to:** Impact (`EchoFeedback`) Package Specification v1.0.0, SUITE-DOC-05 audit report, README, roadmap, and Current Notes handoff.
 
 ### August 4, 2026 — Package specification priority clarification
 
@@ -426,6 +468,8 @@ Draft and approve the complete **EchoFeedback — Impact Package Specification**
 
 | Date | Entry | Destination | Status |
 |---|---|---|---|
+| 2026-08-04 | EchoPool definitions, generational leases, capacity, exhaustion, scopes, callbacks, automatic return, reconciliation, diagnostics, and Laboratory | EchoPool Package Specification v1.0.0 | Promoted |
+| 2026-08-04 | Impact recipes, providers, timeline, cancellation, channel scales, time boundary, diagnostics, and Laboratory | EchoFeedback Package Specification v1.0.0 | Promoted |
 | 2026-08-04 | Testing taxonomy, evidence states, Laboratories, compatibility, defects, performance, and release gates | SFGSS-000 v0.12.0 and SFGSS-004 v1.0.0 | Promoted |
 | 2026-08-04 | Data classification, stable IDs, Unity GUIDs, DTOs, serializers, migrations, aliases, unknown data, transactions, and recovery | SFGSS-000 v0.11.0 and SFGSS-003 v1.0.0 | Promoted |
 | 2026-08-04 | Dependency, bridge, provider, assembly, compile-guard, sample/test, and clean-removal rules | SFGSS-000 v0.10.0 and SFGSS-002 v1.0.0 | Promoted |
@@ -458,36 +502,40 @@ Draft and approve the complete **EchoFeedback — Impact Package Specification**
 | Dependency/bridge/assembly standard | Approved | SFGSS-002 v1.0.0 |
 | Data/IDs/serialization/migration standard | Approved | SFGSS-003 v1.0.0 |
 | Testing/validation/Laboratory/release standard | Approved | SFGSS-004 v1.0.0 |
-| Current checkpoint | Active | SUITE-DOC-05 |
+| Impact package specification | Approved | v1.0.0; 30 sections; 32 Laboratory scenarios; 92 planned tests, all Not run |
+| EchoPool package specification | Approved | v1.0.0; 30 sections; 36 Laboratory scenarios; 118 planned tests, all Not run |
+| Current checkpoint | Active | SUITE-DOC-07 |
 | Known blockers | None | Multiplayer empirical provider approval intentionally remains later |
 
 ---
 
 ## Checkpoint Closeout Checklist
 
-- [x] Record the owner decision to continue documentation across the full suite.
-- [x] Preserve the Foundation readiness result without leaving implementation active.
-- [x] Define honest pre-code versus evidence-pending documentation.
-- [x] Promote the decision into SFGSS-000 and ADR-002.
-- [x] Update SFGSS-005 with the visible-code, manual-entry teaching workflow.
-- [x] Create the Full Suite Documentation Program Roadmap.
-- [x] Reconcile README, Foundation roadmap, readiness report, Current Notes, and FL-M1-01.
-- [x] Confirm no package implementation has started.
-- [x] Commit and push SUITE-DOC-01.
-- [x] Stop before package files or C# code.
+- [x] Reconcile EchoPool against SFGSS-000 through SFGSS-005 and approved Foundation/Impact authorities.
+- [x] Approve reuse authority without absorbing gameplay spawn intent or peer-owned internal pools.
+- [x] Separate immutable definitions from runtime pool, record, lease, schedule, scope, and diagnostic state.
+- [x] Define generational handles, callback order, capacity, growth, exhaustion, overflow, retention, automatic return, and external-destruction behavior.
+- [x] Define application, scene, and owner-lease scopes plus standalone scene reconciliation and optional Passage coordination.
+- [x] Design the isolated Wellspring Laboratory and package-qualified planned test registry.
+- [x] Keep every unexecuted runtime, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
+- [x] Confirm no manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider implementation was created.
+- [ ] Commit and push SUITE-DOC-06.
+- [x] Stop before EchoProgression specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-04 — SFGSS-004 Testing, Validation, Test Labs, and Release Standard  
-**Result:** Passed  
-**Current focus:** SFGSS-006 New-Project Guided Pathways  
-**Active checkpoint:** SUITE-DOC-05 — SFGSS-006 New-Project Guided Pathways  
+**Completed checkpoint:** SUITE-DOC-06 - The Wellspring (`EchoPool`) Package Specification  
+**Result:** Approved v1.0.0  
+**Current focus:** EchoProgression - The Ascent  
+**Active checkpoint:** SUITE-DOC-07 - EchoProgression Package Specification  
+**Expansion specifications:** 2 of 13 approved  
 **Package implementation:** Not started  
-**First queued implementation:** FL-M1-01 — First Light Package Skeleton  
-**FL-M1 status:** Approved but dormant  
+**First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Commit/push:** SUITE-DOC-03 confirmed pushed; SUITE-DOC-04 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, or provider adapter
+**Prior checkpoint:** SUITE-DOC-05 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-06 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, scene, prefab, ScriptableObject, setup tool, sample, bridge, provider adapter, or gameplay implementation

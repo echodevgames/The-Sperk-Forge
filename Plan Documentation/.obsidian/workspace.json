@@ -190,6 +190,12 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
+    "Test Reports/SUITE-DOC-06_Artifact_Manifest.json",
+    "Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
+    "Test Reports/SUITE-DOC-05_Artifact_Manifest.json",
+    "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md",
+    "Package Specifications/SFGSS-Impact-EchoFeedback-Package-Specification.md",
     "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Report.md",
     "Test Reports/SUITE-DOC-05_Package_Specification_Priority_Rebaseline_Artifact_Manifest.json",
     "Test Reports/SUITE-DOC-04_Testing_Validation_Test_Labs_Release_Audit_Report.md",
@@ -214,17 +220,11 @@
     "Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md",
     "Integration Specifications",
     "Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md",
-    "Architecture Decision Records",
     "Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
     "Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification.md",
     "Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md",
     "Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
     "Echo_Game_Systems_Suite_Bible.md",
-    "Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md",
-    "Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
-    "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
-    "Foundation_Wave_Specification_Roadmap.md",
-    "Current Notes.md",
-    "Package Specifications"
+    "Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md"
   ]
 }
