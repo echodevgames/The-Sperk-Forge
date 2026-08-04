@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-09 — Draft The Chronicle (`EchoSave`) package specification
+**Current checkpoint:** FW-DOC-10 — Draft The Workshop (`EchoGameStarter`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -48,17 +48,18 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package Specification** using SFGSS-001. Define save files and slot/profile models, project-owned participant payloads, serializer boundaries, atomic write and backup/recovery policy, versioning and migration, autosave/manual-save coordination, metadata, corruption behavior, standalone storage behavior, an isolated Save Laboratory, and optional bridges without allowing EchoSave to invent project gameplay data, own global preferences, serialize arbitrary scene objects, or absorb cloud/provider authority.
+Draft the complete **The Workshop — Project Starter (`EchoGameStarter`) Package Specification** using SFGSS-001. Define the Editor-only composer authority, package and bridge selection, dry-run planning, project-owned generated assets, safe create/repair behavior, preset contracts, scene/configuration output, dependency and compatibility reporting, rollback/removal guidance, an isolated generation laboratory, and release gates without allowing The Workshop to become a runtime manager, overwrite project content silently, conceal installed dependencies, or invent package contracts that the approved specifications do not provide.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of the EchoSave specification.
+- None blocking the start of The Workshop specification.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -246,6 +247,31 @@ Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package 
 
 **Promoted to:** The Looking Glass (`EchoUI`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing UI presentation authority and preserve the approved cross-package ownership matrix.
 
+
+### August 3, 2026 — The Chronicle specification
+
+- `[DECISION]` The Chronicle (`EchoSave`) specification v1.0.0 is approved as the Level 2 authority for durable local game-save documents, slots, generations, participant payload transport, migration, recovery, and save-operation diagnostics; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoSave owns save files, slot and generation management, save/load orchestration, participant contracts, serializer/storage seams, integrity checks, backup retention, corruption recovery, and save-specific tooling. It does not own global preferences, project gameplay schemas, automatic scene-object serialization, production save UI, game-state rules, scene travel, cloud synchronization, or platform accounts.
+- `[DECISION]` One duplicate-safe application-session `EchoSaveRoot` claims authority before paths, callbacks, catalog scans, participant registration, or file operations.
+- `[DECISION]` The MVP uses immutable save generations. A complete generation is written, flushed where supported, checksummed, re-read/verified, and only then published as current through a small head pointer.
+- `[DECISION]` Slot metadata lives in a manifest separate from the participant payload so slot lists do not deserialize full game state. The catalog cache is derived and rebuildable, never the sole authority.
+- `[DECISION]` Slots use stable package-generated IDs independent from display names. Display names never become physical directory names.
+- `[DECISION]` Independent game systems register narrow, stable-ID, versioned participants. EchoSave transports detached DTOs without knowing the project’s inventory, character, quest, world, or progression models.
+- `[DECISION]` Unknown or temporarily unclaimed participant payloads are preserved opaquely across a load-save round trip by default. Removal requires an explicit bounded prune plan.
+- `[DECISION]` Loading is two-phase: `PrepareLoadAsync` validates, recovers, deserializes, and migrates into a disposable handle; `ApplyPreparedLoadAsync` applies only after required participants exist. A one-step convenience path remains available for same-scene loads.
+- `[DECISION]` Package document migrations and participant payload migrations are separate contiguous upgrade chains. Missing steps block safely, source records remain unchanged, unsupported newer formats are preserved, and downgrade is not promised.
+- `[DECISION]` The default serializer uses Unity `JsonUtility` for package envelopes and plain serializable DTOs. Unsupported dictionaries, polymorphic graphs, interfaces, and durable Unity object references are documented; custom serializers use explicit provider IDs.
+- `[DECISION]` Participant capture and apply occur on the main thread by default. Detached serialization, hashing, and local file I/O may run in the background when provider capability allows. Public async operations return fresh `Awaitable<T>` instances and complete on the main thread.
+- `[DECISION]` One mutating operation runs globally in the MVP. Manual requests reject while busy by default, while autosaves coalesce into at most one pending latest request.
+- `[DECISION]` Cancellation is honored before publication. Once head publication begins, cancellation is Too Late and the operation settles to a known committed or failed state without abandoning the prior valid generation.
+- `[DECISION]` Create, rename, duplicate, select, prepare-delete, confirm-delete, prepare-load, apply-load, recovery planning, and redacted support export have structured request/result contracts. Destructive actions require explicit two-step plans.
+- `[DECISION]` Checksums detect accidental corruption but are not encryption, authentication, or anti-cheat. Payload sizes, counts, migration depth, histories, queues, and paths are bounded and validated.
+- `[DECISION]` Cloud/platform storage, cross-device merge, compression, encryption, streaming/chunked worlds, and multiplayer save authority remain deferred provider or future-specification work.
+- `[DECISION]` The isolated Chronicle Save Laboratory defines 32 acceptance scenarios and the implementation registry contains 100 planned cases, including fault injection at each generation-publication boundary.
+- `[DECISION]` No SFGSS-000 revision is required because these choices refine the already-approved EchoSave authority and preserve the global settings/save boundary.
+
+**Promoted to:** The Chronicle (`EchoSave`) Package Specification v1.0.0.
+
 ## Promotion Queue
 
 | Date | Entry | Destination | Status |
@@ -261,6 +287,7 @@ Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package 
 | 2026-08-03 | Resonance authority, transport, voice-pool, handle, concurrency, routing, profile, diagnostics, Audio Laboratory, and bridge decisions | Jukebot specification v1.0.0 | Promoted |
 | 2026-08-03 | Will authority, runtime action ownership, contexts, locks, device/user, transactional rebind, override, prompt, privacy, Input Laboratory, and bridge decisions | EchoInput specification v1.0.0 | Promoted |
 | 2026-08-03 | Looking Glass authority, layers, screen/modal lifecycle, focus/EventSystem, HUD/notification/prompt, theme/accessibility, diagnostics, UI Laboratory, and bridge decisions | EchoUI specification v1.0.0 | Promoted |
+| 2026-08-03 | Chronicle authority, immutable generations, head publication, participant payloads, two-phase load, migration, recovery, autosave, security, Save Laboratory, and bridge decisions | EchoSave specification v1.0.0 | Promoted |
 
 ---
 
@@ -268,7 +295,7 @@ Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package 
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Looking Glass decisions refine the existing UI authority without changing suite ownership |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Chronicle decisions refine the existing save authority without changing suite ownership or the settings/save boundary |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
@@ -278,7 +305,8 @@ Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package 
 | Resonance specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Will specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 70-test registry; no release-blocking design questions |
 | Looking Glass specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 42 Laboratory scenarios and 84-test registry; no release-blocking design questions |
-| Foundation documentation gate | Active | 8 of 10 package specifications approved |
+| Chronicle specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 32 Laboratory scenarios and 100-test registry; no release-blocking design questions |
+| Foundation documentation gate | Active | 9 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -300,9 +328,9 @@ Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package 
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved; The Will (`EchoInput`) v1.0.0 Approved; The Looking Glass (`EchoUI`) v1.0.0 Approved  
-**Current package:** The Chronicle (`EchoSave`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved; The Will (`EchoInput`) v1.0.0 Approved; The Looking Glass (`EchoUI`) v1.0.0 Approved; The Chronicle (`EchoSave`) v1.0.0 Approved  
+**Current package:** The Workshop (`EchoGameStarter`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** EchoUI duplicate-safe persistent root, seven-layer topology, serialized screen operations, exact-once modal results, explicit EventSystem policy, deterministic focus restoration, HUD/notification/prompt ownership, immutable themes, accessibility seams, privacy-safe diagnostics, isolated UI Laboratory, and optional bridge boundaries approved  
+**Last completed documentation change:** EchoSave duplicate-safe root, immutable generation/head publication model, independent manifests, versioned participant payloads, unknown payload preservation, two-phase load, serializer/storage seams, migration, autosave admission, corruption recovery, security limits, isolated Save Laboratory, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-09 — Draft and review the complete EchoSave package specification
+**Next checkpoint:** FW-DOC-10 — Draft and review the complete EchoGameStarter package specification
