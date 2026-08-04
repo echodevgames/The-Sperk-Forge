@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry  
+**Current checkpoint:** SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -37,7 +37,8 @@ flowchart LR
     D --> G[Foundation Collision Matrix]
     E --> H[Expansion Collision Matrix]
     F --> I[Advanced Collision and Research Matrix — Approved]
-    G --> J[Remaining Standards SFGSS-008 to 010]
+    G --> H[SFGSS-008 Glossary and Naming Registry]
+    H --> J[Remaining Standards SFGSS-009 to 010]
     H --> J
     I --> J
     J --> K[Full Suite Matrix and Handoff Audit]
@@ -139,7 +140,9 @@ flowchart LR
 - [[SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard|SFGSS-004 — Testing and Release Evidence]]
 - [[SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules|SFGSS-005 — Checkpoint and Learning Workflow]]
 - [[SFGSS-006_New-Project_Guided_Pathways|SFGSS-006 — New-Project Guided Pathways]]
-- [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007 — Architecture Decision Records]]
+- [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007 – Architecture Decision Records]]
+- [[SFGSS-008_Suite_Glossary_and_Naming_Registry|SFGSS-008 – Glossary and Naming Registry]]
+- [[SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard|SFGSS-009 – Repository, Versioning, and Integration Workspace]]
 - [[Full_Suite_Documentation_Program_Roadmap|Full Suite Documentation Program Roadmap]]
 - [[Current Notes|Current Notes]]
 
@@ -222,3 +225,24 @@ At each checkpoint closeout:
 - [[SFGSS-006_New-Project_Guided_Pathways#27. PATH-090 - Local Multiplayer Prototype|PATH-090 Local Multiplayer]]
 - [[SFGSS-006_New-Project_Guided_Pathways#28. PATH-100 - Online Multiplayer Research Prototype|PATH-100 Online Multiplayer Research]]
 - [[SFGSS-006_New-Project_Guided_Pathways#29. PATH-110 - Existing-Project Incremental Adoption|PATH-110 Existing-Project Adoption]]
+
+
+## Repository and release topology
+
+```mermaid
+flowchart TB
+    Central[Central suite documentation/catalog repository]
+    Lab[Sperk's Forge Integration Lab]
+    Central --> Lab
+    Central --> Pkg[28 independent package repositories]
+    Pkg --> Bridge[Bridge repositories]
+    Pkg --> Provider[Provider adapter repositories]
+    Pkg -. exact tags/commits .-> Lab
+    Bridge -. exact versions .-> Lab
+    Provider -. exact versions .-> Lab
+    Lab --> Snapshot[compat-YYYY.MM.DD.N snapshot]
+    Snapshot --> Catalog[Central compatibility catalog]
+```
+
+- [[SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard|Repository and versioning authority]]
+- [[SFGSS-009_Repository_Registry|Machine-readable repository registry]]

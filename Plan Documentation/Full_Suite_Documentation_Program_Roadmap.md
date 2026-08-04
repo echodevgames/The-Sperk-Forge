@@ -3,7 +3,7 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; package implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.16.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.18.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, SFGSS-ADR-002  
 **Workflow authority:** SFGSS-005 v1.2.0  
 **Unity baseline:** Unity 6000.3.8f1  
 **Last updated:** August 4, 2026
@@ -62,10 +62,12 @@ These remain visibly `Not run` or conditional until implementation or research e
 | SFGSS-001 | Approved v1.1.0 |
 | SFGSS-002 | Approved v1.0.0 |
 | SFGSS-003 | Approved v1.0.0 |
-| SFGSS-004 | Approved v1.0.0 |
+| SFGSS-004 | Approved v1.1.0 |
 | SFGSS-005 | Approved v1.2.0 |
 | SFGSS-006 | Approved v1.0.0 |
 | SFGSS-007 | Approved v1.0.0 |
+| SFGSS-008 | Approved v1.0.0 |
+| SFGSS-009 | Approved v1.0.0 |
 | Foundation package specifications | 10 of 10 approved |
 | Expansion package specifications | 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0 |
 | Foundation cross-package matrix | Approved |
@@ -119,7 +121,7 @@ These standards now follow the package foundations so they can describe the actu
 |---|---|---|
 | SUITE-DOC-25 | SFGSS-006 - New-Project Guided Pathways - **Approved v1.0.0** | Package-selection pathways and Workshop guidance built from the full approved package catalog |
 | SUITE-DOC-26 | SFGSS-007 - ADR Template and Decision Log - **Approved v1.0.0** | ADR format, lifecycle, indexing, supersession, and current decision register |
-| SUITE-DOC-27 | SFGSS-008 - Suite Glossary and Naming Registry | Public titles, technical IDs, namespaces, diagnostics, stable terminology, and reserved names |
+| SUITE-DOC-27 | SFGSS-008 - Suite Glossary and Naming Registry - **Approved v1.0.0** | Public titles, technical IDs, namespaces, diagnostics, stable terminology, and reserved names |
 | SUITE-DOC-28 | SFGSS-009 - Repository, Versioning, and Integration Workspace Standard | Multi-repo workflow, tags, releases, compatibility catalog, local development, and distribution |
 | SUITE-DOC-29 | SFGSS-010 - Living Documentation, Current Notes, and Obsidian Workflow Standard | Vault structure, links, note promotion, archives, handoff, and documentation commits |
 | SUITE-DOC-30 | Standards and Package Consistency Review | Reconcile SFGSS-002–010 with all Foundation, Expansion, and Advanced package authorities |
@@ -139,7 +141,7 @@ These standards now follow the package foundations so they can describe the actu
 
 `Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. Those reviews occur after SUITE-DOC-32 and before SUITE-DOC-33.
 
-The graph and learning orientation remains active. SUITE-DOC-26 is now complete; the active numbered checkpoint is SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry.
+The graph and learning orientation remains active. SUITE-DOC-27 is now complete; the active numbered checkpoint is SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard.
 
 ## 10. Current status
 
@@ -147,7 +149,7 @@ The graph and learning orientation remains active. SUITE-DOC-26 is now complete;
 |---|---|
 | Completed checkpoint | SUITE-DOC-26 - SFGSS-007 ADR Template and Decision Log |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry** |
+| Active checkpoint | **SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
@@ -219,5 +221,12 @@ SFGSS-006 v1.0.0 is approved as the canonical new-project and existing-project c
 
 SFGSS-007 v1.0.0 is approved as the canonical Architecture Decision Record standard and decision register. It defines ADR requirement tests, suite/package/integration scopes, permanent IDs, status transitions, evidence maturity, required metadata, revision-versus-supersession rules, review triggers, approval, authority updates, graph links, a reusable template, and a central log covering ADR-001 through ADR-003. SFGSS-000 advances to v0.16.0. No implementation or empirical evidence was promoted.
 
-**Next checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry.
+**Next checkpoint:** SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard.
 
+
+
+## SUITE-DOC-28 Closeout - SFGSS-009 Approved
+
+SFGSS-009 v1.0.0 is approved as the canonical repository, package versioning, Git/tag/release, dependency-source, Integration Lab, compatibility snapshot, support-line, protection, artifact, and archival standard. SFGSS-000 advances to v0.18.0. The machine-readable repository registry records all twenty-eight planned package repositories. Actual remotes, Integration Lab creation, CI, registry publishing, tags, releases, and compatibility evidence remain `Not run`.
+
+**Next checkpoint:** SUITE-DOC-29 - SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard.

@@ -1,17 +1,19 @@
 # The Sperk’s Forge – Testing, Validation, Test Labs, and Release Standard
 
 **Document ID:** SFGSS-004  
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Status:** Approved architecture and quality standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.12.0  
-**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-ADR-001, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.17.0  
+**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002  
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
 **Last updated:** August 4, 2026
 
 > A blueprint may predict where the bridge should stand. Only evidence proves that it holds weight.
+
+> **v1.1.0 naming reconciliation:** EchoSave test examples now use the package-approved `ESV` prefix, and SFGSS-008 is registered as the canonical suite naming authority. No test behavior or release gate changed.
 
 ---
 
@@ -334,7 +336,7 @@ Examples:
 ELAUNCH-T-001
 JB-T-010
 EIN-T-045
-ESAVE-T-100
+ESV-T-100
 ```
 
 Laboratory actions use:

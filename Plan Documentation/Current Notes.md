@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** SFGSS-008 Suite Glossary and Naming Registry
-**Current checkpoint:** SUITE-DOC-27 - Define canonical suite terms, public titles, technical identifiers, namespaces, prefixes, reserved names, and synonym/deprecation rules
+**Current focus:** SFGSS-009 Repository, Versioning, and Integration Workspace Standard
+**Current checkpoint:** SUITE-DOC-28 - Define multi-repository workflow, package versioning, tags, releases, compatibility catalogs, local development, integration workspaces, and distribution rules
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -38,13 +38,15 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.16.0.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.17.0.
 - `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
 - `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
-- `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.0.0 Approved.
+- `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.1.0 Approved.
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.2.0 Approved.
 - `SFGSS-006_New-Project_Guided_Pathways.md` - v1.0.0 Approved.
 - `SFGSS-007_Architecture_Decision_Record_Standard.md` - v1.0.0 Approved.
+- `SFGSS-008_Suite_Glossary_and_Naming_Registry.md` - v1.0.0 Approved.
+- `SFGSS-008_Package_Naming_Registry.json` - v1.0.0 documentation companion.
 - `Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log.md` - active current register.
 - `Architecture Decision Records/SFGSS-ADR-TEMPLATE.md` - canonical reusable template.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
@@ -64,7 +66,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Run **SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry**. Reconcile all public package titles, technical identifiers, namespaces, package IDs, diagnostic prefixes, stable terminology, reserved names, synonyms, deprecated terms, and naming collision rules across the complete suite.
+Run **SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard**. Define repository ownership, package release units, SemVer, tags, branches, compatibility catalogs, local path development, integration workspaces, release artifacts, and cross-repository checkpoint behavior.
 
 ---
 
@@ -78,6 +80,38 @@ Run **SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry**. Reconcile a
 ---
 
 ## Active Notes
+
+
+## August 4, 2026 - SFGSS-008 Suite Glossary and Naming Registry
+
+- `[DECISION]` SFGSS-008 v1.0.0 is approved as the canonical suite naming and terminology authority.
+- `[DECISION]` Twenty-eight package records now register one technical identifier, public short title, formal public title, plain responsibility, package ID, namespace family, document ID, diagnostic prefix, test/Laboratory prefix, and Workshop setup-facade identity.
+- `[DECISION]` Formal public titles use a spaced en dash; ASCII-only surfaces may use a spaced hyphen. Existing punctuation variants are typography aliases until SUITE-DOC-30 normalization.
+- `[DECISION]` Public API suffixes such as Root, Service, Definition, Configuration, State, Snapshot, Request, Result, Plan, Receipt, Handle, Lease, Registration, Provider, Adapter, Bridge, Presenter, and Coordinator now have canonical meanings.
+- `[DECISION]` Ambiguous terms including Player, Target, State, Profile, Participant, Focus, Selection, Owner, Active, and Current require package/domain qualification in cross-package APIs and durable records.
+- `[DECISION]` Reserved, prohibited, historical, and deprecated names are recorded, including EchoBootstrap, generic GameManager authorities, EchoCore/EchoFoundation, JukeBot variants, and the retired ESAVE prefix.
+- `[DECISION]` SFGSS-004 advances to v1.1.0 and corrects its EchoSave test example to the canonical ESV prefix.
+- `[TEST]` Static audit confirms 28 unique technical identifiers, public short titles, package IDs, namespace families, diagnostic prefixes, test prefixes, and setup-facade types.
+- `[TEST]` No implementation artifacts or empirical evidence were created; all runtime naming-validator and compatibility results remain `Not run`.
+- `[NOTE]` Advanced/Crucible document-ID suffixes, title typography normalization, repository names not yet recorded, and the stale Crafting open-decision wording remain queued for later documented reconciliation.
+- `[HANDOFF]` SUITE-DOC-28 drafts SFGSS-009 Repository, Versioning, and Integration Workspace Standard next.
+
+**Promoted to:** SFGSS-008 v1.0.0, SFGSS-008 registry JSON, SFGSS-000 v0.17.0 decisions 105-112, SFGSS-004 v1.1.0, SUITE-DOC-27 audit report, README, graph roadmap, health check, program roadmap, Current Notes, and artifact manifest.
+
+## Handoff Snapshot - SUITE-DOC-27
+
+**Completed checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry  
+**Result:** Approved v1.0.0; naming audit passed  
+**Current focus:** SFGSS-009 Repository, Versioning, and Integration Workspace Standard  
+**Active checkpoint:** SUITE-DOC-28  
+**Package foundations:** 28 of 28 approved  
+**Package implementation:** Not started  
+**Runtime authorization:** None  
+**Known blockers:** None for documentation; empirical implementation evidence remains Not run  
+**Commit/push:** SUITE-DOC-27 pending owner confirmation  
+**Stop point:** Before repository creation automation, package manifests, tags, releases, registries, CI, C# files, asmdefs, scenes, prefabs, or provider implementations
+
+---
 
 ### August 4, 2026 - SFGSS-007 Architecture Decision Record Standard and Decision Register
 
@@ -1157,3 +1191,51 @@ Run **SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry**. Reconcile a
 - `[HANDOFF]` The active numbered checkpoint remains SUITE-DOC-24 — Advanced Cross-Package and Research Review.
 
 **Promoted to:** `Suite_Graph_Roadmap.md`, `Package_Learning_Review_Catalog.md`, `Suite_Health_Check_and_Remaining_Documentation.md`, SFGSS-005 v1.2.0, ADR-003, README, and Full Suite Documentation Program Roadmap.
+
+
+## August 4, 2026 - SUITE-DOC-28 SFGSS-009 approved
+
+- `[DECISION]` SFGSS-009 v1.0.0 is approved as the canonical repository, versioning, release-tag, package-source, Integration Lab, and compatibility-snapshot standard.
+- `[DECISION]` Each independently releasable package, bridge, or provider owns one repository and independent SemVer history. Package repositories contain one UPM package at repository root by default.
+- `[DECISION]` The current documentation repository remains the central suite repository. Its actual Git remote was not present in the supplied archive, so no remote URL was invented. `The-Sperks-Forge` is only the preferred public slug if no existing identity must be preserved.
+- `[DECISION]` The preferred Integration Lab slug is `Sperks-Forge-Integration-Lab`; creation and compatibility evidence remain `Not run`.
+- `[DECISION]` Package releases use immutable annotated `vMAJOR.MINOR.PATCH[-PRERELEASE]` tags matching the package manifest version.
+- `[DECISION]` The preferred local development workspace uses independent sibling clones and portable relative paths. Submodules/worktrees are optional tools, not consumer requirements.
+- `[DECISION]` Consumer and compatibility projects commit `Packages/manifest.json` and `Packages/packages-lock.json` and pin exact registry versions, tags, tarballs, or commits.
+- `[DECISION]` Unity Git dependencies are project-level only. During Git-only incubation, bridge/provider peer packages must be selected explicitly by the project or Workshop because package manifests cannot declare transitive Git URLs.
+- `[DECISION]` The Integration Lab owns compatibility evidence; package repositories own standalone evidence.
+- `[DECISION]` Package versions remain independent. Coordinated releases produce independent artifact tags plus one compatibility snapshot rather than a synchronized suite version.
+- `[TEST]` Static audit confirms 28 unique planned package repository records, one central repository role, one Integration Lab role, and zero implementation artifacts. Repository creation, GitHub rulesets, CI, registry publication, tags, releases, tarballs, LFS, and compatibility execution remain `Not run`.
+- `[HANDOFF]` SUITE-DOC-29 drafts SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard.
+
+**Promoted to:** `SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard.md`, `SFGSS-009_Repository_Registry.json`, SFGSS-000 v0.18.0, SUITE-DOC-28 audit report, README, roadmap, Graph Roadmap, and Suite Health Check.
+
+---
+
+## Checkpoint Closeout Checklist - SUITE-DOC-28
+
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve repository topology, repository classes, package-root policy, branch strategy, commits, SemVer, pre-release channels, tags, GitHub releases, dependency sources, lock files, Integration Lab snapshots, compatibility catalog, support lines, secrets, LFS, CI design, artifact, clone, recovery, and archival rules.
+- [x] Record all 28 planned package repository identities in the machine-readable companion.
+- [x] Keep actual unknown repository remotes, Integration Lab creation, CI, rulesets, registry, releases, tags, tarballs, and compatibility evidence `Not run`.
+- [x] Update SFGSS-000, README, roadmap, Graph Roadmap, health check, audit report, and manifest.
+- [x] Confirm no package manifest, asmdef, C# file, Unity project, scene, prefab, ScriptableObject, CI workflow, registry configuration, Git submodule, tag, release, or repository was created.
+- [ ] Commit and push SUITE-DOC-28.
+- [x] Stop before SFGSS-010 or implementation work.
+
+---
+
+## Handoff Snapshot - SUITE-DOC-28
+
+**Completed checkpoint:** SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard  
+**Result:** Approved v1.0.0  
+**Suite Bible:** v0.18.0  
+**Current focus:** SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard  
+**Active checkpoint:** SUITE-DOC-29  
+**Package foundations:** 28 of 28 approved  
+**Package learning reviews:** 0 of 28 complete  
+**Package implementation:** Not started  
+**Runtime authorization:** None  
+**Evidence state:** Repository creation, remotes, rulesets, CI, registry, releases, tags, tarballs, and compatibility execution remain `Not run`  
+**Commit/push:** SUITE-DOC-28 pending owner confirmation  
+**Stop point:** Before SFGSS-010 drafting is committed or any repository/package implementation is created

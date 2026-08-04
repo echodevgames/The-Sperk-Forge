@@ -26,10 +26,12 @@ The graph roadmap is navigation, not authority.
 ## Current approved state
 
 ```text
-SFGSS-000: v0.16.0
+SFGSS-000: v0.18.0
 SFGSS-005: v1.2.0
 SFGSS-006: v1.0.0
 SFGSS-007: v1.0.0
+SFGSS-008: v1.0.0
+SFGSS-009: v1.0.0
 Foundation specifications: 10 of 10 approved
 Expansion specifications: 13 of 13 approved
 Advanced foundations: 5 of 5 approved
@@ -38,7 +40,7 @@ Expansion collision matrix: approved
 Advanced collision matrix: approved
 Graph roadmap: active
 Package learning reviews: 0 of 28 complete
-Active checkpoint: SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry
+Active checkpoint: SUITE-DOC-29 - SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard
 Implementation: locked
 First queued implementation: FL-M1-01 — First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33, after documentation and learning reviews
@@ -57,6 +59,7 @@ Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, Scriptabl
 - [[SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules|SFGSS-005 Checkpoint and Learning Workflow]]
 - [[SFGSS-006_New-Project_Guided_Pathways|SFGSS-006 New-Project Guided Pathways]]
 - [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007 ADR Standard]]
+- [[SFGSS-008_Suite_Glossary_and_Naming_Registry|SFGSS-008 Glossary and Naming Registry]]
 - [[Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log|Suite Decision Log]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
 
@@ -91,7 +94,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Begin with Suite_Graph_Roadmap.md, README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-007, all approved package specifications, ADR-001 through ADR-003, and the Foundation, Expansion, and Advanced cross-package matrices. Package implementation is locked until SUITE-DOC-33 and all 28 package learning reviews are complete. Current checkpoint: SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Begin with Suite_Graph_Roadmap.md, README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-009, all approved package specifications, ADR-001 through ADR-003, and the Foundation, Expansion, and Advanced cross-package matrices. Package implementation is locked until SUITE-DOC-33 and all 28 package learning reviews are complete. Current checkpoint: SUITE-DOC-29 - SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 

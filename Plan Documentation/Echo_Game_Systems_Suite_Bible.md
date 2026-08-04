@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.16.0  
+**Version:** 0.18.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -201,36 +201,42 @@ This naming system is intentionally layered. Public documentation may use the fu
 
 The suite is independent of Isekai Studios. Isekai branding, repositories, organization identifiers, credits, ownership language, and package prefixes must not be added unless Jesse explicitly changes that boundary in a later recorded decision.
 
-### 3.3 Working public package-title map
+### 3.3 Approved public package-title map
 
-| Technical identifier | Public package title | Meaning |
+SFGSS-008 owns the canonical spelling, punctuation, identifiers, package IDs, namespaces, and prefixes. This summary records the approved public-title layer.
+
+| Technical identifier | Public short title | Plain responsibility |
 |---|---|---|
-| EchoLaunch | First Light | The game’s origin and orderly awakening. |
-| Jukebot | Resonance | Music, sound, and the audible life of the game. |
-| EchoSettings | The Accord | The player’s chosen agreement with the game. |
-| EchoSceneFlow | The Passage | Safe travel between game spaces. |
-| EchoGameState | The Pulse | The current condition and rhythm of the runtime. |
-| EchoUI | The Looking Glass | The visible layer between player and game. |
-| EchoInput | The Will | The player’s intent translated into action. |
-| EchoSave | The Chronicle | Durable records of play. |
-| EchoDiagnostics | The Observatory | Tools that reveal hidden runtime conditions. |
-| EchoGameStarter | The Workshop | The guided place where a new project foundation is assembled. |
-| EchoFeedback | Impact | Coordinated game feel and response. |
-| EchoPool | The Wellspring | Reusable runtime objects drawn and returned. |
-| EchoProgression | The Ascent | Unlocks, passwords, checkpoints, and advancement. |
-| EchoBuildTools | The Foundry | Build preparation, validation, and release output. |
-| EchoLocalization | Many Tongues | Language, regional content, and font presentation. |
-| EchoDialogue | Voices | Speakers, lines, choices, and conversation flow. |
-| EchoObjectives | The Path | Goals, quests, tasks, and tracked completion. |
-| EchoInventory | The Vault | Item ownership, storage, and movement. |
-| EchoInteraction | The Hand | Reusable detection and execution of world interactions. |
-| EchoCamera | The Eye | View targets, modes, bounds, and transitions. |
-| EchoCharacters | The Fellowship | Character identity, roster, selection, switching, and spawning. |
-| EchoControllers | The Vessel | Reusable player-controller foundations and genre presets. |
-| EchoCrafting | The Crucible | Recipes, ingredients, transformation, and production. |
-| EchoMultiplayer | The Convergence | Multiple players entering one shared experience. |
+| EchoLaunch | First Light | Startup and Launch |
+| EchoDiagnostics | The Observatory | Diagnostics and Runtime Inspection |
+| EchoSettings | The Accord | Global Preferences |
+| EchoSceneFlow | The Passage | Scene Flow |
+| EchoGameState | The Pulse | Runtime State |
+| Jukebot | Resonance | Audio Runtime |
+| EchoInput | The Will | Input Infrastructure |
+| EchoUI | The Looking Glass | UI Framework |
+| EchoSave | The Chronicle | Save Infrastructure |
+| EchoGameStarter | The Workshop | Project Starter |
+| EchoFeedback | Impact | Coordinated Feedback |
+| EchoPool | The Wellspring | Runtime Object Pooling |
+| EchoProgression | The Ascent | Progression, Unlocks, Passwords, and Checkpoints |
+| EchoBuildTools | The Foundry | Build Preparation, Validation, and Release Output |
+| EchoLocalization | Many Tongues | Localization, Locale, and Regional Content |
+| EchoDialogue | Voices | Dialogue and Conversation Flow |
+| EchoObjectives | The Path | Objectives, Quests, and Tasks |
+| EchoInventory | The Vault | Inventory and Item Containers |
+| EchoInteraction | The Hand | World Interaction |
+| EchoCamera | The Eye | Camera Direction |
+| EchoCharacters | The Fellowship | Character Identity and Roster |
+| EchoControllers | The Vessel | Player Controller Foundations |
+| EchoCrafting | The Crucible | Recipe Transformation and Production |
+| EchoMultiplayer | The Convergence | Multiplayer Sessions and Authority |
+| EchoAI | Instinct | AI Perception, Decisions, and Behavior |
+| EchoCombat | Clash | Combat Messages, Targets, and Resolution |
+| EchoAbilities | Arcana | Ability Activation and Effect Orchestration |
+| EchoWorld | The Atlas | World Identity, Topology, and Travel Metadata |
 
-These titles are the working user-facing package identities, not API requirements. Their exact art treatment and flavor copy remain revisable until each package’s public specification is approved.
+Formal public titles use `Short Title – Plain Responsibility`. ASCII-only surfaces may use a spaced hyphen. Public titles do not replace technical identifiers in code, packages, assemblies, namespaces, serialization, or provider protocols.
 
 ---
 
@@ -494,6 +500,8 @@ The approved working model is a **hybrid multi-repository workspace**:
 - Tags and releases belong to the package repository whose artifact they ship. The central catalog records compatibility; it does not pretend every package shares one version number.
 
 This model creates the independent GitHub presentation Jesse wants while preserving one practical workspace for cross-package development and testing.
+
+SFGSS-009 makes this model operational: each package repository is a UPM package at repository root by default; package versions and release tags remain independent; the central repository catalogs rather than synchronizes package versions; the Integration Lab pins exact package revisions and commits both its Unity project manifest and lock file; Git-only peer dependencies are selected explicitly at the project level because Unity does not support Git dependencies between packages.
 
 ---
 
@@ -2721,6 +2729,23 @@ The following decisions form the approved starting baseline for the suite:
 102. Jesse “Echo” Adams / EchoDevGames is the approval authority for suite ADRs. ChatGPT and collaborators may research, draft, compare, and recommend but do not silently approve architectural decisions.
 103. The central suite decision register currently contains SFGSS-ADR-001 through SFGSS-ADR-003. The next available suite ADR is SFGSS-ADR-004; candidate decisions receive no ID until they enter Proposed review.
 104. Every ADR defines concrete review triggers, affected authorities, implementation/migration impact, evidence plan, removal/reversal behavior, and Obsidian graph links.
+105. SFGSS-008 is the canonical Suite Glossary and Naming Registry. It governs suite/package identity layers, terminology, technical identifiers, package IDs, namespaces, diagnostic/test/Laboratory prefixes, reserved names, aliases, deprecations, and naming validation.
+106. The twenty-eight approved package foundations have one registered technical identifier, public short title, formal title, plain responsibility, package ID, namespace family, document ID, diagnostic prefix, test/Laboratory prefix, and Workshop setup-facade identity.
+107. Formal public package titles use a spaced en dash between the short title and plain responsibility. ASCII-only surfaces may use a spaced hyphen. Older punctuation variants are typography aliases, not separate products.
+108. Runtime and Editor APIs remain technically neutral. Verse flavor may name public products and optional presentation surfaces but must not enter package IDs, namespaces, assemblies, durable technical IDs, or mandatory game content. Jukebot remains the intentional technical-name exception.
+109. Public type suffixes carry stable suite-wide meanings, including Root, Service, Definition, Configuration, State, Snapshot, Request, Result, Plan, Receipt, Handle, Lease, Registration, Provider, Adapter, Bridge, Presenter, and Coordinator.
+110. Ambiguous cross-package terms such as Player, Target, State, Profile, Participant, Focus, Selection, Owner, Active, and Current must be qualified by their owning domain in public APIs and durable reports.
+111. Package, document, diagnostic, test, Laboratory, bridge, and provider identifiers are permanent registry entries and are never silently recycled. Renames and aliases follow SFGSS-003 and the approving package specification or ADR.
+112. `EchoCore`, `EchoFoundation`, `EchoBootstrap`, generic public `GameManager` authorities, Isekai-branded technical identities, and Hackulos/Sperk technical package dependencies remain prohibited or historical unless a later accepted ADR changes the boundary.
+
+113. SFGSS-009 is the canonical Repository, Versioning, and Integration Workspace Standard. It governs central, package, bridge, provider, and Integration Lab repositories; branches, commits, SemVer, tags, releases, Git/local/tarball/registry sources, lock files, compatibility snapshots, support lines, secrets, large files, CI design, and archival.
+114. Each independently releasable package, bridge, or provider artifact owns one repository and one independent version history. Package repositories contain one UPM package at repository root by default; the central suite repository catalogs releases and never becomes a runtime dependency.
+115. Package, bridge, and provider releases use immutable annotated `vMAJOR.MINOR.PATCH[-PRERELEASE]` tags whose version matches `package.json`. Released tags are never moved or reused; corrections create a new version.
+116. Consumer projects and compatibility snapshots pin registry versions, release tags, tarballs, or exact commits and commit both `Packages/manifest.json` and `Packages/packages-lock.json`. Mutable default branches and machine-local paths do not support release or compatibility claims.
+117. Unity Git dependencies are project-level only; package manifests cannot declare Git URLs for transitive Git peers. During Git-only incubation, bridges/providers and The Workshop visibly install every required peer at the project level until an approved registry provides transitive version resolution.
+118. The Integration Lab is the authority for cross-package compatibility evidence, exact revision combinations, pathway fixtures, bridges/providers, upgrades, and clean removal. Package repositories remain the authority for standalone proof.
+119. The preferred local workspace uses independent sibling clones and portable relative paths. Submodules and worktrees are optional reproducibility/maintenance tools and are never consumer requirements.
+120. Package versions are independent. Coordinated releases tag each artifact in its own repository and publish one compatibility snapshot; no global suite runtime version is implied.
 
 ---
 
@@ -2728,7 +2753,7 @@ The following decisions form the approved starting baseline for the suite:
 
 These questions do not block approval of the overall architecture, but they must be resolved before affected releases.
 
-1. Final public title, icon, and restrained flavor vocabulary for each package.
+1. Final package icons, art treatments, and restrained package-specific flavor vocabulary. Public package titles are registered by SFGSS-008.
 2. Licensing model for package source and samples.
 3. Whether EchoControllers remains one modular UPM package or graduates into a small family of controller packages as dependencies and release cadence become clearer.
 4. The full EchoCrafting conceptual model and approved MVP after its dedicated design workshop.
@@ -2759,14 +2784,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred four decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred twelve decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry
+SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

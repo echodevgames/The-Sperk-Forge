@@ -190,6 +190,14 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-22_EchoWorld_Feasibility_Foundation_Audit_Report.md",
+    "SUITE-DOC-28_Artifact_Manifest.json",
+    "SUITE-DOC-27_Artifact_Manifest.json",
+    "SUITE-DOC-26_Artifact_Manifest.json",
+    "SFGSS-008_Suite_Glossary_and_Naming_Registry.md",
+    "SFGSS-008_Package_Naming_Registry.json",
+    "Architecture Decision Records/SFGSS-ADR-TEMPLATE.md",
+    "Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log.md",
     "Test Reports/SUITE-MAP-01_Suite_Graph_Roadmap_and_Learning_Review_Health_Check.md",
     "Test Reports/SUITE-DOC-26_SFGSS-007_ADR_Standard_and_Decision_Log_Audit_Report.md",
     "Test Reports/SUITE-DOC-25_SFGSS-006_New-Project_Guided_Pathways_Audit_Report.md",
@@ -217,14 +225,6 @@
     "Research Records/SUITE-DOC-21_EchoAbilities_Feasibility_and_Boundary_Record.md",
     "Package Specifications/SFGSS-Arcana-EchoAbilities-Package-Foundation.md",
     "Test Reports/SUITE-DOC-20_EchoCombat_Feasibility_Foundation_Audit_Report.md",
-    "SUITE-DOC-20_Artifact_Manifest.json",
-    "Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md",
-    "Package Specifications/SFGSS-Clash-EchoCombat-Package-Foundation.md",
-    "Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md",
-    "SUITE-DOC-19_Artifact_Manifest.json",
-    "Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md",
-    "Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md",
-    "SUITE-DOC-18_Artifact_Manifest.json",
-    "Test Reports/SUITE-DOC-16_Artifact_Manifest.json"
+    "Research Records/SUITE-DOC-20_EchoCombat_Feasibility_and_Boundary_Record.md"
   ]
 }

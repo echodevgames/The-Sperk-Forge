@@ -12,13 +12,13 @@ updated: 2026-08-04
 **Checkpoint:** SUITE-MAP-01  
 **Status:** Approved orientation checkpoint  
 **Active implementation gate:** Locked  
-**Next numbered documentation checkpoint:** SUITE-DOC-27 - SFGSS-008 Suite Glossary and Naming Registry
+**Next numbered documentation checkpoint:** SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard
 
 ## 1. Where the suite stands
 
 | Area | Current state | Health |
 |---|---|---|
-| Suite architecture | SFGSS-000 v0.16.0 | Green |
+| Suite architecture | SFGSS-000 v0.18.0 | Green |
 | Package catalog | 28 of 28 pre-code package foundations documented | Green |
 | Foundation packages | 10 of 10 approved | Green |
 | Expansion packages | 13 of 13 approved | Green |
@@ -26,8 +26,8 @@ updated: 2026-08-04
 | Foundation collision review | Passed | Green |
 | Expansion collision review | Passed | Green |
 | Advanced collision/research review | Passed | Green |
-| Core standards | SFGSS-001 through SFGSS-007 approved | Green |
-| Remaining standards | SFGSS-008 through SFGSS-010 not yet drafted | Yellow |
+| Core standards | SFGSS-001 through SFGSS-008 approved | Green |
+| Remaining standards | SFGSS-009 through SFGSS-010 not yet drafted | Yellow |
 | Full-suite matrix and handoff | Not yet completed | Yellow |
 | Package learning reviews | Planned, 0 of 28 completed | Yellow |
 | Runtime implementation | Not started by design | Gray |
@@ -51,7 +51,7 @@ updated: 2026-08-04
 | Order | Checkpoint | Result required |
 |---:|---|---|
 | 1 | SUITE-DOC-26 | SFGSS-007 ADR Template and Decision Log - Approved |
-| 2 | SUITE-DOC-27 | SFGSS-008 Suite Glossary and Naming Registry |
+| 2 | SUITE-DOC-27 | SFGSS-008 Suite Glossary and Naming Registry - Approved |
 | 3 | SUITE-DOC-28 | SFGSS-009 Repository, Versioning, and Integration Workspace Standard |
 | 4 | SUITE-DOC-29 | SFGSS-010 Living Documentation and Obsidian Workflow Standard |
 | 5 | SUITE-DOC-30 | Standards and Package Consistency Review |
