@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-05 — Draft The Pulse (`EchoGameState`) package specification
+**Current checkpoint:** FW-DOC-06 — Draft Resonance (`Jukebot`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -44,11 +44,12 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Specification** using SFGSS-001. Define high-level runtime modes, validated state transitions, temporary override/stack behavior, nested pause reasons, time-scale policy, cursor and input-context coordination requests, state history, direct-scene behavior, and optional bridges without allowing EchoGameState to absorb UI presentation, input binding ownership, audio playback, scene-transition execution, gameplay character states, or project-specific victory/defeat rules.
+Draft the complete **Resonance — Audio Runtime (`Jukebot`) Package Specification** using SFGSS-001. Define the duplicate-safe audio authority, music/SFX/ambience ownership, immutable cue and profile assets, runtime playback state, pooled voices, crossfades, looping handles, concurrency and voice stealing, mixer routing, diagnostics, isolated Audio Laboratory, and optional bridges without allowing Jukebot to absorb settings persistence, game-state rules, UI navigation, scene logic, or project-specific decisions about when sounds occur.
 
 ---
 
@@ -144,6 +145,30 @@ Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Speci
 
 **Promoted to:** The Passage (`EchoSceneFlow`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing normal-scene-travel authority and preserve the approved cross-package ownership matrix.
 
+
+### August 3, 2026 — The Pulse specification
+
+- `[DECISION]` The Pulse (`EchoGameState`) specification v1.0.0 is approved as the Level 2 authority for high-level runtime state, validated primary transitions, temporary override scopes, nested pause reasons, and resulting global time/cursor policy; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoGameState owns exactly one primary application state plus zero or more leased override scopes. It does not own menu presentation, input bindings, audio playback, scene loading, character/enemy state machines, save transport, or project-specific victory/defeat rules.
+- `[DECISION]` Override scopes are stored as a keyed set rather than a strict last-in-first-out stack so owners may release their own scopes safely and out of order.
+- `[DECISION]` Override dominance is deterministic: higher explicit priority wins and acquisition sequence breaks equal-priority ties.
+- `[DECISION]` Pause is derived from active states, policies, and leases. The package exposes no fragile global pause boolean and no caller-managed increment/decrement counter.
+- `[DECISION]` Any active pause requirement wins. One running scope cannot cancel another owner’s pause requirement.
+- `[DECISION]` Cursor, input-intent, and audio-intent channels select the highest-priority explicit policy while remaining neutral requests for peer packages to apply through bridges.
+- `[DECISION]` Primary-state transitions are synchronous and atomic. Transition guards are explicit, synchronous, deterministic, and side-effect-free; asynchronous preparation remains outside the state mutation.
+- `[DECISION]` Effective policy is recomputed from current primary state and active scopes rather than restored from a previous-value stack, preventing stale restoration after out-of-order releases.
+- `[DECISION]` One duplicate-safe application-session `EchoGameStateRoot` owns the state service, policy composer, Unity time/cursor adapters, scope registry, bounded history, diagnostics, and cleanup. Duplicate rejection occurs before side effects.
+- `[DECISION]` Unity time and cursor behavior are behind replaceable adapters. Fixed-step scaling is configurable and disabled by default because the correct physics policy is project-specific.
+- `[DECISION]` State timing, history, timeout, and diagnostics use an injected unscaled clock so they remain observable while gameplay time is paused.
+- `[DECISION]` Input and audio coordination remain semantic intents. EchoInput and Jukebot retain authority over input execution and audio behavior through optional bridges.
+- `[DECISION]` The runtime core is nonvisual and has no uGUI, TextMeshPro, Input System, networking, or other Echo-package dependency. The Standalone Test Lab uses removable sample-only controls and readouts.
+- `[DECISION]` Primary state, active scopes, and runtime history are session state and are not automatically saved. Future persistence may store validated project-defined hints, never live lease handles.
+- `[DECISION]` Direct-scene initialization is development-only by default and creates the minimum authority only when absent.
+- `[DECISION]` Active scopes and state history are bounded, diagnostic provider failures remain isolated, and drift reconciliation occurs at explicit lifecycle points rather than through hidden per-frame contention.
+- `[DECISION]` Slow motion, hit stop, photo-mode time modifiers, focus-loss policy, and multiplayer authority remain deferred until their neighboring package and integration contracts are approved.
+
+**Promoted to:** The Pulse (`EchoGameState`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved runtime-state and pause authority without changing the suite ownership matrix.
+
 ---
 
 ## Promotion Queue
@@ -157,6 +182,7 @@ Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Speci
 | 2026-08-03 | Observatory authority, provider, overlay, validation, privacy, and bridge decisions | EchoDiagnostics specification v1.0.0 | Promoted |
 | 2026-08-03 | Accord authority, section, transaction, display-safety, persistence, migration, and bridge decisions | EchoSettings specification v1.0.0 | Promoted |
 | 2026-08-03 | Passage authority, stable scene/route data, transition pipeline, admission, cancellation, activation, recovery, and bridge decisions | EchoSceneFlow specification v1.0.0 | Promoted |
+| 2026-08-03 | Pulse authority, primary/override model, nested pause, policy composition, Unity adapters, diagnostics, Test Lab, and bridge decisions | EchoGameState specification v1.0.0 | Promoted |
 
 ---
 
@@ -164,13 +190,14 @@ Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Speci
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Passage decisions fit existing normal-scene-travel ownership |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Pulse decisions fit existing runtime-state and pause ownership |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
 | Accord specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Foundation documentation gate | Active | 4 of 10 package specifications approved |
+| Pulse specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
+| Foundation documentation gate | Active | 5 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -192,9 +219,9 @@ Draft the complete **The Pulse — Runtime State (`EchoGameState`) Package Speci
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved  
-**Current package:** The Pulse (`EchoGameState`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved  
+**Current package:** Resonance (`Jukebot`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** Passage normal-scene-travel authority, stable scene/route data, serialized transition lifecycle, bounded admission, honest cancellation, activation safety, recovery, Test Lab, and optional bridge boundaries approved  
+**Last completed documentation change:** Pulse primary-state and leased-override architecture, nested pause authority, deterministic policy composition, Unity time/cursor adapters, diagnostics, isolated Test Lab, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-05 — Draft and review the complete EchoGameState package specification
+**Next checkpoint:** FW-DOC-06 — Draft and review the complete Jukebot package specification

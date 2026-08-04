@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Echo_Game_Systems_Suite_Bible"
+              "title": "SFGSS-First-Light-EchoLaunch-Package-Specification"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Echo_Game_Systems_Suite_Bible.md",
+                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -190,17 +190,18 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
+    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+    "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+    "SFGSS-001_Package_Specification_Template.md",
+    "Echo_Game_Systems_Suite_Bible.md",
     "Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
     "Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
     "Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md",
     "Foundation_Wave_Specification_Roadmap.md",
-    "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
     "Package Specifications",
-    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
     "Checkpoint Build Plans",
     "README.md",
-    "SFGSS-001_Package_Specification_Template.md",
-    "Echo_Game_Systems_Suite_Bible.md",
     "Current Notes.md"
   ]
 }
