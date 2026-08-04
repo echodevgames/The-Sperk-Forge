@@ -1,7 +1,7 @@
 # The Ascent - Progression, Unlocks, Passwords, and Checkpoints Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOPROGRESSION-001  
-**Specification version:** 1.0.0  
+**Specification version:** 1.1.0  
 **Status:** Approved  
 **Technical package name:** EchoProgression  
 **Public title:** The Ascent - Progression, Unlocks, Passwords, and Checkpoints  
@@ -13,7 +13,7 @@
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
 **Unity baseline:** Unity 6000.3.8f1  
 **Minimum supported Unity version:** Unity 6000.0  
-**Parent authority:** SFGSS-000 v0.12.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, and SFGSS-005 v1.1.0  
+**Parent authority:** SFGSS-000 v0.13.0, SFGSS-001 v1.1.0, SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, SFGSS-004 v1.0.0, and SFGSS-005 v1.1.0  
 **Last updated:** August 4, 2026
 
 > “Mark what has been earned, remember where the climb paused, and never confuse the summit with the road that leads there.”
@@ -28,6 +28,7 @@
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-04 | Proposed | Initial complete specification derived from SFGSS-000 through SFGSS-005 and the approved Foundation, Impact, and Wellspring authorities | Pending |
 | 1.0.0 | 2026-08-04 | Approved | Approved progression authority, definitions, access rules, unlocks, completions, checkpoints, authored passwords, persistence seams, diagnostics, Laboratory, integrations, and release gates | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-04 | Approved | Clarified progression-node completion ownership versus objective-run completion, selected one active persistence source, and registered the ADR-001 Workshop setup facade | Jesse “Echo” Adams |
 
 ---
 
@@ -36,17 +37,17 @@
 **Public title:** The Ascent - Progression, Unlocks, Passwords, and Checkpoints  
 **Technical identifier:** EchoProgression  
 **Flavor line:** Record each rung without deciding who climbs, what waits above, or how the world is loaded.  
-**Plain-language subtitle:** A neutral runtime for unlocks, access rules, checkpoints, completion records, local rankings, password grants, and versioned progression state.
+**Plain-language subtitle:** A neutral runtime for unlocks, access rules, checkpoints, progression-node completion records, local rankings, password grants, and versioned progression state.
 
 **One-sentence ownership contract:**
 
-> EchoProgression owns stable progression definitions, unlock and access state, checkpoint records, completion records, local rank snapshots, password-to-progression grants, atomic progression mutations, state snapshots, migration-ready progression documents, and diagnostics; it does not own general save-file transport, scene loading, menus, inventory, character statistics or experience, quest logic, platform achievements, online leaderboards, networking authority, or the gameplay events that earn progression.
+> EchoProgression owns stable progression definitions, unlock and access state, checkpoint records, progression-node completion records, local rank snapshots, password-to-progression grants, atomic progression mutations, state snapshots, migration-ready progression documents, and diagnostics; it does not own general save-file transport, scene loading, menus, inventory, character statistics or experience, quest logic, platform achievements, online leaderboards, networking authority, or the gameplay events that earn progression.
 
 ### 1.1 Elevator summary
 
 The Ascent gives a project one clear place to answer questions such as: Is this level available? Has this mode been unlocked? Which checkpoint should a Continue action resume from? How many times was a challenge completed? What is the best local time or score? Does this password grant access to a later stage? The package stores and evaluates those progression truths without becoming the system that loads a scene, awards an item, levels a character, renders a menu, uploads an achievement, or writes an entire save slot.
 
-Project-owned ScriptableObject definitions describe progression nodes, categories, prerequisites, checkpoints, metrics, local rank tables, and authored password schemes. One duplicate-safe runtime authority owns mutable unlocks, completion records, checkpoint state, provider registrations, histories, and the current immutable snapshot. Mutations are validated as complete batches and publish once, so a password or reward cannot unlock one thing, fail on the second operation, and leave the player in a half-granted state.
+Project-owned ScriptableObject definitions describe progression nodes, categories, prerequisites, checkpoints, metrics, local rank tables, and authored password schemes. One duplicate-safe runtime authority owns mutable unlocks, progression-node completion records, checkpoint state, provider registrations, histories, and the current immutable snapshot. Mutations are validated as complete batches and publish once, so a password or reward cannot unlock one thing, fail on the second operation, and leave the player in a half-granted state.
 
 The package works alone in memory and exports a detached versioned state document. A separate Chronicle bridge may persist that document inside a save slot. A small optional local provider may support password-only or lightweight games that need only progression persistence. Passage, Looking Glass, Objectives, Characters, Inventory, platform services, and multiplayer connect through explicit bridges or project adapters and retain their own authority.
 
@@ -238,7 +239,7 @@ Uncoordinated progression commonly fails in predictable ways:
 - Stable progression, category, checkpoint, metric, rank-table, and password-scheme definitions.
 - Catalog validation and prerequisite graph validation.
 - Runtime unlock state and access evaluation.
-- Completion counts, latest results, best metrics, and local rank snapshots.
+- Progression-node completion counts, latest results, best metrics, and local rank snapshots. These records apply only to registered progression definitions such as stages, modes, challenges, and comparable access nodes; they are not objective-run or quest completion truth.
 - Current/reached checkpoint records and opaque resume tokens.
 - Authored password normalization, validation, generation, preview, and grant application.
 - Atomic progression mutation batches and immutable post-commit snapshots.
@@ -269,12 +270,20 @@ Uncoordinated progression commonly fails in predictable ways:
 | Input/rebinding | The Will | UI integration requests input contexts/locks; progression does not read devices |
 | Audio | Resonance | Presentation/project adapter requests semantic cues after results |
 | Diagnostics dashboard | The Observatory | Optional provider bridge exposes health and counts |
-| Objectives and quests | The Path | Objectives may request unlock/completion changes or query progression through bridge |
+| Objectives and quests | The Path | The Path owns objective-run and step completion. A bridge may translate an objective result into an idempotent progression-node mutation or query progression prerequisites; it must not mirror one completion record in both authorities. |
 | Character availability | The Fellowship | Bridge maps progression node state to roster availability |
 | Inventory/content rewards | The Vault/project code | Adapter observes progression; inventory remains item authority |
 | Build validation | The Foundry | Future validator bridge runs catalog, migration, and scheme checks |
 | Platform achievements/leaderboards | Provider adapters | Adapters observe semantic events and apply platform policy |
 | Multiplayer authority | The Convergence/provider | Future adapter validates server/provider-authoritative progression |
+
+### 5.3.1 Completion and checkpoint ownership clarification
+
+- A **progression-node completion record** belongs to a registered `ProgressionNodeId`, such as a stage, challenge, mode, route, or comparable progression definition.
+- An **objective-run completion** belongs to The Path and is keyed by its objective/run identity. EchoProgression must not store a shadow copy of that same objective-run truth.
+- A bridge may react to objective completion by submitting an idempotent progression mutation, but the resulting progression record represents the configured progression node, not the foreign objective run.
+- A checkpoint record identifies progression resume intent. The Passage owns transition execution, and The Atlas owns semantic world/location/entry identity when installed. EchoProgression stores only its own `CheckpointId` plus an opaque adapter token.
+- Exactly one persistence source may be authoritative for EchoProgression state at a time. The in-memory service is always the runtime truth; the Chronicle bridge, a progression-only local provider, or project code may load/store it, but two persistence providers must not race or publish competing documents.
 
 ### 5.4 Boundary tests
 
@@ -357,7 +366,7 @@ No other Echo package is a core dependency.
 | EPROG-CAP-005 | Access evaluation | Structured allowed/denied/unavailable results with reasons | Approved | Yes | Runtime |
 | EPROG-CAP-006 | Built-in conditions | Unlocked, completed, checkpoint, metric, all/any/not rules | Approved | Yes | Runtime |
 | EPROG-CAP-007 | External conditions | Explicit provider registration for project-owned truth | Approved | Yes | Runtime |
-| EPROG-CAP-008 | Completion records | Counts, latest result, best metrics, timestamps, and rank snapshot | Approved | Yes | Runtime |
+| EPROG-CAP-008 | Progression-node completion records | Counts, latest result, best metrics, timestamps, and rank snapshot for registered progression definitions only | Approved | Yes | Runtime |
 | EPROG-CAP-009 | Metric definitions | Stable numeric metric IDs and comparison policy | Approved | Yes | Runtime/Editor |
 | EPROG-CAP-010 | Rank tables | Project-authored local tiers evaluated from one approved metric | Approved | Yes | Runtime/Editor |
 | EPROG-CAP-011 | Checkpoint records | Activate/query current checkpoint without scene authority | Approved | Yes | Runtime |
@@ -746,6 +755,16 @@ Programmer path:
 
 Setup, repair, ID generation, and migration tools are non-destructive by default. Any operation that could alter released identity or durable data requires a preview, explicit acknowledgement, and backup/receipt.
 
+
+### 11.5 Workshop setup facade
+
+EchoProgression’s Editor assembly must expose the exact ADR-001 protocol facade:
+
+```text
+EchoDevGames.EchoProgression.Editor.Workshop.EchoProgressionWorkshopSetupFacade
+```
+
+Its package-owned setup schema covers configuration, progression catalogs, prerequisite graphs, checkpoint definitions, metric/rank definitions, authored password schemes, root/prefab choices, diagnostics policy, and the Standalone Laboratory. The facade remains optional for package usability, adds no runtime dependency on The Workshop, and must return a visible manual path when a domain is unsupported.
 
 ## 12. Installation, Scene Setup, and Direct Testing
 

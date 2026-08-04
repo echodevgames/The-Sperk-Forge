@@ -1,6 +1,6 @@
 # Plan Documentation
 
-This folder is the living planning and architecture record for **The Sperk’s Forge - EchoDevGames Game Systems Suite**.
+This folder is the living planning and architecture record for **The Sperk’s Forge — EchoDevGames Game Systems Suite**.
 
 The Markdown files are committed to Git and opened directly in Obsidian. Git is the durable history; Obsidian is the authoring and navigation surface. Do not maintain a second copied vault.
 
@@ -20,37 +20,44 @@ When documents disagree, stop and reconcile the higher authority. Current Notes 
 2. SFGSS-000.
 3. `Current Notes.md`.
 4. `Full_Suite_Documentation_Program_Roadmap.md`.
-5. SFGSS-002 when dependency, bridge, provider, assembly, sample, or removal behavior is relevant.
-6. SFGSS-003 when definitions, IDs, Unity GUIDs, serialization, versions, migrations, unknown data, transactions, or durable removal behavior is relevant.
-7. SFGSS-004 when tests, validators, Laboratories, evidence, compatibility, defects, performance, or release gates are relevant.
-8. The standard, package specification, ADR, integration record, or research record active for the checkpoint.
-9. SFGSS-001 when drafting package specifications.
-10. SFGSS-005 before implementation planning or code.
-11. Relevant test/readiness reports and prior checkpoint closeout.
+5. SFGSS-002 through SFGSS-005.
+6. The package specifications and research records active for the checkpoint.
+7. Applicable ADRs and integration specifications.
+8. Relevant audit reports and prior closeouts.
+9. SFGSS-001 when drafting or revising a package specification.
 
-## Current approved objective
-
-The ten Foundation specifications and Foundation collision/readiness records are approved. Impact (`EchoFeedback`), The Wellspring (`EchoPool`), The Ascent (`EchoProgression`), The Foundry (`EchoBuildTools`), Many Tongues (`EchoLocalization`), Voices (`EchoDialogue`), The Path (`EchoObjectives`), The Vault (`EchoInventory`), The Hand (`EchoInteraction`), The Eye (`EchoCamera`), The Fellowship (`EchoCharacters`), The Vessel (`EchoControllers`), and The Crucible (`EchoCrafting`) complete all thirteen approved Expansion specifications. Expansion and Advanced package foundations remain the active priority before the remaining general standards.
+## Current approved state
 
 ```text
-Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
-Expansion specifications: 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0
-Completed advanced foundations: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation, Instinct (`EchoAI`) v1.0.0, Clash (`EchoCombat`) v1.0.0, Arcana (`EchoAbilities`) v1.0.0, and The Atlas (`EchoWorld`) v1.0.0 feasibility foundations; providers/adapters pending
-Active checkpoint: SUITE-DOC-23 - Expansion Cross-Package Collision Review
+SFGSS-000: v0.13.0
+Foundation specifications: 10 of 10 approved
+Expansion specifications: 13 of 13 approved
+Advanced foundations: 5 of 5 approved
+Foundation collision matrix: approved
+Expansion collision matrix: SFGSS-INT-EXPANSION-001 v1.0.0 approved
+ADR-001 setup-facade protocol: v1.1.0
+Active checkpoint: SUITE-DOC-24 — Advanced Cross-Package and Research Review
 Implementation: locked
-First queued implementation: FL-M1-01 - First Light Package Skeleton
+First queued implementation: FL-M1-01 — First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
 ```
 
-Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, ScriptableObjects, setup tools, samples, bridges, or provider adapters before SUITE-DOC-33.
+Do not create package manifests, asmdefs, C# scripts, scenes, prefabs, ScriptableObjects, setup tools, samples, bridges, provider adapters, or executable prototypes before SUITE-DOC-33.
+
+## Important integration authorities
+
+- `Integration Specifications/Foundation_Cross-Package_Contract_Matrix.md`
+- `Integration Specifications/SFGSS-INT-EXPANSION-001_Expansion_Cross-Package_Contract_Matrix.md`
+- `Architecture Decision Records/SFGSS-ADR-001_Foundation_Editor_Setup_Facade_Protocol.md`
+- `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md`
 
 ## Learning-oriented implementation rule
 
 When code is eventually authorized:
 
 - Show complete compile-ready files in the conversation.
-- State each exact file path and purpose.
-- Explain the architecture, important code sections, Unity lifecycle, failure behavior, and chosen alternatives.
+- State every exact file path and purpose.
+- Explain architecture, important code sections, Unity lifecycle, failure behavior, and rejected alternatives.
 - Provide exact Editor setup and proof tests.
 - Jesse enters the code himself by default.
 - Stop at compile/test boundaries before continuing.
@@ -58,8 +65,6 @@ When code is eventually authorized:
 Generated files may supplement the visible code only when Jesse explicitly requests them.
 
 ## Repository structure
-
-Create folders only when the first real document exists:
 
 ```text
 Plan Documentation/
@@ -72,9 +77,11 @@ Plan Documentation/
 └── Release Records/
 ```
 
+Create folders only when the first real document exists.
+
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved Foundation and Expansion specifications, and all five approved Advanced foundations plus their research records. Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-23 - Expansion Cross-Package Collision Review. Reconcile authority, identity, persistence, bridge direction, diagnostics, Laboratories, installation, removal, and lifecycle across all thirteen Expansion packages without changing package boundaries silently or inventing empirical evidence. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk’s Forge — EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005, all approved package specifications, ADR-001/ADR-002, the Foundation and Expansion cross-package matrices, and the Advanced research records relevant to the checkpoint. Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-24 — Advanced Cross-Package and Research Review. Reconcile The Convergence, Instinct, Clash, Arcana, and The Atlas against Foundation and Expansion authorities without selecting a networking provider or inventing prototype evidence. Keep every unexecuted result `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -85,57 +92,3 @@ At every meaningful checkpoint:
 3. Update roadmap, tests, research, setup, changelog, or release records as applicable.
 4. Confirm documentation describes approved or observed truth accurately.
 5. Commit and push the checkpoint before advancing when practical.
-
-## Current Package-First Status - August 4, 2026
-
-- Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **13 of 13 approved**.
-- Latest approval: **Clash (`EchoCombat`) feasibility foundation v1.0.0**. No combat implementation, universal health/stat model, damage formula, or adapter is approved.
-- Latest advanced foundations: **The Convergence (`EchoMultiplayer`) v1.0.0**, **Instinct (`EchoAI`) v1.0.0**, and **Clash (`EchoCombat`) v1.0.0**.
-- Active checkpoint: **SUITE-DOC-21 - Arcana (`EchoAbilities`)**.
-- Package implementation remains locked until **SUITE-DOC-33**.
-- All Combat and AI runtime, provider, adapter, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
-
-Read the current work in this order:
-
-1. `Echo_Game_Systems_Suite_Bible.md`
-2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-Instinct-EchoAI-Package-Foundation.md`
-4. `Research Records/SUITE-DOC-19_EchoAI_Feasibility_and_Provider_Record.md`
-5. `Test Reports/SUITE-DOC-19_EchoAI_Feasibility_Foundation_Audit_Report.md`
-6. `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md` and its research records as the prior Advanced authority
-7. `Current Notes.md`
-8. `Full_Suite_Documentation_Program_Roadmap.md`
-
-
-
-## Current Package-First Status - Clash Approved
-
-- Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **13 of 13 approved**.
-- Advanced foundations: **3 of 5 approved**.
-- Latest approval: **Clash (`EchoCombat`) Feasibility Foundation v1.0.0**.
-- Active checkpoint: **SUITE-DOC-21 - Arcana (`EchoAbilities`)**.
-- Package implementation remains locked until **SUITE-DOC-33**.
-
-
-## Current Package-First Status - Arcana Approved
-
-- Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **13 of 13 approved**.
-- Advanced foundations: **4 of 5 approved**.
-- Latest approval: **Arcana (`EchoAbilities`) Feasibility Foundation v1.0.0**.
-- Active checkpoint: **SUITE-DOC-22 - The Atlas (`EchoWorld`)**.
-- Package implementation remains locked until **SUITE-DOC-33**.
-- All Abilities runtime, provider, adapter, status-effect, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.
-
-
-## Current Package-First Status - The Atlas Approved
-
-- Foundation specifications: **10 of 10 approved**.
-- Expansion specifications: **13 of 13 approved**.
-- Advanced foundations: **5 of 5 approved**.
-- Latest approval: **The Atlas (`EchoWorld`) Feasibility Foundation v1.0.0**.
-- Active checkpoint: **SUITE-DOC-23 - Expansion Cross-Package Collision Review**.
-- Package implementation remains locked until **SUITE-DOC-33**.
-- All World runtime, provider, scene, marker, map, persistence, multiplayer, performance, platform, compatibility, integration, migration, and release evidence remains **Not run** until executed and recorded.

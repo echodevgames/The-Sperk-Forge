@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** Expansion Cross-Package Collision Review
-**Current checkpoint:** SUITE-DOC-23 - Reconcile all thirteen Expansion package authorities, IDs, persistence, bridges, Laboratories, and removal behavior
+**Current focus:** Advanced Cross-Package and Research Review
+**Current checkpoint:** SUITE-DOC-24 - Reconcile The Convergence, Instinct, Clash, Arcana, The Atlas, and their research/provider seams against Foundation and Expansion authorities
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -38,7 +38,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.12.0.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.13.0.
 - `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
 - `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
 - `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.0.0 Approved.
@@ -58,7 +58,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Run **SUITE-DOC-23 - Expansion Cross-Package Collision Review**. Reconcile Impact, Wellspring, Ascent, Foundry, Many Tongues, Voices, Path, Vault, Hand, Eye, Fellowship, Vessel, and Crucible against Foundation authorities and SFGSS-002 through SFGSS-004.
+Run **SUITE-DOC-24 - Advanced Cross-Package and Research Review**. Reconcile Multiplayer, AI, Combat, Abilities, and World foundations plus their provider/research records against every approved Foundation and Expansion authority. Preserve all prototype-dependent findings as `Not run`.
 
 ---
 
@@ -111,7 +111,7 @@ Run **SUITE-DOC-23 - Expansion Cross-Package Collision Review**. Reconcile Impac
 
 **Completed checkpoint:** SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation  
 **Result:** Approved v1.0.0 feasibility foundation  
-**Current focus:** Expansion Cross-Package Collision Review  
+**Current focus:** Advanced Cross-Package and Research Review  
 **Active checkpoint:** SUITE-DOC-23  
 **Foundation specifications:** 10 of 10 approved  
 **Expansion specifications:** 13 of 13 approved  
@@ -1052,3 +1052,34 @@ Run **SUITE-DOC-23 - Expansion Cross-Package Collision Review**. Reconcile Impac
 **Prior checkpoint:** SUITE-DOC-19 confirmed committed/pushed by owner  
 **Commit/push:** SUITE-DOC-20 pending user confirmation  
 **Stop point:** Before any EchoAbilities package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, ability, targeting provider, effect executor, bridge, or gameplay implementation
+
+
+---
+
+## August 4, 2026 — SUITE-DOC-23 Expansion Collision Review
+
+- `[DECISION]` SFGSS-INT-EXPANSION-001 v1.0.0 passes the thirteen-package collision review.
+- `[DECISION]` The Ascent v1.1.0 limits completion records to progression definitions; The Path retains objective-run and step completion authority.
+- `[DECISION]` Cross-package workflows have one commit owner and may not claim distributed rollback across authorities.
+- `[DECISION]` One reusable bridge artifact exists per peer pair and behavior; mirror bridges are prohibited.
+- `[DECISION]` ADR-001 v1.1.0 registers exact Workshop setup facades and minimum domains for all thirteen Expansion packages.
+- `[DECISION]` UI focus, interaction focus, camera targets, selected characters, tracked objectives, input users, control owners, controller leases, and network participants remain qualified, separate identities.
+- `[TEST]` Static audit found 13 unique package IDs and diagnostic prefixes, no duplicate documented assembly names, all required SFGSS-001 sections, and no implementation artifacts.
+- `[TEST]` All runtime, bridge, provider, Laboratory, platform, performance, compatibility, migration, removal, and release evidence remains `Not run`.
+
+**Promoted to:** SFGSS-000 v0.13.0, SFGSS-INT-EXPANSION-001, SFGSS-ADR-001 v1.1.0, The Ascent v1.1.0, SUITE-DOC-23 audit report.
+
+## Handoff Snapshot — SUITE-DOC-23
+
+**Completed checkpoint:** SUITE-DOC-23 — Expansion Cross-Package Collision Review  
+**Result:** Approved after documentation repairs  
+**Current focus:** Advanced Cross-Package and Research Review  
+**Active checkpoint:** SUITE-DOC-24  
+**Foundation specifications:** 10 of 10 approved  
+**Expansion specifications:** 13 of 13 approved; The Ascent v1.1.0, other Expansion specifications v1.0.0  
+**Advanced foundations:** 5 of 5 approved foundations  
+**Package implementation:** Not started  
+**Runtime authorization:** None  
+**Known blockers:** None for documentation; provider/prototype evidence remains Not run  
+**Commit/push:** SUITE-DOC-23 pending owner confirmation  
+**Stop point:** Before any Advanced integration implementation, provider prototype, package manifest, asmdef, C# file, asset, scene, prefab, setup facade, bridge, or test execution

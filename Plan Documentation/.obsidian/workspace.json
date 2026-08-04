@@ -190,6 +190,8 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "SUITE-DOC-23_Artifact_Manifest.json",
+    "Package Specifications/SFGSS-The-Atlas-EchoWorld-Package-Foundation.md",
     "SUITE-DOC-22_Artifact_Manifest.json",
     "Test Reports/SUITE-DOC-21_EchoAbilities_Feasibility_Foundation_Audit_Report.md",
     "SUITE-DOC-21_Artifact_Manifest.json",
@@ -219,12 +221,10 @@
     "SUITE-DOC-16_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Vessel-EchoControllers-Package-Specification.md",
     "Test Reports/SUITE-DOC-15_EchoCharacters_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-14_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Fellowship-EchoCharacters-Package-Specification.md",
     "Test Reports/SUITE-DOC-14_EchoCamera_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
-    "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md"
+    "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md"
   ]
 }

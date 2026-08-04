@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.12.0  
+**Version:** 0.13.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2673,6 +2673,14 @@ The following decisions form the approved starting baseline for the suite:
 70. Beta, release-candidate, and stable gates require progressively stronger clean-install, Laboratory, compatibility, performance, migration, removal, documentation, license, and issue evidence. No percentage score overrides a failed mandatory gate.
 71. Release reports preserve traceability from requirement to test case, execution, evidence, issue, fix, regression, and gate decision. Compatibility and measured-performance claims remain pending until observed.
 
+72. The thirteen Expansion package specifications pass SFGSS-INT-EXPANSION-001 after the SUITE-DOC-23 authority, lifecycle, dependency, persistence, transaction, diagnostics, Test Lab, setup-facade, and removal review.
+73. EchoProgression completion records apply only to registered progression definitions such as stages, modes, challenges, and comparable access nodes. EchoObjectives remains the sole authority for objective-run and step completion; integrations translate outcomes through idempotent semantic requests rather than mirroring one record in both packages.
+74. Cross-package operations have one commit owner. Bridges may validate, orchestrate, ledger, retry, or observe, but they must not claim distributed atomic rollback after a foreign authority reports commitment.
+75. One peer pair may have only one reusable bridge artifact for the same integration behavior. The integration specification names the canonical behavioral owner; mirror bridges are prohibited.
+76. Input users/devices, Fellowship `ControlOwnerId` assignments, Vessel actor-local control leases, character identities, camera targets, and network participants are distinct identities and must not be collapsed into one unqualified player ID.
+77. UI focus, interaction focus, camera targets/shots, selected characters, tracked objectives, and other selection concepts remain qualified package-local truths. Public APIs and diagnostics must not imply one global focus authority.
+78. SFGSS-ADR-001 v1.1.0 extends the exact Workshop setup-facade registry and minimum planning domains through all thirteen Expansion packages while preserving manual setup and package independence.
+
 ---
 
 ## 22. Open Decisions Requiring Later Approval
@@ -2710,14 +2718,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the seventy-one decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the seventy-eight decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-05 — SFGSS-006 New-Project Guided Pathways
+SUITE-DOC-24 — Advanced Cross-Package and Research Review
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

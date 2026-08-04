@@ -106,7 +106,7 @@ Advanced documents remain honest about research and provider uncertainty. “Fou
 
 | Checkpoint | Deliverable | Exit condition |
 |---|---|---|
-| SUITE-DOC-23 | Expansion Cross-Package Collision Review | One authority per concern; IDs, persistence, UI/input/audio, Laboratories, bridges, and removal agree across 7.2 |
+| SUITE-DOC-23 | Expansion Cross-Package Collision Review — **Approved** | SFGSS-INT-EXPANSION-001 approved; Ascent v1.1.0 and ADR-001 v1.1.0 repairs complete |
 | SUITE-DOC-24 | Advanced Cross-Package and Research Review | Crafting, Multiplayer, AI, Combat, Abilities, and World fit Foundation/Expansion authorities without fabricated provider evidence |
 
 ## 8. Phase E - Remaining suite standards and guided documentation
@@ -134,9 +134,9 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-22 - The Atlas (`EchoWorld`) Feasibility Foundation and Boundary Record |
+| Completed checkpoint | SUITE-DOC-23 - Expansion Cross-Package Collision Review |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-23 - Expansion Cross-Package Collision Review** |
+| Active checkpoint | **SUITE-DOC-24 - Advanced Cross-Package and Research Review** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
@@ -175,3 +175,10 @@ Arcana (`EchoAbilities`) Feasibility Foundation v1.0.0 is approved. The foundati
 The Atlas (`EchoWorld`) Feasibility Foundation v1.0.0 is approved. The foundation defines stable semantic world/zone/location identity, topology, current context, travel planning, scene-binding tokens, entry/spawn marker registries, discovery, visitation, fast-travel eligibility, map snapshots, world-state participant contracts, diagnostics, 104 Laboratory scenarios, and 624 planned tests. All empirical evidence remains `Not run`.
 
 **Next checkpoint:** SUITE-DOC-23 - Expansion Cross-Package Collision Review.
+
+
+## SUITE-DOC-23 Closeout - Expansion Collision Review Approved
+
+SFGSS-INT-EXPANSION-001 v1.0.0 passes the thirteen-package authority, lifecycle, dependency, persistence, transaction, diagnostics, Laboratory, setup-facade, and removal review. The Ascent advances to v1.1.0 to distinguish progression-node completion from objective-run completion. ADR-001 advances to v1.1.0 with all thirteen Expansion setup facades. No implementation evidence was produced.
+
+**Next checkpoint:** SUITE-DOC-24 - Advanced Cross-Package and Research Review.

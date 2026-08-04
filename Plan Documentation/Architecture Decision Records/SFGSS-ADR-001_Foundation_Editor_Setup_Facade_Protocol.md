@@ -1,11 +1,20 @@
-# SFGSS-ADR-001 — Foundation Editor Setup Facade Protocol
+# SFGSS-ADR-001 — Suite Package Editor Setup Facade Protocol
 
 **Status:** Accepted  
 **Decision date:** August 3, 2026  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Scope:** The Workshop (`EchoGameStarter`) and the nine Foundation runtime packages  
-**Parent authorities:** SFGSS-000, the ten approved Foundation package specifications, and SFGSS-001  
+**Scope:** The Workshop (`EchoGameStarter`) and every approved package that advertises automated Workshop setup  
+**Parent authorities:** SFGSS-000, approved package specifications, SFGSS-001, and SFGSS-002  
 **Supersedes:** No prior ADR  
+**Protocol version:** 1  
+**ADR revision:** 1.1.0  
+
+### Revision history
+
+| Version | Date | Status | Summary |
+|---|---|---|---|
+| 1.0.0 | 2026-08-03 | Accepted | Foundation package facade protocol |
+| 1.1.0 | 2026-08-04 | Accepted | Extended the exact facade registry and minimum setup domains through all thirteen Expansion packages |
 
 > Package setup remains with the package that understands its own assets. The Workshop may coordinate the work, but it may not counterfeit another package’s hands.
 
@@ -15,7 +24,7 @@
 
 The Workshop is an Editor-only composer. Its approved specification requires it to install selected packages, generate generic project structure, and delegate package-specific configuration, prefab, scene, profile, validation, repair, and removal guidance to the package that owns those types.
 
-The nine Foundation runtime package specifications each define setup and validation tooling, but they were approved before The Workshop’s exact invocation model existed. None of them yet promises a stable, versioned endpoint that The Workshop can invoke without directly referencing every peer Editor assembly.
+Package specifications define setup and validation tooling, but The Workshop requires one exact invocation model across independently distributed packages. None of them yet promises a stable, versioned endpoint that The Workshop can invoke without directly referencing every peer Editor assembly.
 
 A cross-package contract is therefore required before automated Workshop composition can be implemented. The contract must preserve all of the following:
 
@@ -30,7 +39,7 @@ A cross-package contract is therefore required before automated Workshop composi
 
 ## 2. Decision
 
-The Foundation Wave adopts a **package-owned, exact, allowlisted Editor setup facade protocol**.
+The suite adopts a **package-owned, exact, allowlisted Editor setup facade protocol**.
 
 Each runtime package may expose one public static facade in its existing Editor assembly. The facade does not reference The Workshop. The Workshop stores the package ID, compatible package range, exact assembly-qualified type name, protocol version, facade schema version, and supported method set in a reviewed adapter descriptor.
 
@@ -61,6 +70,19 @@ The exact assembly-qualified type remains recorded in The Workshop’s reviewed 
 | The Will (`EchoInput`) | `EchoDevGames.EchoInput.Editor.Workshop.EchoInputWorkshopSetupFacade` |
 | The Looking Glass (`EchoUI`) | `EchoDevGames.EchoUI.Editor.Workshop.EchoUIWorkshopSetupFacade` |
 | The Chronicle (`EchoSave`) | `EchoDevGames.EchoSave.Editor.Workshop.EchoSaveWorkshopSetupFacade` |
+| Impact (`EchoFeedback`) | `EchoDevGames.EchoFeedback.Editor.Workshop.EchoFeedbackWorkshopSetupFacade` |
+| The Wellspring (`EchoPool`) | `EchoDevGames.EchoPool.Editor.Workshop.EchoPoolWorkshopSetupFacade` |
+| The Ascent (`EchoProgression`) | `EchoDevGames.EchoProgression.Editor.Workshop.EchoProgressionWorkshopSetupFacade` |
+| The Foundry (`EchoBuildTools`) | `EchoDevGames.EchoBuildTools.Editor.Workshop.EchoBuildToolsWorkshopSetupFacade` |
+| Many Tongues (`EchoLocalization`) | `EchoDevGames.EchoLocalization.Editor.Workshop.EchoLocalizationWorkshopSetupFacade` |
+| Voices (`EchoDialogue`) | `EchoDevGames.EchoDialogue.Editor.Workshop.EchoDialogueWorkshopSetupFacade` |
+| The Path (`EchoObjectives`) | `EchoDevGames.EchoObjectives.Editor.Workshop.EchoObjectivesWorkshopSetupFacade` |
+| The Vault (`EchoInventory`) | `EchoDevGames.EchoInventory.Editor.Workshop.EchoInventoryWorkshopSetupFacade` |
+| The Hand (`EchoInteraction`) | `EchoDevGames.EchoInteraction.Editor.Workshop.EchoInteractionWorkshopSetupFacade` |
+| The Eye (`EchoCamera`) | `EchoDevGames.EchoCamera.Editor.Workshop.EchoCameraWorkshopSetupFacade` |
+| The Fellowship (`EchoCharacters`) | `EchoDevGames.EchoCharacters.Editor.Workshop.EchoCharactersWorkshopSetupFacade` |
+| The Vessel (`EchoControllers`) | `EchoDevGames.EchoControllers.Editor.Workshop.EchoControllersWorkshopSetupFacade` |
+| The Crucible (`EchoCrafting`) | `EchoDevGames.EchoCrafting.Editor.Workshop.EchoCraftingWorkshopSetupFacade` |
 
 The facade belongs to the package Editor assembly. It must not be placed in the runtime assembly, sample assembly, project code, or The Workshop package.
 
@@ -192,6 +214,19 @@ Each package owns and versions its own setup schema. Protocol version 1 requires
 | EchoInput | Action asset/template, contexts, locks, glyph library, rebinding policy, root prefab |
 | EchoUI | Root/layers, EventSystem policy, theme, screen/HUD/modal templates, accessibility defaults |
 | EchoSave | Configuration, slot model, root prefab, storage sandbox, participant/sample choices |
+| EchoFeedback | Configuration, root, recipe catalogs, channel/provider selections, accessibility limits, Laboratory |
+| EchoPool | Configuration, root, pool catalogs, prefab/capacity policies, prewarm choices, Laboratory |
+| EchoProgression | Configuration, root, progression catalogs, prerequisites, checkpoints, metrics/ranks, password schemes, Laboratory |
+| EchoBuildTools | Build recipes, Build Profile bindings, validators, version/output policy, release checklists, Editor Laboratory |
+| EchoLocalization | Configuration, root, locales, fallbacks, table references, font/script profiles, pseudo locales, Laboratory |
+| EchoDialogue | Configuration, root, speaker/conversation catalogs, provider schemas, authoring defaults, Laboratory |
+| EchoObjectives | Configuration, root, objective catalogs, provider/reward registries, tracking policy, Laboratory |
+| EchoInventory | Configuration, root, item/container catalogs, equipment schemas, persistence policy, Laboratory |
+| EchoInteraction | Configuration, root, action catalogs, detector adapters, concurrency policy, 2D/3D Laboratories |
+| EchoCamera | Configuration, root, channels, backend choice, modes, blends, bounds/zones, 2D/3D Laboratories |
+| EchoCharacters | Configuration, root, character catalogs, roster defaults, spawn provider, control policy, Laboratory |
+| EchoControllers | Controller presets, host/config assets, intent adapters, family-specific Laboratories; no persistent root |
+| EchoCrafting | Configuration, root, recipe catalogs, provider/station schemas, knowledge policy, Laboratory |
 
 A package may expose fewer automated domains in its first release. Unsupported domains must appear as manual actions, not fabricated generic operations.
 
