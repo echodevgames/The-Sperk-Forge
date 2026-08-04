@@ -65,7 +65,7 @@ These remain visibly `Not run` or conditional until implementation or research e
 | SFGSS-004 | Approved v1.0.0 |
 | SFGSS-005 | Approved v1.1.0 |
 | Foundation package specifications | 10 of 10 approved |
-| Expansion package specifications | 8 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, and The Vault v1.0.0 |
+| Expansion package specifications | 9 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, and The Hand v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
 | Package implementation | Not started |
@@ -84,7 +84,7 @@ Each package receives a complete SFGSS-001 specification. The order follows SFGS
 | SUITE-DOC-10 | EchoDialogue - Voices - **Approved v1.0.0** | Speakers, lines, sequences, branching, choices, conditions, commands, history, localization, and save boundary |
 | SUITE-DOC-11 | EchoObjectives - The Path - **Approved v1.0.0** | Objectives, quests, tasks, progress graphs, conditions, rewards-as-requests, persistence, and tracked presentation data |
 | SUITE-DOC-12 | EchoInventory - The Vault - **Approved v1.0.0** | Item definitions/instances, containers, stacks, transactions, capacity, transfer, equipment-storage boundary, and persistence |
-| SUITE-DOC-13 | EchoInteraction - The Hand | Detection, focus, range, priority, prompt data, availability, execution requests, cancellation, and 2D/3D adapters |
+| SUITE-DOC-13 | EchoInteraction - The Hand - **Approved v1.0.0** | Detection, focus, range, priority, prompt data, availability, execution requests, cancellation, and 2D/3D adapters |
 | SUITE-DOC-14 | EchoCamera - The Eye | Targets, modes, requests, bounds, blends, zones, backend adapters, and camera/feedback/dialogue boundaries |
 | SUITE-DOC-15 | EchoCharacters - The Fellowship | Identity, roster, selection, spawning, switching, control ownership, possession, save snapshots, and multiplayer seams |
 | SUITE-DOC-16 | EchoControllers - The Vessel | Intent/motor contracts, controller families, capability modules, physics boundaries, adapters, and independent preset Laboratories |
@@ -134,11 +134,11 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-12 - The Vault (`EchoInventory`) Package Specification |
+| Completed checkpoint | SUITE-DOC-13 - The Hand (`EchoInteraction`) Package Specification |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-13 - The Hand (`EchoInteraction`) Package Specification** |
+| Active checkpoint | **SUITE-DOC-14 - The Eye (`EchoCamera`) Package Specification** |
 | Foundation specifications | 10 of 10 approved |
-| Expansion specifications | 8 of 13 approved |
+| Expansion specifications | 9 of 13 approved |
 | Advanced package foundations | 0 of 5 approved |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |

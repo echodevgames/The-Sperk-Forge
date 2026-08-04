@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** EchoInteraction - The Hand package specification
-**Current checkpoint:** SUITE-DOC-13 - EchoInteraction: The Hand Package Specification
+**Current focus:** EchoCamera - The Eye package specification
+**Current checkpoint:** SUITE-DOC-14 - EchoCamera: The Eye Package Specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,14 +45,14 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md` - v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md` - v1.0.0 Approved.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Draft and approve the complete **EchoInteraction - The Hand Package Specification** using SFGSS-001. Define 2D and 3D detection adapters; stable interactor/interactable identities; candidate collection; deterministic focused selection; range, angle, line-of-sight, priority, and availability evaluation; prompt data; tap, hold, toggle, timed, and repeated interaction lifecycles; cancellation; explicit execution requests/results; diagnostics; authoring; validation; and UI, Input, Inventory, Objectives, Dialogue, Audio, Feedback, World, Characters, Save, and Multiplayer boundaries without deciding the unique result of opening a door, rescuing a survivor, placing an explosive, collecting an item, or completing a quest.
+Draft and approve the complete **Eye (`EchoCamera`) Package Specification** using SFGSS-001, with SFGSS-002 through SFGSS-004 as cross-package guardrails. Define targets, groups, modes, priorities, bounds, zones, blends, request leases, provider adapters, direct-scene behavior, diagnostics, isolated Laboratories, and boundaries with characters, controllers, feedback, dialogue, scene flow, UI, multiplayer, and project camera logic. Keep all empirical evidence `Not run`.
 ---
 
 ## Open Questions
@@ -65,6 +65,26 @@ Draft and approve the complete **EchoInteraction - The Hand Package Specificatio
 ---
 
 ## Active Notes
+
+### August 4, 2026 - The Hand (`EchoInteraction`) package specification
+
+- `[DECISION]` EchoInteraction owns interaction action definitions, interactor/detector/endpoint registration, normalized offers, candidate freshness, deterministic focus, semantic prompt snapshots, interaction sessions, cancellation/commit policy, bounded local concurrency, diagnostics, authoring, validation, and isolated 2D/3D Laboratories.
+- `[DECISION]` One endpoint may expose several independent offers. Detection discovers endpoints; endpoints author current offers; project executors own the unique result.
+- `[DECISION]` The neutral core does not reference Physics2D or Physics3D. Separate adapter assemblies translate physics queries into package-neutral candidate observations.
+- `[DECISION]` Focus uses deterministic ranking with configurable hysteresis. Small physics jitter must not make prompt focus oscillate.
+- `[DECISION]` Blocked offers may remain visible with structured availability and denial reasons when the project chooses that presentation policy.
+- `[DECISION]` Input remains external. EchoInteraction consumes semantic Start, Continue, Release, Cancel, and Repeat commands rather than polling devices or bindings.
+- `[DECISION]` Tap, Hold, Timed, Toggle, and Repeated modes share one request/session model while retaining distinct lifetime and cancellation semantics.
+- `[DECISION]` Executors explicitly declare the irreversible commit point. Cancellation before commit may succeed; cancellation after commit returns Too Late and preserves the committed result.
+- `[DECISION]` One active session per interactor is the safe default. Endpoints may be Shared, Exclusive, or bounded-concurrency and use generational reservation/session identities.
+- `[DECISION]` Focus, active sessions, reservations, block leases, and candidate caches are session-only state and are not durable save truth.
+- `[DECISION]` EchoInteraction does not own input bindings, production UI, audio, feedback, objectives, inventory, dialogue, camera, scene loading, save transport, character movement, world-state persistence, multiplayer authority, or project-specific interaction outcomes.
+- `[TEST]` The specification registers 56 package-qualified Laboratory scenarios and 336 package-qualified planned tests. Every implementation-dependent result remains `Not run`.
+- `[HANDOFF]` SUITE-DOC-13 is complete. Continue with SUITE-DOC-14: The Eye (`EchoCamera`) package specification.
+
+**Promoted to:** `Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md`, `Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md`, README, and roadmap.
+
+---
 
 ### August 4, 2026 - The Vault (`EchoInventory`) package specification
 
@@ -634,31 +654,30 @@ Draft and approve the complete **EchoInteraction - The Hand Package Specificatio
 
 ## Checkpoint Closeout Checklist
 
-- [x] Reconcile EchoInventory against SFGSS-000 through SFGSS-005 and approved package authorities through The Path.
-- [x] Preserve one item/container authority without absorbing crafting, vendors, combat/RPG effects, UI, save transport, objectives, dialogue, characters, world spawning, or multiplayer authority.
-- [x] Define immutable item definitions, fungible stacks, unique instances, stable identities, fixed/list/equipment containers, capacity, filters, queries, and atomic transactions.
-- [x] Define revision conflicts, idempotency, equipment occupancy, export/import, migrations, aliases, unknown-data preservation, diagnostics, authoring, validation, removal, and Laboratory contracts.
-- [x] Register 52 Laboratory scenarios and 302 package-qualified planned tests.
-- [x] Keep every unexecuted runtime, transaction, equipment, provider, persistence, migration, performance, platform, compatibility, integration, and release result `Not run`.
+- [x] Reconcile `Current Notes.md`.
+- [x] Approve EchoInteraction ownership, independence, data, lifecycle, failure, diagnostics, authoring, Laboratory, bridge, removal, and release contracts.
+- [x] Define interaction actions, endpoint offers, detector adapters, candidate freshness, deterministic focus, availability, prompts, semantic commands, sessions, cancellation, commit points, reservations, and local concurrency.
+- [x] Register 56 Laboratory scenarios and 336 package-qualified planned tests.
+- [x] Keep every unexecuted runtime, detection, offer, focus, prompt, session, cancellation, concurrency, adapter, migration, performance, platform, compatibility, integration, and release result `Not run`.
 - [x] Update README, Current Notes, roadmap, audit report, and artifact manifest.
-- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, or runtime implementation was created.
-- [x] Record SUITE-DOC-11 as committed/pushed by the owner.
-- [ ] Commit and push SUITE-DOC-12.
-- [x] Stop before EchoInteraction specification work.
+- [x] Confirm no package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider, detector, interactor, endpoint, or gameplay implementation was created.
+- [x] Record SUITE-DOC-12 as committed/pushed by the owner.
+- [ ] Commit and push SUITE-DOC-13.
+- [x] Stop before EchoCamera specification work.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** SUITE-DOC-12 - The Vault (`EchoInventory`) Package Specification  
+**Completed checkpoint:** SUITE-DOC-13 - The Hand (`EchoInteraction`) Package Specification  
 **Result:** Approved v1.0.0  
-**Current focus:** EchoInteraction - The Hand  
-**Active checkpoint:** SUITE-DOC-13 - EchoInteraction Package Specification  
-**Expansion specifications:** 8 of 13 approved  
+**Current focus:** EchoCamera - The Eye  
+**Active checkpoint:** SUITE-DOC-14 - EchoCamera Package Specification  
+**Expansion specifications:** 9 of 13 approved  
 **Package implementation:** Not started  
 **First queued implementation:** FL-M1-01 - First Light Package Skeleton  
 **Runtime authorization:** None  
 **Known blockers:** None  
-**Prior checkpoint:** SUITE-DOC-11 confirmed committed/pushed by owner  
-**Commit/push:** SUITE-DOC-12 pending user confirmation  
-**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, interaction data, detector, interactor, or gameplay implementation
+**Prior checkpoint:** SUITE-DOC-12 confirmed committed/pushed by owner  
+**Commit/push:** SUITE-DOC-13 pending user confirmation  
+**Stop point:** Before any package manifest, asmdef, C# file, ScriptableObject, scene, prefab, setup tool, sample, bridge, provider adapter, camera data, camera controller, or gameplay implementation
