@@ -35,7 +35,8 @@ The ten Foundation specifications and Foundation collision/readiness records are
 ```text
 Completed standards: SFGSS-002 v1.0.0, SFGSS-003 v1.0.0, and SFGSS-004 v1.0.0
 Expansion specifications: 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0
-Active checkpoint: SUITE-DOC-18 - EchoMultiplayer: The Convergence Research and Provider-Neutral Foundation
+Completed advanced foundation: The Convergence (`EchoMultiplayer`) v1.0.0 provider-neutral foundation; provider selection pending
+Active checkpoint: SUITE-DOC-19 - EchoAI: Instinct Feasibility Foundation
 Implementation: locked
 First queued implementation: FL-M1-01 - First Light Package Skeleton
 Final unlock gate: SUITE-DOC-33
@@ -73,7 +74,7 @@ Plan Documentation/
 
 ## Fresh ChatGPT handoff prompt
 
-> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation authorities, and all thirteen approved Expansion package specifications through The Crucible (`EchoCrafting`). Package implementation is locked until SUITE-DOC-33. Current checkpoint: SUITE-DOC-18 - EchoMultiplayer (`The Convergence`) Research and Provider-Neutral Foundation. Treat SFGSS-002 as the dependency/adapter authority, SFGSS-003 as the data/identity/migration authority, and SFGSS-004 as the test/evidence/release authority. Produce a dated provider research plan and matrix, disposable prototype protocol, provider-neutral session/player/authority contracts, security boundaries, adapter packaging, and explicit unknowns. Do not select or claim a final networking provider without executed prototype evidence. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
+> We are continuing documentation-first development of The Sperk's Forge - EchoDevGames Game Systems Suite. Read README.md, SFGSS-000, Current Notes, the Full Suite Documentation Program Roadmap, SFGSS-001 through SFGSS-005 as applicable, all approved Foundation and Expansion authorities, `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md`, and both SUITE-DOC-18 Multiplayer research records. Package implementation is locked until SUITE-DOC-33. The Convergence provider-neutral foundation is approved, but no production networking provider, topology, transport, service, or adapter has been selected. Current checkpoint: SUITE-DOC-19 - EchoAI (`Instinct`) Feasibility Foundation. Define sensing, stimuli, perception memory, target scoring, behavior seams, blackboard/context data, navigation-provider adapters, diagnostics, Laboratories, and explicit non-goals. Do not create one universal enemy brain or select one mandatory navigation backend. Keep all empirical evidence `Not run`. When implementation eventually begins, show complete code and explain every step so Jesse can enter and understand it himself.
 
 ## Checkpoint rule
 
@@ -89,17 +90,19 @@ At every meaningful checkpoint:
 
 - Foundation specifications: **10 of 10 approved**.
 - Expansion specifications: **13 of 13 approved**.
-- Latest approval: **The Crucible (`EchoCrafting`) v1.0.0**.
-- Active checkpoint: **SUITE-DOC-18 - The Convergence (`EchoMultiplayer`)**.
+- Latest approval: **The Convergence (`EchoMultiplayer`) provider-neutral foundation v1.0.0**. No provider adapter is approved.
+- Latest advanced foundation: **The Convergence (`EchoMultiplayer`) v1.0.0**, provider selection pending.
+- Active checkpoint: **SUITE-DOC-19 - Instinct (`EchoAI`)**.
 - Package implementation remains locked until **SUITE-DOC-33**.
-- All Crucible runtime, provider, recipe, matching, transaction, knowledge, station, persistence, timed-module, quality, failure, repair, salvage, platform, performance, compatibility, integration, and release evidence remains **Not run** until implementation.
+- All Convergence provider prototypes, provider selection, topology, transport, service, license, performance, platform, migration, hosting, compatibility, integration, and release evidence remains **Not run** until executed and recorded.
 
 Read the current work in this order:
 
 1. `Echo_Game_Systems_Suite_Bible.md`
 2. `SFGSS-002`, `SFGSS-003`, `SFGSS-004`, and `SFGSS-005`
-3. `Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md` and `Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md`
-4. `Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md`
-5. `Current Notes.md`
-6. `Full_Suite_Documentation_Program_Roadmap.md`
+3. `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md`
+4. `Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md` and `Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md`
+5. `Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md`
+6. `Current Notes.md`
+7. `Full_Suite_Documentation_Program_Roadmap.md`
 

@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** The Convergence (`EchoMultiplayer`) research and provider-neutral foundation
-**Current checkpoint:** SUITE-DOC-18 - Produce the EchoMultiplayer research plan, provider matrix, prototype protocol, and provider-neutral contract foundation
+**Current focus:** Instinct (`EchoAI`) feasibility foundation
+**Current checkpoint:** SUITE-DOC-19 - Define EchoAI sensing, memory, scoring, behavior, navigation seams, diagnostics, and explicit non-goals
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -45,15 +45,17 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-005_Checkpoint_Build_Workflow_and_ChatGPT_Collaboration_Rules.md` - v1.1.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
 - `Full_Suite_Documentation_Program_Roadmap.md` - active roadmap.
-- `Package Specifications/SFGSS-The-Crucible-EchoCrafting-Package-Specification.md` - v1.0.0 Approved.
-- `Research Records/SUITE-DOC-17_EchoCrafting_Design_Workshop_Record.md` - approved workshop conclusions.
+- `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md` - v1.0.0 Approved provider-neutral foundation; provider selection pending.
+- `Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md` - approved dated research foundation.
+- `Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md` - approved comparison protocol; all executions Not run.
+- `Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md` - provider-neutral documentation gate passed.
 - `Test Reports/Full_Suite_Documentation_Rebaseline_Report.md` - SUITE-DOC-01 Passed.
 - Foundation package specifications, ADR-001, and the Foundation cross-package matrix - approved baseline.
 - `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` - approved but dormant.
 
 ### Next action
 
-Produce the complete **Convergence (`EchoMultiplayer`) pre-code foundation**. Define a dated provider research matrix and sources, disposable comparison prototype protocol, provider-neutral session/player/authority contracts, connection and scene-travel seams, security boundaries, adapter packaging, diagnostics, testing, and explicit unknowns. Do not select or claim a production provider without executed prototype evidence. Keep all empirical evidence `Not run`.
+Produce the complete **Instinct (`EchoAI`) feasibility foundation**. Define sensing and stimuli, perception memory, target scoring, behavior/state seams, blackboard/context data, navigation-provider adapters, debugging, Laboratories, and package boundaries. Do not create one universal enemy brain or select one mandatory navigation technology.
 ---
 
 ## Open Questions
@@ -66,6 +68,25 @@ Produce the complete **Convergence (`EchoMultiplayer`) pre-code foundation**. De
 ---
 
 ## Active Notes
+
+
+### August 4, 2026 - The Convergence (`EchoMultiplayer`) provider-neutral foundation
+
+- `[DECISION]` The Convergence provider-neutral foundation v1.0.0 is approved as the Level 2 authority for neutral multiplayer sessions, participants, readiness, roles, lifecycle requests/results, authority gates, synchronized-travel and spawn/ownership seams, diagnostics, security rules, adapter packaging, and research gates.
+- `[DECISION]` No production provider, topology, transport, cloud/session service, provider adapter, package version, hosting model, platform claim, or implementation is approved by SUITE-DOC-18.
+- `[DECISION]` The neutral core has no networking SDK dependency. Each provider or service integration ships separately under SFGSS-002.
+- `[DECISION]` One production provider may be registered per root/session. Provider capabilities are explicit; unsupported features return structured `Unavailable` results.
+- `[DECISION]` Session, participant, account/profile, character, network entity, and Unity object identities remain separate.
+- `[DECISION]` Important gameplay requests are untrusted until validated at the authoritative peer/server through provider-backed gates.
+- `[DECISION]` The Passage retains scene-transition authority; EchoMultiplayer coordinates synchronized travel through a bridge.
+- `[DECISION]` Shared-world save authority defaults to host/server. Clients do not submit complete trusted save payloads.
+- `[DECISION]` NGO plus Multiplayer Services is mandatory Prototype A. Prototype B uses FishNet only if license review clears; otherwise Mirror. Photon Fusion is a conditional third candidate.
+- `[RISK]` FishNet uses a custom license with exclusions for competing networking solutions; public adapter distribution requires explicit review.
+- `[TEST]` The provider-neutral specification contains all 30 SFGSS-001 sections, 84 Laboratory scenarios, and 486 individually registered planned tests. All executions remain `Not run`.
+- `[TEST]` Disposable Prototypes A, B, and conditional C remain `Not run`; no provider winner is selected.
+- `[HANDOFF]` SUITE-DOC-19 drafts Instinct (`EchoAI`) next.
+
+**Promoted to:** `Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md`, both SUITE-DOC-18 Research Records, SUITE-DOC-18 audit report, README, roadmap, and artifact manifest.
 
 ### August 4, 2026 - The Vessel (`EchoControllers`) package specification
 

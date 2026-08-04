@@ -96,7 +96,7 @@ Advanced documents remain honest about research and provider uncertainty. “Fou
 
 | Checkpoint | Package foundation | Responsible pre-code outcome |
 |---|---|---|
-| SUITE-DOC-18 | EchoMultiplayer - The Convergence | Research plan, dated provider matrix, disposable prototype protocol, provider-neutral session/player/authority contracts, security rules, adapter packaging, and explicit unknowns |
+| SUITE-DOC-18 | EchoMultiplayer - The Convergence - **Approved provider-neutral foundation v1.0.0; provider selection pending** | Research plan, dated provider matrix, disposable prototype protocol, provider-neutral session/player/authority contracts, security rules, adapter packaging, and explicit unknowns |
 | SUITE-DOC-19 | EchoAI - Instinct | Sensing, stimuli, perception memory, scoring, behavior seams, navigation adapters, debugging, and explicit non-goals |
 | SUITE-DOC-20 | EchoCombat - Clash | Damage/healing messages, teams, targets, resolution contracts, hit adapters, combat events, and genre-neutral boundaries |
 | SUITE-DOC-21 | EchoAbilities - Arcana | Ability definitions/instances, activation, costs, charges, cooldowns, casting, interruption, targeting, effects, save, and multiplayer seams |
@@ -134,12 +134,12 @@ These standards now follow the package foundations so they can describe the actu
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-17 - The Crucible (`EchoCrafting`) Design Workshop and Package Specification |
+| Completed checkpoint | SUITE-DOC-18 - The Convergence (`EchoMultiplayer`) Provider-Neutral Foundation and Research Records |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **SUITE-DOC-18 - The Convergence (`EchoMultiplayer`) Research and Provider-Neutral Foundation** |
+| Active checkpoint | **SUITE-DOC-19 - Instinct (`EchoAI`) Feasibility Foundation** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
-| Advanced package foundations | 0 of 5 approved |
+| Advanced package foundations | 1 of 5 approved provider-neutral foundations |
 | Package implementation | Not started |
 | First queued implementation | FL-M1-01 - First Light Package Skeleton |
 | Runtime authorization | None |

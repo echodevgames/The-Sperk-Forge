@@ -190,6 +190,11 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
+    "Test Reports/SUITE-DOC-18_EchoMultiplayer_Foundation_Audit_Report.md",
+    "SUITE-DOC-18_Artifact_Manifest.json",
+    "Research Records/SUITE-DOC-18_EchoMultiplayer_Provider_Research_Plan_and_Matrix.md",
+    "Research Records/SUITE-DOC-18_EchoMultiplayer_Disposable_Prototype_Protocol.md",
+    "Package Specifications/SFGSS-The-Convergence-EchoMultiplayer-Package-Foundation.md",
     "Test Reports/SUITE-DOC-17_EchoCrafting_Package_Specification_Audit_Report.md",
     "Test Reports/SUITE-DOC-16_Artifact_Manifest.json",
     "SUITE-DOC-17_Artifact_Manifest.json",
@@ -209,7 +214,6 @@
     "SUITE-DOC-14_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Eye-EchoCamera-Package-Specification.md",
     "Test Reports/SUITE-DOC-13_EchoInteraction_Package_Specification_Audit_Report.md",
-    "SUITE-DOC-13_Artifact_Manifest.json",
     "Package Specifications/SFGSS-The-Hand-EchoInteraction-Package-Specification.md",
     "Test Reports/SUITE-DOC-12_EchoInventory_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Vault-EchoInventory-Package-Specification.md",
@@ -221,10 +225,6 @@
     "Test Reports/SUITE-DOC-07_EchoProgression_Package_Specification_Audit_Report.md",
     "Package Specifications/SFGSS-The-Foundry-EchoBuildTools-Package-Specification.md",
     "Package Specifications/SFGSS-Many-Tongues-EchoLocalization-Package-Specification.md",
-    "Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Ascent-EchoProgression-Package-Specification.md",
-    "Test Reports/SUITE-DOC-06_EchoPool_Package_Specification_Audit_Report.md",
-    "Test Reports/SUITE-DOC-05_Impact_Package_Specification_Audit_Report.md",
-    "Package Specifications/SFGSS-The-Wellspring-EchoPool-Package-Specification.md"
+    "Test Reports/SUITE-DOC-08_EchoBuildTools_Package_Specification_Audit_Report.md"
   ]
 }
