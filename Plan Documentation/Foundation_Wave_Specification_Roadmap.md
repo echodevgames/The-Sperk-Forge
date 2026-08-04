@@ -48,9 +48,9 @@ The order follows the Foundation Wave ownership layers: origin and observability
 | FW-DOC-04 | `EchoSceneFlow` | The Passage — Scene Flow | Defines normal transition authority after First Light handoff, loading phases, progress, locking, and failure behavior | Approved v1.0.0 |
 | FW-DOC-05 | `EchoGameState` | The Pulse — Runtime State | Defines high-level modes, pause authority, time/cursor/input coordination requests, and nested state reasons | Approved v1.0.0 |
 | FW-DOC-06 | `Jukebot` | Resonance — Audio Runtime | Defines music, SFX, ambience, mixer routing, handles, runtime cue state, and settings/state bridges | Approved v1.0.0 |
-| FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Next |
-| FW-DOC-08 | `EchoUI` | The Looking Glass — UI Framework | Defines screen/HUD/modal ownership and presenter boundaries after settings, state, input, scene, and audio contracts are known | Not started |
-| FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Not started |
+| FW-DOC-07 | `EchoInput` | The Will — Input Infrastructure | Defines input contexts, active-device state, rebinding, glyphs, lock reasons, and controller-independent intent support | Approved v1.0.0 |
+| FW-DOC-08 | `EchoUI` | The Looking Glass — UI Framework | Defines screen/HUD/modal ownership and presenter boundaries after settings, state, input, scene, and audio contracts are known | Approved v1.0.0 |
+| FW-DOC-09 | `EchoSave` | The Chronicle — Save Infrastructure | Defines files, slots, serializer/migration/recovery, and participant contracts with the neighboring package surfaces visible | Next |
 | FW-DOC-10 | `EchoGameStarter` | The Workshop — Project Starter | Composer is specified last so its selectable outputs, reports, generated assets, and dependencies reflect approved package contracts | Not started |
 | FW-DOC-11 | Foundation contract matrix | Cross-spec reconciliation | Builds one package-to-package ownership, lifecycle, data, bridge, and removal matrix | Not started |
 | FW-DOC-12 | Documentation readiness gate | Implementation authorization review | Confirms the complete set is coherent and identifies the first implementation checkpoint | Not started |
@@ -192,9 +192,9 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | Metric | Current value |
 |---|---|
 | Foundation specifications required | 10 |
-| Approved | 6 |
+| Approved | 8 |
 | In drafting | 0 |
-| Remaining | 4 |
-| Current checkpoint | FW-DOC-07 — EchoInput |
+| Remaining | 2 |
+| Current checkpoint | FW-DOC-09 — EchoSave |
 | Runtime implementation | Intentionally not started |
 | Known blocker | None |

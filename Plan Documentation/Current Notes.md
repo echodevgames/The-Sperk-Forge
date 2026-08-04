@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 3, 2026  
 **Current focus:** Foundation Wave package specifications  
-**Current checkpoint:** FW-DOC-07 — Draft The Will (`EchoInput`) package specification
+**Current checkpoint:** FW-DOC-09 — Draft The Chronicle (`EchoSave`) package specification
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -46,17 +46,19 @@ Draft, reconcile, and approve complete SFGSS-001 package specifications for all 
 - `Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md` — v1.0.0 Approved.
 - `Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md` — v1.0.0 Approved.
+- `Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md` — v1.0.0 Approved.
 - `Foundation_Wave_Specification_Roadmap.md` — active Level 4 planning record.
 
 ### Next action
 
-Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Specification** using SFGSS-001. Define input-context authority, active-device and control-scheme state, reason-based locks, rebinding and conflict policy, binding-override persistence boundaries, glyph data, local-player seams, diagnostics, an isolated Input Laboratory, and optional bridges without allowing EchoInput to absorb movement physics, gameplay action meaning, UI screen ownership, game-state truth, or project-specific controller rules.
+Draft the complete **The Chronicle — Save Infrastructure (`EchoSave`) Package Specification** using SFGSS-001. Define save files and slot/profile models, project-owned participant payloads, serializer boundaries, atomic write and backup/recovery policy, versioning and migration, autosave/manual-save coordination, metadata, corruption behavior, standalone storage behavior, an isolated Save Laboratory, and optional bridges without allowing EchoSave to invent project gameplay data, own global preferences, serialize arbitrary scene objects, or absorb cloud/provider authority.
 
 ---
 
 ## Open Questions
 
-- None blocking the start of the EchoInput specification.
+- None blocking the start of the EchoSave specification.
 - Licensing remains a later suite-wide release decision and does not block the documentation pass.
 
 ---
@@ -192,7 +194,57 @@ Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Spe
 
 **Promoted to:** Resonance (`Jukebot`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the already-approved audio authority without changing the suite ownership matrix.
 
+
+### August 3, 2026 — The Will specification
+
+- `[DECISION]` The Will (`EchoInput`) specification v1.0.0 is approved as the Level 2 authority for input contexts, reason-based locks, active-device/control-scheme awareness, primary-user pairing, rebinding, binding-override models, prompt/glyph data, and input diagnostics; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoInput owns input infrastructure but does not own movement physics, gameplay action meaning, controller behavior, production UI screens, high-level game state, audio feedback, scene travel, or durable preference storage.
+- `[DECISION]` One duplicate-safe application-session `EchoInputRoot` owns runtime services, and duplicate rejection occurs before action cloning, subscriptions, device pairing, override application, or map enablement.
+- `[DECISION]` The project-owned `InputActionAsset` remains immutable authoring data. The default runtime mode clones it into an owned action collection; advanced injected collection mode is explicit and lower-isolation.
+- `[DECISION]` Actions, maps, and bindings use Unity Input System GUIDs as persistence authority. Names and indexes are never stable save identifiers.
+- `[DECISION]` Context state uses one primary context plus independently leased override contexts. Map directives are Enable, Disable, or Unchanged, with deterministic priority and acquisition-order resolution.
+- `[DECISION]` Input locks are additive, reason-based leases that can target all input, maps, or actions. They resolve after context directives and release safely out of order.
+- `[DECISION]` EchoInput owns enablement only for configured maps/actions. External drift is detected and reported rather than fought every frame.
+- `[DECISION]` The MVP supports one primary `InputUser` with conservative pairing. Device/scheme changes require meaningful input and filter analog drift, pointer jitter, noisy/synthetic events, and unassigned devices.
+- `[DECISION]` Device changes never automatically change gameplay context; prompt presentation and gameplay mode remain separate truths.
+- `[DECISION]` Interactive rebinding is transactional: snapshot, internal lock/context, candidate validation, conflict analysis, atomic commit, or exact rollback. One session per user is allowed by default.
+- `[DECISION]` Composite rebinding commits all required parts together or restores every part.
+- `[DECISION]` Conflict analysis considers normalized path, control scheme/group, user, expected type, composite identity, context overlap, shareability metadata, and reserved controls. The safe default is Reject.
+- `[DECISION]` Binding overrides use a versioned package-owned document keyed by stable action/binding GUIDs, with source identity/fingerprint, migration reporting, and preserved orphan/unknown entries. Unity’s opaque override JSON is interoperability input, not the long-term authority.
+- `[DECISION]` The Accord or project integration owns durable storage. EchoInput core provides session import/export and never silently chooses `PlayerPrefs`, a filename, or a profile boundary.
+- `[DECISION]` Glyph libraries and control displays are project-owned. Resolution falls back from exact glyph to family/generic/text, and the core ships no unlicensed branded controller art.
+- `[DECISION]` The runtime core is nonvisual and has no required uGUI, TextMeshPro, EventSystem, `PlayerInput`, generated-wrapper, or peer Echo-package dependency.
+- `[DECISION]` Built-in Input System interactions and processors are preferred before custom hold/tap/multi-tap/dead-zone helpers are introduced.
+- `[DECISION]` Diagnostics expose semantic state only and never retain raw typed text, key sequences, continuous input histories, full device serials, or platform-account identifiers.
+- `[DECISION]` Unity 6000.0 and Input System 1.17.0 are the planned public floors, with Unity 6000.3.8f1 as the primary development baseline; exact compatibility must be reverified before implementation and release.
+- `[DECISION]` The standalone Will Input Laboratory must prove contexts, locks, device filtering, pairing, transactional rebinding, composites, conflict resolution, override migration, prompt fallback, duplicate safety, reset, shutdown, and source-asset immutability without unrelated Echo packages.
+- `[DECISION]` The implementation test registry contains 70 planned cases.
+- `[DECISION]` No SFGSS-000 revision is required because these choices refine the already-approved EchoInput authority without changing the suite ownership matrix.
+
+**Promoted to:** The Will (`EchoInput`) Package Specification v1.0.0.
+
 ---
+
+
+### August 3, 2026 — The Looking Glass specification
+
+- `[DECISION]` The Looking Glass (`EchoUI`) specification v1.0.0 is approved as the Level 2 authority for reusable runtime UI presentation infrastructure; implementation remains deferred by the Foundation documentation gate.
+- `[DECISION]` EchoUI owns its persistent layer root, screen history, modal ordering/results, HUD region coordination, bounded notifications, prompts/tooltips, EventSystem/focus coordination, view lifecycles, theme application, accessibility-aware presentation, and UI diagnostics. It does not own settings truth, save files, input-context authority, scene travel, pause/time, audio playback, localization content, or gameplay rules.
+- `[DECISION]` The runtime uses one duplicate-safe application-session `EchoUIRoot`. Authority is claimed before EventSystem adoption/creation, layer setup, registry mutation, focus work, subscriptions, or transitions.
+- `[DECISION]` The root exposes seven explicit layers: Screen, HUD, Modal, Notification, Tooltip/Prompt, Transition, and Debug.
+- `[DECISION]` Screen history supports Push, Replace, Reset, and Back. Structural operations are serialized with bounded admission, explicit coalescing/rejection/queue behavior, cancellation, stale-operation protection, and hard transition bounds.
+- `[DECISION]` Modal entries use owned generational handles and exact-once terminal results. Out-of-order close, owner loss, repeated completion, capacity, queue overflow, and shutdown behavior are defined.
+- `[DECISION]` EventSystem behavior is an explicit non-destructive policy: adopt assigned, adopt one valid existing system, create when missing, or require an external system. EchoUI reports conflicts and never silently deletes project EventSystems.
+- `[DECISION]` Focus is event-driven and deterministic, with declared defaults, restoration, scoped containment, fallback, and a legal no-selection state. The package does not perform broad hierarchy searches or force reselection every frame.
+- `[DECISION]` Project-owned view prefabs and presenters interpret domain data and commands. EchoUI owns lifecycle and presentation coordination, never the domain state displayed by a view.
+- `[DECISION]` HUD regions, notification queues, prompts, tooltips, screen history, modal queues, and diagnostic histories are bounded. Overflow behavior is explicit and observable.
+- `[DECISION]` Runtime themes/configuration remain immutable. Effective accessibility policy may scale text, extend/manualize transient timing, suppress/reduce motion, and select contrast/fallback presentation; The Accord remains the persistence authority.
+- `[DECISION]` uGUI with TextMeshPro-compatible text is the first approved backend. Exact Unity 6 dependency versions are verified at M1 rather than guessed. UI Toolkit, native screen-reader providers, XR, and advanced virtualization remain deferred.
+- `[DECISION]` EchoUI diagnostics are privacy-safe and do not retain or export rendered text, typed input, arbitrary view-model payloads, profile names, screenshots, or hierarchy/file paths by default.
+- `[DECISION]` Peer integrations are explicit removable bridges or project adapters. EchoUI presents settings, saves, scene loading, pause, input, and audio state without absorbing their authority.
+- `[DECISION]` The isolated Looking Glass UI Laboratory defines 42 manual scenarios and the specification registers 84 implementation tests across installation, lifecycle, screens, modals, focus, accessibility, diagnostics, stress, integration, migration, and removal.
+
+**Promoted to:** The Looking Glass (`EchoUI`) Package Specification v1.0.0. No SFGSS-000 revision was required because these decisions refine the existing UI presentation authority and preserve the approved cross-package ownership matrix.
 
 ## Promotion Queue
 
@@ -207,6 +259,8 @@ Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Spe
 | 2026-08-03 | Passage authority, stable scene/route data, transition pipeline, admission, cancellation, activation, recovery, and bridge decisions | EchoSceneFlow specification v1.0.0 | Promoted |
 | 2026-08-03 | Pulse authority, primary/override model, nested pause, policy composition, Unity adapters, diagnostics, Test Lab, and bridge decisions | EchoGameState specification v1.0.0 | Promoted |
 | 2026-08-03 | Resonance authority, transport, voice-pool, handle, concurrency, routing, profile, diagnostics, Audio Laboratory, and bridge decisions | Jukebot specification v1.0.0 | Promoted |
+| 2026-08-03 | Will authority, runtime action ownership, contexts, locks, device/user, transactional rebind, override, prompt, privacy, Input Laboratory, and bridge decisions | EchoInput specification v1.0.0 | Promoted |
+| 2026-08-03 | Looking Glass authority, layers, screen/modal lifecycle, focus/EventSystem, HUD/notification/prompt, theme/accessibility, diagnostics, UI Laboratory, and bridge decisions | EchoUI specification v1.0.0 | Promoted |
 
 ---
 
@@ -214,7 +268,7 @@ Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Spe
 
 | Area | Result | Evidence/notes |
 |---|---|---|
-| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Pulse decisions fit existing runtime-state and pause ownership |
+| Suite bible | Approved and unchanged this checkpoint | v0.6.0; Looking Glass decisions refine the existing UI authority without changing suite ownership |
 | Package specification template | Approved and unchanged | v1.1.0 |
 | First Light specification | Approved | v1.0.0; no release-blocking design questions |
 | Observatory specification | Approved | v1.0.0; no release-blocking design questions |
@@ -222,7 +276,9 @@ Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Spe
 | Passage specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Pulse specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
 | Resonance specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; no release-blocking design questions |
-| Foundation documentation gate | Active | 6 of 10 package specifications approved |
+| Will specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 70-test registry; no release-blocking design questions |
+| Looking Glass specification | Approved | v1.0.0; all 30 SFGSS-001 sections completed; 42 Laboratory scenarios and 84-test registry; no release-blocking design questions |
+| Foundation documentation gate | Active | 8 of 10 package specifications approved |
 | Implementation | Not started by design | No package code begins before FW-DOC-12 passes |
 
 ---
@@ -244,9 +300,9 @@ Draft the complete **The Will — Input Infrastructure (`EchoInput`) Package Spe
 ## Handoff Snapshot
 
 **Current program:** Foundation Specification Pass  
-**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved  
-**Current package:** The Will (`EchoInput`)  
+**Completed package specifications:** First Light (`EchoLaunch`) v1.0.0 Approved; The Observatory (`EchoDiagnostics`) v1.0.0 Approved; The Accord (`EchoSettings`) v1.0.0 Approved; The Passage (`EchoSceneFlow`) v1.0.0 Approved; The Pulse (`EchoGameState`) v1.0.0 Approved; Resonance (`Jukebot`) v1.0.0 Approved; The Will (`EchoInput`) v1.0.0 Approved; The Looking Glass (`EchoUI`) v1.0.0 Approved  
+**Current package:** The Chronicle (`EchoSave`)  
 **Current stage:** Specification not yet drafted  
-**Last completed documentation change:** Resonance duplicate-safe audio authority, deterministic music transport, pooled SFX voices, generational handles, concurrency and stealing, independent ambience, mixer routing, profile schemas, diagnostics, isolated Audio Laboratory, and optional bridge boundaries approved  
+**Last completed documentation change:** EchoUI duplicate-safe persistent root, seven-layer topology, serialized screen operations, exact-once modal results, explicit EventSystem policy, deterministic focus restoration, HUD/notification/prompt ownership, immutable themes, accessibility seams, privacy-safe diagnostics, isolated UI Laboratory, and optional bridge boundaries approved  
 **Known blockers:** None  
-**Next checkpoint:** FW-DOC-07 — Draft and review the complete EchoInput package specification
+**Next checkpoint:** FW-DOC-09 — Draft and review the complete EchoSave package specification

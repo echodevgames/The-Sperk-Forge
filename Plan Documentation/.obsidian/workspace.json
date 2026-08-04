@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "SFGSS-First-Light-EchoLaunch-Package-Specification"
+              "title": "Echo_Game_Systems_Suite_Bible"
             }
           }
         ]
@@ -83,7 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 535.1000366210938
   },
   "right": {
     "id": "49f909472106175e",
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+                "file": "Echo_Game_Systems_Suite_Bible.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -190,19 +190,21 @@
   },
   "active": "880ead1679e5adbb",
   "lastOpenFiles": [
-    "Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
-    "Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
-    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
-    "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
-    "SFGSS-001_Package_Specification_Template.md",
+    "Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification.md",
+    "Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
+    "Foundation_Wave_Specification_Roadmap.md",
     "Echo_Game_Systems_Suite_Bible.md",
+    "Checkpoint Build Plans/Foundation_Wave_Specification_Roadmap.md",
+    "Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification.md",
+    "Current Notes.md",
+    "Package Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md",
+    "Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification.md",
+    "SFGSS-001_Package_Specification_Template.md",
     "Package Specifications/SFGSS-The-Passage-EchoSceneFlow-Package-Specification.md",
     "Package Specifications/SFGSS-The-Observatory-EchoDiagnostics-Package-Specification.md",
     "Package Specifications/SFGSS-The-Accord-EchoSettings-Package-Specification.md",
-    "Foundation_Wave_Specification_Roadmap.md",
     "Package Specifications",
     "Checkpoint Build Plans",
-    "README.md",
-    "Current Notes.md"
+    "README.md"
   ]
 }
