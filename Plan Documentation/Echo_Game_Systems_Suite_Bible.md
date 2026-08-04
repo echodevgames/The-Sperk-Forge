@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.18.0  
+**Version:** 0.19.0  
 **Status:** Approved lead architecture baseline; full-suite documentation program active; implementation locked  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
@@ -2746,6 +2746,16 @@ The following decisions form the approved starting baseline for the suite:
 118. The Integration Lab is the authority for cross-package compatibility evidence, exact revision combinations, pathway fixtures, bridges/providers, upgrades, and clean removal. Package repositories remain the authority for standalone proof.
 119. The preferred local workspace uses independent sibling clones and portable relative paths. Submodules and worktrees are optional reproducibility/maintenance tools and are never consumer requirements.
 120. Package versions are independent. Coordinated releases tag each artifact in its own repository and publish one compatibility snapshot; no global suite runtime version is implied.
+121. SFGSS-010 is the canonical Living Documentation, Current Notes, and Obsidian Workflow Standard. It governs vault structure, canonical entry points, Current Notes, link/graph behavior, promotion, handoff, compaction, documentation commits, attachments, validation, and archival.
+122. The repository documentation folder is the one live Obsidian vault. Copied vaults, duplicate current authorities, and version-suffixed live filenames are prohibited; document versions live in headers and Git history preserves prior states.
+123. `Current Notes.md` is a working capture surface only. It may record observations, questions, proposals, decisions awaiting promotion, tests, bugs, risks, and handoff context, but it never becomes the sole authority or permanent evidence store.
+124. Every material Current Notes entry is classified, routed, promoted into its owning authority or permanent record, linked to its destination, and compacted after checkpoint closeout when no longer active.
+125. Every active repository exposes README and Current Notes entry points. The central suite additionally maintains the Graph Roadmap, health check, documentation program roadmap, learning catalog, decision log, and integration matrices as navigation and status surfaces.
+126. Essential documentation remains readable in ordinary UTF-8 Markdown without an Obsidian plugin. Relative Markdown links are preferred for new critical cross-surface navigation; existing Obsidian wikilinks remain approved and may be normalized during consistency review.
+127. Obsidian tags, Graph View, backlinks, Mermaid diagrams, and maps of content are navigation aids only. They never override SFGSS-000, standards, package specifications, ADRs, integration specifications, or retained evidence.
+128. Device-specific Obsidian workspace state, personal themes, local paths, credentials, secrets, caches, and private support/player data are not committed unless an explicit authority approves a safe shared form.
+129. Every meaningful checkpoint reconciles Current Notes, updates affected authorities and navigation hubs, verifies one current handoff, validates links/status/evidence, and commits documentation with or immediately adjacent to the work it describes.
+130. Git history, checkpoint reports, ADRs, research records, test reports, changelogs, and release records are the durable archive. Current Notes is compacted rather than allowed to grow indefinitely; checkpoint ZIPs are transport artifacts, not competing sources of truth.
 
 ---
 
@@ -2784,14 +2794,14 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred twelve decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
+The suite identity and the one hundred thirty decisions in Section 21 are approved. The Foundation package specifications, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-INT-FOUNDATION-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, and the Foundation readiness evidence remain approved.
 
 Package implementation is locked by the Full Suite Documentation-First Gate. FL-M1-01 remains the first queued implementation checkpoint, but it is not active.
 
 Proceed to:
 
 ```text
-SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard
+SUITE-DOC-30 - Standards and Package Consistency Review
 ```
 
 Follow `Full_Suite_Documentation_Program_Roadmap.md`. Do not create package manifests, assembly definitions, C# scripts, Unity scenes, prefabs, ScriptableObjects, setup tools, samples, or bridges until the final Full Suite Documentation Readiness Gate passes.

@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current checkpoint:** SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard  
+**Current checkpoint:** SUITE-DOC-30 - Standards and Package Consistency Review  
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -38,7 +38,7 @@ flowchart LR
     E --> H[Expansion Collision Matrix]
     F --> I[Advanced Collision and Research Matrix — Approved]
     G --> H[SFGSS-008 Glossary and Naming Registry]
-    H --> J[Remaining Standards SFGSS-009 to 010]
+    H --> J[All Standards SFGSS-001 to 010 Approved]
     H --> J
     I --> J
     J --> K[Full Suite Matrix and Handoff Audit]
@@ -143,6 +143,7 @@ flowchart LR
 - [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007 – Architecture Decision Records]]
 - [[SFGSS-008_Suite_Glossary_and_Naming_Registry|SFGSS-008 – Glossary and Naming Registry]]
 - [[SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard|SFGSS-009 – Repository, Versioning, and Integration Workspace]]
+- [[SFGSS-010_Living_Documentation_Current_Notes_and_Obsidian_Workflow_Standard|SFGSS-010 – Living Documentation, Current Notes, and Obsidian Workflow]]
 - [[Full_Suite_Documentation_Program_Roadmap|Full Suite Documentation Program Roadmap]]
 - [[Current Notes|Current Notes]]
 

@@ -4,8 +4,8 @@
 **Authority:** Working context only; SFGSS-000, approved package specifications, accepted ADRs, integration specifications, and approved Checkpoint Build Plans remain authoritative  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Last reconciled:** August 4, 2026  
-**Current focus:** SFGSS-009 Repository, Versioning, and Integration Workspace Standard
-**Current checkpoint:** SUITE-DOC-28 - Define multi-repository workflow, package versioning, tags, releases, compatibility catalogs, local development, integration workspaces, and distribution rules
+**Current focus:** Standards and Package Consistency Review
+**Current checkpoint:** SUITE-DOC-30 - Reconcile SFGSS-002 through SFGSS-010 with all package, ADR, integration, roadmap, naming, repository, and documentation authorities
 
 > Capture quickly here. Promote deliberately at checkpoint closeout.
 
@@ -34,11 +34,11 @@ Do not leave durable decisions only on this page. At checkpoint closeout, promot
 
 ### Goal
 
-Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7.2 and 7.3 before package implementation begins, then finish the remaining standards and final reconciliation. Preserve honest `Not run` states for evidence that requires implementation.
+Reconcile SFGSS-002 through SFGSS-010 with all 28 package foundations, ADRs, integration matrices, naming and repository registries, navigation hubs, and handoff records before the full-suite matrix and learning reviews. Preserve honest `Not run` states for evidence that requires implementation.
 
 ### Active source documents
 
-- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.17.0.
+- `Echo_Game_Systems_Suite_Bible.md` - SFGSS-000 v0.19.0.
 - `SFGSS-002_Dependency_Bridge_and_Assembly_Standard.md` - v1.0.0 Approved.
 - `SFGSS-003_Data_IDs_Serialization_and_Migration_Standard.md` - v1.0.0 Approved.
 - `SFGSS-004_Testing_Validation_Test_Labs_and_Release_Standard.md` - v1.1.0 Approved.
@@ -47,6 +47,8 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 - `SFGSS-007_Architecture_Decision_Record_Standard.md` - v1.0.0 Approved.
 - `SFGSS-008_Suite_Glossary_and_Naming_Registry.md` - v1.0.0 Approved.
 - `SFGSS-008_Package_Naming_Registry.json` - v1.0.0 documentation companion.
+- `SFGSS-009_Repository_Versioning_and_Integration_Workspace_Standard.md` - v1.0.0 Approved.
+- `SFGSS-010_Living_Documentation_Current_Notes_and_Obsidian_Workflow_Standard.md` - v1.0.0 Approved.
 - `Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log.md` - active current register.
 - `Architecture Decision Records/SFGSS-ADR-TEMPLATE.md` - canonical reusable template.
 - `Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation.md` - Accepted.
@@ -66,7 +68,7 @@ Complete every Expansion and Advanced package foundation in SFGSS-000 Sections 7
 
 ### Next action
 
-Run **SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace Standard**. Define repository ownership, package release units, SemVer, tags, branches, compatibility catalogs, local path development, integration workspaces, release artifacts, and cross-repository checkpoint behavior.
+Run **SUITE-DOC-30 - Standards and Package Consistency Review**. Normalize stale package/standard wording, document IDs, public-title punctuation, repository fields, link compatibility, Current Notes structure, and cross-standard references without authorizing implementation.
 
 ---
 
@@ -80,6 +82,24 @@ Run **SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace
 ---
 
 ## Active Notes
+
+
+## August 4, 2026 - SUITE-DOC-29 SFGSS-010 approved
+
+- `[DECISION]` SFGSS-010 v1.0.0 is approved as the canonical living-documentation, Current Notes, Obsidian, link, promotion, handoff, compaction, documentation-commit, and archival standard.
+- `[DECISION]` The repository documentation folder remains the one live vault; copied vaults, duplicate current authorities, and version-suffixed live filenames are prohibited.
+- `[DECISION]` Current Notes is a workbench rather than a warehouse. Durable decisions, tests, bugs, risks, guides, migration rules, and release facts move into their owning documents at checkpoint closeout.
+- `[DECISION]` New critical links should prefer relative Markdown when practical for GitHub and Obsidian compatibility. Existing wikilinks remain approved and may be normalized during SUITE-DOC-30.
+- `[DECISION]` Every repository exposes README and Current Notes entry points; the central vault also maintains Graph Roadmap, health check, program roadmap, learning catalog, decision log, and integration matrices.
+- `[DECISION]` Device-specific Obsidian workspace state, personal themes, caches, local paths, credentials, and private data remain untracked.
+- `[DECISION]` SFGSS-010 approves reusable Current Notes and checkpoint-handoff templates plus a machine-readable documentation registry.
+- `[TEST]` Static audit confirms all canonical central document classes and entry points exist. Package-local repositories and Obsidian plugin behavior remain `Not run` because the package repositories have not been created.
+- `[RISK]` The central Current Notes file exceeds the recommended active-surface trigger and contains historical handoffs. Structural compaction is queued for SUITE-DOC-30 rather than silently performed here.
+- `[HANDOFF]` SUITE-DOC-30 performs the Standards and Package Consistency Review.
+
+**Promoted to:** SFGSS-010 v1.0.0, SFGSS-010 companion templates/registry, SFGSS-000 v0.19.0 decisions 121-130, SUITE-DOC-29 audit report, README, Graph Roadmap, health check, program roadmap, Current Notes, and artifact manifest.
+
+---
 
 
 ## August 4, 2026 - SFGSS-008 Suite Glossary and Naming Registry
@@ -1239,3 +1259,20 @@ Run **SUITE-DOC-28 - SFGSS-009 Repository, Versioning, and Integration Workspace
 **Evidence state:** Repository creation, remotes, rulesets, CI, registry, releases, tags, tarballs, and compatibility execution remain `Not run`  
 **Commit/push:** SUITE-DOC-28 pending owner confirmation  
 **Stop point:** Before SFGSS-010 drafting is committed or any repository/package implementation is created
+
+
+## Handoff Snapshot - SUITE-DOC-29
+
+**Completed checkpoint:** SUITE-DOC-29 - SFGSS-010 Living Documentation, Current Notes, and Obsidian Workflow Standard  
+**Result:** Approved v1.0.0  
+**Suite Bible:** v0.19.0  
+**Current focus:** Standards and Package Consistency Review  
+**Active checkpoint:** SUITE-DOC-30  
+**Package foundations:** 28 of 28 approved  
+**Package learning reviews:** 0 of 28 complete  
+**Package implementation:** Not started  
+**Runtime authorization:** None  
+**Evidence state:** Package repositories, package-local vaults, Obsidian plugins, link validators, runtime behavior, and empirical compatibility remain `Not run`  
+**Known blockers:** None for documentation; Current Notes compaction and listed consistency repairs are queued for SUITE-DOC-30  
+**Commit/push:** SUITE-DOC-29 pending owner confirmation  
+**Stop point:** Before consistency-review repairs are declared complete or any package/repository implementation begins

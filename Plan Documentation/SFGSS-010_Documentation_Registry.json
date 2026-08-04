@@ -1,0 +1,79 @@
+{
+  "documentId": "SFGSS-010-COMPANION",
+  "version": "1.0.0",
+  "status": "Approved documentation companion",
+  "updated": "2026-08-04",
+  "canonicalEntryPoints": [
+    "README.md",
+    "Suite_Graph_Roadmap.md",
+    "Suite_Health_Check_and_Remaining_Documentation.md",
+    "Echo_Game_Systems_Suite_Bible.md",
+    "Current Notes.md",
+    "Full_Suite_Documentation_Program_Roadmap.md"
+  ],
+  "canonicalFolders": [
+    "Package Specifications",
+    "Architecture Decision Records",
+    "Integration Specifications",
+    "Checkpoint Build Plans",
+    "Research Records",
+    "Test Reports",
+    "Release Records",
+    "Documentation Assets"
+  ],
+  "currentNotesLabels": [
+    "NOTE",
+    "QUESTION",
+    "PROPOSAL",
+    "DECISION",
+    "TEST",
+    "BUG",
+    "RISK",
+    "HANDOFF"
+  ],
+  "promotionStates": [
+    "Pending",
+    "In review",
+    "Promoted",
+    "Deferred",
+    "Rejected",
+    "Superseded"
+  ],
+  "evidenceStates": [
+    "Not run",
+    "Pass",
+    "Pass with advisory",
+    "Fail",
+    "Blocked",
+    "Not applicable"
+  ],
+  "currentNotesRequiredSections": [
+    "How to Use This Page",
+    "Current Focus",
+    "Open Questions",
+    "Active Notes",
+    "Promotion Queue",
+    "Latest Validation Snapshot",
+    "Checkpoint Closeout Checklist",
+    "Handoff Snapshot",
+    "Graph Navigation"
+  ],
+  "recommendedCompactionTriggers": {
+    "lines": 750,
+    "bytes": 75000,
+    "historicalHandoffs": 1
+  },
+  "prohibitedLiveFilenamePatterns": [
+    "_v<version>",
+    "FINAL",
+    "COPY",
+    "backup",
+    "<date-suffixed current authority>"
+  ],
+  "navigationOnlyDocuments": [
+    "README.md",
+    "Suite_Graph_Roadmap.md",
+    "Suite_Health_Check_and_Remaining_Documentation.md",
+    "Package_Learning_Review_Catalog.md"
+  ]
+}
