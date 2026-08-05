@@ -13,6 +13,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-02` Neutral Launch-State Vocabulary
   - `FL-M2-03` Launch Session and Read-Only Progress Surface
   - `FL-M2-04` Launch Lifecycle Transition Guard
+  - `FL-M2-05` Lifecycle Notifications
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -57,6 +58,17 @@ First Light now provides:
 - Permanent terminal-state freezing
 - Transactional publication that preserves the prior snapshot when validation fails
 
+### Lifecycle Notifications
+
+- Public `LaunchStateChanged` observer event
+- Public `LaunchProgressChanged` observer event
+- Previous/current notification payloads
+- State notification before progress notification
+- Accepted state visible during callbacks
+- Per-listener exception containment
+- Stable listener-failure diagnostic `ELAUNCH-EVENT-001`
+- Delegate cleanup when the root is destroyed
+
 ## Approved Lifecycle
 
     None
@@ -77,7 +89,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `82`
+- Passed: `102`
 - Failed: `0`
 - Ignored: `0`
 
@@ -87,8 +99,12 @@ Breakdown:
 - Launch-state vocabulary tests: `39`
 - Launch session and progress tests: `14`
 - Lifecycle transition tests: `22`
+- Lifecycle notification tests: `20`
 
-Four `ELAUNCH-ROOT-001` warnings are expected diagnostic evidence from duplicate-root tests.
+Expected yellow diagnostic evidence:
+
+- `ELAUNCH-ROOT-001` from duplicate-root tests
+- `ELAUNCH-EVENT-001` from broken-listener containment tests
 
 ## Not Implemented Yet
 
@@ -98,7 +114,6 @@ First Light does not yet provide:
 - Startup configuration assets
 - Startup sequences or step definitions
 - Startup executors
-- Public state or progress events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -123,7 +138,7 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Eighty-two passing Runtime Play Mode tests
+- One hundred two passing Runtime Play Mode tests
 - No out-of-scope startup execution
 
 Still `Not run`:

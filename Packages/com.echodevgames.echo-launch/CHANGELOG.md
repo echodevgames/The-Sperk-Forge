@@ -8,6 +8,17 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-05 - Lifecycle Notifications
+
+- Public `LaunchStateChanged` observer event
+- Public `LaunchProgressChanged` observer event
+- Previous/current state and progress payloads
+- State notification before progress notification
+- Per-listener exception containment
+- Stable listener-failure diagnostic `ELAUNCH-EVENT-001`
+- Notification cleanup when the authoritative root is destroyed
+- Twenty Runtime Play Mode notification tests
+
 #### FL-M2-04 - Launch Lifecycle Transition Guard
 
 - Internal `LaunchStateTransitionRules`
@@ -45,30 +56,29 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `82`
+- Passed: `102`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-04 coverage:
+FL-M2-05 coverage:
 
-- Terminal-state recognition
-- Approved forward transitions
-- Same active-state publication
-- Failure and interruption paths
-- Backward-transition rejection
-- Skipped-phase rejection
-- Undefined-status rejection
-- `None` publication rejection
-- Terminal-session freezing
-- Snapshot preservation after rejected publication
-- Root publication using the lifecycle guard automatically
+- State-event emission for accepted lifecycle changes
+- Progress-event emission for every accepted publication
+- State-before-progress dispatch order
+- Previous/current payload accuracy
+- No notification from rejected publications
+- Listener unsubscribe behavior
+- Per-listener exception containment
+- Cross-event containment after a failed state listener
+- Stable `ELAUNCH-EVENT-001` diagnostics
+- Duplicate-root publication rejection
+- Destroyed-root subscription cleanup
 
 ### Not Included
 
 - Automatic lifecycle advancement
 - Startup configuration
 - Startup sequence execution
-- Public lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading

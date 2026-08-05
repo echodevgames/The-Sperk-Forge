@@ -9,6 +9,7 @@
   - `FL-M2-02`
   - `FL-M2-03`
   - `FL-M2-04`
+  - `FL-M2-05`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -20,6 +21,7 @@ First Light currently establishes:
 3. One live session owned by the authoritative root
 4. Read-only state and progress exposure
 5. Central lifecycle transition validation
+6. Isolated lifecycle notifications
 
 It does not yet execute startup behavior.
 
@@ -29,6 +31,10 @@ It does not yet execute startup behavior.
     ├── Core/
     │   ├── LaunchAuthorityClaim.cs
     │   └── EchoLaunchRoot.cs
+    ├── Events/
+    │   ├── LaunchNotificationDispatcher.cs
+    │   ├── LaunchProgressChangedEvent.cs
+    │   └── LaunchStateChangedEvent.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
     ├── State/
@@ -45,7 +51,8 @@ It does not yet execute startup behavior.
     ├── EchoLaunchRootAuthorityTests.cs
     ├── LaunchStateVocabularyTests.cs
     ├── LaunchSessionProgressTests.cs
-    └── LaunchLifecycleTransitionTests.cs
+    ├── LaunchLifecycleTransitionTests.cs
+    └── LaunchNotificationTests.cs
 
 ## Lifecycle Transition Authority
 
@@ -124,11 +131,41 @@ If validation fails, the stored progress snapshot remains unchanged.
 
 The root therefore inherits the lifecycle guard automatically without duplicating transition logic.
 
+## Lifecycle Notifications
+
+`EchoLaunchRoot` exposes two public observer events:
+
+    LaunchStateChanged
+    LaunchProgressChanged
+
+`LaunchStateChanged` is raised only when an accepted publication changes the lifecycle state.
+
+`LaunchProgressChanged` is raised after every accepted publication, including a same-state progress update.
+
+Publication order is:
+
+    validate publication
+        -> accept the new snapshot
+            -> dispatch state change when required
+                -> dispatch progress change
+
+Listeners therefore observe the accepted authoritative state during their callbacks.
+
+`LaunchNotificationDispatcher` snapshots the invocation list and invokes each listener independently. One listener exception cannot stop later listeners, block the progress event, or roll back accepted launch state.
+
+Listener failures produce:
+
+    ELAUNCH-EVENT-001
+
+Rejected duplicate-root, mode-mismatched, invalid-transition, and terminal-rewrite publications emit no notifications.
+
+Root destruction clears both event delegate fields so subscriptions cannot transfer to a later root.
+
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `82`
+- Passed: `102`
 - Failed: `0`
 - Ignored: `0`
 
@@ -138,6 +175,7 @@ Breakdown:
 - Vocabulary tests: `39`
 - Session and progress tests: `14`
 - Lifecycle transition tests: `22`
+- Lifecycle notification tests: `20`
 
 ## Current Exclusions
 
@@ -147,7 +185,6 @@ Not implemented:
 - Startup configuration assets
 - Startup sequences
 - Step definitions or executors
-- Public state or progress events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -159,6 +196,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M2-04 stops after illegal lifecycle publication is rejected without mutating the session.
+FL-M2-05 stops after accepted lifecycle state can be observed safely without giving listeners launch authority.
 
 The next runtime slice requires separate approval.

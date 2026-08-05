@@ -2,63 +2,68 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-04`
-- Title: Launch Lifecycle Transition Guard
+- Checkpoint: `FL-M2-05`
+- Title: Lifecycle Notifications
 - Package version: `0.1.0`
-- Status: Complete, pending commit and push
-- Runtime Play Mode result: 82 passed, 0 failed, 0 ignored
+- Implementation status: Complete and pushed
+- Implementation commit: `877761f`
+- Documentation closeout: Pending adjacent commit
+- Runtime Play Mode result: 102 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- Internal `LaunchStateTransitionRules`
-- Approved forward lifecycle graph
-- Same-state active progress publication
-- Failure and interruption paths
-- Backward-transition rejection
-- Skipped-phase rejection
-- Undefined-status rejection
-- Permanent terminal-session freezing
-- Transactional `LaunchSession.Publish`
-- Twenty-two lifecycle transition test cases
-- Lifecycle-aligned maintenance of FL-M2-03 tests
+- Public `LaunchStateChanged` notification
+- Public `LaunchProgressChanged` notification
+- Previous/current notification payloads
+- Accepted-state visibility before callbacks
+- State notification before progress notification
+- Same-state progress notification without a false state event
+- No notification from rejected publications
+- Per-listener exception containment
+- Stable diagnostic `ELAUNCH-EVENT-001`
+- Delegate cleanup when the root is destroyed
+- Twenty notification tests
 
 ## Evidence Summary
 
 ### Passed
 
-- Terminal-state recognition
-- Forward lifecycle transitions
-- Same active-state publication
-- Active-state failure path
-- Active-state interruption path
-- Backward-transition rejection
-- Skipped-phase rejection
-- Undefined current-status rejection
-- Undefined next-status rejection
-- `None` publication rejection
-- Publication after `Completed` rejection
-- Publication after `Failed` rejection
-- Publication after `Interrupted` rejection
-- Previous snapshot preservation after rejection
-- Root integration
-- Eighty-two total Runtime Play Mode tests
+- Accepted lifecycle state event
+- Accepted progress event
+- Same-state progress-only publication
+- State-before-progress order
+- Previous/current state payload
+- Previous/current progress payload
+- Invalid-transition silence
+- Launch-mode mismatch silence
+- Terminal-rewrite silence
+- Unsubscription
+- State-listener isolation
+- Progress-listener isolation
+- Cross-event isolation
+- Stable listener-failure diagnostics
+- Duplicate-root publication rejection
+- No-listener publication
+- Destroyed-root subscription isolation
+- Delegate-field cleanup
+- One hundred two total Runtime Play Mode tests
 
 ### Expected Diagnostics
 
-Four tests intentionally generated:
+Tests intentionally generated:
 
     ELAUNCH-ROOT-001
+    ELAUNCH-EVENT-001
 
-These warnings were expected and matched by `LogAssert.Expect`.
+These warnings were expected and matched by the automated test suite.
 
 ### Not Run
 
 - Automatic lifecycle advancement
 - Startup configuration
 - Startup execution
-- Public lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -67,15 +72,30 @@ These warnings were expected and matched by `LogAssert.Expect`.
 
 ## Changed Files
 
-- `Runtime/State/LaunchStateTransitionRules.cs`
-- `Runtime/State/LaunchSession.cs`
-- `Tests/Runtime/PlayMode/LaunchLifecycleTransitionTests.cs`
-- `Tests/Runtime/PlayMode/LaunchSessionProgressTests.cs`
+Runtime implementation:
+
+- `Runtime/Core/EchoLaunchRoot.cs`
+- `Runtime/Events/LaunchNotificationDispatcher.cs`
+- `Runtime/Events/LaunchProgressChangedEvent.cs`
+- `Runtime/Events/LaunchStateChangedEvent.cs`
 - Unity-generated `.meta` files
-- Adjacent package and suite documentation
+
+Automated tests:
+
+- `Tests/Runtime/PlayMode/LaunchNotificationTests.cs`
+- Unity-generated `.meta` file
+
+Adjacent documentation:
+
+- Package checkpoint
+- Package test report
+- Root completion record
+- Changelog, architecture, index, README, and suite Current Notes
 
 ## Handoff Snapshot
 
-FL-M2-04 is complete and ready for final Git review, commit, and push.
+FL-M2-05 implementation is complete and pushed in commit `877761f`.
+
+The adjacent documentation closeout is ready for final Git review, commit, and push.
 
 No additional runtime behavior is authorized until the next checkpoint is approved.
