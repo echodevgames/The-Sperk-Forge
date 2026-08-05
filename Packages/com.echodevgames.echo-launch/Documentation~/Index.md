@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Immutable failed/interrupted reports and public terminal events implemented; destination handoff and successful completion pending
+- Development stage: FL-M3-08 destination and configuration schema authority approved; runtime handoff implementation pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -34,6 +34,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 
 - [Architecture](Developer/Architecture.md)
 - [Current Notes](Developer/Current%20Notes.md)
+- [EchoLaunch-ADR-001 Project-Owned Launch Destination and Configuration Schema 3](Developer/ADR/EchoLaunch-ADR-001_Project-Owned_Launch_Destination_and_Configuration_Schema_3.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -146,4 +147,4 @@ First Light currently proves:
 - Transition-pending success without false completion
 - Three hundred thirty-six passing Runtime Play Mode tests
 
-Retries, successful report finalization, `LaunchCompleted`, dependency-graph validation, automatic startup, presentation, and destination handoff remain outside the implemented scope.
+The project-owned destination and configuration schema 3 contract is approved but not yet implemented. Retries, automatic startup, presentation, direct-scene initialization, Editor migration, and normal scene travel remain outside the active implementation scope.

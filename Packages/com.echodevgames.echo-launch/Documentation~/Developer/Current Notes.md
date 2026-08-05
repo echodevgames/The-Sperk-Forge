@@ -2,119 +2,68 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M3-07`
-- Title: Immutable Launch Report and Public Terminal Events
+- Checkpoint: `FL-M3-08`
+- Title: Initial Destination Contract, Load Result, and Completed Handoff
 - Package version: `0.1.0`
-- Implementation status: Complete and pushed
-- Implementation commit: `a6f6544`
-- Previous documentation commit: `d728602`
-- Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 336 passed, 0 failed, 0 ignored
-- Compilation result: 0 errors, 0 compiler warnings
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.4.0
+- Package ADR: EchoLaunch-ADR-001 v1.0.0
+- Authority status: Approved; commit pending
+- Starting implementation commit: `a6f6544`
+- Starting documentation commit: `f76b9df`
+- Runtime Play Mode baseline: 336 passed, 0 failed, 0 ignored
+- Compilation baseline: 0 errors, 0 compiler warnings
 
-## Completed Result
+## Approved Decision
 
-Implemented:
+- `LaunchDestination` is a standalone project-owned ScriptableObject.
+- Destination schema begins at version 1.
+- `EchoLaunchConfiguration` advances from schema 2 to schema 3.
+- Schema 2 remains the historical startup-sequence-only shape.
+- Schema 3 adds one serialized initial destination reference.
+- Runtime blocks older/unknown schema.
+- Runtime does not silently migrate or rewrite project assets.
+- Editor migration from schema 2 to 3 is later work.
+- Normal mid-game scene travel remains outside EchoLaunch.
 
-- Public immutable `LaunchStepReport`
-- Public immutable `LaunchReport`
-- Report schema version `1`
-- Producing package version `0.1.0`
-- Internal single-use `LaunchReportBuilder`
-- Authority-filtered `EchoLaunchRoot.LastReport`
-- Public `LaunchFailed`
-- Public `LaunchInterrupted`
-- Immutable copied step timing, policy, progress, result, and identity
-- Failed preflight and blocking reports
-- Interrupted reports after executor settlement
-- Authored traversal and warning/failure accounting
-- State and report acceptance before terminal event dispatch
-- Exactly-once matching terminal event publication
-- Listener isolation through `ELAUNCH-EVENT-001`
-- Duplicate-root report and event silence
-- Destruction-driven late-event suppression
-- Transition-pending success without finalized report
-- Twenty-five new Runtime Play Mode tests
+## FL-M3-08 Intended Runtime Outcome
 
-## Evidence Summary
+- Validate the destination before startup-step side effects.
+- Execute the startup sequence.
+- Transition through one injected initial destination loader.
+- Publish meaningful transition progress.
+- Confirm destination activation.
+- Advance `Transitioning -> Completed`.
+- Finalize one successful immutable `LaunchReport`.
+- Store it in `LastReport`.
+- Dispatch `LaunchCompleted` exactly once.
+- Preserve failure, interruption, duplicate-root, destruction, and immutability behavior.
 
-### Final Pass
+## Explicitly Not Authorized
 
-- Runtime Play Mode: 336 passed, 0 failed, 0 ignored
-- New report and terminal-event fixture: 25 passed
-- Compilation: 0 errors, 0 compiler warnings
-- Implementation commit `a6f6544` pushed to `main` and `origin/main`
-- Working tree clean after implementation push
+- Automatic startup.
+- Presenter/splash implementation.
+- Direct-scene initializer.
+- Editor migration or setup.
+- Test Lab scenes.
+- EchoSceneFlow bridge.
+- Normal scene travel.
+- Report export.
+- Package version bump.
 
-### Compile Correction
+## Evidence State
 
-Initial compile:
-
-- 2 errors
-- Both in the new test fixture
-- Cause: nonexistent `EchoLaunchRuntimeReset.ResetStatics()`
-
-Correction:
-
-- Replaced both calls with `LaunchAuthorityClaim.Reset()`
-- No runtime or report code changed
-
-### Expected Diagnostics
-
-Retained and new tests intentionally generate:
-
-    ELAUNCH-ROOT-001
-    ELAUNCH-EVENT-001
-
-These are expected runtime diagnostics, not compiler warnings or failures.
-
-### Not Run
-
-- Destination validation or loading
-- Successful report finalization
-- `LaunchCompleted`
-- `Transitioning -> Completed`
-- Public step lifecycle events
-- Automatic startup from Unity callbacks
-- Splash or status presentation
-- Direct-scene initialization
-- Report export
-- Editor setup and repair
-- Standalone Laboratory
-- Player builds
-- Performance measurements
-
-## Changed Files
-
-Modified runtime:
-
-- `Runtime/Core/EchoLaunchRoot.cs`
-
-New runtime:
-
-- `Runtime/Reports.meta`
-- `Runtime/Reports/LaunchStepReport.cs`
-- `Runtime/Reports/LaunchReport.cs`
-- `Runtime/Reports/LaunchReportBuilder.cs`
-- Unity-generated `.meta` files
-
-Automated tests:
-
-- `Tests/Runtime/PlayMode/LaunchReportAndTerminalEventTests.cs`
-- Unity-generated `.meta`
-
-Checkpoint plan:
-
-- `Plan Documentation/Checkpoint Build Plans/FL-M3-07_Immutable_Launch_Report_and_Public_Terminal_Events_Checkpoint_Build_Plan.md`
+- Authority decision: Approved.
+- Source conflict discovery: Complete.
+- Runtime implementation: Not started.
+- Compilation: Not run for FL-M3-08.
+- Runtime tests: Not run for FL-M3-08.
+- Standalone scene activation: Not run.
+- Real-project adoption: Not run.
 
 ## Handoff Snapshot
 
-FL-M3-07 implementation is complete and pushed in commit `a6f6544`.
+FL-M3-07 is fully closed in implementation commit `a6f6544` and documentation commit `f76b9df`.
 
-Failed and interrupted root-owned launches now produce immutable reports and matching public terminal events after authoritative lifecycle acceptance.
+FL-M3-08 may begin only after the specification v1.4.0, EchoLaunch-ADR-001, and Checkpoint Build Plan are committed.
 
-Successful startup remains at `Transitioning` with no finalized report or completed event.
-
-The adjacent FL-M3-07 documentation closeout is the only active repository work.
-
-Tentative next checkpoint: FL-M3-08 - Initial Destination Contract, Load Result, and Completed Handoff.
+Next action: apply and push the authority bundle.

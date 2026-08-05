@@ -1,23 +1,23 @@
 # First Light – Startup and Launch Package Specification
 
-**Working document ID:** SFGSS-PKG-ECHOLAUNCH-001  
-**Specification version:** 1.3.0
-**Status:** Approved  
-**Technical package name:** EchoLaunch  
+**Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
+**Specification version:** 1.4.0
+**Status:** Approved
+**Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
-**Package ID:** `com.echodevgames.echo-launch`  
-**Runtime namespace:** `EchoDevGames.EchoLaunch`  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
+**Package ID:** `com.echodevgames.echo-launch`
+**Runtime namespace:** `EchoDevGames.EchoLaunch`
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
 **Planned repository:** `EchoDevGames/EchoLaunch`
-**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
-**Unity baseline:** Unity 6000.3.8f1  
-**Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 4, 2026
+**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
+**Unity baseline:** Unity 6000.3.8f1
+**Parent authority:** SFGSS-000 and SFGSS-001
+**Last updated:** August 5, 2026
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is approved as the authoritative package design. SUITE-DOC-33 activates implementation only through the active SFGSS-005 Checkpoint Build Plan, FL-M1-01 — Package Skeleton. No C# or launch behavior is authorized by the gate or by FL-M1-01.
+> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M3-08 is authorized only after the accepted destination/schema decision and this v1.4.0 authority update are committed.
 
 ---
 
@@ -30,14 +30,15 @@
 | 1.1.0 | 2026-08-03 | Approved | Recorded FW-DOC-12 readiness approval, adopted SFGSS-005 as the implementation workflow authority, and selected FL-M1-01 Package Skeleton without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-04 | Approved | Separated the default uGUI presenter from the neutral Runtime assembly; Set the Editor assembly to `autoReferenced: false`; Canonicalized immutable `StartupStepDefinition` versus runtime executor terminology. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 | 1.3.0 | 2026-08-04 | Approved | Recorded SUITE-DOC-33 activation of FL-M1-01, adopted the just-in-time package learning gate, and updated implementation status without changing runtime behavior or public API intent | Jesse “Echo” Adams |
+| 1.4.0 | 2026-08-05 | Approved | Selected a standalone project-owned `LaunchDestination` ScriptableObject, assigned destination schema version 1, advanced `EchoLaunchConfiguration` to schema version 3, preserved schema 2 as the historical startup-sequence-only shape, and authorized FL-M3-08 destination handoff work | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** First Light – Startup and Launch
-**Technical identifier:** EchoLaunch  
-**Flavor line:** Awaken the systems this project needs.  
+**Technical identifier:** EchoLaunch
+**Flavor line:** Awaken the systems this project needs.
 **Plain-language subtitle:** Startup sequencing, launch diagnostics, splash presentation, and initial destination handoff.
 
 **One-sentence ownership contract:**
@@ -376,7 +377,7 @@ EchoLaunchConfiguration
 ├── StartupSequence
 │   └── ordered StartupStep definitions
 ├── SplashSequence
-├── FinalDestination
+├── InitialDestination → project-owned LaunchDestination asset
 └── runtime and presentation policies
 
 Scene authority
@@ -453,7 +454,7 @@ EchoDirectSceneInitializer
 | `StartupStep` | Base definition and execution contract for one launch operation | Yes, step ID | Definition no; active execution state is separate | Usually yes; package may ship safe test/sample steps |
 | `SplashSequence` | Ordered image splash entries and sequence policy | Yes | No | Yes |
 | `SplashEntry` | Image, label, timing, fade, minimum display, and skip policy | Entry ID required when referenced diagnostically | No | Stored in project-owned sequence |
-| `LaunchDestination` | Validated initial scene reference and display metadata | Yes | No | Yes or embedded config data, final choice pending API review |
+| `LaunchDestination` | Validated initial scene reference and display metadata | Yes, destination ID | No | Yes; standalone project-owned ScriptableObject |
 | `DirectSceneConfiguration` | Development-only root prefab/configuration and inclusion policy | Yes | No | Yes |
 
 ### 9.2 Runtime state
@@ -478,13 +479,27 @@ EchoDirectSceneInitializer
 
 ### 9.4 ScriptableObject safety
 
-All configuration and step assets are treated as immutable during play. Active index, progress, timestamps, cancellation, retries, exception data, and results remain in `LaunchSession` and `StartupStepExecution` runtime objects. Tests must verify that a completed Play Mode run does not dirty or modify configuration assets.
+All configuration, sequence, step, splash, and destination assets are treated as immutable during play. Active index, progress, timestamps, cancellation, retries, exception data, results, and scene-loading state remain in runtime-owned objects. Tests must verify that a completed Play Mode run does not dirty or modify configuration or destination assets.
+
+### 9.4.1 Initial destination asset decision
+
+- `LaunchDestination` is a standalone project-owned `ScriptableObject`.
+- `LaunchDestination.CurrentSchemaVersion` begins at `1`.
+- The asset owns a stable destination ID, a user-facing display label, and runtime-safe initial scene metadata.
+- Scene destination identity does not depend on the display label.
+- `EchoLaunchConfiguration` stores one serialized `LaunchDestination` reference named for the initial destination role.
+- Runtime code reads but never rewrites either asset.
+- Editor tooling may later use `SceneAsset` authoring support, but the neutral Runtime assembly stores only runtime-safe scene metadata and does not reference `UnityEditor`.
+- Conditional or save-aware destination providers remain deferred.
 
 ### 9.5 Serialization and migration
 
-- `EchoLaunchConfiguration` and other project-owned assets include a serialized schema version.
+- `EchoLaunchConfiguration.CurrentSchemaVersion` is `3`.
+- Configuration schema `2` remains the historical startup-sequence-only serialized shape.
+- Configuration schema `3` adds the serialized project-owned initial `LaunchDestination` reference.
+- `LaunchDestination.CurrentSchemaVersion` is `1`.
 - Editor migration owns supported asset upgrades.
-- Runtime may detect unsupported older/newer versions but must not silently rewrite assets.
+- Runtime blocks unsupported older/newer versions through `ELAUNCH-CFG-002` and must not silently rewrite assets.
 - Migration previews the affected assets and preserves a backup when a destructive structure change is required.
 - Unknown future versions block Editor repair and produce a clear compatibility result.
 - `LaunchReport` includes a report schema version for future export compatibility.
@@ -509,7 +524,7 @@ All configuration and step assets are treated as immutable during play. Active i
 | `StartupStepPolicy` | Serializable struct/class | Required/optional, failure action, timeout, skip/retry metadata | Stored in sequence entry |
 | `SplashSequence` | ScriptableObject | Ordered image splash configuration | Project-owned |
 | `SplashEntry` | Serializable definition | Image and timing/skip metadata | Owned by sequence |
-| `LaunchDestination` | Serializable definition or ScriptableObject | Initial validated scene target | Project-owned |
+| `LaunchDestination` | ScriptableObject | Initial validated scene target with stable identity and runtime-safe scene metadata | Project-owned |
 | `LaunchReport` | Immutable class | Complete launch summary and step results | Finalized by root |
 | `LaunchProgressSnapshot` | Immutable struct | Current phase, step, progress, message, elapsed time | Published by root |
 | `EchoDirectSceneInitializer` | MonoBehaviour | Development-only minimum launch creation | Sample/project scene helper |
@@ -1494,10 +1509,10 @@ Before writing code:
 
 ### 30.2 Approval record
 
-**Decision:** Approved  
-**Approved by:** Jesse “Echo” Adams  
-**Date:** August 3, 2026  
-**Conditions or notes:** The design is approved. SUITE-DOC-33 has passed with advisory and activated only FL-M1-01 Package Skeleton under its approved Checkpoint Build Plan. Verify all live-project starting conditions before file creation. Later behavior and every other package remain unauthorized until their own gates pass.
+**Decision:** Approved
+**Approved by:** Jesse “Echo” Adams
+**Date:** August 3, 2026
+**Conditions or notes:** The design is approved. FL-M3-08 may implement the accepted project-owned destination and configuration schema 3 contract only through its approved Checkpoint Build Plan. Runtime migration and silent asset rewriting remain prohibited.
 
 ---
 
@@ -1516,7 +1531,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. SUITE-DOC-33 has activated only the active SFGSS-005 Checkpoint Build Plan, FL-M1-01 Package Skeleton. No C# or launch behavior is authorized until a later checkpoint.
+The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M3-08 owns only the accepted initial-destination contract and completed handoff span.
 
 
 ---
@@ -1524,8 +1539,8 @@ The document is **Approved** as the Level 2 authority for First Light. SUITE-DOC
 
 ## SUITE-DOC-30 Consistency Addendum
 
-**Review status:** Passed  
-**Review date:** August 4, 2026  
+**Review status:** Passed
+**Review date:** August 4, 2026
 **Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.4.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-004; and the approved Foundation, Expansion, and Advanced integration matrices.
 
 The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
