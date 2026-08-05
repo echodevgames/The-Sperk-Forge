@@ -8,7 +8,8 @@
 - Package version: `0.1.0`
 - Implementation result: Complete and pushed
 - Implementation commit: `b51d722`
-- Documentation closeout: Pending adjacent commit
+- Documentation closeout: Complete and pushed
+- Documentation commit: `ce2e23b`
 - Unity baseline: `6000.3.8f1`
 
 ## Implemented Scope

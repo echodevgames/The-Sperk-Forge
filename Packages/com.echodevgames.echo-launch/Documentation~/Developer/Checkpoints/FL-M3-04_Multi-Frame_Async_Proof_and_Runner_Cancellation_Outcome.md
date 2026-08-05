@@ -9,7 +9,8 @@
 - Milestone: M3 - Startup Sequence
 - Implementation status: Complete and pushed
 - Implementation commit: `b51d722`
-- Documentation closeout: Pending adjacent commit
+- Documentation closeout: Complete and pushed
+- Documentation commit: `ce2e23b`
 - Unity baseline: `6000.3.8f1`
 
 ## Goal
@@ -205,6 +206,6 @@ All two hundred sixty-five Runtime Play Mode tests pass.
 
 Implementation commit `b51d722` is present on `main` and `origin/main`.
 
-FL-M3-04 is ready for its adjacent documentation commit.
+FL-M3-04 documentation was closed and pushed in commit `ce2e23b`.
 
 The tentative next checkpoint is FL-M3-05 — Runner Re-entry Protection and Sequence Preflight Boundary. It is not authorized by this closeout.

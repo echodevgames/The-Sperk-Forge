@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
+- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -21,6 +21,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-02` Step Result Policy Application and Exception Conversion
   - `FL-M3-03` Monotonic Timeout Clock and Cooperative Cancellation
   - `FL-M3-04` Multi-Frame Async Proof and Runner Cancellation Outcome
+  - `FL-M3-05` Runner Re-entry Protection and Sequence Preflight Boundary
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -218,6 +219,32 @@ First Light now provides:
 - Run-level `WasCancelled`
 - Same-tick cancellation-race containment
 
+### Startup-Sequence Preflight
+
+- Complete authored-data validation before executor creation
+- Configuration and sequence identity/schema checks
+- Null-entry and enabled-missing-definition rejection
+- Entry identity, activation, and duplicate-ID checks
+- Referenced step identity, schema, and duplicate-ID checks
+- Stable preflight diagnostics:
+  - `ELAUNCH-CFG-001`
+  - `ELAUNCH-SEQ-001`
+  - `ELAUNCH-STEP-001`
+  - `ELAUNCH-STEP-002`
+- No executor factory calls during preflight
+- No asset repair, migration, or mutation
+- Empty-sequence compatibility
+- Disabled-entry-without-definition compatibility
+
+### Runner Re-entry Protection
+
+- One active traversal per runner instance
+- Atomic acquisition through `Interlocked.CompareExchange`
+- Stable concurrent re-entry diagnostic `ELAUNCH-RUN-001`
+- Rejection before a second factory can run
+- Gate release through `finally`
+- Sequential runner reuse after success, cancellation, blocking traversal, or preflight rejection
+
 ### Multi-Frame Async Proof
 
 - Production-shaped executor using `Awaitable.NextFrameAsync`
@@ -274,7 +301,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `265`
+- Passed: `288`
 - Failed: `0`
 - Ignored: `0`
 
@@ -295,6 +322,7 @@ Breakdown:
 - Runner policy and exception tests: `16`
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
+- Preflight and re-entry tests: `23`
 
 Compilation:
 
@@ -341,10 +369,7 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Launch reports
 - Warning aggregation outside the run result
-- Configuration or sequence preflight
-- Duplicate-ID collision validation
 - Dependency validation
-- Runner re-entry protection
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
@@ -368,10 +393,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Two hundred sixty-five passing Runtime Play Mode tests
+- Two hundred eighty-eight passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with no root or lifecycle integration
+- Policy-aware timed startup execution with complete preflight and runner re-entry protection, but no root or lifecycle integration
 
 Still `Not run`:
 

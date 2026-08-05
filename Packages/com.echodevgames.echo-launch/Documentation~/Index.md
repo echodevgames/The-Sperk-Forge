@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
+- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -19,7 +19,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-02`
   - `FL-M3-03`
   - `FL-M3-04`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, and structured caller cancellation
+  - `FL-M3-05`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, and runner re-entry protection
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -49,6 +50,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-03 Runtime Test Report](Developer/Test%20Reports/FL-M3-03_Timeout_Clock_and_Cancellation_Test_Report.md)
 - [FL-M3-04 Multi-Frame Async Proof and Runner Cancellation Outcome](Developer/Checkpoints/FL-M3-04_Multi-Frame_Async_Proof_and_Runner_Cancellation_Outcome.md)
 - [FL-M3-04 Runtime Test Report](Developer/Test%20Reports/FL-M3-04_Multi-Frame_Async_and_Runner_Cancellation_Test_Report.md)
+- [FL-M3-05 Runner Re-entry Protection and Sequence Preflight Boundary](Developer/Checkpoints/FL-M3-05_Runner_Re-entry_Protection_and_Sequence_Preflight_Boundary.md)
+- [FL-M3-05 Runtime Test Report](Developer/Test%20Reports/FL-M3-05_Preflight_and_Re-entry_Test_Report.md)
 
 ## Package Root Documents
 
@@ -109,6 +112,15 @@ First Light currently proves:
 - Stable `ELAUNCH-STEP-005`
 - Run-level `WasCancelled`
 - Same-tick cancellation-race containment
-- Two hundred sixty-five passing Runtime Play Mode tests
+- Complete configuration and sequence preflight before executor creation
+- Configuration and sequence identity/schema validation
+- Entry identity, activation, definition, and duplicate-ID validation
+- Referenced step identity, schema, and duplicate-ID validation
+- Empty-sequence and disabled-entry compatibility
+- Runner-local atomic active-run gate
+- Stable `ELAUNCH-RUN-001`
+- Gate release across all terminal paths
+- Sequential runner reuse after settlement
+- Two hundred eighty-eight passing Runtime Play Mode tests
 
-Retries, root cancellation commands, reports, preflight, runner re-entry protection, root integration, and lifecycle automation remain outside the implemented scope.
+Retries, root cancellation commands, reports, dependency-graph validation, root integration, and lifecycle automation remain outside the implemented scope.

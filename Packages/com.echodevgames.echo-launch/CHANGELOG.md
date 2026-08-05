@@ -7,6 +7,22 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M3-05 - Runner Re-entry Protection and Sequence Preflight Boundary
+- Internal side-effect-free `StartupSequencePreflight`
+- Complete configuration and startup-sequence validation before executor creation
+- Configuration, sequence, entry, and step identity validation
+- Configuration, sequence, and step schema validation
+- Null-entry and enabled-missing-definition rejection
+- Undefined entry-activation rejection
+- Duplicate entry-ID and duplicate step-ID detection
+- Preserved empty-sequence behavior
+- Preserved disabled-entry-without-definition behavior
+- Runner-local atomic active-run gate
+- Stable concurrent re-entry diagnostic `ELAUNCH-RUN-001`
+- `try/finally` gate release across success, preflight rejection, blocking traversal, and structured cancellation
+- Sequential reuse of one runner instance after settlement
+- Twenty-three Runtime Play Mode preflight and re-entry tests
+
 #### FL-M3-04 - Multi-Frame Async Proof and Runner Cancellation Outcome
 - Structured caller-cancellation observation after executor settlement
 - Stable caller-cancellation diagnostic `ELAUNCH-STEP-005`
@@ -177,6 +193,11 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- `StartupSequenceRunner` now performs complete authored preflight before the first executor factory can run.
+- One runner instance now rejects concurrent traversal with `ELAUNCH-RUN-001`.
+- The runner's active-run gate is released through `finally`, preserving later sequential reuse after every terminal path.
+- Invalid policy retains its structured pre-start blocking-result behavior while broader authored-data faults fail before factory creation.
+- Empty sequences and disabled entries without definitions remain valid compatibility cases.
 - Caller cancellation now returns a structured cancelled run result after the active executor settles.
 - Authored `ContinueWithWarning` policy cannot downgrade caller cancellation or continue traversal.
 - `StartupSequenceRunResult` now reports `WasCancelled`.
@@ -227,9 +248,33 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `265`
+- Passed: `288`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M3-05 coverage:
+- Unknown launch-mode rejection before factory creation
+- Null configuration rejection
+- Invalid configuration identity and unsupported schema rejection
+- Missing sequence rejection
+- Invalid sequence identity and unsupported schema rejection
+- Null-entry rejection before any factory
+- Invalid entry identity and undefined activation rejection
+- Duplicate entry-ID detection
+- Enabled missing-definition rejection
+- Invalid step identity and unsupported step schema rejection
+- Duplicate step-ID detection
+- Invalid policy conversion before factory creation
+- Empty-sequence compatibility
+- Disabled-entry-without-definition compatibility
+- Authored asset immutability
+- Concurrent re-entry rejection through `ELAUNCH-RUN-001`
+- No second factory during rejected re-entry
+- Runner reuse after success
+- Gate release after preflight rejection
+- Gate release after structured caller cancellation
+- Gate release after blocking traversal
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-04 coverage:
 - Production-shaped multi-frame `Awaitable.NextFrameAsync` execution
@@ -293,10 +338,7 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Launch reports
 - Warning aggregation outside the run result
-- Configuration or sequence preflight
-- Duplicate-ID collision scans
 - Dependency validation
-- Runner re-entry protection
 - Splash presentation
 - Scene loading
 - Persistent root lifetime

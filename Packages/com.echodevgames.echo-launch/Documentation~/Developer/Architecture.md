@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
+- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -17,6 +17,7 @@
   - `FL-M3-02`
   - `FL-M3-03`
   - `FL-M3-04`
+  - `FL-M3-05`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -57,8 +58,13 @@ First Light currently establishes:
 32. Stable caller-cancellation diagnostic `ELAUNCH-STEP-005`
 33. Immutable run-level `WasCancelled` summary
 34. Same-tick caller-cancellation race containment
+35. Complete side-effect-free startup-sequence preflight
+36. Configuration, sequence, entry, and step identity/schema validation
+37. Duplicate entry-ID and step-ID detection before executor creation
+38. Runner-local atomic active-run gate
+39. Stable concurrent re-entry diagnostic `ELAUNCH-RUN-001`
 
-First Light now executes, times, and evaluates startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
+First Light now validates, executes, times, and evaluates startup steps only through explicit internal runner calls. The runner rejects malformed authored data before executor creation and prevents concurrent reuse of one runner instance. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
 
 ## Implemented Runtime Files
 
@@ -74,6 +80,7 @@ First Light now executes, times, and evaluates startup steps only through explic
     │   └── LaunchStateChangedEvent.cs
     ├── Execution/
     │   ├── ILaunchClock.cs
+    │   ├── StartupSequencePreflight.cs
     │   ├── StartupSequenceRunResult.cs
     │   ├── StartupSequenceRunner.cs
     │   ├── StartupStepAwaitOutcome.cs
@@ -120,6 +127,7 @@ First Light now executes, times, and evaluates startup steps only through explic
     ├── StartupSequenceRunnerPolicyAndExceptionTests.cs
     ├── StartupSequenceRunnerTimeoutTests.cs
     ├── StartupSequenceRunnerMultiFrameAsyncTests.cs
+    ├── StartupSequenceRunnerPreflightAndReentryTests.cs
     ├── StartupStepExecutionTests.cs
     ├── StartupStepPolicyAndExecutorContractTests.cs
     └── StartupStepPolicyApplicationTests.cs
@@ -747,6 +755,71 @@ FL-M3-04 deliberately does not:
 - Build a public report
 - Start automatically
 
+## Startup Sequence Preflight
+
+`StartupSequencePreflight` is an internal stateless read-only gate.
+
+Before the runner creates any executor, it validates:
+
+- A defined active launch mode
+- Non-null launch configuration
+- Valid configuration identity
+- Supported configuration schema
+- Assigned startup sequence
+- Valid sequence identity
+- Supported sequence schema
+- Non-null entries
+- Valid and unique entry identities
+- Defined entry activation values
+- Step-definition presence for enabled entries
+- Valid referenced step identities
+- Supported referenced step schemas
+- Unique referenced step identities
+
+The preflight uses stable diagnostics:
+
+- `ELAUNCH-CFG-001`
+- `ELAUNCH-SEQ-001`
+- `ELAUNCH-STEP-001`
+- `ELAUNCH-STEP-002`
+
+The preflight does not:
+
+- Call `CreateExecutor()`
+- Mutate or repair authored assets
+- Clamp invalid values
+- Migrate schema data
+- Build a public report
+- Validate dependency graphs
+
+Compatibility preserved in FL-M3-05:
+
+- An empty sequence remains a valid empty traversal.
+- A disabled entry may omit its step definition.
+- Invalid enabled-entry policy remains a runner-created pre-start blocking result so the existing structured contract is preserved.
+
+## Runner Re-entry Gate
+
+Each `StartupSequenceRunner` instance owns one integer active-run state.
+
+`RunAsync` acquires the gate through `Interlocked.CompareExchange`.
+
+A concurrent call is rejected with:
+
+    ELAUNCH-RUN-001
+
+The rejection happens before preflight traversal and before any second executor factory can run.
+
+The complete post-acquisition run body is wrapped in `try/finally`. The `finally` block releases the gate after:
+
+- Successful traversal
+- Structured caller cancellation
+- Timeout or blocking traversal
+- Preflight rejection
+- Unexpected exception
+
+The same runner instance may therefore be reused sequentially after the prior run settles, but it cannot own two overlapping traversals.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -757,7 +830,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-04 compile result:
+Final FL-M3-05 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -776,7 +849,7 @@ No FL-M3-04 timing, timeout, multi-frame, or cancellation path calls or mutates 
 
 Runtime Play Mode totals:
 
-- Passed: `265`
+- Passed: `288`
 - Failed: `0`
 - Ignored: `0`
 
@@ -797,9 +870,23 @@ Breakdown:
 - Runner policy and exception tests: `16`
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
+- Preflight and re-entry tests: `23`
 
-Verified FL-M3-04 behavior:
+Verified FL-M3-05 and retained behavior:
 
+- Complete preflight before executor factory creation
+- Configuration and sequence identity/schema validation
+- Entry identity, activation, and uniqueness validation
+- Enabled definition presence validation
+- Step identity, schema, and uniqueness validation
+- Invalid policy blocking before factory creation
+- Empty-sequence compatibility
+- Disabled-entry-without-definition compatibility
+- Concurrent runner re-entry rejection
+- Stable `ELAUNCH-RUN-001`
+- No second factory during rejected re-entry
+- Gate release after success, preflight rejection, structured cancellation, and blocking traversal
+- Sequential runner reuse
 - Clock interface and default implementation
 - Deterministic manual clock
 - Immutable timing validation
@@ -853,10 +940,7 @@ Not implemented:
 - Public step lifecycle events
 - Launch reports
 - Warning aggregation outside the run result
-- Configuration or sequence preflight
-- Duplicate-ID collision validation
 - Dependency validation
-- Runner re-entry protection
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
@@ -867,6 +951,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-04 stops after production-shaped multi-frame Unity async execution, structured caller cancellation, same-tick cancellation-race containment, stable `ELAUNCH-STEP-005`, and immutable `WasCancelled` accounting are proven.
+FL-M3-05 stops after complete side-effect-free sequence preflight, duplicate identity detection, runner-local concurrent re-entry rejection, and gate-release safety are proven.
 
 The next runtime slice requires separate approval.
