@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 4, 2026
 **Current focus:** First Light runtime implementation
-**Current checkpoint:** FL-M2-07 documentation closeout
+**Current checkpoint:** FL-M2-08 documentation closeout
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -13,36 +13,39 @@
 
 ### Goal
 
-Close FL-M2-07 after startup-step definitions, ordered sequence entries, and passive configuration binding passed the complete Runtime Play Mode suite and were pushed to `origin/main`.
+Close FL-M2-08 after authored startup-step policy, immutable progress/context contracts, and the fresh executor API passed the complete Runtime Play Mode suite and were pushed to `origin/main`.
 
 ### Starting State
 
-- Implementation commit `38b03b1` is pushed.
-- Runtime Play Mode result is 141 passed, 0 failed, 0 ignored.
+- Implementation commit `8a02bd8` is pushed.
+- Runtime Play Mode result is 169 passed, 0 failed, 0 ignored.
 - The working tree was clean after the implementation push.
 - The adjacent documentation closeout is the only active repository work.
 - Every later runtime checkpoint remains locked.
 
 ## Active Notes
 
-### August 4, 2026 - FL-M2-07 startup sequence definition and ordered entry model
+### August 4, 2026 - FL-M2-08 startup step policy and executor contract
 
-- `[TEST]` Unity compiled all definition and binding files with zero errors.
-- `[TEST]` All Runtime Play Mode tests passed: 141 passed, 0 failed, 0 ignored.
-- `[TEST]` The total contains 117 retained tests and 24 startup-sequence definition tests.
-- `[TEST]` Unity created a temporary `StartupSequence` with an empty authored `Entries` list.
-- `[TEST]` Unity created a temporary launch configuration and accepted the sequence reference.
-- `[TEST]` Asset creation and assignment produced no scene object, lifecycle transition, startup behavior, or unexpected warning.
-- `[TEST]` Both temporary verification assets were removed before Git review.
-- `[DECISION]` Step, entry, and sequence identities use canonical lowercase 32-character hexadecimal domain IDs.
-- `[DECISION]` Display labels remain separate from stable step identity.
-- `[DECISION]` Sequence order is authored list order, while entry ID remains independent from list index.
-- `[DECISION]` The mutable sequence list is private and exposed through count plus indexed reads.
-- `[DECISION]` Runtime code detects malformed IDs and unsupported schemas without silent repair.
-- `[DECISION]` `EchoLaunchConfiguration` schema advanced from `1` to `2` when the sequence reference changed its serialized shape.
-- `[DECISION]` Configuration-to-sequence binding remains passive and does not execute or validate.
-- `[DECISION]` Definition assets remain immutable during runtime inspection.
-- `[HANDOFF]` Implementation commit `38b03b1` is synchronized on `main` and `origin/main`.
+- `[TEST]` Unity compiled all policy, progress, context, executor, sequence, and test changes with zero errors.
+- `[TEST]` All Runtime Play Mode tests passed: 169 passed, 0 failed, 0 ignored.
+- `[TEST]` The total contains 141 retained tests and 28 policy/executor-contract tests.
+- `[TEST]` The new suite verified contract shape without invoking a startup executor.
+- `[TEST]` Retained `ELAUNCH-ROOT-001` and `ELAUNCH-EVENT-001` warnings remained intentional evidence.
+- `[DECISION]` MVP failure actions are exactly `BlockLaunch` and `ContinueWithWarning`.
+- `[DECISION]` Zero timeout means no timeout is configured.
+- `[DECISION]` Invalid timeout and enum values remain unchanged for diagnostics and future explicit repair.
+- `[DECISION]` Progress is immutable and may be determinate or indeterminate.
+- `[DECISION]` Executors receive immutable context, cooperative cancellation, and a package-owned progress reporter.
+- `[DECISION]` Public execution uses Unity `Awaitable<StartupStepResult>`.
+- `[DECISION]` Every step definition creates a fresh single-use executor.
+- `[DECISION]` No executor is stored in a ScriptableObject.
+- `[DECISION]` `StartupSequence` schema advanced from `1` to `2` because entries now serialize policy.
+- `[BUG]` Manual Inspector verification showed Unity-created embedded entries could bypass C# field initializers and arrive as zeroed booleans.
+- `[DECISION]` Safe zero-valued enums now map Unity's zero state to Enabled, Required, Block Launch, and Cancellation Supported.
+- `[TEST]` Recreated Inspector entries displayed the corrected safe defaults.
+- `[DECISION]` No repair callback, migration, runner, timeout clock, retry, or preflight behavior was added.
+- `[HANDOFF]` Implementation commit `8a02bd8` is synchronized on `main` and `origin/main`.
 
 **Promoted to:** package checkpoint, package test report, package architecture, package changelog, package README, package documentation index, and root implementation completion record.
 
@@ -50,11 +53,12 @@ Close FL-M2-07 after startup-step definitions, ordered sequence entries, and pas
 
 | Entry | Destination | State |
 |---|---|---|
-| FL-M2-07 step-definition contract | Package architecture and checkpoint | Promoted |
-| Ordered entry and sequence model | Package architecture and checkpoint | Promoted |
-| Configuration schema `2` | Architecture, changelog, and README | Promoted |
-| 141-test evidence | Package test report and completion record | Promoted |
-| Manual authoring evidence | README, checkpoint, and test report | Promoted |
+| FL-M2-08 policy contract | Package architecture and checkpoint | Promoted |
+| Progress and context contracts | Package architecture and checkpoint | Promoted |
+| Fresh executor contract | Package architecture and checkpoint | Promoted |
+| Safe Unity serialized defaults | Architecture, changelog, README, and test report | Promoted |
+| Sequence schema `2` | Architecture, changelog, and checkpoint | Promoted |
+| 169-test evidence | Package test report and completion record | Promoted |
 | Documentation closeout commit | Git history | Pending |
 
 ## Latest Validation Snapshot
@@ -62,10 +66,10 @@ Close FL-M2-07 after startup-step definitions, ordered sequence entries, and pas
 | Area | Result |
 |---|---|
 | Unity compilation | Pass |
-| FL-M2-07 definition tests | 24 passed |
-| Full Runtime Play Mode suite | 141 passed |
-| Startup Sequence Create menu | Pass |
-| Configuration sequence assignment | Pass |
+| FL-M2-08 contract tests | 28 passed |
+| Full Runtime Play Mode suite | 169 passed |
+| Executor invocation | Not performed by design |
+| Manual policy authoring | Pass after bounded default correction |
 | Temporary asset cleanup | Complete |
 | Expected diagnostics | Verified |
 | Implementation push | Complete |
@@ -75,20 +79,22 @@ Close FL-M2-07 after startup-step definitions, ordered sequence entries, and pas
 ## Checkpoint Closeout Checklist
 
 - [x] Reconcile package and suite Current Notes.
-- [x] Promote the step-definition and sequence contracts.
-- [x] Promote configuration schema `2`.
-- [x] Record complete automated and manual test evidence.
+- [x] Promote policy, progress, context, and executor contracts.
+- [x] Promote safe Unity serialized defaults.
+- [x] Promote sequence schema `2`.
+- [x] Record complete automated and manual evidence.
 - [x] Update architecture, changelog, README, and documentation index.
-- [x] Record implementation commit `38b03b1`.
+- [x] Record implementation commit `8a02bd8`.
 - [ ] Review the staged documentation diff.
 - [ ] Commit and push the adjacent documentation closeout.
 
 ## Handoff Snapshot
 
-**Completed implementation checkpoint:** FL-M2-07 - Startup Sequence Definition and Ordered Entry Model
-**Implementation commit:** `38b03b1`
-**Runtime Play Mode:** 141 passed, 0 failed, 0 ignored
+**Completed implementation checkpoint:** FL-M2-08 - Startup Step Policy and Executor Contract
+**Implementation commit:** `8a02bd8`
+**Runtime Play Mode:** 169 passed, 0 failed, 0 ignored
+**Executor invocation:** None
 **Active work:** Adjacent documentation closeout
 **Known blockers:** None
-**Next action:** Review, commit, and push the staged FL-M2-07 documentation set
+**Next action:** Review, commit, and push the staged FL-M2-08 documentation set
 **Later runtime behavior:** Not authorized

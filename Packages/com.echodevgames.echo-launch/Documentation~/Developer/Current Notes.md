@@ -2,55 +2,63 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-07`
-- Title: Startup Sequence Definition and Ordered Entry Model
+- Checkpoint: `FL-M2-08`
+- Title: Startup Step Policy and Executor Contract
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `38b03b1`
+- Implementation commit: `8a02bd8`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 141 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 169 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- Abstract `StartupStepDefinition`
-- Stable step ID and schema
-- Display label separate from identity
-- Serializable `StartupSequenceEntry`
-- Stable entry ID
-- Enabled state and step-definition reference
-- Project-owned `StartupSequence`
-- Stable sequence ID and schema
-- Ordered private entry list
-- Read-only entry count and indexed access
-- Passive sequence binding on `EchoLaunchConfiguration`
-- Configuration schema `2`
-- Twenty-four sequence-definition tests
-- Unity Create menu and assignment verification
+- MVP failure-action enum
+- Immutable authored step policy
+- Required and optional presets
+- Timeout metadata validation
+- Cancellation capability metadata
+- Immutable determinate and indeterminate progress
+- Package-owned progress reporter
+- Immutable validated execution context
+- Unity `Awaitable<StartupStepResult>` executor interface
+- Fresh executor factory on step definitions
+- Authored policy on sequence entries
+- Startup-sequence schema `2`
+- Safe Unity zero-state entry defaults
+- Twenty-eight policy and executor-contract tests
+- Manual Inspector verification
 
 ## Evidence Summary
 
 ### Passed
 
-- Canonical step, entry, and sequence IDs
-- Different IDs for separate instances
-- Stable identity reads
-- Current step and sequence schemas
-- Display label preservation
-- Display-label independence from step ID
-- Malformed identity detection without repair
-- Unsupported schema detection without rewrite
-- Default enabled entry state
-- Preserved step reference
-- Empty sequence
-- Authored-order preservation
-- Invalid index rejection
-- Configuration sequence binding
-- Definition immutability
-- One hundred forty-one total Runtime Play Mode tests
-- Manual sequence creation
-- Manual configuration assignment
+- Exact approved failure-action values
+- Required blocking preset
+- Optional warning preset
+- Timeout disabled at zero
+- Positive timeout preservation
+- Negative timeout invalidity
+- NaN and infinity invalidity
+- Undefined failure-action preservation
+- Determinate progress
+- Boundary progress values
+- Indeterminate progress
+- Out-of-range progress rejection
+- Message normalization
+- Context identity metadata
+- Context index and count
+- Cancellation-token preservation
+- Progress-reporter delivery
+- Null reporter rejection
+- Approved executor return type
+- Executor factory result
+- Fresh executor instances
+- Safe entry default policy
+- Sequence schema `2`
+- One hundred sixty-nine total Runtime Play Mode tests
+- Manual zero-state default correction and verification
 
 ### Expected Diagnostics
 
@@ -63,9 +71,12 @@ These warnings were expected and matched by the automated test suite.
 
 ### Not Run
 
-- Step policies
-- Step executors
-- Startup runner
+- Sequence runner
+- Executor invocation
+- Timeout clock
+- Retry behavior
+- Exception conversion
+- Policy result application
 - Configuration or sequence preflight
 - Automatic lifecycle advancement
 - Launch reports
@@ -78,20 +89,26 @@ These warnings were expected and matched by the automated test suite.
 
 Runtime implementation:
 
+- `Runtime/Steps/StartupStepFailureAction.cs`
+- `Runtime/Steps/StartupStepPolicy.cs`
+- `Runtime/Steps/StartupStepProgress.cs`
+- `Runtime/Steps/IStartupStepProgressReporter.cs`
+- `Runtime/Steps/StartupStepContext.cs`
+- `Runtime/Steps/IStartupStepExecutor.cs`
 - `Runtime/Steps/StartupStepDefinition.cs`
 - `Runtime/Steps/StartupSequenceEntry.cs`
 - `Runtime/Steps/StartupSequence.cs`
-- `Runtime/Configuration/EchoLaunchConfiguration.cs`
 - Unity-generated `.meta` files
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/StartupSequenceDefinitionTests.cs`
+- `Tests/Runtime/PlayMode/StartupStepPolicyAndExecutorContractTests.cs`
+- Modified `Tests/Runtime/PlayMode/StartupSequenceDefinitionTests.cs`
 - Unity-generated `.meta` file
 
 Checkpoint plan:
 
-- `Plan Documentation/Checkpoint Build Plans/FL-M2-07_Startup_Sequence_Definition_and_Ordered_Entry_Model_Checkpoint_Build_Plan.md`
+- `Plan Documentation/Checkpoint Build Plans/FL-M2-08_Startup_Step_Policy_and_Executor_Contract_Checkpoint_Build_Plan.md`
 
 Adjacent documentation:
 
@@ -102,8 +119,10 @@ Adjacent documentation:
 
 ## Handoff Snapshot
 
-FL-M2-07 implementation is complete and pushed in commit `38b03b1`.
+FL-M2-08 implementation is complete and pushed in commit `8a02bd8`.
 
 The adjacent documentation closeout is ready for final Git review, commit, and push.
+
+No executor has been invoked.
 
 No additional runtime behavior is authorized until the next checkpoint is approved.

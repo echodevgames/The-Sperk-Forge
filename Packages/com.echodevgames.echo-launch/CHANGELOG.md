@@ -8,6 +8,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-08 - Startup Step Policy and Executor Contract
+
+- MVP `StartupStepFailureAction` vocabulary
+  - `BlockLaunch`
+  - `ContinueWithWarning`
+- Immutable authored `StartupStepPolicy`
+- Safe `RequiredBlocking` and `OptionalWarning` policy presets
+- Required/optional intent
+- Failure-action metadata
+- Optional timeout metadata
+- Cooperative-cancellation capability metadata
+- Invalid policy detection without runtime repair
+- Immutable determinate and indeterminate `StartupStepProgress`
+- Package-owned `IStartupStepProgressReporter`
+- Validated immutable `StartupStepContext`
+- Public `IStartupStepExecutor`
+- Unity `Awaitable<StartupStepResult>` executor method contract
+- Fresh-executor factory on `StartupStepDefinition`
+- Authored policy on every `StartupSequenceEntry`
+- Twenty-eight Runtime Play Mode policy and executor-contract tests
+
 #### FL-M2-07 - Startup Sequence Definition and Ordered Entry Model
 
 - Abstract immutable `StartupStepDefinition`
@@ -83,43 +104,66 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Changed
 
-- `EchoLaunchConfiguration.CurrentSchemaVersion` advanced from `1` to `2` because the serialized configuration now includes a `StartupSequence` reference.
+- `StartupStepDefinition` now requires `CreateExecutor()` to return a fresh single-use runtime executor.
+- `StartupSequenceEntry` now serializes one `StartupStepPolicy`.
+- `StartupSequence.CurrentSchemaVersion` advanced from `1` to `2` because the embedded entry shape now includes policy data.
+- Entry activation, policy requirement, and cancellation support use safe zero-valued serialized enums so Unity-created list elements default to:
+  - enabled;
+  - required;
+  - block launch;
+  - no timeout;
+  - cancellation supported.
+- Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
+
+### Fixed
+
+- Corrected Unity Inspector defaults for newly added embedded sequence entries. Unity can create list elements from zeroed serialized data without applying C# field initializers; the serialized model now makes that zero state intentionally safe without adding automatic repair callbacks.
 
 ### Tested
 
 Runtime Play Mode totals:
 
-- Passed: `141`
+- Passed: `169`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-07 coverage:
+FL-M2-08 coverage:
 
-- Canonical step, entry, and sequence identities
-- Unique IDs across separate instances
-- Stable repeated identity reads
-- Step and sequence schema initialization
-- Display-label separation from step identity
-- Malformed identity detection without runtime repair
-- Unsupported schema detection without runtime rewrite
-- Default enabled entry state
-- Preserved step-definition references
-- Empty-sequence behavior
-- Authored-order preservation
-- Invalid sequence-index rejection
-- Configuration-to-sequence binding
-- Definition immutability
-- Unity Create menu sequence creation with no scene side effects
+- Exact MVP failure-action vocabulary
+- Required and optional policy presets
+- Blocking and continue-with-warning behavior metadata
+- Positive, zero, negative, NaN, and infinite timeout metadata
+- Undefined failure-action preservation
+- Determinate progress values and inclusive boundaries
+- Honest indeterminate progress
+- Progress-range rejection
+- Progress-message normalization
+- Execution-context identity metadata
+- Step index and count
+- Cancellation-token preservation
+- Progress-reporter delivery
+- Null-reporter rejection
+- `Awaitable<StartupStepResult>` executor signature
+- Fresh executor factory results
+- Safe Unity serialized entry defaults
+- Sequence schema version `2`
+- Manual Inspector verification
 
 ### Not Included
 
-- Startup-step policies
-- Step executors
 - Startup sequence runner
-- Automatic lifecycle advancement
+- Executor invocation
+- Active step-execution state
+- Timeout measurement
+- Clock abstraction
+- Timeout cancellation
+- Retry loops
+- Interactive retry
+- Exception-to-result conversion
+- Policy application to results
 - Configuration or sequence preflight
 - Duplicate-ID collision scans
-- Runtime migration or repair
+- Automatic lifecycle advancement
 - Launch reports
 - Splash presentation
 - Scene loading

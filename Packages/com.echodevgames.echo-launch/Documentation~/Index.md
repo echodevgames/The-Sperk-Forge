@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Early runtime implementation
+- Development stage: Runtime contracts established; execution not yet implemented
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -14,7 +14,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-05`
   - `FL-M2-06`
   - `FL-M2-07`
-- Current implemented boundary: authority, vocabulary, live session state, guarded lifecycle publication, isolated notifications, launch configuration binding, and immutable ordered startup-sequence definitions
+  - `FL-M2-08`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered startup definitions, authored policy, immutable progress/context, and fresh executor contracts
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -34,6 +35,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M2-06 Runtime Test Report](Developer/Test%20Reports/FL-M2-06_Launch_Configuration_Binding_Test_Report.md)
 - [FL-M2-07 Startup Sequence Definition and Ordered Entry Model](Developer/Checkpoints/FL-M2-07_Startup_Sequence_Definition_and_Ordered_Entry_Model.md)
 - [FL-M2-07 Runtime Test Report](Developer/Test%20Reports/FL-M2-07_Startup_Sequence_Definition_Test_Report.md)
+- [FL-M2-08 Startup Step Policy and Executor Contract](Developer/Checkpoints/FL-M2-08_Startup_Step_Policy_and_Executor_Contract.md)
+- [FL-M2-08 Runtime Test Report](Developer/Test%20Reports/FL-M2-08_Startup_Step_Policy_and_Executor_Contract_Test_Report.md)
 
 ## Package Root Documents
 
@@ -56,14 +59,18 @@ First Light currently proves:
 - Transactional rejection of invalid publication
 - State and progress lifecycle notifications
 - Per-listener exception containment
-- Project-owned launch configuration identity
-- Serialized configuration schema version
-- Authority-filtered configuration binding
+- Project-owned launch configuration
 - Immutable startup-step definitions
-- Stable sequence-entry identity
 - Ordered startup-sequence modeling
-- Passive configuration-to-sequence binding
-- Definition immutability
-- One hundred forty-one passing Runtime Play Mode tests
+- Authored required/optional policy
+- Blocking and continue-with-warning failure metadata
+- Safe timeout and cancellation metadata
+- Immutable determinate and indeterminate progress
+- Immutable validated execution context
+- Package-owned progress-reporting seam
+- Unity `Awaitable<StartupStepResult>` executor contract
+- Fresh executor creation
+- Safe Unity serialized entry defaults
+- One hundred sixty-nine passing Runtime Play Mode tests
 
-Step policies, executors, preflight, and sequence execution remain outside the implemented scope.
+The sequence runner, executor invocation, timeout handling, retries, preflight, and lifecycle automation remain outside the implemented scope.

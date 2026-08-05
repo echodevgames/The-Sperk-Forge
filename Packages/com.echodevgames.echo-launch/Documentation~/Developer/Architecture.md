@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Early runtime implementation
+- Development stage: Runtime contracts established; execution not yet implemented
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -12,6 +12,7 @@
   - `FL-M2-05`
   - `FL-M2-06`
   - `FL-M2-07`
+  - `FL-M2-08`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -29,6 +30,9 @@ First Light currently establishes:
 9. Immutable startup-step definitions
 10. Ordered startup-sequence entry modeling
 11. Passive configuration-to-sequence binding
+12. Authored step policy
+13. Immutable step progress and runtime context
+14. Fresh single-use executor contract
 
 It does not yet execute startup behavior.
 
@@ -53,11 +57,17 @@ It does not yet execute startup behavior.
     │   ├── LaunchSession.cs
     │   └── LaunchStateTransitionRules.cs
     └── Steps/
+        ├── IStartupStepExecutor.cs
+        ├── IStartupStepProgressReporter.cs
         ├── StartupSequence.cs
         ├── StartupSequenceEntry.cs
+        ├── StartupStepContext.cs
         ├── StartupStepDefinition.cs
-        ├── StartupStepStatus.cs
-        └── StartupStepResult.cs
+        ├── StartupStepFailureAction.cs
+        ├── StartupStepPolicy.cs
+        ├── StartupStepProgress.cs
+        ├── StartupStepResult.cs
+        └── StartupStepStatus.cs
 
     Tests/Runtime/PlayMode/
     ├── EchoLaunchRootAuthorityTests.cs
@@ -66,181 +76,248 @@ It does not yet execute startup behavior.
     ├── LaunchNotificationTests.cs
     ├── LaunchSessionProgressTests.cs
     ├── LaunchStateVocabularyTests.cs
-    └── StartupSequenceDefinitionTests.cs
+    ├── StartupSequenceDefinitionTests.cs
+    └── StartupStepPolicyAndExecutorContractTests.cs
 
-## Launch Configuration Definition
+## Authored Definition Boundary
 
-`EchoLaunchConfiguration` is a project-owned `ScriptableObject`.
+Shared ScriptableObject assets contain authored definition data only.
 
-It contains authored definition data only:
+They may contain:
 
-    configurationId
-    schemaVersion
-    startupSequence
+- Stable domain identity
+- Schema version
+- Display metadata
+- Ordered references
+- Enabled or disabled intent
+- Failure policy
+- Timeout metadata
+- Cancellation capability metadata
 
-It does not contain current launch state, progress, timings, retries, active scene references, or execution results.
+They must not contain:
 
-Active mutable state remains owned by `LaunchSession`.
-
-### Configuration Schema
-
-`EchoLaunchConfiguration.CurrentSchemaVersion` is now `2`.
-
-Schema `2` adds the passive serialized `StartupSequence` reference.
-
-The package does not migrate older configuration assets at runtime. Migration and repair remain future Editor-tooling responsibilities.
-
-## Startup Step Definition
-
-`StartupStepDefinition` is an abstract project or bridge-owned ScriptableObject base.
-
-It contains:
-
-    stepId
-    schemaVersion
-    displayName
-
-It does not contain:
-
-- Executor instances
-- Current status
-- Progress
-- Retry counters
-- Timeout state
+- Current execution status
+- Elapsed time
+- Remaining timeout
+- Retry count
 - Cancellation state
-- Runtime ownership
-- Scene references
-- Result history
+- Current progress
+- Exceptions
+- Results
+- Runner ownership
+- Scene-transition state
 
-### Step Identity
+Active data must live in fresh runtime-owned objects introduced by later checkpoints.
 
-Every newly created step definition receives:
+## Startup Step Failure Vocabulary
 
-    Guid.NewGuid().ToString("N")
+`StartupStepFailureAction` contains exactly:
 
-The canonical format is:
+    BlockLaunch = 0
+    ContinueWithWarning = 1
 
-- Exactly 32 characters
-- Lowercase hexadecimal
-- Characters `0-9` and `a-f`
-- No spaces, punctuation, or separators
+`BlockLaunch` is numeric zero so an uninitialized serialized enum fails closed.
 
-The stable step ID is distinct from asset name, display label, path, list index, Unity asset GUID, and runtime instance ID.
+Automatic retry and interactive retry are intentionally absent.
 
-Runtime code detects malformed identity but does not silently repair it.
+## Startup Step Policy
 
-### Step Display Label
-
-`DisplayName` is presentation metadata, not identity.
-
-Changing the label does not change `StepId`.
-
-A blank authored label falls back to the Unity object name.
-
-### Step Schema
-
-`StartupStepDefinition.CurrentSchemaVersion` is `1`.
-
-Unsupported schema values are detected but not rewritten.
-
-## Startup Sequence Entry
-
-`StartupSequenceEntry` is an embedded serializable authored record.
-
-It contains:
-
-    entryId
-    enabled
-    stepDefinition
-
-The entry ID is durable identity and remains independent from list index.
-
-Reordering entries changes authored order, not entry identity.
-
-The enabled flag is authored definition data. It does not represent runtime skipped, running, failed, or completed state.
-
-A null step reference is legal authored data at this checkpoint. Validation belongs to later preflight work.
-
-## Startup Sequence
-
-`StartupSequence` is a project-owned ScriptableObject.
-
-It contains:
-
-    sequenceId
-    schemaVersion
-    ordered List<StartupSequenceEntry>
+`StartupStepPolicy` is a serializable authored value type.
 
 It exposes:
 
-    SequenceId
-    SchemaVersion
-    EntryCount
-    GetEntry(index)
+    IsRequired
+    IsOptional
+    FailureAction
+    TimeoutSeconds
+    HasTimeout
+    SupportsCancellation
 
-The mutable backing list is not publicly exposed.
+Safe presets:
 
-`GetEntry(index)` preserves authored order and throws `ArgumentOutOfRangeException` for invalid positions.
+    RequiredBlocking
+    OptionalWarning
 
-An empty sequence is legal authored data at this checkpoint.
+### Required Blocking
 
-### Sequence Identity and Schema
+- Required
+- Block launch on failure
+- No timeout configured
+- Cooperative cancellation supported
 
-Sequence IDs use the same canonical 32-character lowercase hexadecimal format.
+### Optional Warning
 
-`StartupSequence.CurrentSchemaVersion` is `1`.
+- Optional
+- Continue with warning on failure
+- No timeout configured
+- Cooperative cancellation supported
 
-Malformed IDs and unsupported schema values are detected without runtime repair.
+### Timeout Metadata
 
-## Configuration-to-Sequence Binding
+Timeout is stored in seconds.
 
-`EchoLaunchConfiguration.StartupSequence` passively exposes the assigned project-owned sequence.
+- `0` means no timeout configured.
+- A finite value greater than `0` enables timeout metadata.
+- Negative, NaN, and infinite values are invalid.
+- Invalid values remain unchanged for diagnostics and future explicit repair.
+- FL-M2-08 does not measure time.
 
-Binding does not:
+### Policy Validation
 
-- Validate the sequence
-- Execute entries
-- Create step executors
-- Advance launch lifecycle
-- Repair IDs
-- Clone definitions
-- Mutate the sequence
-- Emit warnings
+Internal validation detects:
 
-Preflight and execution remain later checkpoints.
+- Undefined requirement mode
+- Undefined failure action
+- Negative or non-finite timeout
+- Undefined cancellation mode
 
-## Definition Immutability
+Runtime code does not clamp, repair, or rewrite authored policy.
 
-Startup configuration, sequence, entry, and step-definition objects are authored inputs.
+## Safe Unity Serialized Defaults
 
-Runtime inspection does not alter:
+Unity can create a new embedded list element from zeroed serialized data without applying C# field initializers.
 
-- Configuration ID or schema
-- Sequence ID or schema
-- Entry ID or enabled state
-- Step ID, schema, or display label
-- Authored references
-- Authored order
+To make that path safe by construction:
 
-Future active execution state must live in fresh runtime-owned objects.
+- `EntryActivation.Enabled` is zero.
+- `RequirementMode.Required` is zero.
+- `StartupStepFailureAction.BlockLaunch` is zero.
+- Timeout zero means disabled.
+- `CancellationMode.Supported` is zero.
 
-## Lifecycle Transition Authority
+Therefore a zeroed new entry becomes:
+
+    Activation: Enabled
+    Requirement: Required
+    Failure Action: Block Launch
+    Timeout Seconds: 0
+    Cancellation: Supported
+
+No `OnValidate`, serialization callback, migration, or automatic repair path was added.
+
+## Startup Step Progress
+
+`StartupStepProgress` is an immutable runtime value.
+
+Factories:
+
+    Determinate(progress01, message)
+    Indeterminate(message)
+
+Determinate progress:
+
+- Accepts finite values from `0` through `1`, inclusive.
+- Rejects negative, greater-than-one, NaN, and infinite values.
+
+Indeterminate progress:
+
+- Does not invent a percentage.
+- Exposes `Progress01` as zero while `IsIndeterminate` is true.
+
+Messages are trimmed. Null, empty, and whitespace-only messages normalize to an empty string.
+
+## Progress Reporting Seam
+
+`IStartupStepProgressReporter` exposes:
+
+    void Report(StartupStepProgress progress)
+
+The interface is package-owned and intentionally narrow.
+
+An executor does not receive the root, presenter, report builder, or mutable sequence through this seam.
+
+## Startup Step Context
+
+`StartupStepContext` is a validated immutable runtime object.
+
+It carries:
+
+- Launch mode
+- Configuration ID
+- Sequence ID
+- Entry ID
+- Step ID
+- Zero-based step index
+- Step count
+- `CancellationToken`
+- `IStartupStepProgressReporter`
+
+Constructor validation rejects:
+
+- Blank identities
+- Step count less than one
+- Step index outside the current count
+- Null progress reporter
+
+The context owns no launch authority and exposes no setters.
+
+## Executor Contract
+
+`IStartupStepExecutor` exposes:
+
+    Awaitable<StartupStepResult> ExecuteAsync(
+        StartupStepContext context)
+
+This contract uses Unity `Awaitable<T>`.
+
+Rules established by FL-M2-08:
+
+- One executor instance represents one execution attempt.
+- A definition creates a fresh executor for every attempt.
+- The definition does not store the executor.
+- The executor owns its own active state.
+- Cancellation is cooperative through the context token.
+- Progress is reported through the package-owned reporter.
+- No executor is invoked by FL-M2-08.
+
+Exception conversion, timeout handling, result interpretation, and lifecycle advancement belong to the future runner.
+
+## Definition Factory
+
+`StartupStepDefinition` now requires:
+
+    public abstract IStartupStepExecutor CreateExecutor();
+
+Repeated factory calls must return distinct executor instances.
+
+A null return or factory exception will become a preflight or runtime blocker in a later checkpoint. FL-M2-08 only establishes and tests the contract.
+
+## Sequence Entry Policy
+
+`StartupSequenceEntry` now contains:
+
+    entryId
+    activation
+    stepDefinition
+    policy
+
+It exposes a copy of `StartupStepPolicy`.
+
+Because the policy is a struct, callers cannot mutate the serialized entry through the returned value.
+
+## Sequence Schema
+
+`StartupSequence.CurrentSchemaVersion` is now `2`.
+
+Schema `2` adds policy data to each embedded sequence entry.
+
+Runtime migration remains unimplemented.
+
+## Retained Lifecycle Architecture
 
 `LaunchStateTransitionRules` remains the single internal authority for lifecycle legality.
 
-It validates defined status values and approved transition paths before `LaunchSession` accepts a new snapshot.
-
-## Lifecycle Notifications
-
-`EchoLaunchRoot` continues to dispatch accepted state and progress notifications after authoritative state has changed.
+`EchoLaunchRoot` continues to dispatch accepted state and progress notifications after authoritative state changes.
 
 Listener failures remain isolated through `ELAUNCH-EVENT-001`.
+
+No FL-M2-08 contract calls or mutates these systems.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `141`
+- Passed: `169`
 - Failed: `0`
 - Ignored: `0`
 
@@ -253,27 +330,39 @@ Breakdown:
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
 - Startup sequence definition tests: `24`
+- Startup step policy and executor-contract tests: `28`
 
 Manual verification:
 
-- Unity created a project-owned `StartupSequence` asset.
-- The sequence Inspector displayed an empty ordered `Entries` list.
-- Unity created a temporary launch configuration and accepted the sequence reference.
-- Asset creation and assignment produced no root, GameObject, lifecycle transition, startup behavior, or warning.
-- Both temporary verification assets were removed before Git review.
+- Unity created a temporary `StartupSequence`.
+- A newly added list entry initially exposed unsafe false boolean defaults.
+- The serialized model was corrected to safe zero-valued enums.
+- Recreated entries displayed:
+  - Enabled
+  - Required
+  - Block Launch
+  - Timeout `0`
+  - Cancellation Supported
+- No executor, root, lifecycle transition, timeout, retry, preflight, or warning occurred.
+- The temporary verification asset was removed before Git review.
 
 ## Current Exclusions
 
 Not implemented:
 
-- Startup-step policy
-- Step executor contract
 - Startup sequence runner
-- Runtime step context
-- Automatic lifecycle advancement
+- Active step execution object
+- Executor invocation
+- Timeout clock
+- Timeout cancellation
+- Retry loops
+- Interactive retry
+- Exception conversion
+- Result-to-policy application
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
-- Runtime migration or repair
+- Automatic lifecycle advancement
+- Step lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -285,6 +374,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M2-07 stops after startup-step definitions, ordered sequence entries, sequence identity, and passive configuration binding are proven.
+FL-M2-08 stops after authored policy, immutable progress/context values, and the fresh executor API are proven without invoking an executor.
 
 The next runtime slice requires separate approval.

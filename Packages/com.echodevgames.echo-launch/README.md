@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Early runtime implementation
+- Development stage: Runtime contracts established; execution not yet implemented
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -16,6 +16,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-05` Lifecycle Notifications
   - `FL-M2-06` Launch Configuration Identity and Root Binding
   - `FL-M2-07` Startup Sequence Definition and Ordered Entry Model
+  - `FL-M2-08` Startup Step Policy and Executor Contract
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -44,74 +45,108 @@ First Light now provides:
 
 - One fresh `LaunchSession` per authoritative root
 - Initial `AuthorityClaimed` state
-- `LaunchProgressSnapshot.Empty`
-- Read-only `EchoLaunchRoot.State`
-- Read-only `EchoLaunchRoot.Progress`
+- Read-only root state and progress
 - Controlled internal progress publication
 - Duplicate and stale-root state hiding
 
 ### Lifecycle Transition Guard
 
-- Centralized `LaunchStateTransitionRules`
+- Centralized transition rules
 - Approved forward lifecycle path
 - Same-state progress publication for active states
 - Failure and interruption from active states
-- Rejection of backward and skipped-phase transitions
+- Rejection of backward and skipped transitions
 - Permanent terminal-state freezing
-- Transactional publication that preserves the prior snapshot when validation fails
+- Transactional publication
 
 ### Lifecycle Notifications
 
-- Public `LaunchStateChanged` observer event
-- Public `LaunchProgressChanged` observer event
-- Previous/current notification payloads
-- State notification before progress notification
+- Public state and progress observer events
+- Previous/current payloads
+- State-before-progress order
 - Accepted state visible during callbacks
 - Per-listener exception containment
-- Stable listener-failure diagnostic `ELAUNCH-EVENT-001`
-- Delegate cleanup when the root is destroyed
+- Stable listener diagnostic `ELAUNCH-EVENT-001`
+- Delegate cleanup on root destruction
 
 ### Launch Configuration
 
-- Project-owned `EchoLaunchConfiguration` asset
-- Canonical runtime-safe stable configuration ID
+- Project-owned `EchoLaunchConfiguration`
+- Stable configuration ID
 - Configuration schema version `2`
 - Passive startup-sequence reference
-- Read-only identity, schema, and sequence binding
-- Invalid identity detection without silent repair
-- Unsupported schema detection without runtime rewrite
-- Passive serialized root binding
-- Authority-filtered `EchoLaunchRoot.Configuration`
+- Authority-filtered root binding
+- Invalid identity and schema detection without runtime repair
 
-### Startup Step Definitions
+### Startup Definitions and Sequence
 
 - Abstract immutable `StartupStepDefinition`
-- Canonical stable step ID
-- Step schema version `1`
-- Authored display label separate from identity
-- Blank-label fallback to the Unity object name
-- No executor or mutable execution state
+- Stable step identity and schema
+- Display label separate from identity
+- Serializable `StartupSequenceEntry`
+- Stable entry identity
+- Safe activation metadata
+- Project-owned `StartupSequence`
+- Sequence schema version `2`
+- Ordered private entry list
+- Read-only count and indexed access
+- Passive configuration binding
 
-### Startup Sequence Entries
+### Startup Step Policy
 
-- Serializable embedded `StartupSequenceEntry`
-- Canonical stable entry ID
-- Authored enabled state
-- One immutable step-definition reference
-- Entry identity independent from list position
+- Exact MVP failure actions:
+  - `BlockLaunch`
+  - `ContinueWithWarning`
+- Required and optional intent
+- Timeout metadata
+- Cancellation capability metadata
+- Safe presets:
+  - `RequiredBlocking`
+  - `OptionalWarning`
+- Invalid policy detection without clamping or repair
+- Safe zero-state Unity serialization defaults
 
-### Startup Sequence
+### Startup Step Progress
 
-- Project-owned `StartupSequence` asset
-- Create menu entry under First Light
-- Canonical stable sequence ID
-- Sequence schema version `1`
-- Ordered private sequence-entry list
-- Read-only entry count
-- Read-only indexed access
-- Clear invalid-index rejection
-- Empty sequence allowed as authored data
-- Passive binding through `EchoLaunchConfiguration.StartupSequence`
+- Immutable determinate progress
+- Immutable indeterminate progress
+- Inclusive `0` through `1` range
+- Invalid range rejection
+- Normalized messages
+
+### Startup Step Context
+
+- Immutable launch mode and stable identities
+- Step index and count
+- Cooperative `CancellationToken`
+- Package-owned progress reporter
+- Constructor validation
+- No launch authority
+
+### Executor Contract
+
+- Public `IStartupStepExecutor`
+- Unity `Awaitable<StartupStepResult>`
+- Fresh executor factory on every step definition
+- Single-use executor intent
+- Active state kept outside ScriptableObject definitions
+- No executor invocation yet
+
+## Safe Serialized Entry Defaults
+
+Unity can create new embedded list elements from zeroed serialized data.
+
+First Light maps zero to safe authored defaults:
+
+```text
+Activation: Enabled
+Requirement: Required
+Failure Action: Block Launch
+Timeout Seconds: 0
+Cancellation: Supported
+```
+
+No automatic repair or migration callback is used.
 
 ## Approved Lifecycle
 
@@ -133,7 +168,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `141`
+- Passed: `169`
 - Failed: `0`
 - Ignored: `0`
 
@@ -146,6 +181,7 @@ Breakdown:
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
 - Startup sequence definition tests: `24`
+- Startup step policy and executor-contract tests: `28`
 
 Expected yellow diagnostic evidence:
 
@@ -154,24 +190,31 @@ Expected yellow diagnostic evidence:
 
 Manual evidence:
 
-- Unity created a project-owned startup sequence through the package Create menu.
-- The sequence Inspector exposed an empty authored `Entries` list.
-- A temporary launch configuration accepted the sequence reference.
-- Asset creation and assignment caused no scene object, lifecycle transition, startup execution, or warning.
-- Both temporary verification assets were removed before Git review.
+- Unity created a temporary startup sequence and embedded entry.
+- The first manual pass exposed unsafe zeroed boolean defaults.
+- The model was corrected to safe zero-valued enums.
+- Recreated entries displayed the approved safe defaults.
+- No executor, runner, timeout, retry, preflight, lifecycle transition, or warning occurred.
+- The temporary verification asset was removed before Git review.
 
 ## Not Implemented Yet
 
 First Light does not yet provide:
 
-- Startup-step policy
-- Step executor contract
 - Startup sequence runner
-- Runtime step context
-- Automatic lifecycle advancement
+- Active execution tracking
+- Executor invocation
+- Timeout measurement
+- Clock abstraction
+- Timeout cancellation
+- Retry loops
+- Interactive retry
+- Exception conversion
+- Policy application
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
-- Runtime migration or repair
+- Automatic lifecycle advancement
+- Step lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -196,9 +239,9 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- One hundred forty-one passing Runtime Play Mode tests
-- Launch configuration and startup-sequence Create menu verification
-- Definition immutability and ordered-access evidence
+- One hundred sixty-nine passing Runtime Play Mode tests
+- Safe policy authoring verification
+- Fresh executor factory contract
 - No out-of-scope startup execution
 
 Still `Not run`:
@@ -208,6 +251,7 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Startup execution
+- Timeout behavior
 - Performance measurements
 
 ## License
