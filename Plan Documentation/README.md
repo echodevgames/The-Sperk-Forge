@@ -1,64 +1,137 @@
-# The Sperk’s Forge – Plan Documentation
+# Plan Documentation
 
-This folder is the live Git-backed Obsidian vault for **The Sperk’s Forge – EchoDevGames Game Systems Suite**.
+This folder is the living planning, architecture, test, and handoff record for **The Sperk’s Forge — EchoDevGames Game Systems Suite**.
 
-## Current authority state
+The Markdown files in this folder are committed to Git and opened directly in Obsidian. Do not maintain a second copied vault. Git preserves documentation history; Obsidian is the editing and navigation surface.
 
-| Area | Current authority |
+---
+
+## Start Here
+
+### Continuing an existing work session
+
+Read:
+
+1. `ChatGPT_Handoff.md`
+2. `Current Notes.md`
+3. The active package specification
+4. The active package architecture and Current Notes
+5. The latest completed checkpoint
+6. The active Checkpoint Build Plan
+7. Relevant implementation and tests
+
+### Starting a new ChatGPT conversation
+
+Use:
+
+- [`ChatGPT_Handoff.md`](ChatGPT_Handoff.md)
+
+That file contains:
+
+- Authority order
+- Required upload set
+- Repository reading order
+- Mandatory first-response fields
+- The copy-and-paste opening prompt
+- Checkpoint workflow rules
+- CMD-first file automation rules
+- Git and test evidence requirements
+- Conversation rotation guidance
+
+Do not rely on the old conversation transcript as the only source of project truth.
+
+---
+
+## Core Authority Documents
+
+| Document | Role |
 |---|---|
-| Suite Bible | `Echo_Game_Systems_Suite_Bible.md` v0.23.0 |
-| Standards | SFGSS-001 through SFGSS-010 complete |
-| Package authorities | 28 of 28 approved and consistency-reviewed |
-| Integration matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
-| Documentation handoff | SUITE-DOC-32 passed |
-| Learning workflow | Just-in-time package-local gate under ADR-004 |
-| Package learning reviews | 1 of 28 complete |
-| First Light learning | Complete |
-| Observatory learning | Paused until EchoDiagnostics implementation |
-| Package implementation | Activated only for FL-M1-01; not started |
-| Active checkpoint | **FL-M1-01 – First Light Package Skeleton** |
-| Active implementation plan | **FL-M1-01 v1.3.0 – First Light Package Skeleton** |
+| `Echo_Game_Systems_Suite_Bible.md` | SFGSS-000, suite-wide authority |
+| `SFGSS-001_Package_Specification_Template.md` | Required package-specification structure |
+| `ChatGPT_Handoff.md` | New-conversation and repository-rehydration protocol |
+| `Current Notes.md` | Fresh working context, evidence, blockers, and handoff state |
 
-## Start here
+When documents disagree, use the authority order defined in SFGSS-000 and `ChatGPT_Handoff.md`.
 
-1. [SUITE-DOC-33 Initial Implementation Readiness Gate](Test%20Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md)
-2. [FL-M1-01 First Light Package Skeleton Plan](Checkpoint%20Build%20Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md)
-3. [Full Suite Documentation and Learning Handoff Guide](Full_Suite_Documentation_and_Learning_Handoff_Guide.md)
-4. [Suite Graph Roadmap](Suite_Graph_Roadmap.md)
-5. [Suite Health Check](Suite_Health_Check_and_Remaining_Documentation.md)
-6. [Suite Bible](Echo_Game_Systems_Suite_Bible.md)
-7. [Current Notes](Current%20Notes.md)
-8. [Documentation Program Roadmap](Full_Suite_Documentation_Program_Roadmap.md)
-9. [Full Suite Integration Matrix](Integration%20Specifications/SFGSS-INT-SUITE-001_Full_Suite_Authority_Dependency_Bridge_and_Persistence_Matrix.md)
-10. [Package Learning Review Catalog](Package_Learning_Review_Catalog.md)
-11. [Learning Reviews Index](Learning%20Reviews/README.md)
+`Current Notes.md` provides the freshest working context but does not silently override approved architecture.
 
-## Authority order
+---
 
-1. SFGSS-000 Suite Bible.
-2. Approved package specification/foundation.
-3. Accepted ADR or approved integration specification.
-4. Standards, checkpoint plans, guides, test reports, research records, and release records according to their owned concern.
-5. Current Notes and navigation hubs.
+## Repository Documentation Structure
 
-## Just-in-time learning rule
+```text
+Plan Documentation/
+├── README.md
+├── ChatGPT_Handoff.md
+├── Echo_Game_Systems_Suite_Bible.md
+├── SFGSS-001_Package_Specification_Template.md
+├── Current Notes.md
+├── Package Specifications/
+├── Architecture Decision Records/
+├── Checkpoint Build Plans/
+├── Implementation Checkpoints/
+├── Test Reports/
+├── Release Records/
+└── Workflow and Standards/
+```
 
-Every package must pass its own learning review immediately before its first implementation checkpoint. The suite no longer requires all twenty-eight reviews before First Light begins. Completing one review never unlocks another package.
+Subfolders should contain real records rather than decorative empty placeholders.
 
-## Current checkpoint result
+---
 
-SUITE-DOC-33 passed with advisory and activated only FL-M1-01. PKG-LEARN-001 satisfies First Light's local learning gate. PKG-LEARN-002 remains paused, and every package other than First Light remains locally locked.
+## Document Authority
 
-FL-M1-01 authorizes the embedded UPM package manifest, four assembly definitions, package documentation shell, generated `.meta` files, and bounded validation. It authorizes no C# file, scene, prefab, ScriptableObject, sample, setup tool, bridge, or launch behavior.
+When documents disagree:
 
-The live Unity compile, Git state, package path, and exact uGUI version must be verified before the first skeleton file is created.
+1. SFGSS-000
+2. Approved individual package specification
+3. Accepted ADR or integration specification
+4. Active Checkpoint Build Plan
+5. Package architecture and completed checkpoint records
+6. Test, issue, setup, changelog, and release records
+7. `Current Notes.md`
+8. Chat history
 
-## Checkpoint rule
+Stop and identify a material conflict rather than silently selecting whichever document appears newest.
+
+---
+
+## Working Notes
+
+Use `Current Notes.md` for:
+
+- `[NOTE]` observations
+- `[QUESTION]` unresolved questions
+- `[PROPOSAL]` unapproved changes
+- `[DECISION]` approved decisions awaiting promotion
+- `[TEST]` validation evidence
+- `[BUG]` defects
+- `[RISK]` architecture, compatibility, or schedule concerns
+- `[HANDOFF]` context the next work session must see
+
+Durable decisions must be promoted into the authoritative document that owns them.
+
+Git history is the archive. Resolved working notes may be condensed after promotion.
+
+---
+
+## Checkpoint Rule
 
 At every meaningful checkpoint:
 
-1. Reconcile `Current Notes.md`.
-2. Promote durable truth into the owning authority or permanent record.
-3. Update README, roadmap, graph, health check, tests/issues, learning tracker, and handoff as applicable.
-4. Verify documentation matches actual evidence.
-5. Commit and push the documentation checkpoint before advancing when practical.
+1. Reconcile root and package `Current Notes.md`.
+2. Promote durable decisions into the correct authoritative document.
+3. Update test, issue, setup, architecture, changelog, README, index, release, or completion records as applicable.
+4. Confirm documentation matches the committed implementation.
+5. Commit and push documentation with the related code when practical, or in an immediately adjacent documentation commit.
+6. Confirm the repository is clean and synchronized.
+
+---
+
+## Historical Bootstrap Note
+
+The repository originally began with four bootstrap documents and a prompt to draft the First Light package specification.
+
+That objective is complete and no longer describes the current work.
+
+Use `ChatGPT_Handoff.md` and the current repository records for all future conversations.
