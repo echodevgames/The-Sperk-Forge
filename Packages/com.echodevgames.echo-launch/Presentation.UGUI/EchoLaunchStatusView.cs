@@ -20,7 +20,8 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
     [RequireComponent(typeof(CanvasGroup))]
     public sealed class EchoLaunchStatusView :
         MonoBehaviour,
-        ILaunchStatusPresenter
+        ILaunchStatusPresenter,
+        IImageSplashPresenter
     {
         [Header("References")]
         [SerializeField]
@@ -49,6 +50,16 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
         [SerializeField]
         private GameObject indeterminateProgressRoot;
+
+        [Header("Splash References")]
+        [SerializeField]
+        private GameObject splashRoot;
+
+        [SerializeField]
+        private Image splashImage;
+
+        [SerializeField]
+        private Text splashLabelText;
 
         [Header("State Copy")]
         [SerializeField]
@@ -82,6 +93,10 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         [SerializeField]
         private string interruptedText =
             "Launch interrupted.";
+
+        [SerializeField]
+        private string showingSplashText =
+            "Showing splash.";
 
         [Header("Progress Copy")]
         [SerializeField]
@@ -132,6 +147,27 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         }
 
         /// <summary>
+        /// Gets the latest splash frame rendered by the view.
+        /// </summary>
+        public SplashPresentationFrame LastSplashFrame
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Raised when the view receives a public splash skip request.
+        /// </summary>
+        public event Action SkipRequested;
+
+        /// <summary>
+        /// Gets whether the splash surface is active.
+        /// </summary>
+        public bool IsShowingSplash =>
+            splashRoot != null &&
+            splashRoot.activeSelf;
+
+        /// <summary>
         /// Gets whether the view's CanvasGroup is currently visible.
         /// </summary>
         public bool IsVisible =>
@@ -178,6 +214,7 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
             IsBound = true;
             LastReport = null;
+            ClearSplash();
 
             if (showOnBind)
             {
@@ -253,6 +290,113 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         }
 
         /// <inheritdoc />
+        public void PresentSplash(
+            SplashPresentationFrame frame)
+        {
+            if (frame == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(frame));
+            }
+
+            if (!IsBound)
+            {
+                return;
+            }
+
+            LastSplashFrame = frame;
+
+            if (splashRoot != null)
+            {
+                splashRoot.SetActive(true);
+            }
+
+            if (splashImage != null)
+            {
+                splashImage.sprite =
+                    frame.Image;
+
+                Color color =
+                    splashImage.color;
+
+                color.a =
+                    frame.Alpha;
+
+                splashImage.color =
+                    color;
+            }
+
+            SetText(
+                splashLabelText,
+                frame.DisplayLabel);
+
+            SetText(
+                stateText,
+                showingSplashText);
+
+            SetText(
+                messageText,
+                frame.DisplayLabel);
+
+            SetText(
+                stepText,
+                $"Splash {frame.EntryIndex + 1} " +
+                $"of {frame.EntryCount}");
+        }
+
+        /// <inheritdoc />
+        public void ClearSplash()
+        {
+            LastSplashFrame = null;
+
+            if (splashRoot != null)
+            {
+                splashRoot.SetActive(false);
+            }
+
+            if (splashImage != null)
+            {
+                splashImage.sprite = null;
+
+                Color color =
+                    splashImage.color;
+
+                color.a = 0f;
+
+                splashImage.color =
+                    color;
+            }
+
+            SetText(
+                splashLabelText,
+                string.Empty);
+        }
+
+        /// <summary>
+        /// Requests that the active deterministic splash player skip when the
+        /// authored minimum display time and skip policy permit it.
+        /// </summary>
+        public bool RequestSplashSkip()
+        {
+            if (!IsBound ||
+                !IsShowingSplash)
+            {
+                return false;
+            }
+
+            Action handlers =
+                SkipRequested;
+
+            if (handlers == null)
+            {
+                return false;
+            }
+
+            handlers.Invoke();
+            return true;
+        }
+
+        /// <inheritdoc />
         public void Unbind()
         {
             if (!IsBound)
@@ -261,6 +405,8 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             }
 
             IsBound = false;
+            ClearSplash();
+            SkipRequested = null;
 
             if (hideOnUnbind)
             {
@@ -324,6 +470,29 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             {
                 SetVisible(false);
             }
+        }
+
+        internal void ConfigureSplashForTesting(
+            GameObject configuredSplashRoot,
+            Image configuredSplashImage,
+            Text configuredSplashLabelText)
+        {
+            if (IsBound)
+            {
+                throw new InvalidOperationException(
+                    "Splash references cannot be reconfigured while bound.");
+            }
+
+            splashRoot =
+                configuredSplashRoot;
+
+            splashImage =
+                configuredSplashImage;
+
+            splashLabelText =
+                configuredSplashLabelText;
+
+            ClearSplash();
         }
 
         internal void ConfigureBehaviorForTesting(
@@ -574,6 +743,7 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
                 LaunchProgressSnapshot.Empty;
 
             LastReport = null;
+            ClearSplash();
 
             SetText(
                 stateText,
