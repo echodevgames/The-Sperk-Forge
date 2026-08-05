@@ -123,6 +123,7 @@ namespace EchoDevGames.EchoLaunch
             bool hasWarnings = false;
             bool hasFailures = false;
             bool hasBlockingFailures = false;
+            bool wasCancelled = false;
 
             for (int index = 0;
                  index < attemptedExecutions.Count;
@@ -166,6 +167,12 @@ namespace EchoDevGames.EchoLaunch
                 {
                     hasBlockingFailures = true;
                 }
+
+                if (result.Status ==
+                    StartupStepStatus.Cancelled)
+                {
+                    wasCancelled = true;
+                }
             }
 
             if (wasStopped)
@@ -203,6 +210,9 @@ namespace EchoDevGames.EchoLaunch
 
             HasBlockingFailures =
                 hasBlockingFailures;
+
+            WasCancelled =
+                wasCancelled;
         }
 
         /// <summary>
@@ -251,6 +261,14 @@ namespace EchoDevGames.EchoLaunch
         /// or minus one when traversal completed normally.
         /// </summary>
         internal int StoppingAuthoredEntryIndex
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets whether traversal captured a terminal cancellation result.
+        /// </summary>
+        internal bool WasCancelled
         {
             get;
         }

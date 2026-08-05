@@ -11,9 +11,10 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Executes enabled startup-sequence entries in authored order.
     ///
-    /// FL-M3-03 applies authored failure policy, contains bounded failures,
+    /// FL-M3-04 applies authored failure policy, contains bounded failures,
     /// measures optional unscaled deadlines, requests cooperative timeout
-    /// cancellation, and never abandons an active executor.
+    /// cancellation, captures caller cancellation as a settled run outcome,
+    /// and never abandons an active executor.
     ///
     /// Retries, reports, root integration, and lifecycle advancement remain
     /// later checkpoints.
@@ -24,6 +25,9 @@ namespace EchoDevGames.EchoLaunch
 
         private const string TimeoutDiagnosticCode =
             "ELAUNCH-STEP-003";
+
+        private const string CallerCancellationDiagnosticCode =
+            "ELAUNCH-STEP-005";
 
         private readonly ILaunchClock clock;
 
@@ -275,6 +279,23 @@ namespace EchoDevGames.EchoLaunch
                         break;
                     }
 
+                    if (outcome
+                        .CallerCancellationObserved)
+                    {
+                        execution.Complete(
+                            CreateCallerCancellationResult(
+                                outcome),
+                            outcome.Timing);
+
+                        completedExecutions.Add(
+                            execution);
+
+                        stoppingAuthoredEntryIndex =
+                            index;
+
+                        break;
+                    }
+
                     StartupStepResult originalResult;
 
                     if (outcome.TimedOut)
@@ -395,6 +416,30 @@ namespace EchoDevGames.EchoLaunch
             return StartupStepResult.TimedOut(
                 TimeoutDiagnosticCode,
                 "The startup step exceeded its configured timeout.",
+                details);
+        }
+
+        private static StartupStepResult
+            CreateCallerCancellationResult(
+                StartupStepAwaitOutcome outcome)
+        {
+            if (outcome == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(outcome));
+            }
+
+            string details =
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "ElapsedSeconds: {0:0.###}\n" +
+                    "ExecutorCompletedWithoutException: {1}",
+                    outcome.Timing.ElapsedSeconds,
+                    outcome.CompletedWithoutException);
+
+            return StartupStepResult.Cancelled(
+                CallerCancellationDiagnosticCode,
+                "Startup-sequence execution was cancelled by the caller.",
                 details);
         }
 

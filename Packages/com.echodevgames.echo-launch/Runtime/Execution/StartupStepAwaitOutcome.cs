@@ -18,7 +18,8 @@ namespace EchoDevGames.EchoLaunch
             bool completedWithoutException,
             StartupStepResult executorResult,
             Exception executorException,
-            StartupStepTiming timing)
+            StartupStepTiming timing,
+            bool callerCancellationObserved)
         {
             if (completedWithoutException)
             {
@@ -41,6 +42,8 @@ namespace EchoDevGames.EchoLaunch
             ExecutorResult = executorResult;
             ExecutorException = executorException;
             Timing = timing;
+            CallerCancellationObserved =
+                callerCancellationObserved;
         }
 
         /// <summary>
@@ -88,6 +91,18 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
+        /// Gets whether the runner's caller requested cancellation before
+        /// the executor became observable as settled.
+        ///
+        /// The monitor still consumes the executor before publishing this
+        /// fact so later traversal never overlaps active startup work.
+        /// </summary>
+        internal bool CallerCancellationObserved
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets whether the monitored deadline won before settlement.
         /// </summary>
         internal bool TimedOut =>
@@ -109,13 +124,15 @@ namespace EchoDevGames.EchoLaunch
         internal static StartupStepAwaitOutcome
             FromResult(
                 StartupStepResult executorResult,
-                StartupStepTiming timing)
+                StartupStepTiming timing,
+                bool callerCancellationObserved = false)
         {
             return new StartupStepAwaitOutcome(
                 true,
                 executorResult,
                 null,
-                timing);
+                timing,
+                callerCancellationObserved);
         }
 
         /// <summary>
@@ -124,13 +141,15 @@ namespace EchoDevGames.EchoLaunch
         internal static StartupStepAwaitOutcome
             FromException(
                 Exception executorException,
-                StartupStepTiming timing)
+                StartupStepTiming timing,
+                bool callerCancellationObserved = false)
         {
             return new StartupStepAwaitOutcome(
                 false,
                 null,
                 executorException,
-                timing);
+                timing,
+                callerCancellationObserved);
         }
     }
 }

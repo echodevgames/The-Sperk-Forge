@@ -20,8 +20,8 @@ namespace EchoDevGames.EchoLaunch
         /// Monitors one already-created executor awaitable.
         ///
         /// Caller cancellation remains distinct. Once observed, the monitor
-        /// waits for the linked executor to settle before allowing
-        /// cancellation to escape.
+        /// waits for the linked executor to settle and returns that fact as
+        /// part of the immutable await outcome.
         /// </summary>
         internal static async Awaitable<
             StartupStepAwaitOutcome>
@@ -248,16 +248,13 @@ namespace EchoDevGames.EchoLaunch
                 executorException = exception;
             }
 
-            if (callerCancellationObserved)
+            if (!callerCancellationObserved &&
+                executorException is
+                    OperationCanceledException &&
+                callerCancellationToken
+                    .IsCancellationRequested)
             {
-                throw new OperationCanceledException(
-                    "Startup-sequence execution was cancelled by the caller.",
-                    callerCancellationToken);
-            }
-
-            if (monitorFailure != null)
-            {
-                throw monitorFailure;
+                callerCancellationObserved = true;
             }
 
             StartupStepTiming timing =
@@ -267,6 +264,29 @@ namespace EchoDevGames.EchoLaunch
                     timeoutSeconds,
                     timedOut,
                     cancellationRequested);
+
+            if (callerCancellationObserved)
+            {
+                if (completedWithoutException)
+                {
+                    return StartupStepAwaitOutcome
+                        .FromResult(
+                            executorResult,
+                            timing,
+                            true);
+                }
+
+                return StartupStepAwaitOutcome
+                    .FromException(
+                        executorException,
+                        timing,
+                        true);
+            }
+
+            if (monitorFailure != null)
+            {
+                throw monitorFailure;
+            }
 
             if (completedWithoutException)
             {

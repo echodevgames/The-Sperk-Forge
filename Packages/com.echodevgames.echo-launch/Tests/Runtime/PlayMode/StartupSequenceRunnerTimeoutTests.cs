@@ -829,7 +829,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void CallerCancellationEscapesTimeoutPath()
+        public void CallerCancellationReturnsStructuredOutcome()
         {
             TimeoutTestClock clock =
                 new TimeoutTestClock(0d);
@@ -839,6 +839,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     "Caller Cancellation");
 
             definition.ObserveCancellation = true;
+
+            StartupSequenceRunResult result;
 
             using (
                 CancellationTokenSource source =
@@ -853,21 +855,70 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                         }
                     };
 
-                Assert.Throws<
-                    OperationCanceledException>(
-                    () =>
-                        RunSingle(
-                            clock,
-                            definition,
-                            CreatePolicy(
-                                StartupStepFailureAction
-                                    .ContinueWithWarning,
-                                5f,
-                                true),
-                            source.Token));
+                result =
+                    RunSingle(
+                        clock,
+                        definition,
+                        CreatePolicy(
+                            StartupStepFailureAction
+                                .ContinueWithWarning,
+                            5f,
+                            true),
+                        source.Token);
             }
-        }
 
+            StartupStepExecution execution =
+                result.GetExecution(0);
+
+            Assert.That(
+                definition.CancellationObservationCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                execution.Result.Status,
+                Is.EqualTo(
+                    StartupStepStatus.Cancelled));
+
+            Assert.That(
+                execution.Result.Code,
+                Is.EqualTo(
+                    "ELAUNCH-STEP-005"));
+
+            Assert.That(
+                execution.Result.Message,
+                Is.EqualTo(
+                    "Startup-sequence execution was cancelled by the caller."));
+
+            Assert.That(
+                execution.Result.Details,
+                Does.Contain(
+                    "ExecutorCompletedWithoutException: False"));
+
+            Assert.That(
+                execution.Timing.TimedOut,
+                Is.False);
+
+            Assert.That(
+                result.WasCancelled,
+                Is.True);
+
+            Assert.That(
+                result.WasStoppedEarly,
+                Is.True);
+
+            Assert.That(
+                result.StoppingAuthoredEntryIndex,
+                Is.EqualTo(0));
+
+            Assert.That(
+                result.AttemptedExecutionCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                execution.Result.Status,
+                Is.Not.EqualTo(
+                    StartupStepStatus.Warning));
+        }
         [Test]
         public void ContinueWithWarningTimeoutRunsLaterStep()
         {
