@@ -79,7 +79,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
-        public void WindowExposesNoApplyRepairOrMigrateMethod()
+        public void WindowExposesApplyButNoRepairOrMigrateMethod()
         {
             MethodInfo[] methods =
                 typeof(EchoLaunchSetupWindow).GetMethods(
@@ -88,32 +88,45 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     BindingFlags.Public |
                     BindingFlags.NonPublic);
 
-            string[] forbiddenTokens =
-            {
-                "Apply",
-                "Repair",
-                "Migrate",
-                "CreateAssets",
-                "ChangeBuildSettings"
-            };
+            bool foundApply = false;
 
             for (int methodIndex = 0;
                  methodIndex < methods.Length;
                  methodIndex++)
             {
-                for (int tokenIndex = 0;
-                     tokenIndex < forbiddenTokens.Length;
-                     tokenIndex++)
+                string name = methods[methodIndex].Name;
+
+                if (name.IndexOf(
+                        "Apply",
+                        StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    Assert.That(
-                        methods[methodIndex].Name.IndexOf(
-                            forbiddenTokens[tokenIndex],
-                            StringComparison.OrdinalIgnoreCase),
-                        Is.LessThan(0),
-                        "Forbidden method found: " +
-                        methods[methodIndex].Name);
+                    foundApply = true;
                 }
+
+                Assert.That(
+                    name.IndexOf(
+                        "Repair",
+                        StringComparison.OrdinalIgnoreCase),
+                    Is.LessThan(0),
+                    "Forbidden repair method found: " + name);
+
+                Assert.That(
+                    name.IndexOf(
+                        "Migrate",
+                        StringComparison.OrdinalIgnoreCase),
+                    Is.LessThan(0),
+                    "Forbidden migration method found: " + name);
             }
+
+            Assert.That(foundApply, Is.True);
+        }
+
+        [Test]
+        public void ApplyBoundaryMessageForbidsOverwrite()
+        {
+            Assert.That(
+                EchoLaunchSetupWindow.ApplyBoundaryMessage,
+                Does.Contain("never overwritten"));
         }
 
         [Test]

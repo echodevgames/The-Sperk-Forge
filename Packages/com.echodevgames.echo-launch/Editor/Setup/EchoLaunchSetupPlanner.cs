@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace EchoDevGames.EchoLaunch.Editor.Setup
 {
-    internal sealed class EchoLaunchSetupPlanner
+    internal sealed class EchoLaunchSetupPlanner :
+        IEchoLaunchSetupPlanSource
     {
         private const int ValidatePhase = 0;
         private const int FolderPhase = 10;
@@ -13,7 +14,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         private const int ScenePhase = 40;
         private const int BuildSettingsPhase = 50;
 
-        internal EchoLaunchSetupPlan CreatePlan(
+        public EchoLaunchSetupPlan CreatePlan(
             EchoLaunchSetupRequest request,
             EchoLaunchProjectSnapshot snapshot)
         {
@@ -169,13 +170,33 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             SortOperations(operations);
             SortDiagnostics(diagnostics);
 
+            EchoLaunchSetupPlanStatus status =
+                DetermineStatus(operations, diagnostics);
+
+            string requestFingerprint =
+                EchoLaunchSetupFingerprint.ForRequest(request);
+
+            string evidenceFingerprint =
+                snapshot.EvidenceFingerprint;
+
+            string planFingerprint =
+                EchoLaunchSetupFingerprint.ForPlan(
+                    requestFingerprint,
+                    evidenceFingerprint,
+                    status,
+                    operations,
+                    diagnostics);
+
             return new EchoLaunchSetupPlan(
                 request,
                 paths,
                 snapshot.CreateEvidenceSummary(),
-                DetermineStatus(operations, diagnostics),
+                status,
                 operations,
-                diagnostics);
+                diagnostics,
+                requestFingerprint,
+                evidenceFingerprint,
+                planFingerprint);
         }
 
         private static void ValidateDestinationScene(

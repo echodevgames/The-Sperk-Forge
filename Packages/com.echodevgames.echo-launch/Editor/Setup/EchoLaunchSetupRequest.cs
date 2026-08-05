@@ -17,8 +17,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string selectedSplashSequencePath = null,
             string selectedRootPrefabPath = null)
         {
-            ProjectRootPath = projectRootPath ?? string.Empty;
-            BootScenePath = bootScenePath ?? string.Empty;
+            ProjectRootPath =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(
+                    projectRootPath);
+
+            BootScenePath =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(
+                    bootScenePath);
             DestinationScenePath =
                 EchoLaunchSetupPathUtility.NormalizeSeparators(destinationScenePath);
             CreateSplashSequence = createSplashSequence;

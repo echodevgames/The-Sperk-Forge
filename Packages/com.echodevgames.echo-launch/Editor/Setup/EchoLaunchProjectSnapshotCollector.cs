@@ -6,9 +6,10 @@ using UnityEngine;
 
 namespace EchoDevGames.EchoLaunch.Editor.Setup
 {
-    internal sealed class EchoLaunchProjectSnapshotCollector
+    internal sealed class EchoLaunchProjectSnapshotCollector :
+        IEchoLaunchSetupSnapshotSource
     {
-        internal EchoLaunchProjectSnapshot Collect(
+        public EchoLaunchProjectSnapshot Collect(
             EchoLaunchSetupRequest request)
         {
             if (request == null)

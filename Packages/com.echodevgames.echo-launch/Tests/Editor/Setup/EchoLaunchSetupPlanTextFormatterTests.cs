@@ -63,6 +63,37 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 Is.EqualTo(formatter.Format(plan)));
         }
 
+
+        [Test]
+        public void ReportIncludesRequestFingerprint()
+        {
+            EchoLaunchSetupPlan plan = CreatePlan();
+
+            Assert.That(
+                new EchoLaunchSetupPlanTextFormatter().Format(plan),
+                Does.Contain(plan.RequestFingerprint));
+        }
+
+        [Test]
+        public void ReportIncludesEvidenceFingerprint()
+        {
+            EchoLaunchSetupPlan plan = CreatePlan();
+
+            Assert.That(
+                new EchoLaunchSetupPlanTextFormatter().Format(plan),
+                Does.Contain(plan.EvidenceFingerprint));
+        }
+
+        [Test]
+        public void ReportIncludesPlanFingerprint()
+        {
+            EchoLaunchSetupPlan plan = CreatePlan();
+
+            Assert.That(
+                new EchoLaunchSetupPlanTextFormatter().Format(plan),
+                Does.Contain(plan.PlanFingerprint));
+        }
+
         [Test]
         public void NullPlanFormatsAsEmpty()
         {

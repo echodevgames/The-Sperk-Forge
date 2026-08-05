@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -124,12 +123,20 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string snapshotEvidenceSummary,
             EchoLaunchSetupPlanStatus status,
             IEnumerable<EchoLaunchSetupOperation> operations,
-            IEnumerable<EchoLaunchSetupDiagnostic> diagnostics)
+            IEnumerable<EchoLaunchSetupDiagnostic> diagnostics,
+            string requestFingerprint = null,
+            string evidenceFingerprint = null,
+            string planFingerprint = null)
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));
             Paths = paths;
             SnapshotEvidenceSummary = snapshotEvidenceSummary ?? string.Empty;
             Status = status;
+            RequestFingerprint =
+                string.IsNullOrEmpty(requestFingerprint)
+                    ? EchoLaunchSetupFingerprint.ForRequest(request)
+                    : requestFingerprint;
+            EvidenceFingerprint = evidenceFingerprint ?? string.Empty;
 
             this.operations = new ReadOnlyCollection<EchoLaunchSetupOperation>(
                 operations == null
@@ -140,11 +147,24 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 diagnostics == null
                     ? new List<EchoLaunchSetupDiagnostic>()
                     : new List<EchoLaunchSetupDiagnostic>(diagnostics));
+
+            PlanFingerprint =
+                string.IsNullOrEmpty(planFingerprint)
+                    ? EchoLaunchSetupFingerprint.ForPlan(
+                        RequestFingerprint,
+                        EvidenceFingerprint,
+                        Status,
+                        this.operations,
+                        this.diagnostics)
+                    : planFingerprint;
         }
 
         internal EchoLaunchSetupRequest Request { get; }
         internal EchoLaunchSetupPathSet Paths { get; }
         internal string SnapshotEvidenceSummary { get; }
+        internal string RequestFingerprint { get; }
+        internal string EvidenceFingerprint { get; }
+        internal string PlanFingerprint { get; }
         internal EchoLaunchSetupPlanStatus Status { get; }
         internal IReadOnlyList<EchoLaunchSetupOperation> Operations => operations;
         internal IReadOnlyList<EchoLaunchSetupDiagnostic> Diagnostics => diagnostics;
@@ -193,6 +213,18 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 !string.Equals(
                     SnapshotEvidenceSummary,
                     other.SnapshotEvidenceSummary,
+                    StringComparison.Ordinal) ||
+                !string.Equals(
+                    RequestFingerprint,
+                    other.RequestFingerprint,
+                    StringComparison.Ordinal) ||
+                !string.Equals(
+                    EvidenceFingerprint,
+                    other.EvidenceFingerprint,
+                    StringComparison.Ordinal) ||
+                !string.Equals(
+                    PlanFingerprint,
+                    other.PlanFingerprint,
                     StringComparison.Ordinal) ||
                 operations.Count != other.operations.Count ||
                 diagnostics.Count != other.diagnostics.Count)

@@ -219,6 +219,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             return -1;
         }
 
+        internal string EvidenceFingerprint =>
+            EchoLaunchSetupFingerprint.ForSnapshot(this);
+
         internal string CreateEvidenceSummary()
         {
             return "Assets=" + assetFacts.Count +

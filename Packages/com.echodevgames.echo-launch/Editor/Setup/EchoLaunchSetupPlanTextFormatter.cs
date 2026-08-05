@@ -19,6 +19,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             builder.AppendLine(
                 "Preview only: no project changes have been applied.");
             builder.AppendLine("Evidence: " + plan.SnapshotEvidenceSummary);
+            builder.AppendLine("Request fingerprint: " + plan.RequestFingerprint);
+            builder.AppendLine("Evidence fingerprint: " + plan.EvidenceFingerprint);
+            builder.AppendLine("Plan fingerprint: " + plan.PlanFingerprint);
 
             if (plan.Paths != null)
             {

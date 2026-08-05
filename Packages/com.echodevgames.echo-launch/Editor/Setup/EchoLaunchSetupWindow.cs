@@ -1,4 +1,4 @@
-
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,14 +12,21 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal const string PreviewOnlyMessage =
             "Preview only. This checkpoint changes nothing in the project.";
 
+        internal const string ApplyBoundaryMessage =
+            "Create-only setup. Existing project assets are never overwritten.";
+
         private string projectRootPath;
         private string bootScenePath;
         private SceneAsset destinationScene;
         private bool createSplashSequence;
         private EchoLaunchBuildSettingsPolicy buildSettingsPolicy;
+        private bool approvePlaceFirst;
         private EchoLaunchSetupPlan currentPlan;
-        private string currentReport = string.Empty;
+        private EchoLaunchSetupApplyResult currentApplyResult;
+        private string currentPlanReport = string.Empty;
+        private string currentApplyReport = string.Empty;
         private Vector2 scrollPosition;
+        private EchoLaunchSetupApplyService applyService;
 
         [MenuItem(MenuPath)]
         private static void OpenFromMenu()
@@ -32,7 +39,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             EchoLaunchSetupWindow window =
                 GetWindow<EchoLaunchSetupWindow>("First Light Setup");
 
-            window.minSize = new Vector2(680f, 520f);
+            window.minSize = new Vector2(720f, 560f);
             window.Show();
             return window;
         }
@@ -55,13 +62,14 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             buildSettingsPolicy =
                 EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd;
 
+            applyService = new EchoLaunchSetupApplyService();
             RefreshPlan();
         }
 
         private void OnGUI()
         {
             EditorGUILayout.HelpBox(
-                PreviewOnlyMessage,
+                ApplyBoundaryMessage,
                 MessageType.Info);
 
             EditorGUILayout.Space();
@@ -93,6 +101,18 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     "Build Settings Policy",
                     buildSettingsPolicy);
 
+            if (buildSettingsPolicy ==
+                EchoLaunchBuildSettingsPolicy.PlaceFirstAfterApproval)
+            {
+                approvePlaceFirst = EditorGUILayout.ToggleLeft(
+                    "I approve placing Boot first while preserving unrelated scene order.",
+                    approvePlaceFirst);
+            }
+            else
+            {
+                approvePlaceFirst = false;
+            }
+
             EditorGUILayout.Space();
 
             using (new EditorGUILayout.HorizontalScope())
@@ -106,7 +126,31 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 {
                     if (GUILayout.Button("Copy Plan", GUILayout.Height(28f)))
                     {
-                        EditorGUIUtility.systemCopyBuffer = currentReport;
+                        EditorGUIUtility.systemCopyBuffer =
+                            currentPlanReport;
+                    }
+                }
+
+                EchoLaunchSetupApplyEligibility eligibility =
+                    EchoLaunchSetupApplyService.EvaluateEligibility(
+                        currentPlan,
+                        approvePlaceFirst);
+
+                bool editorBusy =
+                    EditorApplication.isCompiling ||
+                    EditorApplication.isUpdating ||
+                    EditorApplication.isPlayingOrWillChangePlaymode;
+
+                using (new EditorGUI.DisabledScope(
+                           !eligibility.CanApply ||
+                           editorBusy ||
+                           EchoLaunchSetupApplyService.IsApplyActive))
+                {
+                    if (GUILayout.Button(
+                            "Apply Plan...",
+                            GUILayout.Height(28f)))
+                    {
+                        ApplyCurrentPlan();
                     }
                 }
             }
@@ -122,6 +166,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
 
             DrawPlanSummary();
+
+            if (currentApplyResult != null)
+            {
+                EditorGUILayout.Space();
+                DrawApplyResult();
+            }
         }
 
         internal EchoLaunchSetupPlan RefreshPlanForTests(
@@ -133,14 +183,48 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             currentPlan =
                 new EchoLaunchSetupPlanner().CreatePlan(request, snapshot);
 
-            currentReport =
+            currentPlanReport =
                 new EchoLaunchSetupPlanTextFormatter().Format(currentPlan);
 
             Repaint();
             return currentPlan;
         }
 
-        internal string CurrentReportForTests => currentReport;
+        internal EchoLaunchSetupApplyResult ApplyPlanForTests(
+            EchoLaunchSetupPlan plan,
+            bool confirmed,
+            bool placeFirstApproved,
+            EchoLaunchSetupApplyService service = null)
+        {
+            currentPlan = plan;
+            currentApplyResult =
+                (service ?? applyService ?? new EchoLaunchSetupApplyService())
+                    .Apply(
+                        new EchoLaunchSetupApplyRequest(
+                            plan,
+                            confirmed,
+                            placeFirstApproved));
+
+            currentApplyReport =
+                new EchoLaunchSetupApplyResultFormatter().Format(
+                    currentApplyResult);
+
+            Repaint();
+            return currentApplyResult;
+        }
+
+        internal bool CanApplyCurrentPlanForTests(
+            bool placeFirstApproved)
+        {
+            return EchoLaunchSetupApplyService.EvaluateEligibility(
+                currentPlan,
+                placeFirstApproved).CanApply;
+        }
+
+        internal string CurrentReportForTests => currentPlanReport;
+        internal string CurrentApplyReportForTests => currentApplyReport;
+        internal EchoLaunchSetupApplyResult CurrentApplyResultForTests =>
+            currentApplyResult;
 
         private void RefreshPlan()
         {
@@ -160,6 +244,78 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             RefreshPlanForTests(request);
         }
 
+        private void ApplyCurrentPlan()
+        {
+            string confirmation =
+                BuildConfirmationText(
+                    currentPlan,
+                    approvePlaceFirst);
+
+            bool confirmed =
+                EditorUtility.DisplayDialog(
+                    "Apply First Light Setup",
+                    confirmation,
+                    "Apply",
+                    "Cancel");
+
+            currentApplyResult =
+                applyService.Apply(
+                    new EchoLaunchSetupApplyRequest(
+                        currentPlan,
+                        confirmed,
+                        approvePlaceFirst));
+
+            currentApplyReport =
+                new EchoLaunchSetupApplyResultFormatter().Format(
+                    currentApplyResult);
+
+            RefreshPlan();
+        }
+
+        private static string BuildConfirmationText(
+            EchoLaunchSetupPlan plan,
+            bool placeFirstApproved)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            builder.AppendLine(
+                "First Light will create only the following missing project-owned targets:");
+
+            bool foundCreate = false;
+
+            for (int index = 0; index < plan.Operations.Count; index++)
+            {
+                EchoLaunchSetupOperation operation = plan.Operations[index];
+
+                if (operation.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Create)
+                {
+                    builder.AppendLine("- " + operation.TargetPath);
+                    foundCreate = true;
+                }
+            }
+
+            if (!foundCreate)
+            {
+                builder.AppendLine("- No asset or folder creation.");
+            }
+
+            builder.AppendLine();
+            builder.AppendLine(
+                "Build Settings policy: " +
+                plan.Request.BuildSettingsPolicy);
+
+            builder.AppendLine(
+                "Place-first approval: " +
+                (placeFirstApproved ? "Approved" : "Not approved"));
+
+            builder.AppendLine();
+            builder.AppendLine(
+                "Existing project assets will not be overwritten, repaired, moved, renamed, or deleted.");
+
+            return builder.ToString();
+        }
+
         private void DrawPlanSummary()
         {
             MessageType messageType =
@@ -173,7 +329,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             EditorGUILayout.HelpBox(
                 "Plan status: " + currentPlan.Status +
                 "\nOperations: " + currentPlan.Operations.Count +
-                "\nDiagnostics: " + currentPlan.Diagnostics.Count,
+                "\nDiagnostics: " + currentPlan.Diagnostics.Count +
+                "\nFingerprint: " + currentPlan.PlanFingerprint,
                 messageType);
 
             scrollPosition =
@@ -234,6 +391,31 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
 
             EditorGUILayout.EndScrollView();
+        }
+
+        private void DrawApplyResult()
+        {
+            MessageType messageType =
+                currentApplyResult.Status ==
+                    EchoLaunchSetupApplyStatus.Succeeded ||
+                currentApplyResult.Status ==
+                    EchoLaunchSetupApplyStatus.NoChanges
+                    ? MessageType.Info
+                    : currentApplyResult.Status ==
+                      EchoLaunchSetupApplyStatus.Cancelled
+                        ? MessageType.Warning
+                        : MessageType.Error;
+
+            EditorGUILayout.HelpBox(
+                "Apply status: " + currentApplyResult.Status +
+                "\n" + currentApplyResult.Message,
+                messageType);
+
+            if (GUILayout.Button("Copy Result", GUILayout.Height(24f)))
+            {
+                EditorGUIUtility.systemCopyBuffer =
+                    currentApplyReport;
+            }
         }
     }
 }

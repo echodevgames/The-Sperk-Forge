@@ -161,6 +161,23 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 Is.False);
         }
 
+
+        [Test]
+        public void CollectorProducesNonemptyEvidenceFingerprint()
+        {
+            Assert.That(
+                Collect().EvidenceFingerprint,
+                Is.Not.Empty);
+        }
+
+        [Test]
+        public void RepeatedCollectionProducesSameFingerprint()
+        {
+            Assert.That(
+                Collect().EvidenceFingerprint,
+                Is.EqualTo(Collect().EvidenceFingerprint));
+        }
+
         private static EchoLaunchProjectSnapshot Collect()
         {
             EchoLaunchSetupRequest request =

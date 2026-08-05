@@ -580,6 +580,66 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             Assert.That(plan.Status, Is.EqualTo(EchoLaunchSetupPlanStatus.Blocked));
         }
 
+
+        [Test]
+        public void PlanFingerprintsAreNonempty()
+        {
+            EchoLaunchSetupPlan plan = CreatePlan();
+
+            Assert.That(plan.RequestFingerprint, Is.Not.Empty);
+            Assert.That(plan.EvidenceFingerprint, Is.Not.Empty);
+            Assert.That(plan.PlanFingerprint, Is.Not.Empty);
+        }
+
+        [Test]
+        public void EquivalentPlansHaveEqualFingerprints()
+        {
+            EchoLaunchSetupPlan first = CreatePlan();
+            EchoLaunchSetupPlan second = CreatePlan();
+
+            Assert.That(
+                first.PlanFingerprint,
+                Is.EqualTo(second.PlanFingerprint));
+        }
+
+        [Test]
+        public void BuildSettingsOrderChangesPlanFingerprint()
+        {
+            EchoLaunchSetupPlan first =
+                CreatePlan(
+                    buildScenes:
+                    new[]
+                    {
+                        new EchoLaunchBuildSettingsSceneFact(
+                            "Assets/Scenes/A.unity",
+                            true,
+                            0),
+                        new EchoLaunchBuildSettingsSceneFact(
+                            "Assets/Scenes/B.unity",
+                            true,
+                            1)
+                    });
+
+            EchoLaunchSetupPlan second =
+                CreatePlan(
+                    buildScenes:
+                    new[]
+                    {
+                        new EchoLaunchBuildSettingsSceneFact(
+                            "Assets/Scenes/B.unity",
+                            true,
+                            0),
+                        new EchoLaunchBuildSettingsSceneFact(
+                            "Assets/Scenes/A.unity",
+                            true,
+                            1)
+                    });
+
+            Assert.That(
+                first.PlanFingerprint,
+                Is.Not.EqualTo(second.PlanFingerprint));
+        }
+
         private static EchoLaunchSetupPlan CreatePlan(
             EchoLaunchSetupRequest request = null,
             IEnumerable<EchoLaunchProjectAssetFact> facts = null,

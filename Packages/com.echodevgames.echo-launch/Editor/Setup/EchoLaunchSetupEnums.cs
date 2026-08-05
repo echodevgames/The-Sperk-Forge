@@ -1,4 +1,3 @@
-
 namespace EchoDevGames.EchoLaunch.Editor.Setup
 {
     internal enum EchoLaunchBuildSettingsPolicy
@@ -54,5 +53,28 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         LaunchDestination = 2,
         SplashSequence = 3,
         RootPrefab = 4
+    }
+
+    internal enum EchoLaunchSetupApplyStatus
+    {
+        Succeeded = 0,
+        NoChanges = 1,
+        Cancelled = 2,
+        Blocked = 3,
+        StalePlan = 4,
+        AlreadyRunning = 5,
+        FailedRolledBack = 6,
+        FailedRollbackIncomplete = 7
+    }
+
+    internal enum EchoLaunchSetupChangeKind
+    {
+        CreatedFolder = 0,
+        CreatedAsset = 1,
+        CreatedPrefabVariant = 2,
+        CreatedScene = 3,
+        BuildSettingsChanged = 4,
+        Reused = 5,
+        NoChange = 6
     }
 }

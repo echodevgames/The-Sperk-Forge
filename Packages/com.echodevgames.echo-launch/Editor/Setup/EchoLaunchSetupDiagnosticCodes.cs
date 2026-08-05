@@ -1,4 +1,3 @@
-
 namespace EchoDevGames.EchoLaunch.Editor.Setup
 {
     internal static class EchoLaunchSetupDiagnosticCodes
@@ -10,5 +9,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal const string AmbiguousCandidates = "ELAUNCH-SETUP-005";
         internal const string PackagePrerequisiteMissing = "ELAUNCH-SETUP-006";
         internal const string CompatibleAssetReused = "ELAUNCH-SETUP-007";
+        internal const string StalePlan = "ELAUNCH-SETUP-008";
+        internal const string ApplyAlreadyRunning = "ELAUNCH-SETUP-009";
+        internal const string ApplyFailedRolledBack = "ELAUNCH-SETUP-010";
+        internal const string RollbackIncomplete = "ELAUNCH-SETUP-011";
+        internal const string UnauthorizedApplyOperation = "ELAUNCH-SETUP-012";
     }
 }
