@@ -10,9 +10,25 @@ using Object = UnityEngine.Object;
 
 namespace EchoDevGames.EchoLaunch.Tests.Runtime
 {
+    internal sealed class TestStartupStepExecutor :
+        IStartupStepExecutor
+    {
+        public Awaitable<StartupStepResult> ExecuteAsync(
+            StartupStepContext context)
+        {
+            throw new NotSupportedException(
+                "The FL-M2-07 definition tests do not execute startup steps.");
+        }
+    }
+
     internal sealed class TestStartupStepDefinition :
         StartupStepDefinition
     {
+        public override IStartupStepExecutor
+            CreateExecutor()
+        {
+            return new TestStartupStepExecutor();
+        }
     }
 
     public sealed class StartupSequenceDefinitionTests
@@ -46,9 +62,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     BindingFlags.NonPublic);
 
         private static readonly FieldInfo
-            EntryEnabledField =
+            EntryActivationField =
                 typeof(StartupSequenceEntry).GetField(
-                    "enabled",
+                    "activation",
                     BindingFlags.Instance |
                     BindingFlags.NonPublic);
 
@@ -110,7 +126,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 Is.Not.Null);
 
             Assert.That(
-                EntryEnabledField,
+                EntryActivationField,
                 Is.Not.Null);
 
             Assert.That(

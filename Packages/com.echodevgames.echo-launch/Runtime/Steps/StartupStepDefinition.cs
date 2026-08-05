@@ -71,6 +71,14 @@ namespace EchoDevGames.EchoLaunch
             schemaVersion ==
             CurrentSchemaVersion;
 
+        /// <summary>
+        /// Creates one fresh single-use runtime executor for this
+        /// definition.
+        ///
+        /// The definition must not store or reuse the returned executor.
+        /// </summary>
+        public abstract IStartupStepExecutor CreateExecutor();
+
         private static bool IsCanonicalStepId(
             string value)
         {

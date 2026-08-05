@@ -24,7 +24,7 @@ namespace EchoDevGames.EchoLaunch
         /// Identifies the currently supported serialized structure of
         /// StartupSequence assets.
         /// </summary>
-        public const int CurrentSchemaVersion = 1;
+        public const int CurrentSchemaVersion = 2;
 
         private const int CanonicalIdLength = 32;
 
