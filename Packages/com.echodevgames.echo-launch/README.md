@@ -14,6 +14,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-03` Launch Session and Read-Only Progress Surface
   - `FL-M2-04` Launch Lifecycle Transition Guard
   - `FL-M2-05` Lifecycle Notifications
+  - `FL-M2-06` Launch Configuration Identity and Root Binding
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -69,6 +70,20 @@ First Light now provides:
 - Stable listener-failure diagnostic `ELAUNCH-EVENT-001`
 - Delegate cleanup when the root is destroyed
 
+### Launch Configuration
+
+- Project-owned `EchoLaunchConfiguration` asset
+- Create menu entry under First Light
+- Canonical runtime-safe stable configuration ID
+- Serialized schema version `1`
+- Read-only configuration identity and schema
+- Invalid identity detection without silent repair
+- Unsupported schema detection without runtime rewrite
+- Passive serialized root binding
+- Read-only authority-filtered `EchoLaunchRoot.Configuration`
+- Duplicate and stale-root configuration hiding
+- No mutable launch-session state stored in the asset
+
 ## Approved Lifecycle
 
     None
@@ -89,13 +104,14 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `102`
+- Passed: `117`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Launch configuration binding tests: `15`
 - Launch-state vocabulary tests: `39`
 - Launch session and progress tests: `14`
 - Lifecycle transition tests: `22`
@@ -106,20 +122,28 @@ Expected yellow diagnostic evidence:
 - `ELAUNCH-ROOT-001` from duplicate-root tests
 - `ELAUNCH-EVENT-001` from broken-listener containment tests
 
+Manual evidence:
+
+- Unity created a project-owned launch configuration through the package Create menu.
+- The default Inspector exposed no mutable launch-session state.
+- Asset creation caused no scene object, lifecycle transition, startup execution, or warning.
+- The temporary verification asset was removed before Git review.
+
 ## Not Implemented Yet
 
 First Light does not yet provide:
 
 - Automatic lifecycle advancement
-- Startup configuration assets
 - Startup sequences or step definitions
 - Startup executors
+- Configuration preflight
+- Configuration migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
-- Editor setup tools
+- Editor setup tools beyond `CreateAssetMenu`
 - Standalone Laboratory
 - Peer-package bridges
 
@@ -138,7 +162,9 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- One hundred two passing Runtime Play Mode tests
+- One hundred seventeen passing Runtime Play Mode tests
+- Launch configuration Create menu verification
+- Configuration immutability and authority filtering
 - No out-of-scope startup execution
 
 Still `Not run`:

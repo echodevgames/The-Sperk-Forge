@@ -10,6 +10,7 @@
   - `FL-M2-03`
   - `FL-M2-04`
   - `FL-M2-05`
+  - `FL-M2-06`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -22,12 +23,16 @@ First Light currently establishes:
 4. Read-only state and progress exposure
 5. Central lifecycle transition validation
 6. Isolated lifecycle notifications
+7. Project-owned launch configuration identity
+8. Authority-filtered root configuration binding
 
 It does not yet execute startup behavior.
 
 ## Implemented Runtime Files
 
     Runtime/
+    ├── Configuration/
+    │   └── EchoLaunchConfiguration.cs
     ├── Core/
     │   ├── LaunchAuthorityClaim.cs
     │   └── EchoLaunchRoot.cs
@@ -49,10 +54,78 @@ It does not yet execute startup behavior.
 
     Tests/Runtime/PlayMode/
     ├── EchoLaunchRootAuthorityTests.cs
-    ├── LaunchStateVocabularyTests.cs
-    ├── LaunchSessionProgressTests.cs
+    ├── LaunchConfigurationBindingTests.cs
     ├── LaunchLifecycleTransitionTests.cs
-    └── LaunchNotificationTests.cs
+    ├── LaunchNotificationTests.cs
+    ├── LaunchSessionProgressTests.cs
+    └── LaunchStateVocabularyTests.cs
+
+## Launch Configuration Definition
+
+`EchoLaunchConfiguration` is a project-owned `ScriptableObject`.
+
+It contains authored definition data only:
+
+    configurationId
+    schemaVersion
+
+It does not contain current launch state, progress, timings, retries, active scene references, or execution results.
+
+Active mutable state remains owned by `LaunchSession`.
+
+### Stable Configuration Identity
+
+Every newly created configuration receives:
+
+    Guid.NewGuid().ToString("N")
+
+The canonical format is:
+
+- Exactly 32 characters
+- Lowercase hexadecimal
+- Characters `0-9` and `a-f`
+- No spaces, punctuation, or separators
+
+The runtime-safe configuration ID is distinct from Unity's asset GUID, asset path, filename, display name, and runtime instance ID.
+
+Runtime code detects malformed identity but does not silently regenerate or repair it.
+
+### Configuration Schema
+
+`EchoLaunchConfiguration.CurrentSchemaVersion` is `1`.
+
+The serialized `schemaVersion` describes the structure of the configuration asset. It is independent from the package version.
+
+Runtime code detects unsupported schema values but does not rewrite or migrate them.
+
+Migration and repair remain future Editor-tooling responsibilities.
+
+## Root Configuration Binding
+
+`EchoLaunchRoot` contains one passive serialized configuration reference.
+
+The public property:
+
+    EchoLaunchRoot.Configuration
+
+returns:
+
+- The assigned configuration when the root is authoritative
+- `null` when no configuration is assigned
+- `null` when the root is a rejected duplicate
+- `null` when a former authority becomes stale after reset
+
+Binding a configuration does not:
+
+- Validate or repair the asset
+- Advance lifecycle state
+- Begin startup execution
+- Create a default configuration
+- Clone the asset
+- Write runtime values into the asset
+- Emit a missing-configuration warning
+
+Preflight behavior remains outside FL-M2-06.
 
 ## Lifecycle Transition Authority
 
@@ -95,11 +168,10 @@ It validates that status values are defined before interpreting them.
         -> Failed
         -> Interrupted
 
-Terminal:
-
-    Completed
-    Failed
-    Interrupted
+    Terminal:
+        Completed
+        Failed
+        Interrupted
 
 ## Same-State Publication
 
@@ -165,37 +237,46 @@ Root destruction clears both event delegate fields so subscriptions cannot trans
 
 Runtime Play Mode totals:
 
-- Passed: `102`
+- Passed: `117`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Configuration binding tests: `15`
 - Vocabulary tests: `39`
 - Session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+
+Manual verification:
+
+- Unity Create menu generated a project-owned launch configuration asset.
+- The default Inspector exposed no mutable session state.
+- Asset creation produced no root, GameObject, lifecycle transition, startup behavior, or warning.
+- The temporary verification asset was removed before Git review.
 
 ## Current Exclusions
 
 Not implemented:
 
 - Automatic lifecycle advancement
-- Startup configuration assets
 - Startup sequences
 - Step definitions or executors
+- Configuration preflight
+- Configuration migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
 - Direct-scene initialization behavior
-- Editor setup tools
+- Editor setup tools beyond `CreateAssetMenu`
 - Standalone Laboratory
 - Peer-package bridges
 
 ## Stop Point
 
-FL-M2-05 stops after accepted lifecycle state can be observed safely without giving listeners launch authority.
+FL-M2-06 stops after project-owned configuration identity and passive authoritative root binding are proven.
 
 The next runtime slice requires separate approval.

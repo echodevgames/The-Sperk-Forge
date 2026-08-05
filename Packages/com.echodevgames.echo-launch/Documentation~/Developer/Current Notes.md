@@ -2,53 +2,50 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-05`
-- Title: Lifecycle Notifications
+- Checkpoint: `FL-M2-06`
+- Title: Launch Configuration Identity and Root Binding
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `877761f`
+- Implementation commit: `3280472`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 102 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 117 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- Public `LaunchStateChanged` notification
-- Public `LaunchProgressChanged` notification
-- Previous/current notification payloads
-- Accepted-state visibility before callbacks
-- State notification before progress notification
-- Same-state progress notification without a false state event
-- No notification from rejected publications
-- Per-listener exception containment
-- Stable diagnostic `ELAUNCH-EVENT-001`
-- Delegate cleanup when the root is destroyed
-- Twenty notification tests
+- Project-owned `EchoLaunchConfiguration`
+- Canonical stable configuration ID
+- Serialized schema version `1`
+- Identity and schema support checks
+- Passive configuration reference on `EchoLaunchRoot`
+- Authority-filtered `Configuration` property
+- Duplicate and stale-root configuration hiding
+- Configuration immutability through root lifecycle
+- Fifteen configuration-binding tests
+- Unity Create menu verification
 
 ## Evidence Summary
 
 ### Passed
 
-- Accepted lifecycle state event
-- Accepted progress event
-- Same-state progress-only publication
-- State-before-progress order
-- Previous/current state payload
-- Previous/current progress payload
-- Invalid-transition silence
-- Launch-mode mismatch silence
-- Terminal-rewrite silence
-- Unsubscription
-- State-listener isolation
-- Progress-listener isolation
-- Cross-event isolation
-- Stable listener-failure diagnostics
-- Duplicate-root publication rejection
-- No-listener publication
-- Destroyed-root subscription isolation
-- Delegate-field cleanup
-- One hundred two total Runtime Play Mode tests
+- Canonical generated ID
+- Different IDs for separate configurations
+- Stable ID reads
+- Current schema initialization
+- Valid identity detection
+- Supported schema detection
+- Malformed identity detection without repair
+- Unsupported schema detection without rewrite
+- Authoritative binding
+- Null unconfigured authority
+- Duplicate-root hiding
+- Authority configuration preservation
+- Former-authority hiding after reset
+- Fresh-root configuration after reset
+- Root lifecycle immutability
+- One hundred seventeen total Runtime Play Mode tests
+- Manual Create menu asset generation
 
 ### Expected Diagnostics
 
@@ -61,8 +58,9 @@ These warnings were expected and matched by the automated test suite.
 
 ### Not Run
 
+- Configuration preflight
 - Automatic lifecycle advancement
-- Startup configuration
+- Startup sequences
 - Startup execution
 - Launch reports
 - Splash presentation
@@ -74,16 +72,18 @@ These warnings were expected and matched by the automated test suite.
 
 Runtime implementation:
 
+- `Runtime/Configuration/EchoLaunchConfiguration.cs`
 - `Runtime/Core/EchoLaunchRoot.cs`
-- `Runtime/Events/LaunchNotificationDispatcher.cs`
-- `Runtime/Events/LaunchProgressChangedEvent.cs`
-- `Runtime/Events/LaunchStateChangedEvent.cs`
 - Unity-generated `.meta` files
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/LaunchNotificationTests.cs`
+- `Tests/Runtime/PlayMode/LaunchConfigurationBindingTests.cs`
 - Unity-generated `.meta` file
+
+Checkpoint plan:
+
+- `Plan Documentation/Checkpoint Build Plans/FL-M2-06_Launch_Configuration_Identity_and_Root_Binding_Checkpoint_Build_Plan.md`
 
 Adjacent documentation:
 
@@ -94,7 +94,7 @@ Adjacent documentation:
 
 ## Handoff Snapshot
 
-FL-M2-05 implementation is complete and pushed in commit `877761f`.
+FL-M2-06 implementation is complete and pushed in commit `3280472`.
 
 The adjacent documentation closeout is ready for final Git review, commit, and push.
 

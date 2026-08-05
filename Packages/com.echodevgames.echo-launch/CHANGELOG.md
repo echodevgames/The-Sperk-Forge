@@ -8,6 +8,17 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-06 - Launch Configuration Identity and Root Binding
+
+- Project-owned `EchoLaunchConfiguration` ScriptableObject
+- Canonical lowercase 32-character hexadecimal configuration identity
+- Serialized configuration schema version `1`
+- Internal identity and schema support checks
+- Passive serialized configuration binding on `EchoLaunchRoot`
+- Read-only authority-filtered `EchoLaunchRoot.Configuration`
+- Fifteen Runtime Play Mode configuration-binding tests
+- Create menu path under `EchoDevGames/First Light/Launch Configuration`
+
 #### FL-M2-05 - Lifecycle Notifications
 
 - Public `LaunchStateChanged` observer event
@@ -56,35 +67,41 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `102`
+- Passed: `117`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-05 coverage:
+FL-M2-06 coverage:
 
-- State-event emission for accepted lifecycle changes
-- Progress-event emission for every accepted publication
-- State-before-progress dispatch order
-- Previous/current payload accuracy
-- No notification from rejected publications
-- Listener unsubscribe behavior
-- Per-listener exception containment
-- Cross-event containment after a failed state listener
-- Stable `ELAUNCH-EVENT-001` diagnostics
-- Duplicate-root publication rejection
-- Destroyed-root subscription cleanup
+- Canonical configuration ID format
+- Unique IDs across separate configuration instances
+- Stable repeated identity reads
+- Current schema version initialization
+- Valid identity and supported schema checks
+- Malformed identity detection without repair
+- Unsupported schema detection without rewrite
+- Authoritative configuration exposure
+- Null behavior without assignment
+- Duplicate-root configuration hiding
+- Authority preservation during duplicate creation
+- Former-authority hiding after reset
+- Fresh-root configuration after reset
+- Configuration immutability through root creation and destruction
+- Unity Create menu asset creation with no scene side effects
 
 ### Not Included
 
 - Automatic lifecycle advancement
-- Startup configuration
+- Startup sequence definitions
 - Startup sequence execution
+- Configuration preflight or blocking diagnostics
+- Runtime migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent root lifetime
 - Direct-scene initializer behavior
-- Editor tooling
+- Editor setup tooling beyond `CreateAssetMenu`
 - Standalone Laboratory
 - Peer-package bridges
 

@@ -12,7 +12,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-03`
   - `FL-M2-04`
   - `FL-M2-05`
-- Current implemented boundary: authority, vocabulary, live session state, guarded lifecycle publication, and isolated lifecycle notifications
+  - `FL-M2-06`
+- Current implemented boundary: authority, vocabulary, live session state, guarded lifecycle publication, isolated notifications, and project-owned launch configuration binding
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -28,6 +29,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
 - [FL-M2-05 Runtime Test Report](Developer/Test%20Reports/FL-M2-05_Lifecycle_Notification_Test_Report.md)
+- [FL-M2-06 Launch Configuration Identity and Root Binding](Developer/Checkpoints/FL-M2-06_Launch_Configuration_Identity_and_Root_Binding.md)
+- [FL-M2-06 Runtime Test Report](Developer/Test%20Reports/FL-M2-06_Launch_Configuration_Binding_Test_Report.md)
 
 ## Package Root Documents
 
@@ -50,6 +53,10 @@ First Light currently proves:
 - Transactional rejection of invalid publication
 - State and progress lifecycle notifications
 - Per-listener exception containment
-- One hundred two passing Runtime Play Mode tests
+- Project-owned launch configuration identity
+- Serialized configuration schema version
+- Authority-filtered configuration binding
+- Configuration immutability during root lifecycle
+- One hundred seventeen passing Runtime Play Mode tests
 
-Startup execution remains outside the implemented scope.
+Startup sequence modeling and execution remain outside the implemented scope.
