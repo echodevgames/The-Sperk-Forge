@@ -9,7 +9,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
-- Current implemented boundary: authority ownership plus neutral launch-state vocabulary
+  - `FL-M2-03`
+- Current implemented boundary: authority, launch-state vocabulary, and one live read-only launch session
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -21,11 +22,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 
 - [Architecture](Developer/Architecture.md)
 - [Current Notes](Developer/Current%20Notes.md)
-- [FL-M1-01 Package Skeleton](Developer/Checkpoints/FL-M1-01_Package_Skeleton.md)
-- [FL-M2-01 Authority Claim and Static Reset Core](Developer/Checkpoints/FL-M2-01_Authority_Claim_and_Static_Reset_Core.md)
-- [FL-M2-02 Neutral Launch-State Vocabulary](Developer/Checkpoints/FL-M2-02_Neutral_Launch-State_Vocabulary.md)
-- [FL-M2-01 Runtime Test Report](Developer/Test%20Reports/FL-M2-01_Authority_Runtime_Test_Report.md)
-- [FL-M2-02 Runtime Test Report](Developer/Test%20Reports/FL-M2-02_Launch-State_Vocabulary_Test_Report.md)
+- [FL-M2-03 Launch Session and Read-Only Progress Surface](Developer/Checkpoints/FL-M2-03_Launch_Session_and_Read-Only_Progress_Surface.md)
+- [FL-M2-03 Runtime Test Report](Developer/Test%20Reports/FL-M2-03_Launch_Session_and_Progress_Test_Report.md)
 
 ## Package Root Documents
 
@@ -33,12 +31,6 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [Changelog](../CHANGELOG.md)
 - [License](../LICENSE.md)
 - [Third-Party Notices](../Third%20Party%20Notices.md)
-
-## Architectural Authority
-
-The complete suite architecture and approved First Light specification live in the repository's `Plan Documentation` Obsidian vault.
-
-Package documentation applies those authorities. It does not replace them.
 
 ## Current Runtime Boundary
 
@@ -48,10 +40,11 @@ First Light currently proves:
 - Duplicate rejection
 - Owner-only release
 - Static reset
-- Stable launch-mode vocabulary
-- Stable launch and step-status vocabulary
-- Immutable structured step results
-- Immutable validated progress snapshots
-- Forty-six passing Runtime Play Mode tests
+- Stable launch-state vocabulary
+- Immutable results and snapshots
+- One fresh launch session per authority
+- Read-only state and progress
+- Controlled snapshot replacement
+- Sixty passing Runtime Play Mode tests
 
-Startup configuration and execution remain outside the implemented scope.
+Startup execution remains outside the implemented scope.

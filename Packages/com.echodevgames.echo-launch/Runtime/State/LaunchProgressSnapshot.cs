@@ -9,6 +9,22 @@ namespace EchoDevGames.EchoLaunch
     /// </summary>
     public readonly struct LaunchProgressSnapshot
     {
+        /// <summary>
+        /// Gets a normalized snapshot representing no active launch.
+        /// </summary>
+        public static LaunchProgressSnapshot Empty { get; } =
+            new LaunchProgressSnapshot(
+                LaunchMode.Unknown,
+                LaunchStatus.None,
+                string.Empty,
+                -1,
+                0,
+                0f,
+                true,
+                string.Empty,
+                0d,
+                null);
+
         public LaunchMode Mode { get; }
 
         public LaunchStatus Status { get; }
@@ -50,12 +66,15 @@ namespace EchoDevGames.EchoLaunch
 
             Mode = mode;
             Status = status;
-            ActiveStepId = activeStepId ?? string.Empty;
+            ActiveStepId =
+                activeStepId ?? string.Empty;
             ActiveStepIndex = activeStepIndex;
             TotalStepCount = totalStepCount;
             Progress01 = progress01;
-            IsProgressIndeterminate = isProgressIndeterminate;
-            Message = message ?? string.Empty;
+            IsProgressIndeterminate =
+                isProgressIndeterminate;
+            Message =
+                message ?? string.Empty;
             ElapsedSeconds = elapsedSeconds;
             LastResult = lastResult;
         }

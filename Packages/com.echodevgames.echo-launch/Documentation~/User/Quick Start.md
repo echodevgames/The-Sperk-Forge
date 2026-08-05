@@ -6,6 +6,7 @@ First Light version `0.1.0` currently provides:
 
 - Launch-authority ownership
 - Neutral launch-state vocabulary
+- One live read-only launch session
 
 It does not yet execute startup sequences.
 
@@ -13,83 +14,55 @@ It does not yet execute startup sequences.
 
 Add `EchoLaunchRoot` to one GameObject in a scene.
 
-The first valid component becomes:
+The first valid root becomes authoritative and creates a fresh session.
 
-    EchoLaunchRoot.Current
+Initial public state:
 
-For that component:
+    State == LaunchStatus.AuthorityClaimed
 
-    IsAuthoritative == true
-    WasRejectedAsDuplicate == false
-    enabled == true
+Initial public progress:
+
+    Progress.Mode == LaunchMode.CanonicalBoot
+    Progress.Status == LaunchStatus.AuthorityClaimed
+    Progress.ActiveStepIndex == -1
+    Progress.TotalStepCount == 0
+    Progress.Progress01 == 0
+    Progress.IsProgressIndeterminate == true
+    Progress.Message == "Launch authority claimed."
 
 ## Duplicate Behavior
 
-If another `EchoLaunchRoot` awakens while an authority already exists:
+A duplicate root:
 
-- The first root remains authoritative.
-- The duplicate sets `WasRejectedAsDuplicate` to `true`.
-- The duplicate disables itself.
-- First Light logs diagnostic code `ELAUNCH-ROOT-001`.
+- Is rejected
+- Is disabled
+- Logs `ELAUNCH-ROOT-001`
+- Exposes `State == LaunchStatus.None`
+- Exposes `Progress == LaunchProgressSnapshot.Empty`
 
-## Describing Launch State
+## Empty Progress
 
-Use `LaunchMode` to describe how launch was entered:
+`LaunchProgressSnapshot.Empty` is the safe canonical value for no active launch.
 
-    Unknown
-    CanonicalBoot
-    DirectSceneDevelopment
+Its strings are normalized to empty strings rather than null.
 
-Use `LaunchStatus` to describe the overall launch phase:
+## Read-Only Progress
 
-    None
-    AuthorityClaimed
-    Validating
-    Running
-    Transitioning
-    Completed
-    Failed
-    Interrupted
+Consumers may read:
 
-Use `StartupStepStatus` to describe one startup step's active or terminal state.
+    EchoLaunchRoot.State
+    EchoLaunchRoot.Progress
 
-## Creating Step Results
-
-Use named factories:
-
-    StartupStepResult.Success(...)
-    StartupStepResult.Warning(...)
-    StartupStepResult.RecoverableFailure(...)
-    StartupStepResult.BlockingFailure(...)
-    StartupStepResult.Skipped(...)
-    StartupStepResult.TimedOut(...)
-    StartupStepResult.Cancelled(...)
-
-Warning and diagnostic failure outcomes require a nonblank code and message.
-
-The result is immutable after creation.
-
-## Creating Progress Snapshots
-
-`LaunchProgressSnapshot` records one immutable observation of launch progress.
-
-It validates:
-
-- Total step count
-- Active step index
-- Progress from `0` through `1`
-- Finite, nonnegative elapsed time
-
-Creating a new snapshot does not mutate an earlier snapshot.
+Project code cannot directly replace session progress because publication remains internal.
 
 ## What This Does Not Do Yet
 
-The current package does not:
+The package does not yet:
 
 - Run startup steps
-- Publish live progress
+- Publish public progress events
+- Enforce lifecycle transition rules
 - Build a final launch report
-- Load settings or audio
 - Display a splash
 - Load an initial scene
 - Persist between scenes
@@ -99,11 +72,11 @@ The current package does not:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `46`
+- Passed: `60`
 - Failed: `0`
 - Ignored: `0`
 
 See:
 
-- [FL-M2-02 Runtime Test Report](../Developer/Test%20Reports/FL-M2-02_Launch-State_Vocabulary_Test_Report.md)
+- [FL-M2-03 Runtime Test Report](../Developer/Test%20Reports/FL-M2-03_Launch_Session_and_Progress_Test_Report.md)
 - [Developer Architecture](../Developer/Architecture.md)

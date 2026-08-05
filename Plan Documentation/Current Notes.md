@@ -125,3 +125,11 @@ Execute **FL-M1-01 – First Light Package Skeleton** exactly as authorized. Beg
 - Vocabulary tests: 39 passed, 0 failed, 0 ignored
 - Full Runtime Play Mode suite: 46 passed, 0 failed, 0 ignored
 - Next runtime work remains locked pending approval.
+
+## FL-M2-03 First Light Launch Session and Read-Only Progress Surface
+
+- Status: Complete, pending commit and push
+- Package version: `0.1.0`
+- FL-M2-03 tests: 14 passed, 0 failed, 0 ignored
+- Full Runtime Play Mode suite: 60 passed, 0 failed, 0 ignored
+- Next runtime work remains locked pending approval.

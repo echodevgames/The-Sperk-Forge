@@ -11,6 +11,7 @@ It coordinates ordered application initialization and final handoff without owni
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
+  - `FL-M2-03` Launch Session and Read-Only Progress Surface
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -23,13 +24,10 @@ First Light now provides:
 
 - One process-wide launch-authority claim
 - `EchoLaunchRoot.Current`
-- `EchoLaunchRoot.IsAuthoritative`
-- `EchoLaunchRoot.WasRejectedAsDuplicate`
-- Immediate duplicate rejection in `Awake`
+- Immediate duplicate rejection
 - Stable duplicate diagnostic code `ELAUNCH-ROOT-001`
-- Duplicate-component disabling before future startup behavior
 - Owner-only authority release
-- Static reset through Unity subsystem registration
+- Static reset through subsystem registration
 
 ### Launch-State Vocabulary
 
@@ -38,16 +36,24 @@ First Light now provides:
 - `StartupStepStatus`
 - Immutable `StartupStepResult`
 - Immutable `LaunchProgressSnapshot`
-- Validated diagnostic result factories
-- Policy-neutral result classification
-- Snapshot range and index validation
-- Safe string normalization
+
+### Launch Session and Progress
+
+- One fresh `LaunchSession` per authoritative root
+- Initial `AuthorityClaimed` state
+- Canonical initial progress snapshot
+- `LaunchProgressSnapshot.Empty`
+- Read-only `EchoLaunchRoot.State`
+- Read-only `EchoLaunchRoot.Progress`
+- Controlled internal progress publication
+- Duplicate and stale-root state hiding
+- Fresh-session creation after authority replacement
 
 ## Verified Behavior
 
-The Runtime Play Mode suite now reports:
+The Runtime Play Mode suite reports:
 
-- Passed: `46`
+- Passed: `60`
 - Failed: `0`
 - Ignored: `0`
 
@@ -55,8 +61,9 @@ Breakdown:
 
 - Authority tests: `7`
 - Launch-state vocabulary tests: `39`
+- Launch session and progress tests: `14`
 
-The two `ELAUNCH-ROOT-001` warnings remain expected diagnostic evidence from duplicate-root tests.
+Four `ELAUNCH-ROOT-001` warnings are expected diagnostic evidence from duplicate-root tests.
 
 ## Not Implemented Yet
 
@@ -65,15 +72,16 @@ First Light does not yet provide:
 - Startup configuration assets
 - Startup sequences or step definitions
 - Startup executors
-- Launch sessions or report aggregation
-- Progress publication
+- Launch lifecycle transition rules
+- Public state or progress events
+- Launch reports
 - Splash presentation
 - Scene loading
 - `DontDestroyOnLoad` lifetime policy
-- Direct-scene development initialization
+- Direct-scene development initialization behavior
 - Editor setup tools
 - Standalone Laboratory
-- Bridges to peer packages
+- Peer-package bridges
 
 ## Assembly Layout
 
@@ -95,8 +103,6 @@ The dependency direction remains:
     Runtime Tests -> Runtime
     Editor Tests -> Editor + Runtime
 
-The Runtime assembly must never reference the Editor or test assemblies.
-
 ## Documentation
 
 Package documentation lives under `Documentation~`.
@@ -112,9 +118,7 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Seven passing authority tests
-- Thirty-nine passing vocabulary tests
-- Forty-six total passing Runtime Play Mode tests
+- Sixty passing Runtime Play Mode tests
 - No out-of-scope First Light runtime features
 
 Still `Not run`:
@@ -123,7 +127,7 @@ Still `Not run`:
 - Tarball installation
 - Separate clean-project installation
 - Player builds
-- Startup sequencing
+- Startup execution
 - Performance measurements
 
 ## License
