@@ -22,10 +22,11 @@ namespace EchoDevGames.EchoLaunch
     {
         /// <summary>
         /// Identifies the currently supported serialized structure of
-        /// EchoLaunchConfiguration assets. Schema 3 adds the project-owned
-        /// initial destination reference; schema 2 remains historical.
+        /// EchoLaunchConfiguration assets. Schema 4 adds the optional
+        /// project-owned splash sequence and reduced-motion default; schemas
+        /// 2 and 3 remain historical.
         /// </summary>
-        public const int CurrentSchemaVersion = 3;
+        public const int CurrentSchemaVersion = 4;
 
         private const int CanonicalIdLength = 32;
 
@@ -44,6 +45,12 @@ namespace EchoDevGames.EchoLaunch
 
         [SerializeField]
         private LaunchDestination initialDestination;
+
+        [SerializeField]
+        private SplashSequence splashSequence;
+
+        [SerializeField]
+        private bool useReducedMotionForSplash;
 
         /// <summary>
         /// Gets the stable runtime-safe identity of this configuration.
@@ -70,6 +77,21 @@ namespace EchoDevGames.EchoLaunch
         /// </summary>
         public LaunchDestination InitialDestination =>
             initialDestination;
+
+        /// <summary>
+        /// Gets the optional project-owned image splash sequence assigned to
+        /// this configuration. A null reference intentionally omits the splash
+        /// phase.
+        /// </summary>
+        public SplashSequence SplashSequence =>
+            splashSequence;
+
+        /// <summary>
+        /// Gets the project-authored reduced-motion default used by root-owned
+        /// splash playback.
+        /// </summary>
+        public bool UseReducedMotionForSplash =>
+            useReducedMotionForSplash;
 
         /// <summary>
         /// Returns true when the stored identity uses the canonical

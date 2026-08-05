@@ -228,12 +228,12 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void CurrentConfigurationSchemaIsThree()
+        public void CurrentConfigurationSchemaIsFour()
         {
             Assert.That(
                 EchoLaunchConfiguration
                     .CurrentSchemaVersion,
-                Is.EqualTo(3));
+                Is.EqualTo(4));
         }
 
         [Test]
@@ -253,6 +253,25 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 configuration.SchemaVersion,
                 Is.EqualTo(2));
+        }
+
+        [Test]
+        public void HistoricalSchemaThreeIsUnsupportedWithoutRewrite()
+        {
+            EchoLaunchConfiguration configuration =
+                CreateConfiguration();
+
+            SchemaVersionField.SetValue(
+                configuration,
+                3);
+
+            Assert.That(
+                configuration.HasSupportedSchema,
+                Is.False);
+
+            Assert.That(
+                configuration.SchemaVersion,
+                Is.EqualTo(3));
         }
 
         [Test]

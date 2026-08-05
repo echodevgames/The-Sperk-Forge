@@ -15,7 +15,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 {
     /// <summary>
     /// Shared deterministic destination loader used by retained success-path
-    /// tests after configuration schema 3 made the destination mandatory.
+    /// tests after configuration schema 3 made the destination mandatory and schema 4 added optional splash binding.
     /// </summary>
     internal sealed class
         ImmediateSuccessInitialDestinationLoader :
@@ -600,7 +600,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void ConfigurationSchemaIsThree()
+        public void ConfigurationSchemaIsFour()
         {
             EchoLaunchConfiguration configuration =
                 CreateConfiguration(
@@ -610,11 +610,11 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 EchoLaunchConfiguration
                     .CurrentSchemaVersion,
-                Is.EqualTo(3));
+                Is.EqualTo(4));
 
             Assert.That(
                 configuration.SchemaVersion,
-                Is.EqualTo(3));
+                Is.EqualTo(4));
 
             Assert.That(
                 configuration.HasSupportedSchema,

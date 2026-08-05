@@ -49,6 +49,18 @@ namespace EchoDevGames.EchoLaunch
             PresenterFailureDiagnosticCode =
                 "ELAUNCH-VIEW-002";
 
+        internal const string
+            SplashPreflightDiagnosticCode =
+                "ELAUNCH-SPLASH-001";
+
+        internal const string
+            SplashPlaybackDiagnosticCode =
+                "ELAUNCH-SPLASH-002";
+
+        internal const string
+            SplashPresenterUnavailableDiagnosticCode =
+                "ELAUNCH-SPLASH-003";
+
         [Header("Launch")]
         [SerializeField]
         private EchoLaunchConfiguration configuration;
@@ -66,7 +78,10 @@ namespace EchoDevGames.EchoLaunch
 
         private LaunchSession session;
 
+        private ILaunchClock launchClock;
+
         private StartupSequenceRunner sequenceRunner;
+        private bool sequenceRunnerWasInjected;
 
         private IInitialDestinationLoader
             initialDestinationLoader;
@@ -79,6 +94,9 @@ namespace EchoDevGames.EchoLaunch
 
         private StartupSequenceRunResult
             lastSequenceRunResult;
+
+        private SplashPlaybackResult
+            lastSplashPlaybackResult;
 
         private LaunchReportBuilder
             launchReportBuilder;
@@ -174,6 +192,16 @@ namespace EchoDevGames.EchoLaunch
                 : null;
 
         /// <summary>
+        /// Gets the optional project-owned splash sequence assigned through
+        /// the authoritative configuration.
+        /// </summary>
+        public SplashSequence SplashSequence =>
+            IsAuthoritative &&
+            configuration != null
+                ? configuration.SplashSequence
+                : null;
+
+        /// <summary>
         /// Gets the current authoritative launch state.
         /// </summary>
         public LaunchStatus State =>
@@ -263,6 +291,13 @@ namespace EchoDevGames.EchoLaunch
                 lastSequenceRunResult;
 
         /// <summary>
+        /// Gets the latest successfully completed root-owned splash result.
+        /// </summary>
+        internal SplashPlaybackResult
+            LastSplashPlaybackResult =>
+                lastSplashPlaybackResult;
+
+        /// <summary>
         /// Gets whether successful sequence data is retained for the later
         /// destination handoff without a finalized public report.
         /// </summary>
@@ -283,8 +318,15 @@ namespace EchoDevGames.EchoLaunch
                         new LaunchSession(
                             launchMode);
 
+                    launchClock =
+                        UnityLaunchClock.Shared;
+
                     sequenceRunner =
-                        new StartupSequenceRunner();
+                        new StartupSequenceRunner(
+                            launchClock);
+
+                    sequenceRunnerWasInjected =
+                        false;
 
                     initialDestinationLoader =
                         UnityInitialDestinationLoader
@@ -359,12 +401,15 @@ namespace EchoDevGames.EchoLaunch
             LaunchCompleted = null;
 
             session = null;
+            launchClock = null;
             sequenceRunner = null;
+            sequenceRunnerWasInjected = false;
             initialDestinationLoader = null;
             statusPresenter = null;
             statusPresenterComponent = null;
             statusPresenterWasInjected = false;
             lastSequenceRunResult = null;
+            lastSplashPlaybackResult = null;
             launchReportBuilder = null;
             lastReport = null;
             preservedHandoffObject = null;
@@ -402,6 +447,7 @@ namespace EchoDevGames.EchoLaunch
                     string.Empty;
 
                 lastSequenceRunResult = null;
+                lastSplashPlaybackResult = null;
                 lastReport = null;
 
                 launchStartSeconds =
@@ -417,11 +463,13 @@ namespace EchoDevGames.EchoLaunch
                 PublishValidationStarted();
 
                 LaunchDestination initialDestination;
+                SplashSequence splashSequence;
 
                 try
                 {
                     initialDestination =
-                        ValidateInitialDestination();
+                        ValidateInitialDestination(
+                            out splashSequence);
                 }
                 catch (
                     StartupSequencePreflightException
@@ -443,10 +491,71 @@ namespace EchoDevGames.EchoLaunch
 
                     return null;
                 }
+                catch (
+                    ArgumentOutOfRangeException
+                        exception)
+                {
+                    PublishUnexpectedFailure(
+                        StartupSequencePreflight
+                            .ConfigurationDiagnosticCode,
+                        "The active launch mode is invalid.",
+                        exception);
+
+                    return null;
+                }
+
+                if (splashSequence != null)
+                {
+                    try
+                    {
+                        lastSplashPlaybackResult =
+                            await PlayConfiguredSplashAsync(
+                                splashSequence,
+                                launchCancellationSource
+                                    .Token);
+                    }
+                    catch (
+                        OperationCanceledException
+                            exception)
+                    {
+                        if (IsCancellationRequested)
+                        {
+                            PublishInterrupted(
+                                null,
+                                CreateLifecycleCancellationResult(
+                                    exception));
+
+                            return null;
+                        }
+
+                        PublishUnexpectedFailure(
+                            SplashPlaybackDiagnosticCode,
+                            "Splash playback was cancelled without an active root cancellation request.",
+                            exception);
+
+                        return null;
+                    }
+                    catch (Exception exception)
+                    {
+                        PublishUnexpectedFailure(
+                            SplashPlaybackDiagnosticCode,
+                            "Splash playback failed unexpectedly.",
+                            exception);
+
+                        return null;
+                    }
+                }
+
+                if (!CanPublishRuntimeProgress)
+                {
+                    return null;
+                }
 
                 StartupSequenceRunner runner =
                     sequenceRunner ??
-                    new StartupSequenceRunner();
+                    new StartupSequenceRunner(
+                        launchClock ??
+                        UnityLaunchClock.Shared);
 
                 sequenceRunner = runner;
 
@@ -619,8 +728,36 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
+        /// Replaces the root's monotonic launch clock before execution begins.
+        /// The default startup runner is rebuilt against the same clock unless
+        /// a runner was explicitly injected.
+        /// </summary>
+        internal void SetLaunchClockForTesting(
+            ILaunchClock clock)
+        {
+            if (clock == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(clock));
+            }
+
+            EnsureMayReplaceLaunchDependency(
+                "The launch clock");
+
+            launchClock = clock;
+
+            if (!sequenceRunnerWasInjected)
+            {
+                sequenceRunner =
+                    new StartupSequenceRunner(
+                        launchClock);
+            }
+
+        }
+
+        /// <summary>
         /// Replaces the runner before launch begins for deterministic runtime
-        /// tests. Production uses the default Unity-clock runner.
+        /// tests. Production uses the root launch clock.
         /// </summary>
         internal void SetSequenceRunnerForTesting(
             StartupSequenceRunner runner)
@@ -635,6 +772,7 @@ namespace EchoDevGames.EchoLaunch
                 "The sequence runner");
 
             sequenceRunner = runner;
+            sequenceRunnerWasInjected = true;
         }
 
         /// <summary>
@@ -1118,7 +1256,8 @@ namespace EchoDevGames.EchoLaunch
 
 
         private LaunchDestination
-            ValidateInitialDestination()
+            ValidateInitialDestination(
+                out SplashSequence splashSequence)
         {
             if (configuration == null)
             {
@@ -1138,8 +1277,16 @@ namespace EchoDevGames.EchoLaunch
             {
                 throw new StartupSequencePreflightException(
                     ConfigurationSchemaDiagnosticCode,
-                    "The launch configuration schema version is unsupported. Schema 3 is required.");
+                    "The launch configuration schema version is unsupported. Schema 4 is required.");
             }
+
+            splashSequence =
+                SplashSequencePreflight.Validate(
+                    configuration);
+
+            StartupSequencePreflight.Validate(
+                launchMode,
+                configuration);
 
             LaunchDestination destination =
                 configuration.InitialDestination;
@@ -1205,6 +1352,60 @@ namespace EchoDevGames.EchoLaunch
             }
 
             return destination;
+        }
+
+        private async Awaitable<SplashPlaybackResult>
+            PlayConfiguredSplashAsync(
+                SplashSequence sequence,
+                CancellationToken cancellationToken)
+        {
+            if (sequence == null)
+            {
+                return null;
+            }
+
+            IImageSplashPresenter presenter =
+                ResolveSplashPresenter(
+                    sequence);
+
+            SplashSequencePlayer player =
+                new SplashSequencePlayer(
+                    launchClock ??
+                    UnityLaunchClock.Shared,
+                    presenter);
+
+            return await player.PlayAsync(
+                sequence,
+                configuration != null &&
+                configuration
+                    .UseReducedMotionForSplash,
+                cancellationToken);
+        }
+
+        private IImageSplashPresenter
+            ResolveSplashPresenter(
+                SplashSequence sequence)
+        {
+            if (sequence == null ||
+                sequence.EntryCount == 0)
+            {
+                return NullImageSplashPresenter.Shared;
+            }
+
+            if (statusPresenter is
+                    IImageSplashPresenter
+                        splashPresenter)
+            {
+                return splashPresenter;
+            }
+
+            Debug.LogWarning(
+                $"[{SplashPresenterUnavailableDiagnosticCode}] " +
+                "A splash sequence is configured, but the active status presenter does not implement IImageSplashPresenter. " +
+                "First Light will preserve authored splash timing through the headless presenter.",
+                this);
+
+            return NullImageSplashPresenter.Shared;
         }
 
         private async Awaitable
@@ -1739,10 +1940,14 @@ namespace EchoDevGames.EchoLaunch
                    launchStartSeconds;
         }
 
-        private static double GetMonotonicNow()
+        private double GetMonotonicNow()
         {
+            ILaunchClock clock =
+                launchClock ??
+                UnityLaunchClock.Shared;
+
             double now =
-                Time.realtimeSinceStartupAsDouble;
+                clock.NowSeconds;
 
             return double.IsNaN(now) ||
                    double.IsInfinity(now) ||
