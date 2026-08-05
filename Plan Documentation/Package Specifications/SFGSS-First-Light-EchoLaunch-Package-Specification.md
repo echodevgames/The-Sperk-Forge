@@ -1476,18 +1476,17 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M3-08 — Initial Destination Contract, Load Result, and Completed Handoff |
-| Authority commit | `eb9cc49` |
-| Implementation commit | `114ac91` |
-| Previous documentation commit | `f76b9df` |
-| Files/assets created | Runtime authority, state, notifications, configuration, startup sequence, policy, execution, reports, project-owned destination, initial destination loading, and Runtime Play Mode tests |
-| Tests passed | 380 Runtime Play Mode tests |
+| Completed checkpoint | FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract |
+| Implementation commit | `46481b1` |
+| Previous documentation commit | `727b502` |
+| Files/assets created | Runtime authority, state, notifications, configuration, startup sequence, policy, execution, reports, destination loading, automatic startup, neutral presentation contract, and Runtime Play Mode tests |
+| Tests passed | 396 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Known issues | Real Boot-to-destination Standalone Laboratory activation, automatic startup, presentation, direct-scene setup, Editor migration/setup, player builds, and external adoption remain not run |
-| Decisions added | EchoLaunch-ADR-001 accepted and implemented; destination schema 1; configuration schema 3; report schema 2 |
-| Next checkpoint | FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract, tentative and not authorized |
+| Known issues | Default uGUI presentation, splash playback, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Decisions added | Automatic Unity `Start` uses the existing one-run gate; neutral presentation observes accepted immutable truth; missing presentation is headless-safe |
+| Next checkpoint | FL-M4-02 — Default uGUI Plain Status View and Presentation Assembly, tentative and not authorized |
 
 ---
 

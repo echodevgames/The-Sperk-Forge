@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light FL-M3-08 documentation closeout
-**Current checkpoint:** FL-M3-08 — Initial Destination Contract, Load Result, and Completed Handoff
+**Current focus:** First Light FL-M4-01 documentation closeout
+**Current checkpoint:** FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -15,55 +15,51 @@
 
 ### Goal
 
-Close FL-M3-08 after the root-owned launch successfully crossed one validated initial destination boundary, reached `Completed`, finalized an immutable completed report, and published `LaunchCompleted`.
+Close FL-M4-01 after the authoritative root successfully gained automatic Unity `Start` entry and the neutral presenter contract observed accepted snapshots and finalized reports without owning launch truth.
 
 ### Starting State
 
-- FL-M3-08 authority is committed in `eb9cc49`.
-- FL-M3-08 implementation is committed and pushed in `114ac91`.
-- FL-M3-07 documentation is complete in `f76b9df`.
-- `main` and `origin/main` are synchronized at `114ac91`.
+- FL-M4-01 implementation is committed and pushed in `46481b1`.
+- FL-M3-08 documentation is complete in `727b502`.
+- `main` and `origin/main` are synchronized at `46481b1`.
 - Working tree was clean after the implementation push.
-- Runtime Play Mode result is 380 passed, 0 failed, 0 ignored.
+- Runtime Play Mode result is 396 passed, 0 failed, 0 ignored.
 - Unity compiler result is 0 errors and 0 compiler warnings.
-- Three bounded test-fixture property/expectation corrections were required.
+- Two bounded test-only compile corrections were required.
 - No production runtime change was required by those corrections.
-- Real Boot-to-destination Standalone Laboratory activation remains untested.
-- The adjacent FL-M3-08 documentation closeout is the only active repository work.
+- The default uGUI status view is not implemented.
+- The adjacent FL-M4-01 documentation closeout is the only active repository work.
 - Later runtime work remains locked until this documentation set is committed and pushed.
 
 ---
 
 ## Active Notes
 
-### August 5, 2026 — FL-M3-08 initial destination and completed handoff
+### August 5, 2026 — FL-M4-01 automatic start and presenter contract
 
-- `[IMPLEMENTATION]` Added project-owned immutable `LaunchDestination`.
-- `[IMPLEMENTATION]` Destination schema begins at 1.
-- `[IMPLEMENTATION]` Configuration schema advances from 2 to 3.
-- `[IMPLEMENTATION]` Added serialized initial destination binding.
-- `[DECISION]` Historical schema 2 remains unsupported without runtime rewrite.
-- `[IMPLEMENTATION]` Added immutable load status and result.
-- `[IMPLEMENTATION]` Added injectable `IInitialDestinationLoader`.
-- `[IMPLEMENTATION]` Added standalone Unity asynchronous destination loader.
-- `[IMPLEMENTATION]` Added destination preflight before startup-step side effects.
-- `[IMPLEMENTATION]` Added `ELAUNCH-DEST-001` and `ELAUNCH-DEST-002`.
-- `[IMPLEMENTATION]` Added destination progress during `Transitioning`.
-- `[IMPLEMENTATION]` Added `Transitioning -> Completed`.
-- `[IMPLEMENTATION]` Advanced report schema from 1 to 2.
-- `[IMPLEMENTATION]` Added destination metadata to completed reports.
-- `[IMPLEMENTATION]` Added exactly-once `LaunchCompleted`.
-- `[TEST]` All 37 destination/handoff tests passed.
-- `[TEST]` Configuration/destination binding fixture expanded to 22 passing tests.
-- `[TEST]` All 380 Runtime Play Mode tests passed with 0 failed and 0 ignored.
+- `[IMPLEMENTATION]` Added automatic Unity `Start` launch.
+- `[IMPLEMENTATION]` Automatic startup is serialized and enabled by default.
+- `[DECISION]` Automatic startup routes through the existing `StartLaunchAsync` gate.
+- `[IMPLEMENTATION]` Manual-before-automatic re-entry is prevented.
+- `[IMPLEMENTATION]` Added public neutral `ILaunchStatusPresenter`.
+- `[IMPLEMENTATION]` Added logging-free headless fallback.
+- `[IMPLEMENTATION]` Added safe presenter resolver and dispatcher.
+- `[IMPLEMENTATION]` Added neutral serialized `MonoBehaviour` presenter seam.
+- `[IMPLEMENTATION]` Added bind-before-validation ordering.
+- `[IMPLEMENTATION]` Added accepted-snapshot presentation before public progress events.
+- `[IMPLEMENTATION]` Added finalized-report presentation after `LastReport`.
+- `[IMPLEMENTATION]` Added exactly-once presenter unbind during destruction.
+- `[IMPLEMENTATION]` Added duplicate-root automatic-start and presenter silence.
+- `[IMPLEMENTATION]` Added `ELAUNCH-VIEW-001` and `ELAUNCH-VIEW-002`.
+- `[TEST]` All 16 automatic-start/presenter tests passed.
+- `[TEST]` All 396 Runtime Play Mode tests passed with 0 failed and 0 ignored.
 - `[TEST]` Unity compiled with 0 errors and 0 compiler warnings.
-- `[FIX]` Corrected `IsIndeterminate` test references to `IsProgressIndeterminate`.
-- `[FIX]` Corrected warning-completion retained expectations while preserving report warning proof.
-- `[FIX]` Corrected `FinalStatus` test reference to `Status`.
-- `[EVIDENCE GAP]` Real Boot-to-destination Standalone Laboratory activation not run.
-- `[HANDOFF]` Implementation commit `114ac91` is synchronized on `main` and `origin/main`.
+- `[FIX]` Replaced invalid `AudioSource` test presenter with an invalid `MonoBehaviour`.
+- `[FIX]` Replaced unsupported NUnit `Is.AnyOf`.
+- `[EVIDENCE GAP]` Default uGUI visual presentation not implemented or tested.
+- `[HANDOFF]` Implementation commit `46481b1` is synchronized on `main` and `origin/main`.
 
-**Promoted to:** package checkpoint, package test report, architecture, changelog, README, documentation index, package ADR evidence, package specification status, root completion record, and Current Notes.
+**Promoted to:** package checkpoint, package test report, architecture, changelog, README, documentation index, package specification status, root completion record, and Current Notes.
 
 ---
 
@@ -71,17 +67,16 @@ Close FL-M3-08 after the root-owned launch successfully crossed one validated in
 
 | Entry | Destination | State |
 |---|---|---|
-| Destination schema 1 and configuration schema 3 | Architecture, README, changelog | Promoted |
-| Loader and immutable load result | Architecture, checkpoint, README | Promoted |
-| Destination preflight and diagnostics | Architecture, checkpoint, test report | Promoted |
-| Completed lifecycle and report schema 2 | Architecture, checkpoint, README | Promoted |
-| Exactly-once `LaunchCompleted` | Architecture, checkpoint, test report | Promoted |
-| Test-fixture corrections | Changelog, checkpoint, test report | Promoted |
-| 380-test evidence | Test report and completion record | Promoted |
-| ADR evidence maturity | EchoLaunch-ADR-001 | Promoted |
-| Specification current status | First Light specification v1.4.0 | Promoted |
-| Standalone Laboratory evidence gap | Checkpoint and test report | Promoted |
-| FL-M3-08 documentation closeout commit | Git history | Pending |
+| Automatic Unity `Start` launch | Architecture, checkpoint, README | Promoted |
+| One-run automatic/manual gate | Architecture and test report | Promoted |
+| Neutral presenter contract | Architecture, checkpoint, README | Promoted |
+| Headless fallback | Architecture and test report | Promoted |
+| Presenter ordering | Architecture and test report | Promoted |
+| `ELAUNCH-VIEW-001/002` | Changelog, architecture, test report | Promoted |
+| Test-only compile corrections | Changelog, checkpoint, test report | Promoted |
+| 396-test evidence | Test report and completion record | Promoted |
+| Default uGUI evidence gap | Checkpoint and Current Notes | Promoted |
+| FL-M4-01 documentation closeout commit | Git history | Pending |
 
 ---
 
@@ -89,16 +84,15 @@ Close FL-M3-08 after the root-owned launch successfully crossed one validated in
 
 | Area | Result |
 |---|---|
-| FL-M3-08 authority | `eb9cc49` |
-| FL-M3-08 implementation | `114ac91` |
+| FL-M4-01 implementation | `46481b1` |
+| Previous documentation | `727b502` |
 | Unity compilation | 0 errors, 0 compiler warnings |
-| Runtime Play Mode | 380 passed, 0 failed, 0 ignored |
-| New destination fixture | 37 passed |
-| Expanded configuration fixture | 22 passed |
-| Expected runtime diagnostics | `ELAUNCH-ROOT-001`, `ELAUNCH-EVENT-001` |
+| Runtime Play Mode | 396 passed, 0 failed, 0 ignored |
+| New automatic/presenter fixture | 16 passed |
+| Expected runtime diagnostics | `ELAUNCH-ROOT-001`, `ELAUNCH-EVENT-001`, `ELAUNCH-VIEW-001`, `ELAUNCH-VIEW-002` |
 | Repository synchronization | `main` equals `origin/main` |
 | Working tree after implementation push | Clean |
-| Standalone real-scene activation | Not run |
+| Default uGUI view | Not implemented |
 | Documentation closeout | Pending adjacent commit |
 | Later runtime work | Locked |
 
@@ -106,22 +100,22 @@ Close FL-M3-08 after the root-owned launch successfully crossed one validated in
 
 ## Checkpoint Closeout Checklist
 
-- [x] Confirm authority commit `eb9cc49`.
-- [x] Confirm implementation commit `114ac91`.
-- [x] Record destination schema 1 and configuration schema 3.
-- [x] Record loader and destination-preflight boundary.
-- [x] Record successful completed handoff.
-- [x] Record report schema 2 and destination metadata.
-- [x] Record `LaunchCompleted` ordering and exactly-once behavior.
-- [x] Record test-fixture corrections.
-- [x] Record 380 passed, 0 failed, 0 ignored.
+- [x] Confirm implementation commit `46481b1`.
+- [x] Record automatic Unity `Start` entry.
+- [x] Record automatic/manual one-run protection.
+- [x] Record neutral presenter contract and headless fallback.
+- [x] Record presentation ordering.
+- [x] Record presenter callback containment and diagnostics.
+- [x] Record duplicate-root and destruction behavior.
+- [x] Record test-only compile corrections.
+- [x] Record 396 passed, 0 failed, 0 ignored.
 - [x] Record 0 compiler errors and 0 compiler warnings.
-- [x] Record Standalone Laboratory evidence gap.
+- [x] Record default uGUI evidence gap.
 - [x] Reconcile package and suite Current Notes.
-- [x] Update architecture, ADR, specification status, changelog, README, and index.
+- [x] Update architecture, specification status, changelog, README, and index.
 - [x] Create package checkpoint, package test report, and root completion record.
 - [ ] Review the staged documentation diff.
-- [ ] Commit and push the adjacent FL-M3-08 documentation closeout.
+- [ ] Commit and push the adjacent FL-M4-01 documentation closeout.
 - [ ] Confirm clean synchronized repository.
 - [ ] Open the next approved First Light checkpoint.
 
@@ -129,14 +123,13 @@ Close FL-M3-08 after the root-owned launch successfully crossed one validated in
 
 ## Handoff Snapshot
 
-**Completed implementation checkpoint:** FL-M3-08 — Initial Destination Contract, Load Result, and Completed Handoff
-**Authority commit:** `eb9cc49`
-**Implementation commit:** `114ac91`
-**Previous documentation commit:** `f76b9df`
-**Runtime Play Mode:** 380 passed, 0 failed, 0 ignored
+**Completed implementation checkpoint:** FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract
+**Implementation commit:** `46481b1`
+**Previous documentation commit:** `727b502`
+**Runtime Play Mode:** 396 passed, 0 failed, 0 ignored
 **Compilation:** 0 errors, 0 compiler warnings
-**Active work:** Adjacent FL-M3-08 documentation closeout
+**Active work:** Adjacent FL-M4-01 documentation closeout
 **Known blockers:** None
-**Evidence gap:** Real Boot-to-destination Standalone Laboratory activation not run
-**Next action:** Apply, review, commit, and push the FL-M3-08 documentation set
-**Tentative later checkpoint:** FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract
+**Evidence gap:** Default uGUI status view not implemented
+**Next action:** Apply, review, commit, and push the FL-M4-01 documentation set
+**Tentative later checkpoint:** FL-M4-02 — Default uGUI Plain Status View and Presentation Assembly

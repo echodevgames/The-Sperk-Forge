@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Initial destination contract, completed handoff, completed reports, and `LaunchCompleted` implemented; automatic startup and presentation pending
+- Development stage: Automatic root startup and neutral status-presenter contract implemented; default uGUI presentation pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -21,6 +21,7 @@
   - `FL-M3-06`
   - `FL-M3-07`
   - `FL-M3-08`
+  - `FL-M4-01`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -93,8 +94,18 @@ First Light currently establishes:
 64. Completed report schema 2 with destination metadata
 65. Exactly-once `LaunchCompleted`
 66. Startup warning preservation across successful destination activation
+67. Unity `Start` automatic launch through the existing one-run gate
+68. Serialized automatic-start opt-out
+69. Public neutral `ILaunchStatusPresenter`
+70. Logging-free headless presenter fallback
+71. Presenter resolution without a Runtime uGUI dependency
+72. Accepted snapshot presentation before public progress events
+73. Finalized report presentation before public terminal events
+74. Stable `ELAUNCH-VIEW-001` and `ELAUNCH-VIEW-002`
+75. Presenter callback containment and destruction unbinding
+76. Duplicate-root automatic-start and presenter silence
 
-First Light now validates, executes, times, evaluates, projects, loads one initial destination, and finalizes one immutable terminal report. Failed, interrupted, and completed attempts publish matching exactly-once terminal events after lifecycle state and report storage are authoritative. Automatic startup, presentation, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, and can begin automatically from Unity `Start`. Neutral presentation observers can receive accepted snapshots and finalized reports without owning launch truth or introducing a uGUI dependency into Runtime. The default uGUI view, splash presentation, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
 ## Implemented Runtime Files
 
@@ -126,6 +137,10 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     │   ├── StartupStepTimeoutMonitor.cs
     │   ├── StartupStepTiming.cs
     │   └── UnityLaunchClock.cs
+    ├── Presentation/
+    │   ├── ILaunchStatusPresenter.cs
+    │   ├── LaunchStatusPresenterDispatcher.cs
+    │   └── NullLaunchStatusPresenter.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
     ├── Reports/
@@ -159,6 +174,7 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
         └── StartupStepStatus.cs
 
     Tests/Runtime/PlayMode/
+    ├── EchoLaunchAutomaticStartAndPresenterTests.cs
     ├── EchoLaunchRootAuthorityTests.cs
     ├── EchoLaunchRootStartupLifecycleTests.cs
     ├── LaunchClockTimingAndGateTests.cs
@@ -1092,6 +1108,87 @@ After a successful or warning-only startup sequence:
 
 The final lifecycle snapshot describes successful destination activation. Any startup warnings remain preserved through `WarningCount` and immutable per-step reports.
 
+## Automatic Root Start Boundary
+
+The authoritative root has a serialized automatic-start setting that defaults to enabled.
+
+Unity entry:
+
+```csharp
+private async Awaitable Start()
+```
+
+The callback does not create a second execution path. It returns when automatic startup is disabled or when the session has already advanced, otherwise it awaits the existing `StartLaunchAsync` gate.
+
+Therefore automatic startup retains:
+
+- Authority filtering
+- `AuthorityClaimed` start-state requirement
+- Atomic active-run protection
+- Existing lifecycle and cancellation behavior
+- Existing terminal report and event ordering
+- Duplicate-root rejection
+
+Manual startup before Unity `Start` advances the same gate, so the later Unity callback performs no second run.
+
+## Neutral Presenter Boundary
+
+`ILaunchStatusPresenter` is a public Runtime contract with four callbacks:
+
+```csharp
+void Bind(LaunchProgressSnapshot initialSnapshot);
+void Present(LaunchProgressSnapshot snapshot);
+void PresentTerminal(LaunchReport report);
+void Unbind();
+```
+
+Presenters observe immutable accepted truth. They do not own:
+
+- Launch authority
+- Lifecycle transitions
+- Startup-step execution
+- Destination loading
+- Report finalization
+- General UI navigation
+- Scene travel
+
+The root stores an optional serialized `MonoBehaviour` and resolves it to `ILaunchStatusPresenter`. This permits a later isolated uGUI assembly without making the neutral Runtime assembly reference uGUI.
+
+## Headless Presentation
+
+When no presenter component is assigned, First Light uses `NullLaunchStatusPresenter`.
+
+The fallback:
+
+- Produces no logs
+- Allocates no visual resources
+- Does not affect launch state
+- Preserves headless and test execution
+
+An explicitly assigned component that does not implement the contract emits `ELAUNCH-VIEW-001` and falls back to the headless presenter.
+
+## Presenter Ordering and Containment
+
+Binding occurs once before the root publishes `Validating`.
+
+For accepted progress:
+
+1. `LaunchSession.Publish` accepts the snapshot.
+2. The presenter receives the accepted snapshot.
+3. If the root remains live, public state/progress events dispatch.
+
+For terminal reports:
+
+1. Terminal lifecycle state is accepted.
+2. The immutable report is finalized.
+3. `LastReport` is assigned.
+4. The presenter receives that exact report.
+5. If the root remains live, the matching public terminal event dispatches.
+
+Every presenter callback is isolated. Exceptions produce `ELAUNCH-VIEW-002` and do not alter lifecycle truth or block later public notifications.
+
+A successfully bound presenter is unbound once during root destruction. Duplicate roots never bind or present.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1102,7 +1199,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-08 compile result:
+Final FL-M4-01 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1121,12 +1218,13 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `380`
+- Passed: `396`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Automatic-start and presenter tests: `16`
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
@@ -1146,6 +1244,25 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M4-01 and retained behavior:
+
+- Automatic Unity `Start` launch
+- Serialized automatic-start opt-out
+- Manual-before-automatic one-run protection
+- Public neutral presenter contract
+- Logging-free headless fallback
+- Serialized presenter component resolution
+- `ELAUNCH-VIEW-001` invalid-component containment
+- `ELAUNCH-VIEW-002` callback-failure containment
+- Binding before validation
+- Accepted snapshot presentation ordering
+- Finalized report presentation ordering
+- Completion-event continuity after presenter failure
+- Presenter replacement and null-injection guards
+- Exactly-once unbind on destruction
+- Duplicate-root automatic-start and presenter silence
+- Runtime assembly remaining uGUI-neutral
 
 Verified FL-M3-08 and retained behavior:
 
@@ -1268,10 +1385,10 @@ Not implemented:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Automatic startup from Unity callbacks
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Default uGUI status view and presentation assembly
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
@@ -1282,6 +1399,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-08 stops after one validated initial destination can complete through an injected loader, publish `Completed`, finalize one immutable completed report, and dispatch `LaunchCompleted` exactly once.
+FL-M4-01 stops after Unity `Start` safely opens the existing authoritative launch gate and a neutral presenter can observe accepted snapshots and finalized reports.
 
-Automatic startup, splash/status presentation, direct-scene initialization, Editor migration/setup, persistent-root policy, normal mid-game scene travel, and real Standalone Laboratory scene activation require later checkpoints.
+The default uGUI status view, Canvas/prefab implementation, splash playback, direct-scene initialization, Editor setup, persistent-root policy, and real Standalone Laboratory scene activation require later checkpoints.

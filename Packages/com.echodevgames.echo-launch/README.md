@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Initial destination loading, completed reports, and `LaunchCompleted` implemented; automatic startup and presentation pending
+- Development stage: Automatic root startup and neutral presenter contract implemented; default uGUI presentation pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -25,6 +25,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-06` Root-Owned Startup Run and Lifecycle Advancement
   - `FL-M3-07` Immutable Launch Report and Public Terminal Events
   - `FL-M3-08` Initial Destination Contract, Load Result, and Completed Handoff
+  - `FL-M4-01` Automatic Root Start Gate and Plain Status Presenter Contract
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -383,6 +384,29 @@ First Light now provides:
 - Cancellation and destruction containment
 - Startup warning preservation in immutable reports
 
+### Automatic Root Startup
+
+- Serialized automatic-start setting enabled by default
+- Unity `Start` entry point
+- Existing `StartLaunchAsync` gate reuse
+- Manual-before-automatic one-run protection
+- Duplicate-root automatic-start silence
+- Internal deterministic opt-out for manual tests
+
+### Neutral Status Presentation
+
+- Public `ILaunchStatusPresenter`
+- Bind, accepted-snapshot, terminal-report, and unbind callbacks
+- Serialized neutral `MonoBehaviour` presenter seam
+- Logging-free `NullLaunchStatusPresenter`
+- Safe `LaunchStatusPresenterDispatcher`
+- `ELAUNCH-VIEW-001` invalid-component fallback
+- `ELAUNCH-VIEW-002` callback-failure containment
+- Accepted snapshots presented before public progress events
+- Finalized report presented after `LastReport` assignment
+- Exactly-once unbind during destruction
+- No Runtime dependency on uGUI or TextMeshPro
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -419,12 +443,13 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `380`
+- Passed: `396`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Automatic-start and presenter tests: `16`
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
@@ -482,10 +507,10 @@ First Light does not yet provide:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Automatic startup from Unity scene callbacks
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Default uGUI status view and presentation assembly
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
@@ -509,10 +534,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Three hundred eighty passing Runtime Play Mode tests
+- Three hundred ninety-six passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with root ownership, validated initial destination loading, immutable completed/failed/interrupted reporting, and exactly-once terminal events
+- Policy-aware timed startup execution with automatic root entry, validated initial destination loading, immutable terminal reporting, exactly-once events, and neutral accepted-state presentation
 
 Still `Not run`:
 

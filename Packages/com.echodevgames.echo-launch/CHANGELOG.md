@@ -7,6 +7,25 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M4-01 - Automatic Root Start Gate and Plain Status Presenter Contract
+- Serialized automatic-start gate enabled by default
+- Unity `Start` callback routed through the existing `StartLaunchAsync` one-run boundary
+- Manual-start-before-`Start` re-entry prevention
+- Public neutral `ILaunchStatusPresenter`
+- Internal silent `NullLaunchStatusPresenter`
+- Internal safe presenter resolver and dispatcher
+- Serialized `MonoBehaviour` presenter seam without a Runtime uGUI dependency
+- Presenter binding before `Validating`
+- Accepted snapshot presentation before public progress events
+- Finalized report presentation after `LastReport` assignment
+- Presenter unbinding during authoritative root destruction
+- Duplicate-root presenter and automatic-start silence
+- Stable invalid-presenter diagnostic `ELAUNCH-VIEW-001`
+- Stable presenter-callback diagnostic `ELAUNCH-VIEW-002`
+- Per-callback presenter exception containment
+- Internal deterministic automatic-start test seam
+- Internal deterministic presenter-injection test seam
+- Sixteen Runtime Play Mode automatic-start and presenter tests
 #### FL-M3-08 - Initial Destination Contract, Load Result, and Completed Handoff
 - Project-owned immutable `LaunchDestination` ScriptableObject
 - Destination schema version `1`
@@ -256,6 +275,12 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- Authoritative roots now begin the existing launch gate from Unity `Start` when automatic startup is enabled.
+- Automatic and manual startup share the same authority, lifecycle, and active-run protections.
+- Retained manual Runtime Play Mode fixtures explicitly disable automatic startup before invoking `StartLaunchAsync`.
+- Accepted launch snapshots are presented before public state/progress notifications.
+- Finalized terminal reports are assigned to `LastReport`, presented, and then dispatched through the matching public terminal event.
+- Missing presentation remains logging-free through the headless fallback.
 - `EchoLaunchConfiguration.CurrentSchemaVersion` advanced from `2` to `3`; schema 3 adds the project-owned initial destination reference.
 - Configuration schema 2 remains historical and is rejected through `ELAUNCH-CFG-002` without runtime migration or mutation.
 - Successful and warning-only startup-sequence settlement now proceeds through initial destination loading and reaches `Completed`.
@@ -323,6 +348,8 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Replaced an invalid `AudioSource` presenter test component with a dedicated `MonoBehaviour` that intentionally does not implement `ILaunchStatusPresenter`.
+- Replaced unsupported NUnit `Is.AnyOf` usage with a direct terminal-state assertion compatible with the installed Unity test framework.
 - Corrected three new FL-M3-08 test references from nonexistent `LaunchProgressSnapshot.IsIndeterminate` to the established `IsProgressIndeterminate` property.
 - Updated the retained warning-completion test to expect a successful destination-activation lifecycle result while verifying that the completed report preserves the startup warning.
 - Corrected the retained report assertion from nonexistent `LaunchStepReport.FinalStatus` to the established `Status` property.
@@ -341,9 +368,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `380`
+- Passed: `396`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M4-01 coverage:
+- Automatic launch on the first enabled authoritative root
+- Disabled automatic startup remaining at `AuthorityClaimed`
+- Manual launch before Unity `Start` without re-entry
+- Presenter binding exactly once before validation
+- Accepted lifecycle snapshot ordering
+- Exact finalized report presentation
+- Silent headless fallback
+- Serialized presenter component resolution
+- Invalid assigned presenter containment through `ELAUNCH-VIEW-001`
+- Bind, progress, and terminal callback containment through `ELAUNCH-VIEW-002`
+- Completion event continuity after presenter failure
+- Presenter replacement rejection after launch advancement
+- Null presenter-injection rejection
+- Exactly-once presenter unbind on destruction
+- Duplicate-root automatic-start and presenter silence
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-08 coverage:
 - Destination schema 1 and canonical identity
@@ -506,10 +551,10 @@ FL-M3-03 coverage:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip presentation
-- Automatic startup from Unity scene callbacks
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Default uGUI status view and presentation assembly
 - Splash presentation
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
