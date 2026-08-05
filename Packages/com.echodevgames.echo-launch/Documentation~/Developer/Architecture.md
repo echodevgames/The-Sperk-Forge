@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
+- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -15,6 +15,7 @@
   - `FL-M2-08`
   - `FL-M3-01`
   - `FL-M3-02`
+  - `FL-M3-03`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -43,8 +44,15 @@ First Light currently establishes:
 20. Stable factory and executor exception conversion
 21. Blocking traversal stops
 22. Attempted, disabled, and unvisited entry accounting
+23. Injectable monotonic launch clock
+24. Immutable per-attempt timing
+25. Deterministic completion-versus-timeout monitoring
+26. Stable timeout result conversion
+27. Cooperative timeout cancellation
+28. Timed-out executor settlement before traversal
+29. Late progress and late result containment
 
-First Light now executes and evaluates startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
+First Light now executes, times, and evaluates startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
 
 ## Implemented Runtime Files
 
@@ -59,13 +67,19 @@ First Light now executes and evaluates startup steps only through explicit inter
     │   ├── LaunchProgressChangedEvent.cs
     │   └── LaunchStateChangedEvent.cs
     ├── Execution/
+    │   ├── ILaunchClock.cs
     │   ├── StartupSequenceRunResult.cs
     │   ├── StartupSequenceRunner.cs
+    │   ├── StartupStepAwaitOutcome.cs
     │   ├── StartupStepExceptionConverter.cs
     │   ├── StartupStepExceptionPhase.cs
     │   ├── StartupStepExecution.cs
     │   ├── StartupStepPolicyDecision.cs
-    │   └── StartupStepPolicyEvaluator.cs
+    │   ├── StartupStepPolicyEvaluator.cs
+    │   ├── StartupStepProgressGate.cs
+    │   ├── StartupStepTimeoutMonitor.cs
+    │   ├── StartupStepTiming.cs
+    │   └── UnityLaunchClock.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
     ├── State/
@@ -89,6 +103,7 @@ First Light now executes and evaluates startup steps only through explicit inter
 
     Tests/Runtime/PlayMode/
     ├── EchoLaunchRootAuthorityTests.cs
+    ├── LaunchClockTimingAndGateTests.cs
     ├── LaunchConfigurationBindingTests.cs
     ├── LaunchLifecycleTransitionTests.cs
     ├── LaunchNotificationTests.cs
@@ -97,6 +112,7 @@ First Light now executes and evaluates startup steps only through explicit inter
     ├── StartupSequenceDefinitionTests.cs
     ├── StartupSequenceRunnerImmediateTests.cs
     ├── StartupSequenceRunnerPolicyAndExceptionTests.cs
+    ├── StartupSequenceRunnerTimeoutTests.cs
     ├── StartupStepExecutionTests.cs
     ├── StartupStepPolicyAndExecutorContractTests.cs
     └── StartupStepPolicyApplicationTests.cs
@@ -182,7 +198,7 @@ Timeout is stored in seconds.
 - A finite value greater than `0` enables timeout metadata.
 - Negative, NaN, and infinite values are invalid.
 - Invalid values remain unchanged for diagnostics and future explicit repair.
-- FL-M2-08 does not measure time.
+- FL-M3-03 measures positive timeout metadata through an injected monotonic unscaled clock.
 
 ### Policy Validation
 
@@ -261,7 +277,7 @@ It carries:
 - Step ID
 - Zero-based step index
 - Step count
-- `CancellationToken`
+- Linked per-attempt `CancellationToken`
 - `IStartupStepProgressReporter`
 
 Constructor validation rejects:
@@ -270,6 +286,8 @@ Constructor validation rejects:
 - Step count less than one
 - Step index outside the current count
 - Null progress reporter
+
+The runner links the caller token with one attempt-local timeout token.
 
 The context owns no launch authority and exposes no setters.
 
@@ -282,17 +300,21 @@ The context owns no launch authority and exposes no setters.
 
 This contract uses Unity `Awaitable<T>`.
 
-Rules established by FL-M2-08:
+Rules:
 
 - One executor instance represents one execution attempt.
 - A definition creates a fresh executor for every attempt.
 - The definition does not store the executor.
 - The executor owns its own active state.
-- Cancellation is cooperative through the context token.
+- Cancellation is cooperative through the linked context token.
 - Progress is reported through the package-owned reporter.
-- No executor is invoked by FL-M2-08.
+- A cancellable executor must settle promptly after cancellation.
+- A non-cancellable executor may finish naturally.
+- The runner never abandons an active executor.
+- A late result cannot replace an already-observed timeout.
+- A late progress report is ignored after the progress gate closes.
 
-Exception conversion, timeout handling, result interpretation, and lifecycle advancement belong to the future runner.
+Exception conversion, timeout monitoring, and failure-policy application remain runner-owned.
 
 ## Definition Factory
 
@@ -342,8 +364,9 @@ It owns:
 
 - An optional fresh executor
 - Current `StartupStepStatus`
-- Latest `StartupStepProgress`
+- Latest accepted `StartupStepProgress`
 - One terminal `StartupStepResult`
+- One immutable `StartupStepTiming`
 
 Normal execution path:
 
@@ -356,6 +379,10 @@ Factory or pre-execution contract failure path:
     NotStarted
         -> BlockingFailure
 
+Timing is assigned exactly once with terminal completion.
+
+Retained callers that do not measure executor time use `StartupStepTiming.NotMeasured`.
+
 Guards:
 
 - An executor may be attached exactly once before begin.
@@ -363,8 +390,9 @@ Guards:
 - Progress is legal only while running.
 - Normal completion is legal only while running.
 - Pre-start completion accepts one blocking result only.
-- Completion is legal exactly once.
-- Progress after completion is rejected.
+- Result and timing completion are legal exactly once.
+- Direct progress after completion is rejected.
+- Timeout-driven late progress is filtered before reaching the execution object.
 
 No ScriptableObject is mutated.
 
@@ -462,6 +490,156 @@ They exclude:
 
 `OperationCanceledException` is not converted by the generic path. Cancellation orchestration remains a later checkpoint.
 
+## Monotonic Launch Clock
+
+`ILaunchClock` is the public runtime and testing seam.
+
+It exposes:
+
+    double NowSeconds
+
+    Awaitable NextTickAsync(
+        CancellationToken cancellationToken)
+
+Clock requirements:
+
+- Finite values
+- Nonnegative values
+- Monotonic nondecreasing values
+- Seconds as the unit
+- Unscaled time
+- Non-blocking ticks
+
+`UnityLaunchClock` is the internal shared default.
+
+It uses:
+
+    Time.realtimeSinceStartupAsDouble
+    Awaitable.NextFrameAsync(cancellationToken)
+
+The runner also accepts an injected `ILaunchClock` for deterministic tests.
+
+## Attempt Timing
+
+`StartupStepTiming` is an immutable runtime value.
+
+It records:
+
+- Start time
+- Settlement time
+- Derived elapsed seconds
+- Configured timeout seconds
+- Whether timeout was configured
+- Whether timeout was reached
+- Whether timeout cancellation was requested
+
+Validation rejects:
+
+- NaN
+- Infinity
+- Negative time
+- Settlement before start
+- Timeout-reached state without positive timeout
+- Cancellation-request state without timeout
+
+Timing remains outside ScriptableObject definitions.
+
+## Late Progress Gate
+
+`StartupStepProgressGate` wraps one progress reporter.
+
+While open, progress is forwarded.
+
+After close:
+
+- Progress is ignored.
+- Repeated close calls are safe.
+- The gate never reopens.
+
+The timeout monitor closes the gate when timeout, caller cancellation, monitor failure, or executor settlement is observed.
+
+## Await Outcome
+
+`StartupStepAwaitOutcome` preserves the settled executor observation before the runner applies result policy.
+
+It distinguishes:
+
+- Normal returned result
+- Normal returned null result
+- Thrown exception
+- Timed-out state
+- Timeout cancellation-request state
+- Immutable timing snapshot
+
+A timed-out outcome may contain a later success, failure, or cancellation exception, but timeout remains the runner's source result.
+
+## Timeout Monitor
+
+`StartupStepTimeoutMonitor` owns one attempt deadline.
+
+Deterministic race rule:
+
+1. Observe executor completion first.
+2. Read and validate the current clock.
+3. Recheck completion.
+4. Compare the clock with the absolute deadline.
+5. Latch the first observed timeout.
+
+Therefore an executor already observable as complete at the deadline boundary wins.
+
+Once timeout is latched:
+
+- The progress gate closes.
+- Timeout cancellation is requested only when the authored policy supports cancellation.
+- The monitor continues until the executor settles.
+- A late result or exception cannot replace timeout.
+
+The monitor also waits for settlement before allowing caller cancellation or a clock-contract failure to escape.
+
+Backward, non-finite, or negative clock behavior becomes a blocking `ELAUNCH-STEP-004` timing-contract failure after the active executor settles.
+
+## Timeout Result
+
+Timed-out attempts use stable code:
+
+    ELAUNCH-STEP-003
+
+Message:
+
+    The startup step exceeded its configured timeout.
+
+Details contain invariant values for:
+
+- `TimeoutSeconds`
+- `ElapsedSeconds`
+- `CancellationRequested`
+
+The source result uses `StartupStepStatus.TimedOut`.
+
+Existing failure policy then applies:
+
+- `ContinueWithWarning` converts the timeout to `Warning` and continues after settlement.
+- `BlockLaunch` converts the timeout to `BlockingFailure` and stops before a later factory.
+
+## Cooperative Cancellation
+
+Each enabled attempt owns:
+
+- One timeout `CancellationTokenSource`
+- One token source linked with the caller token
+
+The linked token is delivered through `StartupStepContext`.
+
+At timeout:
+
+- Supporting steps receive one timeout cancellation request.
+- Unsupported steps receive no timeout cancellation request.
+- The runner still waits for natural settlement.
+
+Caller cancellation remains distinct from timeout cancellation.
+
+FL-M3-03 allows caller cancellation to escape as `OperationCanceledException` only after the active executor has settled. Converting caller cancellation into a structured run result remains later work.
+
 ## Completed Sequence Run Result
 
 `StartupSequenceRunResult` is an internal immutable summary.
@@ -493,15 +671,20 @@ After a stop, every later authored entry is unvisited because the runner never i
 
 The backing execution array remains private.
 
-## Policy-Aware Immediate Sequence Runner
+## Policy-Aware Timed Sequence Runner
 
-`StartupSequenceRunner.RunAsync` accepts:
+`StartupSequenceRunner` supports:
 
-- Launch mode
-- Launch configuration
-- Cancellation token
+    StartupSequenceRunner()
 
-It then:
+    StartupSequenceRunner(
+        ILaunchClock clock)
+
+The default constructor uses `UnityLaunchClock.Shared`.
+
+The injected constructor rejects a null clock.
+
+`RunAsync` then:
 
 1. Validates the configuration and active launch mode.
 2. Reads the configured startup sequence.
@@ -511,24 +694,30 @@ It then:
 6. Calls `CreateExecutor()`.
 7. Converts factory exceptions or null executors to blocking `ELAUNCH-STEP-004`.
 8. Attaches the fresh executor.
-9. Creates immutable `StartupStepContext`.
-10. Begins execution.
-11. Awaits `ExecuteAsync(context)`.
-12. Converts non-cancellation executor exceptions.
-13. Converts null results to blocking contract failures.
-14. Applies authored failure policy.
-15. Completes the execution with the effective result.
-16. Appends the execution in authored order.
-17. Continues or stops according to the policy decision.
-18. Returns immutable traversal accounting.
+9. Captures and validates the monotonic start time.
+10. Creates timeout and linked cancellation sources.
+11. Creates a progress gate.
+12. Creates immutable `StartupStepContext` with the linked token.
+13. Begins execution.
+14. Invokes the executor exactly once.
+15. Monitors completion, timeout, caller cancellation, and clock validity.
+16. Waits for executor settlement.
+17. Creates `ELAUNCH-STEP-003` when timeout won.
+18. Converts non-timeout executor exceptions through `ELAUNCH-STEP-004`.
+19. Converts null results to blocking contract failures.
+20. Applies authored failure policy.
+21. Completes the execution with effective result and timing.
+22. Appends the execution in authored order.
+23. Continues or stops according to the policy decision.
+24. Disposes per-attempt cancellation sources.
+25. Returns immutable traversal accounting.
 
-No later executor factory is called after a stop.
+No later executor factory is called while a timed-out executor remains active.
 
-FL-M3-02 deliberately does not:
+FL-M3-03 deliberately does not:
 
-- Measure timeout
-- Orchestrate cancellation
 - Retry
+- Produce a structured caller-cancellation run result
 - Publish root events
 - Update `LaunchSession`
 - Build a public report
@@ -536,11 +725,15 @@ FL-M3-02 deliberately does not:
 
 ## Compile Evidence
 
-The retained immediate test executor intentionally completes synchronously.
+The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
 
-Its local `CS1998` suppression keeps Unity compilation clean without changing immediate execution semantics.
+Local `CS1998` suppression keeps those bounded test helpers warning-free.
 
-Final FL-M3-02 compile result:
+One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableCompletionSource<T>.SetResult` signature.
+
+The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
+
+Final FL-M3-03 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -553,19 +746,20 @@ Final FL-M3-02 compile result:
 
 Listener failures remain isolated through `ELAUNCH-EVENT-001`.
 
-No FL-M3-02 execution or policy path calls or mutates these systems.
+No FL-M3-03 timing, timeout, or cancellation path calls or mutates these systems.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `231`
+- Passed: `263`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Clock, timing, and progress-gate tests: `14`
 - Configuration binding tests: `15`
 - Vocabulary tests: `39`
 - Session and progress tests: `14`
@@ -577,26 +771,31 @@ Breakdown:
 - Immediate startup sequence runner tests: `18`
 - Policy-application tests: `16`
 - Runner policy and exception tests: `16`
+- Timeout runner and cancellation tests: `18`
 
-Verified FL-M3-02 behavior:
+Verified FL-M3-03 behavior:
 
-- Immutable policy decisions
-- Preserved and converted results
-- Explicit failure-action authority
-- Continue-with-warning conversion
-- Block-launch conversion and stop
-- Cancelled-result preservation
-- Factory exception containment
-- Null executor containment
-- Executor exception conversion
-- Null result containment
-- Stable `ELAUNCH-STEP-004`
-- Sanitized exception details
-- Cancellation exception escape
-- No later factory creation after stop
-- Attempted, disabled, and unvisited accounting
-- Stopping authored-index capture
-- Complete traversal metadata
+- Clock interface and default implementation
+- Deterministic manual clock
+- Immutable timing validation
+- Progress-gate forwarding and closure
+- Single timing assignment
+- Zero-timeout behavior
+- Completion before deadline
+- Completion at the observed deadline boundary
+- Stable `ELAUNCH-STEP-003`
+- Timeout diagnostic details
+- Supported timeout cancellation
+- Unsupported timeout behavior
+- Late success containment
+- Late failure containment
+- Timeout cancellation-exception containment
+- Caller cancellation boundary
+- Continue-with-warning timeout
+- Block-launch timeout
+- Late-progress containment
+- Backward-clock containment
+- Executor settlement before later factory creation
 - Authored asset immutability
 - Zero compiler errors
 - Zero compiler warnings
@@ -612,14 +811,13 @@ No production asset, scene, prefab, root, or automatic startup setup was require
 
 Not implemented:
 
-- Timeout measurement
-- `ILaunchClock`
-- Timeout race
-- Timeout cancellation
-- Retry loops
-- Retry backoff
+- Automatic retry
+- Retry count or backoff
 - Interactive retry
-- Cancellation orchestration
+- Retry or skip UI
+- Structured caller-cancellation run result
+- Root-level cancellation command
+- Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity callbacks
 - Launch-session lifecycle advancement
@@ -628,8 +826,9 @@ Not implemented:
 - Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
+- Dependency validation
 - Runner re-entry protection
-- Asynchronous multi-frame proof
+- Production-shaped multi-frame asynchronous proof
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
@@ -640,6 +839,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-02 stops after failure policy and bounded exception conversion produce deterministic effective results and blocking decisions stop traversal.
+FL-M3-03 stops after monotonic unscaled timeout measurement, deterministic completion-versus-deadline ordering, stable timeout results, cooperative timeout cancellation, late progress containment, and executor settlement are proven.
 
 The next runtime slice requires separate approval.

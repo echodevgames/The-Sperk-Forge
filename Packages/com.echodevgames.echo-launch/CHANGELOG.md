@@ -8,6 +8,29 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M3-03 - Monotonic Timeout Clock and Cooperative Cancellation
+
+- Public `ILaunchClock` runtime and test seam
+- Internal shared `UnityLaunchClock`
+- Double-precision unscaled real-time clock source
+- Non-blocking Unity frame tick source
+- Immutable `StartupStepTiming`
+- Internal `StartupStepProgressGate`
+- Internal immutable `StartupStepAwaitOutcome`
+- Internal `StartupStepTimeoutMonitor`
+- Deterministic completion-before-deadline race ordering
+- Absolute per-attempt timeout deadlines
+- Stable timeout diagnostic `ELAUNCH-STEP-003`
+- Timeout details containing configured timeout, measured elapsed time, and cancellation-request state
+- Linked caller and timeout cancellation tokens
+- Cooperative timeout cancellation only for supporting steps
+- Timed-out executor settlement before traversal continues
+- Late executor-result containment
+- Late progress containment
+- Clock-contract validation and backward-clock blocking
+- Fourteen Runtime Play Mode clock, timing, and progress-gate tests
+- Eighteen Runtime Play Mode timeout-runner and cancellation tests
+
 #### FL-M3-02 - Step Result Policy Application and Exception Conversion
 
 - Immutable `StartupStepPolicyDecision`
@@ -144,6 +167,18 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Changed
 
+- `StartupSequenceRunner` now supports default and injected `ILaunchClock` construction.
+- Every enabled attempt receives a linked per-attempt cancellation token.
+- Positive timeout metadata now establishes one monotonic unscaled deadline.
+- Timeout zero remains disabled.
+- Executor completion observable before deadline evaluation wins the boundary race.
+- The first observed deadline crossing remains authoritative over later success or failure.
+- Timed-out executors settle before the runner evaluates continuation or creates a later executor.
+- `ContinueWithWarning` converts timed-out source results to warnings after executor settlement.
+- `BlockLaunch` converts timed-out source results to blocking failures and leaves later entries unvisited.
+- `StartupStepExecution` now captures one immutable timing snapshot with terminal completion.
+- Retained immediate-runner cancellation tests now assert a distinct linked token rather than caller-token identity.
+
 - `StartupSequenceRunner` now applies authored `StartupStepFailureAction` to failure-like terminal results.
 - `ContinueWithWarning` converts recoverable, blocking, and timed-out results to warnings and continues traversal.
 - `BlockLaunch` converts failure-like results to blocking failures and stops before any later executor factory is called.
@@ -165,53 +200,62 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Fixed
 
-- Corrected Unity Inspector defaults for newly added embedded sequence entries. Unity can create list elements from zeroed serialized data without applying C# field initializers; the serialized model now makes that zero state intentionally safe without adding automatic repair callbacks.
-- Removed the intentional immediate-test `CS1998` warning from normal Unity compilation while preserving synchronous immediate-executor behavior.
+- Adapted the timeout test helper to Unity `6000.3.8f1`, where `AwaitableCompletionSource<T>.SetResult` accepts the result by value.
+- Realigned the retained immediate-runner fixture after a stale test artifact temporarily restored three pre-FL-M3-02 expectations.
+- Preserved FL-M3-02 policy-aware retained behavior while adding the FL-M3-03 linked-token expectation.
+- Kept the full Unity compilation result at zero errors and zero warnings.
 
 ### Tested
 
 Runtime Play Mode totals:
 
-- Passed: `231`
+- Passed: `263`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M3-02 coverage:
+FL-M3-03 coverage:
 
-- Null policy-decision input rejection
-- Preserved and converted decision identity
-- Success, warning, and skipped continuation
-- `ContinueWithWarning` conversion
-- `BlockLaunch` conversion and stop
-- Timed-out result policy application
-- Cancelled-result preservation and stop
-- Diagnostic code, message, and details preservation
-- Explicit failure action authority for unusual requirement/action pairs
-- Factory exception containment
-- Null executor containment
-- No later factory creation after factory failure
-- Executor exception conversion and policy application
-- Null result containment
-- Sanitized exception details without stack traces
-- `OperationCanceledException` escape from generic conversion
-- Returned recoverable and blocking result policy application
-- Attempted, disabled, and unvisited accounting
-- Stopping authored-index capture
-- Complete traversal metadata
+- Approved `ILaunchClock` interface shape
+- Default Unity clock interface implementation
+- Finite nonnegative Unity clock values
+- Deterministic manual clock advancement
+- Timing validation for non-finite, negative, and backward values
+- Derived elapsed-time calculation
+- Disabled and reached timeout timing states
+- Open progress forwarding
+- Closed late-progress containment
+- Idempotent progress-gate closure
+- Single execution-timing assignment
+- Zero-timeout delayed completion
+- Completion before deadline
+- Completion observable at the exact deadline
+- Deadline crossing and timeout authority
+- Stable `ELAUNCH-STEP-003`
+- Timeout diagnostic details
+- Supported cancellation request exactly once
+- Unsupported timeout without cancellation request
+- Late success containment
+- Late failure containment
+- Timeout-triggered cancellation exception containment
+- Caller cancellation escape after executor settlement
+- Continue-with-warning timeout traversal
+- Block-launch timeout traversal stop
+- Late-progress containment
+- Backward-clock blocking contract result
 - Authored asset immutability
+- Later factory creation only after timed-out executor settlement
 - Zero compiler errors and zero compiler warnings
 - Expected retained diagnostics `ELAUNCH-ROOT-001` and `ELAUNCH-EVENT-001`
 
 ### Not Included
 
-- Timeout measurement
-- `ILaunchClock`
-- Timeout race
-- Timeout cancellation
-- Retry loops
-- Retry backoff
+- Automatic retry
+- Retry count or backoff
 - Interactive retry
-- Cancellation orchestration
+- Retry or skip presentation
+- Structured caller-cancellation run result
+- Root-level cancellation command
+- Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
 - Launch-session lifecycle advancement
@@ -220,8 +264,9 @@ FL-M3-02 coverage:
 - Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision scans
+- Dependency validation
 - Runner re-entry protection
-- Asynchronous multi-frame proof
+- Production-shaped multi-frame executor proof
 - Splash presentation
 - Scene loading
 - Persistent root lifetime

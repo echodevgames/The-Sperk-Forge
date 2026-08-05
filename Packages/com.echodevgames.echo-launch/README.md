@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
+- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -19,6 +19,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-08` Startup Step Policy and Executor Contract
   - `FL-M3-01` Startup Sequence Runner Skeleton and Immediate Step Execution
   - `FL-M3-02` Step Result Policy Application and Exception Conversion
+  - `FL-M3-03` Monotonic Timeout Clock and Cooperative Cancellation
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -142,6 +143,7 @@ First Light now provides:
 - `NotStarted -> BlockingFailure` factory-contract path
 - Progress accepted only while running
 - Single terminal-result capture
+- Single immutable timing capture
 - Copied authored identity, position, policy, and label metadata
 - No authored asset mutation
 
@@ -167,18 +169,46 @@ First Light now provides:
 - No stack trace copying
 - `OperationCanceledException` excluded from generic conversion
 
-### Policy-Aware Immediate Sequence Runner
+### Launch Clock and Timing
+
+- Public `ILaunchClock`
+- Internal shared `UnityLaunchClock`
+- `Time.realtimeSinceStartupAsDouble`
+- `Awaitable.NextFrameAsync`
+- Injected deterministic test clocks
+- Immutable `StartupStepTiming`
+- Finite, nonnegative, monotonic clock validation
+- Derived elapsed duration
+- Runtime-only timing state
+
+### Timeout and Cooperative Cancellation
+
+- Absolute per-attempt deadlines
+- Timeout zero disabled
+- Deterministic completion-before-deadline race
+- Stable `ELAUNCH-STEP-003`
+- Timeout detail capture
+- Linked caller and timeout cancellation tokens
+- Cancellation requests only for supporting steps
+- Timed-out executor settlement before traversal
+- Late executor-result containment
+- Late progress containment
+- Backward-clock blocking through `ELAUNCH-STEP-004`
+
+### Policy-Aware Timed Sequence Runner
 
 - Internal `StartupSequenceRunner`
+- Default or injected monotonic clock
 - Explicit invocation only
 - Disabled entries skipped before factory creation
 - Fresh executor for every enabled attempt
 - Authored-order traversal
 - Immutable context delivery
-- Cancellation-token pass-through
-- Immediate progress capture
-- Effective terminal-result capture
+- Linked per-attempt cancellation token
+- Immediate and multi-tick progress capture
+- Effective terminal-result and timing capture
 - Blocking traversal stops before later factory creation
+- Timed-out executor settles before later traversal
 - Immutable `StartupSequenceRunResult`
 - Attempted, disabled, and unvisited accounting
 - Stopping authored-index capture
@@ -219,13 +249,14 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `231`
+- Passed: `263`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Clock, timing, and progress-gate tests: `14`
 - Launch configuration binding tests: `15`
 - Launch-state vocabulary tests: `39`
 - Launch session and progress tests: `14`
@@ -237,6 +268,7 @@ Breakdown:
 - Immediate startup sequence runner tests: `18`
 - Policy-application tests: `16`
 - Runner policy and exception tests: `16`
+- Timeout runner and cancellation tests: `18`
 
 Compilation:
 
@@ -248,16 +280,19 @@ Expected yellow diagnostic evidence:
 - `ELAUNCH-ROOT-001` from duplicate-root tests
 - `ELAUNCH-EVENT-001` from broken-listener containment tests
 
-Policy and exception evidence:
+Timeout and cancellation evidence:
 
-- Continue-with-warning converts failure-like results and continues.
-- Block-launch converts failure-like results and stops.
-- Cancelled results remain cancelled and stop.
-- Factory and executor failures become structured `ELAUNCH-STEP-004` results.
-- Null executors and null terminal results become blocking contract results.
-- Later factories are never called after a stop.
-- Attempted, disabled, and unvisited counts balance against the authored count.
-- Stopping authored index is preserved.
+- Zero timeout remains disabled.
+- Completion observable at the deadline wins.
+- First observed deadline crossing creates `ELAUNCH-STEP-003`.
+- Timeout details preserve configured timeout, elapsed time, and cancellation request.
+- Supporting steps receive one timeout cancellation request.
+- Unsupported steps are allowed to settle naturally.
+- Timed-out executors settle before later factories are created.
+- Late success, failure, and progress cannot replace the timeout boundary.
+- Continue-with-warning and block-launch policies apply after settlement.
+- Caller cancellation remains distinct and escapes after active work settles.
+- Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
 No production asset, scene, prefab, root, or automatic startup setup was required.
@@ -266,14 +301,13 @@ No production asset, scene, prefab, root, or automatic startup setup was require
 
 First Light does not yet provide:
 
-- Timeout measurement
-- `ILaunchClock`
-- Timeout race
-- Timeout cancellation
-- Retry loops
-- Retry backoff
+- Automatic retry
+- Retry count or backoff
 - Interactive retry
-- Cancellation orchestration
+- Retry or skip UI
+- Structured caller-cancellation run result
+- Root-level cancellation command
+- Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
 - Launch-session lifecycle advancement
@@ -282,8 +316,9 @@ First Light does not yet provide:
 - Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
+- Dependency validation
 - Runner re-entry protection
-- Multi-frame asynchronous proof
+- Production-shaped multi-frame asynchronous proof
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
@@ -307,10 +342,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Two hundred thirty-one passing Runtime Play Mode tests
+- Two hundred sixty-three passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware immediate startup execution with no root or lifecycle integration
+- Policy-aware timed startup execution with no root or lifecycle integration
 
 Still `Not run`:
 
@@ -319,9 +354,9 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Production startup integration
-- Multi-frame asynchronous execution
-- Timeout behavior
-- Cancellation orchestration
+- Production-shaped multi-frame asynchronous execution
+- Structured caller-cancellation result
+- Root cancellation orchestration
 - Performance measurements
 
 ## License

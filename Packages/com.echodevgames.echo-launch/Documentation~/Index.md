@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
+- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -17,7 +17,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-08`
   - `FL-M3-01`
   - `FL-M3-02`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware immediate traversal, and structured exception containment
+  - `FL-M3-03`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, and cooperative timeout cancellation
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -43,6 +44,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-01 Runtime Test Report](Developer/Test%20Reports/FL-M3-01_Startup_Sequence_Runner_Immediate_Test_Report.md)
 - [FL-M3-02 Step Result Policy Application and Exception Conversion](Developer/Checkpoints/FL-M3-02_Step_Result_Policy_Application_and_Exception_Conversion.md)
 - [FL-M3-02 Runtime Test Report](Developer/Test%20Reports/FL-M3-02_Step_Result_Policy_and_Exception_Test_Report.md)
+- [FL-M3-03 Monotonic Timeout Clock and Cooperative Cancellation](Developer/Checkpoints/FL-M3-03_Monotonic_Timeout_Clock_and_Cooperative_Cancellation.md)
+- [FL-M3-03 Runtime Test Report](Developer/Test%20Reports/FL-M3-03_Timeout_Clock_and_Cancellation_Test_Report.md)
 
 ## Package Root Documents
 
@@ -89,6 +92,14 @@ First Light currently proves:
 - Sanitized exception details
 - Attempted, disabled, and unvisited entry accounting
 - Stopping authored-index capture
-- Two hundred thirty-one passing Runtime Play Mode tests
+- Public monotonic `ILaunchClock`
+- Default unscaled Unity clock
+- Immutable per-attempt timing
+- Deterministic completion-versus-timeout ordering
+- Stable `ELAUNCH-STEP-003`
+- Cooperative timeout cancellation
+- Timed-out executor settlement
+- Late progress and result containment
+- Two hundred sixty-three passing Runtime Play Mode tests
 
-Timeout handling, retries, cancellation orchestration, reports, preflight, root integration, and lifecycle automation remain outside the implemented scope.
+Retries, structured caller-cancellation results, reports, preflight, root integration, and lifecycle automation remain outside the implemented scope.
