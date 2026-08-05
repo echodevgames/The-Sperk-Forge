@@ -1709,17 +1709,18 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly |
-| Active authorized checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan |
-| Authority baseline | `8bd2a57` |
-| Last implementation commit | `8d3c6a7` |
+| Completed checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan |
+| Authority commit | `b6a4f27` |
+| Implementation commit | `453bc14` |
+| Previous documentation commit | `8bd2a57` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
-| EditMode tests passed | 27 prefab asset tests |
+| EditMode tests passed | 93 total: 66 setup planning and 27 prefab asset tests |
+| Total automated tests passed | 572 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Authority decisions | Read-only project snapshot; immutable request/plan/operation contracts; deterministic pure planner; preview-only Setup window; stable setup diagnostics; no writes in FL-M5-01 |
+| Implemented decisions | Read-only snapshot; immutable setup contracts; deterministic pure planner; preview-only Setup window; stable setup diagnostics; no project writes |
 | Default proposed project root | `Assets/EchoDevGames/FirstLight` |
-| Known issues | FL-M5-01 Editor implementation/tests, apply/repair operations, migration, direct-scene initializer, Standalone Laboratory, player builds, and external adoption remain not run |
-| Next action | Commit this authority update before adding Editor setup implementation |
+| Known issues | Apply/repair operations, asset/scene creation, Build Settings mutation, migration, direct-scene initializer, Standalone Laboratory, player builds, and external adoption remain not run |
+| Next checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation, tentative and not yet authorized |
 
 ---
 
@@ -1768,7 +1769,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M5-01 owns only the read-only Editor project snapshot, immutable setup planning contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, and focused purity/UI proof.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 has implemented the read-only Editor project snapshot, immutable setup planning contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, and focused purity/UI proof. Any setup apply/repair engine requires a separately approved SFGSS-005 Checkpoint Build Plan.
 
 
 ---

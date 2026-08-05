@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M4-05 implemented; FL-M5-01 preview-only setup-planning authority approved pending authority commit
+- Development stage: FL-M5-01 preview-only setup planning implemented; setup apply/repair pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -28,7 +28,6 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-03`
   - `FL-M4-04`
   - `FL-M4-05`
-- Active authority checkpoint:
   - `FL-M5-01`
 - Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, a removable plain uGUI status view, and standalone deterministic image splash playback
 - Unity baseline: `6000.3.8f1`
@@ -82,6 +81,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M4-04 Runtime Test Report](Developer/Test%20Reports/FL-M4-04_Splash_Configuration_and_Root_Playback_Test_Report.md)
 - [FL-M4-05 Startup Presentation Prefab and Canvas Assembly](Developer/Checkpoints/FL-M4-05_Startup_Presentation_Prefab_and_Canvas_Assembly.md)
 - [FL-M4-05 Prefab Asset Test Report](Developer/Test%20Reports/FL-M4-05_Startup_Presentation_Prefab_Asset_Test_Report.md)
+- [FL-M5-01 Editor Setup Foundation and Non-Destructive Project Plan](Developer/Checkpoints/FL-M5-01_Editor_Setup_Foundation_and_Non-Destructive_Project_Plan.md)
+- [FL-M5-01 Editor Setup Planning Test Report](Developer/Test%20Reports/FL-M5-01_Editor_Setup_Planning_Test_Report.md)
 
 ## Package Root Documents
 
@@ -229,7 +230,11 @@ First Light currently proves:
 - Nested root-to-presenter prefab composition
 - No project branding, input authority, TextMeshPro, or project asset dependency
 - Temporary authoring helper removed before commit
-- Approved read-only project snapshot and deterministic dry-run setup plan, not yet implemented
-- Approved preview-only Setup window with no project write action
+- Read-only project snapshot and deterministic dry-run setup plan
+- Preview-only Setup window with no project write action
+- Sixty-six focused Editor setup tests
+- Ninety-three total passing EditMode tests
+- Four hundred seventy-nine passing Runtime Play Mode tests
+- Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-007`
 
-Retries, direct-scene initializer tooling, Editor migration/setup, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
+Retries, setup apply/repair, Editor migration, direct-scene initializer tooling, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

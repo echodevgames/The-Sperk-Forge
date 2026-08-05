@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Neutral package presentation prefabs and Canvas assembly implemented; Editor setup and migration pending
+- Development stage: Preview-only non-destructive Editor setup planning implemented; apply/repair and migration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -26,6 +26,7 @@
   - `FL-M4-03`
   - `FL-M4-04`
   - `FL-M4-05`
+  - `FL-M5-01`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -159,8 +160,25 @@ First Light currently establishes:
 125. No hidden prefab discovery or runtime instantiation
 126. Editor-only serialized asset proof
 127. Prefab dependency and missing-script containment
+128. Read-only project snapshot collection
+129. Immutable setup request and project evidence values
+130. Immutable setup operation, diagnostic, and plan values
+131. Deterministic pure setup planning
+132. Stable project-owned default path set
+133. Path traversal and external-path rejection
+134. Compatible project asset reuse planning
+135. Incompatible target conflict planning
+136. Unsupported schema migration blocking
+137. Ambiguous candidate manual-decision planning
+138. Package-template prerequisite planning
+139. Append-safe Build Settings planning
+140. Explicit-approval place-first Build Settings planning
+141. Preview-only Setup window
+142. Deterministic plain-text setup report
+143. Hard no-write Editor boundary
+144. Editor-only focused setup proof
 
-First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. The package now also ships explicit neutral prefab templates for the root and its removable uGUI presenter. Editor migration, setup tooling, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. The package also ships neutral presentation prefabs and a preview-only Editor setup-planning layer that can inspect and explain project adoption without modifying project content. Apply/repair, migration, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
 ## Implemented Package Files
 
@@ -172,6 +190,21 @@ First Light now validates, executes, times, evaluates, projects, plays an option
     │   └── EchoLaunchStatusView.prefab
     └── Properties/
         └── AssemblyInfo.cs
+
+    Editor/
+    ├── Properties/
+    │   └── AssemblyInfo.cs
+    └── Setup/
+        ├── EchoLaunchProjectSnapshot.cs
+        ├── EchoLaunchProjectSnapshotCollector.cs
+        ├── EchoLaunchSetupDiagnosticCodes.cs
+        ├── EchoLaunchSetupEnums.cs
+        ├── EchoLaunchSetupPaths.cs
+        ├── EchoLaunchSetupPlanModels.cs
+        ├── EchoLaunchSetupPlanTextFormatter.cs
+        ├── EchoLaunchSetupPlanner.cs
+        ├── EchoLaunchSetupRequest.cs
+        └── EchoLaunchSetupWindow.cs
 
     Runtime/
     ├── Configuration/
@@ -247,6 +280,16 @@ First Light now validates, executes, times, evaluates, projects, plays an option
         ├── StartupStepProgress.cs
         ├── StartupStepResult.cs
         └── StartupStepStatus.cs
+
+    Tests/Editor/
+    ├── EchoDevGames.EchoLaunch.Tests.Editor.asmdef
+    └── Setup/
+        ├── EchoLaunchProjectSnapshotCollectorTests.cs
+        ├── EchoLaunchSetupPathUtilityTests.cs
+        ├── EchoLaunchSetupPlanTextFormatterTests.cs
+        ├── EchoLaunchSetupPlannerTests.cs
+        ├── EchoLaunchSetupTestFactory.cs
+        └── EchoLaunchSetupWindowTests.cs
 
     Tests/Presentation.UGUI/
     ├── EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef
@@ -1815,6 +1858,153 @@ The temporary authoring helper was deleted before staging.
 Generated trailing whitespace was trimmed from prefab YAML and metadata without
 changing GUIDs or serialized behavior.
 
+## Preview-Only Editor Setup Planning
+
+FL-M5-01 adds the first Editor adoption layer without authorizing project
+mutation.
+
+Approved flow:
+
+```text
+EchoLaunchSetupWindow
+    -> EchoLaunchSetupRequest
+    -> EchoLaunchProjectSnapshotCollector
+    -> EchoLaunchProjectSnapshot
+    -> EchoLaunchSetupPlanner
+    -> EchoLaunchSetupPlan
+    -> EchoLaunchSetupPlanTextFormatter
+```
+
+### Setup Window
+
+Menu path:
+
+```text
+Tools/Sperk's Forge/First Light/Setup
+```
+
+The window provides:
+
+- In-memory project-root and Boot-scene path editing.
+- Existing destination-scene selection.
+- Optional splash-sequence planning.
+- Build Settings policy selection.
+- Explicit plan refresh.
+- Ordered operation and diagnostic presentation.
+- Plain-text plan copying.
+- A visible preview-only warning.
+
+The window does not provide:
+
+- Apply.
+- Repair.
+- Migrate.
+- Asset creation.
+- Scene creation/open/save.
+- Prefab copy or variant creation.
+- Build Settings mutation.
+
+### Project Snapshot
+
+`EchoLaunchProjectSnapshotCollector` uses read-only Unity Editor APIs to capture:
+
+- Asset existence.
+- Main asset type.
+- Asset GUID.
+- Existing configuration schema where compatible.
+- Package root-template availability.
+- Build Settings scene paths, enabled states, and order.
+- Compatible project-owned candidates.
+
+The collector does not open scenes, dirty package assets, create project
+folders, create scenes, or change Build Settings.
+
+### Deterministic Plan
+
+`EchoLaunchSetupPlanner` operates only on immutable request and snapshot values.
+
+Equivalent request and evidence produce equivalent plans.
+
+Ordered operation phases:
+
+1. Validate request and package prerequisite.
+2. Resolve required project folders.
+3. Resolve definition assets.
+4. Resolve the project-owned root prefab variant.
+5. Resolve the Boot scene.
+6. Resolve Build Settings policy.
+
+Plan statuses:
+
+```text
+Ready
+ReadyWithWarnings
+Blocked
+```
+
+Operation dispositions:
+
+```text
+Create
+Reuse
+NoChange
+ManualDecision
+Conflict
+Unsupported
+```
+
+### Default Project Paths
+
+```text
+Assets/EchoDevGames/FirstLight
+```
+
+Approved targets:
+
+```text
+Configuration/EchoLaunchConfiguration.asset
+Configuration/StartupSequence.asset
+Configuration/LaunchDestination.asset
+Configuration/SplashSequence.asset
+Prefabs/EchoLaunchRoot.prefab
+Scenes/Boot.unity
+```
+
+The splash target is optional.
+
+The destination scene must already exist.
+
+### Build Settings Planning
+
+Policies:
+
+```text
+DoNotChange
+AddIfMissingAtEnd
+PlaceFirstAfterApproval
+```
+
+Default:
+
+```text
+AddIfMissingAtEnd
+```
+
+No Build Settings mutation occurs.
+
+Place-first planning sets an explicit-approval flag and preserves unrelated
+scene order in the observed evidence.
+
+### Stable Diagnostics
+
+- `ELAUNCH-SETUP-001` invalid request/path/destination.
+- `ELAUNCH-SETUP-002` incompatible target asset.
+- `ELAUNCH-SETUP-003` unsupported schema migration.
+- `ELAUNCH-SETUP-004` Build Settings promotion approval.
+- `ELAUNCH-SETUP-005` ambiguous compatible candidates.
+- `ELAUNCH-SETUP-006` missing package prerequisite.
+- `ELAUNCH-SETUP-007` compatible existing asset reuse.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1825,7 +2015,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M4-05 compile result:
+Final FL-M5-01 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1842,7 +2032,19 @@ The runner remains neutral: it emits internal observations but does not own root
 
 ## Test Evidence
 
-EditMode prefab asset totals:
+Full EditMode totals:
+
+- Passed: `93`
+- Failed: `0`
+- Ignored: `0`
+
+FL-M5-01 focused Editor tests:
+
+- Passed: `66`
+- Failed: `0`
+- Ignored: `0`
+
+Retained prefab asset tests:
 
 - Passed: `27`
 - Failed: `0`
@@ -1856,6 +2058,7 @@ Runtime Play Mode totals:
 
 Breakdown:
 
+- Editor setup planning tests: `66` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -1882,6 +2085,41 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M5-01 and retained behavior:
+
+- Stable preview-only Setup menu path
+- Approved preview-only warning
+- Approved default path generation
+- Backslash and duplicate-separator normalization
+- Absolute/external/traversal/wrong-extension rejection
+- Immutable setup request
+- Immutable asset and Build Settings facts
+- Immutable operation, diagnostic, and plan values
+- Defensive plan collection copies
+- Deterministic plan equality and ordering
+- Missing project assets represented as create proposals only
+- Existing compatible asset reuse
+- Incompatible target conflict blocking
+- Unsupported configuration schema blocking
+- Multiple candidate manual decisions
+- Explicit selected candidate reuse
+- Optional splash planning
+- Package-template prerequisite validation
+- Append-if-missing Build Settings proposal
+- Do-not-change Build Settings proposal
+- Place-first explicit approval
+- Existing Boot entry no-change handling
+- Read-only Build Settings observation
+- Open-scene setup preservation
+- Package-template dirty-state preservation
+- Missing destination evidence
+- Deterministic plain-text reports
+- Window plan refresh and report generation
+- No Apply/Repair/Migrate mutation methods
+- No project folder or Boot-scene creation
+- Retained 27 prefab asset tests
+- Retained 479 Runtime Play Mode tests
 
 Verified FL-M4-05 and retained behavior:
 
@@ -2116,8 +2354,9 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Approved setup apply/repair engine
 - Editor migration from historical configuration schemas
-- Direct-scene initializer and setup tooling
+- Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -2127,11 +2366,13 @@ Not implemented:
 
 ## Stop Point
 
-FL-M4-05 stops after the two stable neutral package prefab templates, committed
-asset identities, serialized Canvas and root wiring, input independence,
-dependency containment, twenty-seven EditMode asset tests, and the retained
-four-hundred-seventy-nine-test Runtime Play Mode suite.
+FL-M5-01 stops after the read-only project snapshot, immutable setup-planning
+contracts, deterministic planner, stable diagnostics, plain-text formatter,
+preview-only Setup window, sixty-six focused Editor tests, retained
+twenty-seven prefab asset tests, and retained four-hundred-seventy-nine Runtime
+Play Mode tests.
 
-Editor migration, setup/repair tooling, direct-scene initialization, project
-branding and input variants, persistent-root policy, and real Standalone
-Laboratory activation require later checkpoints.
+Applying or repairing setup, creating project-owned assets and scenes,
+modifying Build Settings, migration, direct-scene initialization, persistent
+root policy, and real Standalone Laboratory activation require later
+checkpoints.

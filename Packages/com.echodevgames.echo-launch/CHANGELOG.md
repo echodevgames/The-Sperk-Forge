@@ -7,6 +7,33 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-01 - Editor Setup Foundation and Non-Destructive Project Plan
+- Preview-only First Light Setup window
+- Stable menu path at `Tools/Sperk's Forge/First Light/Setup`
+- Read-only project snapshot collector
+- Immutable in-memory setup request
+- Immutable project asset and Build Settings facts
+- Immutable setup operations, diagnostics, and plan
+- Deterministic side-effect-free setup planner
+- Approved project-owned default path set
+- Project path normalization and safety validation
+- Existing compatible asset reuse planning
+- Incompatible target conflict planning
+- Ambiguous candidate manual-decision planning
+- Unsupported schema migration blocking
+- Package root-template prerequisite validation
+- Default append-if-missing Build Settings policy
+- Explicit-approval place-first Build Settings policy
+- Preservation of unrelated Build Settings scene order
+- Stable `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-007`
+- Deterministic plain-text setup-plan formatter
+- Copy Plan command
+- Preview-only warning and plan/diagnostic presentation
+- No Apply, Repair, Migrate, Create, or Build Settings mutation action
+- Editor-only friend access for setup tests
+- Sixty-six focused Editor setup tests
+- Retained twenty-seven prefab asset tests
+- Retained four-hundred-seventy-nine Runtime Play Mode tests
 #### FL-M4-05 - Startup Presentation Prefab and Canvas Assembly
 - Stable package-owned `EchoLaunchStatusView.prefab`
 - Stable package-owned `EchoLaunchRoot.prefab`
@@ -384,6 +411,11 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- First Light now exposes a real Editor setup-planning surface while preserving a hard no-write boundary.
+- Setup observation, planning, and future mutation are separated into distinct architectural stages.
+- The package specification current status now records FL-M5-01 as implemented and tested.
+- Editor setup planning now uses project-owned default paths beneath `Assets/EchoDevGames/FirstLight`.
+- Build Settings changes remain proposals only; default planning appends Boot and place-first planning requires explicit approval.
 - First Light now ships inspectable scene-ready presentation templates without adding hidden runtime prefab discovery or instantiation.
 - Package branding remains neutral; production art, fonts, layout variants, and input bindings remain project-owned.
 - The package README now consistently reports configuration schema version `4`.
@@ -484,6 +516,8 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Trimmed Unity-generated trailing whitespace from the new Editor setup folder metadata before commit.
+- Restored generated solution-file noise before validation and staging.
 - Trimmed Unity-generated trailing whitespace from the committed prefab YAML and generated `.meta` files without changing asset GUIDs or serialized behavior.
 - Removed the temporary `Assets/FLM405Temp` authoring folder and its generated metadata before staging.
 - Replaced a zero-advance synchronous manual clock in `ConcurrentPlaybackIsRejected` that caused an infinite main-thread test loop.
@@ -513,7 +547,19 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Tested
 
-EditMode prefab asset totals:
+Full EditMode totals:
+
+- Passed: `93`
+- Failed: `0`
+- Ignored: `0`
+
+FL-M5-01 focused Editor tests:
+
+- Passed: `66`
+- Failed: `0`
+- Ignored: `0`
+
+Retained prefab asset tests:
 
 - Passed: `27`
 - Failed: `0`
@@ -524,6 +570,33 @@ Runtime Play Mode totals:
 - Passed: `479`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M5-01 coverage:
+- Approved default project paths
+- Path normalization and invalid-path rejection
+- Immutable request, snapshot, operation, diagnostic, and plan values
+- Defensive collection copying
+- Stable deterministic operation ordering
+- Equivalent plan output for equivalent evidence
+- Existing compatible asset reuse
+- Wrong target type conflicts
+- Unsupported configuration schema blocking
+- Ambiguous candidate manual decisions
+- Package-template prerequisite blocking
+- Optional splash planning
+- Default append-if-missing Build Settings planning
+- Do-not-change Build Settings planning
+- Explicit-approval place-first planning
+- Read-only Build Settings observation
+- Open-scene state preservation
+- Package-template dirty-state preservation
+- Missing-destination handling
+- Deterministic plain-text reports
+- Preview-only Setup window availability
+- Stable menu path and warning copy
+- No Apply, Repair, Migrate, asset-create, or Build Settings mutation method
+- No project folder or Boot scene creation during collection/window refresh
+- Zero compiler errors and zero compiler warnings
 
 FL-M4-05 coverage:
 - Status-view prefab path and stable GUID
@@ -813,8 +886,9 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Approved setup apply/repair engine
 - Editor migration from historical configuration schemas
-- Direct-scene initializer and setup tooling
+- Direct-scene initializer tooling
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
 - Direct-scene initializer behavior

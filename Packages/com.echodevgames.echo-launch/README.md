@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Neutral startup presentation prefabs and Canvas assembly implemented; Editor setup and migration pending
+- Development stage: Preview-only non-destructive Editor setup planning implemented; setup apply/repair and migration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -30,6 +30,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M4-03` Image Splash Definitions and Deterministic Splash Player
   - `FL-M4-04` Splash Configuration Schema and Root Playback Integration
   - `FL-M4-05` Startup Presentation Prefab and Canvas Assembly
+  - `FL-M5-01` Editor Setup Foundation and Non-Destructive Project Plan
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -511,6 +512,35 @@ Projects explicitly place, copy, variant, or replace these templates.
 
 Runtime does not locate or instantiate them automatically.
 
+## Preview-Only First Light Setup
+
+Open:
+
+```text
+Tools > Sperk's Forge > First Light > Setup
+```
+
+The window can propose paths, select an existing destination scene, inspect
+assets and Build Settings, generate deterministic ordered operations, display
+diagnostics, and copy a plain-text report.
+
+It cannot Apply, Repair, Migrate, create folders/assets/prefabs/scenes, open or
+save scenes, modify Build Settings, or store project identity in EditorPrefs.
+
+Default proposed root:
+
+```text
+Assets/EchoDevGames/FirstLight
+```
+
+Default Build Settings policy:
+
+```text
+AddIfMissingAtEnd
+```
+
+Moving Boot first requires explicit approval.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -545,7 +575,19 @@ Active states may also enter:
 
 ## Verified Behavior
 
-The EditMode prefab asset suite reports:
+The full EditMode suite reports:
+
+- Passed: `93`
+- Failed: `0`
+- Ignored: `0`
+
+FL-M5-01 focused Editor setup tests:
+
+- Passed: `66`
+- Failed: `0`
+- Ignored: `0`
+
+Retained prefab asset tests:
 
 - Passed: `27`
 - Failed: `0`
@@ -559,6 +601,7 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
+- Editor setup planning tests: `66` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -626,8 +669,9 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Approved setup apply/repair engine
 - Editor migration from historical configuration schemas
-- Direct-scene initializer and setup tooling
+- Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -651,8 +695,12 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Four hundred seventy-nine passing Runtime Play Mode tests
-- Twenty-seven passing EditMode prefab asset tests
+- Ninety-three passing EditMode tests
+- Sixty-six focused Editor setup-planning tests
+- Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
+- Preview-only non-destructive First Light Setup window
+- Deterministic dry-run setup plans and stable diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
