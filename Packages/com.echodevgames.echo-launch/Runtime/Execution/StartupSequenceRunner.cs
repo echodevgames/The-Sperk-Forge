@@ -11,14 +11,12 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Executes enabled startup-sequence entries in authored order.
     ///
-    /// FL-M3-05 validates the complete authored sequence before executor
-    /// creation, rejects concurrent runner re-entry, applies authored failure
-    /// policy, contains bounded failures, measures optional unscaled deadlines,
-    /// captures caller cancellation as a settled run outcome, and never
-    /// abandons an active executor.
+    /// FL-M3-06 preserves complete authored preflight and runner re-entry
+    /// protection while forwarding accepted sequence, step, progress, and
+    /// completion observations to an optional internal lifecycle sink.
     ///
-    /// Reports, root integration, lifecycle advancement, presentation, and
-    /// destination loading remain later checkpoints.
+    /// Public step events, reports, presentation, and destination loading
+    /// remain later checkpoints.
     /// </summary>
     internal sealed class StartupSequenceRunner
     {
@@ -71,6 +69,33 @@ namespace EchoDevGames.EchoLaunch
                 EchoLaunchConfiguration configuration,
                 CancellationToken cancellationToken)
         {
+            try
+            {
+                return await RunAsync(
+                    launchMode,
+                    configuration,
+                    cancellationToken,
+                    null);
+            }
+            catch (StartupSequencePreflightException exception)
+            {
+                throw new InvalidOperationException(
+                    exception.Message,
+                    exception);
+            }
+        }
+
+        /// <summary>
+        /// Traverses one configured startup sequence and forwards accepted
+        /// lifecycle observations to an optional internal sink.
+        /// </summary>
+        internal async Awaitable<StartupSequenceRunResult>
+            RunAsync(
+                LaunchMode launchMode,
+                EchoLaunchConfiguration configuration,
+                CancellationToken cancellationToken,
+                IStartupSequenceObserver observer)
+        {
             if (Interlocked.CompareExchange(
                     ref activeRunState,
                     1,
@@ -86,7 +111,8 @@ namespace EchoDevGames.EchoLaunch
                 return await RunCoreAsync(
                     launchMode,
                     configuration,
-                    cancellationToken);
+                    cancellationToken,
+                    observer);
             }
             finally
             {
@@ -100,12 +126,16 @@ namespace EchoDevGames.EchoLaunch
             RunCoreAsync(
                 LaunchMode launchMode,
                 EchoLaunchConfiguration configuration,
-                CancellationToken cancellationToken)
+                CancellationToken cancellationToken,
+                IStartupSequenceObserver observer)
         {
             StartupSequence sequence =
                 StartupSequencePreflight.Validate(
                     launchMode,
                     configuration);
+
+            observer?.SequenceValidated(
+                sequence);
 
             int authoredEntryCount =
                 sequence.EntryCount;
@@ -165,6 +195,9 @@ namespace EchoDevGames.EchoLaunch
                     completedExecutions.Add(
                         execution);
 
+                    observer?.StepCompleted(
+                        execution);
+
                     stoppingAuthoredEntryIndex =
                         index;
 
@@ -197,6 +230,9 @@ namespace EchoDevGames.EchoLaunch
                     completedExecutions.Add(
                         execution);
 
+                    observer?.StepCompleted(
+                        execution);
+
                     stoppingAuthoredEntryIndex =
                         index;
 
@@ -210,6 +246,9 @@ namespace EchoDevGames.EchoLaunch
                             .CreateNullExecutorResult());
 
                     completedExecutions.Add(
+                        execution);
+
+                    observer?.StepCompleted(
                         execution);
 
                     stoppingAuthoredEntryIndex =
@@ -237,6 +276,9 @@ namespace EchoDevGames.EchoLaunch
                     completedExecutions.Add(
                         execution);
 
+                    observer?.StepCompleted(
+                        execution);
+
                     stoppingAuthoredEntryIndex =
                         index;
 
@@ -256,9 +298,14 @@ namespace EchoDevGames.EchoLaunch
                                     timeoutCancellationSource
                                         .Token))
                 {
+                    StartupStepProgressRelay progressRelay =
+                        new StartupStepProgressRelay(
+                            execution,
+                            observer);
+
                     StartupStepProgressGate progressGate =
                         new StartupStepProgressGate(
-                            execution);
+                            progressRelay);
 
                     StartupStepContext context =
                         new StartupStepContext(
@@ -273,6 +320,9 @@ namespace EchoDevGames.EchoLaunch
                             progressGate);
 
                     execution.Begin();
+
+                    observer?.StepStarted(
+                        execution);
 
                     Awaitable<StartupStepResult>
                         executorAwaitable =
@@ -310,6 +360,9 @@ namespace EchoDevGames.EchoLaunch
                         completedExecutions.Add(
                             execution);
 
+                        observer?.StepCompleted(
+                            execution);
+
                         stoppingAuthoredEntryIndex =
                             index;
 
@@ -325,6 +378,9 @@ namespace EchoDevGames.EchoLaunch
                             outcome.Timing);
 
                         completedExecutions.Add(
+                            execution);
+
+                        observer?.StepCompleted(
                             execution);
 
                         stoppingAuthoredEntryIndex =
@@ -375,6 +431,9 @@ namespace EchoDevGames.EchoLaunch
                         completedExecutions.Add(
                             execution);
 
+                        observer?.StepCompleted(
+                            execution);
+
                         stoppingAuthoredEntryIndex =
                             index;
 
@@ -391,6 +450,9 @@ namespace EchoDevGames.EchoLaunch
                         outcome.Timing);
 
                     completedExecutions.Add(
+                        execution);
+
+                    observer?.StepCompleted(
                         execution);
 
                     if (decision.StopsTraversal)

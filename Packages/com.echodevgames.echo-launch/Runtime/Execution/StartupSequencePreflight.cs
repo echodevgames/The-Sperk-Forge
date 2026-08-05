@@ -11,6 +11,10 @@ namespace EchoDevGames.EchoLaunch
     ///
     /// The preflight reads immutable definition data only. It does not repair,
     /// clamp, migrate, create executors, or write runtime state into assets.
+    ///
+    /// FL-M3-06 preserves diagnostic identity through a structured internal
+    /// exception so the authoritative root can publish a matching failure
+    /// snapshot without parsing exception text.
     /// </summary>
     internal static class StartupSequencePreflight
     {
@@ -33,7 +37,7 @@ namespace EchoDevGames.EchoLaunch
         /// executor creation so invalid policy keeps its structured blocking
         /// result behavior.
         ///
-        /// Empty sequences remain valid in FL-M3-05. Disabled entries may omit
+        /// Empty sequences remain valid in FL-M3-06. Disabled entries may omit
         /// a definition because they cannot create an executor.
         /// </summary>
         internal static StartupSequence Validate(
@@ -215,13 +219,14 @@ namespace EchoDevGames.EchoLaunch
             }
         }
 
-        private static InvalidOperationException
+        private static StartupSequencePreflightException
             CreateInvalidOperation(
                 string diagnosticCode,
                 string message)
         {
-            return new InvalidOperationException(
-                $"[{diagnosticCode}] {message}");
+            return new StartupSequencePreflightException(
+                diagnosticCode,
+                message);
         }
     }
 }
