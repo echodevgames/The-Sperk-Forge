@@ -11,13 +11,14 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Executes enabled startup-sequence entries in authored order.
     ///
-    /// FL-M3-04 applies authored failure policy, contains bounded failures,
-    /// measures optional unscaled deadlines, requests cooperative timeout
-    /// cancellation, captures caller cancellation as a settled run outcome,
-    /// and never abandons an active executor.
+    /// FL-M3-05 validates the complete authored sequence before executor
+    /// creation, rejects concurrent runner re-entry, applies authored failure
+    /// policy, contains bounded failures, measures optional unscaled deadlines,
+    /// captures caller cancellation as a settled run outcome, and never
+    /// abandons an active executor.
     ///
-    /// Retries, reports, root integration, and lifecycle advancement remain
-    /// later checkpoints.
+    /// Reports, root integration, lifecycle advancement, presentation, and
+    /// destination loading remain later checkpoints.
     /// </summary>
     internal sealed class StartupSequenceRunner
     {
@@ -29,7 +30,11 @@ namespace EchoDevGames.EchoLaunch
         private const string CallerCancellationDiagnosticCode =
             "ELAUNCH-STEP-005";
 
+        private const string ReentryDiagnosticCode =
+            "ELAUNCH-RUN-001";
+
         private readonly ILaunchClock clock;
+        private int activeRunState;
 
         /// <summary>
         /// Creates a runner using Unity's unscaled real-time clock.
@@ -55,6 +60,10 @@ namespace EchoDevGames.EchoLaunch
         /// <summary>
         /// Traverses one configured startup sequence and awaits each enabled
         /// entry's fresh executor.
+        ///
+        /// One runner instance permits only one active traversal. The gate is
+        /// released after every terminal path so the instance may be reused
+        /// sequentially.
         /// </summary>
         internal async Awaitable<StartupSequenceRunResult>
             RunAsync(
@@ -62,31 +71,41 @@ namespace EchoDevGames.EchoLaunch
                 EchoLaunchConfiguration configuration,
                 CancellationToken cancellationToken)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(
-                    nameof(configuration));
-            }
-
-            if (!Enum.IsDefined(
-                    typeof(LaunchMode),
-                    launchMode) ||
-                launchMode == LaunchMode.Unknown)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(launchMode),
-                    launchMode,
-                    "A defined active launch mode is required.");
-            }
-
-            StartupSequence sequence =
-                configuration.StartupSequence;
-
-            if (sequence == null)
+            if (Interlocked.CompareExchange(
+                    ref activeRunState,
+                    1,
+                    0) != 0)
             {
                 throw new InvalidOperationException(
-                    "The launch configuration does not reference a startup sequence.");
+                    $"[{ReentryDiagnosticCode}] " +
+                    "The startup-sequence runner already owns an active run.");
             }
+
+            try
+            {
+                return await RunCoreAsync(
+                    launchMode,
+                    configuration,
+                    cancellationToken);
+            }
+            finally
+            {
+                Volatile.Write(
+                    ref activeRunState,
+                    0);
+            }
+        }
+
+        private async Awaitable<StartupSequenceRunResult>
+            RunCoreAsync(
+                LaunchMode launchMode,
+                EchoLaunchConfiguration configuration,
+                CancellationToken cancellationToken)
+        {
+            StartupSequence sequence =
+                StartupSequencePreflight.Validate(
+                    launchMode,
+                    configuration);
 
             int authoredEntryCount =
                 sequence.EntryCount;
@@ -133,6 +152,24 @@ namespace EchoDevGames.EchoLaunch
                         entry,
                         index,
                         authoredEntryCount);
+
+                if (!execution.Policy.IsValid)
+                {
+                    execution.CompleteBeforeStart(
+                        StartupStepResult.BlockingFailure(
+                            StartupStepExceptionConverter
+                                .DiagnosticCode,
+                            "The startup-step policy contains unsupported authored values.",
+                            "ContractFailure: InvalidPolicy"));
+
+                    completedExecutions.Add(
+                        execution);
+
+                    stoppingAuthoredEntryIndex =
+                        index;
+
+                    break;
+                }
 
                 IStartupStepExecutor executor;
 
