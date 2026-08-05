@@ -1,72 +1,67 @@
 # First Light - Current Notes
 
-## Active Checkpoint
+## Completed Checkpoint
 
 - Checkpoint: `FL-M5-02`
 - Title: Approved Setup Apply Engine and Repeat-Safe Asset Creation
 - Package version: `0.1.0`
 - Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.8.0
 - ADR: EchoLaunch-ADR-005
-- Authority baseline: `4c4d168`
-- Previous authority: `b6a4f27`
-- Previous implementation: `453bc14`
-- Previous documentation: `4c4d168`
-- Status: Authority prepared; implementation locked
-- EditMode baseline: 93 passed
-- Runtime Play Mode baseline: 479 passed
-- Compilation baseline: 0 errors, 0 warnings
+- Authority commit: `208ee71`
+- Implementation commit: `f05b95c`
+- Status: Implemented, tested, manually accepted, and pushed
 
-## Approved Outcome
+## Implemented Boundary
 
-The Setup window may apply one fresh executable plan and create the missing
-canonical First Light foundation.
+The Setup window can now apply one fresh executable setup plan.
 
-The operation is create-only, reuse-only, and non-destructive.
-
-## Apply Boundary
-
-- Freshness recollection before writes
-- Deterministic fingerprints
-- Single active apply
-- Create/Reuse/NoChange only
-- Folder and definition creation
-- Configuration binding
-- Project root prefab variant
-- Boot scene creation
+- Recollect and replan before writes
+- Deterministic plan fingerprint
+- Single active Apply
+- Executable `Create`, `Reuse`, and `NoChange` dispositions only
+- Create-only project folders and definition assets
+- Configuration reference binding
+- Project-owned root prefab variant
+- Boot scene creation without changing the destination scene
 - Explicit Build Settings policy
-- In-memory rollback
-- Immutable result
-- No-op second and third Apply
+- Build Settings write last
+- In-memory compensating rollback
+- Immutable apply result and plain-text formatter
+- Second and third Apply settle as `NoChanges`
 
-## Existing Content Policy
+## Validation
 
-Compatible content is reused and not modified.
+- EditMode: `197` passed, `0` failed, `0` ignored
+  - Setup and apply: `170`
+  - Presentation prefab: `27`
+- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
+- Compilation: `0` errors, `0` warnings
+- Manual Apply sequence: `Succeeded`, `NoChanges`, `NoChanges`
+- Stable fingerprint: `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
+- Existing destination reused: `Assets/OutdoorsScene.unity`
+- Boot appended once: `Assets/EchoDevGames/FirstLight/Scenes/Boot.unity`
+- Rollback required: no
+- Manual recovery paths: none
 
-Incompatible content blocks.
+## Commit Scope
 
-Ambiguous candidates require selection.
-
-Unsupported schemas require migration later.
-
-## Scene and Build Settings Policy
-
-- Destination scene is never opened or modified.
-- Existing open, active, and dirty scene states are preserved.
-- Build Settings write last.
-- Default appends one enabled Boot entry.
-- Place-first requires explicit approval.
-- Unrelated order/enabled states are preserved.
+The implementation commit contains package Editor setup code, EditMode tests,
+and Unity metadata only. Generated acceptance assets, Build Settings drift, and
+solution-file noise were removed before staging.
 
 ## Deferred
 
-Repair, migration, persistent receipt, uninstall/reset, crash-persistent
+Repair, migration, persistent receipts, uninstall/reset, crash-persistent
 recovery, Direct Scene, Validator, Laboratory, builds, clean/external adoption,
 and performance evidence.
 
 ## Next Action
 
-Commit and push:
+Commit and push the reconciled documentation:
 
 ```text
-echo-launch: approve FL-M5-02 repeat-safe setup apply
+echo-launch: document FL-M5-02 completion
 ```
+
+Tentative next checkpoint: `FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation`.
+It is not authorized until its specification/ADR/checkpoint authority is approved.

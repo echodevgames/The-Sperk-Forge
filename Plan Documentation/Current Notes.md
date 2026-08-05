@@ -4,73 +4,77 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light FL-M5-02 authority
-**Current checkpoint:** FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation
+**Current focus:** First Light post-FL-M5-02 reconciliation
+**Current checkpoint:** FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation — complete
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Current Focus
+## Completed Checkpoint
 
-Approve the first mutation boundary for First Light setup.
+FL-M5-02 implemented the first approved First Light project-mutation boundary.
+The Setup window now applies one fresh executable plan, creates only missing
+project-owned foundation content, reuses compatible existing assets, preserves
+scene state, mutates Build Settings only through the selected policy, rolls
+back active-attempt changes on failure, and becomes a no-op on repeat Apply.
 
-FL-M5-02 creates only missing project-owned foundation content, preserves
-existing intent, detects stale plans, compensates for active-attempt failures,
-and becomes a no-op on repeated Apply.
+## Repository Evidence
 
-## Starting State
-
+- Authority commit: `208ee71` — `echo-launch: approve FL-M5-02 repeat-safe setup apply`
+- Implementation commit: `f05b95c` — `Implement repeat-safe First Light setup apply engine`
 - Branch: `main`
-- HEAD: `4c4d168`
-- `main` equals `origin/main`
-- Working tree: clean
-- FL-M5-01 authority: `b6a4f27`
-- FL-M5-01 implementation: `453bc14`
-- FL-M5-01 documentation: `4c4d168`
-- EditMode baseline: 93 passed
-- Runtime Play Mode baseline: 479 passed
-- Compilation baseline: 0 errors, 0 warnings
-- Current specification: v1.7.0
-- FL-M5-02 implementation locked until authority commit
+- Remote: `origin/main`
+- Implementation push: complete
+- Working tree after implementation push: clean
 
-## Approved Decisions
+## Validation Evidence
 
-- `[DECISION]` Advance specification to v1.8.0.
-- `[DECISION]` Recollect and replan before writes.
-- `[DECISION]` Execute Create, Reuse, and NoChange only.
-- `[DECISION]` Never overwrite, move, delete, repair, or migrate existing assets.
-- `[DECISION]` Create folders, definitions, configuration, variant, Boot, then Build Settings.
-- `[DECISION]` Root is a project-owned prefab variant.
-- `[DECISION]` Preserve open/active/dirty scene state.
-- `[DECISION]` Append Boot by default; place-first requires approval.
-- `[DECISION]` Preserve unrelated Build Settings order/enabled states.
-- `[DECISION]` Allow one active Apply.
-- `[DECISION]` Use an in-memory compensating rollback journal.
-- `[DECISION]` Return immutable apply results.
-- `[DECISION]` Second and third Apply must be NoChanges.
-- `[DECISION]` Defer repair, migration, receipts, uninstall, Direct Scene, Validator, and Laboratory.
+- EditMode: `197` passed, `0` failed, `0` ignored
+  - Setup and apply: `170`
+  - Presentation prefab: `27`
+- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
+- Total automated tests: `676`
+- Compilation: `0` errors, `0` warnings
+- First manual Apply: `Succeeded`
+- Second manual Apply: `NoChanges`
+- Third manual Apply: `NoChanges`
+- Stable plan fingerprint: `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
+- Build Settings proof: existing `OutdoorsScene` retained at index `0`; one enabled Boot scene appended at index `1`
+- Rollback completed: not required
+- Manual recovery paths: none
 
-## New Diagnostics
+## Promoted Decisions
 
-- `ELAUNCH-SETUP-008` stale plan
-- `ELAUNCH-SETUP-009` apply active
-- `ELAUNCH-SETUP-010` failed and rolled back
-- `ELAUNCH-SETUP-011` rollback incomplete
-- `ELAUNCH-SETUP-012` unauthorized apply operation
+- Freshness is recollected and replanned immediately before writes.
+- Only `Create`, `Reuse`, and `NoChange` operations are executable.
+- Existing compatible content is reused and never silently repaired.
+- Incompatible or unsupported content remains blocking.
+- Project-owned folders, definitions, configuration, root prefab variant, and Boot scene are created deterministically.
+- Build Settings is written last and only through the approved policy.
+- One active Apply is allowed.
+- Active-attempt failure uses an in-memory compensating rollback journal.
+- Repeat Apply returns `NoChanges` without duplicate assets or Build Settings entries.
+
+## Deferred Boundary
+
+Repair, migration, persistent receipts, uninstall/reset, crash-persistent
+recovery, Direct Scene initialization, Validator, real Standalone Laboratory
+activation, player builds, clean external installation, and performance evidence
+remain outside FL-M5-02.
 
 ## Next Action
 
-Apply, review, commit, and push the six-file authority update:
+Apply and review the FL-M5-02 documentation closeout, then commit and push:
 
 ```text
-echo-launch: approve FL-M5-02 repeat-safe setup apply
+echo-launch: document FL-M5-02 completion
 ```
 
 ## Handoff
 
-**Checkpoint:** FL-M5-02
-**Baseline:** `4c4d168`
-**Implementation:** Locked
+**Completed:** FL-M5-02
+**Implementation:** `f05b95c`
 **Blockers:** None
 **Tentative next:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation
+**Authorization state:** Not yet approved for implementation

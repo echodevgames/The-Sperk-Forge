@@ -1738,18 +1738,20 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan |
-| Active authorized checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation |
-| Authority baseline | `4c4d168` |
-| Last implementation commit | `453bc14` |
-| Last documentation commit | `4c4d168` |
+| Completed checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation |
+| Active authorized checkpoint | None; the tentative FL-M5-03 repair checkpoint is not yet authorized |
+| Authority commit | `208ee71` |
+| Last implementation commit | `f05b95c` |
+| Documentation closeout | This reconciliation change set; final commit recorded by Git history |
 | Runtime tests passed | 479 Runtime Play Mode tests |
-| EditMode tests passed | 93 total: 66 setup planning and 27 prefab asset tests |
+| EditMode tests passed | 197 total: 170 setup/apply and 27 prefab asset tests |
+| Total automated tests | 676 passed, 0 failed, 0 ignored |
 | Compilation | 0 errors and 0 compiler warnings |
-| FL-M5-02 authority | Fresh-plan gate; Create/Reuse/NoChange only; deterministic creation; project prefab variant; scene preservation; explicit Build Settings approval; single apply; rollback; no-op reruns |
+| FL-M5-02 evidence | Fresh-plan gate; Create/Reuse/NoChange only; deterministic creation; project prefab variant; scene preservation; explicit Build Settings approval; single apply; rollback support; first Apply succeeded; second and third Apply returned NoChanges |
+| Stable manual-acceptance fingerprint | `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1` |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Apply creation, rollback, Build Settings mutation, migration, direct-scene initializer, Laboratory, builds, clean install, and external adoption remain not run |
-| Next action | Commit and push v1.8.0, ADR-005, and FL-M5-02 plan before implementation |
+| Evidence gaps | Repair, migration, direct-scene initializer, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push the FL-M5-02 documentation closeout, then prepare authority for the tentative FL-M5-03 checkpoint |
 
 ---
 
@@ -1798,7 +1800,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 has implemented the read-only snapshot and dry-run planner. FL-M5-02 may implement only the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005 and its SFGSS-005 plan. Repair, migration, receipts, uninstall, Direct Scene, and Laboratory remain unauthorized.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005 and its SFGSS-005 plan. Repair, migration, receipts, uninstall, Direct Scene, and Laboratory remain unauthorized until later authority is approved.
 
 
 ---

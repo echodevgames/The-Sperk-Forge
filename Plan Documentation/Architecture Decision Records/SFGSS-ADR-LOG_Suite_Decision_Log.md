@@ -4,7 +4,7 @@ tags:
   - sfgss/decision-log
   - sfgss/navigation
 status: active
-updated: 2026-08-04
+updated: 2026-08-05
 ---
 
 # The Sperk’s Forge — Suite Architecture Decision Log
@@ -44,7 +44,17 @@ None.
 
 ## Linked package and integration ADRs
 
-No package-local or integration-local ADR has been created yet. Their future logs remain owned by their repositories and are linked here when they affect suite compatibility or guided pathways.
+Package-local ADRs remain owned by their package documentation and are linked here when they affect suite compatibility, authority boundaries, or guided setup pathways.
+
+### First Light (`EchoLaunch`)
+
+| ID | Decision | Status | Evidence maturity |
+|---|---|---|---|
+| [EchoLaunch-ADR-001](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-001_Project-Owned_Launch_Destination_and_Configuration_Schema_3.md) | Project-Owned Launch Destination and Configuration Schema 3 | Accepted | Implemented and retained |
+| [EchoLaunch-ADR-002](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-002_Splash_Configuration_Schema_4_and_Root_Playback_Order.md) | Splash Configuration Schema 4 and Root Playback Order | Accepted | Implemented and tested |
+| [EchoLaunch-ADR-003](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-003_Neutral_Startup_Prefab_Templates_and_Canvas_Assembly.md) | Neutral Startup Prefab Templates and Canvas Assembly | Accepted | Implemented and tested |
+| [EchoLaunch-ADR-004](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-004_Read-Only_Project_Snapshot_and_Non-Destructive_Setup_Plan.md) | Read-Only Project Snapshot and Non-Destructive Setup Plan | Accepted | Implemented and tested |
+| [EchoLaunch-ADR-005](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-005_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md) | Approved Setup Apply Engine and Repeat-Safe Asset Creation | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-02 |
 
 ## Candidate decisions without allocated IDs
 

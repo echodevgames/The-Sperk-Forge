@@ -7,6 +7,25 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-02 - Approved Setup Apply Engine and Repeat-Safe Asset Creation
+- Fresh-plan-gated create-only Setup Apply service
+- Deterministic plan fingerprints and stale-plan rejection
+- Single-active-Apply protection
+- Immutable apply request, status, change record, and result models
+- Deterministic project folder and ScriptableObject creation
+- Configuration reference binding
+- Project-owned root prefab variant generation
+- Boot scene generation without opening or modifying the destination scene
+- Explicit Build Settings writer with append and approved place-first policies
+- In-memory compensating rollback journal
+- Rollback and manual-recovery reporting
+- Plain-text apply-result formatter and Copy Result command
+- Stable `ELAUNCH-SETUP-008` through `ELAUNCH-SETUP-012`
+- Repeat-safe second and third Apply returning `NoChanges`
+- Readonly `Scene` lease restoration through a mutable local copy
+- One hundred seventy focused EditMode setup-and-apply tests
+- Retained twenty-seven prefab asset tests
+- Retained four-hundred-seventy-nine Runtime Play Mode tests
 #### FL-M5-01 - Editor Setup Foundation and Non-Destructive Project Plan
 - Preview-only First Light Setup window
 - Stable menu path at `Tools/Sperk's Forge/First Light/Setup`
@@ -411,6 +430,11 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- The Setup window now exposes approved Apply and Copy Result actions while preserving the preview-first workflow.
+- The package specification current status records FL-M5-02 as implemented, tested, manually accepted, and pushed.
+- Setup mutation remains create-only: compatible content is reused; incompatible, ambiguous, unsupported, repair, and migration cases remain non-executable.
+- Build Settings mutation occurs last and preserves unrelated scene order and enabled states.
+- Repeated Apply is an explicit no-op rather than a duplicate-generation path.
 - First Light now exposes a real Editor setup-planning surface while preserving a hard no-write boundary.
 - Setup observation, planning, and future mutation are separated into distinct architectural stages.
 - The package specification current status now records FL-M5-01 as implemented and tested.
@@ -549,13 +573,13 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Full EditMode totals:
 
-- Passed: `93`
+- Passed: `197`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-01 focused Editor tests:
+FL-M5-02 setup and apply tests:
 
-- Passed: `66`
+- Passed: `170`
 - Failed: `0`
 - Ignored: `0`
 
@@ -571,7 +595,20 @@ Runtime Play Mode totals:
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-01 coverage:
+FL-M5-02 coverage:
+
+- Fresh-plan fingerprinting and stale-plan rejection
+- Single-active-Apply containment
+- Create, reuse, and no-change execution
+- Folder, asset, configuration, prefab-variant, scene, and Build Settings writers
+- Destination/open/active/dirty scene preservation
+- Build Settings append and approved place-first policy
+- Failure injection, compensating rollback, and recovery reporting
+- Immutable result formatting
+- Successful first Apply and `NoChanges` second and third Apply
+- Manual acceptance fingerprint `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
+
+Retained FL-M5-01 coverage:
 - Approved default project paths
 - Path normalization and invalid-path rejection
 - Immutable request, snapshot, operation, diagnostic, and plan values
@@ -886,7 +923,7 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Approved setup apply/repair engine
+- Explicit setup repair and existing-asset reconciliation
 - Editor migration from historical configuration schemas
 - Direct-scene initializer tooling
 - Real Boot-to-destination Laboratory activation proof

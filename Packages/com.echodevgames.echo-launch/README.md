@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Preview-only non-destructive Editor setup planning implemented; setup apply/repair and migration pending
+- Development stage: Create-only repeat-safe Editor setup Apply implemented; explicit repair and migration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -31,6 +31,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M4-04` Splash Configuration Schema and Root Playback Integration
   - `FL-M4-05` Startup Presentation Prefab and Canvas Assembly
   - `FL-M5-01` Editor Setup Foundation and Non-Destructive Project Plan
+  - `FL-M5-02` Approved Setup Apply Engine and Repeat-Safe Asset Creation
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -512,7 +513,7 @@ Projects explicitly place, copy, variant, or replace these templates.
 
 Runtime does not locate or instantiate them automatically.
 
-## Preview-Only First Light Setup
+## First Light Setup Apply
 
 Open:
 
@@ -520,12 +521,25 @@ Open:
 Tools > Sperk's Forge > First Light > Setup
 ```
 
-The window can propose paths, select an existing destination scene, inspect
-assets and Build Settings, generate deterministic ordered operations, display
-diagnostics, and copy a plain-text report.
+The window can inspect the project, select an existing destination scene,
+generate a deterministic ordered plan, display diagnostics, copy the plan, and
+apply one fresh executable plan.
 
-It cannot Apply, Repair, Migrate, create folders/assets/prefabs/scenes, open or
-save scenes, modify Build Settings, or store project identity in EditorPrefs.
+FL-M5-02 Apply is deliberately create-only and reuse-only:
+
+- Recollects project evidence and replans immediately before writes.
+- Rejects stale or non-executable plans.
+- Executes only `Create`, `Reuse`, and `NoChange` operations.
+- Creates missing project-owned folders, definition assets, configuration,
+  root prefab variant, and Boot scene in deterministic order.
+- Never opens or modifies the selected destination scene.
+- Preserves existing open, active, and dirty scene state.
+- Applies the selected Build Settings policy last.
+- Allows only one active Apply.
+- Uses compensating rollback for changes made by the active attempt.
+- Returns an immutable result with created, reused, Build Settings, rollback,
+  and recovery evidence.
+- Returns `NoChanges` on repeat Apply when the project already matches.
 
 Default proposed root:
 
@@ -540,6 +554,9 @@ AddIfMissingAtEnd
 ```
 
 Moving Boot first requires explicit approval.
+
+Apply does not repair, migrate, overwrite, move, rename, or delete existing
+project-authored content.
 
 ## Safe Serialized Entry Defaults
 
@@ -577,13 +594,13 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `93`
+- Passed: `197`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-01 focused Editor setup tests:
+FL-M5-02 setup and apply tests:
 
-- Passed: `66`
+- Passed: `170`
 - Failed: `0`
 - Ignored: `0`
 
@@ -601,7 +618,7 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
-- Editor setup planning tests: `66` EditMode
+- Editor setup and apply tests: `170` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -656,7 +673,7 @@ Timeout and cancellation evidence:
 - Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
-No production asset, scene, prefab, or automatic startup setup was required.
+Manual acceptance created the project-owned First Light foundation, appended one Boot scene, proved two no-op reruns, and then removed generated acceptance residue before the implementation commit.
 
 ## Not Implemented Yet
 
@@ -669,13 +686,12 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Approved setup apply/repair engine
+- Explicit setup repair and existing-asset reconciliation
 - Editor migration from historical configuration schemas
 - Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
-- Custom inspectors or setup windows
 - Standalone Laboratory
 - Peer-package bridges
 
@@ -695,12 +711,12 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Four hundred seventy-nine passing Runtime Play Mode tests
-- Ninety-three passing EditMode tests
-- Sixty-six focused Editor setup-planning tests
+- One hundred ninety-seven passing EditMode tests
+- One hundred seventy focused Editor setup-and-apply tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Preview-only non-destructive First Light Setup window
-- Deterministic dry-run setup plans and stable diagnostics
+- Create-only repeat-safe First Light Setup Apply window
+- Deterministic dry-run plans, freshness fingerprints, rollback evidence, and stable diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view

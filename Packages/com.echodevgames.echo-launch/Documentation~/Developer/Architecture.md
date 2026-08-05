@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Preview-only non-destructive Editor setup planning implemented; apply/repair and migration pending
+- Development stage: Create-only repeat-safe Editor setup Apply implemented; explicit repair and migration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -27,6 +27,7 @@
   - `FL-M4-04`
   - `FL-M4-05`
   - `FL-M5-01`
+  - `FL-M5-02`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -1858,10 +1859,11 @@ The temporary authoring helper was deleted before staging.
 Generated trailing whitespace was trimmed from prefab YAML and metadata without
 changing GUIDs or serialized behavior.
 
-## Preview-Only Editor Setup Planning
+## Create-Only Editor Setup Apply
 
-FL-M5-01 adds the first Editor adoption layer without authorizing project
-mutation.
+FL-M5-02 extends the FL-M5-01 observation and planning boundary with one
+approved mutation service. Planning remains side-effect-free. Apply may execute
+only a freshly recollected, equivalent, executable plan.
 
 Approved flow:
 
@@ -1869,114 +1871,62 @@ Approved flow:
 EchoLaunchSetupWindow
     -> EchoLaunchSetupRequest
     -> EchoLaunchProjectSnapshotCollector
-    -> EchoLaunchProjectSnapshot
     -> EchoLaunchSetupPlanner
-    -> EchoLaunchSetupPlan
-    -> EchoLaunchSetupPlanTextFormatter
+    -> EchoLaunchSetupFingerprint
+    -> EchoLaunchSetupApplyService
+        -> EchoLaunchSetupAssetWriter
+        -> EchoLaunchSetupPrefabWriter
+        -> EchoLaunchSetupSceneWriter
+        -> EchoLaunchSetupBuildSettingsWriter
+        -> EchoLaunchSetupRollbackJournal
+    -> EchoLaunchSetupApplyResult
+    -> EchoLaunchSetupApplyResultFormatter
 ```
 
-### Setup Window
+### Freshness and Concurrency
 
-Menu path:
+Immediately before the first write, Apply recollects project evidence, rebuilds
+the plan, and compares deterministic fingerprints. A changed project produces a
+stale-plan result instead of applying outdated intent.
 
-```text
-Tools/Sperk's Forge/First Light/Setup
-```
+Only one Apply attempt may be active. Re-entry returns a stable diagnostic and
+performs no mutation.
 
-The window provides:
+### Executable Operations
 
-- In-memory project-root and Boot-scene path editing.
-- Existing destination-scene selection.
-- Optional splash-sequence planning.
-- Build Settings policy selection.
-- Explicit plan refresh.
-- Ordered operation and diagnostic presentation.
-- Plain-text plan copying.
-- A visible preview-only warning.
-
-The window does not provide:
-
-- Apply.
-- Repair.
-- Migrate.
-- Asset creation.
-- Scene creation/open/save.
-- Prefab copy or variant creation.
-- Build Settings mutation.
-
-### Project Snapshot
-
-`EchoLaunchProjectSnapshotCollector` uses read-only Unity Editor APIs to capture:
-
-- Asset existence.
-- Main asset type.
-- Asset GUID.
-- Existing configuration schema where compatible.
-- Package root-template availability.
-- Build Settings scene paths, enabled states, and order.
-- Compatible project-owned candidates.
-
-The collector does not open scenes, dirty package assets, create project
-folders, create scenes, or change Build Settings.
-
-### Deterministic Plan
-
-`EchoLaunchSetupPlanner` operates only on immutable request and snapshot values.
-
-Equivalent request and evidence produce equivalent plans.
-
-Ordered operation phases:
-
-1. Validate request and package prerequisite.
-2. Resolve required project folders.
-3. Resolve definition assets.
-4. Resolve the project-owned root prefab variant.
-5. Resolve the Boot scene.
-6. Resolve Build Settings policy.
-
-Plan statuses:
-
-```text
-Ready
-ReadyWithWarnings
-Blocked
-```
-
-Operation dispositions:
+Only these dispositions may execute:
 
 ```text
 Create
 Reuse
 NoChange
-ManualDecision
-Conflict
-Unsupported
 ```
 
-### Default Project Paths
+`ManualDecision`, `Conflict`, and `Unsupported` remain blocking. Apply does not
+convert repair or migration cases into writes.
 
-```text
-Assets/EchoDevGames/FirstLight
-```
+Creation order is deterministic:
 
-Approved targets:
+1. Project-owned folders.
+2. Definition assets.
+3. `EchoLaunchConfiguration` and serialized references.
+4. Project-owned `EchoLaunchRoot` prefab variant.
+5. Boot scene.
+6. Build Settings mutation, when approved.
 
-```text
-Configuration/EchoLaunchConfiguration.asset
-Configuration/StartupSequence.asset
-Configuration/LaunchDestination.asset
-Configuration/SplashSequence.asset
-Prefabs/EchoLaunchRoot.prefab
-Scenes/Boot.unity
-```
+### Asset and Scene Safety
 
-The splash target is optional.
+- Existing compatible project assets are reused without modification.
+- Existing incompatible targets block before writes.
+- The selected destination scene is never opened or modified.
+- Existing open, active, and dirty scene state is preserved.
+- Boot creation uses an isolated scene lease and restores the leased Scene name
+  through a mutable local struct copy.
+- Package-owned templates remain immutable.
 
-The destination scene must already exist.
+### Build Settings
 
-### Build Settings Planning
-
-Policies:
+Supported policies:
 
 ```text
 DoNotChange
@@ -1984,26 +1934,33 @@ AddIfMissingAtEnd
 PlaceFirstAfterApproval
 ```
 
-Default:
+Build Settings writes last. The writer preserves unrelated paths, order, and
+enabled states. The default policy appends one enabled Boot scene. Place-first
+requires explicit approval.
 
-```text
-AddIfMissingAtEnd
-```
+### Rollback and Result
 
-No Build Settings mutation occurs.
+Every mutation created by the active attempt is registered in an in-memory
+compensating rollback journal. On failure, rollback proceeds in reverse order.
+The immutable result records:
 
-Place-first planning sets an explicit-approval flag and preserves unrelated
-scene order in the observed evidence.
+- Status and message.
+- Final plan status and fingerprint.
+- Created and reused paths.
+- Build Settings before and after.
+- Whether rollback completed.
+- Manual recovery paths when compensation is incomplete.
 
-### Stable Diagnostics
+The first accepted manual Apply succeeded. The second and third Apply returned
+`NoChanges` with the same fingerprint and no duplicate Build Settings entry.
 
-- `ELAUNCH-SETUP-001` invalid request/path/destination.
-- `ELAUNCH-SETUP-002` incompatible target asset.
-- `ELAUNCH-SETUP-003` unsupported schema migration.
-- `ELAUNCH-SETUP-004` Build Settings promotion approval.
-- `ELAUNCH-SETUP-005` ambiguous compatible candidates.
-- `ELAUNCH-SETUP-006` missing package prerequisite.
-- `ELAUNCH-SETUP-007` compatible existing asset reuse.
+### Stable Apply Diagnostics
+
+- `ELAUNCH-SETUP-008` stale plan.
+- `ELAUNCH-SETUP-009` Apply already active.
+- `ELAUNCH-SETUP-010` Apply failed and rollback completed.
+- `ELAUNCH-SETUP-011` rollback incomplete; manual recovery required.
+- `ELAUNCH-SETUP-012` unauthorized operation disposition.
 
 ## Compile Evidence
 
@@ -2015,7 +1972,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M5-01 compile result:
+Final FL-M5-02 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -2034,13 +1991,13 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `93`
+- Passed: `197`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-01 focused Editor tests:
+FL-M5-02 setup and apply tests:
 
-- Passed: `66`
+- Passed: `170`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2058,7 +2015,7 @@ Runtime Play Mode totals:
 
 Breakdown:
 
-- Editor setup planning tests: `66` EditMode
+- Editor setup and apply tests: `170` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -2086,7 +2043,23 @@ Breakdown:
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
 
-Verified FL-M5-01 and retained behavior:
+Verified FL-M5-02 and retained behavior:
+
+- Fresh-plan fingerprint equality and stale-plan rejection
+- Single-active-Apply rejection
+- Create/reuse/no-change execution boundary
+- Deterministic folder and asset creation
+- Configuration binding
+- Project root prefab variant generation
+- Boot scene creation with destination and open-scene preservation
+- Build Settings append and approved place-first policies
+- Reverse-order compensating rollback and manual recovery reporting
+- Immutable apply-result formatting
+- First manual Apply `Succeeded`
+- Second and third manual Apply `NoChanges`
+- Stable fingerprint `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
+
+Retained FL-M5-01 and earlier behavior:
 
 - Stable preview-only Setup menu path
 - Approved preview-only warning
@@ -2354,25 +2327,25 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Approved setup apply/repair engine
+- Explicit setup repair and existing-asset reconciliation
 - Editor migration from historical configuration schemas
 - Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
-- Custom inspectors and setup windows
 - Standalone Laboratory
 - Peer-package bridges
 
 ## Stop Point
 
-FL-M5-01 stops after the read-only project snapshot, immutable setup-planning
-contracts, deterministic planner, stable diagnostics, plain-text formatter,
-preview-only Setup window, sixty-six focused Editor tests, retained
-twenty-seven prefab asset tests, and retained four-hundred-seventy-nine Runtime
-Play Mode tests.
+FL-M5-02 stops after the fresh-plan-gated create-only Apply service,
+deterministic project-owned foundation creation, explicit Build Settings
+mutation, compensating rollback, immutable result reporting, one successful
+manual Apply, two repeat-safe `NoChanges` Applies, one hundred ninety-seven
+passing EditMode tests, and four hundred seventy-nine passing Runtime Play Mode
+tests.
 
-Applying or repairing setup, creating project-owned assets and scenes,
-modifying Build Settings, migration, direct-scene initialization, persistent
-root policy, and real Standalone Laboratory activation require later
-checkpoints.
+Repairing or migrating existing assets, persistent receipts, uninstall/reset,
+crash-persistent recovery, direct-scene initialization, persistent-root policy,
+player builds, external adoption, and real Standalone Laboratory activation
+require later approved checkpoints.
