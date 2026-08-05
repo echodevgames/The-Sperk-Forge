@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Explicit root-owned startup execution and lifecycle advancement implemented; immutable reports and destination handoff pending
+- Development stage: Immutable failed/interrupted launch reports and public terminal events implemented; destination handoff and successful completion pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -19,6 +19,7 @@
   - `FL-M3-04`
   - `FL-M3-05`
   - `FL-M3-06`
+  - `FL-M3-07`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -72,8 +73,16 @@ First Light currently establishes:
 45. Destruction-driven cancellation and late-publication suppression
 46. Success boundary at `Transitioning`
 47. Exact legacy runner exception compatibility
+48. Immutable public per-step report values
+49. Immutable public failed/interrupted launch reports
+50. Internal single-use report builder
+51. Authority-filtered `LastReport`
+52. Exactly-once `LaunchFailed` and `LaunchInterrupted`
+53. Terminal state and report acceptance before event dispatch
+54. Defensive report copying and post-runtime readability
+55. Transition-pending success without false report completion
 
-First Light now validates, executes, times, evaluates, and projects startup-sequence work through one explicit root-owned launch run. The authoritative root publishes lifecycle and progress snapshots, contains cancellation and destruction, and stops successful work at `Transitioning`. Automatic Unity-callback startup, immutable launch reports, presentation, and destination loading remain outside the implemented boundary.
+First Light now validates, executes, times, evaluates, projects, and records root-owned startup work. Failed and interrupted attempts finalize immutable diagnostic reports and publish matching public terminal events. Successful sequence execution still stops truthfully at `Transitioning` until destination activation can finalize the successful report and completed lifecycle.
 
 ## Implemented Runtime Files
 
@@ -107,6 +116,10 @@ First Light now validates, executes, times, evaluates, and projects startup-sequ
     │   └── UnityLaunchClock.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
+    ├── Reports/
+    │   ├── LaunchReport.cs
+    │   ├── LaunchReportBuilder.cs
+    │   └── LaunchStepReport.cs
     ├── State/
     │   ├── LaunchMode.cs
     │   ├── LaunchStatus.cs
@@ -133,6 +146,7 @@ First Light now validates, executes, times, evaluates, and projects startup-sequ
     ├── LaunchConfigurationBindingTests.cs
     ├── LaunchLifecycleTransitionTests.cs
     ├── LaunchNotificationTests.cs
+    ├── LaunchReportAndTerminalEventTests.cs
     ├── LaunchSessionProgressTests.cs
     ├── LaunchStateVocabularyTests.cs
     ├── StartupSequenceDefinitionTests.cs
@@ -919,6 +933,104 @@ When an active authoritative root is destroyed:
 
 Duplicate roots cannot start or cancel the authoritative launch.
 
+## Immutable Step Report Boundary
+
+`LaunchStepReport` is a public immutable copy of one terminal `StartupStepExecution`.
+
+It contains:
+
+- Entry and step identity
+- Display label
+- Authored index and count
+- Authored policy
+- Final status and immutable result
+- Final accepted progress
+- Monotonic start, settlement, elapsed, and timeout timing
+- Timeout and timeout-cancellation flags
+
+It never exposes the internal execution object, executor, progress gate, or cancellation source.
+
+## Immutable Launch Report Boundary
+
+`LaunchReport` is a public immutable finalized launch artifact.
+
+Current report schema:
+
+    LaunchReport.CurrentSchemaVersion = 1
+
+Producing package version:
+
+    LaunchReport.CurrentPackageVersion = "0.1.0"
+
+FL-M3-07 permits finalized statuses only for:
+
+- `Failed`
+- `Interrupted`
+
+The report copies step reports into a private ordered array and exposes only count plus indexed reads. Constructor validation rejects nonterminal success states, invalid timing, and inconsistent authored traversal accounting.
+
+Reports are session diagnostics. They are not authored assets and are not EchoSave data.
+
+## Report Builder Boundary
+
+`LaunchReportBuilder` is internal, root-owned, and single-use.
+
+It:
+
+- Captures validated configuration and sequence identity
+- Captures completed step reports exactly once
+- Preserves authored order
+- Reconciles attempted, disabled, and unvisited accounting
+- Records the settled sequence result
+- Rejects duplicate capture and second finalization
+- Finalizes only failed or interrupted reports
+- Retains transition-pending success without finalization
+
+The builder does not publish events and does not own lifecycle authority.
+
+## Terminal Report Publication
+
+`EchoLaunchRoot.LastReport` exposes the latest finalized report only from the current authoritative root.
+
+Failed ordering:
+
+    Failed snapshot accepted
+        -> immutable report finalized
+            -> LastReport assigned
+                -> LaunchFailed dispatched
+
+Interrupted ordering:
+
+    Interrupted snapshot accepted
+        -> immutable report finalized
+            -> LastReport assigned
+                -> LaunchInterrupted dispatched
+
+Terminal listeners observe the already-authoritative root state and the exact `LastReport` instance supplied as the event payload.
+
+Per-listener failures remain isolated by `LaunchNotificationDispatcher` through `ELAUNCH-EVENT-001`.
+
+Duplicate roots expose no report and publish no terminal report event.
+
+Root destruction suppresses unsafe late terminal-event publication.
+
+## Transition-Pending Success
+
+A successful or warning-only sequence run still ends at:
+
+    LaunchStatus.Transitioning
+
+At that boundary:
+
+- The builder retains the settled successful run.
+- `LastReport` remains `null`.
+- `LaunchFailed` is not raised.
+- `LaunchInterrupted` is not raised.
+- `LaunchCompleted` does not exist yet.
+- `LaunchStatus.Completed` is not published.
+
+The later destination handoff must activate the destination before finalizing the successful report and publishing completion.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -929,7 +1041,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-06 compile result:
+Final FL-M3-07 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -948,7 +1060,7 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `311`
+- Passed: `336`
 - Failed: `0`
 - Ignored: `0`
 
@@ -962,6 +1074,7 @@ Breakdown:
 - Session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Launch report and terminal-event tests: `25`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
 - Startup step execution tests: `12`
@@ -971,6 +1084,26 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M3-07 and retained behavior:
+
+- Immutable public `LaunchStepReport`
+- Immutable public `LaunchReport`
+- Report schema version `1`
+- Internal single-use report builder
+- Failed preflight and blocking reports
+- Interrupted report after executor settlement
+- `LastReport` identity with terminal event payload
+- State-before-terminal-event ordering
+- Exactly-once failed and interrupted event publication
+- Listener isolation through `ELAUNCH-EVENT-001`
+- Defensive collection copying
+- Report readability after runtime object release
+- Duplicate-root report and event silence
+- Destruction-driven late-event suppression
+- Transition-pending success without finalized report
+- Report accounting and timing validation
+- Authored asset immutability
 
 Verified FL-M3-06 and retained behavior:
 
@@ -1052,8 +1185,8 @@ Not implemented:
 - Interactive retry
 - Retry or skip UI
 - Automatic startup from Unity callbacks
-- Immutable launch reports
-- Public terminal launch events
+- `LaunchCompleted`
+- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
@@ -1067,6 +1200,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-06 stops after one authoritative root can explicitly own, observe, cancel, settle, and project a startup-sequence run through the approved lifecycle.
+FL-M3-07 stops after failed and interrupted root-owned attempts finalize immutable reports and publish matching exactly-once terminal events.
 
-It deliberately stops at `Transitioning`. Immutable launch reports, public terminal events, automatic startup, presentation, and destination handoff require separate checkpoints.
+Successful work remains at `Transitioning` with no finalized report. Destination validation, loading, activation, `LaunchCompleted`, and `Transitioning -> Completed` require a separate checkpoint.

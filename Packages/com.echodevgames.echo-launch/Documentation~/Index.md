@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Explicit root-owned startup lifecycle implemented; immutable reports and destination handoff pending
+- Development stage: Immutable failed/interrupted reports and public terminal events implemented; destination handoff and successful completion pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -21,7 +21,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-04`
   - `FL-M3-05`
   - `FL-M3-06`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, and lifecycle projection through `Transitioning`
+  - `FL-M3-07`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, and exactly-once failed/interrupted terminal events
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -55,6 +56,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-05 Runtime Test Report](Developer/Test%20Reports/FL-M3-05_Preflight_and_Re-entry_Test_Report.md)
 - [FL-M3-06 Root-Owned Startup Run and Lifecycle Advancement](Developer/Checkpoints/FL-M3-06_Root-Owned_Startup_Run_and_Lifecycle_Advancement.md)
 - [FL-M3-06 Runtime Test Report](Developer/Test%20Reports/FL-M3-06_Root-Owned_Startup_Lifecycle_Test_Report.md)
+- [FL-M3-07 Immutable Launch Report and Public Terminal Events](Developer/Checkpoints/FL-M3-07_Immutable_Launch_Report_and_Public_Terminal_Events.md)
+- [FL-M3-07 Runtime Test Report](Developer/Test%20Reports/FL-M3-07_Immutable_Launch_Report_and_Terminal_Events_Test_Report.md)
 
 ## Package Root Documents
 
@@ -132,6 +135,15 @@ First Light currently proves:
 - Stable `ELAUNCH-LIFE-001` and `ELAUNCH-LIFE-002`
 - Structured root preflight diagnostics with legacy direct-runner compatibility
 - Successful launch stopping at `Transitioning`
-- Three hundred eleven passing Runtime Play Mode tests
+- Public immutable per-step reports
+- Public immutable failed/interrupted launch reports
+- Report schema version `1`
+- Internal single-use report builder
+- Authority-filtered `LastReport`
+- Exactly-once `LaunchFailed` and `LaunchInterrupted`
+- Terminal state and report acceptance before event dispatch
+- Defensive report copying and post-runtime readability
+- Transition-pending success without false completion
+- Three hundred thirty-six passing Runtime Play Mode tests
 
-Retries, immutable reports, public terminal events, dependency-graph validation, automatic startup, presentation, and destination handoff remain outside the implemented scope.
+Retries, successful report finalization, `LaunchCompleted`, dependency-graph validation, automatic startup, presentation, and destination handoff remain outside the implemented scope.

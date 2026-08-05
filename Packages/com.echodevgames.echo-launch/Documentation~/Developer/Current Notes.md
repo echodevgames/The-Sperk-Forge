@@ -2,84 +2,83 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M3-06`
-- Title: Root-Owned Startup Run and Lifecycle Advancement
+- Checkpoint: `FL-M3-07`
+- Title: Immutable Launch Report and Public Terminal Events
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `e0e9645`
-- Previous documentation commit: `485a09f`
+- Implementation commit: `a6f6544`
+- Previous documentation commit: `d728602`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 311 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 336 passed, 0 failed, 0 ignored
 - Compilation result: 0 errors, 0 compiler warnings
 
 ## Completed Result
 
 Implemented:
 
-- Explicit internal `EchoLaunchRoot.StartLaunchAsync`
-- Public cooperative `EchoLaunchRoot.CancelLaunch`
-- Root-local atomic active-launch gate
-- Stable `ELAUNCH-LIFE-001` and `ELAUNCH-LIFE-002`
-- Internal `IStartupSequenceObserver`
-- Internal `StartupStepProgressRelay`
-- Structured `StartupSequencePreflightException`
-- Root publication of validation, running, step progress, failure, interruption, and transition-pending snapshots
-- Successful and warning-only runs stopping at `Transitioning`
-- Blocking and preflight failures reaching `Failed`
-- Cancellation reaching `Interrupted` after executor settlement
-- Destruction-driven cancellation and late-publication suppression
-- Duplicate-root start and cancellation rejection
-- Root run-result retention
-- Legacy direct-runner exact exception compatibility
-- Twenty-three new Runtime Play Mode tests
+- Public immutable `LaunchStepReport`
+- Public immutable `LaunchReport`
+- Report schema version `1`
+- Producing package version `0.1.0`
+- Internal single-use `LaunchReportBuilder`
+- Authority-filtered `EchoLaunchRoot.LastReport`
+- Public `LaunchFailed`
+- Public `LaunchInterrupted`
+- Immutable copied step timing, policy, progress, result, and identity
+- Failed preflight and blocking reports
+- Interrupted reports after executor settlement
+- Authored traversal and warning/failure accounting
+- State and report acceptance before terminal event dispatch
+- Exactly-once matching terminal event publication
+- Listener isolation through `ELAUNCH-EVENT-001`
+- Duplicate-root report and event silence
+- Destruction-driven late-event suppression
+- Transition-pending success without finalized report
+- Twenty-five new Runtime Play Mode tests
 
 ## Evidence Summary
 
 ### Final Pass
 
-- Runtime Play Mode: 311 passed, 0 failed, 0 ignored
-- New root lifecycle fixture: 23 passed
+- Runtime Play Mode: 336 passed, 0 failed, 0 ignored
+- New report and terminal-event fixture: 25 passed
 - Compilation: 0 errors, 0 compiler warnings
-- Implementation commit `e0e9645` pushed to `main` and `origin/main`
+- Implementation commit `a6f6544` pushed to `main` and `origin/main`
 - Working tree clean after implementation push
 
-### Compatibility Detour
+### Compile Correction
 
-Initial full-suite run:
+Initial compile:
 
-- 296 passed
-- 15 failed
-- 0 ignored
-
-Cause:
-
-- Retained direct-runner tests required exact `InvalidOperationException`.
-- Structured preflight exceptions inherited from that type but did not satisfy NUnit exact-type assertions.
+- 2 errors
+- Both in the new test fixture
+- Cause: nonexistent `EchoLaunchRuntimeReset.ResetStatics()`
 
 Correction:
 
-- Legacy three-argument runner overload restores exact historical exception type.
-- Root-owned observer overload retains structured diagnostic data.
+- Replaced both calls with `LaunchAuthorityClaim.Reset()`
+- No runtime or report code changed
 
 ### Expected Diagnostics
 
-Retained tests intentionally generate:
+Retained and new tests intentionally generate:
 
     ELAUNCH-ROOT-001
     ELAUNCH-EVENT-001
 
-These warnings are expected runtime evidence, not compiler warnings or failures.
+These are expected runtime diagnostics, not compiler warnings or failures.
 
 ### Not Run
 
-- Automatic startup from Unity callbacks
-- Immutable launch reports
-- Public terminal launch events
+- Destination validation or loading
+- Successful report finalization
+- `LaunchCompleted`
+- `Transitioning -> Completed`
 - Public step lifecycle events
-- Initial destination selection or loading
-- `Completed` publication after handoff
+- Automatic startup from Unity callbacks
 - Splash or status presentation
 - Direct-scene initialization
+- Report export
 - Editor setup and repair
 - Standalone Laboratory
 - Player builds
@@ -90,33 +89,32 @@ These warnings are expected runtime evidence, not compiler warnings or failures.
 Modified runtime:
 
 - `Runtime/Core/EchoLaunchRoot.cs`
-- `Runtime/Execution/StartupSequencePreflight.cs`
-- `Runtime/Execution/StartupSequenceRunner.cs`
 
 New runtime:
 
-- `Runtime/Execution/IStartupSequenceObserver.cs`
-- `Runtime/Execution/StartupSequencePreflightException.cs`
-- `Runtime/Execution/StartupStepProgressRelay.cs`
+- `Runtime/Reports.meta`
+- `Runtime/Reports/LaunchStepReport.cs`
+- `Runtime/Reports/LaunchReport.cs`
+- `Runtime/Reports/LaunchReportBuilder.cs`
 - Unity-generated `.meta` files
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/EchoLaunchRootStartupLifecycleTests.cs`
+- `Tests/Runtime/PlayMode/LaunchReportAndTerminalEventTests.cs`
 - Unity-generated `.meta`
 
 Checkpoint plan:
 
-- `Plan Documentation/Checkpoint Build Plans/FL-M3-06_Root-Owned_Startup_Run_and_Lifecycle_Advancement_Checkpoint_Build_Plan.md`
+- `Plan Documentation/Checkpoint Build Plans/FL-M3-07_Immutable_Launch_Report_and_Public_Terminal_Events_Checkpoint_Build_Plan.md`
 
 ## Handoff Snapshot
 
-FL-M3-06 implementation is complete and pushed in commit `e0e9645`.
+FL-M3-07 implementation is complete and pushed in commit `a6f6544`.
 
-The authoritative root can explicitly own, observe, cancel, settle, and project one startup-sequence run through the approved lifecycle.
+Failed and interrupted root-owned launches now produce immutable reports and matching public terminal events after authoritative lifecycle acceptance.
 
-Success stops at `Transitioning`; automatic startup, immutable reporting, public terminal events, and destination handoff remain pending.
+Successful startup remains at `Transitioning` with no finalized report or completed event.
 
-The adjacent FL-M3-06 documentation closeout is the only active repository work.
+The adjacent FL-M3-07 documentation closeout is the only active repository work.
 
-Tentative next checkpoint: FL-M3-07 - Immutable Launch Report and Public Terminal Events.
+Tentative next checkpoint: FL-M3-08 - Initial Destination Contract, Load Result, and Completed Handoff.

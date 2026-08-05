@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Explicit root-owned startup lifecycle implemented; immutable reports and destination handoff pending
+- Development stage: Immutable failed/interrupted reports and public terminal events implemented; destination handoff and successful completion pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -23,6 +23,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-04` Multi-Frame Async Proof and Runner Cancellation Outcome
   - `FL-M3-05` Runner Re-entry Protection and Sequence Preflight Boundary
   - `FL-M3-06` Root-Owned Startup Run and Lifecycle Advancement
+  - `FL-M3-07` Immutable Launch Report and Public Terminal Events
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -304,6 +305,43 @@ First Light now provides:
 - Internal `StartupStepProgressRelay`
 - Legacy direct-runner calls preserve exact `InvalidOperationException`
 
+### Immutable Launch Reports
+
+- Public immutable `LaunchStepReport`
+- Public immutable `LaunchReport`
+- Report schema version `1`
+- Producing package version `0.1.0`
+- Copied identity, policy, progress, result, and timing values
+- Attempted, disabled, and unvisited accounting
+- Warning, failure, blocking-failure, and cancellation summaries
+- Indexed read-only step access
+- Defensive collection copying
+- No authored asset mutation
+- No durable-save integration
+
+### Report Builder
+
+- Internal root-owned `LaunchReportBuilder`
+- Completed-step capture exactly once
+- Authored-order preservation
+- Single finalization guard
+- Failed and interrupted report finalization
+- Transition-pending successful data retention
+
+### Public Terminal Report Events
+
+- Authority-filtered `LastReport`
+- Public `LaunchFailed`
+- Public `LaunchInterrupted`
+- Root state accepted before report finalization
+- `LastReport` assigned before event dispatch
+- Exact event-payload identity
+- Exactly-once matching event
+- Per-listener exception isolation
+- Duplicate-root silence
+- Destruction-driven late-event suppression
+- No false successful completion event
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -340,7 +378,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `311`
+- Passed: `336`
 - Failed: `0`
 - Ignored: `0`
 
@@ -354,6 +392,7 @@ Breakdown:
 - Launch session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Launch report and terminal-event tests: `25`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
 - Startup step execution tests: `12`
@@ -402,8 +441,8 @@ First Light does not yet provide:
 - Interactive retry
 - Retry or skip UI
 - Automatic startup from Unity scene callbacks
-- Immutable launch reports
-- Public terminal launch events
+- `LaunchCompleted`
+- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
@@ -430,10 +469,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Three hundred eleven passing Runtime Play Mode tests
+- Three hundred thirty-six passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with explicit root ownership, lifecycle projection, cooperative root cancellation, and success stopping at `Transitioning`
+- Policy-aware timed startup execution with root ownership, immutable failed/interrupted reporting, exactly-once terminal events, and success stopping at `Transitioning`
 
 Still `Not run`:
 
@@ -442,7 +481,7 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Automatic production startup
-- Immutable reporting and destination handoff
+- Successful report completion and destination handoff
 - Performance measurements
 
 ## License

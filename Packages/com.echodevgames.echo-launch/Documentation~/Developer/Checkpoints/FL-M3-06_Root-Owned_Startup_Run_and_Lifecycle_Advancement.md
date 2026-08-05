@@ -11,7 +11,8 @@
 - Implementation status: Complete and pushed
 - Implementation commit: `e0e9645`
 - Previous documentation commit: `485a09f`
-- Documentation closeout: Pending adjacent commit
+- Documentation closeout: Complete and pushed
+- Documentation commit: `d728602`
 - Unity baseline: `6000.3.8f1`
 
 ## Goal
@@ -192,6 +193,6 @@ The implementation compiles cleanly and all 311 Runtime Play Mode tests pass.
 
 Implementation commit `e0e9645` is synchronized on `main` and `origin/main`.
 
-FL-M3-06 is ready for its adjacent documentation closeout.
+FL-M3-06 is fully closed in implementation commit `e0e9645` and documentation commit `d728602`.
 
-The tentative next checkpoint is FL-M3-07 - Immutable Launch Report and Public Terminal Events.
+FL-M3-07 subsequently implemented immutable failed/interrupted reports and public terminal events in implementation commit `a6f6544`.

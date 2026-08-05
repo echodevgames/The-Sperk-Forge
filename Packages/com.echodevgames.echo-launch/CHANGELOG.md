@@ -7,6 +7,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M3-07 - Immutable Launch Report and Public Terminal Events
+- Public immutable `LaunchStepReport`
+- Public immutable `LaunchReport`
+- Report schema version `1`
+- Producing package version `0.1.0`
+- Internal single-use `LaunchReportBuilder`
+- Authority-filtered `EchoLaunchRoot.LastReport`
+- Public `LaunchFailed`
+- Public `LaunchInterrupted`
+- Defensive copying of ordered terminal step summaries
+- Launch timing and authored traversal accounting
+- Warning, failure, blocking-failure, and cancellation summaries
+- Failed preflight and blocking-run report finalization
+- Interrupted report finalization after executor settlement
+- State and `LastReport` acceptance before terminal event dispatch
+- Exactly-once terminal event publication
+- Terminal listener isolation through `ELAUNCH-EVENT-001`
+- Duplicate-root report and terminal-event silence
+- Destruction-driven late terminal-event suppression
+- Transition-pending success retaining no finalized report
+- Twenty-five Runtime Play Mode report and terminal-event tests
 #### FL-M3-06 - Root-Owned Startup Run and Lifecycle Advancement
 - Explicit root-owned `StartLaunchAsync` execution boundary
 - Public cooperative `CancelLaunch` command for the active authoritative root
@@ -209,6 +230,12 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- Failed and interrupted root-owned launches now finalize one immutable report after the terminal lifecycle snapshot is accepted.
+- `EchoLaunchRoot.LastReport` now exposes only the authoritative finalized failed or interrupted report.
+- `LaunchFailed` and `LaunchInterrupted` now dispatch after root state and report storage are authoritative.
+- Successful sequence settlement still stops at `Transitioning` and intentionally produces no finalized report or completed event.
+- Completed step executions are copied into immutable report values rather than exposed as live runtime objects.
+- Report schema versioning is independent from package version and authored configuration schemas.
 - `EchoLaunchRoot` now owns one explicit startup-sequence run after authority claim.
 - Root lifecycle publication now advances from `AuthorityClaimed` through `Validating` and `Running`.
 - Successful startup-sequence settlement now advances to `Transitioning`, not `Completed`, because destination handoff remains pending.
@@ -260,6 +287,7 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Replaced two nonexistent `EchoLaunchRuntimeReset.ResetStatics()` calls in the new FL-M3-07 test fixture with the established `LaunchAuthorityClaim.Reset()` test reset, restoring clean compilation.
 - Restored exact legacy `InvalidOperationException` behavior for direct three-argument runner calls after the first FL-M3-06 full-suite run exposed fifteen retained exact-type assertions.
 - Preserved structured `StartupSequencePreflightException` behavior for root-owned observer runs.
 - Contained the same-tick caller-cancellation race where the executor settled with `OperationCanceledException` before the monitor's next loop.
@@ -274,9 +302,37 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `311`
+- Passed: `336`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M3-07 coverage:
+- `LastReport` null before finalization
+- Missing-configuration failed report
+- Invalid-preflight report before executor creation
+- Blocking-step immutable terminal copy
+- Warning, disabled, failure, and unvisited accounting
+- Failed event after accepted failed state and stored report
+- Exactly-once failed event without interrupted event
+- Failed-listener isolation
+- Interrupted report after executor settlement
+- Interrupted event after accepted interrupted state and stored report
+- Exactly-once interrupted event without failed event
+- Normalized blank cancellation reason
+- Interrupted-listener isolation
+- Transition-pending success without finalized report or terminal event
+- Duplicate-root report and terminal-event silence
+- Destruction-driven late terminal-event suppression
+- Stable report schema and package version
+- Public report properties without public setters
+- Indexed report bounds checking
+- Builder second-finalization rejection
+- Rejection of nonterminal successful report status
+- Defensive step-list copying
+- Report readability after root and authored assets are destroyed
+- Authored asset immutability
+- Accounting and timing invariant rejection
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-06 coverage:
 - Authority claim without automatic startup
@@ -382,8 +438,8 @@ FL-M3-03 coverage:
 - Interactive retry
 - Retry or skip presentation
 - Automatic startup from Unity scene callbacks
-- Public terminal launch events
-- Immutable launch reports
+- `LaunchCompleted`
+- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation

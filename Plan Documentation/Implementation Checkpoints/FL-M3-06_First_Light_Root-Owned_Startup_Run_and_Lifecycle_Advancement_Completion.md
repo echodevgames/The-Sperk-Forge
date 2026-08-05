@@ -10,7 +10,8 @@
 - Implementation result: Complete and pushed
 - Implementation commit: `e0e9645`
 - Previous documentation commit: `485a09f`
-- Documentation closeout: Pending adjacent commit
+- Documentation closeout: Complete and pushed
+- Documentation commit: `d728602`
 - Unity baseline: `6000.3.8f1`
 
 ## Implemented Scope
@@ -110,6 +111,6 @@ FL-M3-06 implementation is complete in `e0e9645`.
 
 The repository was clean and synchronized after the implementation push.
 
-The checkpoint is ready for the adjacent documentation closeout commit.
+FL-M3-06 is fully closed in implementation commit `e0e9645` and documentation commit `d728602`.
 
-Tentative next checkpoint: FL-M3-07 - Immutable Launch Report and Public Terminal Events.
+FL-M3-07 later implemented immutable failed/interrupted reports and public terminal events in implementation commit `a6f6544`.
