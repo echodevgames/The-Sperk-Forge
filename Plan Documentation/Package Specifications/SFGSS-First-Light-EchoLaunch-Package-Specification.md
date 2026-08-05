@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.8.0
+**Specification version:** 1.9.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-02 is authorized only after the create-only apply, freshness, rollback, and repeatability boundary in this v1.8.0 update and EchoLaunch-ADR-005 are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-03 is authorized only after the explicit-repair eligibility, ownership proof, backup, rollback, result, and repeatability boundary in this v1.9.0 update and EchoLaunch-ADR-006 are committed.
 
 ---
 
@@ -35,6 +35,7 @@
 | 1.6.0 | 2026-08-05 | Approved | Defined two immutable neutral package template prefabs, selected the package-owned Canvas hierarchy and defaults, preserved project ownership of branding/layout variants/input bindings, prohibited hidden prefab discovery or spawning, and authorized FL-M4-05 | Jesse “Echo” Adams |
 | 1.7.0 | 2026-08-05 | Approved | Defined the read-only project snapshot, immutable setup request/plan/operation contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, default project-owned paths, and explicit no-write boundary for FL-M5-01 | Jesse “Echo” Adams |
 | 1.8.0 | 2026-08-05 | Approved | Authorized the fresh-plan-gated create-only setup apply service, deterministic asset/prefab/scene creation order, explicit Build Settings mutation policy, single-active apply gate, compensating rollback journal, immutable apply result, and repeat-safe no-op reruns for FL-M5-02 | Jesse “Echo” Adams |
+| 1.9.0 | 2026-08-05 | Approved | Authorized explicit Setup Repair for narrowly provable current-schema drift, separate repair confirmation, ownership/shape gates, byte-preserving backup and rollback of modified project assets, immutable repair reporting, and repeat-safe reconciliation for FL-M5-03 | Jesse “Echo” Adams |
 
 ---
 
@@ -618,37 +619,49 @@ All configuration, sequence, step, splash, and destination assets are treated as
 
 **Programmer path:** Implement/derive a custom startup step or provide an explicit adapter, return structured results, report progress, and test with injected clock/presenter/destination loader.
 
+
 ---
 
 ## 11. Editor Tooling and Authoring Experience
 
 ### 11.1 Setup workflow
 
+Create-only Setup Apply and explicit Setup Repair are separate user actions over the
+same immutable request, recollected snapshot, and deterministic plan.
+
+Create workflow:
+
 1. Install or embed `com.echodevgames.echo-launch`.
 2. Open **Tools > Sperk’s Forge > First Light > Setup**.
 3. Select project root, Boot path, existing destination scene, optional splash,
    and Build Settings policy.
-4. Refresh the read-only snapshot.
-5. Review the deterministic plan.
-6. Resolve blockers and ambiguity.
-7. Review create paths and approvals.
-8. Press **Apply Plan...**.
-9. Confirm the exact mutation summary.
-10. The service recollects and replans.
-11. When fresh, create only missing project-owned targets.
-12. Refresh.
-13. Repeat Apply until `NoChanges`.
+4. Refresh the read-only snapshot and review the deterministic plan.
+5. Press **Apply Plan...** only for `Create`, `Reuse`, and `NoChange` operations.
+6. Confirm the exact mutation summary.
+7. The service recollects and replans before writes.
+8. Create only missing project-owned targets.
+9. Refresh and repeat until the result is `NoChanges`.
 
-FL-M5-01 owns observation and planning.
+Repair workflow:
 
-FL-M5-02 adds create-only apply. It does not add repair or migration.
+1. Refresh the same Setup plan after existing First Light assets drift.
+2. Review every operation marked `Repair` and its before/after explanation.
+3. Resolve every blocker or ambiguous ownership/shape result manually.
+4. Press **Repair Plan...**.
+5. Confirm the exact repair paths, fields, Build Settings changes, and backup policy.
+6. The service recollects and replans, then verifies the displayed repair fingerprint.
+7. Back up every existing asset that will be modified before the first repair write.
+8. Apply only the approved narrow repairs.
+9. Refresh and repeat until the result is `NoChanges`.
+
+`Apply Plan...` remains create-only. It must never become a hidden alias for repair.
 
 ### 11.2 Setup operations
 
 | Operation | Creates | Modifies | Repeats safely? | Undo/backup | Report output |
 |---|---|---|---:|---|---|
 | Create First Light foundation | Project folders, definitions, root prefab variant, Boot scene | Build Settings only after fresh preview/approval | Yes; second/third apply are no-op | Failure rollback journal; Undo may supplement where supported | Immutable apply result |
-| Repair missing references | Only missing or invalid generated references | Existing generated assets | Later checkpoint | Preview + explicit repair authority | Repair report |
+| Repair approved generated references and canonical setup drift | Missing project-owned targets when the plan also contains repair; no replacement types | Only exact current-schema fields, verified prefab binding, verified Boot root presence, and approved Build Settings state | Yes; second/third repair are no-op | Byte-preserving asset + `.meta` backup before modification; Build Settings snapshot; rollback result | Immutable repair result with before/after records |
 | Validate project | Nothing | Nothing | Yes | N/A | Validation report |
 | Add built-in step | Step asset/sequence entry | Selected sequence | Yes | Undo | Change report |
 | Create direct-scene helper | Project-owned helper | Selected scene after confirmation | Yes | Undo | Setup report |
@@ -659,7 +672,7 @@ FL-M5-02 adds create-only apply. It does not add repair or migration.
 
 | Tool | User | Purpose | Runtime dependency? |
 |---|---|---|---:|
-| First Light Setup | Novice/maintainer | Preview and create canonical foundation | No |
+| First Light Setup | Novice/maintainer | Preview, create, and explicitly repair the canonical foundation | No |
 | Launch Configuration Inspector | Designer/programmer | Edit references/policies with validation | No |
 | Startup Sequence Inspector | Programmer | Reorder and validate steps | No |
 | Splash Sequence Inspector | Designer | Preview image order/timing | No |
@@ -672,16 +685,16 @@ FL-M5-02 adds create-only apply. It does not add repair or migration.
 | Check ID | Condition | Severity | Fix available? | Safe auto-fix? |
 |---|---|---|---:|---:|
 | ELAUNCH-VAL-001 | No canonical Boot scene configured | Blocker | Yes | Create-only after preview |
-| ELAUNCH-VAL-002 | More than one enabled root in Boot scene | Blocker | Yes | No |
-| ELAUNCH-VAL-003 | Root has no configuration | Blocker | Yes | Later repair |
+| ELAUNCH-VAL-002 | More than one enabled root in Boot scene | Blocker | Manual only | No |
+| ELAUNCH-VAL-003 | Verified canonical root has no/mismatched configuration | Blocker | Yes | Explicit repair only |
 | ELAUNCH-VAL-004 | Configuration schema unsupported | Blocker | Maybe | Explicit migration only |
 | ELAUNCH-VAL-005 | Startup sequence contains null entry | Error | Yes | No silent deletion |
-| ELAUNCH-VAL-006 | Duplicate step ID | Blocker | Yes | Explicit confirmation |
+| ELAUNCH-VAL-006 | Duplicate step ID | Blocker | Yes | Explicit content editing only |
 | ELAUNCH-VAL-007 | Final destination missing from build scenes | Blocker | Yes | Preview/approval |
-| ELAUNCH-VAL-008 | Boot scene missing from build scenes | Blocker | Yes | Preview/approval |
+| ELAUNCH-VAL-008 | Boot scene missing/disabled in build scenes | Blocker | Yes | Explicit apply/repair policy |
 | ELAUNCH-VAL-009 | Direct helper in release | Warning/Blocker | Yes | Approved disable |
-| ELAUNCH-VAL-010 | Presenter missing but required | Blocker | Yes | Assign default when available |
-| ELAUNCH-VAL-011 | Invalid splash timing | Error | Yes | Explicit apply only |
+| ELAUNCH-VAL-010 | Presenter missing but required | Blocker | Yes | Assign default when available; no FL-M5-03 replacement |
+| ELAUNCH-VAL-011 | Invalid splash timing | Error | Yes | Explicit content edit only |
 | ELAUNCH-VAL-012 | Required step has unsafe failure policy | Error | Yes | Policy edit |
 | ELAUNCH-VAL-013 | Project asset inside package source | Error | Yes | Later GUID-preserving move |
 
@@ -689,25 +702,33 @@ FL-M5-02 adds create-only apply. It does not add repair or migration.
 
 ```text
 collector -> snapshot -> planner -> plan
-    -> apply service
-        -> asset writer
-        -> prefab writer
-        -> scene writer
+    -> create-only apply service
+        -> create writers
         -> Build Settings writer
-        -> rollback journal
-    -> immutable apply result
+        -> create rollback journal
+    -> explicit repair service
+        -> repair eligibility/ownership proof
+        -> repair backup store
+        -> asset/prefab/scene/Build Settings repair writers
+        -> repair rollback
+    -> immutable apply/repair result
 ```
 
 Observation and planning remain side-effect free.
 
-Mutation begins only after confirmation and freshness validation.
+Mutation begins only after confirmation, freshness validation, and the correct
+create-versus-repair authority gate.
 
 ### 11.6 Immutable contracts
 
 Planning contracts remain approved.
 
-FL-M5-02 adds immutable apply request/approval, status, change record, result,
+FL-M5-02 owns immutable apply request/approval, status, change record, result,
 and request/snapshot/plan fingerprints.
+
+FL-M5-03 adds immutable repair approval, repair candidate, repair change,
+backup record, and repair result values. Results defensively copy collections
+and contain project-relative paths and sanitized data, not mutable Unity objects.
 
 ### 11.7 Default paths
 
@@ -730,12 +751,13 @@ Splash is optional. Destination scene already exists and is never modified.
 
 Root is a project-owned variant of the stable package root template.
 
-### 11.8 Apply eligibility
+### 11.8 Apply and repair eligibility
 
-Executable only when plan is `Ready`, or approved `ReadyWithWarnings`, with no
-conflict, unsupported operation, or ambiguous decision.
+Create Apply is executable only when the plan is `Ready`, or approved
+`ReadyWithWarnings`, with no conflict, unsupported operation, ambiguous decision,
+or repair operation.
 
-Executable dispositions:
+Create dispositions:
 
 ```text
 Create
@@ -743,65 +765,156 @@ Reuse
 NoChange
 ```
 
-### 11.9 Freshness
+Repair is executable only when:
 
-The displayed plan carries deterministic fingerprints.
+- The plan is `Ready`, or approved `ReadyWithWarnings`.
+- At least one operation is `Repair`.
+- Every repair candidate has proven current type, supported schema, expected
+  project-owned path, and the required prefab/scene shape where applicable.
+- Every repair operation is explicitly approved.
+- No `Conflict`, `Unsupported`, unresolved `ManualDecision`, migration, or
+  ambiguous ownership result remains.
+- No other setup mutation is active.
 
-Immediately before writes, apply recollects and replans.
+A repair plan may also execute `Create`, `Reuse`, and `NoChange` operations so a
+partial foundation can be reconciled in one explicit repair transaction.
 
-Mismatch aborts with `ELAUNCH-SETUP-008` before any writer call.
+### 11.9 Freshness and single mutation authority
 
-### 11.10 Create-only order
+The displayed plan carries deterministic request, evidence, plan, and repair
+fingerprints.
 
-1. Folders
-2. Startup sequence
-3. Destination
-4. Optional splash
-5. Configuration
-6. Root prefab variant
-7. Boot scene
-8. Build Settings
+Immediately before any create or repair write, the service recollects and
+replans from the same request. A mismatch aborts with `ELAUNCH-SETUP-008` before
+backup or mutation.
 
-New assets are fully initialized before creation.
+Only one Setup mutation may be active across Apply and Repair. Re-entry is
+rejected with `ELAUNCH-SETUP-009` before writes.
 
-Reused assets are not modified.
+### 11.10 Authorized FL-M5-03 repairs
 
-### 11.11 Prefab and scene
+FL-M5-03 may modify only these narrowly defined surfaces:
 
-Root prefab is a variant bound to project configuration and preserves the
-nested presenter. Package template remains not dirty.
+1. **`EchoLaunchConfiguration` reference reconciliation**
+   - Asset type and supported current schema must already be valid.
+   - Rebind only `StartupSequence`, `LaunchDestination`, and optional
+     `SplashSequence` references to the uniquely resolved planned assets.
+   - Preserve stable ID, schema, root-lifetime policy, reduced-motion default,
+     and every unrelated serialized value.
+2. **`LaunchDestination` scene reconciliation**
+   - Asset type, stable identity, and current schema must be valid.
+   - Reconcile only the runtime scene path to the explicitly selected existing
+     destination scene.
+   - Fill the display label only when empty; never overwrite a non-empty
+     project-authored label.
+3. **Project root prefab binding reconciliation**
+   - The asset must be a prefab variant whose lineage resolves to the stable
+     First Light package root template.
+   - It must contain exactly one `EchoLaunchRoot`.
+   - Rebind only the root configuration reference.
+   - Preserve nested presenter connection and every unrelated override.
+4. **Boot scene root-presence reconciliation**
+   - The scene must exist at the exact planned project path.
+   - When the scene contains zero `EchoLaunchRoot` components, add one instance
+     of the uniquely resolved project root prefab.
+   - Preserve all unrelated scene objects, open-scene set, active scene, and
+     dirty states.
+   - Multiple roots, an unpacked/wrong root, or ambiguous hierarchy block repair.
+5. **Build Settings reconciliation**
+   - Follow the selected approved policy.
+   - Add a missing canonical Boot entry or enable one uniquely identified
+     disabled canonical Boot entry.
+   - Place-first remains separately approved.
+   - Preserve unrelated order and enabled state.
+   - Duplicate or ambiguous canonical entries block repair unless an existing
+     approved place-first operation already defines the exact normalization.
 
-Boot scene contains one root-prefab instance, no gameplay, and no setup-created
-EventSystem. Existing open/active/dirty scene state is preserved. Destination
-scene is not opened.
+### 11.11 Forbidden repair and migration boundary
 
-### 11.12 Build Settings
+FL-M5-03 must not:
 
-- `DoNotChange`: no write.
-- `AddIfMissingAtEnd`: append one enabled Boot entry when missing.
-- `PlaceFirstAfterApproval`: explicit approval required.
-- No duplicate Boot entry.
-- Unrelated order and enabled state preserved.
-- Write last.
+- Change or migrate unsupported/older/newer schema versions.
+- Regenerate or replace stable IDs.
+- Replace an asset with another type.
+- Edit entries inside `StartupSequence` or `SplashSequence`.
+- Delete duplicate roots or scene objects.
+- Rebase, unpack, replace, or structurally rewrite a prefab.
+- Move, rename, delete, or relocate assets.
+- Modify the selected destination scene.
+- Repair arbitrary project scenes or project-authored presentation.
+- Persist a setup receipt, own uninstall/reset, or perform automatic crash recovery.
 
-### 11.13 Rollback and repeatability
+Ambiguity is a blocker, not permission to guess.
 
-The service records active-attempt paths and original Build Settings.
+### 11.12 Ownership and shape proof
 
-Failure restores settings and removes only active-attempt content.
+A target is repairable only when the package can prove all required facts from
+current project evidence:
 
-After success, second and third Apply return `NoChanges`, GUIDs remain stable,
-and no duplicate entry appears.
+- Exact project-relative planned path.
+- Expected Unity type and loadable identity.
+- Supported current schema where the type is versioned.
+- Unique role resolution.
+- Stable package-template lineage for the root prefab.
+- Exact root-count and prefab-instance shape for Boot-scene repair.
 
-### 11.14 Setup window
+A matching filename, label, or folder is insufficient proof by itself.
 
-May display approval, `Apply Plan...`, final confirmation, result, Copy Result,
-and asset pinging.
+### 11.13 Repair backup and rollback
 
-May not repair, delete, move, rename, migrate, persist a receipt, store project
-identity in EditorPrefs, or invoke runtime launch.
+Before modifying any existing asset, prefab, or scene, the service copies the
+exact asset bytes and matching `.meta` bytes to:
 
-### 11.15 Stable setup diagnostics
+```text
+Library/EchoDevGames/FirstLight/RepairBackups/<repair-id>/
+```
+
+Rules:
+
+- Backup is outside `Assets` and is never imported as project content.
+- A failed backup aborts before the first repair write with
+  `ELAUNCH-SETUP-014`.
+- Build Settings is captured as a complete ordered scene array.
+- On failure, modified files and `.meta` files are restored byte-for-byte,
+  Build Settings is restored, and the AssetDatabase is refreshed/reimported.
+- Newly created paths from the same repair transaction are removed using the
+  existing active-attempt rollback rules.
+- A complete successful repair removes its temporary backup directory.
+- Incomplete rollback retains the backup and reports its path for manual recovery.
+- Crash-persistent automatic recovery remains deferred; a surviving backup is
+  evidence for manual recovery, not permission for silent startup mutation.
+
+### 11.14 Repair result and repeatability
+
+The immutable result records:
+
+- Status and message.
+- Displayed and final plan/repair fingerprints.
+- Created, reused, repaired, and unchanged paths.
+- Per-repair field/surface summary with sanitized before/after values.
+- Build Settings before/after summary.
+- Whether rollback completed.
+- Retained backup/manual-recovery paths, when any.
+
+After a successful repair, second and third Repair return `NoChanges`, GUIDs and
+stable IDs remain unchanged, no duplicate Boot root or Build Settings entry is
+created, and package templates remain not dirty.
+
+### 11.15 Setup window
+
+The Setup window may display:
+
+- Create and repair eligibility separately.
+- `Apply Plan...` for create-only work.
+- `Repair Plan...` for explicitly repairable work.
+- Per-repair before/after explanations.
+- Required approval and final confirmation.
+- Result, Copy Result, and project-asset pinging.
+
+It may not silently repair during Refresh, ordinary inspector drawing, package
+import, Play Mode entry, or create-only Apply.
+
+### 11.16 Stable setup diagnostics
 
 - `ELAUNCH-SETUP-001` invalid path/request.
 - `ELAUNCH-SETUP-002` incompatible target.
@@ -811,11 +924,15 @@ identity in EditorPrefs, or invoke runtime launch.
 - `ELAUNCH-SETUP-006` package prerequisite unavailable.
 - `ELAUNCH-SETUP-007` compatible asset reuse.
 - `ELAUNCH-SETUP-008` stale plan.
-- `ELAUNCH-SETUP-009` another apply is active.
-- `ELAUNCH-SETUP-010` apply failed; rollback completed.
-- `ELAUNCH-SETUP-011` rollback incomplete.
-- `ELAUNCH-SETUP-012` unauthorized apply operation.
-
+- `ELAUNCH-SETUP-009` another Setup mutation is active.
+- `ELAUNCH-SETUP-010` create Apply failed; rollback completed.
+- `ELAUNCH-SETUP-011` create rollback incomplete.
+- `ELAUNCH-SETUP-012` unauthorized operation for the selected action.
+- `ELAUNCH-SETUP-013` explicit repair approval required.
+- `ELAUNCH-SETUP-014` repair backup could not be secured.
+- `ELAUNCH-SETUP-015` repair ownership or shape cannot be proven.
+- `ELAUNCH-SETUP-016` repair failed; rollback completed.
+- `ELAUNCH-SETUP-017` repair rollback incomplete; backup retained.
 ---
 
 ## 12. Installation, Scene Setup, and Direct Testing
@@ -1054,7 +1171,12 @@ EchoLaunch exposes:
 | ELAUNCH-SETUP-009 | Warning | Another setup apply is active | Wait for settlement |
 | ELAUNCH-SETUP-010 | Error | Apply failed and active-attempt changes were rolled back | Review failure and refresh |
 | ELAUNCH-SETUP-011 | Blocker | Rollback was incomplete | Recover named paths manually |
-| ELAUNCH-SETUP-012 | Blocker | Plan contains an operation outside create-only apply authority | Use later repair/migration workflow |
+| ELAUNCH-SETUP-012 | Blocker | Plan contains an operation outside the selected create/repair authority | Use the correct explicit action or a later migration workflow |
+| ELAUNCH-SETUP-013 | Warning/Manual | One or more safe current-schema repair operations require explicit approval | Review every repair and confirm Repair Plan |
+| ELAUNCH-SETUP-014 | Blocker | Required repair backup could not be secured | Resolve filesystem/access issue before repair |
+| ELAUNCH-SETUP-015 | Blocker | Existing target ownership or shape cannot be proven safe for repair | Resolve manually or select a canonical compatible target |
+| ELAUNCH-SETUP-016 | Error | Repair failed and modified/created content was rolled back | Review failure, refresh, and retry only after correction |
+| ELAUNCH-SETUP-017 | Blocker | Repair rollback was incomplete and backup was retained | Recover from the named backup paths before continuing |
 
 
 ### 15.4 Observatory bridge
@@ -1508,6 +1630,15 @@ All code examples must compile against the documented release. Menu paths, scree
 | ELAUNCH-T-021 | Apply rollback | Inject failure after partial creation | Apply | Active-attempt content removed and settings restored | Yes | Not run |
 | ELAUNCH-T-022 | Prefab variant adoption | Package template + new root | Apply | Valid bound project variant; template not dirty | Yes | Not run |
 | ELAUNCH-T-023 | Scene-state preservation | Open/active/dirty scenes | Create Boot | Existing scene state unchanged | Yes | Not run |
+| ELAUNCH-T-024 | Explicit repair gate | Repairable current-schema drift | Refresh then press Apply | Create Apply rejects repair; Repair requires confirmation | Yes | Not run |
+| ELAUNCH-T-025 | Configuration reference repair | Valid schema-4 config with wrong/null canonical refs | Repair | Only three approved references reconcile; other values and stable ID unchanged | Yes | Not run |
+| ELAUNCH-T-026 | Destination repair | Valid schema-1 destination with stale path | Repair | Scene path reconciles; non-empty authored label preserved | Yes | Not run |
+| ELAUNCH-T-027 | Prefab binding repair | Verified template variant with wrong/null config | Repair | Config binding reconciles; other overrides/presenter preserved; template not dirty | Yes | Not run |
+| ELAUNCH-T-028 | Boot root-presence repair | Exact Boot scene with zero roots and unrelated objects | Repair | One project-prefab root added; unrelated scene/open/active/dirty state preserved | Yes | Not run |
+| ELAUNCH-T-029 | Ambiguous/unsafe repair rejection | Multiple roots, wrong prefab lineage, wrong type, or unsupported schema | Plan/repair | ELAUNCH-SETUP-003/015; no backup or writes | Yes | Not run |
+| ELAUNCH-T-030 | Repair backup and rollback | Existing repairable files + injected failure | Repair | Exact bytes/meta/settings restored; ELAUNCH-SETUP-016 | Yes | Not run |
+| ELAUNCH-T-031 | Incomplete repair rollback | Inject restore failure | Repair | ELAUNCH-SETUP-017 and retained backup/manual paths | Yes | Not run |
+| ELAUNCH-T-032 | Repair repeatability | Repairable partial foundation | Repair 3 times | First succeeds; second/third NoChanges; GUIDs/IDs stable; no duplicates | Yes | Not run |
 | ELAUNCH-T-014 | Sample removal | Installed package + imported sample | Delete sample | Runtime/Editor compile | Manual/CI | Not run |
 | ELAUNCH-T-015 | Clean tarball install | New project | Install `.tgz` | Zero compile errors; quick start succeeds | Manual/CI | Not run |
 
@@ -1641,6 +1772,7 @@ Automated script rewriting is rejected unless a later migration specification pr
 | ELAUNCH-D-010 | No reflection-based peer discovery | Approved | Makes dependencies explicit and removal safe | Bridges must be installed deliberately | No |
 | ELAUNCH-D-011 | Startup authoring uses immutable `StartupStepDefinition` ScriptableObjects that create single-use `IStartupStepExecutor` runtime instances | Approved | Combines inspector-friendly assets with strict definition/runtime-state separation | Custom steps require a definition and executor pair | No |
 | ELAUNCH-D-012 | Minimum public Unity floor is 6000.0; 6000.3.8f1 is the primary development baseline | Approved | Avoids false precision while retaining an honest tested baseline | Additional Unity 6 versions require validation before being listed as tested | No; also recorded suite-wide |
+| ELAUNCH-D-013 | Setup Repair is a separate explicitly approved transaction limited to provable current-schema canonical drift, with pre-write byte/meta backup and rollback | Approved | Prevents create-only Apply from silently becoming destructive while making damaged generated foundations recoverable | Ambiguous ownership, structural edits, and schema changes remain manual or migration work | Yes; EchoLaunch-ADR-006 |
 
 ### 27.2 Release-blocking questions
 
@@ -1739,10 +1871,10 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation |
-| Active authorized checkpoint | None; the tentative FL-M5-03 repair checkpoint is not yet authorized |
-| Authority commit | `208ee71` |
+| Active authorized checkpoint | FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation |
+| FL-M5-02 authority commit | `208ee71` |
 | Last implementation commit | `f05b95c` |
-| Documentation closeout | This reconciliation change set; final commit recorded by Git history |
+| FL-M5-02 documentation closeout | `2ef594c` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
 | EditMode tests passed | 197 total: 170 setup/apply and 27 prefab asset tests |
 | Total automated tests | 676 passed, 0 failed, 0 ignored |
@@ -1750,8 +1882,8 @@ Before writing code:
 | FL-M5-02 evidence | Fresh-plan gate; Create/Reuse/NoChange only; deterministic creation; project prefab variant; scene preservation; explicit Build Settings approval; single apply; rollback support; first Apply succeeded; second and third Apply returned NoChanges |
 | Stable manual-acceptance fingerprint | `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1` |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Repair, migration, direct-scene initializer, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push the FL-M5-02 documentation closeout, then prepare authority for the tentative FL-M5-03 checkpoint |
+| Evidence gaps | FL-M5-03 repair implementation/evidence, migration, direct-scene initializer, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push FL-M5-03 authority, then implement only the approved explicit-repair checkpoint plan |
 
 ---
 
@@ -1800,7 +1932,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005 and its SFGSS-005 plan. Repair, migration, receipts, uninstall, Direct Scene, and Laboratory remain unauthorized until later authority is approved.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 is now authorized to implement only the explicit current-schema repair, ownership/shape proof, backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan. Schema migration, receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator, and Laboratory remain unauthorized.
 
 
 ---

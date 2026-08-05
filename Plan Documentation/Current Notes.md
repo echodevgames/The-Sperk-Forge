@@ -4,77 +4,71 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light post-FL-M5-02 reconciliation
-**Current checkpoint:** FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation — complete
+**Current focus:** First Light explicit Setup Repair authority
+**Current checkpoint:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation — authority prepared
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Completed Checkpoint
+## Last Completed Checkpoint
 
-FL-M5-02 implemented the first approved First Light project-mutation boundary.
-The Setup window now applies one fresh executable plan, creates only missing
-project-owned foundation content, reuses compatible existing assets, preserves
-scene state, mutates Build Settings only through the selected policy, rolls
-back active-attempt changes on failure, and becomes a no-op on repeat Apply.
+FL-M5-02 is fully closed and pushed.
 
-## Repository Evidence
-
-- Authority commit: `208ee71` — `echo-launch: approve FL-M5-02 repeat-safe setup apply`
-- Implementation commit: `f05b95c` — `Implement repeat-safe First Light setup apply engine`
-- Branch: `main`
-- Remote: `origin/main`
-- Implementation push: complete
-- Working tree after implementation push: clean
-
-## Validation Evidence
-
-- EditMode: `197` passed, `0` failed, `0` ignored
-  - Setup and apply: `170`
-  - Presentation prefab: `27`
-- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
-- Total automated tests: `676`
+- Authority: `208ee71`
+- Implementation: `f05b95c`
+- Documentation closeout: `2ef594c`
+- EditMode: `197` passed
+- Runtime Play Mode: `479` passed
 - Compilation: `0` errors, `0` warnings
-- First manual Apply: `Succeeded`
-- Second manual Apply: `NoChanges`
-- Third manual Apply: `NoChanges`
-- Stable plan fingerprint: `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
-- Build Settings proof: existing `OutdoorsScene` retained at index `0`; one enabled Boot scene appended at index `1`
-- Rollback completed: not required
-- Manual recovery paths: none
+- Manual Apply sequence: `Succeeded`, `NoChanges`, `NoChanges`
+- Working tree at handoff: clean
 
-## Promoted Decisions
+## Active Authority Preparation
 
-- Freshness is recollected and replanned immediately before writes.
-- Only `Create`, `Reuse`, and `NoChange` operations are executable.
-- Existing compatible content is reused and never silently repaired.
-- Incompatible or unsupported content remains blocking.
-- Project-owned folders, definitions, configuration, root prefab variant, and Boot scene are created deterministically.
-- Build Settings is written last and only through the approved policy.
-- One active Apply is allowed.
-- Active-attempt failure uses an in-memory compensating rollback journal.
-- Repeat Apply returns `NoChanges` without duplicate assets or Build Settings entries.
+FL-M5-03 defines a separate explicit repair transaction for existing
+current-schema First Light project assets. It does not weaken create-only Apply.
 
-## Deferred Boundary
+The approved authority set introduces:
 
-Repair, migration, persistent receipts, uninstall/reset, crash-persistent
-recovery, Direct Scene initialization, Validator, real Standalone Laboratory
-activation, player builds, clean external installation, and performance evidence
-remain outside FL-M5-02.
+- SFGSS-PKG-ECHOLAUNCH-001 v1.9.0.
+- EchoLaunch-ADR-006.
+- FL-M5-03 Checkpoint Build Plan.
+- Separate `Repair Plan...` user intent.
+- Proven type/schema/identity/prefab-lineage/scene-shape gates.
+- Exact asset + `.meta` backup under `Library` before modification.
+- Complete and incomplete rollback diagnostics/results.
+- Repeat-safe reconciliation ending in `NoChanges`.
+
+## Key Boundary
+
+Repair may touch only:
+
+- Three canonical configuration references.
+- Destination scene path and an empty-only display label.
+- Configuration binding on a verified root-prefab variant.
+- Root presence in an exact zero-root canonical Boot scene.
+- Canonical Boot Build Settings presence/enabled/approved placement.
+
+Migration, ID regeneration, type replacement, sequence/splash content edits,
+duplicate-root deletion, prefab structural rewrite, move/rename/delete,
+destination-scene modification, receipts, uninstall, crash recovery, Direct
+Scene, Validator, and Laboratory remain deferred.
 
 ## Next Action
 
-Apply and review the FL-M5-02 documentation closeout, then commit and push:
+Apply/review the FL-M5-03 authority bundle, then commit and push:
 
 ```text
-echo-launch: document FL-M5-02 completion
+echo-launch: approve FL-M5-03 explicit setup repair
 ```
+
+Implementation is not authorized until that authority commit is on `main`.
 
 ## Handoff
 
 **Completed:** FL-M5-02
-**Implementation:** `f05b95c`
-**Blockers:** None
-**Tentative next:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation
-**Authorization state:** Not yet approved for implementation
+**Active:** FL-M5-03 authority
+**Required baseline:** `2ef594c`
+**Blockers:** None recorded
+**Implementation state:** Not started

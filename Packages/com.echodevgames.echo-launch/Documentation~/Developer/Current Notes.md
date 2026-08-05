@@ -1,67 +1,74 @@
 # First Light - Current Notes
 
-## Completed Checkpoint
+## Active Checkpoint
 
-- Checkpoint: `FL-M5-02`
-- Title: Approved Setup Apply Engine and Repeat-Safe Asset Creation
+- Checkpoint: `FL-M5-03`
+- Title: Explicit Setup Repair and Existing-Asset Reconciliation
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.8.0
-- ADR: EchoLaunch-ADR-005
-- Authority commit: `208ee71`
-- Implementation commit: `f05b95c`
-- Status: Implemented, tested, manually accepted, and pushed
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.9.0
+- ADR: EchoLaunch-ADR-006
+- Required baseline: `2ef594c`
+- Status: Authority prepared; implementation begins only after authority commit/push
 
-## Implemented Boundary
+## Last Completed Checkpoint
 
-The Setup window can now apply one fresh executable setup plan.
+FL-M5-02 is implemented, tested, manually accepted, documented, and pushed.
 
-- Recollect and replan before writes
-- Deterministic plan fingerprint
-- Single active Apply
-- Executable `Create`, `Reuse`, and `NoChange` dispositions only
-- Create-only project folders and definition assets
-- Configuration reference binding
-- Project-owned root prefab variant
-- Boot scene creation without changing the destination scene
-- Explicit Build Settings policy
-- Build Settings write last
-- In-memory compensating rollback
-- Immutable apply result and plain-text formatter
-- Second and third Apply settle as `NoChanges`
-
-## Validation
-
-- EditMode: `197` passed, `0` failed, `0` ignored
-  - Setup and apply: `170`
-  - Presentation prefab: `27`
-- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
+- Authority: `208ee71`
+- Implementation: `f05b95c`
+- Documentation closeout: `2ef594c`
+- EditMode: `197` passed
+- Runtime Play Mode: `479` passed
 - Compilation: `0` errors, `0` warnings
 - Manual Apply sequence: `Succeeded`, `NoChanges`, `NoChanges`
-- Stable fingerprint: `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1`
-- Existing destination reused: `Assets/OutdoorsScene.unity`
-- Boot appended once: `Assets/EchoDevGames/FirstLight/Scenes/Boot.unity`
-- Rollback required: no
-- Manual recovery paths: none
 
-## Commit Scope
+## Approved FL-M5-03 Boundary
 
-The implementation commit contains package Editor setup code, EditMode tests,
-and Unity metadata only. Generated acceptance assets, Build Settings drift, and
-solution-file noise were removed before staging.
+Repair is separate from create-only Apply.
 
-## Deferred
+Authorized only for provable current-schema canonical drift:
 
-Repair, migration, persistent receipts, uninstall/reset, crash-persistent
-recovery, Direct Scene, Validator, Laboratory, builds, clean/external adoption,
-and performance evidence.
+- Reconcile configuration sequence/destination/optional-splash references.
+- Reconcile destination scene path; fill label only when empty.
+- Rebind configuration on a verified package-template root-prefab variant.
+- Add one project-root-prefab instance to an exact canonical Boot scene with zero roots.
+- Add/enable/reposition the canonical Boot Build Settings entry only under the approved policy.
+- Create missing foundation targets in the same explicitly approved repair transaction when needed.
+
+Every repair requires a fresh plan, explicit confirmation, proven type/schema/
+identity/lineage/shape, and backup of existing asset + `.meta` bytes before
+modification.
+
+## Preserved Boundary
+
+FL-M5-03 does not authorize:
+
+- Runtime changes.
+- Schema migration or stable-ID regeneration.
+- Type replacement.
+- Sequence/splash content repair.
+- Duplicate-root deletion or arbitrary scene cleanup.
+- Prefab replacement/rebase/unpack/structural rewrite.
+- Move/rename/delete/relocation.
+- Destination-scene modification.
+- Receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator,
+  or Laboratory.
+
+## Diagnostics Added to Authority
+
+- `ELAUNCH-SETUP-013` explicit repair approval required.
+- `ELAUNCH-SETUP-014` repair backup unavailable.
+- `ELAUNCH-SETUP-015` ownership/shape cannot be proven.
+- `ELAUNCH-SETUP-016` repair failed; rollback completed.
+- `ELAUNCH-SETUP-017` rollback incomplete; backup retained.
 
 ## Next Action
 
-Commit and push the reconciled documentation:
+1. Review this authority bundle.
+2. Commit and push:
 
 ```text
-echo-launch: document FL-M5-02 completion
+echo-launch: approve FL-M5-03 explicit setup repair
 ```
 
-Tentative next checkpoint: `FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation`.
-It is not authorized until its specification/ADR/checkpoint authority is approved.
+3. Begin implementation only from the approved FL-M5-03 plan.

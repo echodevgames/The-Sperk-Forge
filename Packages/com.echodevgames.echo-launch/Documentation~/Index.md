@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-02 create-only repeat-safe Setup Apply implemented and accepted; repair and migration pending
+- Development stage: FL-M5-02 complete; FL-M5-03 explicit current-schema Setup Repair authority approved and awaiting implementation
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -30,8 +30,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-05`
   - `FL-M5-01`
   - `FL-M5-02`
-- Active authority checkpoint: none; FL-M5-03 remains tentative and unauthorized
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, and fresh-plan-gated create-only repeat-safe Setup Apply
+- Active authority checkpoint: `FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation`
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, and fresh-plan-gated create-only repeat-safe Setup Apply; explicit repair is approved but not yet implemented
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -48,6 +48,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [EchoLaunch-ADR-003 Neutral Startup Prefab Templates and Canvas Assembly](Developer/ADR/EchoLaunch-ADR-003_Neutral_Startup_Prefab_Templates_and_Canvas_Assembly.md)
 - [EchoLaunch-ADR-004 Read-Only Project Snapshot and Non-Destructive Setup Plan](Developer/ADR/EchoLaunch-ADR-004_Read-Only_Project_Snapshot_and_Non-Destructive_Setup_Plan.md)
 - [EchoLaunch-ADR-005 Approved Setup Apply Engine and Repeat-Safe Asset Creation](Developer/ADR/EchoLaunch-ADR-005_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md)
+- [EchoLaunch-ADR-006 Explicit Setup Repair and Existing-Asset Reconciliation](Developer/ADR/EchoLaunch-ADR-006_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -88,6 +89,15 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-01 Editor Setup Planning Test Report](Developer/Test%20Reports/FL-M5-01_Editor_Setup_Planning_Test_Report.md)
 - [FL-M5-02 Approved Setup Apply Engine and Repeat-Safe Asset Creation](Developer/Checkpoints/FL-M5-02_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md)
 - [FL-M5-02 Setup Apply and Repeatability Test Report](Developer/Test%20Reports/FL-M5-02_Setup_Apply_and_Repeatability_Test_Report.md)
+
+
+## Active FL-M5-03 Authority
+
+FL-M5-03 is approved to implement a separate explicit Repair transaction for
+narrow current-schema canonical drift. Create-only Apply remains unchanged.
+Repair must prove ownership/shape, back up existing asset and `.meta` bytes
+before writes, preserve unrelated project content, and become `NoChanges` on
+repeat. Implementation evidence is not yet claimed.
 
 ## Package Root Documents
 
