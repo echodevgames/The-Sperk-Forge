@@ -1,0 +1,21 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Tests.Presentation.UGUI",
+  "rootNamespace": "EchoDevGames.EchoLaunch.Tests.Presentation.UGUI",
+  "references": [
+    "GUID:6370d00c0cfa8144795d367cb689f221",
+    "EchoDevGames.EchoLaunch.Presentation.UGUI",
+    "Unity.ugui"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

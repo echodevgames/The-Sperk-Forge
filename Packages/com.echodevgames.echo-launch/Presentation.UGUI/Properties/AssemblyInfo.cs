@@ -3,10 +3,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo(
-    "EchoDevGames.EchoLaunch.Tests.Runtime"
-)]
-
-[assembly: InternalsVisibleTo(
     "EchoDevGames.EchoLaunch.Tests.Presentation.UGUI"
 )]
 
