@@ -9,10 +9,11 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Scene-facing authority root for First Light.
     ///
-    /// FL-M3-06 gives the authoritative root ownership of one explicit
-    /// startup-sequence run, lifecycle publication, cooperative cancellation,
-    /// and destruction-safe settlement. Automatic startup, reports,
-    /// presentation, and destination loading remain later checkpoints.
+    /// The authoritative root owns one explicit startup-sequence run,
+    /// lifecycle publication, cooperative cancellation, immutable terminal
+    /// reporting, and destruction-safe settlement. Automatic startup,
+    /// successful destination handoff, presentation, and scene loading remain
+    /// later checkpoints.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class EchoLaunchRoot : MonoBehaviour
@@ -44,6 +45,11 @@ namespace EchoDevGames.EchoLaunch
         private StartupSequenceRunResult
             lastSequenceRunResult;
 
+        private LaunchReportBuilder
+            launchReportBuilder;
+
+        private LaunchReport lastReport;
+
         private string cancellationReason =
             string.Empty;
 
@@ -64,6 +70,20 @@ namespace EchoDevGames.EchoLaunch
         /// </summary>
         public event Action<LaunchProgressChangedEvent>
             LaunchProgressChanged;
+
+        /// <summary>
+        /// Raised after a failed report is finalized and authoritative state is
+        /// already <see cref="LaunchStatus.Failed"/>.
+        /// </summary>
+        public event Action<LaunchReport>
+            LaunchFailed;
+
+        /// <summary>
+        /// Raised after an interrupted report is finalized and authoritative
+        /// state is already <see cref="LaunchStatus.Interrupted"/>.
+        /// </summary>
+        public event Action<LaunchReport>
+            LaunchInterrupted;
 
         /// <summary>
         /// Returns the currently authoritative First Light root.
@@ -115,6 +135,17 @@ namespace EchoDevGames.EchoLaunch
                 : LaunchProgressSnapshot.Empty;
 
         /// <summary>
+        /// Gets the latest immutable finalized launch report.
+        ///
+        /// FL-M3-07 finalizes failed and interrupted attempts only. A successful
+        /// sequence remains report-pending while the root is Transitioning.
+        /// </summary>
+        public LaunchReport LastReport =>
+            IsAuthoritative
+                ? lastReport
+                : null;
+
+        /// <summary>
         /// Requests cooperative cancellation of the active root-owned launch.
         ///
         /// Returns false when this root is not authoritative, no launch is
@@ -160,6 +191,15 @@ namespace EchoDevGames.EchoLaunch
         internal StartupSequenceRunResult
             LastSequenceRunResult =>
                 lastSequenceRunResult;
+
+        /// <summary>
+        /// Gets whether successful sequence data is retained for the later
+        /// destination handoff without a finalized public report.
+        /// </summary>
+        internal bool HasPendingLaunchReport =>
+            launchReportBuilder != null &&
+            launchReportBuilder
+                .HasPendingSuccessfulRun;
 
         private void Awake()
         {
@@ -225,10 +265,14 @@ namespace EchoDevGames.EchoLaunch
 
             LaunchStateChanged = null;
             LaunchProgressChanged = null;
+            LaunchFailed = null;
+            LaunchInterrupted = null;
 
             session = null;
             sequenceRunner = null;
             lastSequenceRunResult = null;
+            launchReportBuilder = null;
+            lastReport = null;
 
             LaunchAuthorityClaim.Release(this);
         }
@@ -236,7 +280,7 @@ namespace EchoDevGames.EchoLaunch
         /// <summary>
         /// Explicitly begins the one startup-sequence run owned by this root.
         ///
-        /// FL-M3-06 deliberately does not call this method from Awake, Start,
+        /// First Light deliberately does not call this method from Awake, Start,
         /// or a scene callback. Automatic startup remains a later checkpoint.
         /// </summary>
         internal async Awaitable<StartupSequenceRunResult>
@@ -261,9 +305,16 @@ namespace EchoDevGames.EchoLaunch
                     string.Empty;
 
                 lastSequenceRunResult = null;
+                lastReport = null;
 
                 launchStartSeconds =
-                    Time.realtimeSinceStartupAsDouble;
+                    GetMonotonicNow();
+
+                launchReportBuilder =
+                    new LaunchReportBuilder(
+                        launchMode,
+                        configuration,
+                        launchStartSeconds);
 
                 PublishValidationStarted();
 
@@ -554,6 +605,10 @@ namespace EchoDevGames.EchoLaunch
                 return;
             }
 
+            launchReportBuilder?
+                .RecordSequenceValidated(
+                    sequence);
+
             PublishProgress(
                 new LaunchProgressSnapshot(
                     launchMode,
@@ -626,6 +681,10 @@ namespace EchoDevGames.EchoLaunch
                 return;
             }
 
+            launchReportBuilder?
+                .RecordStepCompleted(
+                    execution);
+
             StartupStepResult result =
                 execution.Result;
 
@@ -672,14 +731,13 @@ namespace EchoDevGames.EchoLaunch
                     exception.FailureMessage,
                     string.Empty);
 
-            PublishTerminalSnapshot(
-                LaunchStatus.Failed,
+            PublishFailureAndReport(
+                null,
                 string.Empty,
                 -1,
                 GetAuthoredEntryCount(),
                 0f,
                 true,
-                result.Message,
                 result);
         }
 
@@ -688,24 +746,20 @@ namespace EchoDevGames.EchoLaunch
             string message,
             Exception exception)
         {
-            string details =
-                CreateExceptionDetails(
-                    exception);
-
             StartupStepResult result =
                 StartupStepResult.BlockingFailure(
                     diagnosticCode,
                     message,
-                    details);
+                    CreateExceptionDetails(
+                        exception));
 
-            PublishTerminalSnapshot(
-                LaunchStatus.Failed,
+            PublishFailureAndReport(
+                null,
                 string.Empty,
                 -1,
                 GetAuthoredEntryCount(),
                 0f,
                 true,
-                result.Message,
                 result);
         }
 
@@ -725,8 +779,8 @@ namespace EchoDevGames.EchoLaunch
                             string.Empty)
                     : finalExecution.Result;
 
-            PublishTerminalSnapshot(
-                LaunchStatus.Failed,
+            PublishFailureAndReport(
+                result,
                 finalExecution == null
                     ? string.Empty
                     : finalExecution.StepId,
@@ -738,7 +792,34 @@ namespace EchoDevGames.EchoLaunch
                     ? 0f
                     : 1f,
                 finalExecution == null,
-                finalResult.Message,
+                finalResult);
+        }
+
+        private void PublishFailureAndReport(
+            StartupSequenceRunResult runResult,
+            string stepId,
+            int stepIndex,
+            int totalStepCount,
+            float progress01,
+            bool isIndeterminate,
+            StartupStepResult finalResult)
+        {
+            if (!PublishTerminalSnapshot(
+                    LaunchStatus.Failed,
+                    stepId,
+                    stepIndex,
+                    totalStepCount,
+                    progress01,
+                    isIndeterminate,
+                    finalResult.Message,
+                    finalResult))
+            {
+                return;
+            }
+
+            FinalizeTerminalReport(
+                LaunchStatus.Failed,
+                runResult,
                 finalResult);
         }
 
@@ -750,7 +831,7 @@ namespace EchoDevGames.EchoLaunch
                 GetFinalExecution(
                     runResult);
 
-            StartupStepResult result =
+            StartupStepResult sourceResult =
                 cancellationResult ??
                 StartupStepResult.Cancelled(
                     LifecycleDiagnosticCode,
@@ -760,27 +841,46 @@ namespace EchoDevGames.EchoLaunch
             string message =
                 string.IsNullOrEmpty(
                     cancellationReason)
-                    ? result.Message
+                    ? sourceResult.Message
                     : cancellationReason;
 
-            PublishTerminalSnapshot(
+            string diagnosticCode =
+                string.IsNullOrWhiteSpace(
+                    sourceResult.Code)
+                    ? LifecycleDiagnosticCode
+                    : sourceResult.Code;
+
+            StartupStepResult reportResult =
+                StartupStepResult.Cancelled(
+                    diagnosticCode,
+                    message,
+                    sourceResult.Details);
+
+            if (!PublishTerminalSnapshot(
+                    LaunchStatus.Interrupted,
+                    finalExecution == null
+                        ? string.Empty
+                        : finalExecution.StepId,
+                    finalExecution == null
+                        ? -1
+                        : finalExecution.StepIndex,
+                    runResult == null
+                        ? GetAuthoredEntryCount()
+                        : runResult.AuthoredEntryCount,
+                    finalExecution == null
+                        ? 0f
+                        : 1f,
+                    finalExecution == null,
+                    reportResult.Message,
+                    reportResult))
+            {
+                return;
+            }
+
+            FinalizeTerminalReport(
                 LaunchStatus.Interrupted,
-                finalExecution == null
-                    ? string.Empty
-                    : finalExecution.StepId,
-                finalExecution == null
-                    ? -1
-                    : finalExecution.StepIndex,
-                runResult == null
-                    ? GetAuthoredEntryCount()
-                    : runResult
-                        .AuthoredEntryCount,
-                finalExecution == null
-                    ? 0f
-                    : 1f,
-                finalExecution == null,
-                message,
-                result);
+                runResult,
+                reportResult);
         }
 
         private void PublishTransitionPending(
@@ -790,18 +890,25 @@ namespace EchoDevGames.EchoLaunch
                 GetFinalResult(
                     result);
 
-            PublishTerminalSnapshot(
-                LaunchStatus.Transitioning,
-                string.Empty,
-                -1,
-                result.AuthoredEntryCount,
-                1f,
-                false,
-                "Startup sequence completed. Initial destination transition is pending.",
-                finalResult);
+            if (!PublishTerminalSnapshot(
+                    LaunchStatus.Transitioning,
+                    string.Empty,
+                    -1,
+                    result.AuthoredEntryCount,
+                    1f,
+                    false,
+                    "Startup sequence completed. Initial destination transition is pending.",
+                    finalResult))
+            {
+                return;
+            }
+
+            launchReportBuilder?
+                .MarkTransitionPending(
+                    result);
         }
 
-        private void PublishTerminalSnapshot(
+        private bool PublishTerminalSnapshot(
             LaunchStatus status,
             string stepId,
             int stepIndex,
@@ -813,7 +920,7 @@ namespace EchoDevGames.EchoLaunch
         {
             if (!CanPublishRuntimeProgress)
             {
-                return;
+                return false;
             }
 
             PublishProgress(
@@ -828,6 +935,49 @@ namespace EchoDevGames.EchoLaunch
                     message,
                     GetElapsedSeconds(),
                     lastResult));
+
+            return true;
+        }
+
+        private void FinalizeTerminalReport(
+            LaunchStatus finalStatus,
+            StartupSequenceRunResult runResult,
+            StartupStepResult finalResult)
+        {
+            if (!CanPublishRuntimeProgress ||
+                launchReportBuilder == null ||
+                lastReport != null)
+            {
+                return;
+            }
+
+            LaunchReport report =
+                launchReportBuilder
+                    .FinalizeReport(
+                        finalStatus,
+                        runResult,
+                        finalResult,
+                        GetMonotonicNow());
+
+            lastReport = report;
+
+            if (finalStatus ==
+                LaunchStatus.Failed)
+            {
+                LaunchNotificationDispatcher.Dispatch(
+                    LaunchFailed,
+                    report,
+                    nameof(LaunchFailed),
+                    this);
+
+                return;
+            }
+
+            LaunchNotificationDispatcher.Dispatch(
+                LaunchInterrupted,
+                report,
+                nameof(LaunchInterrupted),
+                this);
         }
 
         private int GetAuthoredEntryCount()
@@ -846,17 +996,27 @@ namespace EchoDevGames.EchoLaunch
         private double GetElapsedSeconds()
         {
             double now =
-                Time.realtimeSinceStartupAsDouble;
+                GetMonotonicNow();
 
-            if (double.IsNaN(now) ||
-                double.IsInfinity(now) ||
-                now < launchStartSeconds)
+            if (now < launchStartSeconds)
             {
                 return 0d;
             }
 
             return now -
                    launchStartSeconds;
+        }
+
+        private static double GetMonotonicNow()
+        {
+            double now =
+                Time.realtimeSinceStartupAsDouble;
+
+            return double.IsNaN(now) ||
+                   double.IsInfinity(now) ||
+                   now < 0d
+                ? 0d
+                : now;
         }
 
         private static StartupStepExecution
