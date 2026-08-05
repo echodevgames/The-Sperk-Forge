@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.4.0
+**Specification version:** 1.5.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M3-08 is authorized only after the accepted destination/schema decision and this v1.4.0 authority update are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M4-04 is authorized only after the accepted splash/configuration/root-order decision and this v1.5.0 authority update are committed.
 
 ---
 
@@ -31,6 +31,7 @@
 | 1.2.0 | 2026-08-04 | Approved | Separated the default uGUI presenter from the neutral Runtime assembly; Set the Editor assembly to `autoReferenced: false`; Canonicalized immutable `StartupStepDefinition` versus runtime executor terminology. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 | 1.3.0 | 2026-08-04 | Approved | Recorded SUITE-DOC-33 activation of FL-M1-01, adopted the just-in-time package learning gate, and updated implementation status without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 | 1.4.0 | 2026-08-05 | Approved | Selected a standalone project-owned `LaunchDestination` ScriptableObject, assigned destination schema version 1, advanced `EchoLaunchConfiguration` to schema version 3, preserved schema 2 as the historical startup-sequence-only shape, and authorized FL-M3-08 destination handoff work | Jesse “Echo” Adams |
+| 1.5.0 | 2026-08-05 | Approved | Advanced `EchoLaunchConfiguration` to schema version 4 with an optional project-owned `SplashSequence` reference and project-authored reduced-motion default; selected sequential root order of optional splash, startup steps, destination transition; preserved report schema 2; and authorized FL-M4-04 | Jesse “Echo” Adams |
 
 ---
 
@@ -376,7 +377,8 @@ Project-owned assets
 EchoLaunchConfiguration
 ├── StartupSequence
 │   └── ordered StartupStep definitions
-├── SplashSequence
+├── SplashSequence → optional project-owned image sequence
+├── UseReducedMotionForSplash → project-authored default
 ├── InitialDestination → project-owned LaunchDestination asset
 └── runtime and presentation policies
 
@@ -384,10 +386,12 @@ Scene authority
 EchoLaunchRoot
 ├── AuthorityClaim
 ├── LaunchPreflight
+├── SplashSequencePlayer
 ├── StartupSequenceRunner
 ├── LaunchSessionState
 ├── LaunchReportBuilder
 ├── ILaunchStatusPresenter (default: EchoLaunchStatusView)
+├── IImageSplashPresenter (default: EchoLaunchStatusView or headless fallback)
 └── IInitialDestinationLoader (default: Unity scene loader)
 
 Development helper
@@ -412,17 +416,20 @@ EchoDirectSceneInitializer
 1. **Construct scene object** — Unity loads the Boot scene or direct-scene helper.
 2. **Claim runtime** — root atomically claims launch authority before any side effect.
 3. **Reject duplicate** — duplicate reports a stable code and exits immediately.
-4. **Validate references** — root, configuration, sequence, presenter, and destination references are checked.
+4. **Validate references** — root, configuration, startup sequence, optional splash sequence, presenter, and destination references are checked.
 5. **Begin report** — launch mode, package version, timestamps, configuration identity, and preflight results are recorded.
-6. **Preflight** — configuration and build-scene validity are evaluated.
-7. **Prepare presentation** — plain status view is bound; no gameplay/package authority is initialized by presentation.
-8. **Run splash/steps** — configured launch phases execute in deterministic order.
-9. **Resolve final destination** — MVP uses one configured scene reference.
-10. **Transition** — standalone loader performs validated asynchronous single-scene load.
-11. **Handoff** — launch is marked complete after destination activation and handoff callbacks.
-12. **Release startup-only resources** — splash/status objects are hidden or destroyed according to policy.
-13. **Retain or release root** — root follows approved lifetime policy and exposes final immutable report while retained.
-14. **Shutdown/reset** — active work is cancelled where safe, report is finalized, and static claim state is reset for domain-reload-disabled workflows.
+6. **Preflight** — configuration, splash, startup sequence, destination, and build-scene validity are evaluated before launch work.
+7. **Prepare presentation** — plain status and splash presenters are resolved; no gameplay/package authority is initialized by presentation.
+8. **Play optional splash** — when schema-4 configuration assigns a `SplashSequence`, the root plays it once through `SplashSequencePlayer` using the launch clock, root cancellation token, configured reduced-motion default, and resolved splash presenter.
+9. **Run startup steps** — only after splash completion or no-op omission, the configured startup sequence executes through the existing runner.
+10. **Resolve final destination** — MVP uses one configured scene reference.
+11. **Transition** — standalone loader performs validated asynchronous single-scene load.
+12. **Handoff** — launch is marked complete after destination activation and handoff callbacks.
+13. **Release startup-only resources** — splash/status objects are hidden or destroyed according to policy.
+14. **Retain or release root** — root follows approved lifetime policy and exposes final immutable report while retained.
+15. **Shutdown/reset** — active work is cancelled where safe, report is finalized, and static claim state is reset for domain-reload-disabled workflows.
+
+Splash playback and startup-step execution are sequential in the MVP. They do not run concurrently, race for presentation ownership, or hide step-side effects behind an overlapping splash timeline.
 
 ### 8.5 Failure model
 
@@ -436,6 +443,9 @@ EchoDirectSceneInitializer
 | Step timeout | Runtime | Active step, elapsed time, and policy shown | Continue, retry, or block according to step policy; MVP supports continue-or-block, not interactive retry | ELAUNCH-STEP-003 |
 | Step exception | Runtime | Sanitized failure message and step ID | Convert to blocking or recoverable failure by policy; never crash silently | ELAUNCH-STEP-004 |
 | Presenter missing | Preflight | Console/report warning | Use logging-only headless status path if presentation is optional; otherwise block | ELAUNCH-VIEW-001 |
+| Splash sequence invalid | Preflight | Splash asset/index guidance | No splash, steps, or destination work; report blocks | ELAUNCH-SPLASH-001 |
+| Splash playback failed | Splash phase | Blocking status with sanitized details | Stop before startup steps and destination; finalize failed report | ELAUNCH-SPLASH-002 |
+| Splash visual presenter unavailable | Preflight/prepare presentation | Warning when a splash is configured | Preserve authored timing through `NullImageSplashPresenter`; continue headless | ELAUNCH-SPLASH-003 |
 | Invalid destination | Preflight | Scene/path guidance | No transition; report blocks | ELAUNCH-DEST-001 |
 | Destination load failure | Transition | Failure state and scene error | Remain in Boot/status scene; no false handoff | ELAUNCH-DEST-002 |
 | Direct initializer unavailable in release | Direct-scene entry | Explicit Editor/development warning | Require canonical Boot scene | ELAUNCH-DIRECT-001 |
@@ -492,12 +502,32 @@ All configuration, sequence, step, splash, and destination assets are treated as
 - Editor tooling may later use `SceneAsset` authoring support, but the neutral Runtime assembly stores only runtime-safe scene metadata and does not reference `UnityEditor`.
 - Conditional or save-aware destination providers remain deferred.
 
+### 9.4.2 Splash configuration and root-order decision
+
+- `SplashSequence` remains a standalone project-owned `ScriptableObject`.
+- `EchoLaunchConfiguration` stores one optional serialized `SplashSequence` reference.
+- A null splash reference means the splash phase is intentionally omitted and produces no warning or failure.
+- An assigned empty but valid sequence is a legal no-op.
+- `EchoLaunchConfiguration` stores one project-authored `UseReducedMotionForSplash` default.
+- The root passes that value directly to `SplashSequencePlayer`.
+- Runtime preference-provider or EchoSettings overrides remain deferred.
+- Canonical Boot and direct-scene development launches use the same configured splash contract.
+- The root plays the optional splash before startup steps.
+- Splash playback and startup-step execution are not concurrent in the MVP.
+- Successful splash completion clears splash presentation before startup-step presentation begins.
+- Runtime reads but never rewrites configuration or splash assets.
+
 ### 9.5 Serialization and migration
 
-- `EchoLaunchConfiguration.CurrentSchemaVersion` is `3`.
+- `EchoLaunchConfiguration.CurrentSchemaVersion` is `4`.
 - Configuration schema `2` remains the historical startup-sequence-only serialized shape.
-- Configuration schema `3` adds the serialized project-owned initial `LaunchDestination` reference.
-- `LaunchDestination.CurrentSchemaVersion` is `1`.
+- Configuration schema `3` remains the historical startup-sequence-plus-initial-destination shape.
+- Configuration schema `4` adds the optional serialized project-owned `SplashSequence` reference and the project-authored reduced-motion default.
+- `LaunchDestination.CurrentSchemaVersion` remains `1`.
+- `SplashSequence.CurrentSchemaVersion` remains `1`.
+- `LaunchReport.CurrentSchemaVersion` remains `2`.
+- Successful splash timing contributes to the report's existing total launch elapsed time.
+- Splash failures use the existing immutable final-result code/message surface; report schema 2 gains no splash-specific fields.
 - Editor migration owns supported asset upgrades.
 - Runtime blocks unsupported older/newer versions through `ELAUNCH-CFG-002` and must not silently rewrite assets.
 - Migration previews the affected assets and preserves a backup when a destructive structure change is required.
@@ -524,6 +554,9 @@ All configuration, sequence, step, splash, and destination assets are treated as
 | `StartupStepPolicy` | Serializable struct/class | Required/optional, failure action, timeout, skip/retry metadata | Stored in sequence entry |
 | `SplashSequence` | ScriptableObject | Ordered image splash configuration | Project-owned |
 | `SplashEntry` | Serializable definition | Image and timing/skip metadata | Owned by sequence |
+| `SplashSequencePlayer` | Class | Deterministic clock-driven traversal of one assigned sequence | Root-owned per launch attempt |
+| `IImageSplashPresenter` | Interface | Receives immutable splash frames and project-routed skip requests | Default uGUI view, project adapter, or headless fallback |
+| `SplashPlaybackResult` | Immutable class | Completed splash traversal summary | Produced by player; retained only as temporary root execution evidence in FL-M4-04 |
 | `LaunchDestination` | ScriptableObject | Initial validated scene target with stable identity and runtime-safe scene metadata | Project-owned |
 | `LaunchReport` | Immutable class | Complete launch summary and step results | Finalized by root |
 | `LaunchProgressSnapshot` | Immutable struct | Current phase, step, progress, message, elapsed time | Published by root |
@@ -825,6 +858,9 @@ EchoLaunch exposes:
 | ELAUNCH-STEP-003 | Error | Step timed out | Inspect step policy/dependency and timeout |
 | ELAUNCH-STEP-004 | Error | Step threw/unhandled failure | Inspect development details and step implementation |
 | ELAUNCH-VIEW-001 | Warning/Blocker | Required presenter unavailable | Assign default or project presenter |
+| ELAUNCH-SPLASH-001 | Blocker | Assigned splash sequence is invalid or unsupported | Repair/remove the assigned sequence or use compatible assets |
+| ELAUNCH-SPLASH-002 | Blocker | Splash playback failed unexpectedly | Inspect presenter, clock, cancellation, and development details |
+| ELAUNCH-SPLASH-003 | Warning | Splash is configured without a visual splash presenter | Assign an `IImageSplashPresenter` or accept headless timing |
 | ELAUNCH-DEST-001 | Blocker | Destination invalid/not build-loadable | Assign a valid scene and update build settings |
 | ELAUNCH-DEST-002 | Blocker | Destination load failed | Inspect scene/build/platform error |
 | ELAUNCH-DIRECT-001 | Warning | Direct-scene helper unavailable or prohibited | Start from Boot scene or enable approved development mode |
@@ -1477,16 +1513,17 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M4-03 — Image Splash Definitions and Deterministic Splash Player |
+| Active authorized checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration |
 | Implementation commit | `f997a9a` |
-| Previous documentation commit | `cbaee24` |
+| Documentation baseline | `b36e04d` |
 | Files/assets created | Runtime launch systems, destination loading, automatic startup, neutral status presentation, isolated uGUI status view, project-owned image splash definitions, deterministic splash player, neutral/headless splash presenters, and isolated splash tests |
 | Tests passed | 450 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Known issues | Splash configuration/root integration, presentation prefab/art pass, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Decisions added | Image splash definitions remain standalone; skip input is project-routed; reduced motion removes fades; configuration schema 3 and report schema 2 remain unchanged |
-| Next checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration, tentative and authority-first |
+| Authority decisions | Configuration schema 4; optional serialized splash sequence; serialized reduced-motion default; optional splash before startup steps; headless fallback; report schema 2 preserved |
+| Known issues | FL-M4-04 runtime implementation, presentation prefab/art pass, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Next action | Commit this authority update before applying any FL-M4-04 runtime patch |
 
 ---
 
@@ -1516,7 +1553,7 @@ Before writing code:
 **Decision:** Approved
 **Approved by:** Jesse “Echo” Adams
 **Date:** August 3, 2026
-**Conditions or notes:** The design is approved. FL-M3-08 may implement the accepted project-owned destination and configuration schema 3 contract only through its approved Checkpoint Build Plan. Runtime migration and silent asset rewriting remain prohibited.
+**Conditions or notes:** The design is approved. FL-M4-04 may implement configuration schema 4 and the accepted sequential optional-splash-before-startup root contract only through its approved Checkpoint Build Plan. Report schema 2 remains unchanged. Runtime migration, concurrent splash/step execution, and silent asset rewriting remain prohibited.
 
 ---
 
@@ -1535,7 +1572,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M3-08 owns only the accepted initial-destination contract and completed handoff span.
+The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M4-04 owns only configuration schema 4, optional splash preflight/binding, sequential root playback before startup steps, and associated lifecycle proof.
 
 
 ---

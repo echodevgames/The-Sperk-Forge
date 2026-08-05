@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
+- Development stage: FL-M4-03 implemented; FL-M4-04 schema-4 and root-order authority approved pending authority commit
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -26,6 +26,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-01`
   - `FL-M4-02`
   - `FL-M4-03`
+- Active authority checkpoint:
+  - `FL-M4-04`
 - Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, a removable plain uGUI status view, and standalone deterministic image splash playback
 - Unity baseline: `6000.3.8f1`
 
@@ -39,6 +41,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [Architecture](Developer/Architecture.md)
 - [Current Notes](Developer/Current%20Notes.md)
 - [EchoLaunch-ADR-001 Project-Owned Launch Destination and Configuration Schema 3](Developer/ADR/EchoLaunch-ADR-001_Project-Owned_Launch_Destination_and_Configuration_Schema_3.md)
+- [EchoLaunch-ADR-002 Splash Configuration Schema 4 and Root Playback Order](Developer/ADR/EchoLaunch-ADR-002_Splash_Configuration_Schema_4_and_Root_Playback_Order.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -200,8 +203,9 @@ First Light currently proves:
 - Neutral and headless splash presenters
 - Default uGUI image-splash projection
 - Public project-routed skip request
-- Configuration schema 3 remaining unchanged
-- Report schema 2 remaining unchanged
+- Implemented configuration schema 3
+- Approved FL-M4-04 configuration schema 4, not yet implemented
+- Report schema 2 preserved
 - Four hundred fifty passing Runtime Play Mode tests
 
 Retries, splash configuration/root integration, the default prefab/Canvas art pass, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
