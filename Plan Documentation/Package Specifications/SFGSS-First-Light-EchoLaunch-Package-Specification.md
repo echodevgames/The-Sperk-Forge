@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.7.0
+**Specification version:** 1.8.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-01 is authorized only after the dry-run setup-planning boundary and this v1.7.0 authority update are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-02 is authorized only after the create-only apply, freshness, rollback, and repeatability boundary in this v1.8.0 update and EchoLaunch-ADR-005 are committed.
 
 ---
 
@@ -34,6 +34,7 @@
 | 1.5.0 | 2026-08-05 | Approved | Advanced `EchoLaunchConfiguration` to schema version 4 with an optional project-owned `SplashSequence` reference and project-authored reduced-motion default; selected sequential root order of optional splash, startup steps, destination transition; preserved report schema 2; and authorized FL-M4-04 | Jesse “Echo” Adams |
 | 1.6.0 | 2026-08-05 | Approved | Defined two immutable neutral package template prefabs, selected the package-owned Canvas hierarchy and defaults, preserved project ownership of branding/layout variants/input bindings, prohibited hidden prefab discovery or spawning, and authorized FL-M4-05 | Jesse “Echo” Adams |
 | 1.7.0 | 2026-08-05 | Approved | Defined the read-only project snapshot, immutable setup request/plan/operation contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, default project-owned paths, and explicit no-write boundary for FL-M5-01 | Jesse “Echo” Adams |
+| 1.8.0 | 2026-08-05 | Approved | Authorized the fresh-plan-gated create-only setup apply service, deterministic asset/prefab/scene creation order, explicit Build Settings mutation policy, single-active apply gate, compensating rollback journal, immutable apply result, and repeat-safe no-op reruns for FL-M5-02 | Jesse “Echo” Adams |
 
 ---
 
@@ -625,119 +626,96 @@ All configuration, sequence, step, splash, and destination assets are treated as
 
 1. Install or embed `com.echodevgames.echo-launch`.
 2. Open **Tools > Sperk’s Forge > First Light > Setup**.
-3. Select the project-owned First Light root, Boot scene path, destination scene, optional splash creation, and Build Settings policy.
-4. Refresh the read-only project snapshot.
-5. Review the deterministic dry-run plan and every operation disposition.
-6. Resolve blockers or manual decisions before any apply operation becomes available.
-7. In a later approved apply checkpoint, create only missing project-owned assets and modify only explicitly approved project settings.
-8. Re-run planning and validation until the result is repeat-safe and contains no unexpected create/modify operation.
+3. Select project root, Boot path, existing destination scene, optional splash,
+   and Build Settings policy.
+4. Refresh the read-only snapshot.
+5. Review the deterministic plan.
+6. Resolve blockers and ambiguity.
+7. Review create paths and approvals.
+8. Press **Apply Plan...**.
+9. Confirm the exact mutation summary.
+10. The service recollects and replans.
+11. When fresh, create only missing project-owned targets.
+12. Refresh.
+13. Repeat Apply until `NoChanges`.
 
-FL-M5-01 implements steps 2 through 5 only. It provides no Apply, Repair,
-Migrate, Create, Copy, Scene Save, or Build Settings mutation action.
+FL-M5-01 owns observation and planning.
+
+FL-M5-02 adds create-only apply. It does not add repair or migration.
 
 ### 11.2 Setup operations
 
 | Operation | Creates | Modifies | Repeats safely? | Undo/backup | Report output |
 |---|---|---|---:|---|---|
-| Create First Light foundation | Project folders, config assets, root prefab, Boot scene | Build Settings only after preview/approval | Yes | Unity Undo where supported; scene/settings backup when needed | Setup report |
-| Repair missing references | Only missing or invalid generated references | Existing generated assets | Yes | Preview + Undo/backup | Repair report |
+| Create First Light foundation | Project folders, definitions, root prefab variant, Boot scene | Build Settings only after fresh preview/approval | Yes; second/third apply are no-op | Failure rollback journal; Undo may supplement where supported | Immutable apply result |
+| Repair missing references | Only missing or invalid generated references | Existing generated assets | Later checkpoint | Preview + explicit repair authority | Repair report |
 | Validate project | Nothing | Nothing | Yes | N/A | Validation report |
-| Add built-in step | Step asset/sequence entry | Selected sequence | Yes, duplicate ID/reference prevented | Undo | Change report |
-| Create direct-scene helper | Project-owned helper prefab/config | Selected scene only after confirmation | Yes | Undo | Setup report |
-| Simulate failure/delay | Temporary test configuration or in-memory override | No production assets by default | Yes | Reset action | Test report |
-| Migrate configuration schema | Upgraded project-owned assets | Selected assets after preview | Repeat-safe per version | Backup required for destructive migration | Migration report |
+| Add built-in step | Step asset/sequence entry | Selected sequence | Yes | Undo | Change report |
+| Create direct-scene helper | Project-owned helper | Selected scene after confirmation | Yes | Undo | Setup report |
+| Simulate failure/delay | Temporary/in-memory test state | No production assets by default | Yes | Reset | Test report |
+| Migrate schema | Upgraded project-owned assets | Selected assets after preview | Per version | Destructive migration backup | Migration report |
 
 ### 11.3 Inspectors and windows
 
 | Tool | User | Purpose | Runtime dependency? |
 |---|---|---|---:|
-| First Light Setup | Novice/maintainer | Create or repair canonical project foundation | No |
-| Launch Configuration Inspector | Designer/programmer | Edit references and policies with validation | No |
-| Startup Sequence Inspector | Programmer | Reorder steps, inspect IDs/policies, detect duplicates | No |
-| Splash Sequence Inspector | Designer | Preview image order and timing | No |
-| First Light Validator | Tester/maintainer | Run configuration, scene, build, duplicate, and schema checks | No |
-| Launch Simulator | Tester | Inject delay, warning, recoverable failure, blocking failure | No runtime production dependency |
-| Launch Report Viewer | Tester | Inspect report and copy/export support details | No; MVP may show reports in Editor only |
+| First Light Setup | Novice/maintainer | Preview and create canonical foundation | No |
+| Launch Configuration Inspector | Designer/programmer | Edit references/policies with validation | No |
+| Startup Sequence Inspector | Programmer | Reorder and validate steps | No |
+| Splash Sequence Inspector | Designer | Preview image order/timing | No |
+| First Light Validator | Tester/maintainer | Run configuration/scene/build/schema checks | No |
+| Launch Simulator | Tester | Inject development failures/delays | No runtime production dependency |
+| Launch Report Viewer | Tester | Inspect/copy launch reports | No |
 
 ### 11.4 Validation and repair
 
 | Check ID | Condition | Severity | Fix available? | Safe auto-fix? |
 |---|---|---|---:|---:|
 | ELAUNCH-VAL-001 | No canonical Boot scene configured | Blocker | Yes | Create-only after preview |
-| ELAUNCH-VAL-002 | More than one enabled root in Boot scene | Blocker | Yes | No, user selects authority |
-| ELAUNCH-VAL-003 | Root has no configuration | Blocker | Yes | Yes when exactly one valid config exists |
-| ELAUNCH-VAL-004 | Configuration schema unsupported | Blocker | Maybe | Only through explicit migration |
+| ELAUNCH-VAL-002 | More than one enabled root in Boot scene | Blocker | Yes | No |
+| ELAUNCH-VAL-003 | Root has no configuration | Blocker | Yes | Later repair |
+| ELAUNCH-VAL-004 | Configuration schema unsupported | Blocker | Maybe | Explicit migration only |
 | ELAUNCH-VAL-005 | Startup sequence contains null entry | Error | Yes | No silent deletion |
-| ELAUNCH-VAL-006 | Duplicate step ID | Blocker | Yes | Regenerate only after explicit confirmation |
-| ELAUNCH-VAL-007 | Final destination missing from build scenes | Blocker | Yes | Add after preview/approval |
-| ELAUNCH-VAL-008 | Boot scene missing from build scenes | Blocker | Yes | Add after preview/approval |
-| ELAUNCH-VAL-009 | Direct-scene helper included in release configuration | Warning/Blocker by policy | Yes | Disable after approval |
-| ELAUNCH-VAL-010 | Presenter missing but presentation required | Blocker | Yes | Assign default prefab if available |
-| ELAUNCH-VAL-011 | Splash duration/fade values invalid | Error | Yes | Clamp only with explicit apply action |
-| ELAUNCH-VAL-012 | Required step configured to continue on blocking failure | Error | Yes | Policy edit required |
-| ELAUNCH-VAL-013 | Project-owned asset is inside immutable package source | Error | Yes | Move with GUID preservation after preview |
+| ELAUNCH-VAL-006 | Duplicate step ID | Blocker | Yes | Explicit confirmation |
+| ELAUNCH-VAL-007 | Final destination missing from build scenes | Blocker | Yes | Preview/approval |
+| ELAUNCH-VAL-008 | Boot scene missing from build scenes | Blocker | Yes | Preview/approval |
+| ELAUNCH-VAL-009 | Direct helper in release | Warning/Blocker | Yes | Approved disable |
+| ELAUNCH-VAL-010 | Presenter missing but required | Blocker | Yes | Assign default when available |
+| ELAUNCH-VAL-011 | Invalid splash timing | Error | Yes | Explicit apply only |
+| ELAUNCH-VAL-012 | Required step has unsafe failure policy | Error | Yes | Policy edit |
+| ELAUNCH-VAL-013 | Project asset inside package source | Error | Yes | Later GUID-preserving move |
 
-### 11.5 Setup planning contract
-
-The Editor setup foundation separates observation, planning, and mutation:
+### 11.5 Setup architecture
 
 ```text
-EchoLaunchProjectSnapshotCollector
-    -> EchoLaunchProjectSnapshot
-    -> EchoLaunchSetupPlanner
-    -> EchoLaunchSetupPlan
-    -> later approved apply service
+collector -> snapshot -> planner -> plan
+    -> apply service
+        -> asset writer
+        -> prefab writer
+        -> scene writer
+        -> Build Settings writer
+        -> rollback journal
+    -> immutable apply result
 ```
 
-FL-M5-01 implements the first four stages only.
+Observation and planning remain side-effect free.
 
-The project snapshot is read-only evidence captured from AssetDatabase and
-EditorBuildSettings. The deterministic planner performs no Unity write API call.
+Mutation begins only after confirmation and freshness validation.
 
-Approved immutable Editor contracts:
+### 11.6 Immutable contracts
 
-- `EchoLaunchSetupRequest`
-- `EchoLaunchProjectSnapshot`
-- `EchoLaunchSetupPlan`
-- `EchoLaunchSetupOperation`
-- `EchoLaunchSetupDiagnostic`
-- `EchoLaunchSetupPathSet`
-- `EchoLaunchSetupPlanStatus`
-- `EchoLaunchSetupOperationKind`
-- `EchoLaunchSetupOperationDisposition`
-- `EchoLaunchBuildSettingsPolicy`
+Planning contracts remain approved.
 
-Plan statuses:
+FL-M5-02 adds immutable apply request/approval, status, change record, result,
+and request/snapshot/plan fingerprints.
 
-```text
-Ready
-ReadyWithWarnings
-Blocked
-```
-
-Operation dispositions:
-
-```text
-Create
-Reuse
-NoChange
-ManualDecision
-Conflict
-Unsupported
-```
-
-The planner orders operations deterministically by phase and path so the same
-request and snapshot produce the same plan.
-
-### 11.6 Default project-owned paths
-
-The Setup window proposes, but never silently enforces, this project-owned root:
+### 11.7 Default paths
 
 ```text
 Assets/EchoDevGames/FirstLight
 ```
 
-Default paths beneath it:
+Targets:
 
 ```text
 Configuration/EchoLaunchConfiguration.asset
@@ -748,62 +726,95 @@ Prefabs/EchoLaunchRoot.prefab
 Scenes/Boot.unity
 ```
 
-The splash asset is optional and omitted from the plan unless selected.
+Splash is optional. Destination scene already exists and is never modified.
 
-The destination scene is selected from an existing project scene. FL-M5-01
-does not create a gameplay or menu destination scene.
+Root is a project-owned variant of the stable package root template.
 
-A future apply operation creates a project-owned prefab variant from the stable
-package `EchoLaunchRoot.prefab`, rather than editing the immutable package
-template.
+### 11.8 Apply eligibility
 
-### 11.7 Non-destructive planning rules
+Executable only when plan is `Ready`, or approved `ReadyWithWarnings`, with no
+conflict, unsupported operation, or ambiguous decision.
 
-- Existing compatible assets are reused.
-- Existing paths with an incompatible asset type are conflicts.
-- Existing project assets are never overwritten by planning.
-- Package assets are never modified.
-- Missing folders/assets/scenes produce proposed create operations only.
-- Build Settings inspection is read-only.
-- `AddIfMissingAtEnd` is the default Build Settings policy.
-- Moving Boot to index zero requires a distinct explicit
-  `PlaceFirstAfterApproval` policy.
-- Existing unrelated scene order is preserved in every plan.
-- Unsupported configuration schemas produce a blocked migration diagnostic;
-  FL-M5-01 does not migrate.
-- Ambiguous multiple candidates produce a manual-decision operation.
-- Every operation includes a stable key, target path, reason, and whether later
-  apply would require explicit approval.
-- Refreshing or closing the Setup window changes no project asset, scene,
-  import setting, or Build Settings entry.
-
-### 11.8 Preview-only Setup window
-
-FL-M5-01 provides:
+Executable dispositions:
 
 ```text
-Tools > Sperk's Forge > First Light > Setup
+Create
+Reuse
+NoChange
 ```
 
-The window may:
+### 11.9 Freshness
 
-- Edit an in-memory setup request.
-- Refresh project observation.
-- Generate and display a dry-run plan.
-- Filter operations and diagnostics.
-- Copy a plain-text plan report.
-- Ping existing compatible assets.
+The displayed plan carries deterministic fingerprints.
 
-The window may not:
+Immediately before writes, apply recollects and replans.
 
-- Create folders or assets.
-- Copy or variant prefabs.
-- Create, open, save, or modify scenes.
-- Change Build Settings.
-- Modify selection targets.
-- Migrate schemas.
-- Store project identity in EditorPrefs.
-- Call runtime launch behavior.
+Mismatch aborts with `ELAUNCH-SETUP-008` before any writer call.
+
+### 11.10 Create-only order
+
+1. Folders
+2. Startup sequence
+3. Destination
+4. Optional splash
+5. Configuration
+6. Root prefab variant
+7. Boot scene
+8. Build Settings
+
+New assets are fully initialized before creation.
+
+Reused assets are not modified.
+
+### 11.11 Prefab and scene
+
+Root prefab is a variant bound to project configuration and preserves the
+nested presenter. Package template remains not dirty.
+
+Boot scene contains one root-prefab instance, no gameplay, and no setup-created
+EventSystem. Existing open/active/dirty scene state is preserved. Destination
+scene is not opened.
+
+### 11.12 Build Settings
+
+- `DoNotChange`: no write.
+- `AddIfMissingAtEnd`: append one enabled Boot entry when missing.
+- `PlaceFirstAfterApproval`: explicit approval required.
+- No duplicate Boot entry.
+- Unrelated order and enabled state preserved.
+- Write last.
+
+### 11.13 Rollback and repeatability
+
+The service records active-attempt paths and original Build Settings.
+
+Failure restores settings and removes only active-attempt content.
+
+After success, second and third Apply return `NoChanges`, GUIDs remain stable,
+and no duplicate entry appears.
+
+### 11.14 Setup window
+
+May display approval, `Apply Plan...`, final confirmation, result, Copy Result,
+and asset pinging.
+
+May not repair, delete, move, rename, migrate, persist a receipt, store project
+identity in EditorPrefs, or invoke runtime launch.
+
+### 11.15 Stable setup diagnostics
+
+- `ELAUNCH-SETUP-001` invalid path/request.
+- `ELAUNCH-SETUP-002` incompatible target.
+- `ELAUNCH-SETUP-003` migration required.
+- `ELAUNCH-SETUP-004` Build Settings reorder approval.
+- `ELAUNCH-SETUP-005` ambiguous candidates.
+- `ELAUNCH-SETUP-006` package prerequisite unavailable.
+- `ELAUNCH-SETUP-007` compatible asset reuse.
+- `ELAUNCH-SETUP-008` stale plan.
+- `ELAUNCH-SETUP-009` another apply is active.
+- `ELAUNCH-SETUP-010` apply failed; rollback completed.
+- `ELAUNCH-SETUP-011` rollback incomplete.
+- `ELAUNCH-SETUP-012` unauthorized apply operation.
 
 ---
 
@@ -1039,6 +1050,11 @@ EchoLaunch exposes:
 | ELAUNCH-SETUP-005 | Warning/Manual | More than one compatible candidate exists for a required role | Select the intended project asset |
 | ELAUNCH-SETUP-006 | Blocker | Required package template or script identity is unavailable | Repair/reinstall the package before setup |
 | ELAUNCH-SETUP-007 | Info | Existing compatible project asset will be reused | Review the planned reference target |
+| ELAUNCH-SETUP-008 | Blocker | Project evidence changed after preview | Refresh and review the new plan |
+| ELAUNCH-SETUP-009 | Warning | Another setup apply is active | Wait for settlement |
+| ELAUNCH-SETUP-010 | Error | Apply failed and active-attempt changes were rolled back | Review failure and refresh |
+| ELAUNCH-SETUP-011 | Blocker | Rollback was incomplete | Recover named paths manually |
+| ELAUNCH-SETUP-012 | Blocker | Plan contains an operation outside create-only apply authority | Use later repair/migration workflow |
 
 
 ### 15.4 Observatory bridge
@@ -1300,15 +1316,24 @@ Presentation.UGUI/
 
 Editor/
 └── Setup/
-    ├── EchoLaunchBuildSettingsPolicy.cs
     ├── EchoLaunchProjectSnapshot.cs
     ├── EchoLaunchProjectSnapshotCollector.cs
-    ├── EchoLaunchSetupDiagnostic.cs
-    ├── EchoLaunchSetupOperation.cs
-    ├── EchoLaunchSetupPathSet.cs
-    ├── EchoLaunchSetupPlan.cs
+    ├── EchoLaunchSetupDiagnosticCodes.cs
+    ├── EchoLaunchSetupEnums.cs
+    ├── EchoLaunchSetupPaths.cs
+    ├── EchoLaunchSetupPlanModels.cs
+    ├── EchoLaunchSetupPlanTextFormatter.cs
     ├── EchoLaunchSetupPlanner.cs
     ├── EchoLaunchSetupRequest.cs
+    ├── EchoLaunchSetupFingerprint.cs
+    ├── EchoLaunchSetupApplyModels.cs
+    ├── EchoLaunchSetupApplyService.cs
+    ├── EchoLaunchSetupAssetWriter.cs
+    ├── EchoLaunchSetupPrefabWriter.cs
+    ├── EchoLaunchSetupSceneWriter.cs
+    ├── EchoLaunchSetupBuildSettingsWriter.cs
+    ├── EchoLaunchSetupRollbackJournal.cs
+    ├── EchoLaunchSetupApplyResultFormatter.cs
     └── EchoLaunchSetupWindow.cs
 ```
 
@@ -1474,11 +1499,15 @@ All code examples must compile against the documented release. Menu paths, scree
 | ELAUNCH-T-010 | Existing authority direct scene | Existing root + helper | Enter Play | No duplicate created | Yes | Not run |
 | ELAUNCH-T-011 | Invalid destination | Scene not build-loadable | Launch | Preflight blocks with ELAUNCH-DEST-001 | Yes | Not run |
 | ELAUNCH-T-012 | Successful handoff | Valid destination | Launch | Destination activates; one completion event/report | Yes | Not run |
-| ELAUNCH-T-013 | Setup repeatability | Clean project | Run setup 3 times | One config/root/Boot entry; no overwrite | Partly | Not run |
-| ELAUNCH-T-016 | Setup planning purity | Snapshot and request | Generate plan repeatedly | No project writes; plans are value-equivalent | Yes | Not run |
-| ELAUNCH-T-017 | Existing compatible assets | Snapshot with matching targets | Generate plan | Reuse/NoChange, never overwrite | Yes | Not run |
-| ELAUNCH-T-018 | Setup path conflict | Snapshot with wrong asset type at target | Generate plan | Blocked conflict with ELAUNCH-SETUP-002 | Yes | Not run |
-| ELAUNCH-T-019 | Build Settings order safety | Existing unrelated scene order | Plan Boot addition/promotion | Default appends; promotion requires explicit approval | Yes | Not run |
+| ELAUNCH-T-013 | Setup repeatability | Clean temporary root | Apply setup 3 times | One config/root/Boot entry; second/third apply NoChanges | Yes | Not run |
+| ELAUNCH-T-016 | Setup planning purity | Snapshot and request | Generate plan repeatedly | No writes; plans value-equivalent | Yes | Pass in FL-M5-01 |
+| ELAUNCH-T-017 | Existing compatible assets | Matching targets | Plan/apply | Reuse/NoChange; never overwrite or dirty | Yes | Planning pass; apply not run |
+| ELAUNCH-T-018 | Setup path conflict | Wrong type at target | Plan/apply | ELAUNCH-SETUP-002; no writes | Yes | Planning pass; apply not run |
+| ELAUNCH-T-019 | Build Settings order safety | Existing unrelated order | Apply append/promotion | Append default; approval for promotion; unrelated order preserved | Yes | Planning pass; apply not run |
+| ELAUNCH-T-020 | Stale plan safety | Preview then change evidence | Apply displayed plan | ELAUNCH-SETUP-008 before writes | Yes | Not run |
+| ELAUNCH-T-021 | Apply rollback | Inject failure after partial creation | Apply | Active-attempt content removed and settings restored | Yes | Not run |
+| ELAUNCH-T-022 | Prefab variant adoption | Package template + new root | Apply | Valid bound project variant; template not dirty | Yes | Not run |
+| ELAUNCH-T-023 | Scene-state preservation | Open/active/dirty scenes | Create Boot | Existing scene state unchanged | Yes | Not run |
 | ELAUNCH-T-014 | Sample removal | Installed package + imported sample | Delete sample | Runtime/Editor compile | Manual/CI | Not run |
 | ELAUNCH-T-015 | Clean tarball install | New project | Install `.tgz` | Zero compile errors; quick start succeeds | Manual/CI | Not run |
 
@@ -1710,17 +1739,17 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan |
-| Authority commit | `b6a4f27` |
-| Implementation commit | `453bc14` |
-| Previous documentation commit | `8bd2a57` |
+| Active authorized checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation |
+| Authority baseline | `4c4d168` |
+| Last implementation commit | `453bc14` |
+| Last documentation commit | `4c4d168` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
 | EditMode tests passed | 93 total: 66 setup planning and 27 prefab asset tests |
-| Total automated tests passed | 572 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Implemented decisions | Read-only snapshot; immutable setup contracts; deterministic pure planner; preview-only Setup window; stable setup diagnostics; no project writes |
-| Default proposed project root | `Assets/EchoDevGames/FirstLight` |
-| Known issues | Apply/repair operations, asset/scene creation, Build Settings mutation, migration, direct-scene initializer, Standalone Laboratory, player builds, and external adoption remain not run |
-| Next checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation, tentative and not yet authorized |
+| FL-M5-02 authority | Fresh-plan gate; Create/Reuse/NoChange only; deterministic creation; project prefab variant; scene preservation; explicit Build Settings approval; single apply; rollback; no-op reruns |
+| Default project root | `Assets/EchoDevGames/FirstLight` |
+| Evidence gaps | Apply creation, rollback, Build Settings mutation, migration, direct-scene initializer, Laboratory, builds, clean install, and external adoption remain not run |
+| Next action | Commit and push v1.8.0, ADR-005, and FL-M5-02 plan before implementation |
 
 ---
 
@@ -1769,7 +1798,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 has implemented the read-only Editor project snapshot, immutable setup planning contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, and focused purity/UI proof. Any setup apply/repair engine requires a separately approved SFGSS-005 Checkpoint Build Plan.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 has implemented the read-only snapshot and dry-run planner. FL-M5-02 may implement only the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005 and its SFGSS-005 plan. Repair, migration, receipts, uninstall, Direct Scene, and Laboratory remain unauthorized.
 
 
 ---

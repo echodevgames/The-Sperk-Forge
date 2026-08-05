@@ -2,78 +2,71 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M5-01`
-- Title: Editor Setup Foundation and Non-Destructive Project Plan
+- Checkpoint: `FL-M5-02`
+- Title: Approved Setup Apply Engine and Repeat-Safe Asset Creation
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.7.0
-- ADR: EchoLaunch-ADR-004
-- Authority commit: `b6a4f27`
-- Implementation commit: `453bc14`
-- Previous documentation commit: `8bd2a57`
-- Implementation status: Complete and pushed
-- Documentation closeout: Pending adjacent commit
-- EditMode result: 93 passed, 0 failed, 0 ignored
-- Runtime Play Mode result: 479 passed, 0 failed, 0 ignored
-- Compilation result: 0 errors, 0 compiler warnings
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.8.0
+- ADR: EchoLaunch-ADR-005
+- Authority baseline: `4c4d168`
+- Previous authority: `b6a4f27`
+- Previous implementation: `453bc14`
+- Previous documentation: `4c4d168`
+- Status: Authority prepared; implementation locked
+- EditMode baseline: 93 passed
+- Runtime Play Mode baseline: 479 passed
+- Compilation baseline: 0 errors, 0 warnings
 
-## Completed Result
+## Approved Outcome
 
-Implemented:
+The Setup window may apply one fresh executable plan and create the missing
+canonical First Light foundation.
 
-- Read-only project snapshot collector
-- Immutable setup request, facts, operations, diagnostics, and plan
-- Deterministic pure setup planner
-- Approved project-owned path defaults
-- Path normalization and safety validation
-- Compatible reuse, conflict, migration-block, and ambiguity planning
-- Package-template prerequisite planning
-- Append-safe and explicit-approval Build Settings policies
-- Deterministic plain-text formatter
-- Preview-only Setup window
-- Stable setup diagnostics
-- Sixty-six focused Editor tests
-- Retained twenty-seven prefab tests
-- Retained four-hundred-seventy-nine Runtime tests
+The operation is create-only, reuse-only, and non-destructive.
 
-## Evidence Summary
+## Apply Boundary
 
-- Authority `b6a4f27`
-- Implementation `453bc14`
-- `main` equals `origin/main`
-- Working tree clean
-- EditMode: 93 passed
-- Runtime Play Mode: 479 passed
-- Total: 572 passed
-- Compilation: 0 errors, 0 warnings
-- Cached whitespace check passed
-- Generated solution noise restored
-- Folder metadata whitespace repaired
+- Freshness recollection before writes
+- Deterministic fingerprints
+- Single active apply
+- Create/Reuse/NoChange only
+- Folder and definition creation
+- Configuration binding
+- Project root prefab variant
+- Boot scene creation
+- Explicit Build Settings policy
+- In-memory rollback
+- Immutable result
+- No-op second and third Apply
 
-## No-Write Boundary
+## Existing Content Policy
 
-The window can inspect, plan, display, and copy.
+Compatible content is reused and not modified.
 
-It cannot Apply, Repair, Migrate, create assets/scenes/prefab variants, change
-Build Settings, or store project identity in EditorPrefs.
+Incompatible content blocks.
 
-## Not Run
+Ambiguous candidates require selection.
 
-- Setup apply/repair
-- Asset/scene creation
-- Build Settings mutation
-- Migration
-- Direct-scene initializer
-- Standalone Laboratory
-- Player builds
-- Clean-project/external adoption
-- Performance measurements
+Unsupported schemas require migration later.
 
-## Handoff Snapshot
+## Scene and Build Settings Policy
 
-FL-M5-01 implementation is complete and pushed at `453bc14`.
+- Destination scene is never opened or modified.
+- Existing open, active, and dirty scene states are preserved.
+- Build Settings write last.
+- Default appends one enabled Boot entry.
+- Place-first requires explicit approval.
+- Unrelated order/enabled states are preserved.
 
-The adjacent FL-M5-01 documentation closeout is the only active repository
-work.
+## Deferred
 
-Tentative next checkpoint: FL-M5-02 - Approved Setup Apply Engine and
-Repeat-Safe Asset Creation.
+Repair, migration, persistent receipt, uninstall/reset, crash-persistent
+recovery, Direct Scene, Validator, Laboratory, builds, clean/external adoption,
+and performance evidence.
+
+## Next Action
+
+Commit and push:
+
+```text
+echo-launch: approve FL-M5-02 repeat-safe setup apply
+```

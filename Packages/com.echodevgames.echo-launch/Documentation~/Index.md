@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-01 preview-only setup planning implemented; setup apply/repair pending
+- Development stage: FL-M5-01 implemented; FL-M5-02 create-only setup apply authority approved pending authority commit
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -29,6 +29,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-04`
   - `FL-M4-05`
   - `FL-M5-01`
+- Active authority checkpoint:
+  - `FL-M5-02`
 - Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, a removable plain uGUI status view, and standalone deterministic image splash playback
 - Unity baseline: `6000.3.8f1`
 
@@ -45,6 +47,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [EchoLaunch-ADR-002 Splash Configuration Schema 4 and Root Playback Order](Developer/ADR/EchoLaunch-ADR-002_Splash_Configuration_Schema_4_and_Root_Playback_Order.md)
 - [EchoLaunch-ADR-003 Neutral Startup Prefab Templates and Canvas Assembly](Developer/ADR/EchoLaunch-ADR-003_Neutral_Startup_Prefab_Templates_and_Canvas_Assembly.md)
 - [EchoLaunch-ADR-004 Read-Only Project Snapshot and Non-Destructive Setup Plan](Developer/ADR/EchoLaunch-ADR-004_Read-Only_Project_Snapshot_and_Non-Destructive_Setup_Plan.md)
+- [EchoLaunch-ADR-005 Approved Setup Apply Engine and Repeat-Safe Asset Creation](Developer/ADR/EchoLaunch-ADR-005_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -237,4 +240,4 @@ First Light currently proves:
 - Four hundred seventy-nine passing Runtime Play Mode tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-007`
 
-Retries, setup apply/repair, Editor migration, direct-scene initializer tooling, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
+FL-M5-02 authorizes only fresh-plan-gated create-only setup apply after its authority commit. Repair, migration, receipts, uninstall, direct-scene initialization, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

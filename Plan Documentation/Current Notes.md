@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light FL-M5-01 documentation closeout
-**Current checkpoint:** FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan
+**Current focus:** First Light FL-M5-02 authority
+**Current checkpoint:** FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -13,60 +13,64 @@
 
 ## Current Focus
 
-Close FL-M5-01 after the preview-only Editor setup-planning foundation passed
-focused Editor, retained prefab, and complete Runtime proof.
+Approve the first mutation boundary for First Light setup.
+
+FL-M5-02 creates only missing project-owned foundation content, preserves
+existing intent, detects stale plans, compensates for active-attempt failures,
+and becomes a no-op on repeated Apply.
 
 ## Starting State
 
-- Authority: `b6a4f27`
-- Implementation: `453bc14`
-- Previous documentation: `8bd2a57`
+- Branch: `main`
+- HEAD: `4c4d168`
 - `main` equals `origin/main`
-- Working tree clean
-- Focused Editor: 66 passed
-- Full EditMode: 93 passed, 0 failed, 0 ignored
-- Runtime Play Mode: 479 passed, 0 failed, 0 ignored
-- Total automated: 572 passed
-- Compilation: 0 errors, 0 warnings
-- Adjacent documentation closeout is the only active work
-- Later implementation remains locked until documentation is pushed
+- Working tree: clean
+- FL-M5-01 authority: `b6a4f27`
+- FL-M5-01 implementation: `453bc14`
+- FL-M5-01 documentation: `4c4d168`
+- EditMode baseline: 93 passed
+- Runtime Play Mode baseline: 479 passed
+- Compilation baseline: 0 errors, 0 warnings
+- Current specification: v1.7.0
+- FL-M5-02 implementation locked until authority commit
 
-## Completed Notes
+## Approved Decisions
 
-- `[IMPLEMENTATION]` Read-only snapshot collector
-- `[IMPLEMENTATION]` Immutable setup contracts
-- `[IMPLEMENTATION]` Deterministic planner
-- `[IMPLEMENTATION]` Stable setup diagnostics
-- `[IMPLEMENTATION]` Preview-only Setup window
-- `[IMPLEMENTATION]` No mutation path
-- `[TEST]` 66 focused Editor tests passed
-- `[TEST]` 27 retained prefab tests passed
-- `[TEST]` 479 retained Runtime tests passed
-- `[FIX]` Three generated folder metadata files repaired
-- `[CLEANUP]` Generated `.slnx` noise restored
-- `[HANDOFF]` `453bc14` synchronized
+- `[DECISION]` Advance specification to v1.8.0.
+- `[DECISION]` Recollect and replan before writes.
+- `[DECISION]` Execute Create, Reuse, and NoChange only.
+- `[DECISION]` Never overwrite, move, delete, repair, or migrate existing assets.
+- `[DECISION]` Create folders, definitions, configuration, variant, Boot, then Build Settings.
+- `[DECISION]` Root is a project-owned prefab variant.
+- `[DECISION]` Preserve open/active/dirty scene state.
+- `[DECISION]` Append Boot by default; place-first requires approval.
+- `[DECISION]` Preserve unrelated Build Settings order/enabled states.
+- `[DECISION]` Allow one active Apply.
+- `[DECISION]` Use an in-memory compensating rollback journal.
+- `[DECISION]` Return immutable apply results.
+- `[DECISION]` Second and third Apply must be NoChanges.
+- `[DECISION]` Defer repair, migration, receipts, uninstall, Direct Scene, Validator, and Laboratory.
 
-## Closeout Checklist
+## New Diagnostics
 
-- [x] Record authority and implementation commits
-- [x] Record architecture and no-write boundary
-- [x] Record path and Build Settings policy
-- [x] Record diagnostics
-- [x] Record all automated evidence
-- [x] Record metadata/solution cleanup
-- [x] Update architecture, README, changelog, index, specification, and notes
-- [x] Create checkpoint, test report, and completion record
-- [ ] Stage and review documentation
-- [ ] Commit and push documentation
-- [ ] Confirm clean synchronized repository
+- `ELAUNCH-SETUP-008` stale plan
+- `ELAUNCH-SETUP-009` apply active
+- `ELAUNCH-SETUP-010` failed and rolled back
+- `ELAUNCH-SETUP-011` rollback incomplete
+- `ELAUNCH-SETUP-012` unauthorized apply operation
+
+## Next Action
+
+Apply, review, commit, and push the six-file authority update:
+
+```text
+echo-launch: approve FL-M5-02 repeat-safe setup apply
+```
 
 ## Handoff
 
-**Completed implementation:** FL-M5-01
-**Authority:** `b6a4f27`
-**Implementation:** `453bc14`
-**EditMode:** 93 passed
-**PlayMode:** 479 passed
-**Compilation:** 0 errors, 0 warnings
-**Active work:** Documentation closeout
-**Tentative next:** FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation
+**Checkpoint:** FL-M5-02
+**Baseline:** `4c4d168`
+**Implementation:** Locked
+**Blockers:** None
+**Tentative next:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation
