@@ -8,6 +8,26 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M3-01 - Startup Sequence Runner Skeleton and Immediate Step Execution
+
+- Internal runtime-only `StartupStepExecution`
+- `NotStarted -> Running -> terminal` attempt-state path
+- Active progress capture through `IStartupStepProgressReporter`
+- Single terminal-result capture
+- Immutable `StartupSequenceRunResult`
+- Authored entry, disabled entry, and attempted execution counts
+- Ordered indexed access to completed attempts
+- Warning, failure, and blocking-failure summary flags
+- Internal `StartupSequenceRunner`
+- Enabled-entry traversal in authored order
+- Disabled-entry skipping before executor creation
+- Fresh executor creation for every enabled attempt
+- Immutable `StartupStepContext` delivery
+- Cooperative cancellation-token pass-through
+- Immediate `Awaitable<StartupStepResult>` execution and result capture
+- Twelve Runtime Play Mode execution-state tests
+- Eighteen Runtime Play Mode immediate-runner tests
+
 #### FL-M2-08 - Startup Step Policy and Executor Contract
 
 - MVP `StartupStepFailureAction` vocabulary
@@ -123,47 +143,56 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `169`
+- Passed: `199`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-08 coverage:
+FL-M3-01 coverage:
 
-- Exact MVP failure-action vocabulary
-- Required and optional policy presets
-- Blocking and continue-with-warning behavior metadata
-- Positive, zero, negative, NaN, and infinite timeout metadata
-- Undefined failure-action preservation
-- Determinate progress values and inclusive boundaries
-- Honest indeterminate progress
-- Progress-range rejection
-- Progress-message normalization
-- Execution-context identity metadata
-- Step index and count
-- Cancellation-token preservation
-- Progress-reporter delivery
-- Null-reporter rejection
-- `Awaitable<StartupStepResult>` executor signature
-- Fresh executor factory results
-- Safe Unity serialized entry defaults
-- Sequence schema version `2`
-- Manual Inspector verification
+- Runtime execution metadata copying
+- Initial `NotStarted` state
+- Single legal transition to `Running`
+- Progress rejection before begin and after completion
+- Progress capture while running
+- Null and repeated completion rejection
+- Terminal status and result capture
+- Invalid execution construction rejection
+- Null configuration rejection
+- Missing sequence rejection
+- Empty-sequence result
+- Disabled-entry skipping before factory creation
+- One executor and one invocation per enabled entry
+- Fresh executors across repeated runs
+- Context configuration, sequence, entry, and step identities
+- Authored index and complete authored entry count
+- Cancellation-token pass-through
+- Immediate progress capture
+- Success, warning, recoverable failure, and blocking failure preservation
+- Authored execution order
+- Continued traversal after a blocking result
+- Null executor rejection
+- Definition, entry, policy, sequence, and configuration immutability
+- Expected retained diagnostics `ELAUNCH-ROOT-001` and `ELAUNCH-EVENT-001`
 
 ### Not Included
 
-- Startup sequence runner
-- Executor invocation
-- Active step-execution state
+- `EchoLaunchRoot` runner integration
+- Automatic startup from Unity scene callbacks
+- Launch-session lifecycle advancement
+- Step lifecycle public events
+- Exception-to-result conversion
+- Result-to-policy interpretation
+- Blocking-result traversal stop
+- Warning aggregation into a launch report
 - Timeout measurement
 - Clock abstraction
 - Timeout cancellation
 - Retry loops
 - Interactive retry
-- Exception-to-result conversion
-- Policy application to results
 - Configuration or sequence preflight
 - Duplicate-ID collision scans
-- Automatic lifecycle advancement
+- Runner re-entry protection
+- Asynchronous multi-frame proof
 - Launch reports
 - Splash presentation
 - Scene loading

@@ -2,63 +2,55 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-08`
-- Title: Startup Step Policy and Executor Contract
+- Checkpoint: `FL-M3-01`
+- Title: Startup Sequence Runner Skeleton and Immediate Step Execution
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `8a02bd8`
+- Implementation commit: `0864b9c`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 169 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 199 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- MVP failure-action enum
-- Immutable authored step policy
-- Required and optional presets
-- Timeout metadata validation
-- Cancellation capability metadata
-- Immutable determinate and indeterminate progress
-- Package-owned progress reporter
-- Immutable validated execution context
-- Unity `Awaitable<StartupStepResult>` executor interface
-- Fresh executor factory on step definitions
-- Authored policy on sequence entries
-- Startup-sequence schema `2`
-- Safe Unity zero-state entry defaults
-- Twenty-eight policy and executor-contract tests
-- Manual Inspector verification
+- Runtime-only `StartupStepExecution`
+- Immutable `StartupSequenceRunResult`
+- Internal `StartupSequenceRunner`
+- Authored-order enabled-entry traversal
+- Disabled-entry skipping before factory creation
+- Fresh executor creation per attempt
+- Immutable context delivery
+- Cancellation-token pass-through
+- Immediate progress capture
+- Immediate terminal-result capture
+- Thirty new Runtime Play Mode tests
+- `LaunchMode.Unknown` guard correction
 
 ## Evidence Summary
 
 ### Passed
 
-- Exact approved failure-action values
-- Required blocking preset
-- Optional warning preset
-- Timeout disabled at zero
-- Positive timeout preservation
-- Negative timeout invalidity
-- NaN and infinity invalidity
-- Undefined failure-action preservation
-- Determinate progress
-- Boundary progress values
-- Indeterminate progress
-- Out-of-range progress rejection
-- Message normalization
-- Context identity metadata
-- Context index and count
-- Cancellation-token preservation
-- Progress-reporter delivery
-- Null reporter rejection
-- Approved executor return type
-- Executor factory result
-- Fresh executor instances
-- Safe entry default policy
-- Sequence schema `2`
-- One hundred sixty-nine total Runtime Play Mode tests
-- Manual zero-state default correction and verification
+- Runtime attempt metadata
+- `NotStarted -> Running -> terminal` flow
+- Progress-state guards
+- Single terminal completion
+- Invalid construction rejection
+- Null configuration and missing sequence rejection
+- Empty sequence traversal
+- Disabled entry skipping
+- Enabled entry execution
+- Fresh executors across runs
+- Context identities
+- Authored index and complete count
+- Cancellation-token pass-through
+- Immediate progress reporting
+- Success, warning, recoverable, and blocking result capture
+- Authored execution order
+- Continued traversal after blocking result
+- Null executor rejection
+- Authored asset immutability
+- One hundred ninety-nine full Runtime Play Mode tests
 
 ### Expected Diagnostics
 
@@ -67,19 +59,21 @@ Retained tests intentionally generated:
     ELAUNCH-ROOT-001
     ELAUNCH-EVENT-001
 
-These warnings were expected and matched by the automated test suite.
+These warnings were expected and matched by the automated suite.
 
 ### Not Run
 
-- Sequence runner
-- Executor invocation
-- Timeout clock
-- Retry behavior
+- Root integration
+- Automatic startup
+- Lifecycle advancement
+- Step lifecycle events
 - Exception conversion
-- Policy result application
-- Configuration or sequence preflight
-- Automatic lifecycle advancement
-- Launch reports
+- Policy application
+- Blocking traversal stop
+- Timeout
+- Retry
+- Preflight
+- Reports
 - Splash presentation
 - Scene loading
 - Player builds
@@ -89,26 +83,21 @@ These warnings were expected and matched by the automated test suite.
 
 Runtime implementation:
 
-- `Runtime/Steps/StartupStepFailureAction.cs`
-- `Runtime/Steps/StartupStepPolicy.cs`
-- `Runtime/Steps/StartupStepProgress.cs`
-- `Runtime/Steps/IStartupStepProgressReporter.cs`
-- `Runtime/Steps/StartupStepContext.cs`
-- `Runtime/Steps/IStartupStepExecutor.cs`
-- `Runtime/Steps/StartupStepDefinition.cs`
-- `Runtime/Steps/StartupSequenceEntry.cs`
-- `Runtime/Steps/StartupSequence.cs`
+- `Runtime/Execution.meta`
+- `Runtime/Execution/StartupStepExecution.cs`
+- `Runtime/Execution/StartupSequenceRunResult.cs`
+- `Runtime/Execution/StartupSequenceRunner.cs`
 - Unity-generated `.meta` files
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/StartupStepPolicyAndExecutorContractTests.cs`
-- Modified `Tests/Runtime/PlayMode/StartupSequenceDefinitionTests.cs`
-- Unity-generated `.meta` file
+- `Tests/Runtime/PlayMode/StartupStepExecutionTests.cs`
+- `Tests/Runtime/PlayMode/StartupSequenceRunnerImmediateTests.cs`
+- Unity-generated `.meta` files
 
 Checkpoint plan:
 
-- `Plan Documentation/Checkpoint Build Plans/FL-M2-08_Startup_Step_Policy_and_Executor_Contract_Checkpoint_Build_Plan.md`
+- `Plan Documentation/Checkpoint Build Plans/FL-M3-01_Startup_Sequence_Runner_Skeleton_and_Immediate_Step_Execution_Checkpoint_Build_Plan.md`
 
 Adjacent documentation:
 
@@ -119,10 +108,10 @@ Adjacent documentation:
 
 ## Handoff Snapshot
 
-FL-M2-08 implementation is complete and pushed in commit `8a02bd8`.
+FL-M3-01 implementation is complete and pushed in commit `0864b9c`.
 
 The adjacent documentation closeout is ready for final Git review, commit, and push.
 
-No executor has been invoked.
+Immediate executor invocation is now proven through explicit internal test calls.
 
-No additional runtime behavior is authorized until the next checkpoint is approved.
+No root, automatic startup, policy interpretation, exception conversion, timeout, report, or lifecycle integration is authorized until the next checkpoint.

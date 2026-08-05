@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Runtime contracts established; execution not yet implemented
+- Development stage: Immediate execution skeleton implemented; policy and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -13,6 +13,7 @@
   - `FL-M2-06`
   - `FL-M2-07`
   - `FL-M2-08`
+  - `FL-M3-01`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -33,8 +34,12 @@ First Light currently establishes:
 12. Authored step policy
 13. Immutable step progress and runtime context
 14. Fresh single-use executor contract
+15. Runtime-only step-attempt state
+16. Immutable completed traversal summaries
+17. Ordered enabled-entry execution
+18. Immediate executor result capture
 
-It does not yet execute startup behavior.
+First Light now executes startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
 
 ## Implemented Runtime Files
 
@@ -48,6 +53,10 @@ It does not yet execute startup behavior.
     │   ├── LaunchNotificationDispatcher.cs
     │   ├── LaunchProgressChangedEvent.cs
     │   └── LaunchStateChangedEvent.cs
+    ├── Execution/
+    │   ├── StartupSequenceRunResult.cs
+    │   ├── StartupSequenceRunner.cs
+    │   └── StartupStepExecution.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
     ├── State/
@@ -77,6 +86,8 @@ It does not yet execute startup behavior.
     ├── LaunchSessionProgressTests.cs
     ├── LaunchStateVocabularyTests.cs
     ├── StartupSequenceDefinitionTests.cs
+    ├── StartupSequenceRunnerImmediateTests.cs
+    ├── StartupStepExecutionTests.cs
     └── StartupStepPolicyAndExecutorContractTests.cs
 
 ## Authored Definition Boundary
@@ -303,6 +314,108 @@ Schema `2` adds policy data to each embedded sequence entry.
 
 Runtime migration remains unimplemented.
 
+## Runtime Step Execution
+
+`StartupStepExecution` is an internal runtime-owned object representing one enabled entry attempt.
+
+It copies:
+
+- Entry ID
+- Step ID
+- Step display label
+- Authored index
+- Complete authored entry count
+- Authored policy
+- Fresh executor reference
+
+It owns:
+
+- Current `StartupStepStatus`
+- Latest `StartupStepProgress`
+- One terminal `StartupStepResult`
+
+The legal path is:
+
+    NotStarted
+        -> Running
+            -> terminal result status
+
+Guards:
+
+- Begin is legal exactly once.
+- Progress is legal only while running.
+- Completion is legal only while running.
+- A null result is rejected.
+- Completion is legal exactly once.
+- Progress after completion is rejected.
+
+No ScriptableObject is mutated.
+
+## Completed Sequence Run Result
+
+`StartupSequenceRunResult` is an internal immutable summary.
+
+It exposes:
+
+- Authored entry count
+- Disabled entry count
+- Attempted execution count
+- Indexed completed execution access
+- Warning presence
+- Failure presence
+- Blocking-failure presence
+
+The backing array is private.
+
+Every completed result must account for each authored entry as either disabled or attempted.
+
+The summary records result classifications but does not interpret `StartupStepPolicy` or claim final launch success.
+
+## Immediate Sequence Runner
+
+`StartupSequenceRunner.RunAsync` accepts:
+
+- Launch mode
+- Launch configuration
+- Cancellation token
+
+It then:
+
+1. Validates the configuration and active launch mode.
+2. Reads the configured startup sequence.
+3. Iterates authored indices directly.
+4. Skips disabled entries before executor creation.
+5. Requires an enabled entry definition.
+6. Calls `CreateExecutor()` once.
+7. Requires a non-null fresh executor.
+8. Creates one `StartupStepExecution`.
+9. Creates immutable `StartupStepContext`.
+10. Begins the execution.
+11. Awaits `ExecuteAsync(context)`.
+12. Captures the returned terminal result.
+13. Appends the completed execution in authored order.
+14. Returns an immutable run summary.
+
+FL-M3-01 deliberately does not:
+
+- Interpret policy
+- Stop after blocking results
+- Convert exceptions
+- Measure timeout
+- Retry
+- Publish root events
+- Update `LaunchSession`
+- Build a public report
+- Start automatically
+
+## Compile Correction
+
+The first Phase C runner draft checked for `LaunchMode.None`.
+
+The approved enum uses `LaunchMode.Unknown` as its inactive value.
+
+The runner guard was corrected to reject `Unknown` and undefined values. No other runtime behavior changed.
+
 ## Retained Lifecycle Architecture
 
 `LaunchStateTransitionRules` remains the single internal authority for lifecycle legality.
@@ -317,7 +430,7 @@ No FL-M2-08 contract calls or mutates these systems.
 
 Runtime Play Mode totals:
 
-- Passed: `169`
+- Passed: `199`
 - Failed: `0`
 - Ignored: `0`
 
@@ -331,38 +444,51 @@ Breakdown:
 - Lifecycle notification tests: `20`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
+- Startup step execution tests: `12`
+- Immediate startup sequence runner tests: `18`
 
-Manual verification:
+Verified execution behavior:
 
-- Unity created a temporary `StartupSequence`.
-- A newly added list entry initially exposed unsafe false boolean defaults.
-- The serialized model was corrected to safe zero-valued enums.
-- Recreated entries displayed:
-  - Enabled
-  - Required
-  - Block Launch
-  - Timeout `0`
-  - Cancellation Supported
-- No executor, root, lifecycle transition, timeout, retry, preflight, or warning occurred.
-- The temporary verification asset was removed before Git review.
+- Runtime-only attempt state
+- Progress-state guards
+- Single terminal completion
+- Empty sequence traversal
+- Disabled-entry skipping
+- Fresh executor creation
+- Enabled-entry authored order
+- Context identity and position delivery
+- Cancellation-token pass-through
+- Immediate progress and terminal result capture
+- Continued traversal after blocking results
+- Authored definition immutability
+
+Expected retained diagnostics:
+
+- `ELAUNCH-ROOT-001`
+- `ELAUNCH-EVENT-001`
+
+No production asset, scene, prefab, root, or automatic startup setup was required.
 
 ## Current Exclusions
 
 Not implemented:
 
-- Startup sequence runner
-- Active step execution object
-- Executor invocation
+- `EchoLaunchRoot` runner integration
+- Automatic startup from Unity callbacks
+- Launch-session lifecycle advancement
+- Public step lifecycle events
+- Exception conversion
+- Result-to-policy application
+- Blocking-result short circuit
+- Warning aggregation
 - Timeout clock
 - Timeout cancellation
 - Retry loops
 - Interactive retry
-- Exception conversion
-- Result-to-policy application
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
-- Automatic lifecycle advancement
-- Step lifecycle events
+- Runner re-entry protection
+- Asynchronous multi-frame proof
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -374,6 +500,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M2-08 stops after authored policy, immutable progress/context values, and the fresh executor API are proven without invoking an executor.
+FL-M3-01 stops after valid enabled entries execute immediate fresh test executors in authored order and return captured runtime results.
 
 The next runtime slice requires separate approval.

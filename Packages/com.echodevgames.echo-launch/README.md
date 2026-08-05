@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Runtime contracts established; execution not yet implemented
+- Development stage: Immediate execution skeleton implemented; policy and lifecycle integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -17,6 +17,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-06` Launch Configuration Identity and Root Binding
   - `FL-M2-07` Startup Sequence Definition and Ordered Entry Model
   - `FL-M2-08` Startup Step Policy and Executor Contract
+  - `FL-M3-01` Startup Sequence Runner Skeleton and Immediate Step Execution
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -130,7 +131,29 @@ First Light now provides:
 - Fresh executor factory on every step definition
 - Single-use executor intent
 - Active state kept outside ScriptableObject definitions
-- No executor invocation yet
+
+### Runtime Step Execution
+
+- Internal runtime-only `StartupStepExecution`
+- `NotStarted -> Running -> terminal` attempt path
+- Progress accepted only while running
+- Single terminal-result capture
+- Copied authored identity, position, policy, and label metadata
+- No authored asset mutation
+
+### Immediate Sequence Runner
+
+- Internal `StartupSequenceRunner`
+- Explicit invocation only
+- Disabled entries skipped before factory creation
+- Fresh executor for every enabled attempt
+- Authored-order traversal
+- Immutable context delivery
+- Cancellation-token pass-through
+- Immediate progress capture
+- Immediate terminal-result capture
+- Immutable `StartupSequenceRunResult`
+- Blocking results recorded without stopping traversal
 
 ## Safe Serialized Entry Defaults
 
@@ -168,7 +191,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `169`
+- Passed: `199`
 - Failed: `0`
 - Ignored: `0`
 
@@ -182,39 +205,47 @@ Breakdown:
 - Lifecycle notification tests: `20`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
+- Startup step execution tests: `12`
+- Immediate startup sequence runner tests: `18`
 
 Expected yellow diagnostic evidence:
 
 - `ELAUNCH-ROOT-001` from duplicate-root tests
 - `ELAUNCH-EVENT-001` from broken-listener containment tests
 
-Manual evidence:
+Immediate execution evidence:
 
-- Unity created a temporary startup sequence and embedded entry.
-- The first manual pass exposed unsafe zeroed boolean defaults.
-- The model was corrected to safe zero-valued enums.
-- Recreated entries displayed the approved safe defaults.
-- No executor, runner, timeout, retry, preflight, lifecycle transition, or warning occurred.
-- The temporary verification asset was removed before Git review.
+- Disabled entries create no executor.
+- Enabled entries create fresh executors.
+- Enabled entries execute in authored order.
+- Context identities, authored index, complete count, cancellation, and progress are preserved.
+- Success, warning, recoverable failure, and blocking failure results are captured exactly.
+- Traversal continues after blocking results because policy application is not implemented yet.
+- Definitions, entries, policies, sequence assets, and configuration assets remain unchanged.
+
+No production asset, scene, prefab, root, or automatic startup setup was required.
 
 ## Not Implemented Yet
 
 First Light does not yet provide:
 
-- Startup sequence runner
-- Active execution tracking
-- Executor invocation
+- `EchoLaunchRoot` runner integration
+- Automatic startup from Unity scene callbacks
+- Launch-session lifecycle advancement
+- Public step lifecycle events
+- Exception-to-result conversion
+- Result-to-policy interpretation
+- Blocking-result traversal stop
+- Warning aggregation
 - Timeout measurement
 - Clock abstraction
 - Timeout cancellation
 - Retry loops
 - Interactive retry
-- Exception conversion
-- Policy application
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
-- Automatic lifecycle advancement
-- Step lifecycle events
+- Runner re-entry protection
+- Multi-frame asynchronous proof
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -239,10 +270,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- One hundred sixty-nine passing Runtime Play Mode tests
+- One hundred ninety-nine passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- No out-of-scope startup execution
+- Explicit immediate startup execution with no root or lifecycle integration
 
 Still `Not run`:
 
@@ -250,7 +281,8 @@ Still `Not run`:
 - Tarball installation
 - Separate clean-project installation
 - Player builds
-- Startup execution
+- Production startup integration
+- Multi-frame asynchronous execution
 - Timeout behavior
 - Performance measurements
 
