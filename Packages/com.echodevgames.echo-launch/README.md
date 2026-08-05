@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
+- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -20,6 +20,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-01` Startup Sequence Runner Skeleton and Immediate Step Execution
   - `FL-M3-02` Step Result Policy Application and Exception Conversion
   - `FL-M3-03` Monotonic Timeout Clock and Cooperative Cancellation
+  - `FL-M3-04` Multi-Frame Async Proof and Runner Cancellation Outcome
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -212,6 +213,30 @@ First Light now provides:
 - Immutable `StartupSequenceRunResult`
 - Attempted, disabled, and unvisited accounting
 - Stopping authored-index capture
+- Structured caller cancellation after executor settlement
+- Stable `ELAUNCH-STEP-005`
+- Run-level `WasCancelled`
+- Same-tick cancellation-race containment
+
+### Multi-Frame Async Proof
+
+- Production-shaped executor using `Awaitable.NextFrameAsync`
+- Execution across multiple rendered Unity frames
+- Progress accepted while the attempt is active
+- Positive monotonic elapsed timing
+- Authored traversal order preserved after settlement
+- No scene, prefab, root, or automatic startup dependency
+
+### Structured Caller Cancellation
+
+- Caller cancellation reaches the linked executor token
+- Active executor settles before the runner returns
+- Attempt completes with `StartupStepStatus.Cancelled`
+- Stable diagnostic `ELAUNCH-STEP-005`
+- `StartupSequenceRunResult.WasCancelled`
+- Authored warning policy cannot downgrade cancellation
+- Later entries remain unvisited
+- Later executor factories are not called
 
 ## Safe Serialized Entry Defaults
 
@@ -249,7 +274,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `263`
+- Passed: `265`
 - Failed: `0`
 - Ignored: `0`
 
@@ -269,6 +294,7 @@ Breakdown:
 - Policy-application tests: `16`
 - Runner policy and exception tests: `16`
 - Timeout runner and cancellation tests: `18`
+- Multi-frame async runner tests: `2`
 
 Compilation:
 
@@ -291,7 +317,9 @@ Timeout and cancellation evidence:
 - Timed-out executors settle before later factories are created.
 - Late success, failure, and progress cannot replace the timeout boundary.
 - Continue-with-warning and block-launch policies apply after settlement.
-- Caller cancellation remains distinct and escapes after active work settles.
+- Caller cancellation remains distinct and returns `ELAUNCH-STEP-005` only after active work settles.
+- A same-tick executor cancellation exception is contained when the caller token is already requested.
+- Multi-frame execution preserves progress, positive timing, and authored order.
 - Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
@@ -305,7 +333,6 @@ First Light does not yet provide:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Structured caller-cancellation run result
 - Root-level cancellation command
 - Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
@@ -318,7 +345,6 @@ First Light does not yet provide:
 - Duplicate-ID collision validation
 - Dependency validation
 - Runner re-entry protection
-- Production-shaped multi-frame asynchronous proof
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
@@ -342,7 +368,7 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Two hundred sixty-three passing Runtime Play Mode tests
+- Two hundred sixty-five passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with no root or lifecycle integration
@@ -354,8 +380,6 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Production startup integration
-- Production-shaped multi-frame asynchronous execution
-- Structured caller-cancellation result
 - Root cancellation orchestration
 - Performance measurements
 

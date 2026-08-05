@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
+- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -18,7 +18,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-01`
   - `FL-M3-02`
   - `FL-M3-03`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, and cooperative timeout cancellation
+  - `FL-M3-04`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, and structured caller cancellation
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -46,6 +47,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-02 Runtime Test Report](Developer/Test%20Reports/FL-M3-02_Step_Result_Policy_and_Exception_Test_Report.md)
 - [FL-M3-03 Monotonic Timeout Clock and Cooperative Cancellation](Developer/Checkpoints/FL-M3-03_Monotonic_Timeout_Clock_and_Cooperative_Cancellation.md)
 - [FL-M3-03 Runtime Test Report](Developer/Test%20Reports/FL-M3-03_Timeout_Clock_and_Cancellation_Test_Report.md)
+- [FL-M3-04 Multi-Frame Async Proof and Runner Cancellation Outcome](Developer/Checkpoints/FL-M3-04_Multi-Frame_Async_Proof_and_Runner_Cancellation_Outcome.md)
+- [FL-M3-04 Runtime Test Report](Developer/Test%20Reports/FL-M3-04_Multi-Frame_Async_and_Runner_Cancellation_Test_Report.md)
 
 ## Package Root Documents
 
@@ -100,6 +103,12 @@ First Light currently proves:
 - Cooperative timeout cancellation
 - Timed-out executor settlement
 - Late progress and result containment
-- Two hundred sixty-three passing Runtime Play Mode tests
+- Production-shaped multi-frame Unity `Awaitable` execution
+- Multi-frame progress, positive timing, and authored-order proof
+- Structured caller cancellation after executor settlement
+- Stable `ELAUNCH-STEP-005`
+- Run-level `WasCancelled`
+- Same-tick cancellation-race containment
+- Two hundred sixty-five passing Runtime Play Mode tests
 
-Retries, structured caller-cancellation results, reports, preflight, root integration, and lifecycle automation remain outside the implemented scope.
+Retries, root cancellation commands, reports, preflight, runner re-entry protection, root integration, and lifecycle automation remain outside the implemented scope.

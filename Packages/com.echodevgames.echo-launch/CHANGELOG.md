@@ -7,6 +7,17 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M3-04 - Multi-Frame Async Proof and Runner Cancellation Outcome
+- Structured caller-cancellation observation after executor settlement
+- Stable caller-cancellation diagnostic `ELAUNCH-STEP-005`
+- Terminal `StartupStepStatus.Cancelled` runner outcome
+- Immutable `StartupSequenceRunResult.WasCancelled`
+- Cancellation-driven traversal stop before later factory creation
+- Same-tick caller-cancellation race containment
+- Production-shaped multi-frame executor using `Awaitable.NextFrameAsync`
+- Multi-frame progress, positive timing, and authored-order proof
+- Two Runtime Play Mode multi-frame async tests
+
 
 #### FL-M3-03 - Monotonic Timeout Clock and Cooperative Cancellation
 
@@ -166,6 +177,11 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- Caller cancellation now returns a structured cancelled run result after the active executor settles.
+- Authored `ContinueWithWarning` policy cannot downgrade caller cancellation or continue traversal.
+- `StartupSequenceRunResult` now reports `WasCancelled`.
+- The timeout monitor now preserves caller-cancellation ownership across same-tick executor settlement.
+- Retained caller-cancellation coverage now asserts `ELAUNCH-STEP-005`, settlement, stopping index, and unvisited later entries.
 
 - `StartupSequenceRunner` now supports default and injected `ILaunchClock` construction.
 - Every enabled attempt receives a linked per-attempt cancellation token.
@@ -199,6 +215,8 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Contained the same-tick caller-cancellation race where the executor settled with `OperationCanceledException` before the monitor's next loop.
+- Kept the final FL-M3-04 Unity compilation result at zero errors and zero compiler warnings.
 
 - Adapted the timeout test helper to Unity `6000.3.8f1`, where `AwaitableCompletionSource<T>.SetResult` accepts the result by value.
 - Realigned the retained immediate-runner fixture after a stale test artifact temporarily restored three pre-FL-M3-02 expectations.
@@ -209,9 +227,23 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `263`
+- Passed: `265`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M3-04 coverage:
+- Production-shaped multi-frame `Awaitable.NextFrameAsync` execution
+- Progress retention while an attempt remains active
+- Positive monotonic elapsed timing
+- Authored-order traversal after multi-frame settlement
+- Linked caller cancellation reaching the executor
+- Executor settlement before runner return
+- Structured `Cancelled` result with `ELAUNCH-STEP-005`
+- Run-level `WasCancelled`
+- Later-entry and later-factory suppression
+- Same-tick caller-cancellation race containment
+- Authored asset immutability
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-03 coverage:
 
@@ -253,7 +285,6 @@ FL-M3-03 coverage:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip presentation
-- Structured caller-cancellation run result
 - Root-level cancellation command
 - Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
@@ -266,7 +297,6 @@ FL-M3-03 coverage:
 - Duplicate-ID collision scans
 - Dependency validation
 - Runner re-entry protection
-- Production-shaped multi-frame executor proof
 - Splash presentation
 - Scene loading
 - Persistent root lifetime

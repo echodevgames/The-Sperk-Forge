@@ -2,65 +2,69 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M3-03`
-- Title: Monotonic Timeout Clock and Cooperative Cancellation
+- Checkpoint: `FL-M3-04`
+- Title: Multi-Frame Async Proof and Runner Cancellation Outcome
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `92c97ae`
+- Implementation commit: `b51d722`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 263 passed, 0 failed, 0 ignored
-- Compilation result: 0 errors, 0 warnings
+- Runtime Play Mode result: 265 passed, 0 failed, 0 ignored
+- Compilation result: 0 errors, 0 compiler warnings
 
 ## Completed Result
 
 Implemented:
 
-- Public `ILaunchClock`
-- Shared internal `UnityLaunchClock`
-- Unscaled double-precision runtime time
-- Deterministic test clock seam
-- Immutable `StartupStepTiming`
-- `StartupStepProgressGate`
-- `StartupStepAwaitOutcome`
-- `StartupStepTimeoutMonitor`
-- Absolute monotonic deadlines
-- Completion-before-deadline race ordering
-- Stable `ELAUNCH-STEP-003`
-- Timeout diagnostic details
-- Linked per-attempt cancellation tokens
-- Cancellation requests only for supporting steps
-- Timed-out executor settlement before traversal
-- Late result containment
-- Late progress containment
-- Backward-clock blocking
-- Thirty-two new Runtime Play Mode tests
+- Immutable caller-cancellation observation on `StartupStepAwaitOutcome`
+- Structured caller-cancellation conversion inside `StartupSequenceRunner`
+- Stable caller-cancellation diagnostic `ELAUNCH-STEP-005`
+- Terminal `StartupStepStatus.Cancelled` execution outcome
+- `StartupSequenceRunResult.WasCancelled`
+- Cancellation-driven traversal stop before later factory creation
+- Executor settlement before runner return
+- Same-tick caller-cancellation race containment
+- Production-shaped multi-frame executor proof
+- Multi-frame progress and positive timing proof
+- Authored-order proof across real Unity frames
+- Two new Runtime Play Mode tests
+- One retained caller-cancellation test updated to the structured outcome
 
 ## Evidence Summary
 
 ### Passed
 
-- Clock interface shape
-- Default Unity clock
-- Deterministic manual clock
-- Timing validation and elapsed duration
-- Progress-gate forwarding and closure
-- Single timing assignment
-- Zero-timeout delayed execution
-- Completion before and at deadline
-- Timeout authority
-- Timeout details
-- Supported and unsupported cancellation
-- Late success and failure containment
-- Timeout cancellation exception
-- Caller cancellation boundary
-- Continue-with-warning timeout
-- Block-launch timeout
-- Late-progress containment
-- Backward-clock containment
-- Executor settlement before later factory creation
+- Real `Awaitable.NextFrameAsync` execution across multiple Unity frames
+- Progress publication while the attempt remained active
+- Positive monotonic elapsed timing
+- Authored-order execution after multi-frame settlement
+- Linked caller cancellation reaching the active executor
+- Executor settlement before cancellation result return
+- Structured `Cancelled` result
+- Stable `ELAUNCH-STEP-005`
+- `WasCancelled == true`
+- Later entry remaining unvisited
+- Later executor factory not being called
+- Authored warning policy unable to downgrade caller cancellation
+- Same-tick cancellation exception containment
 - Authored asset immutability
-- Full 263-test suite
-- Clean compilation with zero warnings
+- Full 265-test suite
+- Clean compilation with zero compiler warnings
+
+### Initial Failure and Bounded Fix
+
+The first complete FL-M3-04 run reported:
+
+- Passed: 264
+- Failed: 1
+- Ignored: 0
+
+The failing retained test was:
+
+    CallerCancellationReturnsStructuredOutcome
+
+The executor settled with `OperationCanceledException` in the same tick that caller cancellation was requested. The monitor consumed the executor before its next loop could latch the caller token.
+
+The bounded fix treats a settled `OperationCanceledException` as caller cancellation when the caller token is already requested. The complete suite then passed.
 
 ### Expected Diagnostics
 
@@ -69,28 +73,26 @@ Retained tests intentionally generated:
     ELAUNCH-ROOT-001
     ELAUNCH-EVENT-001
 
-These warnings were expected and matched by the automated suite.
-
-### Bounded Fixture Corrections
-
-- Updated `AwaitableCompletionSource<T>.SetResult` to the Unity `6000.3.8f1` by-value call.
-- Restored the retained immediate fixture from the correct FL-M3-02 baseline.
-- Preserved the new linked-token assertion.
+These yellow warnings were expected runtime diagnostic evidence, not compiler warnings or test failures.
 
 ### Not Run
 
 - Automatic retry
 - Retry backoff
 - Interactive retry
-- Structured caller-cancellation result
-- Root cancellation command
+- Retry or skip UI
+- Root-level cancellation command
+- Shutdown or destruction cancellation orchestration
 - Root integration
 - Automatic startup
 - Lifecycle advancement
 - Public step events
 - Reports
-- Preflight
-- Production-shaped multi-frame proof
+- Warning aggregation outside the run result
+- Configuration or sequence preflight
+- Duplicate-ID collision validation
+- Dependency validation
+- Runner re-entry protection
 - Splash presentation
 - Scene loading
 - Player builds
@@ -98,45 +100,40 @@ These warnings were expected and matched by the automated suite.
 
 ## Changed Files
 
-New runtime implementation:
-
-- `Runtime/Execution/ILaunchClock.cs`
-- `Runtime/Execution/UnityLaunchClock.cs`
-- `Runtime/Execution/StartupStepTiming.cs`
-- `Runtime/Execution/StartupStepProgressGate.cs`
-- `Runtime/Execution/StartupStepAwaitOutcome.cs`
-- `Runtime/Execution/StartupStepTimeoutMonitor.cs`
-- Unity-generated `.meta` files
-
 Modified runtime implementation:
 
-- `Runtime/Execution/StartupStepExecution.cs`
+- `Runtime/Execution/StartupSequenceRunResult.cs`
 - `Runtime/Execution/StartupSequenceRunner.cs`
+- `Runtime/Execution/StartupStepAwaitOutcome.cs`
+- `Runtime/Execution/StartupStepTimeoutMonitor.cs`
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/LaunchClockTimingAndGateTests.cs`
-- `Tests/Runtime/PlayMode/StartupSequenceRunnerTimeoutTests.cs`
-- Modified `Tests/Runtime/PlayMode/StartupSequenceRunnerImmediateTests.cs`
-- Unity-generated `.meta` files
+- Modified `Tests/Runtime/PlayMode/StartupSequenceRunnerTimeoutTests.cs`
+- Added `Tests/Runtime/PlayMode/StartupSequenceRunnerMultiFrameAsyncTests.cs`
+- Added Unity-generated `.meta` file
 
 Checkpoint plan:
 
-- `Plan Documentation/Checkpoint Build Plans/FL-M3-03_Monotonic_Timeout_Clock_and_Cooperative_Cancellation_Checkpoint_Build_Plan.md`
+- `Plan Documentation/Checkpoint Build Plans/FL-M3-04_Multi-Frame_Async_Proof_and_Runner_Cancellation_Outcome_Checkpoint_Build_Plan.md`
 
 Adjacent documentation:
 
 - Package checkpoint
 - Package test report
 - Root completion record
-- Changelog, architecture, index, README, and suite Current Notes
+- Changelog
+- Architecture
+- Documentation index
+- README
+- Root and package Current Notes
 
 ## Handoff Snapshot
 
-FL-M3-03 implementation is complete and pushed in commit `92c97ae`.
+FL-M3-04 implementation is complete and pushed in commit `b51d722`.
 
 The adjacent documentation closeout is ready for final Git review, commit, and push.
 
-Monotonic unscaled timeout measurement, cooperative timeout cancellation, and executor-settlement safety are proven.
+Real multi-frame Unity async execution and structured caller cancellation are proven without root, lifecycle, report, presentation, or scene integration.
 
-Retries, reports, structured caller-cancellation results, root integration, and lifecycle automation remain unauthorized until the next checkpoint.
+Retries, preflight, runner re-entry protection, root cancellation commands, root integration, reports, presentation, and scene loading remain unauthorized until a later checkpoint is approved.

@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Monotonic timeout execution and cooperative cancellation implemented; retries and lifecycle integration pending
+- Development stage: Multi-frame asynchronous execution and structured runner cancellation implemented; preflight, re-entry protection, and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -16,6 +16,7 @@
   - `FL-M3-01`
   - `FL-M3-02`
   - `FL-M3-03`
+  - `FL-M3-04`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -51,6 +52,11 @@ First Light currently establishes:
 27. Cooperative timeout cancellation
 28. Timed-out executor settlement before traversal
 29. Late progress and late result containment
+30. Production-shaped multi-frame Unity `Awaitable` proof
+31. Structured caller-cancellation outcome after executor settlement
+32. Stable caller-cancellation diagnostic `ELAUNCH-STEP-005`
+33. Immutable run-level `WasCancelled` summary
+34. Same-tick caller-cancellation race containment
 
 First Light now executes, times, and evaluates startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
 
@@ -113,6 +119,7 @@ First Light now executes, times, and evaluates startup steps only through explic
     ├── StartupSequenceRunnerImmediateTests.cs
     ├── StartupSequenceRunnerPolicyAndExceptionTests.cs
     ├── StartupSequenceRunnerTimeoutTests.cs
+    ├── StartupSequenceRunnerMultiFrameAsyncTests.cs
     ├── StartupStepExecutionTests.cs
     ├── StartupStepPolicyAndExecutorContractTests.cs
     └── StartupStepPolicyApplicationTests.cs
@@ -569,9 +576,12 @@ It distinguishes:
 - Thrown exception
 - Timed-out state
 - Timeout cancellation-request state
+- Caller-cancellation observation
 - Immutable timing snapshot
 
 A timed-out outcome may contain a later success, failure, or cancellation exception, but timeout remains the runner's source result.
+
+A caller-cancelled outcome is returned only after the active executor settles. The outcome preserves the settled executor observation while recording that the caller cancellation boundary owns the effective runner result.
 
 ## Timeout Monitor
 
@@ -594,7 +604,9 @@ Once timeout is latched:
 - The monitor continues until the executor settles.
 - A late result or exception cannot replace timeout.
 
-The monitor also waits for settlement before allowing caller cancellation or a clock-contract failure to escape.
+The monitor also waits for settlement before returning caller cancellation or allowing a clock-contract failure to escape.
+
+Caller cancellation is recognized when it was latched during monitoring or when the executor settles with `OperationCanceledException` while the caller token is already requested. This closes the same-tick cancellation race without treating unrelated executor cancellation as caller cancellation.
 
 Backward, non-finite, or negative clock behavior becomes a blocking `ELAUNCH-STEP-004` timing-contract failure after the active executor settles.
 
@@ -638,7 +650,17 @@ At timeout:
 
 Caller cancellation remains distinct from timeout cancellation.
 
-FL-M3-03 allows caller cancellation to escape as `OperationCanceledException` only after the active executor has settled. Converting caller cancellation into a structured run result remains later work.
+FL-M3-04 converts caller cancellation into a structured terminal result only after the active executor settles.
+
+Stable code:
+
+    ELAUNCH-STEP-005
+
+Message:
+
+    Startup-sequence execution was cancelled by the caller.
+
+Caller cancellation stops traversal regardless of authored failure policy. `ContinueWithWarning` cannot downgrade it, and no later executor factory is called.
 
 ## Completed Sequence Run Result
 
@@ -656,6 +678,7 @@ It exposes:
 - Warning presence
 - Failure presence
 - Blocking-failure presence
+- Cancellation presence through `WasCancelled`
 
 Accounting invariant:
 
@@ -703,21 +726,22 @@ The injected constructor rejects a null clock.
 15. Monitors completion, timeout, caller cancellation, and clock validity.
 16. Waits for executor settlement.
 17. Creates `ELAUNCH-STEP-003` when timeout won.
-18. Converts non-timeout executor exceptions through `ELAUNCH-STEP-004`.
-19. Converts null results to blocking contract failures.
-20. Applies authored failure policy.
-21. Completes the execution with effective result and timing.
-22. Appends the execution in authored order.
-23. Continues or stops according to the policy decision.
-24. Disposes per-attempt cancellation sources.
-25. Returns immutable traversal accounting.
+18. Creates structured `ELAUNCH-STEP-005` when caller cancellation won after settlement.
+19. Converts non-timeout, non-caller-cancellation executor exceptions through `ELAUNCH-STEP-004`.
+20. Converts null results to blocking contract failures.
+21. Applies authored failure policy only when the outcome is not caller cancellation.
+22. Completes the execution with effective result and timing.
+23. Appends the execution in authored order.
+24. Stops immediately after caller cancellation or follows the normal policy decision.
+25. Disposes per-attempt cancellation sources.
+26. Returns immutable traversal accounting, including `WasCancelled`.
 
 No later executor factory is called while a timed-out executor remains active.
 
-FL-M3-03 deliberately does not:
+FL-M3-04 deliberately does not:
 
 - Retry
-- Produce a structured caller-cancellation run result
+- Add a root-level cancellation command
 - Publish root events
 - Update `LaunchSession`
 - Build a public report
@@ -733,7 +757,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-03 compile result:
+Final FL-M3-04 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -746,13 +770,13 @@ Final FL-M3-03 compile result:
 
 Listener failures remain isolated through `ELAUNCH-EVENT-001`.
 
-No FL-M3-03 timing, timeout, or cancellation path calls or mutates these systems.
+No FL-M3-04 timing, timeout, multi-frame, or cancellation path calls or mutates these systems.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `263`
+- Passed: `265`
 - Failed: `0`
 - Ignored: `0`
 
@@ -772,8 +796,9 @@ Breakdown:
 - Policy-application tests: `16`
 - Runner policy and exception tests: `16`
 - Timeout runner and cancellation tests: `18`
+- Multi-frame async runner tests: `2`
 
-Verified FL-M3-03 behavior:
+Verified FL-M3-04 behavior:
 
 - Clock interface and default implementation
 - Deterministic manual clock
@@ -790,7 +815,12 @@ Verified FL-M3-03 behavior:
 - Late success containment
 - Late failure containment
 - Timeout cancellation-exception containment
-- Caller cancellation boundary
+- Structured caller cancellation after executor settlement
+- Stable `ELAUNCH-STEP-005`
+- Run-level `WasCancelled`
+- Same-tick cancellation-race containment
+- Production-shaped multi-frame `Awaitable.NextFrameAsync` execution
+- Multi-frame progress, positive timing, and authored order
 - Continue-with-warning timeout
 - Block-launch timeout
 - Late-progress containment
@@ -815,7 +845,6 @@ Not implemented:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Structured caller-cancellation run result
 - Root-level cancellation command
 - Shutdown or destruction cancellation orchestration
 - `EchoLaunchRoot` runner integration
@@ -828,7 +857,6 @@ Not implemented:
 - Duplicate-ID collision validation
 - Dependency validation
 - Runner re-entry protection
-- Production-shaped multi-frame asynchronous proof
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
@@ -839,6 +867,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-03 stops after monotonic unscaled timeout measurement, deterministic completion-versus-deadline ordering, stable timeout results, cooperative timeout cancellation, late progress containment, and executor settlement are proven.
+FL-M3-04 stops after production-shaped multi-frame Unity async execution, structured caller cancellation, same-tick cancellation-race containment, stable `ELAUNCH-STEP-005`, and immutable `WasCancelled` accounting are proven.
 
 The next runtime slice requires separate approval.
