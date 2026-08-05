@@ -8,6 +8,24 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-07 - Startup Sequence Definition and Ordered Entry Model
+
+- Abstract immutable `StartupStepDefinition`
+- Stable step identity and step-definition schema version `1`
+- Authored step display label separated from stable identity
+- Serializable `StartupSequenceEntry`
+- Stable entry identity
+- Enabled/disabled authored entry state
+- One immutable step-definition reference per entry
+- Project-owned `StartupSequence` ScriptableObject
+- Stable sequence identity and sequence schema version `1`
+- Ordered embedded sequence-entry list
+- Read-only entry count and indexed entry access
+- Passive `StartupSequence` binding on `EchoLaunchConfiguration`
+- Configuration schema advancement from `1` to `2`
+- Twenty-four Runtime Play Mode startup-sequence definition tests
+- Create menu path under `EchoDevGames/First Light/Startup Sequence`
+
 #### FL-M2-06 - Launch Configuration Identity and Root Binding
 
 - Project-owned `EchoLaunchConfiguration` ScriptableObject
@@ -63,45 +81,51 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Stable diagnostic code `ELAUNCH-ROOT-001`
 - Seven Runtime Play Mode authority tests
 
+### Changed
+
+- `EchoLaunchConfiguration.CurrentSchemaVersion` advanced from `1` to `2` because the serialized configuration now includes a `StartupSequence` reference.
+
 ### Tested
 
 Runtime Play Mode totals:
 
-- Passed: `117`
+- Passed: `141`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-06 coverage:
+FL-M2-07 coverage:
 
-- Canonical configuration ID format
-- Unique IDs across separate configuration instances
+- Canonical step, entry, and sequence identities
+- Unique IDs across separate instances
 - Stable repeated identity reads
-- Current schema version initialization
-- Valid identity and supported schema checks
-- Malformed identity detection without repair
-- Unsupported schema detection without rewrite
-- Authoritative configuration exposure
-- Null behavior without assignment
-- Duplicate-root configuration hiding
-- Authority preservation during duplicate creation
-- Former-authority hiding after reset
-- Fresh-root configuration after reset
-- Configuration immutability through root creation and destruction
-- Unity Create menu asset creation with no scene side effects
+- Step and sequence schema initialization
+- Display-label separation from step identity
+- Malformed identity detection without runtime repair
+- Unsupported schema detection without runtime rewrite
+- Default enabled entry state
+- Preserved step-definition references
+- Empty-sequence behavior
+- Authored-order preservation
+- Invalid sequence-index rejection
+- Configuration-to-sequence binding
+- Definition immutability
+- Unity Create menu sequence creation with no scene side effects
 
 ### Not Included
 
+- Startup-step policies
+- Step executors
+- Startup sequence runner
 - Automatic lifecycle advancement
-- Startup sequence definitions
-- Startup sequence execution
-- Configuration preflight or blocking diagnostics
+- Configuration or sequence preflight
+- Duplicate-ID collision scans
 - Runtime migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent root lifetime
 - Direct-scene initializer behavior
-- Editor setup tooling beyond `CreateAssetMenu`
+- Custom inspectors or setup windows
 - Standalone Laboratory
 - Peer-package bridges
 

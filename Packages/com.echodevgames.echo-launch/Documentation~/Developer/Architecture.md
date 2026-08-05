@@ -11,6 +11,7 @@
   - `FL-M2-04`
   - `FL-M2-05`
   - `FL-M2-06`
+  - `FL-M2-07`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -25,6 +26,9 @@ First Light currently establishes:
 6. Isolated lifecycle notifications
 7. Project-owned launch configuration identity
 8. Authority-filtered root configuration binding
+9. Immutable startup-step definitions
+10. Ordered startup-sequence entry modeling
+11. Passive configuration-to-sequence binding
 
 It does not yet execute startup behavior.
 
@@ -49,6 +53,9 @@ It does not yet execute startup behavior.
     │   ├── LaunchSession.cs
     │   └── LaunchStateTransitionRules.cs
     └── Steps/
+        ├── StartupSequence.cs
+        ├── StartupSequenceEntry.cs
+        ├── StartupStepDefinition.cs
         ├── StartupStepStatus.cs
         └── StartupStepResult.cs
 
@@ -58,7 +65,8 @@ It does not yet execute startup behavior.
     ├── LaunchLifecycleTransitionTests.cs
     ├── LaunchNotificationTests.cs
     ├── LaunchSessionProgressTests.cs
-    └── LaunchStateVocabularyTests.cs
+    ├── LaunchStateVocabularyTests.cs
+    └── StartupSequenceDefinitionTests.cs
 
 ## Launch Configuration Definition
 
@@ -68,14 +76,45 @@ It contains authored definition data only:
 
     configurationId
     schemaVersion
+    startupSequence
 
 It does not contain current launch state, progress, timings, retries, active scene references, or execution results.
 
 Active mutable state remains owned by `LaunchSession`.
 
-### Stable Configuration Identity
+### Configuration Schema
 
-Every newly created configuration receives:
+`EchoLaunchConfiguration.CurrentSchemaVersion` is now `2`.
+
+Schema `2` adds the passive serialized `StartupSequence` reference.
+
+The package does not migrate older configuration assets at runtime. Migration and repair remain future Editor-tooling responsibilities.
+
+## Startup Step Definition
+
+`StartupStepDefinition` is an abstract project or bridge-owned ScriptableObject base.
+
+It contains:
+
+    stepId
+    schemaVersion
+    displayName
+
+It does not contain:
+
+- Executor instances
+- Current status
+- Progress
+- Retry counters
+- Timeout state
+- Cancellation state
+- Runtime ownership
+- Scene references
+- Result history
+
+### Step Identity
+
+Every newly created step definition receives:
 
     Guid.NewGuid().ToString("N")
 
@@ -86,158 +125,122 @@ The canonical format is:
 - Characters `0-9` and `a-f`
 - No spaces, punctuation, or separators
 
-The runtime-safe configuration ID is distinct from Unity's asset GUID, asset path, filename, display name, and runtime instance ID.
+The stable step ID is distinct from asset name, display label, path, list index, Unity asset GUID, and runtime instance ID.
 
-Runtime code detects malformed identity but does not silently regenerate or repair it.
+Runtime code detects malformed identity but does not silently repair it.
 
-### Configuration Schema
+### Step Display Label
 
-`EchoLaunchConfiguration.CurrentSchemaVersion` is `1`.
+`DisplayName` is presentation metadata, not identity.
 
-The serialized `schemaVersion` describes the structure of the configuration asset. It is independent from the package version.
+Changing the label does not change `StepId`.
 
-Runtime code detects unsupported schema values but does not rewrite or migrate them.
+A blank authored label falls back to the Unity object name.
 
-Migration and repair remain future Editor-tooling responsibilities.
+### Step Schema
 
-## Root Configuration Binding
+`StartupStepDefinition.CurrentSchemaVersion` is `1`.
 
-`EchoLaunchRoot` contains one passive serialized configuration reference.
+Unsupported schema values are detected but not rewritten.
 
-The public property:
+## Startup Sequence Entry
 
-    EchoLaunchRoot.Configuration
+`StartupSequenceEntry` is an embedded serializable authored record.
 
-returns:
+It contains:
 
-- The assigned configuration when the root is authoritative
-- `null` when no configuration is assigned
-- `null` when the root is a rejected duplicate
-- `null` when a former authority becomes stale after reset
+    entryId
+    enabled
+    stepDefinition
 
-Binding a configuration does not:
+The entry ID is durable identity and remains independent from list index.
 
-- Validate or repair the asset
-- Advance lifecycle state
-- Begin startup execution
-- Create a default configuration
-- Clone the asset
-- Write runtime values into the asset
-- Emit a missing-configuration warning
+Reordering entries changes authored order, not entry identity.
 
-Preflight behavior remains outside FL-M2-06.
+The enabled flag is authored definition data. It does not represent runtime skipped, running, failed, or completed state.
 
-## Lifecycle Transition Authority
+A null step reference is legal authored data at this checkpoint. Validation belongs to later preflight work.
 
-`LaunchStateTransitionRules` is the single internal authority for lifecycle legality.
+## Startup Sequence
+
+`StartupSequence` is a project-owned ScriptableObject.
+
+It contains:
+
+    sequenceId
+    schemaVersion
+    ordered List<StartupSequenceEntry>
 
 It exposes:
 
-    IsTerminal
-    CanTransition
-    EnsureCanPublish
+    SequenceId
+    SchemaVersion
+    EntryCount
+    GetEntry(index)
 
-It validates that status values are defined before interpreting them.
+The mutable backing list is not publicly exposed.
 
-## Approved Transition Graph
+`GetEntry(index)` preserves authored order and throws `ArgumentOutOfRangeException` for invalid positions.
 
-    None
-        -> AuthorityClaimed
+An empty sequence is legal authored data at this checkpoint.
 
-    AuthorityClaimed
-        -> AuthorityClaimed
-        -> Validating
-        -> Failed
-        -> Interrupted
+### Sequence Identity and Schema
 
-    Validating
-        -> Validating
-        -> Running
-        -> Failed
-        -> Interrupted
+Sequence IDs use the same canonical 32-character lowercase hexadecimal format.
 
-    Running
-        -> Running
-        -> Transitioning
-        -> Failed
-        -> Interrupted
+`StartupSequence.CurrentSchemaVersion` is `1`.
 
-    Transitioning
-        -> Transitioning
-        -> Completed
-        -> Failed
-        -> Interrupted
+Malformed IDs and unsupported schema values are detected without runtime repair.
 
-    Terminal:
-        Completed
-        Failed
-        Interrupted
+## Configuration-to-Sequence Binding
 
-## Same-State Publication
+`EchoLaunchConfiguration.StartupSequence` passively exposes the assigned project-owned sequence.
 
-Same-state publication is legal only for active states.
+Binding does not:
 
-It supports progress updates within one lifecycle phase without inventing a false transition.
+- Validate the sequence
+- Execute entries
+- Create step executors
+- Advance launch lifecycle
+- Repair IDs
+- Clone definitions
+- Mutate the sequence
+- Emit warnings
 
-## Terminal Freezing
+Preflight and execution remain later checkpoints.
 
-Once a session reaches `Completed`, `Failed`, or `Interrupted`, no additional snapshot may be published.
+## Definition Immutability
 
-This includes publication of the same terminal state.
+Startup configuration, sequence, entry, and step-definition objects are authored inputs.
 
-A new launch attempt requires a new session.
+Runtime inspection does not alter:
 
-## Transactional Publication
+- Configuration ID or schema
+- Sequence ID or schema
+- Entry ID or enabled state
+- Step ID, schema, or display label
+- Authored references
+- Authored order
 
-`LaunchSession.Publish` validates in this order:
+Future active execution state must live in fresh runtime-owned objects.
 
-    Validate launch mode
-        -> validate lifecycle transition
-            -> replace current snapshot
+## Lifecycle Transition Authority
 
-If validation fails, the stored progress snapshot remains unchanged.
+`LaunchStateTransitionRules` remains the single internal authority for lifecycle legality.
 
-## Root Integration
-
-`EchoLaunchRoot.PublishProgress` delegates to `LaunchSession.Publish`.
-
-The root therefore inherits the lifecycle guard automatically without duplicating transition logic.
+It validates defined status values and approved transition paths before `LaunchSession` accepts a new snapshot.
 
 ## Lifecycle Notifications
 
-`EchoLaunchRoot` exposes two public observer events:
+`EchoLaunchRoot` continues to dispatch accepted state and progress notifications after authoritative state has changed.
 
-    LaunchStateChanged
-    LaunchProgressChanged
-
-`LaunchStateChanged` is raised only when an accepted publication changes the lifecycle state.
-
-`LaunchProgressChanged` is raised after every accepted publication, including a same-state progress update.
-
-Publication order is:
-
-    validate publication
-        -> accept the new snapshot
-            -> dispatch state change when required
-                -> dispatch progress change
-
-Listeners therefore observe the accepted authoritative state during their callbacks.
-
-`LaunchNotificationDispatcher` snapshots the invocation list and invokes each listener independently. One listener exception cannot stop later listeners, block the progress event, or roll back accepted launch state.
-
-Listener failures produce:
-
-    ELAUNCH-EVENT-001
-
-Rejected duplicate-root, mode-mismatched, invalid-transition, and terminal-rewrite publications emit no notifications.
-
-Root destruction clears both event delegate fields so subscriptions cannot transfer to a later root.
+Listener failures remain isolated through `ELAUNCH-EVENT-001`.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `117`
+- Passed: `141`
 - Failed: `0`
 - Ignored: `0`
 
@@ -249,34 +252,39 @@ Breakdown:
 - Session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Startup sequence definition tests: `24`
 
 Manual verification:
 
-- Unity Create menu generated a project-owned launch configuration asset.
-- The default Inspector exposed no mutable session state.
-- Asset creation produced no root, GameObject, lifecycle transition, startup behavior, or warning.
-- The temporary verification asset was removed before Git review.
+- Unity created a project-owned `StartupSequence` asset.
+- The sequence Inspector displayed an empty ordered `Entries` list.
+- Unity created a temporary launch configuration and accepted the sequence reference.
+- Asset creation and assignment produced no root, GameObject, lifecycle transition, startup behavior, or warning.
+- Both temporary verification assets were removed before Git review.
 
 ## Current Exclusions
 
 Not implemented:
 
+- Startup-step policy
+- Step executor contract
+- Startup sequence runner
+- Runtime step context
 - Automatic lifecycle advancement
-- Startup sequences
-- Step definitions or executors
-- Configuration preflight
-- Configuration migration or repair
+- Configuration or sequence preflight
+- Duplicate-ID collision validation
+- Runtime migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
 - Direct-scene initialization behavior
-- Editor setup tools beyond `CreateAssetMenu`
+- Custom inspectors and setup windows
 - Standalone Laboratory
 - Peer-package bridges
 
 ## Stop Point
 
-FL-M2-06 stops after project-owned configuration identity and passive authoritative root binding are proven.
+FL-M2-07 stops after startup-step definitions, ordered sequence entries, sequence identity, and passive configuration binding are proven.
 
 The next runtime slice requires separate approval.

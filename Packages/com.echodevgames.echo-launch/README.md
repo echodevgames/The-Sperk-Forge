@@ -15,6 +15,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-04` Launch Lifecycle Transition Guard
   - `FL-M2-05` Lifecycle Notifications
   - `FL-M2-06` Launch Configuration Identity and Root Binding
+  - `FL-M2-07` Startup Sequence Definition and Ordered Entry Model
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -73,16 +74,44 @@ First Light now provides:
 ### Launch Configuration
 
 - Project-owned `EchoLaunchConfiguration` asset
-- Create menu entry under First Light
 - Canonical runtime-safe stable configuration ID
-- Serialized schema version `1`
-- Read-only configuration identity and schema
+- Configuration schema version `2`
+- Passive startup-sequence reference
+- Read-only identity, schema, and sequence binding
 - Invalid identity detection without silent repair
 - Unsupported schema detection without runtime rewrite
 - Passive serialized root binding
-- Read-only authority-filtered `EchoLaunchRoot.Configuration`
-- Duplicate and stale-root configuration hiding
-- No mutable launch-session state stored in the asset
+- Authority-filtered `EchoLaunchRoot.Configuration`
+
+### Startup Step Definitions
+
+- Abstract immutable `StartupStepDefinition`
+- Canonical stable step ID
+- Step schema version `1`
+- Authored display label separate from identity
+- Blank-label fallback to the Unity object name
+- No executor or mutable execution state
+
+### Startup Sequence Entries
+
+- Serializable embedded `StartupSequenceEntry`
+- Canonical stable entry ID
+- Authored enabled state
+- One immutable step-definition reference
+- Entry identity independent from list position
+
+### Startup Sequence
+
+- Project-owned `StartupSequence` asset
+- Create menu entry under First Light
+- Canonical stable sequence ID
+- Sequence schema version `1`
+- Ordered private sequence-entry list
+- Read-only entry count
+- Read-only indexed access
+- Clear invalid-index rejection
+- Empty sequence allowed as authored data
+- Passive binding through `EchoLaunchConfiguration.StartupSequence`
 
 ## Approved Lifecycle
 
@@ -104,7 +133,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `117`
+- Passed: `141`
 - Failed: `0`
 - Ignored: `0`
 
@@ -116,6 +145,7 @@ Breakdown:
 - Launch session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Startup sequence definition tests: `24`
 
 Expected yellow diagnostic evidence:
 
@@ -124,26 +154,30 @@ Expected yellow diagnostic evidence:
 
 Manual evidence:
 
-- Unity created a project-owned launch configuration through the package Create menu.
-- The default Inspector exposed no mutable launch-session state.
-- Asset creation caused no scene object, lifecycle transition, startup execution, or warning.
-- The temporary verification asset was removed before Git review.
+- Unity created a project-owned startup sequence through the package Create menu.
+- The sequence Inspector exposed an empty authored `Entries` list.
+- A temporary launch configuration accepted the sequence reference.
+- Asset creation and assignment caused no scene object, lifecycle transition, startup execution, or warning.
+- Both temporary verification assets were removed before Git review.
 
 ## Not Implemented Yet
 
 First Light does not yet provide:
 
+- Startup-step policy
+- Step executor contract
+- Startup sequence runner
+- Runtime step context
 - Automatic lifecycle advancement
-- Startup sequences or step definitions
-- Startup executors
-- Configuration preflight
-- Configuration migration or repair
+- Configuration or sequence preflight
+- Duplicate-ID collision validation
+- Runtime migration or repair
 - Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
-- Editor setup tools beyond `CreateAssetMenu`
+- Custom inspectors or setup windows
 - Standalone Laboratory
 - Peer-package bridges
 
@@ -162,9 +196,9 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- One hundred seventeen passing Runtime Play Mode tests
-- Launch configuration Create menu verification
-- Configuration immutability and authority filtering
+- One hundred forty-one passing Runtime Play Mode tests
+- Launch configuration and startup-sequence Create menu verification
+- Definition immutability and ordered-access evidence
 - No out-of-scope startup execution
 
 Still `Not run`:

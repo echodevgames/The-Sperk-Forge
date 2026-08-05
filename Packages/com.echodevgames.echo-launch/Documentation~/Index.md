@@ -13,7 +13,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-04`
   - `FL-M2-05`
   - `FL-M2-06`
-- Current implemented boundary: authority, vocabulary, live session state, guarded lifecycle publication, isolated notifications, and project-owned launch configuration binding
+  - `FL-M2-07`
+- Current implemented boundary: authority, vocabulary, live session state, guarded lifecycle publication, isolated notifications, launch configuration binding, and immutable ordered startup-sequence definitions
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -31,6 +32,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M2-05 Runtime Test Report](Developer/Test%20Reports/FL-M2-05_Lifecycle_Notification_Test_Report.md)
 - [FL-M2-06 Launch Configuration Identity and Root Binding](Developer/Checkpoints/FL-M2-06_Launch_Configuration_Identity_and_Root_Binding.md)
 - [FL-M2-06 Runtime Test Report](Developer/Test%20Reports/FL-M2-06_Launch_Configuration_Binding_Test_Report.md)
+- [FL-M2-07 Startup Sequence Definition and Ordered Entry Model](Developer/Checkpoints/FL-M2-07_Startup_Sequence_Definition_and_Ordered_Entry_Model.md)
+- [FL-M2-07 Runtime Test Report](Developer/Test%20Reports/FL-M2-07_Startup_Sequence_Definition_Test_Report.md)
 
 ## Package Root Documents
 
@@ -56,7 +59,11 @@ First Light currently proves:
 - Project-owned launch configuration identity
 - Serialized configuration schema version
 - Authority-filtered configuration binding
-- Configuration immutability during root lifecycle
-- One hundred seventeen passing Runtime Play Mode tests
+- Immutable startup-step definitions
+- Stable sequence-entry identity
+- Ordered startup-sequence modeling
+- Passive configuration-to-sequence binding
+- Definition immutability
+- One hundred forty-one passing Runtime Play Mode tests
 
-Startup sequence modeling and execution remain outside the implemented scope.
+Step policies, executors, preflight, and sequence execution remain outside the implemented scope.
