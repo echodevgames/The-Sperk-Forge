@@ -7,61 +7,66 @@ First Light version `0.1.0` currently provides:
 - Launch-authority ownership
 - Neutral launch-state vocabulary
 - One live read-only launch session
+- Guarded lifecycle publication
 
-It does not yet execute startup sequences.
+It does not yet execute startup sequences automatically.
 
-## Adding a Root
+## Approved Lifecycle
 
-Add `EchoLaunchRoot` to one GameObject in a scene.
+The active lifecycle is:
 
-The first valid root becomes authoritative and creates a fresh session.
+    AuthorityClaimed
+        -> Validating
+            -> Running
+                -> Transitioning
+                    -> Completed
 
-Initial public state:
+Any active phase may also enter:
 
-    State == LaunchStatus.AuthorityClaimed
+    Failed
+    Interrupted
 
-Initial public progress:
+## Same-State Progress
 
-    Progress.Mode == LaunchMode.CanonicalBoot
-    Progress.Status == LaunchStatus.AuthorityClaimed
-    Progress.ActiveStepIndex == -1
-    Progress.TotalStepCount == 0
-    Progress.Progress01 == 0
-    Progress.IsProgressIndeterminate == true
-    Progress.Message == "Launch authority claimed."
+An active state may publish another snapshot with the same status.
 
-## Duplicate Behavior
+Example:
 
-A duplicate root:
+    Running at 25%
+        -> Running at 50%
+            -> Running at 80%
 
-- Is rejected
-- Is disabled
-- Logs `ELAUNCH-ROOT-001`
-- Exposes `State == LaunchStatus.None`
-- Exposes `Progress == LaunchProgressSnapshot.Empty`
+This changes progress without changing lifecycle phase.
 
-## Empty Progress
+## Illegal Transitions
 
-`LaunchProgressSnapshot.Empty` is the safe canonical value for no active launch.
+First Light rejects:
 
-Its strings are normalized to empty strings rather than null.
+- Backward transitions
+- Skipped required phases
+- `LaunchStatus.None` in an active session
+- Publication after a terminal state
+- Undefined status values
 
-## Read-Only Progress
+A rejected publication leaves the previous snapshot unchanged.
 
-Consumers may read:
+## Terminal States
 
-    EchoLaunchRoot.State
-    EchoLaunchRoot.Progress
+These states permanently end the current session:
 
-Project code cannot directly replace session progress because publication remains internal.
+    Completed
+    Failed
+    Interrupted
+
+A new launch requires a new `LaunchSession`.
 
 ## What This Does Not Do Yet
 
 The package does not yet:
 
+- Advance the lifecycle automatically
 - Run startup steps
-- Publish public progress events
-- Enforce lifecycle transition rules
+- Publish public lifecycle events
 - Build a final launch report
 - Display a splash
 - Load an initial scene
@@ -72,11 +77,11 @@ The package does not yet:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `60`
+- Passed: `82`
 - Failed: `0`
 - Ignored: `0`
 
 See:
 
-- [FL-M2-03 Runtime Test Report](../Developer/Test%20Reports/FL-M2-03_Launch_Session_and_Progress_Test_Report.md)
+- [FL-M2-04 Runtime Test Report](../Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [Developer Architecture](../Developer/Architecture.md)

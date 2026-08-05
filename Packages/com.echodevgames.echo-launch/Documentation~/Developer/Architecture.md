@@ -8,6 +8,7 @@
   - `FL-M2-01`
   - `FL-M2-02`
   - `FL-M2-03`
+  - `FL-M2-04`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -18,6 +19,7 @@ First Light currently establishes:
 2. Neutral launch-state vocabulary
 3. One live session owned by the authoritative root
 4. Read-only state and progress exposure
+5. Central lifecycle transition validation
 
 It does not yet execute startup behavior.
 
@@ -33,7 +35,8 @@ It does not yet execute startup behavior.
     │   ├── LaunchMode.cs
     │   ├── LaunchStatus.cs
     │   ├── LaunchProgressSnapshot.cs
-    │   └── LaunchSession.cs
+    │   ├── LaunchSession.cs
+    │   └── LaunchStateTransitionRules.cs
     └── Steps/
         ├── StartupStepStatus.cs
         └── StartupStepResult.cs
@@ -41,76 +44,91 @@ It does not yet execute startup behavior.
     Tests/Runtime/PlayMode/
     ├── EchoLaunchRootAuthorityTests.cs
     ├── LaunchStateVocabularyTests.cs
-    └── LaunchSessionProgressTests.cs
+    ├── LaunchSessionProgressTests.cs
+    └── LaunchLifecycleTransitionTests.cs
 
-## Launch Session
+## Lifecycle Transition Authority
 
-`LaunchSession` is an internal sealed class representing one launch attempt.
+`LaunchStateTransitionRules` is the single internal authority for lifecycle legality.
 
-It owns:
+It exposes:
 
-- Launch mode
-- Current launch state
-- Latest immutable progress snapshot
+    IsTerminal
+    CanTransition
+    EnsureCanPublish
 
-A new session begins with:
+It validates that status values are defined before interpreting them.
 
-- Configured mode
-- `AuthorityClaimed`
-- No active step
-- Zero total steps
-- Zero progress
-- Indeterminate progress
-- Message `Launch authority claimed.`
-- Zero elapsed time
-- No last result
+## Approved Transition Graph
 
-## Progress Publication
+    None
+        -> AuthorityClaimed
 
-`LaunchSession.Publish` replaces the stored snapshot.
+    AuthorityClaimed
+        -> AuthorityClaimed
+        -> Validating
+        -> Failed
+        -> Interrupted
 
-It rejects:
+    Validating
+        -> Validating
+        -> Running
+        -> Failed
+        -> Interrupted
 
-- A snapshot with a different launch mode
-- A snapshot using `LaunchStatus.None`
+    Running
+        -> Running
+        -> Transitioning
+        -> Failed
+        -> Interrupted
 
-`EchoLaunchRoot.PublishProgress` remains internal and rejects publication when the root is not authoritative or has no session.
+    Transitioning
+        -> Transitioning
+        -> Completed
+        -> Failed
+        -> Interrupted
 
-## Read-Only Root Surface
+Terminal:
 
-`EchoLaunchRoot` publicly exposes:
+    Completed
+    Failed
+    Interrupted
 
-    public LaunchStatus State { get; }
-    public LaunchProgressSnapshot Progress { get; }
+## Same-State Publication
 
-Only the current authority may expose live session state.
+Same-state publication is legal only for active states.
 
-Duplicate roots, stale roots after static reset, and roots without a session expose:
+It supports progress updates within one lifecycle phase without inventing a false transition.
 
-    LaunchStatus.None
-    LaunchProgressSnapshot.Empty
+## Terminal Freezing
 
-## Empty Snapshot
+Once a session reaches `Completed`, `Failed`, or `Interrupted`, no additional snapshot may be published.
 
-`LaunchProgressSnapshot.Empty` is a normalized constructed value.
+This includes publication of the same terminal state.
 
-It avoids `default(LaunchProgressSnapshot)`, whose string properties could otherwise be null.
+A new launch attempt requires a new session.
 
-## Session Lifetime
+## Transactional Publication
 
-The authoritative root creates one session immediately after claiming authority.
+`LaunchSession.Publish` validates in this order:
 
-Destroying the root discards that session and releases authority.
+    Validate launch mode
+        -> validate lifecycle transition
+            -> replace current snapshot
 
-A replacement root receives a completely fresh session.
+If validation fails, the stored progress snapshot remains unchanged.
 
-Static reset hides stale private session data because non-authoritative roots expose only `None` and `Empty`.
+## Root Integration
+
+`EchoLaunchRoot.PublishProgress` delegates to `LaunchSession.Publish`.
+
+The root therefore inherits the lifecycle guard automatically without duplicating transition logic.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `60`
+- Passed: `82`
 - Failed: `0`
 - Ignored: `0`
 
@@ -119,15 +137,16 @@ Breakdown:
 - Authority tests: `7`
 - Vocabulary tests: `39`
 - Session and progress tests: `14`
+- Lifecycle transition tests: `22`
 
 ## Current Exclusions
 
 Not implemented:
 
+- Automatic lifecycle advancement
 - Startup configuration assets
 - Startup sequences
 - Step definitions or executors
-- Lifecycle transition validation
 - Public state or progress events
 - Launch reports
 - Splash presentation
@@ -140,6 +159,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M2-03 stops after one authority owns one fresh session and exposes read-only state and progress.
+FL-M2-04 stops after illegal lifecycle publication is rejected without mutating the session.
 
 The next runtime slice requires separate approval.

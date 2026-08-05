@@ -39,21 +39,29 @@ namespace EchoDevGames.EchoLaunch
 
             Mode = mode;
 
-            Progress = new LaunchProgressSnapshot(
-                mode,
-                LaunchStatus.AuthorityClaimed,
-                string.Empty,
-                -1,
-                0,
-                0f,
-                true,
-                "Launch authority claimed.",
-                0d,
-                null);
+            LaunchProgressSnapshot initialSnapshot =
+                new LaunchProgressSnapshot(
+                    mode,
+                    LaunchStatus.AuthorityClaimed,
+                    string.Empty,
+                    -1,
+                    0,
+                    0f,
+                    true,
+                    "Launch authority claimed.",
+                    0d,
+                    null);
+
+            LaunchStateTransitionRules.EnsureCanPublish(
+                LaunchStatus.None,
+                initialSnapshot.Status);
+
+            Progress = initialSnapshot;
         }
 
         /// <summary>
-        /// Replaces the current immutable progress snapshot.
+        /// Replaces the current immutable progress snapshot after
+        /// validating its mode and lifecycle transition.
         /// </summary>
         internal void Publish(
             LaunchProgressSnapshot snapshot)
@@ -65,12 +73,9 @@ namespace EchoDevGames.EchoLaunch
                     nameof(snapshot));
             }
 
-            if (snapshot.Status == LaunchStatus.None)
-            {
-                throw new ArgumentException(
-                    "An active launch session cannot publish the None status.",
-                    nameof(snapshot));
-            }
+            LaunchStateTransitionRules.EnsureCanPublish(
+                State,
+                snapshot.Status);
 
             Progress = snapshot;
         }

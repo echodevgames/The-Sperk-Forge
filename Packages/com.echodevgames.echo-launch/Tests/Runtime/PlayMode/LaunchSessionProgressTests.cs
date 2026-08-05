@@ -213,6 +213,17 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             EchoLaunchRoot root =
                 CreateRoot("Publishing Root");
 
+            root.PublishProgress(
+                CreateSnapshot(
+                    status: LaunchStatus.Validating,
+                    activeStepId: "validate",
+                    activeStepIndex: 0,
+                    totalStepCount: 4,
+                    progress01: 0.25f,
+                    message: "Validating.",
+                    elapsedSeconds: 0.5d,
+                    lastResult: null));
+
             StartupStepResult result =
                 StartupStepResult.Success(
                     "Settings initialized.");
@@ -362,7 +373,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             LaunchProgressSnapshot snapshot =
                 new LaunchProgressSnapshot(
                     LaunchMode.DirectSceneDevelopment,
-                    LaunchStatus.Running,
+                    LaunchStatus.Validating,
                     string.Empty,
                     -1,
                     0,
@@ -396,7 +407,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     0d,
                     null);
 
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidOperationException>(
                 () => session.Publish(snapshot));
         }
 
@@ -423,7 +434,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             LaunchProgressSnapshot snapshot =
                 CreateSnapshot(
-                    status: LaunchStatus.Running,
+                    status: LaunchStatus.Validating,
                     activeStepId: "forged-step",
                     activeStepIndex: 0,
                     totalStepCount: 1,
@@ -442,6 +453,17 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         {
             EchoLaunchRoot root =
                 CreateRoot("Stale Root");
+
+            root.PublishProgress(
+                CreateSnapshot(
+                    status: LaunchStatus.Validating,
+                    activeStepId: "validate",
+                    activeStepIndex: 0,
+                    totalStepCount: 1,
+                    progress01: 0.25f,
+                    message: "Validating.",
+                    elapsedSeconds: 0.25d,
+                    lastResult: null));
 
             LaunchProgressSnapshot running =
                 CreateSnapshot(
@@ -479,6 +501,39 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         {
             EchoLaunchRoot first =
                 CreateRoot("First Authority");
+
+            first.PublishProgress(
+                CreateSnapshot(
+                    status: LaunchStatus.Validating,
+                    activeStepId: "validate",
+                    activeStepIndex: 0,
+                    totalStepCount: 2,
+                    progress01: 0.25f,
+                    message: "Validating.",
+                    elapsedSeconds: 0.5d,
+                    lastResult: null));
+
+            first.PublishProgress(
+                CreateSnapshot(
+                    status: LaunchStatus.Running,
+                    activeStepId: "initialize",
+                    activeStepIndex: 1,
+                    totalStepCount: 2,
+                    progress01: 0.75f,
+                    message: "Initializing.",
+                    elapsedSeconds: 1.25d,
+                    lastResult: null));
+
+            first.PublishProgress(
+                CreateSnapshot(
+                    status: LaunchStatus.Transitioning,
+                    activeStepId: string.Empty,
+                    activeStepIndex: -1,
+                    totalStepCount: 2,
+                    progress01: 1f,
+                    message: "Transitioning.",
+                    elapsedSeconds: 1.75d,
+                    lastResult: null));
 
             LaunchProgressSnapshot completed =
                 CreateSnapshot(

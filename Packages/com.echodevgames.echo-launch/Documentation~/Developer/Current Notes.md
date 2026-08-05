@@ -2,45 +2,48 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-03`
-- Title: Launch Session and Read-Only Progress Surface
+- Checkpoint: `FL-M2-04`
+- Title: Launch Lifecycle Transition Guard
 - Package version: `0.1.0`
 - Status: Complete, pending commit and push
-- Runtime Play Mode result: 60 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 82 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- Internal `LaunchSession`
-- Fresh session creation after authority claim
-- Initial `AuthorityClaimed` snapshot
-- `LaunchProgressSnapshot.Empty`
-- Public read-only root `State`
-- Public read-only root `Progress`
-- Internal controlled progress publication
-- Duplicate and stale-root state hiding
-- Fourteen session and progress tests
+- Internal `LaunchStateTransitionRules`
+- Approved forward lifecycle graph
+- Same-state active progress publication
+- Failure and interruption paths
+- Backward-transition rejection
+- Skipped-phase rejection
+- Undefined-status rejection
+- Permanent terminal-session freezing
+- Transactional `LaunchSession.Publish`
+- Twenty-two lifecycle transition test cases
+- Lifecycle-aligned maintenance of FL-M2-03 tests
 
 ## Evidence Summary
 
 ### Passed
 
-- Session creation
-- Canonical initial progress
-- Direct-scene session mode
-- Safe empty snapshot
-- Duplicate state hiding
-- Snapshot replacement
-- Same-state publication
-- Previous snapshot immutability
-- Mode mismatch rejection
+- Terminal-state recognition
+- Forward lifecycle transitions
+- Same active-state publication
+- Active-state failure path
+- Active-state interruption path
+- Backward-transition rejection
+- Skipped-phase rejection
+- Undefined current-status rejection
+- Undefined next-status rejection
 - `None` publication rejection
-- Undefined mode rejection
-- Duplicate publication rejection
-- Static-reset stale-state hiding
-- Fresh session after authority destruction
-- Sixty total Runtime Play Mode tests
+- Publication after `Completed` rejection
+- Publication after `Failed` rejection
+- Publication after `Interrupted` rejection
+- Previous snapshot preservation after rejection
+- Root integration
+- Eighty-two total Runtime Play Mode tests
 
 ### Expected Diagnostics
 
@@ -52,10 +55,10 @@ These warnings were expected and matched by `LogAssert.Expect`.
 
 ### Not Run
 
+- Automatic lifecycle advancement
 - Startup configuration
 - Startup execution
-- Lifecycle transition rules
-- Public progress events
+- Public lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -64,15 +67,15 @@ These warnings were expected and matched by `LogAssert.Expect`.
 
 ## Changed Files
 
-- `Runtime/Core/EchoLaunchRoot.cs`
-- `Runtime/State/LaunchProgressSnapshot.cs`
+- `Runtime/State/LaunchStateTransitionRules.cs`
 - `Runtime/State/LaunchSession.cs`
+- `Tests/Runtime/PlayMode/LaunchLifecycleTransitionTests.cs`
 - `Tests/Runtime/PlayMode/LaunchSessionProgressTests.cs`
 - Unity-generated `.meta` files
 - Adjacent package and suite documentation
 
 ## Handoff Snapshot
 
-FL-M2-03 is complete and ready for final Git review, commit, and push.
+FL-M2-04 is complete and ready for final Git review, commit, and push.
 
 No additional runtime behavior is authorized until the next checkpoint is approved.

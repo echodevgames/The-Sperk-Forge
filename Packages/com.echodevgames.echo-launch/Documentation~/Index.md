@@ -10,7 +10,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-01`
   - `FL-M2-02`
   - `FL-M2-03`
-- Current implemented boundary: authority, launch-state vocabulary, and one live read-only launch session
+  - `FL-M2-04`
+- Current implemented boundary: authority, vocabulary, live session state, and guarded lifecycle publication
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -22,8 +23,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 
 - [Architecture](Developer/Architecture.md)
 - [Current Notes](Developer/Current%20Notes.md)
-- [FL-M2-03 Launch Session and Read-Only Progress Surface](Developer/Checkpoints/FL-M2-03_Launch_Session_and_Read-Only_Progress_Surface.md)
-- [FL-M2-03 Runtime Test Report](Developer/Test%20Reports/FL-M2-03_Launch_Session_and_Progress_Test_Report.md)
+- [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
+- [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 
 ## Package Root Documents
 
@@ -37,14 +38,13 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 First Light currently proves:
 
 - One valid launch authority
-- Duplicate rejection
-- Owner-only release
-- Static reset
 - Stable launch-state vocabulary
-- Immutable results and snapshots
 - One fresh launch session per authority
 - Read-only state and progress
 - Controlled snapshot replacement
-- Sixty passing Runtime Play Mode tests
+- Approved lifecycle transition rules
+- Frozen terminal states
+- Transactional rejection of invalid publication
+- Eighty-two passing Runtime Play Mode tests
 
 Startup execution remains outside the implemented scope.

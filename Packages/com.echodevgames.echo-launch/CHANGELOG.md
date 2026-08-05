@@ -8,34 +8,35 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-04 - Launch Lifecycle Transition Guard
+
+- Internal `LaunchStateTransitionRules`
+- Approved lifecycle transition matrix
+- Same-state progress publication for active states
+- Failure and interruption paths from active states
+- Rejection of backward transitions
+- Rejection of skipped lifecycle phases
+- Permanent freezing of `Completed`, `Failed`, and `Interrupted`
+- Transactional `LaunchSession.Publish` behavior
+- Twenty-two Runtime Play Mode lifecycle transition cases
+- Lifecycle-aligned maintenance of the existing session test suite
+
 #### FL-M2-03 - Launch Session and Read-Only Progress Surface
 
 - Internal `LaunchSession`
 - One fresh session per authoritative root
-- Canonical initial `AuthorityClaimed` snapshot
 - `LaunchProgressSnapshot.Empty`
-- Public read-only `EchoLaunchRoot.State`
-- Public read-only `EchoLaunchRoot.Progress`
-- Internal controlled `PublishProgress`
-- Duplicate and stale-root state hiding
-- Mode-mismatch validation
-- `None`-status publication rejection
-- Undefined-mode rejection
+- Public read-only root state and progress
 - Fourteen Runtime Play Mode session and progress tests
 
 #### FL-M2-02 - Neutral Launch-State Vocabulary
 
-- `LaunchMode`
-- `LaunchStatus`
-- `StartupStepStatus`
-- Immutable `StartupStepResult`
-- Immutable `LaunchProgressSnapshot`
+- Launch-mode, lifecycle, step-status, result, and snapshot vocabulary
 - Thirty-nine Runtime Play Mode vocabulary tests
 
 #### FL-M2-01 - Authority Claim and Static Reset Core
 
-- Internal `LaunchAuthorityClaim`
-- Public `EchoLaunchRoot`
+- Single launch authority
 - Duplicate rejection
 - Stable diagnostic code `ELAUNCH-ROOT-001`
 - Seven Runtime Play Mode authority tests
@@ -44,33 +45,30 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `60`
+- Passed: `82`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M2-03 coverage:
+FL-M2-04 coverage:
 
-- Fresh authority session
-- Canonical initial progress
-- Direct-scene mode session
-- Safe empty snapshot
-- Duplicate state hiding
-- Snapshot replacement
-- Same-state publication
-- Previous snapshot immutability
-- Mode mismatch rejection
-- `None` status rejection
-- Undefined mode rejection
-- Duplicate publication rejection
-- Static-reset stale-state hiding
-- Fresh session after authority destruction
+- Terminal-state recognition
+- Approved forward transitions
+- Same active-state publication
+- Failure and interruption paths
+- Backward-transition rejection
+- Skipped-phase rejection
+- Undefined-status rejection
+- `None` publication rejection
+- Terminal-session freezing
+- Snapshot preservation after rejected publication
+- Root publication using the lifecycle guard automatically
 
 ### Not Included
 
+- Automatic lifecycle advancement
 - Startup configuration
 - Startup sequence execution
-- Lifecycle transition rules
-- Public progress events
+- Public lifecycle events
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -86,8 +84,5 @@ FL-M2-03 coverage:
 
 - Initial Unity Package Manager manifest
 - Embedded package registration
-- Runtime assembly boundary
-- Editor assembly boundary
-- Runtime test assembly boundary
-- Editor test assembly boundary
+- Runtime, Editor, Runtime-test, and Editor-test assembly boundaries
 - Initial package documentation shell
