@@ -16,6 +16,9 @@ namespace EchoDevGames.EchoLaunch
 
         [Header("Launch")]
         [SerializeField]
+        private EchoLaunchConfiguration configuration;
+
+        [SerializeField]
         private LaunchMode launchMode =
             LaunchMode.CanonicalBoot;
 
@@ -54,6 +57,15 @@ namespace EchoDevGames.EchoLaunch
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets the project-owned launch configuration assigned to the
+        /// authoritative root.
+        /// </summary>
+        public EchoLaunchConfiguration Configuration =>
+            IsAuthoritative
+                ? configuration
+                : null;
 
         /// <summary>
         /// Gets the current authoritative launch state.
