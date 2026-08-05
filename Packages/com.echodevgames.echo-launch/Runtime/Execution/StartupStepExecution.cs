@@ -9,7 +9,7 @@ namespace EchoDevGames.EchoLaunch
     ///
     /// Authored definitions and sequence entries remain immutable. The
     /// execution object owns copied metadata, an optional fresh executor,
-    /// active progress, and one terminal result.
+    /// active progress, one terminal result, and one timing snapshot.
     /// </summary>
     internal sealed class StartupStepExecution :
         IStartupStepProgressReporter
@@ -23,6 +23,10 @@ namespace EchoDevGames.EchoLaunch
             StartupStepProgress.Indeterminate();
 
         private StartupStepResult result;
+
+        private StartupStepTiming timing;
+
+        private bool hasTiming;
 
         /// <summary>
         /// Creates one runtime execution from valid authored entry
@@ -174,6 +178,29 @@ namespace EchoDevGames.EchoLaunch
             result != null;
 
         /// <summary>
+        /// Gets whether this completed attempt owns a timing snapshot.
+        /// </summary>
+        internal bool HasTiming =>
+            hasTiming;
+
+        /// <summary>
+        /// Gets the completed attempt timing snapshot.
+        /// </summary>
+        internal StartupStepTiming Timing
+        {
+            get
+            {
+                if (!hasTiming)
+                {
+                    throw new InvalidOperationException(
+                        "Startup-step timing is available only after terminal completion.");
+                }
+
+                return timing;
+            }
+        }
+
+        /// <summary>
         /// Gets whether a fresh executor has been attached to this attempt.
         /// </summary>
         internal bool HasExecutor =>
@@ -243,9 +270,23 @@ namespace EchoDevGames.EchoLaunch
         internal void CompleteBeforeStart(
             StartupStepResult blockingResult)
         {
+            CompleteBeforeStart(
+                blockingResult,
+                StartupStepTiming.NotMeasured);
+        }
+
+        /// <summary>
+        /// Captures one blocking factory or contract failure and its timing
+        /// snapshot before an executor begins.
+        /// </summary>
+        internal void CompleteBeforeStart(
+            StartupStepResult blockingResult,
+            StartupStepTiming completedTiming)
+        {
             if (status !=
                     StartupStepStatus.NotStarted ||
-                result != null)
+                result != null ||
+                hasTiming)
             {
                 throw new InvalidOperationException(
                     "A pre-start startup-step failure may be captured only once before execution begins.");
@@ -264,30 +305,47 @@ namespace EchoDevGames.EchoLaunch
                     nameof(blockingResult));
             }
 
-            result = blockingResult;
-            status = blockingResult.Status;
+            CaptureTerminal(
+                blockingResult,
+                completedTiming);
         }
 
         /// <summary>
         /// Captures the terminal result exactly once after execution begins.
+        ///
+        /// Retained callers that do not yet measure timing receive a
+        /// zero-duration no-timeout snapshot.
         /// </summary>
         internal void Complete(
             StartupStepResult terminalResult)
         {
+            Complete(
+                terminalResult,
+                StartupStepTiming.NotMeasured);
+        }
+
+        /// <summary>
+        /// Captures the terminal result and timing exactly once after
+        /// execution begins.
+        /// </summary>
+        internal void Complete(
+            StartupStepResult terminalResult,
+            StartupStepTiming completedTiming)
+        {
             if (status !=
-                StartupStepStatus.Running)
+                    StartupStepStatus.Running ||
+                result != null ||
+                hasTiming)
             {
                 throw new InvalidOperationException(
-                    "A startup-step execution may complete only while running.");
+                    "A startup-step execution may complete only once while running.");
             }
 
-            result =
+            CaptureTerminal(
                 terminalResult ??
                 throw new ArgumentNullException(
-                    nameof(terminalResult));
-
-            status =
-                terminalResult.Status;
+                    nameof(terminalResult)),
+                completedTiming);
         }
 
         /// <summary>
@@ -304,6 +362,16 @@ namespace EchoDevGames.EchoLaunch
             }
 
             latestProgress = progress;
+        }
+
+        private void CaptureTerminal(
+            StartupStepResult terminalResult,
+            StartupStepTiming completedTiming)
+        {
+            result = terminalResult;
+            timing = completedTiming;
+            hasTiming = true;
+            status = terminalResult.Status;
         }
 
         private static string RequireText(

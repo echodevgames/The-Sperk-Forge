@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using UnityEngine;
 
@@ -10,16 +11,42 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Executes enabled startup-sequence entries in authored order.
     ///
-    /// FL-M3-02 applies authored failure policy, converts bounded factory
-    /// and executor failures into stable results, and stops traversal when
-    /// the effective result requires it.
+    /// FL-M3-03 applies authored failure policy, contains bounded failures,
+    /// measures optional unscaled deadlines, requests cooperative timeout
+    /// cancellation, and never abandons an active executor.
     ///
-    /// Timeout handling, retries, reports, root integration, and lifecycle
-    /// advancement remain later checkpoints.
+    /// Retries, reports, root integration, and lifecycle advancement remain
+    /// later checkpoints.
     /// </summary>
     internal sealed class StartupSequenceRunner
     {
         private const int NoStoppingIndex = -1;
+
+        private const string TimeoutDiagnosticCode =
+            "ELAUNCH-STEP-003";
+
+        private readonly ILaunchClock clock;
+
+        /// <summary>
+        /// Creates a runner using Unity's unscaled real-time clock.
+        /// </summary>
+        internal StartupSequenceRunner()
+            : this(
+                UnityLaunchClock.Shared)
+        {
+        }
+
+        /// <summary>
+        /// Creates a runner using an explicit monotonic clock.
+        /// </summary>
+        internal StartupSequenceRunner(
+            ILaunchClock clock)
+        {
+            this.clock =
+                clock ??
+                throw new ArgumentNullException(
+                    nameof(clock));
+        }
 
         /// <summary>
         /// Traverses one configured startup sequence and awaits each enabled
@@ -153,47 +180,18 @@ namespace EchoDevGames.EchoLaunch
                 execution.AttachExecutor(
                     executor);
 
-                StartupStepContext context =
-                    new StartupStepContext(
-                        launchMode,
-                        configuration.ConfigurationId,
-                        sequence.SequenceId,
-                        execution.EntryId,
-                        execution.StepId,
-                        index,
-                        authoredEntryCount,
-                        cancellationToken,
-                        execution);
-
-                execution.Begin();
-
-                StartupStepResult originalResult;
+                double startSeconds;
 
                 try
                 {
-                    originalResult =
-                        await executor.ExecuteAsync(
-                            context);
-                }
-                catch (OperationCanceledException)
-                {
-                    throw;
+                    startSeconds =
+                        ReadStartTime();
                 }
                 catch (Exception exception)
                 {
-                    originalResult =
-                        StartupStepExceptionConverter
-                            .Convert(
-                                StartupStepExceptionPhase
-                                    .ExecutorExecution,
-                                exception);
-                }
-
-                if (originalResult == null)
-                {
-                    execution.Complete(
-                        StartupStepExceptionConverter
-                            .CreateNullResult());
+                    execution.CompleteBeforeStart(
+                        CreateClockContractFailure(
+                            exception));
 
                     completedExecutions.Add(
                         execution);
@@ -204,23 +202,146 @@ namespace EchoDevGames.EchoLaunch
                     break;
                 }
 
-                StartupStepPolicyDecision decision =
-                    ApplyPolicy(
-                        execution.Policy,
-                        originalResult);
-
-                execution.Complete(
-                    decision.EffectiveResult);
-
-                completedExecutions.Add(
-                    execution);
-
-                if (decision.StopsTraversal)
+                using (
+                    CancellationTokenSource
+                        timeoutCancellationSource =
+                            new CancellationTokenSource())
+                using (
+                    CancellationTokenSource
+                        linkedCancellationSource =
+                            CancellationTokenSource
+                                .CreateLinkedTokenSource(
+                                    cancellationToken,
+                                    timeoutCancellationSource
+                                        .Token))
                 {
-                    stoppingAuthoredEntryIndex =
-                        index;
+                    StartupStepProgressGate progressGate =
+                        new StartupStepProgressGate(
+                            execution);
 
-                    break;
+                    StartupStepContext context =
+                        new StartupStepContext(
+                            launchMode,
+                            configuration.ConfigurationId,
+                            sequence.SequenceId,
+                            execution.EntryId,
+                            execution.StepId,
+                            index,
+                            authoredEntryCount,
+                            linkedCancellationSource.Token,
+                            progressGate);
+
+                    execution.Begin();
+
+                    Awaitable<StartupStepResult>
+                        executorAwaitable =
+                            InvokeExecutorAsync(
+                                executor,
+                                context);
+
+                    StartupStepAwaitOutcome outcome;
+
+                    try
+                    {
+                        outcome =
+                            await StartupStepTimeoutMonitor
+                                .MonitorAsync(
+                                    executorAwaitable,
+                                    execution.Policy,
+                                    clock,
+                                    startSeconds,
+                                    timeoutCancellationSource,
+                                    progressGate,
+                                    cancellationToken);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception exception)
+                    {
+                        execution.Complete(
+                            CreateClockContractFailure(
+                                exception),
+                            StartupStepTiming
+                                .NotMeasured);
+
+                        completedExecutions.Add(
+                            execution);
+
+                        stoppingAuthoredEntryIndex =
+                            index;
+
+                        break;
+                    }
+
+                    StartupStepResult originalResult;
+
+                    if (outcome.TimedOut)
+                    {
+                        originalResult =
+                            CreateTimeoutResult(
+                                outcome.Timing);
+                    }
+                    else if (outcome
+                        .HasExecutorException)
+                    {
+                        if (outcome.ExecutorException is
+                            OperationCanceledException)
+                        {
+                            throw outcome
+                                .ExecutorException;
+                        }
+
+                        originalResult =
+                            StartupStepExceptionConverter
+                                .Convert(
+                                    StartupStepExceptionPhase
+                                        .ExecutorExecution,
+                                    outcome
+                                        .ExecutorException);
+                    }
+                    else
+                    {
+                        originalResult =
+                            outcome.ExecutorResult;
+                    }
+
+                    if (originalResult == null)
+                    {
+                        execution.Complete(
+                            StartupStepExceptionConverter
+                                .CreateNullResult(),
+                            outcome.Timing);
+
+                        completedExecutions.Add(
+                            execution);
+
+                        stoppingAuthoredEntryIndex =
+                            index;
+
+                        break;
+                    }
+
+                    StartupStepPolicyDecision decision =
+                        ApplyPolicy(
+                            execution.Policy,
+                            originalResult);
+
+                    execution.Complete(
+                        decision.EffectiveResult,
+                        outcome.Timing);
+
+                    completedExecutions.Add(
+                        execution);
+
+                    if (decision.StopsTraversal)
+                    {
+                        stoppingAuthoredEntryIndex =
+                            index;
+
+                        break;
+                    }
                 }
             }
 
@@ -229,6 +350,86 @@ namespace EchoDevGames.EchoLaunch
                 disabledEntryCount,
                 completedExecutions,
                 stoppingAuthoredEntryIndex);
+        }
+
+        private static async Awaitable<
+            StartupStepResult>
+            InvokeExecutorAsync(
+                IStartupStepExecutor executor,
+                StartupStepContext context)
+        {
+            return await executor.ExecuteAsync(
+                context);
+        }
+
+        private double ReadStartTime()
+        {
+            double startSeconds =
+                clock.NowSeconds;
+
+            if (double.IsNaN(startSeconds) ||
+                double.IsInfinity(startSeconds) ||
+                startSeconds < 0d)
+            {
+                throw new InvalidOperationException(
+                    "The launch clock returned an invalid startup-step start time.");
+            }
+
+            return startSeconds;
+        }
+
+        private static StartupStepResult
+            CreateTimeoutResult(
+                StartupStepTiming timing)
+        {
+            string details =
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "TimeoutSeconds: {0:0.###}\n" +
+                    "ElapsedSeconds: {1:0.###}\n" +
+                    "CancellationRequested: {2}",
+                    timing.TimeoutSeconds,
+                    timing.ElapsedSeconds,
+                    timing.CancellationRequested);
+
+            return StartupStepResult.TimedOut(
+                TimeoutDiagnosticCode,
+                "The startup step exceeded its configured timeout.",
+                details);
+        }
+
+        private static StartupStepResult
+            CreateClockContractFailure(
+                Exception exception)
+        {
+            string exceptionType =
+                exception.GetType().FullName;
+
+            if (string.IsNullOrWhiteSpace(
+                    exceptionType))
+            {
+                exceptionType =
+                    exception.GetType().Name;
+            }
+
+            string message =
+                string.IsNullOrWhiteSpace(
+                    exception.Message)
+                    ? string.Empty
+                    : exception.Message.Trim();
+
+            string details =
+                string.IsNullOrEmpty(message)
+                    ? $"ExceptionType: {exceptionType}"
+                    : $"ExceptionType: {exceptionType}\n" +
+                      $"ExceptionMessage: {message}";
+
+            return StartupStepResult
+                .BlockingFailure(
+                    StartupStepExceptionConverter
+                        .DiagnosticCode,
+                    "The startup-step timing system violated its runtime contract.",
+                    details);
         }
 
         private static StartupStepPolicyDecision

@@ -576,7 +576,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void ContextPreservesCancellationToken()
+        public void ContextReceivesLinkedCancellationToken()
         {
             ImmediateRunnerTestDefinition definition =
                 CreateDefinition(
@@ -600,11 +600,23 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     configuration,
                     source.Token);
 
-                Assert.That(
+                CancellationToken contextToken =
                     definition
                         .GetReceivedContext(0)
-                        .CancellationToken,
-                    Is.EqualTo(source.Token));
+                        .CancellationToken;
+
+                Assert.That(
+                    contextToken.CanBeCanceled,
+                    Is.True);
+
+                Assert.That(
+                    contextToken
+                        .IsCancellationRequested,
+                    Is.False);
+
+                Assert.That(
+                    contextToken,
+                    Is.Not.EqualTo(source.Token));
             }
         }
 
