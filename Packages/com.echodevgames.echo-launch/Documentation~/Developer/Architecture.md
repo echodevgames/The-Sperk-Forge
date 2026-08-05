@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Immutable failed/interrupted launch reports and public terminal events implemented; destination handoff and successful completion pending
+- Development stage: Initial destination contract, completed handoff, completed reports, and `LaunchCompleted` implemented; automatic startup and presentation pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -20,6 +20,7 @@
   - `FL-M3-05`
   - `FL-M3-06`
   - `FL-M3-07`
+  - `FL-M3-08`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -81,8 +82,19 @@ First Light currently establishes:
 53. Terminal state and report acceptance before event dispatch
 54. Defensive report copying and post-runtime readability
 55. Transition-pending success without false report completion
+56. Project-owned `LaunchDestination` schema 1
+57. Configuration schema 3 with initial destination binding
+58. Immutable initial destination load result
+59. Injectable package-local initial destination loader
+60. Destination validation before startup-step side effects
+61. Standalone Unity asynchronous destination loader
+62. Destination progress while `Transitioning`
+63. Successful `Transitioning -> Completed` handoff
+64. Completed report schema 2 with destination metadata
+65. Exactly-once `LaunchCompleted`
+66. Startup warning preservation across successful destination activation
 
-First Light now validates, executes, times, evaluates, projects, and records root-owned startup work. Failed and interrupted attempts finalize immutable diagnostic reports and publish matching public terminal events. Successful sequence execution still stops truthfully at `Transitioning` until destination activation can finalize the successful report and completed lifecycle.
+First Light now validates, executes, times, evaluates, projects, loads one initial destination, and finalizes one immutable terminal report. Failed, interrupted, and completed attempts publish matching exactly-once terminal events after lifecycle state and report storage are authoritative. Automatic startup, presentation, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
 ## Implemented Runtime Files
 
@@ -120,6 +132,13 @@ First Light now validates, executes, times, evaluates, projects, and records roo
     │   ├── LaunchReport.cs
     │   ├── LaunchReportBuilder.cs
     │   └── LaunchStepReport.cs
+    ├── SceneLoading/
+    │   ├── IInitialDestinationLoader.cs
+    │   ├── InitialDestinationLoadResult.cs
+    │   ├── InitialDestinationLoadStatus.cs
+    │   ├── InitialDestinationProgressRelay.cs
+    │   ├── LaunchDestination.cs
+    │   └── UnityInitialDestinationLoader.cs
     ├── State/
     │   ├── LaunchMode.cs
     │   ├── LaunchStatus.cs
@@ -145,6 +164,7 @@ First Light now validates, executes, times, evaluates, projects, and records roo
     ├── LaunchClockTimingAndGateTests.cs
     ├── LaunchConfigurationBindingTests.cs
     ├── LaunchLifecycleTransitionTests.cs
+    ├── LaunchDestinationAndCompletedHandoffTests.cs
     ├── LaunchNotificationTests.cs
     ├── LaunchReportAndTerminalEventTests.cs
     ├── LaunchSessionProgressTests.cs
@@ -956,20 +976,54 @@ It never exposes the internal execution object, executor, progress gate, or canc
 
 Current report schema:
 
-    LaunchReport.CurrentSchemaVersion = 1
+    LaunchReport.CurrentSchemaVersion = 2
 
 Producing package version:
 
     LaunchReport.CurrentPackageVersion = "0.1.0"
 
-FL-M3-07 permits finalized statuses only for:
+FL-M3-08 permits finalized statuses for:
 
+- `Completed`
 - `Failed`
 - `Interrupted`
 
-The report copies step reports into a private ordered array and exposes only count plus indexed reads. Constructor validation rejects nonterminal success states, invalid timing, and inconsistent authored traversal accounting.
+Completed reports require canonical destination identity and destination display metadata. Failed and interrupted reports may retain destination metadata when the handoff had already begun.
+
+The report copies step reports into a private ordered array and exposes only count plus indexed reads. Constructor validation rejects nonterminal states, invalid timing, inconsistent authored traversal accounting, invalid cancellation combinations, and invalid destination metadata.
 
 Reports are session diagnostics. They are not authored assets and are not EchoSave data.
+
+## Project-Owned Destination Boundary
+
+`LaunchDestination` is a project-owned immutable `ScriptableObject`.
+
+It contains:
+
+- Canonical stable destination identity
+- Destination schema version `1`
+- Trimmed nonblank display label
+- Runtime-safe `Assets/.../*.unity` scene path
+
+`EchoLaunchConfiguration` schema version `3` stores one initial destination reference. Historical schema 2 remains unsupported until later Editor migration.
+
+Runtime never repairs, migrates, or rewrites configuration or destination assets.
+
+## Initial Destination Loader Boundary
+
+`IInitialDestinationLoader` is the public package-local seam for the one startup handoff.
+
+It receives:
+
+- The validated destination asset
+- A normalized progress receiver
+- The active launch cancellation token
+
+It returns one immutable `InitialDestinationLoadResult`.
+
+`UnityInitialDestinationLoader` is the standalone default. It validates build-loadability, starts `SceneManager.LoadSceneAsync` in single mode, reports normalized progress, waits for settlement, and confirms the requested destination scene is active before reporting success.
+
+The loader does not own root lifecycle, reports, public events, normal mid-game scene travel, or presentation.
 
 ## Report Builder Boundary
 
@@ -977,20 +1031,28 @@ Reports are session diagnostics. They are not authored assets and are not EchoSa
 
 It:
 
-- Captures validated configuration and sequence identity
+- Captures validated configuration, sequence, and destination identity
 - Captures completed step reports exactly once
 - Preserves authored order
 - Reconciles attempted, disabled, and unvisited accounting
 - Records the settled sequence result
+- Retains transition-pending successful data during loading
 - Rejects duplicate capture and second finalization
-- Finalizes only failed or interrupted reports
-- Retains transition-pending success without finalization
+- Finalizes completed, failed, or interrupted reports
 
 The builder does not publish events and does not own lifecycle authority.
 
 ## Terminal Report Publication
 
 `EchoLaunchRoot.LastReport` exposes the latest finalized report only from the current authoritative root.
+
+Completed ordering:
+
+    Destination activation confirmed
+        -> Completed snapshot accepted
+            -> immutable report finalized
+                -> LastReport assigned
+                    -> LaunchCompleted dispatched
 
 Failed ordering:
 
@@ -1014,22 +1076,21 @@ Duplicate roots expose no report and publish no terminal report event.
 
 Root destruction suppresses unsafe late terminal-event publication.
 
-## Transition-Pending Success
+## Completed Destination Handoff
 
-A successful or warning-only sequence run still ends at:
+After a successful or warning-only startup sequence:
 
-    LaunchStatus.Transitioning
+1. The root publishes `Transitioning`.
+2. The validated initial destination loader is invoked exactly once.
+3. Accepted destination progress replaces progress while state remains `Transitioning`.
+4. Loader failure maps to `ELAUNCH-DEST-002` and `Failed`.
+5. Loader cancellation maps to interruption after settlement.
+6. Loader success must match the authored destination identity.
+7. Destination activation success publishes `Completed`.
+8. The completed report is finalized and assigned.
+9. `LaunchCompleted` dispatches exactly once.
 
-At that boundary:
-
-- The builder retains the settled successful run.
-- `LastReport` remains `null`.
-- `LaunchFailed` is not raised.
-- `LaunchInterrupted` is not raised.
-- `LaunchCompleted` does not exist yet.
-- `LaunchStatus.Completed` is not published.
-
-The later destination handoff must activate the destination before finalizing the successful report and publishing completion.
+The final lifecycle snapshot describes successful destination activation. Any startup warnings remain preserved through `WarningCount` and immutable per-step reports.
 
 ## Compile Evidence
 
@@ -1041,7 +1102,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-07 compile result:
+Final FL-M3-08 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1060,7 +1121,7 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `336`
+- Passed: `380`
 - Failed: `0`
 - Ignored: `0`
 
@@ -1069,11 +1130,12 @@ Breakdown:
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
-- Configuration binding tests: `15`
+- Configuration and destination binding tests: `22`
 - Vocabulary tests: `39`
 - Session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Destination and completed-handoff tests: `37`
 - Launch report and terminal-event tests: `25`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
@@ -1084,6 +1146,28 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M3-08 and retained behavior:
+
+- Project-owned immutable destination schema 1
+- Configuration schema 3 destination binding
+- Historical schema 2 rejection without rewrite
+- Destination identity, label, path, and loader preflight
+- Immutable load status and result contract
+- Normalized transition progress
+- Default Unity loader preflight and pre-start cancellation
+- Exactly-once injected loader invocation
+- Successful `Transitioning -> Completed` handoff
+- Completed report schema 2
+- Destination metadata in completed reports
+- Exact `LastReport` and `LaunchCompleted` payload identity
+- Exactly-once completion publication
+- Completion-listener isolation
+- Destination failure and null/mismatched result containment
+- Cancellation before and during transition
+- Destruction-driven late-completion suppression
+- Startup warning preservation in completed reports
+- Configuration and destination asset immutability
 
 Verified FL-M3-07 and retained behavior:
 
@@ -1185,14 +1269,12 @@ Not implemented:
 - Interactive retry
 - Retry or skip UI
 - Automatic startup from Unity callbacks
-- `LaunchCompleted`
-- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation
-- Scene loading
-- Persistent-root lifetime
+- Real Boot-to-destination Standalone Laboratory proof
+- Persistent-root lifetime policy
 - Direct-scene initialization behavior
 - Custom inspectors and setup windows
 - Standalone Laboratory
@@ -1200,6 +1282,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-07 stops after failed and interrupted root-owned attempts finalize immutable reports and publish matching exactly-once terminal events.
+FL-M3-08 stops after one validated initial destination can complete through an injected loader, publish `Completed`, finalize one immutable completed report, and dispatch `LaunchCompleted` exactly once.
 
-Successful work remains at `Transitioning` with no finalized report. Destination validation, loading, activation, `LaunchCompleted`, and `Transitioning -> Completed` require a separate checkpoint.
+Automatic startup, splash/status presentation, direct-scene initialization, Editor migration/setup, persistent-root policy, normal mid-game scene travel, and real Standalone Laboratory scene activation require later checkpoints.

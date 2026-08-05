@@ -1475,14 +1475,19 @@ Before writing code:
 
 | Field | Current value |
 |---|---|
-| Package version | Not implemented; approved specification 1.3.0 |
-| Completed checkpoint | SUITE-DOC-33 — Initial Implementation Readiness Gate passed with advisory |
-| Files/assets created | Package specification, learning review, and suite documentation authorities only; package implementation has not started |
-| Tests passed | Documentation, consistency, handoff, learning-gate, and checkpoint-scope audits only |
-| Tests failed | None |
-| Known issues | No architecture blocker; live Unity compile, Git state, package path, and exact uGUI dependency remain execution-start checks |
-| Decisions added | SFGSS-ADR-004 accepted; PKG-LEARN-001 complete; FL-M1-01 activated under checkpoint control |
-| Next checkpoint | FL-M1-01 — Package Skeleton, active and authorized |
+| Package version | `0.1.0` embedded package implementation |
+| Completed checkpoint | FL-M3-08 — Initial Destination Contract, Load Result, and Completed Handoff |
+| Authority commit | `eb9cc49` |
+| Implementation commit | `114ac91` |
+| Previous documentation commit | `f76b9df` |
+| Files/assets created | Runtime authority, state, notifications, configuration, startup sequence, policy, execution, reports, project-owned destination, initial destination loading, and Runtime Play Mode tests |
+| Tests passed | 380 Runtime Play Mode tests |
+| Tests failed | 0 |
+| Tests ignored | 0 |
+| Compilation | 0 errors and 0 compiler warnings |
+| Known issues | Real Boot-to-destination Standalone Laboratory activation, automatic startup, presentation, direct-scene setup, Editor migration/setup, player builds, and external adoption remain not run |
+| Decisions added | EchoLaunch-ADR-001 accepted and implemented; destination schema 1; configuration schema 3; report schema 2 |
+| Next checkpoint | FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract, tentative and not authorized |
 
 ---
 

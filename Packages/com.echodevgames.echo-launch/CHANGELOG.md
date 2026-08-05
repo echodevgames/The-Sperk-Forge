@@ -7,6 +7,32 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M3-08 - Initial Destination Contract, Load Result, and Completed Handoff
+- Project-owned immutable `LaunchDestination` ScriptableObject
+- Destination schema version `1`
+- Stable destination identity, display label, and runtime-safe scene path
+- Configuration schema version `3`
+- Serialized initial-destination reference on `EchoLaunchConfiguration`
+- Historical configuration schema `2` rejection without runtime rewrite
+- Public `InitialDestinationLoadStatus`
+- Public immutable `InitialDestinationLoadResult`
+- Public injectable `IInitialDestinationLoader`
+- Internal optional destination preflight-validator seam
+- Internal normalized destination-progress relay
+- Standalone `UnityInitialDestinationLoader`
+- Root-owned destination validation before startup-step side effects
+- Stable `ELAUNCH-DEST-001` destination-preflight diagnostic
+- Stable `ELAUNCH-DEST-002` destination-load diagnostic
+- Destination progress publication while `Transitioning`
+- Successful `Transitioning -> Completed` lifecycle handoff
+- Report schema version `2`
+- Completed report destination identity and display metadata
+- Public exactly-once `LaunchCompleted`
+- State and completed report acceptance before event dispatch
+- Completion-listener isolation through `ELAUNCH-EVENT-001`
+- Destruction-driven late-completion suppression
+- Thirty-seven destination and completed-handoff tests
+- Seven additional configuration and destination-binding tests
 #### FL-M3-07 - Immutable Launch Report and Public Terminal Events
 - Public immutable `LaunchStepReport`
 - Public immutable `LaunchReport`
@@ -230,6 +256,16 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- `EchoLaunchConfiguration.CurrentSchemaVersion` advanced from `2` to `3`; schema 3 adds the project-owned initial destination reference.
+- Configuration schema 2 remains historical and is rejected through `ELAUNCH-CFG-002` without runtime migration or mutation.
+- Successful and warning-only startup-sequence settlement now proceeds through initial destination loading and reaches `Completed`.
+- The final lifecycle result after a successful handoff describes destination activation, while startup warnings remain preserved in the immutable completed report.
+- `LaunchReport.CurrentSchemaVersion` advanced from `1` to `2` because completed reports now include destination identity and display metadata.
+- `LaunchReportBuilder` now finalizes completed, failed, or interrupted reports exactly once.
+- `EchoLaunchRoot.LastReport` now exposes completed reports in addition to failed and interrupted reports.
+- `LaunchCompleted` now dispatches after completed state and report storage are authoritative.
+- Root-owned destination validation occurs before any startup-step factory or destination-loader side effect.
+- The startup-sequence runner remains destination-neutral.
 - Failed and interrupted root-owned launches now finalize one immutable report after the terminal lifecycle snapshot is accepted.
 - `EchoLaunchRoot.LastReport` now exposes only the authoritative finalized failed or interrupted report.
 - `LaunchFailed` and `LaunchInterrupted` now dispatch after root state and report storage are authoritative.
@@ -287,6 +323,9 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Corrected three new FL-M3-08 test references from nonexistent `LaunchProgressSnapshot.IsIndeterminate` to the established `IsProgressIndeterminate` property.
+- Updated the retained warning-completion test to expect a successful destination-activation lifecycle result while verifying that the completed report preserves the startup warning.
+- Corrected the retained report assertion from nonexistent `LaunchStepReport.FinalStatus` to the established `Status` property.
 - Replaced two nonexistent `EchoLaunchRuntimeReset.ResetStatics()` calls in the new FL-M3-07 test fixture with the established `LaunchAuthorityClaim.Reset()` test reset, restoring clean compilation.
 - Restored exact legacy `InvalidOperationException` behavior for direct three-argument runner calls after the first FL-M3-06 full-suite run exposed fifteen retained exact-type assertions.
 - Preserved structured `StartupSequencePreflightException` behavior for root-owned observer runs.
@@ -302,9 +341,39 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `336`
+- Passed: `380`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M3-08 coverage:
+- Destination schema 1 and canonical identity
+- Configuration schema 3 and initial destination binding
+- Historical schema 2 rejection without runtime rewrite
+- Destination display-name and scene-path validation
+- Missing and invalid destination rejection before factories and loading
+- Loader-specific preflight rejection
+- Missing loader rejection
+- Immutable success, failure, and cancellation load results
+- Normalized destination progress and late-progress containment
+- Successful destination handoff and exactly-once loader invocation
+- `Transitioning` destination progress
+- `Transitioning -> Completed` state order
+- Completed report destination and sequence accounting
+- Exact `LastReport` and `LaunchCompleted` payload identity
+- Exactly-once completion without failed or interrupted events
+- Completion-listener isolation
+- Destination-load failure through `ELAUNCH-DEST-002`
+- Null and mismatched loader result containment
+- Cancellation before load start
+- Cancellation during injected load after settlement
+- Destruction-driven late-completion suppression
+- Default-loader build-settings rejection
+- Default-loader pre-start cancellation
+- Completed-report single finalization
+- Completed-report destination requirements
+- Authored configuration and destination immutability
+- Startup warning preservation in the completed report
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-07 coverage:
 - `LastReport` null before finalization
@@ -438,14 +507,12 @@ FL-M3-03 coverage:
 - Interactive retry
 - Retry or skip presentation
 - Automatic startup from Unity scene callbacks
-- `LaunchCompleted`
-- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation
-- Scene loading
-- Persistent root lifetime
+- Real Boot-to-destination Laboratory activation proof
+- Persistent root lifetime policy
 - Direct-scene initializer behavior
 - Custom inspectors or setup windows
 - Standalone Laboratory

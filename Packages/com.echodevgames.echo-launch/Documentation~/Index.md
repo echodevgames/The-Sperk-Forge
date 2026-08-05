@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M3-08 destination and configuration schema authority approved; runtime handoff implementation pending
+- Development stage: Initial destination loading, completed reports, and `LaunchCompleted` implemented; automatic startup and presentation pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -22,7 +22,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-05`
   - `FL-M3-06`
   - `FL-M3-07`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, and exactly-once failed/interrupted terminal events
+  - `FL-M3-08`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, and exactly-once `LaunchCompleted`
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -59,6 +60,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-06 Runtime Test Report](Developer/Test%20Reports/FL-M3-06_Root-Owned_Startup_Lifecycle_Test_Report.md)
 - [FL-M3-07 Immutable Launch Report and Public Terminal Events](Developer/Checkpoints/FL-M3-07_Immutable_Launch_Report_and_Public_Terminal_Events.md)
 - [FL-M3-07 Runtime Test Report](Developer/Test%20Reports/FL-M3-07_Immutable_Launch_Report_and_Terminal_Events_Test_Report.md)
+- [FL-M3-08 Initial Destination Contract, Load Result, and Completed Handoff](Developer/Checkpoints/FL-M3-08_Initial_Destination_Contract_Load_Result_and_Completed_Handoff.md)
+- [FL-M3-08 Runtime Test Report](Developer/Test%20Reports/FL-M3-08_Initial_Destination_and_Completed_Handoff_Test_Report.md)
 
 ## Package Root Documents
 
@@ -145,6 +148,20 @@ First Light currently proves:
 - Terminal state and report acceptance before event dispatch
 - Defensive report copying and post-runtime readability
 - Transition-pending success without false completion
-- Three hundred thirty-six passing Runtime Play Mode tests
+- Project-owned immutable `LaunchDestination`
+- Destination schema version `1`
+- Configuration schema version `3`
+- Historical schema 2 rejection without rewrite
+- Immutable destination load status and result
+- Public injectable initial destination loader
+- Standalone Unity asynchronous destination loader
+- Destination validation before startup-step side effects
+- Stable `ELAUNCH-DEST-001` and `ELAUNCH-DEST-002`
+- Destination progress while `Transitioning`
+- Successful `Transitioning -> Completed` handoff
+- Completed report schema version `2`
+- Exactly-once `LaunchCompleted`
+- Startup warning preservation in completed reports
+- Three hundred eighty passing Runtime Play Mode tests
 
-The project-owned destination and configuration schema 3 contract is approved but not yet implemented. Retries, automatic startup, presentation, direct-scene initialization, Editor migration, and normal scene travel remain outside the active implementation scope.
+Retries, automatic startup, presentation, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

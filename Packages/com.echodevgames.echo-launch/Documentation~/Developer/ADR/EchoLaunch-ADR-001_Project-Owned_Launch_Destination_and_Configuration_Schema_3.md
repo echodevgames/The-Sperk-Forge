@@ -7,13 +7,13 @@
 **Last reviewed:** 2026-08-05
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Decision scope:** Package
-**Evidence maturity:** Design approved; evidence pending
+**Evidence maturity:** Implemented and automated evidence complete; Standalone Laboratory and migration tooling pending
 **Parent authorities:** SFGSS-000; SFGSS-PKG-ECHOLAUNCH-001 v1.4.0; SFGSS-003; SFGSS-005; SFGSS-007
 **Affected documents:** First Light package specification; FL-M3-08 Checkpoint Build Plan; package and suite Current Notes; package documentation index
 **Supersedes:** None
 **Superseded by:** None
 **Review triggers:** Destination-provider adoption; public scene-reference standard; configuration migration implementation; EchoSceneFlow handoff bridge; evidence that one reusable destination asset is harmful
-**Related evidence:** Existing EchoLaunch serialized schema 2 source at `f76b9df`; FL-M3-08 automated and Laboratory evidence pending
+**Related evidence:** Authority commit `eb9cc49`; implementation commit `114ac91`; 380 passing Runtime Play Mode tests; 0 compile errors; 0 compiler warnings; Standalone Laboratory activation pending
 
 > First Light will reference one reusable project-owned destination asset, and the configuration schema advances to version 3 so existing schema-2 assets cannot masquerade as complete.
 
@@ -185,14 +185,14 @@ Advancing to schema 3 is required because schema 2 already exists in committed s
 | Package Current Notes | Record accepted decision and active checkpoint | Updated |
 | Suite Current Notes | Record accepted decision and handoff | Updated |
 | FL-M3-08 plan | Bound implementation and evidence | Created |
-| Automated tests | Prove schema, asset immutability, validation, load result, report, and completion | Pending |
+| Automated tests | Prove schema, asset immutability, validation, load result, report, and completion | Complete: 380 passed, 0 failed, 0 ignored |
 | Standalone Laboratory | Prove real Boot-to-destination load | Later checkpoint |
 
 ---
 
 ## 8. Implementation and migration impact
 
-- **Implementation state:** Not implemented; FL-M3-08 authorized after authority commit.
+- **Implementation state:** Implemented and pushed in commit `114ac91`.
 - **Public API impact:** Adds public `LaunchDestination`, destination loader contract, load result, completed report data, and `LaunchCompleted`.
 - **Serialized data impact:** Configuration schema 3 adds a serialized destination reference. Destination schema 1 introduces a new project-owned asset type.
 - **Migration impact:** Schema-2 configurations are blocked at runtime until an explicit Editor migration assigns a destination and writes schema 3.
@@ -207,12 +207,12 @@ Advancing to schema 3 is required because schema 2 already exists in committed s
 | Evidence | Required result | Current status |
 |---|---|---|
 | Source review | Confirm schema 2 already exists without destination | Complete |
-| Compile | 0 errors and 0 compiler warnings | Not run |
-| Runtime Play Mode | Full retained suite plus FL-M3-08 tests passes | Not run |
-| Serialization tests | New config defaults to 3; schema 2 rejected; no runtime mutation | Not run |
-| Destination tests | Identity/schema/scene metadata validation | Not run |
-| Loader tests | Success, failure, cancellation, progress, and exactly-once invocation | Not run |
-| Root handoff tests | `Transitioning -> Completed`, final report, `LaunchCompleted` | Not run |
+| Compile | 0 errors and 0 compiler warnings | Complete |
+| Runtime Play Mode | Full retained suite plus FL-M3-08 tests passes | Complete: 380 passed |
+| Serialization tests | New config defaults to 3; schema 2 rejected; no runtime mutation | Complete |
+| Destination tests | Identity/schema/scene metadata validation | Complete |
+| Loader tests | Success, failure, cancellation, progress, and exactly-once invocation | Complete through injected/default-loader contract tests |
+| Root handoff tests | `Transitioning -> Completed`, final report, `LaunchCompleted` | Complete |
 | Standalone Laboratory | Real asynchronous scene activation | Not run |
 | Real-project integration | External project adoption | Not run |
 

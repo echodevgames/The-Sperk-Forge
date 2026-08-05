@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Immutable failed/interrupted reports and public terminal events implemented; destination handoff and successful completion pending
+- Development stage: Initial destination loading, completed reports, and `LaunchCompleted` implemented; automatic startup and presentation pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -24,6 +24,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-05` Runner Re-entry Protection and Sequence Preflight Boundary
   - `FL-M3-06` Root-Owned Startup Run and Lifecycle Advancement
   - `FL-M3-07` Immutable Launch Report and Public Terminal Events
+  - `FL-M3-08` Initial Destination Contract, Load Result, and Completed Handoff
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -284,7 +285,7 @@ First Light now provides:
 - Blocking or unexpected outcomes publish `Failed`
 - Cancellation publishes `Interrupted`
 - Successful and warning-only runs publish `Transitioning`
-- `Completed` remains reserved for later destination handoff
+- Successful destination activation publishes `Completed`
 
 ### Root Cancellation and Destruction Safety
 
@@ -309,7 +310,7 @@ First Light now provides:
 
 - Public immutable `LaunchStepReport`
 - Public immutable `LaunchReport`
-- Report schema version `1`
+- Report schema version `2`
 - Producing package version `0.1.0`
 - Copied identity, policy, progress, result, and timing values
 - Attempted, disabled, and unvisited accounting
@@ -325,12 +326,13 @@ First Light now provides:
 - Completed-step capture exactly once
 - Authored-order preservation
 - Single finalization guard
-- Failed and interrupted report finalization
-- Transition-pending successful data retention
+- Completed, failed, and interrupted report finalization
+- Transition-pending successful data retention during destination loading
 
 ### Public Terminal Report Events
 
 - Authority-filtered `LastReport`
+- Public `LaunchCompleted`
 - Public `LaunchFailed`
 - Public `LaunchInterrupted`
 - Root state accepted before report finalization
@@ -340,7 +342,46 @@ First Light now provides:
 - Per-listener exception isolation
 - Duplicate-root silence
 - Destruction-driven late-event suppression
-- No false successful completion event
+- No terminal event before its matching lifecycle outcome
+
+### Project-Owned Initial Destination
+
+- Public immutable `LaunchDestination` ScriptableObject
+- Stable canonical destination identity
+- Destination schema version `1`
+- User-facing display label
+- Runtime-safe scene path
+- Configuration schema version `3`
+- Historical configuration schema `2` rejection without runtime rewrite
+- Read-only authority-filtered initial destination exposure
+
+### Initial Destination Loading
+
+- Public `IInitialDestinationLoader`
+- Immutable `InitialDestinationLoadResult`
+- `Succeeded`, `Failed`, and `Cancelled` status vocabulary
+- Internal normalized progress relay
+- Standalone `UnityInitialDestinationLoader`
+- Build-loadability validation
+- Unity asynchronous single-scene loading
+- Destination activation confirmation
+- No ownership of normal mid-game scene travel
+
+### Completed Handoff
+
+- Destination validation before startup-step side effects
+- Stable `ELAUNCH-DEST-001` and `ELAUNCH-DEST-002`
+- Destination progress while state remains `Transitioning`
+- Successful `Transitioning -> Completed` lifecycle
+- Completed report schema version `2`
+- Destination identity and display metadata in completed reports
+- Public `LaunchCompleted`
+- Completed state and report accepted before event dispatch
+- Exact `LastReport` event payload identity
+- Exactly-once completion publication
+- Listener failure isolation
+- Cancellation and destruction containment
+- Startup warning preservation in immutable reports
 
 ## Safe Serialized Entry Defaults
 
@@ -378,7 +419,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `336`
+- Passed: `380`
 - Failed: `0`
 - Ignored: `0`
 
@@ -387,11 +428,12 @@ Breakdown:
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
-- Launch configuration binding tests: `15`
+- Configuration and destination binding tests: `22`
 - Launch-state vocabulary tests: `39`
 - Launch session and progress tests: `14`
 - Lifecycle transition tests: `22`
 - Lifecycle notification tests: `20`
+- Destination and completed-handoff tests: `37`
 - Launch report and terminal-event tests: `25`
 - Startup sequence definition tests: `24`
 - Startup step policy and executor-contract tests: `28`
@@ -441,13 +483,11 @@ First Light does not yet provide:
 - Interactive retry
 - Retry or skip UI
 - Automatic startup from Unity scene callbacks
-- `LaunchCompleted`
-- Successful report finalization before destination activation
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation
-- Scene loading
+- Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
 - Custom inspectors or setup windows
@@ -469,10 +509,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Three hundred thirty-six passing Runtime Play Mode tests
+- Three hundred eighty passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with root ownership, immutable failed/interrupted reporting, exactly-once terminal events, and success stopping at `Transitioning`
+- Policy-aware timed startup execution with root ownership, validated initial destination loading, immutable completed/failed/interrupted reporting, and exactly-once terminal events
 
 Still `Not run`:
 
@@ -481,7 +521,7 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Automatic production startup
-- Successful report completion and destination handoff
+- Real Boot-to-destination Standalone Laboratory activation
 - Performance measurements
 
 ## License
