@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M4-03 implemented; FL-M4-04 schema-4 and root-order authority approved pending authority commit
+- Development stage: FL-M4-04 configuration schema 4 and sequential root-owned splash playback implemented
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -26,7 +26,6 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-01`
   - `FL-M4-02`
   - `FL-M4-03`
-- Active authority checkpoint:
   - `FL-M4-04`
 - Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, a removable plain uGUI status view, and standalone deterministic image splash playback
 - Unity baseline: `6000.3.8f1`
@@ -74,6 +73,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M4-02 Runtime Test Report](Developer/Test%20Reports/FL-M4-02_Default_uGUI_Plain_Status_View_Test_Report.md)
 - [FL-M4-03 Image Splash Definitions and Deterministic Splash Player](Developer/Checkpoints/FL-M4-03_Image_Splash_Definitions_and_Deterministic_Splash_Player.md)
 - [FL-M4-03 Runtime Test Report](Developer/Test%20Reports/FL-M4-03_Deterministic_Image_Splash_Test_Report.md)
+- [FL-M4-04 Splash Configuration Schema and Root Playback Integration](Developer/Checkpoints/FL-M4-04_Splash_Configuration_Schema_and_Root_Playback_Integration.md)
+- [FL-M4-04 Runtime Test Report](Developer/Test%20Reports/FL-M4-04_Splash_Configuration_and_Root_Playback_Test_Report.md)
 
 ## Package Root Documents
 
@@ -203,9 +204,17 @@ First Light currently proves:
 - Neutral and headless splash presenters
 - Default uGUI image-splash projection
 - Public project-routed skip request
-- Implemented configuration schema 3
-- Approved FL-M4-04 configuration schema 4, not yet implemented
+- Implemented configuration schema 4
+- Optional configured splash before startup steps
+- Side-effect-free splash and startup preflight
+- Stable splash preflight, playback, and headless diagnostics
+- Shared root launch clock
+- Splash clear before step presentation
+- Startup completion before destination loading
+- Cancellation during splash with exactly-once interruption
+- Duplicate-root, automatic-start, and direct-scene splash containment
+- Configuration and splash asset immutability
 - Report schema 2 preserved
-- Four hundred fifty passing Runtime Play Mode tests
+- Four hundred seventy-nine passing Runtime Play Mode tests
 
-Retries, splash configuration/root integration, the default prefab/Canvas art pass, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
+Retries, the startup presentation prefab/Canvas assembly, direct-scene initializer tooling, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

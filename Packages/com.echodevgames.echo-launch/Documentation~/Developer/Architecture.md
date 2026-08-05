@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
+- Development stage: Configuration schema 4 and sequential root-owned splash playback implemented; prefab and Editor migration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -24,6 +24,7 @@
   - `FL-M4-01`
   - `FL-M4-02`
   - `FL-M4-03`
+  - `FL-M4-04`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -86,7 +87,7 @@ First Light currently establishes:
 54. Defensive report copying and post-runtime readability
 55. Transition-pending success without false report completion
 56. Project-owned `LaunchDestination` schema 1
-57. Configuration schema 3 with initial destination binding
+57. Configuration schema 4 with startup sequence, initial destination, optional splash sequence, and reduced-motion binding
 58. Immutable initial destination load result
 59. Injectable package-local initial destination loader
 60. Destination validation before startup-step side effects
@@ -132,9 +133,20 @@ First Light currently establishes:
 100. uGUI image, label, alpha, and sequence-position projection
 101. Public project-routed splash skip request
 102. Missing-reference-safe splash presentation
-103. Configuration schema 3 and report schema 2 remaining unchanged
+103. Configuration schema 4 splash binding
+104. Side-effect-free optional splash preflight
+105. Stable `ELAUNCH-SPLASH-001`, `ELAUNCH-SPLASH-002`, and `ELAUNCH-SPLASH-003`
+106. Sequential root order of splash, startup steps, and destination
+107. Shared launch clock across splash, startup execution, and report timing
+108. Root cancellation during splash using existing interrupted settlement
+109. Headless splash timing when visuals are unavailable
+110. Successful splash result retention
+111. Duplicate-root and automatic-start splash containment
+112. Direct-scene mode using the same splash contract
+113. Configuration and splash asset immutability
+114. Report schema 2 preserved
 
-First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, starts automatically from Unity `Start`, provides a removable plain uGUI face, and can deterministically play standalone project-owned image splash sequences. Splash definitions and playback are intentionally not yet bound to configuration or the authoritative root. Prefab art, root splash integration, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. Splash playback is authoritative, deterministic, cancellation-aware, and sequential with startup execution. Prefab art, Editor migration, direct-scene initializer tooling, and standalone scene proof remain separate boundaries.
 
 ## Implemented Package Files
 
@@ -198,6 +210,7 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     │   ├── SplashPresentationFrame.cs
     │   ├── SplashSequence.cs
     │   ├── SplashSequencePlayer.cs
+    │   ├── SplashSequencePreflight.cs
     │   └── SplashSkipPolicy.cs
     ├── State/
     │   ├── LaunchMode.cs
@@ -227,6 +240,7 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     Tests/Runtime/PlayMode/
     ├── EchoLaunchAutomaticStartAndPresenterTests.cs
     ├── EchoLaunchRootAuthorityTests.cs
+    ├── EchoLaunchRootSplashLifecycleTests.cs
     ├── EchoLaunchRootStartupLifecycleTests.cs
     ├── LaunchClockTimingAndGateTests.cs
     ├── LaunchConfigurationBindingTests.cs
@@ -1521,6 +1535,147 @@ Launch reports remain schema version `2`.
 Root-owned splash playback, configuration serialization, report integration, and
 lifecycle placement require an authority-first follow-up checkpoint.
 
+## Schema-4 Splash Configuration
+
+`EchoLaunchConfiguration.CurrentSchemaVersion` is now:
+
+```text
+4
+```
+
+Schema 4 stores:
+
+- `StartupSequence`
+- `InitialDestination`
+- Optional `SplashSequence`
+- `UseReducedMotionForSplash`
+
+Historical schemas remain unsupported at runtime.
+
+A null splash reference means the splash phase is intentionally omitted.
+
+An assigned empty but valid sequence is a legal no-op.
+
+Runtime reads but never repairs, migrates, or rewrites configuration or splash
+assets.
+
+## Root Splash Preflight
+
+`SplashSequencePreflight` validates the optional assigned sequence before any
+splash frame, startup-step executor, or destination side effect.
+
+The root preflight order is:
+
+```text
+configuration identity and schema
+    -> optional splash sequence
+    -> startup sequence
+    -> initial destination
+```
+
+An invalid assigned sequence produces:
+
+```text
+ELAUNCH-SPLASH-001
+```
+
+Startup-sequence validation also occurs before splash playback. An invalid
+startup sequence therefore cannot display a splash before blocking.
+
+## Root-Owned Phase Order
+
+The authoritative order is:
+
+```text
+bind presentation
+    -> publish validation
+    -> validate all assigned launch definitions
+    -> play optional splash
+    -> run startup sequence
+    -> load initial destination
+    -> publish completed handoff
+```
+
+Splash playback and startup steps do not overlap.
+
+The splash presenter is cleared before startup-step presentation begins.
+
+The destination loader cannot start until splash and startup execution settle.
+
+## Shared Launch Clock
+
+The root supplies the same injected `ILaunchClock` seam to:
+
+- Splash playback.
+- Startup-sequence execution.
+- Root report timing.
+
+This keeps ordering and elapsed-time proof deterministic.
+
+Successful splash time contributes to the existing total launch elapsed time.
+
+## Splash Presenter Resolution
+
+When the active status presenter also implements `IImageSplashPresenter`, the
+root uses it.
+
+When a nonempty sequence is configured but the status presenter has no splash
+surface, the root emits:
+
+```text
+ELAUNCH-SPLASH-003
+```
+
+Playback continues through `NullImageSplashPresenter`.
+
+Headless fallback preserves authored timing, minimum display, skip policy, and
+reduced-motion behavior.
+
+Empty sequences use the silent headless path without warning.
+
+## Splash Failure and Cancellation
+
+Unexpected splash playback, clock, or presenter failure produces:
+
+```text
+ELAUNCH-SPLASH-002
+```
+
+The launch fails before startup steps and destination loading.
+
+Root cancellation during splash uses the existing lifecycle interruption:
+
+```text
+ELAUNCH-LIFE-001
+```
+
+Cancellation:
+
+- Clears splash presentation.
+- Prevents startup-step execution.
+- Prevents destination loading.
+- Finalizes one interrupted report.
+- Publishes one interrupted terminal event.
+
+Duplicate roots cannot present or play another splash.
+
+## Splash Execution Evidence
+
+The root retains the latest successful `SplashPlaybackResult` internally for
+focused runtime evidence.
+
+The immutable public launch report remains schema version `2`.
+
+No splash-specific report fields were added.
+
+Existing report fields carry:
+
+- Total elapsed launch time.
+- Final status.
+- Final diagnostic code and message.
+- Existing startup-step reports.
+- Existing destination metadata.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1531,7 +1686,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M4-03 compile result:
+Final FL-M4-04 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1550,12 +1705,14 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `450`
+- Passed: `479`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Root splash integration tests: `28`
+- Additional schema-history test: `1`
 - Splash playback tests: `26`
 - Splash uGUI presentation tests: `10`
 - Plain uGUI presentation tests: `18`
@@ -1579,6 +1736,29 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M4-04 and retained behavior:
+
+- Configuration schema 4
+- Optional splash and reduced-motion configuration binding
+- Historical schema 3 rejection without rewrite
+- Null and empty splash no-op behavior
+- Splash and startup preflight before side effects
+- Splash presentation before startup steps
+- Splash clear before step presentation
+- Startup completion before destination load
+- Reduced-motion forwarding
+- Headless fallback warning
+- Project-routed skip through the root path
+- Total elapsed time including splash duration
+- Successful splash result retention
+- Presenter/playback failure blocking later phases
+- Cancellation during splash with exactly-once interruption
+- Duplicate-root splash silence
+- Automatic-start splash routing
+- Direct-scene contract consistency
+- Configuration and splash immutability
+- Report schema 2 preservation
 
 Verified FL-M4-03 and retained behavior:
 
@@ -1768,8 +1948,8 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Default presentation prefab and Canvas art pass
-- Splash configuration binding and root playback integration
+- Startup presentation prefab and Canvas assembly
+- Editor migration from historical configuration schemas
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -1779,11 +1959,11 @@ Not implemented:
 
 ## Stop Point
 
-FL-M4-03 stops after project-owned image splash definitions, deterministic
-clock-driven playback, neutral skip requests, headless fallback, default uGUI
-projection, and isolated automated proof.
+FL-M4-04 stops after schema-4 splash binding, side-effect-free splash and
+startup preflight, sequential root-owned splash playback, cancellation/failure
+settlement, headless fallback, automatic/direct-scene routing, and complete
+automated proof.
 
-`EchoLaunchConfiguration` schema advancement, root-owned splash execution,
-launch-report integration, package prefab/art, project input binding,
-direct-scene initialization, Editor setup, persistent-root policy, and real
-Standalone Laboratory scene activation require later checkpoints.
+Editor migration, package prefab and Canvas assembly, project input binding,
+direct-scene initializer tooling, persistent-root policy, and real Standalone
+Laboratory scene activation require later checkpoints.

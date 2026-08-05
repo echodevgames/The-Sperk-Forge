@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
+- Development stage: Configuration schema 4 and sequential root-owned splash playback implemented; startup prefab and Editor migration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -28,6 +28,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M4-01` Automatic Root Start Gate and Plain Status Presenter Contract
   - `FL-M4-02` Default uGUI Plain Status View and Presentation Assembly
   - `FL-M4-03` Image Splash Definitions and Deterministic Splash Player
+  - `FL-M4-04` Splash Configuration Schema and Root Playback Integration
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -452,6 +453,30 @@ First Light now provides:
 - Report schema remains 2
 - No root-owned splash integration yet
 
+### Schema-4 Root Splash Integration
+
+- Configuration schema version `4`
+- Optional serialized `SplashSequence`
+- Serialized reduced-motion default
+- Historical schema 3 rejection without rewrite
+- Null and empty splash no-op behavior
+- Side-effect-free splash and startup preflight
+- Sequential root order: splash, startup steps, destination
+- Shared monotonic launch clock
+- Visual or headless splash presenter resolution
+- `ELAUNCH-SPLASH-001`
+- `ELAUNCH-SPLASH-002`
+- `ELAUNCH-SPLASH-003`
+- Splash clear before startup-step presentation
+- Root cancellation during splash
+- Failure blocking later phases
+- Successful splash-result retention
+- Total report elapsed time including splash
+- Duplicate-root splash silence
+- Automatic-start and direct-scene splash routing
+- Configuration and splash immutability
+- Report schema version `2` preserved
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -488,12 +513,14 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `450`
+- Passed: `479`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Root splash integration tests: `28`
+- Additional schema-history test: `1`
 - Splash playback tests: `26`
 - Splash presentation tests: `10`
 - Plain uGUI presentation tests: `18`
@@ -558,8 +585,8 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Splash configuration schema and root playback integration
-- Default presentation prefab and Canvas art pass
+- Startup presentation prefab and Canvas assembly
+- Editor migration from historical configuration schemas
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
@@ -583,10 +610,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Four hundred fifty passing Runtime Play Mode tests
+- Four hundred seventy-nine passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with automatic root entry, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, a removable plain uGUI view, and standalone deterministic image splash playback
+- Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
 
 Still `Not run`:
 

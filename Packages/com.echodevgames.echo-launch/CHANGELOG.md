@@ -7,6 +7,37 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M4-04 - Splash Configuration Schema and Root Playback Integration
+- `EchoLaunchConfiguration` schema version `4`
+- Optional serialized project-owned `SplashSequence`
+- Serialized project-authored `UseReducedMotionForSplash`
+- Historical schema `3` rejection without runtime rewrite
+- Public read-only splash and reduced-motion configuration surface
+- Internal side-effect-free `SplashSequencePreflight`
+- Null splash reference as a legal omission
+- Empty valid splash sequence as a legal no-op
+- Invalid assigned splash rejection before splash, startup-step, or destination side effects
+- Stable `ELAUNCH-SPLASH-001` preflight diagnostic
+- Stable `ELAUNCH-SPLASH-002` unexpected-playback diagnostic
+- Stable `ELAUNCH-SPLASH-003` missing-visual-presenter warning
+- Root-owned deterministic splash playback
+- Shared injectable monotonic launch clock for splash and report timing
+- Sequential root order of optional splash, startup steps, and destination transition
+- Reduced-motion forwarding from schema-4 configuration
+- Visual `IImageSplashPresenter` resolution through the active status presenter
+- Logging-free headless fallback with authored timing preserved
+- Splash clear before startup-step presentation
+- Root cancellation during splash mapped to the existing interrupted-launch settlement
+- Splash presenter or playback failure blocking startup steps and destination loading
+- Successful splash timing included in existing total launch elapsed time
+- Internal retention of the latest successful `SplashPlaybackResult`
+- Duplicate-root splash silence
+- Automatic-start splash-path proof
+- Direct-scene mode splash-contract proof
+- Configuration and splash asset immutability proof
+- Report schema version `2` preserved
+- Twenty-eight focused root splash lifecycle tests
+- One additional retained schema-history configuration test
 #### FL-M4-03 - Image Splash Definitions and Deterministic Splash Player
 - Project-owned `SplashSequence` ScriptableObject with schema version `1`
 - Immutable `SplashEntry` definitions with stable canonical identities
@@ -329,6 +360,13 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- Root preflight now validates configuration identity/schema, the optional splash sequence, the startup sequence, and the initial destination before launch side effects.
+- The authoritative launch order is now optional splash, startup steps, then initial destination.
+- Splash playback and startup-step execution remain sequential rather than concurrent.
+- The active launch clock is shared by root splash playback, startup execution, and report timing.
+- A configured splash without a visual splash presenter now preserves timing through `NullImageSplashPresenter` and emits one warning.
+- `EchoLaunchConfiguration.CurrentSchemaVersion` is now `4`.
+- `LaunchReport.CurrentSchemaVersion` remains `2`.
 - First Light now includes standalone project-owned image splash definitions and deterministic playback without binding them to configuration or root launch flow.
 - The default uGUI view now implements both `ILaunchStatusPresenter` and `IImageSplashPresenter`.
 - Splash timing uses the established monotonic unscaled `ILaunchClock` seam.
@@ -447,9 +485,35 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `450`
+- Passed: `479`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M4-04 coverage:
+- Stable splash diagnostic codes
+- Schema-4 splash-sequence binding
+- Schema-4 reduced-motion binding
+- Historical schema-3 rejection without rewrite
+- Root splash configuration exposure
+- Null and empty splash no-op paths
+- Startup-sequence preflight before splash side effects
+- Invalid splash identity, schema, entry, image, and duplicate-ID blocking
+- Splash presentation before the first startup step
+- Splash clear before startup-step presentation
+- Startup-step completion before destination loading
+- Reduced-motion frame behavior through the root
+- Missing visual presenter warning and headless continuation
+- Project-routed skip shortening the configured splash
+- Total report elapsed time including splash time
+- Root retention of successful splash playback result
+- Presenter/playback failure blocking step and destination work
+- Root cancellation during splash with exactly-once interrupted settlement
+- Duplicate-root splash silence
+- Direct-scene mode using the same splash contract
+- Configuration and splash definition immutability
+- Launch report schema remaining 2
+- Automatic-start route using the splash path
+- Zero compiler errors and zero compiler warnings
 
 FL-M4-03 coverage:
 - Stable splash skip-policy and playback-phase vocabulary
@@ -689,8 +753,8 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Default presentation prefab and Canvas art pass
-- Splash configuration binding and root playback integration
+- Startup presentation prefab and Canvas assembly
+- Editor migration from historical configuration schemas
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
 - Direct-scene initializer behavior

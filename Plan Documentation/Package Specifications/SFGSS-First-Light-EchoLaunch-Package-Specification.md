@@ -1512,18 +1512,18 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M4-03 — Image Splash Definitions and Deterministic Splash Player |
-| Active authorized checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration |
-| Implementation commit | `f997a9a` |
-| Documentation baseline | `b36e04d` |
-| Files/assets created | Runtime launch systems, destination loading, automatic startup, neutral status presentation, isolated uGUI status view, project-owned image splash definitions, deterministic splash player, neutral/headless splash presenters, and isolated splash tests |
-| Tests passed | 450 Runtime Play Mode tests |
+| Completed checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration |
+| Authority commit | `90aabd1` |
+| Implementation commit | `858808b` |
+| Previous documentation commit | `b36e04d` |
+| Files/assets created | Runtime launch systems, schema-4 configuration binding, destination loading, automatic startup, neutral status and splash presentation, deterministic splash definitions/player, root-owned splash preflight/playback, and isolated runtime/uGUI tests |
+| Tests passed | 479 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Authority decisions | Configuration schema 4; optional serialized splash sequence; serialized reduced-motion default; optional splash before startup steps; headless fallback; report schema 2 preserved |
-| Known issues | FL-M4-04 runtime implementation, presentation prefab/art pass, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Next action | Commit this authority update before applying any FL-M4-04 runtime patch |
+| Implemented decisions | Configuration schema 4; optional splash sequence; reduced-motion default; optional splash before startup steps; headless fallback; report schema 2 preserved |
+| Known issues | Startup presentation prefab/Canvas assembly, Editor migration/setup, direct-scene initializer tooling, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Next checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly, tentative and not yet authorized |
 
 ---
 
