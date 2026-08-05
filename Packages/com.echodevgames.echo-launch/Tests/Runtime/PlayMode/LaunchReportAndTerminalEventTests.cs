@@ -41,6 +41,21 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 "startupSequence",
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
+        private static readonly FieldInfo ConfigurationDestinationField =
+            typeof(EchoLaunchConfiguration).GetField(
+                "initialDestination",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static readonly FieldInfo DestinationDisplayNameField =
+            typeof(LaunchDestination).GetField(
+                "displayName",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static readonly FieldInfo DestinationScenePathField =
+            typeof(LaunchDestination).GetField(
+                "scenePath",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
         private static readonly FieldInfo SequenceEntriesField =
             typeof(StartupSequence).GetField(
                 "entries",
@@ -79,6 +94,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(RootLaunchModeField, Is.Not.Null);
             Assert.That(ConfigurationIdField, Is.Not.Null);
             Assert.That(ConfigurationSequenceField, Is.Not.Null);
+            Assert.That(ConfigurationDestinationField, Is.Not.Null);
+            Assert.That(DestinationDisplayNameField, Is.Not.Null);
+            Assert.That(DestinationScenePathField, Is.Not.Null);
             Assert.That(SequenceEntriesField, Is.Not.Null);
             Assert.That(EntryActivationField, Is.Not.Null);
             Assert.That(EntryDefinitionField, Is.Not.Null);
@@ -491,7 +509,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void TransitionPendingSuccessHasNoFinalReportOrTerminalEvent()
+        public void SuccessfulHandoffFinalizesCompletedReportAndEvent()
         {
             EchoLaunchRoot root =
                 CreateRoot(
@@ -501,15 +519,25 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             int failedCalls = 0;
             int interruptedCalls = 0;
+            int completedCalls = 0;
+            LaunchReport completedReport = null;
+
             root.LaunchFailed += _ => failedCalls++;
             root.LaunchInterrupted += _ => interruptedCalls++;
+            root.LaunchCompleted += report =>
+            {
+                completedCalls++;
+                completedReport = report;
+            };
 
             StartImmediate(root);
 
-            Assert.That(root.State, Is.EqualTo(LaunchStatus.Transitioning));
-            Assert.That(root.State, Is.Not.EqualTo(LaunchStatus.Completed));
-            Assert.That(root.LastReport, Is.Null);
-            Assert.That(root.HasPendingLaunchReport, Is.True);
+            Assert.That(root.State, Is.EqualTo(LaunchStatus.Completed));
+            Assert.That(root.LastReport, Is.Not.Null);
+            Assert.That(root.LastReport.FinalStatus, Is.EqualTo(LaunchStatus.Completed));
+            Assert.That(root.HasPendingLaunchReport, Is.False);
+            Assert.That(completedCalls, Is.EqualTo(1));
+            Assert.That(completedReport, Is.SameAs(root.LastReport));
             Assert.That(failedCalls, Is.Zero);
             Assert.That(interruptedCalls, Is.Zero);
         }
@@ -530,6 +558,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             int calls = 0;
             duplicate.LaunchFailed += _ => calls++;
             duplicate.LaunchInterrupted += _ => calls++;
+            duplicate.LaunchCompleted += _ => calls++;
 
             Assert.That(authority.IsAuthoritative, Is.True);
             Assert.That(duplicate.IsAuthoritative, Is.False);
@@ -553,6 +582,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             int terminalCalls = 0;
             root.LaunchFailed += _ => terminalCalls++;
             root.LaunchInterrupted += _ => terminalCalls++;
+            root.LaunchCompleted += _ => terminalCalls++;
 
             Awaitable<StartupSequenceRunResult>.Awaiter awaiter =
                 root.StartLaunchAsync().GetAwaiter();
@@ -579,9 +609,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             StartImmediate(root);
 
-            Assert.That(root.LastReport.ReportSchemaVersion, Is.EqualTo(1));
+            Assert.That(root.LastReport.ReportSchemaVersion, Is.EqualTo(2));
             Assert.That(root.LastReport.PackageVersion, Is.EqualTo("0.1.0"));
-            Assert.That(LaunchReport.CurrentSchemaVersion, Is.EqualTo(1));
+            Assert.That(LaunchReport.CurrentSchemaVersion, Is.EqualTo(2));
             Assert.That(LaunchReport.CurrentPackageVersion, Is.EqualTo("0.1.0"));
         }
 
@@ -943,6 +973,14 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             RootConfigurationField.SetValue(root, configuration);
             RootLaunchModeField.SetValue(root, mode);
             target.SetActive(true);
+
+            if (root.IsAuthoritative &&
+                configuration != null)
+            {
+                root.SetInitialDestinationLoaderForTesting(
+                    ImmediateSuccessInitialDestinationLoader.Shared);
+            }
+
             return root;
         }
 
@@ -954,7 +992,25 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             createdAssets.Add(configuration);
             ConfigurationSequenceField.SetValue(configuration, sequence);
+            ConfigurationDestinationField.SetValue(
+                configuration,
+                CreateDestination());
             return configuration;
+        }
+
+        private LaunchDestination CreateDestination()
+        {
+            LaunchDestination destination =
+                ScriptableObject.CreateInstance<LaunchDestination>();
+
+            createdAssets.Add(destination);
+            DestinationDisplayNameField.SetValue(
+                destination,
+                "Report Destination");
+            DestinationScenePathField.SetValue(
+                destination,
+                "Assets/Scenes/ReportDestination.unity");
+            return destination;
         }
 
         private StartupSequence CreateSequence(

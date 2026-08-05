@@ -32,12 +32,51 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     BindingFlags.Instance |
                     BindingFlags.NonPublic);
 
+        private static readonly FieldInfo
+            ConfigurationDestinationField =
+                typeof(EchoLaunchConfiguration).GetField(
+                    "initialDestination",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationIdField =
+                typeof(LaunchDestination).GetField(
+                    "destinationId",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationSchemaVersionField =
+                typeof(LaunchDestination).GetField(
+                    "schemaVersion",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationDisplayNameField =
+                typeof(LaunchDestination).GetField(
+                    "displayName",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationScenePathField =
+                typeof(LaunchDestination).GetField(
+                    "scenePath",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic);
+
         private readonly List<GameObject> createdObjects =
             new List<GameObject>();
 
         private readonly List<EchoLaunchConfiguration>
             createdConfigurations =
                 new List<EchoLaunchConfiguration>();
+
+        private readonly List<LaunchDestination>
+            createdDestinations =
+                new List<LaunchDestination>();
 
         [SetUp]
         public void SetUp()
@@ -54,6 +93,26 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             Assert.That(
                 SchemaVersionField,
+                Is.Not.Null);
+
+            Assert.That(
+                ConfigurationDestinationField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationIdField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationSchemaVersionField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationDisplayNameField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationScenePathField,
                 Is.Not.Null);
         }
 
@@ -88,8 +147,24 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 }
             }
 
+            for (int index =
+                     createdDestinations.Count - 1;
+                 index >= 0;
+                 index--)
+            {
+                LaunchDestination destination =
+                    createdDestinations[index];
+
+                if (destination != null)
+                {
+                    Object.DestroyImmediate(
+                        destination);
+                }
+            }
+
             createdObjects.Clear();
             createdConfigurations.Clear();
+            createdDestinations.Clear();
 
             LaunchAuthorityClaim.Reset();
 
@@ -150,6 +225,75 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 Is.EqualTo(
                     EchoLaunchConfiguration
                         .CurrentSchemaVersion));
+        }
+
+        [Test]
+        public void CurrentConfigurationSchemaIsThree()
+        {
+            Assert.That(
+                EchoLaunchConfiguration
+                    .CurrentSchemaVersion,
+                Is.EqualTo(3));
+        }
+
+        [Test]
+        public void HistoricalSchemaTwoIsUnsupportedWithoutRewrite()
+        {
+            EchoLaunchConfiguration configuration =
+                CreateConfiguration();
+
+            SchemaVersionField.SetValue(
+                configuration,
+                2);
+
+            Assert.That(
+                configuration.HasSupportedSchema,
+                Is.False);
+
+            Assert.That(
+                configuration.SchemaVersion,
+                Is.EqualTo(2));
+        }
+
+        [Test]
+        public void NewDestinationUsesSchemaOneAndCanonicalIdentity()
+        {
+            LaunchDestination destination =
+                CreateDestination();
+
+            Assert.That(
+                LaunchDestination.CurrentSchemaVersion,
+                Is.EqualTo(1));
+
+            Assert.That(
+                destination.SchemaVersion,
+                Is.EqualTo(1));
+
+            Assert.That(
+                destination.DestinationId,
+                Does.Match("^[0-9a-f]{32}$"));
+
+            Assert.That(
+                destination.HasValidIdentity,
+                Is.True);
+        }
+
+        [Test]
+        public void ConfigurationExposesAssignedInitialDestination()
+        {
+            EchoLaunchConfiguration configuration =
+                CreateConfiguration();
+
+            LaunchDestination destination =
+                CreateDestination();
+
+            ConfigurationDestinationField.SetValue(
+                configuration,
+                destination);
+
+            Assert.That(
+                configuration.InitialDestination,
+                Is.SameAs(destination));
         }
 
         [Test]
@@ -371,6 +515,116 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
+        public void AuthorityExposesAssignedInitialDestination()
+        {
+            EchoLaunchConfiguration configuration =
+                CreateConfiguration();
+
+            LaunchDestination destination =
+                CreateDestination();
+
+            ConfigurationDestinationField.SetValue(
+                configuration,
+                destination);
+
+            EchoLaunchRoot authority =
+                CreateRoot(
+                    "Destination Authority",
+                    configuration);
+
+            Assert.That(
+                authority.InitialDestination,
+                Is.SameAs(destination));
+        }
+
+        [Test]
+        public void DuplicateRootExposesNoInitialDestination()
+        {
+            EchoLaunchConfiguration authorityConfiguration =
+                CreateConfiguration();
+
+            ConfigurationDestinationField.SetValue(
+                authorityConfiguration,
+                CreateDestination());
+
+            EchoLaunchConfiguration duplicateConfiguration =
+                CreateConfiguration();
+
+            ConfigurationDestinationField.SetValue(
+                duplicateConfiguration,
+                CreateDestination());
+
+            CreateRoot(
+                "Destination Authority",
+                authorityConfiguration);
+
+            ExpectDuplicateWarning();
+
+            EchoLaunchRoot duplicate =
+                CreateRoot(
+                    "Destination Duplicate",
+                    duplicateConfiguration);
+
+            Assert.That(
+                duplicate.InitialDestination,
+                Is.Null);
+        }
+
+        [Test]
+        public void RootLifecycleDoesNotMutateDestination()
+        {
+            EchoLaunchConfiguration configuration =
+                CreateConfiguration();
+
+            LaunchDestination destination =
+                CreateDestination();
+
+            ConfigurationDestinationField.SetValue(
+                configuration,
+                destination);
+
+            string originalId =
+                destination.DestinationId;
+
+            int originalSchema =
+                destination.SchemaVersion;
+
+            string originalDisplayName =
+                destination.DisplayName;
+
+            string originalScenePath =
+                destination.ScenePath;
+
+            EchoLaunchRoot root =
+                CreateRoot(
+                    "Destination Lifecycle Root",
+                    configuration);
+
+            Assert.That(
+                root.InitialDestination,
+                Is.SameAs(destination));
+
+            Object.DestroyImmediate(
+                root.gameObject);
+
+            Assert.That(
+                destination.DestinationId,
+                Is.EqualTo(originalId));
+
+            Assert.That(
+                destination.SchemaVersion,
+                Is.EqualTo(originalSchema));
+
+            Assert.That(
+                destination.DisplayName,
+                Is.EqualTo(originalDisplayName));
+
+            Assert.That(
+                destination.ScenePath,
+                Is.EqualTo(originalScenePath));
+        }
+
+        [Test]
         public void RootLifecycleDoesNotMutateConfiguration()
         {
             EchoLaunchConfiguration configuration =
@@ -414,6 +668,26 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 configuration);
 
             return configuration;
+        }
+
+        private LaunchDestination CreateDestination()
+        {
+            LaunchDestination destination =
+                ScriptableObject.CreateInstance<
+                    LaunchDestination>();
+
+            createdDestinations.Add(
+                destination);
+
+            DestinationDisplayNameField.SetValue(
+                destination,
+                "Configuration Destination");
+
+            DestinationScenePathField.SetValue(
+                destination,
+                "Assets/Scenes/ConfigurationDestination.unity");
+
+            return destination;
         }
 
         private EchoLaunchRoot CreateRoot(

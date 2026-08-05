@@ -8,8 +8,8 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Immutable public summary of one finalized launch attempt.
     ///
-    /// FL-M3-07 finalizes failed and interrupted reports. Successful launch
-    /// reports remain pending until a later destination-handoff checkpoint.
+    /// Failed, interrupted, and destination-activated completed attempts are
+    /// represented without exposing live runtime execution objects.
     /// </summary>
     public sealed class LaunchReport
     {
@@ -19,7 +19,7 @@ namespace EchoDevGames.EchoLaunch
         /// This version is independent from package and authored asset schema
         /// versions because report export compatibility evolves separately.
         /// </summary>
-        public const int CurrentSchemaVersion = 1;
+        public const int CurrentSchemaVersion = 2;
 
         /// <summary>
         /// Gets the package version that produced this report.
@@ -35,6 +35,44 @@ namespace EchoDevGames.EchoLaunch
             LaunchMode launchMode,
             string configurationId,
             string sequenceId,
+            LaunchStatus finalStatus,
+            double startSeconds,
+            double finalizationSeconds,
+            int authoredEntryCount,
+            int disabledEntryCount,
+            int unvisitedEntryCount,
+            bool wasCancelled,
+            StartupStepResult finalResult,
+            IReadOnlyList<LaunchStepReport>
+                completedStepReports)
+            : this(
+                launchMode,
+                configurationId,
+                sequenceId,
+                string.Empty,
+                string.Empty,
+                finalStatus,
+                startSeconds,
+                finalizationSeconds,
+                authoredEntryCount,
+                disabledEntryCount,
+                unvisitedEntryCount,
+                wasCancelled,
+                finalResult,
+                completedStepReports)
+        {
+        }
+
+        /// <summary>
+        /// Creates one validated immutable finalized report with copied
+        /// destination identity and display metadata.
+        /// </summary>
+        internal LaunchReport(
+            LaunchMode launchMode,
+            string configurationId,
+            string sequenceId,
+            string destinationId,
+            string destinationDisplayName,
             LaunchStatus finalStatus,
             double startSeconds,
             double finalizationSeconds,
@@ -101,6 +139,29 @@ namespace EchoDevGames.EchoLaunch
             if (finalResult == null)
             {
                 throw new ArgumentNullException(
+                    nameof(finalResult));
+            }
+
+            string normalizedDestinationId =
+                NormalizeText(
+                    destinationId);
+
+            string normalizedDestinationDisplayName =
+                NormalizeText(
+                    destinationDisplayName);
+
+            ValidateDestination(
+                finalStatus,
+                normalizedDestinationId,
+                normalizedDestinationDisplayName);
+
+            if (finalStatus ==
+                    LaunchStatus.Completed &&
+                (!finalResult.IsSuccessful ||
+                 wasCancelled))
+            {
+                throw new ArgumentException(
+                    "A completed launch report requires a successful non-cancelled final result.",
                     nameof(finalResult));
             }
 
@@ -225,6 +286,12 @@ namespace EchoDevGames.EchoLaunch
                 NormalizeText(
                     sequenceId);
 
+            DestinationId =
+                normalizedDestinationId;
+
+            DestinationDisplayName =
+                normalizedDestinationDisplayName;
+
             FinalStatus =
                 finalStatus;
 
@@ -302,6 +369,22 @@ namespace EchoDevGames.EchoLaunch
         /// Gets the copied startup-sequence identity when available.
         /// </summary>
         public string SequenceId
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the copied initial destination identity when available.
+        /// </summary>
+        public string DestinationId
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the copied initial destination display name when available.
+        /// </summary>
+        public string DestinationDisplayName
         {
             get;
         }
@@ -475,6 +558,8 @@ namespace EchoDevGames.EchoLaunch
             LaunchStatus finalStatus)
         {
             if (finalStatus !=
+                    LaunchStatus.Completed &&
+                finalStatus !=
                     LaunchStatus.Failed &&
                 finalStatus !=
                     LaunchStatus.Interrupted)
@@ -482,7 +567,52 @@ namespace EchoDevGames.EchoLaunch
                 throw new ArgumentOutOfRangeException(
                     nameof(finalStatus),
                     finalStatus,
-                    "FL-M3-07 finalizes only failed or interrupted launch reports.");
+                    "A finalized launch report requires Completed, Failed, or Interrupted status.");
+            }
+        }
+
+        private static void ValidateDestination(
+            LaunchStatus finalStatus,
+            string destinationId,
+            string destinationDisplayName)
+        {
+            if (string.IsNullOrEmpty(
+                    destinationId))
+            {
+                if (finalStatus ==
+                    LaunchStatus.Completed)
+                {
+                    throw new ArgumentException(
+                        "A completed launch report requires a destination identity.",
+                        nameof(destinationId));
+                }
+
+                if (!string.IsNullOrEmpty(
+                        destinationDisplayName))
+                {
+                    throw new ArgumentException(
+                        "Destination display metadata requires a destination identity.",
+                        nameof(destinationDisplayName));
+                }
+
+                return;
+            }
+
+            if (!LaunchDestination
+                    .IsCanonicalDestinationId(
+                        destinationId))
+            {
+                throw new ArgumentException(
+                    "The report destination identity must use lowercase 32-character hexadecimal format.",
+                    nameof(destinationId));
+            }
+
+            if (string.IsNullOrEmpty(
+                    destinationDisplayName))
+            {
+                throw new ArgumentException(
+                    "Destination display metadata is required when a destination identity is present.",
+                    nameof(destinationDisplayName));
             }
         }
 

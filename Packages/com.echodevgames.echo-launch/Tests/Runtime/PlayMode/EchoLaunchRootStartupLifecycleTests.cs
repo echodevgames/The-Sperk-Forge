@@ -193,8 +193,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
     /// <summary>
     /// FL-M3-06 proof that the authoritative root owns one explicit startup
     /// run, translates runner observations into launch lifecycle snapshots,
-    /// cooperatively cancels active work, and stops at Transitioning until a
-    /// later destination checkpoint completes handoff.
+    /// cooperatively cancels active work, and completes one injected initial
+    /// destination handoff.
     /// </summary>
     public sealed class
         EchoLaunchRootStartupLifecycleTests
@@ -228,6 +228,30 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 typeof(EchoLaunchConfiguration)
                     .GetField(
                         "startupSequence",
+                        BindingFlags.Instance |
+                        BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            ConfigurationDestinationField =
+                typeof(EchoLaunchConfiguration)
+                    .GetField(
+                        "initialDestination",
+                        BindingFlags.Instance |
+                        BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationDisplayNameField =
+                typeof(LaunchDestination)
+                    .GetField(
+                        "displayName",
+                        BindingFlags.Instance |
+                        BindingFlags.NonPublic);
+
+        private static readonly FieldInfo
+            DestinationScenePathField =
+                typeof(LaunchDestination)
+                    .GetField(
+                        "scenePath",
                         BindingFlags.Instance |
                         BindingFlags.NonPublic);
 
@@ -295,6 +319,18 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             Assert.That(
                 ConfigurationSequenceField,
+                Is.Not.Null);
+
+            Assert.That(
+                ConfigurationDestinationField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationDisplayNameField,
+                Is.Not.Null);
+
+            Assert.That(
+                DestinationScenePathField,
                 Is.Not.Null);
 
             Assert.That(
@@ -389,7 +425,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void EmptySequenceAdvancesToTransitioning()
+        public void EmptySequenceAdvancesToCompleted()
         {
             EchoLaunchRoot root =
                 CreateRoot(
@@ -410,7 +446,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 root.State,
                 Is.EqualTo(
-                    LaunchStatus.Transitioning));
+                    LaunchStatus.Completed));
 
             Assert.That(
                 root.Progress.Progress01,
@@ -452,7 +488,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 {
                     LaunchStatus.Validating,
                     LaunchStatus.Running,
-                    LaunchStatus.Transitioning
+                    LaunchStatus.Transitioning,
+                    LaunchStatus.Completed
                 },
                 states);
         }
@@ -521,7 +558,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void WarningRunAdvancesToTransitioning()
+        public void WarningRunAdvancesToCompleted()
         {
             RootLifecycleTestDefinition definition =
                 CreateDefinition(
@@ -551,12 +588,27 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 root.State,
                 Is.EqualTo(
-                    LaunchStatus.Transitioning));
+                    LaunchStatus.Completed));
 
             Assert.That(
                 root.Progress.LastResult.Status,
                 Is.EqualTo(
-                    StartupStepStatus.Warning));
+                    StartupStepStatus.Succeeded),
+                "The final lifecycle snapshot must describe the successful destination activation.");
+
+            Assert.That(
+                root.LastReport,
+                Is.Not.Null);
+
+            Assert.That(
+                root.LastReport.WarningCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                root.LastReport.GetStepReport(0).Status,
+                Is.EqualTo(
+                    StartupStepStatus.Warning),
+                "The completed report must preserve the startup warning even though the destination handoff succeeded.");
         }
 
         [Test]
@@ -1074,7 +1126,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void SuccessfulRunDoesNotPublishCompletedBeforeDestination()
+        public void SuccessfulRunPublishesCompletedAfterDestination()
         {
             EchoLaunchRoot root =
                 CreateRoot(
@@ -1089,17 +1141,21 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 root.State,
                 Is.EqualTo(
-                    LaunchStatus.Transitioning));
+                    LaunchStatus.Completed));
 
             Assert.That(
-                root.State,
-                Is.Not.EqualTo(
+                root.LastReport,
+                Is.Not.Null);
+
+            Assert.That(
+                root.LastReport.FinalStatus,
+                Is.EqualTo(
                     LaunchStatus.Completed));
 
             Assert.That(
                 root.Progress.Message,
                 Does.Contain(
-                    "destination transition is pending"));
+                    "activated"));
         }
 
         [Test]
@@ -1122,7 +1178,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 root.State,
                 Is.EqualTo(
-                    LaunchStatus.Transitioning));
+                    LaunchStatus.Completed));
         }
 
         [Test]
@@ -1391,6 +1447,15 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 mode);
 
             target.SetActive(true);
+
+            if (root.IsAuthoritative &&
+                configuration != null)
+            {
+                root.SetInitialDestinationLoaderForTesting(
+                    ImmediateSuccessInitialDestinationLoader
+                        .Shared);
+            }
+
             return root;
         }
 
@@ -1408,7 +1473,30 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 configuration,
                 sequence);
 
+            ConfigurationDestinationField.SetValue(
+                configuration,
+                CreateDestination());
+
             return configuration;
+        }
+
+        private LaunchDestination CreateDestination()
+        {
+            LaunchDestination destination =
+                ScriptableObject.CreateInstance<
+                    LaunchDestination>();
+
+            createdAssets.Add(destination);
+
+            DestinationDisplayNameField.SetValue(
+                destination,
+                "Lifecycle Destination");
+
+            DestinationScenePathField.SetValue(
+                destination,
+                "Assets/Scenes/LifecycleDestination.unity");
+
+            return destination;
         }
 
         private StartupSequence CreateSequence(

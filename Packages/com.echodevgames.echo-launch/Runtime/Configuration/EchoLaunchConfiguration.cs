@@ -22,9 +22,10 @@ namespace EchoDevGames.EchoLaunch
     {
         /// <summary>
         /// Identifies the currently supported serialized structure of
-        /// EchoLaunchConfiguration assets.
+        /// EchoLaunchConfiguration assets. Schema 3 adds the project-owned
+        /// initial destination reference; schema 2 remains historical.
         /// </summary>
-        public const int CurrentSchemaVersion = 2;
+        public const int CurrentSchemaVersion = 3;
 
         private const int CanonicalIdLength = 32;
 
@@ -40,6 +41,9 @@ namespace EchoDevGames.EchoLaunch
 
         [SerializeField]
         private StartupSequence startupSequence;
+
+        [SerializeField]
+        private LaunchDestination initialDestination;
 
         /// <summary>
         /// Gets the stable runtime-safe identity of this configuration.
@@ -59,6 +63,13 @@ namespace EchoDevGames.EchoLaunch
         /// </summary>
         public StartupSequence StartupSequence =>
             startupSequence;
+
+        /// <summary>
+        /// Gets the project-owned initial destination assigned to this
+        /// configuration.
+        /// </summary>
+        public LaunchDestination InitialDestination =>
+            initialDestination;
 
         /// <summary>
         /// Returns true when the stored identity uses the canonical

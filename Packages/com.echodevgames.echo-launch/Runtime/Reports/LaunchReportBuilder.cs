@@ -8,8 +8,8 @@ namespace EchoDevGames.EchoLaunch
     /// <summary>
     /// Internal single-use assembly boundary for one immutable launch report.
     ///
-    /// The builder may retain a successful transition-pending run, but
-    /// FL-M3-07 finalizes only failed or interrupted reports.
+    /// The builder retains a successful transition-pending run until the
+    /// validated initial destination settles, then finalizes exactly once.
     /// </summary>
     internal sealed class LaunchReportBuilder
     {
@@ -26,6 +26,8 @@ namespace EchoDevGames.EchoLaunch
 
         private string configurationId;
         private string sequenceId;
+        private string destinationId;
+        private string destinationDisplayName;
         private int authoredEntryCount;
         private int disabledEntryCount;
         private StartupSequenceRunResult
@@ -190,9 +192,56 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
+        /// Finalizes one successful report after the configured initial
+        /// destination has been activated.
+        /// </summary>
+        internal LaunchReport FinalizeCompletedReport(
+            LaunchDestination destination,
+            StartupStepResult finalResult,
+            double finalizationSeconds)
+        {
+            EnsureNotFinalized();
+
+            if (destination == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(destination));
+            }
+
+            if (pendingRunResult == null)
+            {
+                throw new InvalidOperationException(
+                    "A completed launch report requires one retained successful startup-sequence run.");
+            }
+
+            CaptureDestination(
+                destination,
+                true);
+
+            return FinalizeReportCore(
+                LaunchStatus.Completed,
+                pendingRunResult,
+                finalResult,
+                finalizationSeconds);
+        }
+
+        /// <summary>
         /// Finalizes one failed or interrupted immutable report exactly once.
         /// </summary>
         internal LaunchReport FinalizeReport(
+            LaunchStatus finalStatus,
+            StartupSequenceRunResult runResult,
+            StartupStepResult finalResult,
+            double finalizationSeconds)
+        {
+            return FinalizeReportCore(
+                finalStatus,
+                runResult,
+                finalResult,
+                finalizationSeconds);
+        }
+
+        private LaunchReport FinalizeReportCore(
             LaunchStatus finalStatus,
             StartupSequenceRunResult runResult,
             StartupStepResult finalResult,
@@ -272,6 +321,8 @@ namespace EchoDevGames.EchoLaunch
                     launchMode,
                     configurationId,
                     sequenceId,
+                    destinationId,
+                    destinationDisplayName,
                     finalStatus,
                     launchStartSeconds,
                     finalizationSeconds,
@@ -299,6 +350,12 @@ namespace EchoDevGames.EchoLaunch
                 sequenceId =
                     string.Empty;
 
+                destinationId =
+                    string.Empty;
+
+                destinationDisplayName =
+                    string.Empty;
+
                 authoredEntryCount = 0;
                 disabledEntryCount = 0;
                 return;
@@ -307,6 +364,10 @@ namespace EchoDevGames.EchoLaunch
             configurationId =
                 NormalizeText(
                     configuration.ConfigurationId);
+
+            CaptureDestination(
+                configuration.InitialDestination,
+                false);
 
             StartupSequence sequence =
                 configuration.StartupSequence;
@@ -331,6 +392,57 @@ namespace EchoDevGames.EchoLaunch
             disabledEntryCount =
                 CountDisabledEntries(
                     sequence);
+        }
+
+        private void CaptureDestination(
+            LaunchDestination destination,
+            bool requireValid)
+        {
+            if (destination == null)
+            {
+                if (requireValid)
+                {
+                    throw new ArgumentNullException(
+                        nameof(destination));
+                }
+
+                destinationId =
+                    string.Empty;
+
+                destinationDisplayName =
+                    string.Empty;
+
+                return;
+            }
+
+            if (!destination.HasValidIdentity ||
+                !destination.HasSupportedSchema ||
+                !destination.HasValidDisplayName ||
+                !destination.HasValidScenePath)
+            {
+                if (requireValid)
+                {
+                    throw new ArgumentException(
+                        "A completed launch report requires one valid supported destination.",
+                        nameof(destination));
+                }
+
+                destinationId =
+                    string.Empty;
+
+                destinationDisplayName =
+                    string.Empty;
+
+                return;
+            }
+
+            destinationId =
+                NormalizeText(
+                    destination.DestinationId);
+
+            destinationDisplayName =
+                NormalizeText(
+                    destination.DisplayName);
         }
 
         private static int CountDisabledEntries(

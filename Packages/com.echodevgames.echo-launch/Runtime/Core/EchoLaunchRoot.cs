@@ -3,6 +3,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace EchoDevGames.EchoLaunch
 {
@@ -11,9 +12,9 @@ namespace EchoDevGames.EchoLaunch
     ///
     /// The authoritative root owns one explicit startup-sequence run,
     /// lifecycle publication, cooperative cancellation, immutable terminal
-    /// reporting, and destruction-safe settlement. Automatic startup,
-    /// successful destination handoff, presentation, and scene loading remain
-    /// later checkpoints.
+    /// reporting, initial destination handoff, and destruction-safe settlement.
+    /// Automatic startup, presentation, direct-scene helpers, and normal
+    /// mid-game scene travel remain later checkpoints.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class EchoLaunchRoot : MonoBehaviour
@@ -27,6 +28,18 @@ namespace EchoDevGames.EchoLaunch
         internal const string StartGateDiagnosticCode =
             "ELAUNCH-LIFE-002";
 
+        internal const string
+            ConfigurationSchemaDiagnosticCode =
+                "ELAUNCH-CFG-002";
+
+        internal const string
+            DestinationPreflightDiagnosticCode =
+                "ELAUNCH-DEST-001";
+
+        internal const string
+            DestinationLoadDiagnosticCode =
+                "ELAUNCH-DEST-002";
+
         [Header("Launch")]
         [SerializeField]
         private EchoLaunchConfiguration configuration;
@@ -38,6 +51,9 @@ namespace EchoDevGames.EchoLaunch
         private LaunchSession session;
 
         private StartupSequenceRunner sequenceRunner;
+
+        private IInitialDestinationLoader
+            initialDestinationLoader;
 
         private CancellationTokenSource
             launchCancellationSource;
@@ -58,6 +74,8 @@ namespace EchoDevGames.EchoLaunch
         private int activeLaunchState;
 
         private bool isDestroying;
+        private bool isTemporarilyPreservedForHandoff;
+        private GameObject preservedHandoffObject;
 
         /// <summary>
         /// Raised after an accepted snapshot changes the launch lifecycle state.
@@ -84,6 +102,14 @@ namespace EchoDevGames.EchoLaunch
         /// </summary>
         public event Action<LaunchReport>
             LaunchInterrupted;
+
+        /// <summary>
+        /// Raised after the configured initial destination is active, the
+        /// authoritative state is already Completed, and the successful
+        /// immutable report is stored in LastReport.
+        /// </summary>
+        public event Action<LaunchReport>
+            LaunchCompleted;
 
         /// <summary>
         /// Returns the currently authoritative First Light root.
@@ -117,6 +143,16 @@ namespace EchoDevGames.EchoLaunch
                 : null;
 
         /// <summary>
+        /// Gets the project-owned initial destination assigned through the
+        /// authoritative configuration.
+        /// </summary>
+        public LaunchDestination InitialDestination =>
+            IsAuthoritative &&
+            configuration != null
+                ? configuration.InitialDestination
+                : null;
+
+        /// <summary>
         /// Gets the current authoritative launch state.
         /// </summary>
         public LaunchStatus State =>
@@ -137,8 +173,8 @@ namespace EchoDevGames.EchoLaunch
         /// <summary>
         /// Gets the latest immutable finalized launch report.
         ///
-        /// FL-M3-07 finalizes failed and interrupted attempts only. A successful
-        /// sequence remains report-pending while the root is Transitioning.
+        /// Failed, interrupted, and destination-activated completed attempts are
+        /// finalized. No report is exposed before terminal finalization.
         /// </summary>
         public LaunchReport LastReport =>
             IsAuthoritative
@@ -215,6 +251,10 @@ namespace EchoDevGames.EchoLaunch
 
                     sequenceRunner =
                         new StartupSequenceRunner();
+
+                    initialDestinationLoader =
+                        UnityInitialDestinationLoader
+                            .Shared;
                 }
                 catch
                 {
@@ -267,12 +307,16 @@ namespace EchoDevGames.EchoLaunch
             LaunchProgressChanged = null;
             LaunchFailed = null;
             LaunchInterrupted = null;
+            LaunchCompleted = null;
 
             session = null;
             sequenceRunner = null;
+            initialDestinationLoader = null;
             lastSequenceRunResult = null;
             launchReportBuilder = null;
             lastReport = null;
+            preservedHandoffObject = null;
+            isTemporarilyPreservedForHandoff = false;
 
             LaunchAuthorityClaim.Release(this);
         }
@@ -317,6 +361,34 @@ namespace EchoDevGames.EchoLaunch
                         launchStartSeconds);
 
                 PublishValidationStarted();
+
+                LaunchDestination initialDestination;
+
+                try
+                {
+                    initialDestination =
+                        ValidateInitialDestination();
+                }
+                catch (
+                    StartupSequencePreflightException
+                        exception)
+                {
+                    PublishPreflightFailure(
+                        exception);
+
+                    return null;
+                }
+                catch (
+                    ArgumentNullException exception)
+                {
+                    PublishUnexpectedFailure(
+                        StartupSequencePreflight
+                            .ConfigurationDiagnosticCode,
+                        "The launch configuration is missing.",
+                        exception);
+
+                    return null;
+                }
 
                 StartupSequenceRunner runner =
                     sequenceRunner ??
@@ -442,8 +514,9 @@ namespace EchoDevGames.EchoLaunch
                     return lastSequenceRunResult;
                 }
 
-                PublishTransitionPending(
-                    lastSequenceRunResult);
+                await CompleteInitialDestinationHandoffAsync(
+                    lastSequenceRunResult,
+                    initialDestination);
 
                 return lastSequenceRunResult;
             }
@@ -482,6 +555,35 @@ namespace EchoDevGames.EchoLaunch
             }
 
             sequenceRunner = runner;
+        }
+
+        /// <summary>
+        /// Replaces the initial destination loader before launch begins for
+        /// deterministic runtime tests. Production uses the standalone Unity
+        /// scene loader.
+        /// </summary>
+        internal void SetInitialDestinationLoaderForTesting(
+            IInitialDestinationLoader loader)
+        {
+            if (loader == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(loader));
+            }
+
+            if (!IsAuthoritative ||
+                session == null ||
+                session.State !=
+                    LaunchStatus.AuthorityClaimed ||
+                IsLaunchActive)
+            {
+                throw new InvalidOperationException(
+                    $"[{StartGateDiagnosticCode}] " +
+                    "The initial destination loader may be replaced only on an idle authoritative root before launch begins.");
+            }
+
+            initialDestinationLoader =
+                loader;
         }
 
         /// <summary>
@@ -883,7 +985,7 @@ namespace EchoDevGames.EchoLaunch
                 reportResult);
         }
 
-        private void PublishTransitionPending(
+        private bool PublishTransitionPending(
             StartupSequenceRunResult result)
         {
             StartupStepResult finalResult =
@@ -895,17 +997,428 @@ namespace EchoDevGames.EchoLaunch
                     string.Empty,
                     -1,
                     result.AuthoredEntryCount,
-                    1f,
-                    false,
-                    "Startup sequence completed. Initial destination transition is pending.",
+                    0f,
+                    true,
+                    "Startup sequence completed. Loading the initial destination.",
                     finalResult))
             {
-                return;
+                return false;
             }
 
             launchReportBuilder?
                 .MarkTransitionPending(
                     result);
+
+            return true;
+        }
+
+
+        private LaunchDestination
+            ValidateInitialDestination()
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(configuration));
+            }
+
+            if (!configuration.HasValidIdentity)
+            {
+                throw new StartupSequencePreflightException(
+                    StartupSequencePreflight
+                        .ConfigurationDiagnosticCode,
+                    "The launch configuration identity is invalid.");
+            }
+
+            if (!configuration.HasSupportedSchema)
+            {
+                throw new StartupSequencePreflightException(
+                    ConfigurationSchemaDiagnosticCode,
+                    "The launch configuration schema version is unsupported. Schema 3 is required.");
+            }
+
+            LaunchDestination destination =
+                configuration.InitialDestination;
+
+            if (destination == null)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The launch configuration does not reference an initial destination.");
+            }
+
+            if (!destination.HasValidIdentity)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The initial destination identity is invalid.");
+            }
+
+            if (!destination.HasSupportedSchema)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The initial destination schema version is unsupported.");
+            }
+
+            if (!destination.HasValidDisplayName)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The initial destination display name is blank or not normalized.");
+            }
+
+            if (!destination.HasValidScenePath)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The initial destination scene path is invalid.");
+            }
+
+            IInitialDestinationLoader loader =
+                initialDestinationLoader;
+
+            if (loader == null)
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    "The authoritative launch root does not have an initial destination loader.");
+            }
+
+            if (loader is
+                    IInitialDestinationPreflightValidator
+                        validator &&
+                !validator.TryValidate(
+                    destination,
+                    out string failureMessage))
+            {
+                throw new StartupSequencePreflightException(
+                    DestinationPreflightDiagnosticCode,
+                    string.IsNullOrWhiteSpace(
+                        failureMessage)
+                        ? "The initial destination loader rejected the configured destination."
+                        : failureMessage.Trim());
+            }
+
+            return destination;
+        }
+
+        private async Awaitable
+            CompleteInitialDestinationHandoffAsync(
+                StartupSequenceRunResult runResult,
+                LaunchDestination destination)
+        {
+            if (!PublishTransitionPending(
+                    runResult))
+            {
+                return;
+            }
+
+            if (IsCancellationRequested)
+            {
+                PublishInterrupted(
+                    runResult,
+                    StartupStepResult.Cancelled(
+                        LifecycleDiagnosticCode,
+                        NormalizeCancellationReason(
+                            cancellationReason),
+                        string.Empty));
+
+                return;
+            }
+
+            IInitialDestinationLoader loader =
+                initialDestinationLoader;
+
+            if (loader == null)
+            {
+                PublishDestinationLoadFailure(
+                    runResult,
+                    "The initial destination loader became unavailable.",
+                    string.Empty);
+
+                return;
+            }
+
+            InitialDestinationProgressRelay progress =
+                new InitialDestinationProgressRelay(
+                    OnInitialDestinationProgressChanged);
+
+            InitialDestinationLoadResult loadResult =
+                null;
+
+            PrepareRootForDestinationLoad(
+                loader);
+
+            try
+            {
+                loadResult =
+                    await loader.LoadAsync(
+                        destination,
+                        progress,
+                        launchCancellationSource
+                            .Token);
+            }
+            catch (
+                OperationCanceledException
+                    exception)
+            {
+                if (IsCancellationRequested)
+                {
+                    PublishInterrupted(
+                        runResult,
+                        StartupStepResult.Cancelled(
+                            LifecycleDiagnosticCode,
+                            NormalizeCancellationReason(
+                                cancellationReason),
+                            CreateExceptionDetails(
+                                exception)));
+
+                    return;
+                }
+
+                PublishDestinationLoadFailure(
+                    runResult,
+                    "Initial destination loading was cancelled without an active root cancellation request.",
+                    CreateExceptionDetails(
+                        exception));
+
+                return;
+            }
+            catch (Exception exception)
+            {
+                PublishDestinationLoadFailure(
+                    runResult,
+                    "Initial destination loading failed unexpectedly.",
+                    CreateExceptionDetails(
+                        exception));
+
+                return;
+            }
+            finally
+            {
+                progress.Close();
+
+                RestoreRootAfterDestinationLoad();
+            }
+
+            if (!CanPublishRuntimeProgress)
+            {
+                return;
+            }
+
+            if (loadResult == null)
+            {
+                PublishDestinationLoadFailure(
+                    runResult,
+                    "The initial destination loader returned no terminal result.",
+                    string.Empty);
+
+                return;
+            }
+
+            if (IsCancellationRequested ||
+                loadResult.IsCancelled)
+            {
+                string code =
+                    string.IsNullOrWhiteSpace(
+                        loadResult.Code)
+                        ? LifecycleDiagnosticCode
+                        : loadResult.Code;
+
+                string message =
+                    string.IsNullOrWhiteSpace(
+                        cancellationReason)
+                        ? loadResult.Message
+                        : cancellationReason;
+
+                PublishInterrupted(
+                    runResult,
+                    StartupStepResult.Cancelled(
+                        code,
+                        NormalizeCancellationReason(
+                            message),
+                        loadResult.Details));
+
+                return;
+            }
+
+            if (loadResult.IsFailed)
+            {
+                PublishDestinationLoadFailure(
+                    runResult,
+                    loadResult.Message,
+                    loadResult.Details);
+
+                return;
+            }
+
+            if (!loadResult.IsSucceeded ||
+                !string.Equals(
+                    loadResult.DestinationId,
+                    destination.DestinationId,
+                    StringComparison.Ordinal))
+            {
+                PublishDestinationLoadFailure(
+                    runResult,
+                    "The initial destination loader returned an invalid success result.",
+                    $"ExpectedDestinationId: {destination.DestinationId}\n" +
+                    $"ObservedDestinationId: {loadResult.DestinationId}");
+
+                return;
+            }
+
+            PublishCompletedHandoff(
+                runResult,
+                destination,
+                loadResult);
+        }
+
+        private void OnInitialDestinationProgressChanged(
+            float progress01)
+        {
+            if (!CanPublishRuntimeProgress ||
+                session.State !=
+                    LaunchStatus.Transitioning)
+            {
+                return;
+            }
+
+            PublishProgress(
+                new LaunchProgressSnapshot(
+                    launchMode,
+                    LaunchStatus.Transitioning,
+                    string.Empty,
+                    -1,
+                    GetAuthoredEntryCount(),
+                    progress01,
+                    false,
+                    "Loading the initial destination.",
+                    GetElapsedSeconds(),
+                    GetFinalResult(
+                        lastSequenceRunResult)));
+        }
+
+        private void PublishDestinationLoadFailure(
+            StartupSequenceRunResult runResult,
+            string message,
+            string details)
+        {
+            StartupStepResult result =
+                StartupStepResult.BlockingFailure(
+                    DestinationLoadDiagnosticCode,
+                    string.IsNullOrWhiteSpace(
+                        message)
+                        ? "The initial destination failed to load."
+                        : message.Trim(),
+                    details);
+
+            PublishFailureAndReport(
+                runResult,
+                string.Empty,
+                -1,
+                runResult == null
+                    ? GetAuthoredEntryCount()
+                    : runResult.AuthoredEntryCount,
+                1f,
+                false,
+                result);
+        }
+
+        private void PublishCompletedHandoff(
+            StartupSequenceRunResult runResult,
+            LaunchDestination destination,
+            InitialDestinationLoadResult loadResult)
+        {
+            string message =
+                string.IsNullOrWhiteSpace(
+                    loadResult.Message)
+                    ? $"Initial destination '{destination.DisplayName}' activated."
+                    : loadResult.Message;
+
+            StartupStepResult finalResult =
+                StartupStepResult.Success(
+                    message,
+                    loadResult.Details);
+
+            if (!PublishTerminalSnapshot(
+                    LaunchStatus.Completed,
+                    string.Empty,
+                    -1,
+                    runResult.AuthoredEntryCount,
+                    1f,
+                    false,
+                    finalResult.Message,
+                    finalResult))
+            {
+                return;
+            }
+
+            FinalizeTerminalReport(
+                LaunchStatus.Completed,
+                runResult,
+                finalResult,
+                destination);
+        }
+
+        private void PrepareRootForDestinationLoad(
+            IInitialDestinationLoader loader)
+        {
+            if (!ReferenceEquals(
+                    loader,
+                    UnityInitialDestinationLoader
+                        .Shared) ||
+                isDestroying)
+            {
+                return;
+            }
+
+            GameObject handoffRoot =
+                transform.root.gameObject;
+
+            preservedHandoffObject =
+                handoffRoot;
+
+            DontDestroyOnLoad(
+                handoffRoot);
+
+            isTemporarilyPreservedForHandoff =
+                true;
+        }
+
+        private void RestoreRootAfterDestinationLoad()
+        {
+            if (!isTemporarilyPreservedForHandoff)
+            {
+                return;
+            }
+
+            isTemporarilyPreservedForHandoff =
+                false;
+
+            GameObject handoffObject =
+                preservedHandoffObject;
+
+            preservedHandoffObject = null;
+
+            if (isDestroying ||
+                handoffObject == null)
+            {
+                return;
+            }
+
+            Scene activeScene =
+                SceneManager.GetActiveScene();
+
+            if (activeScene.IsValid() &&
+                activeScene.isLoaded &&
+                handoffObject.scene !=
+                    activeScene)
+            {
+                SceneManager.MoveGameObjectToScene(
+                    handoffObject,
+                    activeScene);
+            }
         }
 
         private bool PublishTerminalSnapshot(
@@ -942,7 +1455,8 @@ namespace EchoDevGames.EchoLaunch
         private void FinalizeTerminalReport(
             LaunchStatus finalStatus,
             StartupSequenceRunResult runResult,
-            StartupStepResult finalResult)
+            StartupStepResult finalResult,
+            LaunchDestination destination = null)
         {
             if (!CanPublishRuntimeProgress ||
                 launchReportBuilder == null ||
@@ -952,12 +1466,19 @@ namespace EchoDevGames.EchoLaunch
             }
 
             LaunchReport report =
-                launchReportBuilder
-                    .FinalizeReport(
-                        finalStatus,
-                        runResult,
-                        finalResult,
-                        GetMonotonicNow());
+                finalStatus ==
+                    LaunchStatus.Completed
+                    ? launchReportBuilder
+                        .FinalizeCompletedReport(
+                            destination,
+                            finalResult,
+                            GetMonotonicNow())
+                    : launchReportBuilder
+                        .FinalizeReport(
+                            finalStatus,
+                            runResult,
+                            finalResult,
+                            GetMonotonicNow());
 
             lastReport = report;
 
@@ -973,10 +1494,22 @@ namespace EchoDevGames.EchoLaunch
                 return;
             }
 
+            if (finalStatus ==
+                LaunchStatus.Interrupted)
+            {
+                LaunchNotificationDispatcher.Dispatch(
+                    LaunchInterrupted,
+                    report,
+                    nameof(LaunchInterrupted),
+                    this);
+
+                return;
+            }
+
             LaunchNotificationDispatcher.Dispatch(
-                LaunchInterrupted,
+                LaunchCompleted,
                 report,
-                nameof(LaunchInterrupted),
+                nameof(LaunchCompleted),
                 this);
         }
 
