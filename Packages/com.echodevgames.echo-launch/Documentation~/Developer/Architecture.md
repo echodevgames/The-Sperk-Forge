@@ -4,15 +4,21 @@
 
 - Package version: `0.1.0`
 - Development stage: Early runtime implementation
-- Completed checkpoint: `FL-M2-01`
-- Implemented slice: Authority Claim and Static Reset Core
+- Completed checkpoints:
+  - `FL-M2-01`
+  - `FL-M2-02`
 - Unity baseline: `6000.3.8f1`
 
 ## Package Responsibility
 
 First Light coordinates application startup.
 
-The current implementation establishes only the single-authority foundation required before startup behavior can safely exist.
+The current implementation establishes:
+
+1. A safe single-authority foundation
+2. Neutral immutable vocabulary for launch state, step results, and progress snapshots
+
+It does not yet execute startup behavior.
 
 ## Implemented Runtime Files
 
@@ -20,104 +26,145 @@ The current implementation establishes only the single-authority foundation requ
     ├── Core/
     │   ├── LaunchAuthorityClaim.cs
     │   └── EchoLaunchRoot.cs
-    └── Properties/
-        └── AssemblyInfo.cs
+    ├── Properties/
+    │   └── AssemblyInfo.cs
+    ├── State/
+    │   ├── LaunchMode.cs
+    │   ├── LaunchStatus.cs
+    │   └── LaunchProgressSnapshot.cs
+    └── Steps/
+        ├── StartupStepStatus.cs
+        └── StartupStepResult.cs
 
     Tests/Runtime/
     └── PlayMode/
-        └── EchoLaunchRootAuthorityTests.cs
+        ├── EchoLaunchRootAuthorityTests.cs
+        └── LaunchStateVocabularyTests.cs
 
-## `LaunchAuthorityClaim`
+## Authority Core
 
-`LaunchAuthorityClaim` is an internal static kernel responsible for:
+`LaunchAuthorityClaim` owns claim, release, and subsystem-registration reset.
 
-- Holding the current Unity authority object
-- Claiming authority
-- Rejecting different candidates
-- Allowing the same owner to re-confirm its claim
-- Releasing only when the caller is the actual owner
-- Resetting static state during subsystem registration
+`EchoLaunchRoot` exposes the public scene-facing authority surface.
 
-It deliberately knows nothing about:
+Duplicate roots are disabled and emit `ELAUNCH-ROOT-001`.
 
-- Startup configuration
-- Startup sequencing
-- UI
-- Audio
-- Saving
-- Scene destinations
-- Other Echo packages
+## Launch Modes
 
-## `EchoLaunchRoot`
+`LaunchMode` identifies how the launch attempt was entered:
 
-`EchoLaunchRoot` is the public scene-facing component.
+- `Unknown`
+- `CanonicalBoot`
+- `DirectSceneDevelopment`
 
-Public surface:
+The default value is intentionally unresolved.
 
-    public static EchoLaunchRoot Current { get; }
-    public bool IsAuthoritative { get; }
-    public bool WasRejectedAsDuplicate { get; }
+## Overall Launch Status
 
-Duplicate behavior occurs in `Awake`:
+`LaunchStatus` describes the overall launch lifecycle vocabulary:
 
-1. Attempt the authority claim.
-2. If successful, remain enabled.
-3. If rejected, record duplicate state.
-4. Disable the component.
-5. Emit `ELAUNCH-ROOT-001`.
+- `None`
+- `AuthorityClaimed`
+- `Validating`
+- `Running`
+- `Transitioning`
+- `Completed`
+- `Failed`
+- `Interrupted`
 
-The duplicate is disabled before any future startup behavior could execute.
+These values do not cause transitions by themselves.
 
-## Authority Release
+## Step Status
 
-`OnDestroy` asks the claim kernel to release authority.
+`StartupStepStatus` distinguishes active state from terminal outcomes:
 
-The kernel releases only when the destroyed object is the current owner.
+Active:
 
-Therefore:
+- `NotStarted`
+- `Running`
 
-- Destroying the authority clears `Current`.
-- Destroying a duplicate leaves the authority untouched.
+Terminal:
 
-## Static Reset
+- `Succeeded`
+- `Warning`
+- `RecoverableFailure`
+- `BlockingFailure`
+- `Skipped`
+- `TimedOut`
+- `Cancelled`
 
-The claim kernel uses:
+## Structured Step Results
 
-    RuntimeInitializeLoadType.SubsystemRegistration
+`StartupStepResult` is an immutable sealed class.
 
-This clears stale static authority when Unity registers runtime subsystems, including Play Mode configurations where domain reload is disabled.
+It contains:
 
-## Unity Object Null Handling
+- Status
+- Stable diagnostic code
+- Human-readable message
+- Optional details
+- Success classification
+- Failure classification
+- Blocking classification
 
-The kernel stores a `UnityEngine.Object`.
+Named factories prevent loose public construction.
 
-Its `Current` property normalizes Unity's destroyed-object null behavior so callers receive `null` when the stored Unity object is no longer alive.
+Active statuses cannot become completed results.
 
-## Test Access Boundary
+Warning, recoverable failure, blocking failure, timeout, and cancellation require nonblank diagnostic codes and messages.
 
-`AssemblyInfo.cs` grants internal access only to:
+`Skipped`, `TimedOut`, and `Cancelled` remain policy-neutral. A future runner decides how authored policy affects continuation.
 
-    EchoDevGames.EchoLaunch.Tests.Runtime
+## Progress Snapshots
 
-This allows tests to verify claim, release, and reset behavior without exposing test-control methods to game projects.
+`LaunchProgressSnapshot` is an immutable readonly struct.
 
-## Verified Runtime Tests
+It records:
 
-Seven Runtime Play Mode tests pass:
+- Launch mode
+- Overall status
+- Active step identity
+- Active step index
+- Total step count
+- Normalized progress
+- Indeterminate-progress state
+- Human-readable message
+- Elapsed seconds
+- Last completed step result
 
-- `FirstRootClaimsAuthority`
-- `SecondRootIsRejectedWithoutReplacingAuthority`
-- `DestroyingDuplicateDoesNotReleaseAuthority`
-- `DestroyingAuthorityReleasesClaim`
-- `ResetClearsCurrentAuthority`
-- `FreshRootCanClaimAfterReset`
-- `DestroyedAuthorityAllowsFreshRootToClaim`
+Validation prevents:
 
-Result:
+- Negative total counts
+- Active indices below `-1`
+- Active indices outside the total count
+- NaN or infinite progress
+- Progress outside `0` through `1`
+- Negative, NaN, or infinite elapsed time
 
-- Passed: `7`
+## Definition and Runtime-State Boundary
+
+The architecture continues to distinguish:
+
+    Definition = what should happen
+    Runtime snapshot = what is happening now
+    Report = what happened
+
+FL-M2-02 implements runtime vocabulary only.
+
+It does not introduce authored definitions or report aggregation.
+
+## Test Evidence
+
+Runtime Play Mode totals:
+
+- Passed: `46`
 - Failed: `0`
 - Ignored: `0`
+
+Breakdown:
+
+- Authority tests: `7`
+- Vocabulary tests: `39`
 
 ## Current Exclusions
 
@@ -126,8 +173,9 @@ Not implemented:
 - Startup configuration assets
 - Startup sequences
 - Step definitions or executors
-- Launch sessions or reports
-- Progress snapshots
+- Launch-session mutation
+- Report aggregation
+- Progress publication
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
@@ -138,6 +186,6 @@ Not implemented:
 
 ## Checkpoint Stop Point
 
-FL-M2-01 stops after authority claiming, duplicate rejection, release, static reset, and automated tests.
+FL-M2-02 stops after the five vocabulary types and their validation suite.
 
 The next runtime slice requires separate approval.

@@ -2,53 +2,56 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M2-01`
-- Title: Authority Claim and Static Reset Core
+- Checkpoint: `FL-M2-02`
+- Title: Neutral Launch-State Vocabulary
 - Package version: `0.1.0`
 - Status: Complete, pending commit and push
-- Test result: 7 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 46 passed, 0 failed, 0 ignored
 
 ## Completed Result
 
 Implemented:
 
-- Internal launch-authority kernel
-- Public `EchoLaunchRoot`
-- Duplicate rejection
-- Stable diagnostic code `ELAUNCH-ROOT-001`
-- Duplicate disabling
-- Owner-only release
-- Subsystem-registration static reset
-- Runtime test internal access
-- Seven Runtime Play Mode tests
+- `LaunchMode`
+- `LaunchStatus`
+- `StartupStepStatus`
+- Immutable `StartupStepResult`
+- Immutable `LaunchProgressSnapshot`
+- Result factories
+- Diagnostic validation
+- Policy-neutral result classification
+- Snapshot validation
+- Thirty-nine vocabulary tests
+
+Existing authority tests remain green.
 
 ## Evidence Summary
 
 ### Passed
 
-- Clean compilation
-- First root authority claim
-- Duplicate rejection
-- Duplicate warning verification
-- Duplicate destruction safety
-- Authority release
-- Static reset
-- Fresh claim after reset
-- Deferred Unity destruction
-- Seven-test Play Mode suite
-
-### Expected Diagnostics
-
-Two tests intentionally generated:
-
-    ELAUNCH-ROOT-001
-
-These warnings were expected and matched by `LogAssert.Expect`.
+- Five runtime vocabulary files compile
+- Stable enum values
+- Factory status mapping
+- Result classification
+- Diagnostic code validation
+- Diagnostic message validation
+- Optional text normalization
+- Inactive snapshot construction
+- Active snapshot construction
+- Null-string normalization
+- Invalid step-count rejection
+- Invalid active-index rejection
+- Invalid progress rejection
+- Invalid elapsed-time rejection
+- Snapshot immutability
+- Thirty-nine vocabulary tests
+- Forty-six total Runtime Play Mode tests
 
 ### Not Run
 
 - Startup configuration
 - Startup sequence execution
+- Progress publication
 - Launch reports
 - Splash presentation
 - Scene loading
@@ -57,16 +60,17 @@ These warnings were expected and matched by `LogAssert.Expect`.
 
 ## Changed Files
 
-- `Runtime/Core/LaunchAuthorityClaim.cs`
-- `Runtime/Core/EchoLaunchRoot.cs`
-- `Runtime/Properties/AssemblyInfo.cs`
-- `Tests/Runtime/PlayMode/EchoLaunchRootAuthorityTests.cs`
+- `Runtime/State/LaunchMode.cs`
+- `Runtime/State/LaunchStatus.cs`
+- `Runtime/State/LaunchProgressSnapshot.cs`
+- `Runtime/Steps/StartupStepStatus.cs`
+- `Runtime/Steps/StartupStepResult.cs`
+- `Tests/Runtime/PlayMode/LaunchStateVocabularyTests.cs`
 - Unity-generated `.meta` files
-- Unity solution entry
 - Adjacent package and suite documentation
 
 ## Handoff Snapshot
 
-FL-M2-01 is complete and ready for final Git review, commit, and push.
+FL-M2-02 is complete and ready for final Git review, commit, and push.
 
 No additional runtime behavior is authorized until the next checkpoint is approved.

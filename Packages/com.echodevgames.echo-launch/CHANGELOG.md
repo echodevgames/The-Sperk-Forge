@@ -8,6 +8,22 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M2-02 - Neutral Launch-State Vocabulary
+
+- `LaunchMode`
+- `LaunchStatus`
+- `StartupStepStatus`
+- Immutable `StartupStepResult`
+- Immutable `LaunchProgressSnapshot`
+- Named result factories for success, warning, failure, skipped, timed out, and cancelled outcomes
+- Diagnostic code and message validation
+- Policy-neutral convenience classification
+- Progress, elapsed-time, step-count, and active-index validation
+- Null-string normalization
+- Thirty-nine Runtime Play Mode vocabulary tests
+
+#### FL-M2-01 - Authority Claim and Static Reset Core
+
 - Internal `LaunchAuthorityClaim` kernel
 - Public `EchoLaunchRoot` scene component
 - Single-authority claim behavior
@@ -20,27 +36,40 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Tested
 
-- First root claims authority
-- Second root is rejected without replacing authority
-- Duplicate destruction does not release authority
-- Authority destruction releases the claim
-- Static reset clears current authority
-- Fresh root claims after reset
-- Deferred Unity destruction permits a fresh claim
+Runtime Play Mode totals:
 
-Result:
-
-- Passed: `7`
+- Passed: `46`
 - Failed: `0`
 - Ignored: `0`
 
-The two duplicate-root warnings were expected and matched through `LogAssert.Expect`.
+Vocabulary coverage includes:
+
+- Stable enum values
+- Factory status mapping
+- Result classification
+- Diagnostic validation
+- Text normalization
+- Valid inactive and active snapshots
+- Invalid counts, indices, progress, and elapsed time
+- Snapshot immutability
+
+Authority coverage remains green:
+
+- First root claims authority
+- Duplicate root is rejected
+- Duplicate destruction preserves authority
+- Authority destruction releases the claim
+- Static reset clears authority
+- Fresh root claims after reset
+- Deferred destruction permits a fresh claim
 
 ### Not Included
 
 - Startup configuration
 - Startup sequence execution
-- Launch reports
+- Launch-session mutation
+- Report aggregation
+- Progress publication
 - Splash presentation
 - Scene loading
 - Persistent root lifetime

@@ -117,3 +117,11 @@ Execute **FL-M1-01 – First Light Package Skeleton** exactly as authorized. Beg
 - Runtime tests: 7 passed, 0 failed, 0 ignored
 - Duplicate diagnostic `ELAUNCH-ROOT-001`: Expected and verified
 - Next runtime work remains locked pending approval.
+
+## FL-M2-02 First Light Neutral Launch-State Vocabulary
+
+- Status: Complete, pending commit and push
+- Package version: `0.1.0`
+- Vocabulary tests: 39 passed, 0 failed, 0 ignored
+- Full Runtime Play Mode suite: 46 passed, 0 failed, 0 ignored
+- Next runtime work remains locked pending approval.
