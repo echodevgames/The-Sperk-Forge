@@ -1,11 +1,12 @@
+
 # The Sperk’s Forge — Current Notes
 
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light FL-M4-04 documentation closeout
-**Current checkpoint:** FL-M4-04 — Splash Configuration Schema and Root Playback Integration
+**Current focus:** First Light FL-M4-05 authority promotion
+**Current checkpoint:** FL-M4-05 — Startup Presentation Prefab and Canvas Assembly
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -15,48 +16,57 @@
 
 ### Goal
 
-Close FL-M4-04 after configuration schema 4 and sequential root-owned splash
-playback passed complete automated proof.
+Commit the prefab-template and Canvas hierarchy authority before generating
+public package assets.
 
 ### Starting State
 
 - FL-M4-04 authority is complete in `90aabd1`.
 - FL-M4-04 implementation is complete in `858808b`.
-- FL-M4-03 documentation is complete in `b36e04d`.
-- `main` and `origin/main` are synchronized at `858808b`.
-- Working tree was clean after the implementation push.
-- Runtime Play Mode result is 479 passed, 0 failed, 0 ignored.
-- Unity compilation result is 0 errors and 0 compiler warnings.
+- FL-M4-04 documentation is complete in `9d6d469`.
+- `main` and `origin/main` are synchronized at `9d6d469`.
+- Working tree is clean.
+- Runtime Play Mode baseline is 479 passed, 0 failed, 0 ignored.
+- Unity compilation baseline is 0 errors and 0 compiler warnings.
 - Configuration schema is 4.
-- Splash sequence schema remains 1.
-- Destination schema remains 1.
-- Report schema remains 2.
-- No correction bundle was required.
-- The adjacent FL-M4-04 documentation closeout is the only active repository work.
-- Later implementation remains locked until this documentation set is committed and pushed.
+- Report schema is 2.
+- The plain uGUI presenter and root-owned splash path are implemented.
+- No package prefab or Canvas hierarchy exists yet.
+- FL-M4-05 creates stable public package assets.
+- Prefab generation is locked until this authority update is committed.
 
 ---
 
-## Active Notes
+## Approved FL-M4-05 Decisions
 
-### August 5, 2026 — FL-M4-04 splash root integration
+- `[AUTHORITY]` Package specification advances to v1.6.0.
+- `[AUTHORITY]` Package ships `EchoLaunchStatusView.prefab`.
+- `[AUTHORITY]` Package ships `EchoLaunchRoot.prefab`.
+- `[AUTHORITY]` Prefabs live under `Presentation.UGUI/Prefabs`.
+- `[AUTHORITY]` Status prefab is a Screen Space Overlay Canvas.
+- `[AUTHORITY]` Canvas scales from 1920x1080 with 0.5 match.
+- `[AUTHORITY]` Root prefab nests the status prefab.
+- `[AUTHORITY]` Root configuration remains null.
+- `[AUTHORITY]` Root mode is CanonicalBoot with automatic start enabled.
+- `[AUTHORITY]` No project logo, branded art, project font, or project asset.
+- `[AUTHORITY]` No TextMeshPro dependency.
+- `[AUTHORITY]` No EventSystem, input module, GraphicRaycaster, Button, or skip binding.
+- `[AUTHORITY]` All graphics are non-raycast targets.
+- `[AUTHORITY]` Runtime performs no prefab discovery or automatic instantiation.
+- `[AUTHORITY]` Projects customize through copies, variants, or replacement presenters.
+- `[AUTHORITY]` Prefab and folder `.meta` identities become stable package evidence.
+- `[AUTHORITY]` A temporary uncommitted Unity authoring helper may generate YAML but cannot enter final scope.
 
-- `[IMPLEMENTATION]` Advanced configuration to schema 4.
-- `[IMPLEMENTATION]` Added optional splash-sequence and reduced-motion binding.
-- `[IMPLEMENTATION]` Added side-effect-free splash preflight.
-- `[IMPLEMENTATION]` Added sequential root order: splash, steps, destination.
-- `[IMPLEMENTATION]` Shared the launch clock across splash, steps, and reports.
-- `[IMPLEMENTATION]` Added visual/headless presenter resolution.
-- `[IMPLEMENTATION]` Added splash preflight, playback, and headless diagnostics.
-- `[IMPLEMENTATION]` Added cancellation and failure settlement.
-- `[IMPLEMENTATION]` Added successful splash-result retention.
-- `[IMPLEMENTATION]` Preserved report schema 2.
-- `[TEST]` All 28 focused root tests passed.
-- `[TEST]` The additional schema-history test passed.
-- `[TEST]` All 479 Runtime Play Mode tests passed.
-- `[TEST]` Unity compiled with 0 errors and 0 compiler warnings.
-- `[EVIDENCE GAP]` Editor migration, startup prefab, Canvas art, direct-scene tooling, and Laboratory scenes remain untested.
-- `[HANDOFF]` Implementation commit `858808b` is synchronized on `main` and `origin/main`.
+---
+
+## Authority Files
+
+- Package specification v1.6.0
+- EchoLaunch ADR-003
+- FL-M4-05 Checkpoint Build Plan
+- Suite Current Notes
+- Package Current Notes
+- Package Documentation Index
 
 ---
 
@@ -64,56 +74,42 @@ playback passed complete automated proof.
 
 | Area | Result |
 |---|---|
-| FL-M4-04 authority | `90aabd1` |
-| FL-M4-04 implementation | `858808b` |
-| Previous documentation | `b36e04d` |
-| Unity compilation | 0 errors, 0 compiler warnings |
+| Repository baseline | `9d6d469` |
+| Last implementation | `858808b` |
 | Runtime Play Mode | 479 passed, 0 failed, 0 ignored |
-| Focused root fixture | 28 passed |
-| Schema-history addition | 1 passed |
+| Unity compilation | 0 errors, 0 compiler warnings |
 | Configuration schema | 4 |
-| Splash schema | 1 |
-| Destination schema | 1 |
 | Report schema | 2 |
-| Repository synchronization | `main` equals `origin/main` |
-| Working tree after implementation push | Clean |
-| Documentation closeout | Pending adjacent commit |
-| Later implementation | Locked |
+| Status view code | Implemented |
+| Package status prefab | Not implemented |
+| Package root prefab | Not implemented |
+| Authority update | Prepared, not committed |
+| Prefab generation | Locked |
 
 ---
 
-## Checkpoint Closeout Checklist
+## Next Action
 
-- [x] Confirm authority commit `90aabd1`.
-- [x] Confirm implementation commit `858808b`.
-- [x] Record schema-4 binding and root ordering.
-- [x] Record shared clock, diagnostics, and headless fallback.
-- [x] Record cancellation, failure, and terminal settlement.
-- [x] Record automatic, duplicate, and direct-scene paths.
-- [x] Record immutability and report-schema preservation.
-- [x] Record 479 passed, 0 failed, 0 ignored.
-- [x] Record 0 compiler errors and 0 compiler warnings.
-- [x] Record remaining evidence gaps.
-- [x] Reconcile package and suite Current Notes.
-- [x] Update architecture, specification status, changelog, README, and index.
-- [x] Create package checkpoint, package test report, and root completion record.
-- [ ] Review the staged documentation diff.
-- [ ] Commit and push the adjacent FL-M4-04 documentation closeout.
-- [ ] Confirm clean synchronized repository.
-- [ ] Open the next approved First Light checkpoint.
+1. Apply the FL-M4-05 authority bundle.
+2. Review the six-file scope.
+3. Commit and push:
+
+```text
+echo-launch: approve FL-M4-05 neutral presentation prefabs
+```
+
+4. Confirm clean synchronized repository.
+5. Generate the prefab assets from that authority commit.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed implementation checkpoint:** FL-M4-04 — Splash Configuration Schema and Root Playback Integration
-**Authority commit:** `90aabd1`
-**Implementation commit:** `858808b`
-**Previous documentation commit:** `b36e04d`
-**Runtime Play Mode:** 479 passed, 0 failed, 0 ignored
+**Completed checkpoint:** FL-M4-04
+**Active authority checkpoint:** FL-M4-05
+**Baseline:** `9d6d469`
+**Tests:** 479 passed, 0 failed, 0 ignored
 **Compilation:** 0 errors, 0 compiler warnings
-**Active work:** Adjacent FL-M4-04 documentation closeout
 **Known blockers:** None
-**Evidence gap:** Editor migration, startup prefab, Canvas art, direct-scene tooling, and Laboratory proof not run
-**Next action:** Apply, review, commit, and push the FL-M4-04 documentation set
-**Tentative later checkpoint:** FL-M4-05 — Startup Presentation Prefab and Canvas Assembly
+**Implementation lock:** Active until authority commit
+**Next implementation boundary:** Two stable neutral package prefab templates and serialized Canvas/root wiring

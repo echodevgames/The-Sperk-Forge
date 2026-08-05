@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.5.0
+**Specification version:** 1.6.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M4-04 is authorized only after the accepted splash/configuration/root-order decision and this v1.5.0 authority update are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M4-05 is authorized only after the default-prefab/template decision and this v1.6.0 authority update are committed.
 
 ---
 
@@ -32,6 +32,7 @@
 | 1.3.0 | 2026-08-04 | Approved | Recorded SUITE-DOC-33 activation of FL-M1-01, adopted the just-in-time package learning gate, and updated implementation status without changing runtime behavior or public API intent | Jesse “Echo” Adams |
 | 1.4.0 | 2026-08-05 | Approved | Selected a standalone project-owned `LaunchDestination` ScriptableObject, assigned destination schema version 1, advanced `EchoLaunchConfiguration` to schema version 3, preserved schema 2 as the historical startup-sequence-only shape, and authorized FL-M3-08 destination handoff work | Jesse “Echo” Adams |
 | 1.5.0 | 2026-08-05 | Approved | Advanced `EchoLaunchConfiguration` to schema version 4 with an optional project-owned `SplashSequence` reference and project-authored reduced-motion default; selected sequential root order of optional splash, startup steps, destination transition; preserved report schema 2; and authorized FL-M4-04 | Jesse “Echo” Adams |
+| 1.6.0 | 2026-08-05 | Approved | Defined two immutable neutral package template prefabs, selected the package-owned Canvas hierarchy and defaults, preserved project ownership of branding/layout variants/input bindings, prohibited hidden prefab discovery or spawning, and authorized FL-M4-05 | Jesse “Echo” Adams |
 
 ---
 
@@ -806,9 +807,43 @@ A minimal plain startup status and image splash presenter is part of the EchoLau
 
 ### 14.4 Visual customization
 
-- Project logos, backgrounds, fonts, colors, layout prefab, and copy are project-owned.
+- Project logos, branded backgrounds, project fonts, production colors, final layout variants, and localized copy are project-owned.
+- EchoLaunch may ship immutable neutral template prefabs that provide a readable structural starting point without claiming project branding.
+- Projects customize through a copied prefab, prefab variant, or replacement presenter rather than editing immutable package assets.
 - Runtime behavior binds through `ILaunchStatusPresenter`; replacing presentation must not require editing sequence-runner code.
 - Sample art is removable and not referenced by production defaults.
+
+### 14.5 Default package prefab templates
+
+EchoLaunch ships two stable package assets:
+
+```text
+Presentation.UGUI/Prefabs/EchoLaunchStatusView.prefab
+Presentation.UGUI/Prefabs/EchoLaunchRoot.prefab
+```
+
+`EchoLaunchStatusView.prefab` is a self-contained neutral Screen Space Overlay
+Canvas template containing the existing `EchoLaunchStatusView` and all required
+serialized references.
+
+`EchoLaunchRoot.prefab` contains one `EchoLaunchRoot` and a nested instance of
+`EchoLaunchStatusView.prefab`. The presenter reference is wired, while the
+project-owned launch configuration remains intentionally unassigned.
+
+Template rules:
+
+- No project logo, branded image, project font, or project-owned asset.
+- No TextMeshPro dependency.
+- No `EventSystem`, input module, `Button`, or package-owned skip binding.
+- No `Resources`, Addressables, scene search, or hidden runtime instantiation.
+- All display graphics are non-raycast targets.
+- The progress slider is non-interactable.
+- The Canvas begins hidden through `CanvasGroup`.
+- The package uses readable neutral contrast, scalable anchors, and replaceable
+  serialized copy.
+- Setup tooling may later copy or instantiate these templates into project-owned
+  assets and scenes without replacing existing project variants.
+- Both prefab `.meta` files are committed and their GUIDs are preserved.
 
 ---
 
@@ -1119,10 +1154,9 @@ Runtime/
 
 Presentation.UGUI/
 ├── EchoLaunchStatusView.cs
-├── SplashSequencePlayer.cs
 └── Prefabs/
-    ├── EchoLaunchRoot.prefab
-    └── EchoLaunchStatusView.prefab
+    ├── EchoLaunchStatusView.prefab
+    └── EchoLaunchRoot.prefab
 ```
 
 The exact file list is not implementation authorization. It is a proposed ownership map to review at M0.
@@ -1171,6 +1205,12 @@ The repository must include README, package documentation, visible Current Notes
 ### 21.4 GUID and asset compatibility
 
 Public scripts, prefabs, templates, definitions, and samples preserve committed `.meta` files. Moves and renames retain GUIDs whenever identity is intended to survive. Setup-generated project assets are never replaced merely to adopt a new package template.
+
+`EchoLaunchStatusView.prefab` and `EchoLaunchRoot.prefab` are stable public
+package assets after FL-M4-05. Future structural revisions preserve their GUIDs.
+Projects must not depend on internal child-file IDs or exact decorative values;
+the supported contract is the prefab identity, required components, serialized
+presenter wiring, and documented hierarchy roles.
 
 ---
 
@@ -1513,17 +1553,17 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration |
-| Authority commit | `90aabd1` |
-| Implementation commit | `858808b` |
-| Previous documentation commit | `b36e04d` |
+| Active authorized checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly |
+| Authority baseline | `9d6d469` |
+| Last implementation commit | `858808b` |
 | Files/assets created | Runtime launch systems, schema-4 configuration binding, destination loading, automatic startup, neutral status and splash presentation, deterministic splash definitions/player, root-owned splash preflight/playback, and isolated runtime/uGUI tests |
 | Tests passed | 479 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Implemented decisions | Configuration schema 4; optional splash sequence; reduced-motion default; optional splash before startup steps; headless fallback; report schema 2 preserved |
-| Known issues | Startup presentation prefab/Canvas assembly, Editor migration/setup, direct-scene initializer tooling, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Next checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly, tentative and not yet authorized |
+| Authority decisions | Stable neutral status/root template prefabs; Screen Space Overlay Canvas; no package input binding; no hidden prefab spawning; project-owned variants for branding/layout |
+| Known issues | FL-M4-05 prefab assets and asset tests, Editor migration/setup, direct-scene initializer tooling, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Next action | Commit this authority update before generating or staging prefab assets |
 
 ---
 
@@ -1572,7 +1612,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M4-04 owns only configuration schema 4, optional splash preflight/binding, sequential root playback before startup steps, and associated lifecycle proof.
+The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M4-05 owns only the two neutral package prefab templates, their Canvas hierarchy and serialized wiring, stable asset identity, and focused asset/presentation proof.
 
 
 ---

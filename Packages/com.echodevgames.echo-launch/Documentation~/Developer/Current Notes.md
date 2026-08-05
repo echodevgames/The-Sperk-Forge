@@ -1,88 +1,110 @@
+
 # First Light - Current Notes
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M4-04`
-- Title: Splash Configuration Schema and Root Playback Integration
+- Checkpoint: `FL-M4-05`
+- Title: Startup Presentation Prefab and Canvas Assembly
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.5.0
-- ADR: EchoLaunch-ADR-002
-- Implementation status: Complete and pushed
-- Authority commit: `90aabd1`
-- Implementation commit: `858808b`
-- Previous documentation commit: `b36e04d`
-- Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 479 passed, 0 failed, 0 ignored
-- Compilation result: 0 errors, 0 compiler warnings
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.6.0
+- ADR: EchoLaunch-ADR-003
+- Status: Authority approved; prefab generation locked until authority commit
+- Repository baseline: `9d6d469`
+- Last implementation commit: `858808b`
+- Runtime Play Mode baseline: 479 passed, 0 failed, 0 ignored
+- Compilation baseline: 0 errors, 0 compiler warnings
 
-## Completed Result
+## Approved Contract
 
-Implemented:
+### Package Template Assets
 
-- Configuration schema 4
-- Optional `SplashSequence`
-- `UseReducedMotionForSplash`
-- Historical schema 3 rejection
-- Side-effect-free `SplashSequencePreflight`
-- Null and empty splash no-op paths
-- Splash and startup validation before side effects
-- Sequential root order: splash, startup steps, destination
-- Shared launch clock
-- Reduced-motion forwarding
-- Visual/headless presenter resolution
-- `ELAUNCH-SPLASH-001`
-- `ELAUNCH-SPLASH-002`
-- `ELAUNCH-SPLASH-003`
-- Splash clear before step presentation
-- Failure and cancellation settlement
-- Internal successful splash-result retention
-- Automatic-start route
-- Duplicate-root silence
-- Direct-scene consistency
-- Configuration and splash immutability
-- Report schema 2 preservation
-- Twenty-eight focused tests
-- One additional schema-history test
+```text
+Presentation.UGUI/Prefabs/EchoLaunchStatusView.prefab
+Presentation.UGUI/Prefabs/EchoLaunchRoot.prefab
+```
 
-## Evidence Summary
+Both assets preserve committed stable GUIDs.
 
-- Runtime Play Mode: 479 passed, 0 failed, 0 ignored
-- Compilation: 0 errors, 0 compiler warnings
-- Implementation commit `858808b` pushed to `main` and `origin/main`
-- Working tree clean after implementation push
-- No compile or test correction bundle was required
+### Status Canvas
 
-## Schema Boundary
+- Screen Space Overlay
+- Sorting order 1000
+- Scale With Screen Size
+- 1920x1080 reference resolution
+- Match 0.5
+- Hidden through `CanvasGroup` by default
+- Neutral dark backdrop and high-contrast text
+- Built-in legacy uGUI font
+- Splash and status surfaces
+- Distinct determinate and indeterminate progress roots
+- Every existing view reference assigned
 
-- Configuration schema is `4`.
-- Splash sequence schema remains `1`.
-- Destination schema remains `1`.
-- Report schema remains `2`.
-- Runtime migration remains prohibited.
-- Editor migration remains unimplemented.
+### Input Boundary
 
-## Not Run
+No EventSystem, input module, GraphicRaycaster, Button, or skip binding.
 
+All graphics are non-raycast targets.
+
+The slider is non-interactable.
+
+Projects route input to `RequestSplashSkip()` through project code.
+
+### Root Template
+
+- One `EchoLaunchRoot`
+- Nested status-view prefab
+- Presenter reference wired
+- Configuration null
+- CanonicalBoot mode
+- Automatic start enabled
+- No project-owned definition asset
+
+### Runtime Boundary
+
+No hidden discovery, `Resources` load, Addressables lookup, or automatic prefab
+instantiation.
+
+Projects or later setup tooling explicitly place or copy the template.
+
+## Implementation Lock
+
+Do not generate or stage prefab assets until the authority commit is pushed.
+
+Required authority commit:
+
+```text
+echo-launch: approve FL-M4-05 neutral presentation prefabs
+```
+
+## Expected Final Scope
+
+- Prefabs folder and `.meta`
+- Two prefab assets and stable `.meta` files
+- Editor-only prefab asset-test assembly
+- Focused prefab asset tests
+- Optional dependency-clean instantiated contract tests
+- No production Runtime script changes
+
+## Explicit Exclusions
+
+- Setup/repair tooling
 - Editor migration
-- Startup presentation prefab
-- Canvas art/layout
-- Project input binding
-- Direct-scene initializer tooling
-- Standalone Laboratory scene
+- Direct-scene initializer
+- Boot scene generation
+- Test Lab scenes
+- Project branding
+- Custom fonts
+- TextMeshPro
+- Input bindings
+- Safe-area scripts
+- Animation
 - Player builds
-- Clean-project installation
-- External project adoption
-- Performance measurements
 
 ## Handoff Snapshot
 
-FL-M4-04 implementation is complete and pushed in commit `858808b`.
+FL-M4-04 is fully closed at `9d6d469`.
 
-First Light now validates and plays an optional configured splash before startup
-steps, then loads the initial destination. The path is deterministic,
-cancellation-aware, headless-safe, and proven through 479 passing tests.
+FL-M4-05 authority is prepared through specification v1.6.0, ADR-003, and the
+approved Checkpoint Build Plan.
 
-The adjacent FL-M4-04 documentation closeout is the only active repository work.
-
-Tentative next checkpoint: FL-M4-05 - Startup Presentation Prefab and Canvas
-Assembly.
+Prefab generation begins only after the authority commit is confirmed.
