@@ -2,59 +2,63 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M4-01`
-- Title: Automatic Root Start Gate and Plain Status Presenter Contract
+- Checkpoint: `FL-M4-02`
+- Title: Default uGUI Plain Status View and Presentation Assembly
 - Package version: `0.1.0`
 - Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.4.0
 - Implementation status: Complete and pushed
-- Implementation commit: `46481b1`
-- Previous documentation commit: `727b502`
+- Implementation commit: `0e049ef`
+- Previous documentation commit: `e4367bf`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 396 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 414 passed, 0 failed, 0 ignored
 - Compilation result: 0 errors, 0 compiler warnings
 
 ## Completed Result
 
 Implemented:
 
-- Automatic root startup from Unity `Start`
-- Serialized automatic-start setting enabled by default
-- Existing `StartLaunchAsync` one-run gate reuse
-- Manual-before-automatic re-entry prevention
-- Public neutral `ILaunchStatusPresenter`
-- Silent `NullLaunchStatusPresenter`
-- Safe presenter resolver and dispatcher
-- Serialized neutral `MonoBehaviour` presenter seam
-- Binding before validation
-- Accepted snapshot presentation before public progress events
-- Finalized report presentation after `LastReport` assignment
-- Presenter unbinding during destruction
-- Duplicate-root automatic-start and presenter silence
-- `ELAUNCH-VIEW-001`
-- `ELAUNCH-VIEW-002`
-- Per-callback presenter exception containment
-- Deterministic automatic-start and presenter test seams
-- Sixteen new Runtime Play Mode tests
+- Separate `EchoDevGames.EchoLaunch.Presentation.UGUI` assembly
+- Separate presentation test assembly
+- Public `EchoLaunchStatusView`
+- Neutral presenter implementation
+- Optional `CanvasGroup`, `Text`, `Slider`, and progress surfaces
+- Text-complete lifecycle state copy
+- Determinate slider and percentage
+- Distinct indeterminate progress surface
+- Active-step position and stable ID
+- Elapsed-time display
+- Warning diagnostic rendering
+- Completed destination and full progress
+- Failed diagnostic rendering
+- Interrupted cancellation rendering
+- Show-on-bind, hide-on-unbind, and clear-on-unbind
+- Missing-reference-safe behavior
+- Serialized replaceable copy
+- Runtime remaining uGUI-free
+- No TextMeshPro dependency
+- Eighteen new Runtime Play Mode tests
 
 ## Evidence Summary
 
 ### Final Pass
 
-- Runtime Play Mode: 396 passed, 0 failed, 0 ignored
-- New automatic-start/presenter fixture: 16 passed
+- Runtime Play Mode: 414 passed, 0 failed, 0 ignored
+- New presentation fixture: 18 passed
 - Compilation: 0 errors, 0 compiler warnings
-- Implementation commit `46481b1` pushed to `main` and `origin/main`
+- Implementation commit `0e049ef` pushed to `main` and `origin/main`
 - Working tree clean after implementation push
 
-### Compile Corrections
+### Corrections
 
-- Replaced `AudioSource` with a dedicated invalid `MonoBehaviour` presenter component in the new fixture.
-- Replaced unsupported NUnit `Is.AnyOf` with a direct terminal-state assertion.
-- No production runtime behavior changed.
+- Added the missing presentation namespace import to the test fixture.
+- Replaced thirteen unsupported NUnit `Assert.Multiple` blocks.
+- Restored generated `.slnx` noise before review.
+- Trimmed Unity-generated trailing whitespace from new `.meta` files.
+- No production presentation behavior changed.
 
 ### Expected Diagnostics
 
-Retained and new tests intentionally generate:
+Retained tests intentionally generate:
 
     ELAUNCH-ROOT-001
     ELAUNCH-EVENT-001
@@ -65,14 +69,14 @@ These are expected runtime diagnostics, not compiler warnings or failures.
 
 ### Not Run
 
-- Default uGUI status view
-- Presentation assembly
-- Canvas, prefab, text, or progress-bar rendering
+- Package-supplied status prefab
+- Canvas art/layout pass
+- Font and color asset selection
+- Project logo or background
 - Splash playback
-- Test Lab scene presentation
+- Test Lab visual scene
 - Real Boot-to-destination Standalone Laboratory activation
 - Direct-scene initialization
-- Persistent-root policy
 - Editor setup and repair
 - Player builds
 - Separate clean-project installation
@@ -81,32 +85,32 @@ These are expected runtime diagnostics, not compiler warnings or failures.
 
 ## Changed Files
 
-Modified runtime:
+Modified:
 
-- `Runtime/Core/EchoLaunchRoot.cs`
+- `Runtime/Properties/AssemblyInfo.cs`
 
-New runtime:
+New presentation runtime:
 
-- `Runtime/Presentation.meta`
-- `Runtime/Presentation/ILaunchStatusPresenter.cs`
-- `Runtime/Presentation/LaunchStatusPresenterDispatcher.cs`
-- `Runtime/Presentation/NullLaunchStatusPresenter.cs`
-- Unity-generated script `.meta` files
+- `Presentation.UGUI/EchoDevGames.EchoLaunch.Presentation.UGUI.asmdef`
+- `Presentation.UGUI/EchoLaunchStatusView.cs`
+- `Presentation.UGUI/Properties/AssemblyInfo.cs`
+- Unity-generated folders and `.meta`
 
-Automated tests:
+New presentation tests:
 
-- `Tests/Runtime/PlayMode/EchoLaunchAutomaticStartAndPresenterTests.cs`
-- `Tests/Runtime/PlayMode/EchoLaunchRootStartupLifecycleTests.cs`
-- `Tests/Runtime/PlayMode/LaunchDestinationAndCompletedHandoffTests.cs`
-- `Tests/Runtime/PlayMode/LaunchReportAndTerminalEventTests.cs`
-- Unity-generated `.meta`
+- `Tests/Presentation.UGUI/EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef`
+- `Tests/Presentation.UGUI/PlayMode/EchoLaunchStatusViewTests.cs`
+- Unity-generated folders and `.meta`
 
 ## Handoff Snapshot
 
-FL-M4-01 implementation is complete and pushed in commit `46481b1`.
+FL-M4-02 implementation is complete and pushed in commit `0e049ef`.
 
-The authoritative root can now begin automatically from Unity `Start`, and a neutral presenter can observe accepted progress and finalized reports without owning launch truth or pulling uGUI into Runtime.
+First Light now has a removable default plain uGUI status view that renders
+accepted immutable launch truth without coupling the neutral Runtime assembly to
+uGUI.
 
-The adjacent FL-M4-01 documentation closeout is the only active repository work.
+The adjacent FL-M4-02 documentation closeout is the only active repository work.
 
-Tentative next checkpoint: FL-M4-02 - Default uGUI Plain Status View and Presentation Assembly.
+Tentative next checkpoint: FL-M4-03 - Image Splash Definitions and
+Deterministic Splash Player.

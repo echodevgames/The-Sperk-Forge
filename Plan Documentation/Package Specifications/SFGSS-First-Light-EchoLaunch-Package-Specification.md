@@ -1476,17 +1476,17 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M4-01 — Automatic Root Start Gate and Plain Status Presenter Contract |
-| Implementation commit | `46481b1` |
-| Previous documentation commit | `727b502` |
-| Files/assets created | Runtime authority, state, notifications, configuration, startup sequence, policy, execution, reports, destination loading, automatic startup, neutral presentation contract, and Runtime Play Mode tests |
-| Tests passed | 396 Runtime Play Mode tests |
+| Completed checkpoint | FL-M4-02 — Default uGUI Plain Status View and Presentation Assembly |
+| Implementation commit | `0e049ef` |
+| Previous documentation commit | `e4367bf` |
+| Files/assets created | Runtime launch systems, destination loading, automatic startup, neutral presentation contract, isolated uGUI presentation assembly, plain status view, and isolated presentation tests |
+| Tests passed | 414 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Known issues | Default uGUI presentation, splash playback, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Decisions added | Automatic Unity `Start` uses the existing one-run gate; neutral presentation observes accepted immutable truth; missing presentation is headless-safe |
-| Next checkpoint | FL-M4-02 — Default uGUI Plain Status View and Presentation Assembly, tentative and not authorized |
+| Known issues | Presentation prefab/art pass, splash playback, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Decisions added | Default plain uGUI presentation is replaceable and isolated; state meaning remains text-complete; Runtime remains uGUI-free |
+| Next checkpoint | FL-M4-03 — Image Splash Definitions and Deterministic Splash Player, tentative and not authorized |
 
 ---
 

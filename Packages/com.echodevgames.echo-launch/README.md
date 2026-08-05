@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Automatic root startup and neutral presenter contract implemented; default uGUI presentation pending
+- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -26,6 +26,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-07` Immutable Launch Report and Public Terminal Events
   - `FL-M3-08` Initial Destination Contract, Load Result, and Completed Handoff
   - `FL-M4-01` Automatic Root Start Gate and Plain Status Presenter Contract
+  - `FL-M4-02` Default uGUI Plain Status View and Presentation Assembly
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -82,7 +83,7 @@ First Light now provides:
 
 - Project-owned `EchoLaunchConfiguration`
 - Stable configuration ID
-- Configuration schema version `2`
+- Configuration schema version `3`
 - Passive startup-sequence reference
 - Authority-filtered root binding
 - Invalid identity and schema detection without runtime repair
@@ -407,6 +408,26 @@ First Light now provides:
 - Exactly-once unbind during destruction
 - No Runtime dependency on uGUI or TextMeshPro
 
+### Default Plain uGUI Status View
+
+- Separate `EchoDevGames.EchoLaunch.Presentation.UGUI` assembly
+- Public `EchoLaunchStatusView`
+- Neutral presenter implementation
+- Serialized `CanvasGroup`, `Text`, `Slider`, and progress surfaces
+- Text-complete lifecycle state copy
+- Determinate slider progress and percentage
+- Separate indeterminate progress surface
+- Active-step position and stable step ID
+- Elapsed-time readout
+- Warning diagnostic rendering
+- Completed destination and full progress
+- Failed and interrupted diagnostic rendering
+- Show-on-bind, hide-on-unbind, and clear-on-unbind
+- Missing-reference-safe behavior
+- Serialized replaceable copy
+- No TextMeshPro dependency
+- Neutral Runtime assembly remains uGUI-free
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -443,12 +464,13 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `396`
+- Passed: `414`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Plain uGUI presentation tests: `18`
 - Automatic-start and presenter tests: `16`
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
@@ -510,7 +532,7 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Default uGUI status view and presentation assembly
+- Default presentation prefab and Canvas art pass
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
@@ -534,10 +556,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Three hundred ninety-six passing Runtime Play Mode tests
+- Four hundred fourteen passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with automatic root entry, validated initial destination loading, immutable terminal reporting, exactly-once events, and neutral accepted-state presentation
+- Policy-aware timed startup execution with automatic root entry, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
 
 Still `Not run`:
 

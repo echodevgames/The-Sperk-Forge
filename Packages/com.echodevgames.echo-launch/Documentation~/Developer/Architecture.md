@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Automatic root startup and neutral status-presenter contract implemented; default uGUI presentation pending
+- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -22,6 +22,7 @@
   - `FL-M3-07`
   - `FL-M3-08`
   - `FL-M4-01`
+  - `FL-M4-02`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -104,10 +105,27 @@ First Light currently establishes:
 74. Stable `ELAUNCH-VIEW-001` and `ELAUNCH-VIEW-002`
 75. Presenter callback containment and destruction unbinding
 76. Duplicate-root automatic-start and presenter silence
+77. Separate replaceable uGUI presentation assembly
+78. Public plain `EchoLaunchStatusView`
+79. Text-complete lifecycle state presentation
+80. Determinate slider progress and percentage copy
+81. Distinct indeterminate progress surface
+82. Active-step and elapsed-time presentation
+83. Finalized terminal diagnostic and destination presentation
+84. Configurable bind/unbind visibility and clearing
+85. Missing-reference-safe visual degradation
+86. Separate presentation test assembly and bounded friend access
+87. Runtime remaining uGUI-free
 
-First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, and can begin automatically from Unity `Start`. Neutral presentation observers can receive accepted snapshots and finalized reports without owning launch truth or introducing a uGUI dependency into Runtime. The default uGUI view, splash presentation, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, starts automatically from Unity `Start`, and provides a removable plain uGUI face. The view renders accepted immutable truth but does not own launch behavior. Prefab art, splash playback, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
-## Implemented Runtime Files
+## Implemented Package Files
+
+    Presentation.UGUI/
+    ├── EchoDevGames.EchoLaunch.Presentation.UGUI.asmdef
+    ├── EchoLaunchStatusView.cs
+    └── Properties/
+        └── AssemblyInfo.cs
 
     Runtime/
     ├── Configuration/
@@ -172,6 +190,11 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
         ├── StartupStepProgress.cs
         ├── StartupStepResult.cs
         └── StartupStepStatus.cs
+
+    Tests/Presentation.UGUI/
+    ├── EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef
+    └── PlayMode/
+        └── EchoLaunchStatusViewTests.cs
 
     Tests/Runtime/PlayMode/
     ├── EchoLaunchAutomaticStartAndPresenterTests.cs
@@ -1189,6 +1212,119 @@ Every presenter callback is isolated. Exceptions produce `ELAUNCH-VIEW-002` and 
 
 A successfully bound presenter is unbound once during root destruction. Duplicate roots never bind or present.
 
+## Default Plain uGUI View
+
+`EchoLaunchStatusView` is the first package-supplied visual implementation of
+`ILaunchStatusPresenter`.
+
+Assembly:
+
+```text
+EchoDevGames.EchoLaunch.Presentation.UGUI
+```
+
+References:
+
+- Neutral First Light Runtime.
+- Unity uGUI.
+
+The neutral Runtime assembly does not reference the presentation assembly,
+uGUI, TextMeshPro, Canvas, `Text`, or `Slider`.
+
+The root continues to serialize only a neutral `MonoBehaviour` seam and resolves
+the component through `ILaunchStatusPresenter`.
+
+## Plain Status Surfaces
+
+The view can render:
+
+- Lifecycle state copy.
+- Diagnostic or detail copy.
+- Active step position and stable step ID.
+- Elapsed launch time.
+- Determinate progress through a normalized `Slider`.
+- Determinate percentage text.
+- A distinct indeterminate-progress surface.
+- Final destination display metadata.
+- Completed, failed, and interrupted terminal reports.
+
+The view uses serialized legacy uGUI `Text` references and introduces no
+TextMeshPro dependency.
+
+All state copy is serialized and replaceable. This creates a localization-ready
+authoring seam but does not claim localization integration.
+
+## Text-Complete Meaning
+
+State meaning does not require color.
+
+Default copy includes:
+
+```text
+Preparing launch.
+Validating launch.
+Starting systems.
+Continuing with a warning.
+Loading destination.
+Launch complete.
+Launch blocked.
+Launch interrupted.
+```
+
+Warnings and diagnostic results may show stable code plus sanitized message.
+
+Determinate and indeterminate progress use separate surfaces and separate text.
+
+## Terminal Presentation
+
+Completed report behavior:
+
+- Retains the exact finalized report.
+- Shows completed copy.
+- Shows destination display name.
+- Shows final result message.
+- Forces determinate progress to 100 percent.
+
+Failed and interrupted report behavior:
+
+- Shows matching terminal copy.
+- Shows diagnostic code and message.
+- Preserves the most recently accepted progress mode.
+
+A null terminal report is rejected. A valid terminal report before binding is
+ignored without changing visible state.
+
+## Visibility and Replacement
+
+The view supports serialized:
+
+- Show on bind.
+- Hide on unbind.
+- Clear on unbind.
+
+A `CanvasGroup` controls startup-only visibility without requiring the root to
+destroy the view.
+
+Missing optional text, slider, or progress-surface references remain safe. The
+view still tracks accepted snapshots and reports.
+
+The checkpoint does not create a package prefab, Canvas hierarchy, background,
+font asset, logo, animation, or splash player.
+
+## Presentation Test Assembly
+
+Presentation proof lives in:
+
+```text
+EchoDevGames.EchoLaunch.Tests.Presentation.UGUI
+```
+
+Runtime internal report constructors are exposed only to this named test
+assembly. Presentation internals are likewise exposed only to the same test
+assembly.
+
+This avoids widening the public report API merely to test visual projection.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1199,7 +1335,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M4-01 compile result:
+Final FL-M4-02 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1218,12 +1354,13 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `396`
+- Passed: `414`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Plain uGUI presentation tests: `18`
 - Automatic-start and presenter tests: `16`
 - Authority tests: `7`
 - Root-owned startup lifecycle tests: `23`
@@ -1244,6 +1381,28 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M4-02 and retained behavior:
+
+- Separate uGUI presentation runtime assembly
+- Separate presentation test assembly
+- Plain view implementing `ILaunchStatusPresenter`
+- Bind visibility and initial accepted snapshot
+- Determinate slider progress and percentage
+- Indeterminate progress surface
+- Step and elapsed-time copy
+- Warning diagnostics
+- Transitioning copy
+- Completed destination and full progress
+- Failed and interrupted diagnostic rendering
+- Pre-bind no-op behavior
+- Null terminal-report rejection
+- Hide and clear unbind behavior
+- Rebind report reset
+- Missing optional-reference safety
+- Serialized copy replacement
+- Neutral Runtime remaining uGUI-free
+- No TextMeshPro dependency
 
 Verified FL-M4-01 and retained behavior:
 
@@ -1388,7 +1547,7 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Default uGUI status view and presentation assembly
+- Default presentation prefab and Canvas art pass
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
@@ -1399,6 +1558,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M4-01 stops after Unity `Start` safely opens the existing authoritative launch gate and a neutral presenter can observe accepted snapshots and finalized reports.
+FL-M4-02 stops after the removable uGUI presentation assembly and plain status view pass isolated automated proof.
 
-The default uGUI status view, Canvas/prefab implementation, splash playback, direct-scene initialization, Editor setup, persistent-root policy, and real Standalone Laboratory scene activation require later checkpoints.
+A package prefab, Canvas art pass, project logo/background, splash definitions, splash playback, direct-scene initialization, Editor setup, persistent-root policy, and real Standalone Laboratory scene activation require later checkpoints.

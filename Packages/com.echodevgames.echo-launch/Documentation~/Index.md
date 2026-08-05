@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Automatic root startup and neutral presenter contract implemented; default uGUI presentation pending
+- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -24,7 +24,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-07`
   - `FL-M3-08`
   - `FL-M4-01`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, and neutral accepted-state presentation
+  - `FL-M4-02`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, and a removable default plain uGUI status view
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -65,6 +66,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-08 Runtime Test Report](Developer/Test%20Reports/FL-M3-08_Initial_Destination_and_Completed_Handoff_Test_Report.md)
 - [FL-M4-01 Automatic Root Start Gate and Plain Status Presenter Contract](Developer/Checkpoints/FL-M4-01_Automatic_Root_Start_Gate_and_Plain_Status_Presenter_Contract.md)
 - [FL-M4-01 Runtime Test Report](Developer/Test%20Reports/FL-M4-01_Automatic_Root_Start_and_Presenter_Contract_Test_Report.md)
+- [FL-M4-02 Default uGUI Plain Status View and Presentation Assembly](Developer/Checkpoints/FL-M4-02_Default_uGUI_Plain_Status_View_and_Presentation_Assembly.md)
+- [FL-M4-02 Runtime Test Report](Developer/Test%20Reports/FL-M4-02_Default_uGUI_Plain_Status_View_Test_Report.md)
 
 ## Package Root Documents
 
@@ -143,8 +146,8 @@ First Light currently proves:
 - Structured root preflight diagnostics with legacy direct-runner compatibility
 - Successful launch stopping at `Transitioning`
 - Public immutable per-step reports
-- Public immutable failed/interrupted launch reports
-- Report schema version `1`
+- Public immutable completed, failed, and interrupted launch reports
+- Report schema version `2`
 - Internal single-use report builder
 - Authority-filtered `LastReport`
 - Exactly-once `LaunchFailed` and `LaunchInterrupted`
@@ -175,6 +178,17 @@ First Light currently proves:
 - Stable `ELAUNCH-VIEW-001` and `ELAUNCH-VIEW-002`
 - Presenter exception containment and destruction unbinding
 - Duplicate-root automatic-start and presenter silence
-- Three hundred ninety-six passing Runtime Play Mode tests
+- Separate uGUI presentation runtime assembly
+- Separate presentation test assembly
+- Public plain `EchoLaunchStatusView`
+- Text-complete lifecycle state rendering
+- Determinate slider and percentage
+- Distinct indeterminate progress surface
+- Step and elapsed-time display
+- Terminal diagnostic and destination display
+- Configurable visibility and clearing
+- Missing-reference-safe projection
+- Runtime remaining uGUI-free
+- Four hundred fourteen passing Runtime Play Mode tests
 
-Retries, the default uGUI status view, splash presentation, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
+Retries, the default prefab/Canvas art pass, splash presentation, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

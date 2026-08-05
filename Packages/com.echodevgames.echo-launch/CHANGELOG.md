@@ -7,6 +7,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M4-02 - Default uGUI Plain Status View and Presentation Assembly
+- Separate `EchoDevGames.EchoLaunch.Presentation.UGUI` runtime assembly
+- Separate `EchoDevGames.EchoLaunch.Tests.Presentation.UGUI` test assembly
+- Public `EchoLaunchStatusView`
+- Neutral `ILaunchStatusPresenter` implementation without widening Runtime
+- Serialized `CanvasGroup`, `Text`, `Slider`, and progress-surface references
+- Readable authority, validation, running, warning, transitioning, completed, failed, and interrupted copy
+- Determinate normalized slider progress with percentage text
+- Distinct indeterminate-progress surface and copy
+- Active-step position and stable step-ID display
+- Elapsed-time display
+- Finalized report diagnostic and destination metadata display
+- Exact terminal report retention
+- Completed-report progress forced to 100 percent
+- Failed/interrupted reports preserving the latest accepted progress mode
+- Configurable show-on-bind, hide-on-unbind, and clear-on-unbind behavior
+- Missing optional visual references remaining safe
+- Serialized replaceable state copy
+- Runtime friend access limited to the isolated presentation test assembly
+- Presentation friend access limited to the isolated presentation test assembly
+- Eighteen Runtime Play Mode presentation tests
 #### FL-M4-01 - Automatic Root Start Gate and Plain Status Presenter Contract
 - Serialized automatic-start gate enabled by default
 - Unity `Start` callback routed through the existing `StartLaunchAsync` one-run boundary
@@ -275,6 +296,14 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- First Light now provides a removable default plain uGUI implementation while preserving the neutral `ILaunchStatusPresenter` contract.
+- The neutral Runtime asmdef remains free of uGUI and TextMeshPro references.
+- Presentation code now lives under `Presentation.UGUI` and may be replaced without changing launch truth.
+- Runtime `AssemblyInfo.cs` now grants internal report-constructor access only to the dedicated presentation test assembly.
+- Completed terminal presentation now renders destination display metadata and full progress.
+- Failed and interrupted terminal presentation retains the latest accepted progress mode.
+- State meaning remains readable through text rather than requiring color.
+- Serialized state copy may be replaced without subclassing the view.
 - Authoritative roots now begin the existing launch gate from Unity `Start` when automatic startup is enabled.
 - Automatic and manual startup share the same authority, lifecycle, and active-run protections.
 - Retained manual Runtime Play Mode fixtures explicitly disable automatic startup before invoking `StartLaunchAsync`.
@@ -348,6 +377,10 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Added the missing `EchoDevGames.EchoLaunch.Presentation.UGUI` namespace import to the isolated presentation test fixture.
+- Replaced thirteen unsupported NUnit `Assert.Multiple` blocks with sequential `Assert.That` calls compatible with the installed Unity test framework.
+- Restored generated `.slnx` noise before repository review.
+- Removed Unity-generated trailing whitespace from the new presentation metadata files before commit.
 - Replaced an invalid `AudioSource` presenter test component with a dedicated `MonoBehaviour` that intentionally does not implement `ILaunchStatusPresenter`.
 - Replaced unsupported NUnit `Is.AnyOf` usage with a direct terminal-state assertion compatible with the installed Unity test framework.
 - Corrected three new FL-M3-08 test references from nonexistent `LaunchProgressSnapshot.IsIndeterminate` to the established `IsProgressIndeterminate` property.
@@ -368,9 +401,33 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `396`
+- Passed: `414`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M4-02 coverage:
+- Presentation view implementing the neutral presenter contract
+- Bind visibility and authority copy
+- Determinate slider progress and percentage
+- Indeterminate progress surface and copy
+- Active-step position and stable step ID
+- Elapsed-time formatting
+- Warning copy and diagnostic rendering
+- Transitioning copy
+- Completed report destination, message, and 100-percent progress
+- Failed report diagnostic rendering
+- Interrupted report cancellation rendering
+- Pre-bind snapshot no-op
+- Pre-bind terminal-report no-op
+- Null terminal-report rejection
+- Hide-on-unbind behavior
+- Clear-on-unbind behavior
+- Rebind clearing the previous terminal report
+- Missing optional visual references remaining safe
+- Serialized state-copy replacement
+- Separate presentation runtime and test assemblies
+- Neutral Runtime asmdef remaining uGUI-free
+- Zero compiler errors and zero compiler warnings
 
 FL-M4-01 coverage:
 - Automatic launch on the first enabled authoritative root
@@ -554,7 +611,7 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Default uGUI status view and presentation assembly
+- Default presentation prefab and Canvas art pass
 - Splash presentation
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
