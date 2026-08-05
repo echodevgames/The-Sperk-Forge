@@ -22,6 +22,18 @@ namespace EchoDevGames.EchoLaunch
         private LaunchSession session;
 
         /// <summary>
+        /// Raised after an accepted snapshot changes the launch lifecycle state.
+        /// </summary>
+        public event Action<LaunchStateChangedEvent>
+            LaunchStateChanged;
+
+        /// <summary>
+        /// Raised after every accepted authoritative progress snapshot.
+        /// </summary>
+        public event Action<LaunchProgressChangedEvent>
+            LaunchProgressChanged;
+
+        /// <summary>
         /// Returns the currently authoritative First Light root.
         /// </summary>
         public static EchoLaunchRoot Current =>
@@ -95,12 +107,17 @@ namespace EchoDevGames.EchoLaunch
 
         private void OnDestroy()
         {
+            LaunchStateChanged = null;
+            LaunchProgressChanged = null;
+
             session = null;
+
             LaunchAuthorityClaim.Release(this);
         }
 
         /// <summary>
-        /// Replaces the authoritative root's current progress snapshot.
+        /// Replaces the authoritative root's current progress snapshot and
+        /// safely notifies observers after the snapshot is accepted.
         /// </summary>
         internal void PublishProgress(
             LaunchProgressSnapshot snapshot)
@@ -117,7 +134,39 @@ namespace EchoDevGames.EchoLaunch
                     "The authoritative EchoLaunchRoot does not have an active launch session.");
             }
 
+            LaunchProgressSnapshot previous =
+                session.Progress;
+
             session.Publish(snapshot);
+
+            LaunchProgressSnapshot current =
+                session.Progress;
+
+            if (previous.Status != current.Status)
+            {
+                LaunchStateChangedEvent stateEvent =
+                    new LaunchStateChangedEvent(
+                        previous.Status,
+                        current.Status,
+                        current);
+
+                LaunchNotificationDispatcher.Dispatch(
+                    LaunchStateChanged,
+                    stateEvent,
+                    nameof(LaunchStateChanged),
+                    this);
+            }
+
+            LaunchProgressChangedEvent progressEvent =
+                new LaunchProgressChangedEvent(
+                    previous,
+                    current);
+
+            LaunchNotificationDispatcher.Dispatch(
+                LaunchProgressChanged,
+                progressEvent,
+                nameof(LaunchProgressChanged),
+                this);
         }
     }
 }
