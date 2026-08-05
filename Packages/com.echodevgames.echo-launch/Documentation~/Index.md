@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
+- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -25,7 +25,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-08`
   - `FL-M4-01`
   - `FL-M4-02`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, and a removable default plain uGUI status view
+  - `FL-M4-03`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, lifecycle projection through `Transitioning`, immutable failed/interrupted reports, authority-filtered `LastReport`, exactly-once failed/interrupted terminal events, project-owned destination schema 1, configuration schema 3, injected initial destination loading, completed reports, exactly-once `LaunchCompleted`, automatic Unity `Start` launch, neutral accepted-state presentation, a removable plain uGUI status view, and standalone deterministic image splash playback
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -68,6 +69,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M4-01 Runtime Test Report](Developer/Test%20Reports/FL-M4-01_Automatic_Root_Start_and_Presenter_Contract_Test_Report.md)
 - [FL-M4-02 Default uGUI Plain Status View and Presentation Assembly](Developer/Checkpoints/FL-M4-02_Default_uGUI_Plain_Status_View_and_Presentation_Assembly.md)
 - [FL-M4-02 Runtime Test Report](Developer/Test%20Reports/FL-M4-02_Default_uGUI_Plain_Status_View_Test_Report.md)
+- [FL-M4-03 Image Splash Definitions and Deterministic Splash Player](Developer/Checkpoints/FL-M4-03_Image_Splash_Definitions_and_Deterministic_Splash_Player.md)
+- [FL-M4-03 Runtime Test Report](Developer/Test%20Reports/FL-M4-03_Deterministic_Image_Splash_Test_Report.md)
 
 ## Package Root Documents
 
@@ -189,6 +192,16 @@ First Light currently proves:
 - Configurable visibility and clearing
 - Missing-reference-safe projection
 - Runtime remaining uGUI-free
-- Four hundred fourteen passing Runtime Play Mode tests
+- Project-owned splash sequence schema 1
+- Immutable image splash entries
+- Deterministic clock-driven splash player
+- Minimum-display and skip-policy enforcement
+- Reduced-motion fade removal
+- Neutral and headless splash presenters
+- Default uGUI image-splash projection
+- Public project-routed skip request
+- Configuration schema 3 remaining unchanged
+- Report schema 2 remaining unchanged
+- Four hundred fifty passing Runtime Play Mode tests
 
-Retries, the default prefab/Canvas art pass, splash presentation, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.
+Retries, splash configuration/root integration, the default prefab/Canvas art pass, direct-scene initialization, Editor migration, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the active implementation scope.

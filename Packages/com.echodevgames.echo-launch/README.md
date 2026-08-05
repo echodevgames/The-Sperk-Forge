@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
+- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -27,6 +27,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-08` Initial Destination Contract, Load Result, and Completed Handoff
   - `FL-M4-01` Automatic Root Start Gate and Plain Status Presenter Contract
   - `FL-M4-02` Default uGUI Plain Status View and Presentation Assembly
+  - `FL-M4-03` Image Splash Definitions and Deterministic Splash Player
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -428,6 +429,29 @@ First Light now provides:
 - No TextMeshPro dependency
 - Neutral Runtime assembly remains uGUI-free
 
+### Deterministic Image Splash Playback
+
+- Project-owned `SplashSequence` schema 1
+- Immutable image-only `SplashEntry`
+- Stable sequence and entry identities
+- Authored fade-in, hold, fade-out, and minimum-display time
+- Allowed and disallowed skip policy
+- Latched early skip requests
+- Reduced-motion fade removal
+- Deterministic `ILaunchClock` traversal
+- Ordered multi-entry playback
+- Normalized alpha
+- Cancellation and re-entry containment
+- Invalid/backward clock rejection
+- Immutable frames and playback result
+- Neutral `IImageSplashPresenter`
+- Logging-free headless fallback
+- Default uGUI sprite, label, alpha, and position
+- Public `RequestSplashSkip()` with no EchoInput dependency
+- Configuration schema remains 3
+- Report schema remains 2
+- No root-owned splash integration yet
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -464,12 +488,14 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `414`
+- Passed: `450`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Splash playback tests: `26`
+- Splash presentation tests: `10`
 - Plain uGUI presentation tests: `18`
 - Automatic-start and presenter tests: `16`
 - Authority tests: `7`
@@ -532,6 +558,7 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
+- Splash configuration schema and root playback integration
 - Default presentation prefab and Canvas art pass
 - Splash presentation
 - Real Boot-to-destination Standalone Laboratory proof
@@ -556,10 +583,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Four hundred fourteen passing Runtime Play Mode tests
+- Four hundred fifty passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with automatic root entry, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
+- Policy-aware timed startup execution with automatic root entry, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, a removable plain uGUI view, and standalone deterministic image splash playback
 
 Still `Not run`:
 

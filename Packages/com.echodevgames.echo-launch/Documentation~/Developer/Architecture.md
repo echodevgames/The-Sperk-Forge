@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Default plain uGUI status view and isolated presentation assembly implemented; prefab art and splash playback pending
+- Development stage: Standalone deterministic image splash definitions, playback, and uGUI projection implemented; configuration and root integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -23,6 +23,7 @@
   - `FL-M3-08`
   - `FL-M4-01`
   - `FL-M4-02`
+  - `FL-M4-03`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -116,8 +117,24 @@ First Light currently establishes:
 85. Missing-reference-safe visual degradation
 86. Separate presentation test assembly and bounded friend access
 87. Runtime remaining uGUI-free
+88. Project-owned `SplashSequence` schema 1
+89. Immutable image-only `SplashEntry` definitions
+90. Stable splash skip-policy and playback-phase vocabulary
+91. Deterministic `ILaunchClock`-driven splash playback
+92. Ordered multi-entry traversal
+93. Minimum-display timing expansion
+94. Latched skip requests that cannot bypass minimum display
+95. Reduced-motion fade removal
+96. Cancellation, re-entry, and invalid-clock containment
+97. Neutral `IImageSplashPresenter`
+98. Logging-free headless splash presenter fallback
+99. Immutable splash frames and playback results
+100. uGUI image, label, alpha, and sequence-position projection
+101. Public project-routed splash skip request
+102. Missing-reference-safe splash presentation
+103. Configuration schema 3 and report schema 2 remaining unchanged
 
-First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, starts automatically from Unity `Start`, and provides a removable plain uGUI face. The view renders accepted immutable truth but does not own launch behavior. Prefab art, splash playback, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, loads one initial destination, finalizes one immutable terminal report, starts automatically from Unity `Start`, provides a removable plain uGUI face, and can deterministically play standalone project-owned image splash sequences. Splash definitions and playback are intentionally not yet bound to configuration or the authoritative root. Prefab art, root splash integration, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
 ## Implemented Package Files
 
@@ -156,8 +173,10 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     │   ├── StartupStepTiming.cs
     │   └── UnityLaunchClock.cs
     ├── Presentation/
+    │   ├── IImageSplashPresenter.cs
     │   ├── ILaunchStatusPresenter.cs
     │   ├── LaunchStatusPresenterDispatcher.cs
+    │   ├── NullImageSplashPresenter.cs
     │   └── NullLaunchStatusPresenter.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
@@ -172,6 +191,14 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     │   ├── InitialDestinationProgressRelay.cs
     │   ├── LaunchDestination.cs
     │   └── UnityInitialDestinationLoader.cs
+    ├── Splash/
+    │   ├── SplashEntry.cs
+    │   ├── SplashPlaybackPhase.cs
+    │   ├── SplashPlaybackResult.cs
+    │   ├── SplashPresentationFrame.cs
+    │   ├── SplashSequence.cs
+    │   ├── SplashSequencePlayer.cs
+    │   └── SplashSkipPolicy.cs
     ├── State/
     │   ├── LaunchMode.cs
     │   ├── LaunchStatus.cs
@@ -194,6 +221,7 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     Tests/Presentation.UGUI/
     ├── EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef
     └── PlayMode/
+        ├── EchoLaunchSplashPresentationTests.cs
         └── EchoLaunchStatusViewTests.cs
 
     Tests/Runtime/PlayMode/
@@ -208,6 +236,7 @@ First Light now validates, executes, times, evaluates, projects, loads one initi
     ├── LaunchReportAndTerminalEventTests.cs
     ├── LaunchSessionProgressTests.cs
     ├── LaunchStateVocabularyTests.cs
+    ├── SplashSequencePlayerTests.cs
     ├── StartupSequenceDefinitionTests.cs
     ├── StartupSequenceRunnerImmediateTests.cs
     ├── StartupSequenceRunnerPolicyAndExceptionTests.cs
@@ -1325,6 +1354,173 @@ assembly.
 
 This avoids widening the public report API merely to test visual projection.
 
+## Project-Owned Image Splash Definitions
+
+`SplashSequence` is a project-owned `ScriptableObject` with independent schema
+version `1`.
+
+Each `SplashEntry` stores:
+
+- Stable canonical entry ID.
+- Image sprite.
+- Replaceable display label.
+- Fade-in seconds.
+- Hold seconds.
+- Fade-out seconds.
+- Minimum display seconds.
+- Skip policy.
+
+Runtime validates but does not repair or rewrite the authored asset.
+
+Validation rejects:
+
+- Malformed sequence identity.
+- Unsupported sequence schema.
+- Missing entry collection.
+- Null entries.
+- Malformed entry identity.
+- Missing image.
+- Negative or nonfinite timing.
+- Undefined skip policy.
+- Duplicate entry IDs.
+
+## Deterministic Splash Player
+
+`SplashSequencePlayer` owns only temporary traversal, timing, alpha, and latched
+skip state.
+
+The player uses `ILaunchClock`, preserving the same monotonic unscaled-time seam
+used by startup execution.
+
+Effective timing:
+
+```text
+fadeIn = reducedMotion ? 0 : authoredFadeIn
+fadeOut = reducedMotion ? 0 : authoredFadeOut
+hold = max(
+    authoredHold,
+    minimumDisplay - fadeIn - fadeOut,
+    0)
+total = fadeIn + hold + fadeOut
+```
+
+The player rejects:
+
+- NaN, infinite, or negative clock values.
+- Backward clock movement.
+- Concurrent playback on the same player.
+
+Cancellation always unsubscribes skip requests, clears presentation, and
+releases the active-playback gate.
+
+## Skip Semantics
+
+Stable policies:
+
+```text
+Disallowed
+AfterMinimumDisplay
+```
+
+A permitted skip request is latched.
+
+If it arrives early, playback continues until the minimum-display boundary and
+then ends the active entry.
+
+A disallowed request has no effect.
+
+The package does not bind input. Project-owned input calls the public
+`RequestSplashSkip()` seam on the default view or raises the neutral presenter
+event through another implementation.
+
+## Reduced Motion
+
+Reduced-motion playback removes fade-in and fade-out phases.
+
+It preserves:
+
+- Authored hold.
+- Minimum display time.
+- Entry ordering.
+- Skip policy.
+- Full-opacity image presentation.
+
+The caller supplies the reduced-motion choice. Platform preference discovery is
+outside this checkpoint.
+
+## Immutable Splash Projection
+
+`SplashPresentationFrame` contains accepted immutable presentation truth:
+
+- Sequence and entry identity.
+- Sprite and label.
+- Entry index and count.
+- Playback phase.
+- Normalized alpha.
+- Elapsed and minimum-display time.
+- Whether skipping is currently permitted.
+- Reduced-motion state.
+
+`SplashPlaybackResult` stores:
+
+- Sequence identity.
+- Presented entry count.
+- Skipped entry count.
+- Total elapsed time.
+- Reduced-motion state.
+
+## Neutral Splash Presenter
+
+`IImageSplashPresenter` receives frames and exposes one neutral `SkipRequested`
+event.
+
+`NullImageSplashPresenter` provides logging-free headless behavior.
+
+A missing visual presenter therefore does not invalidate deterministic playback.
+
+## Default uGUI Splash Projection
+
+`EchoLaunchStatusView` now implements both:
+
+```text
+ILaunchStatusPresenter
+IImageSplashPresenter
+```
+
+The view can render:
+
+- Splash sprite.
+- Replaceable label.
+- Accepted frame alpha.
+- `Splash N of M` position.
+- Replaceable `Showing splash.` state copy.
+
+`RequestSplashSkip()` returns `false` when the view is unbound, splash
+presentation is inactive, or no playback subscriber exists.
+
+Clearing or unbinding:
+
+- Hides the splash root.
+- Clears the image sprite.
+- Resets image alpha.
+- Clears the splash label.
+- Releases stored splash frame state.
+- Removes skip-request handlers on unbind.
+
+Missing optional splash references remain safe.
+
+## Integration Boundary
+
+FL-M4-03 deliberately does not bind `SplashSequence` to
+`EchoLaunchConfiguration`.
+
+Configuration remains schema version `3`.
+
+Launch reports remain schema version `2`.
+
+Root-owned splash playback, configuration serialization, report integration, and
+lifecycle placement require an authority-first follow-up checkpoint.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1335,7 +1531,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M4-02 compile result:
+Final FL-M4-03 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1354,12 +1550,14 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Runtime Play Mode totals:
 
-- Passed: `414`
+- Passed: `450`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
+- Splash playback tests: `26`
+- Splash uGUI presentation tests: `10`
 - Plain uGUI presentation tests: `18`
 - Automatic-start and presenter tests: `16`
 - Authority tests: `7`
@@ -1381,6 +1579,29 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M4-03 and retained behavior:
+
+- Splash sequence schema 1
+- Canonical and distinct generated identities
+- Entry timing and image validation
+- Duplicate entry-ID detection
+- Empty and ordered multi-entry playback
+- Deterministic fade phases and normalized alpha
+- Minimum-display expansion
+- Permitted, early, and disallowed skip behavior
+- Reduced-motion fade removal
+- Cancellation cleanup
+- Player re-entry protection
+- Invalid and backward clock rejection
+- Headless fallback
+- Immutable authored assets
+- Immutable frames and result accounting
+- uGUI splash image, label, alpha, and position
+- Public skip-request event
+- Clear and unbind cleanup
+- Missing splash-reference safety
+- Configuration and report schemas unchanged
 
 Verified FL-M4-02 and retained behavior:
 
@@ -1548,7 +1769,7 @@ Not implemented:
 - Warning aggregation outside the run result
 - Dependency validation
 - Default presentation prefab and Canvas art pass
-- Splash presentation
+- Splash configuration binding and root playback integration
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -1558,6 +1779,11 @@ Not implemented:
 
 ## Stop Point
 
-FL-M4-02 stops after the removable uGUI presentation assembly and plain status view pass isolated automated proof.
+FL-M4-03 stops after project-owned image splash definitions, deterministic
+clock-driven playback, neutral skip requests, headless fallback, default uGUI
+projection, and isolated automated proof.
 
-A package prefab, Canvas art pass, project logo/background, splash definitions, splash playback, direct-scene initialization, Editor setup, persistent-root policy, and real Standalone Laboratory scene activation require later checkpoints.
+`EchoLaunchConfiguration` schema advancement, root-owned splash execution,
+launch-report integration, package prefab/art, project input binding,
+direct-scene initialization, Editor setup, persistent-root policy, and real
+Standalone Laboratory scene activation require later checkpoints.

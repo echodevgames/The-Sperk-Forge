@@ -2,84 +2,79 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M4-02`
-- Title: Default uGUI Plain Status View and Presentation Assembly
+- Checkpoint: `FL-M4-03`
+- Title: Image Splash Definitions and Deterministic Splash Player
 - Package version: `0.1.0`
 - Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.4.0
 - Implementation status: Complete and pushed
-- Implementation commit: `0e049ef`
-- Previous documentation commit: `e4367bf`
+- Implementation commit: `f997a9a`
+- Previous documentation commit: `cbaee24`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 414 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 450 passed, 0 failed, 0 ignored
 - Compilation result: 0 errors, 0 compiler warnings
 
 ## Completed Result
 
 Implemented:
 
-- Separate `EchoDevGames.EchoLaunch.Presentation.UGUI` assembly
-- Separate presentation test assembly
-- Public `EchoLaunchStatusView`
-- Neutral presenter implementation
-- Optional `CanvasGroup`, `Text`, `Slider`, and progress surfaces
-- Text-complete lifecycle state copy
-- Determinate slider and percentage
-- Distinct indeterminate progress surface
-- Active-step position and stable ID
-- Elapsed-time display
-- Warning diagnostic rendering
-- Completed destination and full progress
-- Failed diagnostic rendering
-- Interrupted cancellation rendering
-- Show-on-bind, hide-on-unbind, and clear-on-unbind
-- Missing-reference-safe behavior
-- Serialized replaceable copy
-- Runtime remaining uGUI-free
-- No TextMeshPro dependency
-- Eighteen new Runtime Play Mode tests
+- `SplashSequence` schema 1
+- Immutable `SplashEntry`
+- Stable splash skip and playback vocabulary
+- Immutable presentation frames and results
+- Neutral `IImageSplashPresenter`
+- Logging-free headless fallback
+- Deterministic `SplashSequencePlayer`
+- Ordered traversal
+- Fade, hold, and fade-out
+- Minimum-display expansion
+- Latched early skip
+- Disallowed skip containment
+- Reduced-motion fade removal
+- Cancellation and re-entry containment
+- Invalid/backward clock rejection
+- Definition immutability
+- uGUI image, label, alpha, and position
+- Public `RequestSplashSkip()`
+- Splash clear and unbind cleanup
+- Twenty-six Runtime tests
+- Ten isolated uGUI tests
 
 ## Evidence Summary
 
 ### Final Pass
 
-- Runtime Play Mode: 414 passed, 0 failed, 0 ignored
-- New presentation fixture: 18 passed
+- Runtime Play Mode: 450 passed, 0 failed, 0 ignored
+- New splash tests: 36 passed
 - Compilation: 0 errors, 0 compiler warnings
-- Implementation commit `0e049ef` pushed to `main` and `origin/main`
+- Implementation commit `f997a9a` pushed to `main` and `origin/main`
 - Working tree clean after implementation push
 
 ### Corrections
 
-- Added the missing presentation namespace import to the test fixture.
-- Replaced thirteen unsupported NUnit `Assert.Multiple` blocks.
-- Restored generated `.slnx` noise before review.
-- Trimmed Unity-generated trailing whitespace from new `.meta` files.
-- No production presentation behavior changed.
+- Diagnosed a zero-advance synchronous manual-clock loop.
+- Corrected skip requests that occurred after synchronous completion.
+- Consumed the faulted concurrent-playback `Awaitable` in the NUnit assertion.
+- Compared untouched generated sequence IDs in the uniqueness test.
+- No production Runtime or presentation behavior changed.
 
-### Expected Diagnostics
+### Schema Boundary
 
-Retained tests intentionally generate:
-
-    ELAUNCH-ROOT-001
-    ELAUNCH-EVENT-001
-    ELAUNCH-VIEW-001
-    ELAUNCH-VIEW-002
-
-These are expected runtime diagnostics, not compiler warnings or failures.
+- Configuration schema remains `3`.
+- Report schema remains `2`.
+- No splash reference was added to configuration.
+- Root-owned splash playback is not implemented.
+- Splash results are not reported through `LaunchReport`.
 
 ### Not Run
 
-- Package-supplied status prefab
-- Canvas art/layout pass
-- Font and color asset selection
-- Project logo or background
-- Splash playback
+- Configuration-bound splash sequence
+- Root-owned splash playback
+- Project input binding
+- Package prefab
+- Canvas art/layout
 - Test Lab visual scene
-- Real Boot-to-destination Standalone Laboratory activation
-- Direct-scene initialization
-- Editor setup and repair
 - Player builds
-- Separate clean-project installation
+- Clean-project installation
 - External project adoption
 - Performance measurements
 
@@ -87,30 +82,39 @@ These are expected runtime diagnostics, not compiler warnings or failures.
 
 Modified:
 
-- `Runtime/Properties/AssemblyInfo.cs`
-
-New presentation runtime:
-
-- `Presentation.UGUI/EchoDevGames.EchoLaunch.Presentation.UGUI.asmdef`
 - `Presentation.UGUI/EchoLaunchStatusView.cs`
-- `Presentation.UGUI/Properties/AssemblyInfo.cs`
-- Unity-generated folders and `.meta`
 
-New presentation tests:
+New neutral presentation:
 
-- `Tests/Presentation.UGUI/EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef`
-- `Tests/Presentation.UGUI/PlayMode/EchoLaunchStatusViewTests.cs`
-- Unity-generated folders and `.meta`
+- `Runtime/Presentation/IImageSplashPresenter.cs`
+- `Runtime/Presentation/NullImageSplashPresenter.cs`
+
+New Runtime splash system:
+
+- `Runtime/Splash/SplashEntry.cs`
+- `Runtime/Splash/SplashPlaybackPhase.cs`
+- `Runtime/Splash/SplashPlaybackResult.cs`
+- `Runtime/Splash/SplashPresentationFrame.cs`
+- `Runtime/Splash/SplashSequence.cs`
+- `Runtime/Splash/SplashSequencePlayer.cs`
+- `Runtime/Splash/SplashSkipPolicy.cs`
+- Unity-generated folder and script `.meta` files
+
+New tests:
+
+- `Tests/Runtime/PlayMode/SplashSequencePlayerTests.cs`
+- `Tests/Presentation.UGUI/PlayMode/EchoLaunchSplashPresentationTests.cs`
+- Unity-generated `.meta` files
 
 ## Handoff Snapshot
 
-FL-M4-02 implementation is complete and pushed in commit `0e049ef`.
+FL-M4-03 implementation is complete and pushed in commit `f997a9a`.
 
-First Light now has a removable default plain uGUI status view that renders
-accepted immutable launch truth without coupling the neutral Runtime assembly to
-uGUI.
+First Light now owns standalone deterministic image-splash definitions and
+playback with a neutral presentation contract, reduced-motion behavior, minimum
+display protection, and project-routed skip requests.
 
-The adjacent FL-M4-02 documentation closeout is the only active repository work.
+The adjacent FL-M4-03 documentation closeout is the only active repository work.
 
-Tentative next checkpoint: FL-M4-03 - Image Splash Definitions and
-Deterministic Splash Player.
+Tentative next checkpoint: FL-M4-04 - Splash Configuration Schema and Root
+Playback Integration. It requires authority-first schema approval.

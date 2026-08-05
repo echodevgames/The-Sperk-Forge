@@ -1476,17 +1476,17 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M4-02 — Default uGUI Plain Status View and Presentation Assembly |
-| Implementation commit | `0e049ef` |
-| Previous documentation commit | `e4367bf` |
-| Files/assets created | Runtime launch systems, destination loading, automatic startup, neutral presentation contract, isolated uGUI presentation assembly, plain status view, and isolated presentation tests |
-| Tests passed | 414 Runtime Play Mode tests |
+| Completed checkpoint | FL-M4-03 — Image Splash Definitions and Deterministic Splash Player |
+| Implementation commit | `f997a9a` |
+| Previous documentation commit | `cbaee24` |
+| Files/assets created | Runtime launch systems, destination loading, automatic startup, neutral status presentation, isolated uGUI status view, project-owned image splash definitions, deterministic splash player, neutral/headless splash presenters, and isolated splash tests |
+| Tests passed | 450 Runtime Play Mode tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Known issues | Presentation prefab/art pass, splash playback, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Decisions added | Default plain uGUI presentation is replaceable and isolated; state meaning remains text-complete; Runtime remains uGUI-free |
-| Next checkpoint | FL-M4-03 — Image Splash Definitions and Deterministic Splash Player, tentative and not authorized |
+| Known issues | Splash configuration/root integration, presentation prefab/art pass, direct-scene setup, Editor migration/setup, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Decisions added | Image splash definitions remain standalone; skip input is project-routed; reduced motion removes fades; configuration schema 3 and report schema 2 remain unchanged |
+| Next checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration, tentative and authority-first |
 
 ---
 

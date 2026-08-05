@@ -7,6 +7,39 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M4-03 - Image Splash Definitions and Deterministic Splash Player
+- Project-owned `SplashSequence` ScriptableObject with schema version `1`
+- Immutable `SplashEntry` definitions with stable canonical identities
+- Image-only splash entries with replaceable display labels
+- Authored fade-in, hold, fade-out, and minimum-display timing
+- Stable `SplashSkipPolicy` vocabulary
+- Stable `SplashPlaybackPhase` vocabulary
+- Immutable `SplashPresentationFrame`
+- Immutable `SplashPlaybackResult`
+- Neutral public `IImageSplashPresenter`
+- Logging-free `NullImageSplashPresenter`
+- Deterministic `SplashSequencePlayer` driven by `ILaunchClock`
+- Sequence and entry validation without runtime asset repair
+- Duplicate entry-ID detection
+- Missing-image and malformed-timing rejection
+- Ordered multi-entry traversal
+- Normalized deterministic alpha projection
+- Minimum-display hold expansion
+- Latched early skip requests
+- Disallowed skip containment
+- Reduced-motion playback with fade phases removed
+- Cancellation cleanup and presenter clearing
+- Player-local active-playback re-entry protection
+- Invalid and backward clock rejection
+- Headless playback fallback
+- Definition immutability proof
+- `EchoLaunchStatusView` image-splash presentation
+- Serialized splash root, image, and label references
+- Public `RequestSplashSkip()` without an EchoInput dependency
+- Splash image, label, alpha, and sequence-position rendering
+- Splash clear and unbind cleanup
+- Twenty-six Runtime splash tests
+- Ten isolated uGUI splash-presentation tests
 #### FL-M4-02 - Default uGUI Plain Status View and Presentation Assembly
 - Separate `EchoDevGames.EchoLaunch.Presentation.UGUI` runtime assembly
 - Separate `EchoDevGames.EchoLaunch.Tests.Presentation.UGUI` test assembly
@@ -296,6 +329,14 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- First Light now includes standalone project-owned image splash definitions and deterministic playback without binding them to configuration or root launch flow.
+- The default uGUI view now implements both `ILaunchStatusPresenter` and `IImageSplashPresenter`.
+- Splash timing uses the established monotonic unscaled `ILaunchClock` seam.
+- Reduced-motion playback removes fade phases while preserving authored hold and minimum-display time.
+- Skip requests are neutral events supplied by project-owned input and cannot bypass minimum display time.
+- Runtime splash playback remains valid with no visual presenter.
+- `EchoLaunchConfiguration` remains at schema version `3`; no serialized splash reference was added in this checkpoint.
+- Launch reports remain at schema version `2`; splash results are not yet included.
 - First Light now provides a removable default plain uGUI implementation while preserving the neutral `ILaunchStatusPresenter` contract.
 - The neutral Runtime asmdef remains free of uGUI and TextMeshPro references.
 - Presentation code now lives under `Presentation.UGUI` and may be replaced without changing launch truth.
@@ -377,6 +418,11 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Replaced a zero-advance synchronous manual clock in `ConcurrentPlaybackIsRejected` that caused an infinite main-thread test loop.
+- Moved three skip requests into deterministic frame presentation so they occur during playback rather than after synchronous completion.
+- Updated the concurrent-playback assertion to consume the faulted `Awaitable`, allowing NUnit to observe `InvalidOperationException`.
+- Updated the sequence-identity uniqueness test to compare untouched newly created assets rather than the fixed-ID helper.
+- Confirmed the apparently stuck `SnapshotRejectsInvalidElapsedTime` test was only the last painted Test Runner row, not the source of the hang.
 - Added the missing `EchoDevGames.EchoLaunch.Presentation.UGUI` namespace import to the isolated presentation test fixture.
 - Replaced thirteen unsupported NUnit `Assert.Multiple` blocks with sequential `Assert.That` calls compatible with the installed Unity test framework.
 - Restored generated `.slnx` noise before repository review.
@@ -401,9 +447,41 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `414`
+- Passed: `450`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M4-03 coverage:
+- Stable splash skip-policy and playback-phase vocabulary
+- Splash sequence schema 1 and canonical identities
+- Separate generated sequence identities
+- Canonical entry identity
+- Negative and nonfinite timing rejection
+- Null-entry, duplicate-ID, and missing-image rejection
+- Empty-sequence completion
+- Authored single-entry timeline completion
+- Ordered multi-entry traversal
+- Fade-in, hold, and fade-out phases
+- Normalized alpha values
+- Minimum-display hold expansion
+- Permitted skip after minimum display
+- Early skip latching until minimum display
+- Disallowed skip containment
+- Reduced-motion fade removal
+- Cancellation cleanup
+- Active-player re-entry rejection
+- Backward-clock rejection
+- Headless fallback
+- Playback-result skipped-entry accounting
+- Authored asset immutability
+- Default uGUI splash presenter contract
+- Pre-bind splash no-op
+- Image, label, state, position, and alpha projection
+- Public skip-request event
+- Splash clearing and unbind cleanup
+- Null-frame rejection
+- Missing splash-reference safety
+- Zero compiler errors and zero compiler warnings
 
 FL-M4-02 coverage:
 - Presentation view implementing the neutral presenter contract
@@ -612,7 +690,7 @@ FL-M3-03 coverage:
 - Warning aggregation outside the run result
 - Dependency validation
 - Default presentation prefab and Canvas art pass
-- Splash presentation
+- Splash configuration binding and root playback integration
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
 - Direct-scene initializer behavior
