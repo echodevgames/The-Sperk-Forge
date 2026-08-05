@@ -7,24 +7,46 @@ namespace EchoDevGames.EchoLaunch
 {
     /// <summary>
     /// Immutable runtime summary produced after one startup-sequence
-    /// traversal completes.
+    /// traversal completes or stops.
     ///
-    /// This result preserves attempted execution order and captured step
-    /// results without interpreting authored failure policy or claiming
-    /// final launch success.
+    /// This result preserves attempted execution order, captured terminal
+    /// results, and authored traversal accounting without claiming final
+    /// launch lifecycle state.
     /// </summary>
     internal sealed class StartupSequenceRunResult
     {
+        private const int NoStoppingIndex = -1;
+
         private readonly StartupStepExecution[] executions;
 
         /// <summary>
-        /// Creates one immutable completed traversal summary.
+        /// Creates one immutable complete-traversal summary.
+        ///
+        /// This overload preserves the FL-M3-01 construction contract.
         /// </summary>
         internal StartupSequenceRunResult(
             int authoredEntryCount,
             int disabledEntryCount,
             IReadOnlyList<StartupStepExecution>
                 attemptedExecutions)
+            : this(
+                authoredEntryCount,
+                disabledEntryCount,
+                attemptedExecutions,
+                NoStoppingIndex)
+        {
+        }
+
+        /// <summary>
+        /// Creates one immutable traversal summary that may represent a
+        /// policy or contract stop.
+        /// </summary>
+        internal StartupSequenceRunResult(
+            int authoredEntryCount,
+            int disabledEntryCount,
+            IReadOnlyList<StartupStepExecution>
+                attemptedExecutions,
+            int stoppingAuthoredEntryIndex)
         {
             if (authoredEntryCount < 0)
             {
@@ -50,13 +72,48 @@ namespace EchoDevGames.EchoLaunch
                     nameof(attemptedExecutions));
             }
 
-            if (attemptedExecutions.Count +
-                disabledEntryCount !=
-                authoredEntryCount)
+            int unvisitedEntryCount =
+                authoredEntryCount -
+                disabledEntryCount -
+                attemptedExecutions.Count;
+
+            if (unvisitedEntryCount < 0)
             {
                 throw new ArgumentException(
-                    "Completed startup-sequence results must account for every authored entry as either disabled or attempted.",
+                    "Attempted and disabled startup-sequence entries must not exceed the authored entry count.",
                     nameof(attemptedExecutions));
+            }
+
+            bool wasStopped =
+                stoppingAuthoredEntryIndex !=
+                NoStoppingIndex;
+
+            if (!wasStopped &&
+                unvisitedEntryCount != 0)
+            {
+                throw new ArgumentException(
+                    "A complete startup-sequence traversal must account for every authored entry as disabled or attempted.",
+                    nameof(attemptedExecutions));
+            }
+
+            if (wasStopped)
+            {
+                if (stoppingAuthoredEntryIndex < 0 ||
+                    stoppingAuthoredEntryIndex >=
+                    authoredEntryCount)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(stoppingAuthoredEntryIndex),
+                        stoppingAuthoredEntryIndex,
+                        "The stopping authored entry index must be within the sequence bounds.");
+                }
+
+                if (attemptedExecutions.Count == 0)
+                {
+                    throw new ArgumentException(
+                        "A stopped startup-sequence traversal requires one attempted execution that caused the stop.",
+                        nameof(attemptedExecutions));
+                }
             }
 
             executions =
@@ -111,11 +168,32 @@ namespace EchoDevGames.EchoLaunch
                 }
             }
 
+            if (wasStopped)
+            {
+                StartupStepExecution stoppingExecution =
+                    executions[
+                        executions.Length - 1];
+
+                if (stoppingExecution.StepIndex !=
+                    stoppingAuthoredEntryIndex)
+                {
+                    throw new ArgumentException(
+                        "The stopping authored entry index must match the final attempted execution.",
+                        nameof(stoppingAuthoredEntryIndex));
+                }
+            }
+
             AuthoredEntryCount =
                 authoredEntryCount;
 
             DisabledEntryCount =
                 disabledEntryCount;
+
+            UnvisitedEntryCount =
+                unvisitedEntryCount;
+
+            StoppingAuthoredEntryIndex =
+                stoppingAuthoredEntryIndex;
 
             HasWarnings =
                 hasWarnings;
@@ -136,10 +214,19 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
-        /// Gets the number of authored entries skipped because they were
-        /// disabled.
+        /// Gets the number of authored entries inspected and skipped because
+        /// they were disabled.
         /// </summary>
         internal int DisabledEntryCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the number of authored entries not inspected because
+        /// traversal stopped.
+        /// </summary>
+        internal int UnvisitedEntryCount
         {
             get;
         }
@@ -152,7 +239,25 @@ namespace EchoDevGames.EchoLaunch
             executions.Length;
 
         /// <summary>
-        /// Gets whether any captured result completed with a warning.
+        /// Gets whether traversal ended because one attempted entry stopped
+        /// the sequence.
+        /// </summary>
+        internal bool WasStoppedEarly =>
+            StoppingAuthoredEntryIndex !=
+            NoStoppingIndex;
+
+        /// <summary>
+        /// Gets the authored index of the execution that stopped traversal,
+        /// or minus one when traversal completed normally.
+        /// </summary>
+        internal int StoppingAuthoredEntryIndex
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets whether any effective captured result completed with a
+        /// warning.
         /// </summary>
         internal bool HasWarnings
         {
@@ -160,8 +265,8 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
-        /// Gets whether any captured result is a recoverable or blocking
-        /// failure.
+        /// Gets whether any effective captured result is a recoverable or
+        /// blocking failure.
         /// </summary>
         internal bool HasFailures
         {
@@ -169,10 +274,8 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
-        /// Gets whether any captured result explicitly blocks launch.
-        ///
-        /// FL-M3-01 records this fact but does not apply policy or stop
-        /// traversal.
+        /// Gets whether any effective captured result explicitly blocks
+        /// launch.
         /// </summary>
         internal bool HasBlockingFailures
         {

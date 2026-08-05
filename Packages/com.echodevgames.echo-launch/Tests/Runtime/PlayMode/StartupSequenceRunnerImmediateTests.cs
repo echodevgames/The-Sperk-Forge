@@ -135,6 +135,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                     nameof(definition));
         }
 
+#pragma warning disable CS1998
         public async Awaitable<StartupStepResult>
             ExecuteAsync(
                 StartupStepContext context)
@@ -149,6 +150,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             return definition.ResultToReturn;
         }
+#pragma warning restore CS1998
     }
 
     public sealed class
@@ -710,20 +712,37 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void RecoverableFailureResultIsPreserved()
+        public void RecoverableFailureWithBlockingPolicyStops()
         {
-            StartupStepResult expected =
+            StartupStepResult original =
                 StartupStepResult
                     .RecoverableFailure(
                         "ELAUNCH-TEST-RECOVER",
                         "Recoverable result");
 
             StartupSequenceRunResult result =
-                RunSingleResult(expected);
+                RunSingleResult(original);
+
+            StartupStepResult effective =
+                result.GetExecution(0).Result;
 
             Assert.That(
-                result.GetExecution(0).Result,
-                Is.SameAs(expected));
+                effective,
+                Is.Not.SameAs(original));
+
+            Assert.That(
+                effective.Status,
+                Is.EqualTo(
+                    StartupStepStatus
+                        .BlockingFailure));
+
+            Assert.That(
+                effective.Code,
+                Is.EqualTo(original.Code));
+
+            Assert.That(
+                effective.Message,
+                Is.EqualTo(original.Message));
 
             Assert.That(
                 result.HasFailures,
@@ -731,7 +750,15 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             Assert.That(
                 result.HasBlockingFailures,
-                Is.False);
+                Is.True);
+
+            Assert.That(
+                result.WasStoppedEarly,
+                Is.True);
+
+            Assert.That(
+                result.StoppingAuthoredEntryIndex,
+                Is.EqualTo(0));
         }
 
         [Test]
@@ -757,6 +784,14 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 result.HasBlockingFailures,
                 Is.True);
+
+            Assert.That(
+                result.WasStoppedEarly,
+                Is.True);
+
+            Assert.That(
+                result.StoppingAuthoredEntryIndex,
+                Is.EqualTo(0));
         }
 
         [Test]
@@ -839,7 +874,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void RunnerContinuesAfterBlockingResult()
+        public void RunnerStopsAfterBlockingResult()
         {
             ImmediateRunnerTestDefinition blocking =
                 CreateDefinition(
@@ -857,7 +892,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             later.ResultToReturn =
                 StartupStepResult.Success(
-                    "Later still ran");
+                    "Later must not run");
 
             StartupSequenceRunResult result =
                 RunImmediate(
@@ -881,26 +916,36 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 Is.EqualTo(1));
 
             Assert.That(
+                later.FactoryCallCount,
+                Is.EqualTo(0));
+
+            Assert.That(
                 later.ExecutionCallCount,
-                Is.EqualTo(1));
+                Is.EqualTo(0));
 
             Assert.That(
                 result.AttemptedExecutionCount,
-                Is.EqualTo(2));
+                Is.EqualTo(1));
+
+            Assert.That(
+                result.UnvisitedEntryCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                result.WasStoppedEarly,
+                Is.True);
+
+            Assert.That(
+                result.StoppingAuthoredEntryIndex,
+                Is.EqualTo(0));
 
             Assert.That(
                 result.HasBlockingFailures,
                 Is.True);
-
-            Assert.That(
-                result.GetExecution(1)
-                    .Result.Status,
-                Is.EqualTo(
-                    StartupStepStatus.Succeeded));
         }
 
         [Test]
-        public void NullExecutorFactoryResultIsRejected()
+        public void NullExecutorBecomesBlockingContractResult()
         {
             ImmediateRunnerTestDefinition definition =
                 CreateDefinition(
@@ -917,12 +962,11 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                             StartupStepPolicy
                                 .RequiredBlocking)));
 
-            Assert.Throws<InvalidOperationException>(
-                () =>
-                    RunImmediate(
-                        new StartupSequenceRunner(),
-                        configuration,
-                        CancellationToken.None));
+            StartupSequenceRunResult result =
+                RunImmediate(
+                    new StartupSequenceRunner(),
+                    configuration,
+                    CancellationToken.None);
 
             Assert.That(
                 definition.FactoryCallCount,
@@ -931,6 +975,33 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             Assert.That(
                 definition.ExecutionCallCount,
                 Is.EqualTo(0));
+
+            Assert.That(
+                result.AttemptedExecutionCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                result.WasStoppedEarly,
+                Is.True);
+
+            StartupStepExecution execution =
+                result.GetExecution(0);
+
+            Assert.That(
+                execution.HasExecutor,
+                Is.False);
+
+            Assert.That(
+                execution.Result.Status,
+                Is.EqualTo(
+                    StartupStepStatus
+                        .BlockingFailure));
+
+            Assert.That(
+                execution.Result.Code,
+                Is.EqualTo(
+                    StartupStepExceptionConverter
+                        .DiagnosticCode));
         }
 
         [Test]

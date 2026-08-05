@@ -8,13 +8,13 @@ namespace EchoDevGames.EchoLaunch
     /// Stores runtime-only state for one enabled startup-step attempt.
     ///
     /// Authored definitions and sequence entries remain immutable. The
-    /// execution object owns the fresh executor, active progress, and one
-    /// terminal result.
+    /// execution object owns copied metadata, an optional fresh executor,
+    /// active progress, and one terminal result.
     /// </summary>
     internal sealed class StartupStepExecution :
         IStartupStepProgressReporter
     {
-        private readonly IStartupStepExecutor executor;
+        private IStartupStepExecutor executor;
 
         private StartupStepStatus status =
             StartupStepStatus.NotStarted;
@@ -25,13 +25,13 @@ namespace EchoDevGames.EchoLaunch
         private StartupStepResult result;
 
         /// <summary>
-        /// Creates one runtime execution for one enabled sequence entry.
+        /// Creates one runtime execution from valid authored entry
+        /// metadata before executor creation is attempted.
         /// </summary>
         internal StartupStepExecution(
             StartupSequenceEntry entry,
             int stepIndex,
-            int stepCount,
-            IStartupStepExecutor executor)
+            int stepCount)
         {
             if (entry == null)
             {
@@ -66,11 +66,6 @@ namespace EchoDevGames.EchoLaunch
                     "Startup-step index must be within the authored sequence bounds.");
             }
 
-            this.executor =
-                executor ??
-                throw new ArgumentNullException(
-                    nameof(executor));
-
             EntryId = RequireText(
                 entry.EntryId,
                 nameof(entry.EntryId));
@@ -85,6 +80,25 @@ namespace EchoDevGames.EchoLaunch
             StepIndex = stepIndex;
             StepCount = stepCount;
             Policy = entry.Policy;
+        }
+
+        /// <summary>
+        /// Creates one runtime execution and immediately attaches the fresh
+        /// executor used by the attempt.
+        ///
+        /// This overload preserves the FL-M3-01 construction contract.
+        /// </summary>
+        internal StartupStepExecution(
+            StartupSequenceEntry entry,
+            int stepIndex,
+            int stepCount,
+            IStartupStepExecutor executor)
+            : this(
+                entry,
+                stepIndex,
+                stepCount)
+        {
+            AttachExecutor(executor);
         }
 
         /// <summary>
@@ -160,10 +174,45 @@ namespace EchoDevGames.EchoLaunch
             result != null;
 
         /// <summary>
-        /// Gets the fresh single-use executor owned by this attempt.
+        /// Gets whether a fresh executor has been attached to this attempt.
+        /// </summary>
+        internal bool HasExecutor =>
+            executor != null;
+
+        /// <summary>
+        /// Gets the fresh single-use executor attached to this attempt.
         /// </summary>
         internal IStartupStepExecutor Executor =>
             executor;
+
+        /// <summary>
+        /// Attaches one fresh executor before the attempt begins.
+        /// </summary>
+        internal void AttachExecutor(
+            IStartupStepExecutor freshExecutor)
+        {
+            if (freshExecutor == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(freshExecutor));
+            }
+
+            if (status !=
+                    StartupStepStatus.NotStarted ||
+                result != null)
+            {
+                throw new InvalidOperationException(
+                    "A startup-step executor may be attached only before the attempt begins.");
+            }
+
+            if (executor != null)
+            {
+                throw new InvalidOperationException(
+                    "A startup-step execution may own exactly one executor.");
+            }
+
+            executor = freshExecutor;
+        }
 
         /// <summary>
         /// Moves this attempt from NotStarted to Running.
@@ -177,12 +226,50 @@ namespace EchoDevGames.EchoLaunch
                     "A startup-step execution may begin exactly once.");
             }
 
+            if (executor == null)
+            {
+                throw new InvalidOperationException(
+                    "A startup-step execution requires an attached executor before it can begin.");
+            }
+
             status =
                 StartupStepStatus.Running;
         }
 
         /// <summary>
-        /// Captures the terminal result exactly once.
+        /// Captures one blocking factory or contract failure before an
+        /// executor begins.
+        /// </summary>
+        internal void CompleteBeforeStart(
+            StartupStepResult blockingResult)
+        {
+            if (status !=
+                    StartupStepStatus.NotStarted ||
+                result != null)
+            {
+                throw new InvalidOperationException(
+                    "A pre-start startup-step failure may be captured only once before execution begins.");
+            }
+
+            if (blockingResult == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(blockingResult));
+            }
+
+            if (!blockingResult.IsBlocking)
+            {
+                throw new ArgumentException(
+                    "A pre-start startup-step failure must block launch.",
+                    nameof(blockingResult));
+            }
+
+            result = blockingResult;
+            status = blockingResult.Status;
+        }
+
+        /// <summary>
+        /// Captures the terminal result exactly once after execution begins.
         /// </summary>
         internal void Complete(
             StartupStepResult terminalResult)
