@@ -12,9 +12,10 @@ namespace EchoDevGames.EchoLaunch
     ///
     /// The authoritative root owns one explicit startup-sequence run,
     /// lifecycle publication, cooperative cancellation, immutable terminal
-    /// reporting, initial destination handoff, and destruction-safe settlement.
-    /// Automatic startup, presentation, direct-scene helpers, and normal
-    /// mid-game scene travel remain later checkpoints.
+    /// reporting, initial destination handoff, automatic root startup, neutral
+    /// status presentation, and destruction-safe settlement. Direct-scene
+    /// helpers, default visual presentation, and normal mid-game scene travel
+    /// remain later checkpoints.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class EchoLaunchRoot : MonoBehaviour
@@ -40,6 +41,14 @@ namespace EchoDevGames.EchoLaunch
             DestinationLoadDiagnosticCode =
                 "ELAUNCH-DEST-002";
 
+        internal const string
+            PresenterUnavailableDiagnosticCode =
+                "ELAUNCH-VIEW-001";
+
+        internal const string
+            PresenterFailureDiagnosticCode =
+                "ELAUNCH-VIEW-002";
+
         [Header("Launch")]
         [SerializeField]
         private EchoLaunchConfiguration configuration;
@@ -48,12 +57,22 @@ namespace EchoDevGames.EchoLaunch
         private LaunchMode launchMode =
             LaunchMode.CanonicalBoot;
 
+        [SerializeField]
+        private bool startAutomatically = true;
+
+        [Header("Presentation")]
+        [SerializeField]
+        private MonoBehaviour statusPresenterComponent;
+
         private LaunchSession session;
 
         private StartupSequenceRunner sequenceRunner;
 
         private IInitialDestinationLoader
             initialDestinationLoader;
+
+        private ILaunchStatusPresenter
+            statusPresenter;
 
         private CancellationTokenSource
             launchCancellationSource;
@@ -74,6 +93,8 @@ namespace EchoDevGames.EchoLaunch
         private int activeLaunchState;
 
         private bool isDestroying;
+        private bool isStatusPresenterBound;
+        private bool statusPresenterWasInjected;
         private bool isTemporarilyPreservedForHandoff;
         private GameObject preservedHandoffObject;
 
@@ -222,6 +243,19 @@ namespace EchoDevGames.EchoLaunch
                 ref activeLaunchState) != 0;
 
         /// <summary>
+        /// Gets whether Unity's Start callback may begin the launch
+        /// automatically.
+        /// </summary>
+        internal bool IsAutomaticStartEnabled =>
+            startAutomatically;
+
+        /// <summary>
+        /// Gets whether the active presenter has accepted its initial binding.
+        /// </summary>
+        internal bool IsStatusPresenterBound =>
+            isStatusPresenterBound;
+
+        /// <summary>
         /// Gets the latest settled sequence result owned by this root.
         /// </summary>
         internal StartupSequenceRunResult
@@ -255,6 +289,8 @@ namespace EchoDevGames.EchoLaunch
                     initialDestinationLoader =
                         UnityInitialDestinationLoader
                             .Shared;
+
+                    ResolveStatusPresenter();
                 }
                 catch
                 {
@@ -279,9 +315,22 @@ namespace EchoDevGames.EchoLaunch
                 this);
         }
 
+        private async Awaitable Start()
+        {
+            if (!startAutomatically ||
+                !MayStartAutomatically)
+            {
+                return;
+            }
+
+            await StartLaunchAsync();
+        }
+
         private void OnDestroy()
         {
             isDestroying = true;
+
+            UnbindStatusPresenter();
 
             if (Volatile.Read(
                     ref activeLaunchState) != 0)
@@ -312,6 +361,9 @@ namespace EchoDevGames.EchoLaunch
             session = null;
             sequenceRunner = null;
             initialDestinationLoader = null;
+            statusPresenter = null;
+            statusPresenterComponent = null;
+            statusPresenterWasInjected = false;
             lastSequenceRunResult = null;
             launchReportBuilder = null;
             lastReport = null;
@@ -324,8 +376,9 @@ namespace EchoDevGames.EchoLaunch
         /// <summary>
         /// Explicitly begins the one startup-sequence run owned by this root.
         ///
-        /// First Light deliberately does not call this method from Awake, Start,
-        /// or a scene callback. Automatic startup remains a later checkpoint.
+        /// Unity's Start callback uses this same gate when automatic startup is
+        /// enabled. Tests and development helpers may still invoke it directly
+        /// after disabling automatic startup through the internal test seam.
         /// </summary>
         internal async Awaitable<StartupSequenceRunResult>
             StartLaunchAsync()
@@ -360,6 +413,7 @@ namespace EchoDevGames.EchoLaunch
                         configuration,
                         launchStartSeconds);
 
+                BindStatusPresenter();
                 PublishValidationStarted();
 
                 LaunchDestination initialDestination;
@@ -531,6 +585,40 @@ namespace EchoDevGames.EchoLaunch
         }
 
         /// <summary>
+        /// Enables or disables Unity Start-driven launch before the session
+        /// advances. This is an internal deterministic test seam.
+        /// </summary>
+        internal void SetAutomaticStartForTesting(
+            bool enabled)
+        {
+            EnsureMayReplaceLaunchDependency(
+                "Automatic startup");
+
+            startAutomatically = enabled;
+        }
+
+        /// <summary>
+        /// Replaces the neutral status presenter before launch begins for
+        /// deterministic runtime tests.
+        /// </summary>
+        internal void SetStatusPresenterForTesting(
+            ILaunchStatusPresenter presenter)
+        {
+            if (presenter == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(presenter));
+            }
+
+            EnsureMayReplaceLaunchDependency(
+                "The status presenter");
+
+            statusPresenter = presenter;
+            statusPresenterWasInjected = true;
+            statusPresenterComponent = null;
+        }
+
+        /// <summary>
         /// Replaces the runner before launch begins for deterministic runtime
         /// tests. Production uses the default Unity-clock runner.
         /// </summary>
@@ -543,16 +631,8 @@ namespace EchoDevGames.EchoLaunch
                     nameof(runner));
             }
 
-            if (!IsAuthoritative ||
-                session == null ||
-                session.State !=
-                    LaunchStatus.AuthorityClaimed ||
-                IsLaunchActive)
-            {
-                throw new InvalidOperationException(
-                    $"[{StartGateDiagnosticCode}] " +
-                    "The sequence runner may be replaced only on an idle authoritative root before launch begins.");
-            }
+            EnsureMayReplaceLaunchDependency(
+                "The sequence runner");
 
             sequenceRunner = runner;
         }
@@ -571,16 +651,8 @@ namespace EchoDevGames.EchoLaunch
                     nameof(loader));
             }
 
-            if (!IsAuthoritative ||
-                session == null ||
-                session.State !=
-                    LaunchStatus.AuthorityClaimed ||
-                IsLaunchActive)
-            {
-                throw new InvalidOperationException(
-                    $"[{StartGateDiagnosticCode}] " +
-                    "The initial destination loader may be replaced only on an idle authoritative root before launch begins.");
-            }
+            EnsureMayReplaceLaunchDependency(
+                "The initial destination loader");
 
             initialDestinationLoader =
                 loader;
@@ -613,6 +685,14 @@ namespace EchoDevGames.EchoLaunch
             LaunchProgressSnapshot current =
                 session.Progress;
 
+            PresentStatusSnapshot(
+                current);
+
+            if (!CanPublishRuntimeProgress)
+            {
+                return;
+            }
+
             if (previous.Status !=
                 current.Status)
             {
@@ -641,6 +721,14 @@ namespace EchoDevGames.EchoLaunch
                 this);
         }
 
+        private bool MayStartAutomatically =>
+            !isDestroying &&
+            IsAuthoritative &&
+            session != null &&
+            session.State ==
+                LaunchStatus.AuthorityClaimed &&
+            !IsLaunchActive;
+
         private bool CanPublishRuntimeProgress =>
             !isDestroying &&
             IsAuthoritative &&
@@ -667,6 +755,22 @@ namespace EchoDevGames.EchoLaunch
                 IsLaunchActive)
             {
                 throw CreateStartGateException();
+            }
+        }
+
+        private void EnsureMayReplaceLaunchDependency(
+            string dependencyName)
+        {
+            if (!IsAuthoritative ||
+                session == null ||
+                session.State !=
+                    LaunchStatus.AuthorityClaimed ||
+                IsLaunchActive)
+            {
+                throw new InvalidOperationException(
+                    $"[{StartGateDiagnosticCode}] " +
+                    dependencyName +
+                    " may be changed only on an idle authoritative root before launch begins.");
             }
         }
 
@@ -1482,6 +1586,14 @@ namespace EchoDevGames.EchoLaunch
 
             lastReport = report;
 
+            PresentTerminalReport(
+                report);
+
+            if (!CanPublishRuntimeProgress)
+            {
+                return;
+            }
+
             if (finalStatus ==
                 LaunchStatus.Failed)
             {
@@ -1511,6 +1623,93 @@ namespace EchoDevGames.EchoLaunch
                 report,
                 nameof(LaunchCompleted),
                 this);
+        }
+
+        private void ResolveStatusPresenter()
+        {
+            if (statusPresenterWasInjected)
+            {
+                return;
+            }
+
+            statusPresenter =
+                LaunchStatusPresenterDispatcher
+                    .Resolve(
+                        statusPresenterComponent,
+                        this);
+        }
+
+        private void BindStatusPresenter()
+        {
+            if (isStatusPresenterBound)
+            {
+                return;
+            }
+
+            ResolveStatusPresenter();
+
+            ILaunchStatusPresenter presenter =
+                statusPresenter ??
+                NullLaunchStatusPresenter.Shared;
+
+            LaunchStatusPresenterDispatcher
+                .TryBind(
+                    presenter,
+                    session == null
+                        ? LaunchProgressSnapshot.Empty
+                        : session.Progress,
+                    this);
+
+            isStatusPresenterBound = true;
+        }
+
+        private void PresentStatusSnapshot(
+            LaunchProgressSnapshot snapshot)
+        {
+            if (!isStatusPresenterBound)
+            {
+                return;
+            }
+
+            LaunchStatusPresenterDispatcher
+                .TryPresent(
+                    statusPresenter ??
+                    NullLaunchStatusPresenter.Shared,
+                    snapshot,
+                    this);
+        }
+
+        private void PresentTerminalReport(
+            LaunchReport report)
+        {
+            if (!isStatusPresenterBound ||
+                report == null)
+            {
+                return;
+            }
+
+            LaunchStatusPresenterDispatcher
+                .TryPresentTerminal(
+                    statusPresenter ??
+                    NullLaunchStatusPresenter.Shared,
+                    report,
+                    this);
+        }
+
+        private void UnbindStatusPresenter()
+        {
+            if (!isStatusPresenterBound)
+            {
+                return;
+            }
+
+            isStatusPresenterBound = false;
+
+            LaunchStatusPresenterDispatcher
+                .TryUnbind(
+                    statusPresenter ??
+                    NullLaunchStatusPresenter.Shared,
+                    this);
         }
 
         private int GetAuthoredEntryCount()

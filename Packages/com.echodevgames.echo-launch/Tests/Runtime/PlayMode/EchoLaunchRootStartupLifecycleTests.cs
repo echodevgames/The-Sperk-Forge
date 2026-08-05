@@ -397,7 +397,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
         }
 
         [Test]
-        public void AwakeClaimsAuthorityWithoutAutomaticStartup()
+        public void AwakeClaimsAuthorityBeforeAutomaticStart()
         {
             EchoLaunchRoot root =
                 CreateRoot(
@@ -1447,6 +1447,12 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
                 mode);
 
             target.SetActive(true);
+
+            if (root.IsAuthoritative)
+            {
+                root.SetAutomaticStartForTesting(
+                    false);
+            }
 
             if (root.IsAuthoritative &&
                 configuration != null)

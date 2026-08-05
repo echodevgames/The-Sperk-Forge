@@ -1885,6 +1885,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
 
             if (root.IsAuthoritative)
             {
+                root.SetAutomaticStartForTesting(
+                    false);
+
                 root.SetInitialDestinationLoaderForTesting(
                     loader);
             }

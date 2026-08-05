@@ -974,6 +974,12 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             RootLaunchModeField.SetValue(root, mode);
             target.SetActive(true);
 
+            if (root.IsAuthoritative)
+            {
+                root.SetAutomaticStartForTesting(
+                    false);
+            }
+
             if (root.IsAuthoritative &&
                 configuration != null)
             {
