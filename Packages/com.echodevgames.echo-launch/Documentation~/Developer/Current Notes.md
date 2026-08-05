@@ -1,86 +1,122 @@
+
 # First Light - Current Notes
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M4-05`
-- Title: Startup Presentation Prefab and Canvas Assembly
+- Checkpoint: `FL-M5-01`
+- Title: Editor Setup Foundation and Non-Destructive Project Plan
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.6.0
-- ADR: EchoLaunch-ADR-003
-- Authority commit: `311a9d2`
-- Implementation commit: `8d3c6a7`
-- Previous documentation commit: `9d6d469`
-- Implementation status: Complete and pushed
-- Documentation closeout: Pending adjacent commit
-- EditMode result: 27 passed, 0 failed, 0 ignored
-- Runtime Play Mode result: 479 passed, 0 failed, 0 ignored
-- Compilation result: 0 errors, 0 compiler warnings
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.7.0
+- ADR: EchoLaunch-ADR-004
+- Status: Authority approved; Editor implementation locked until authority commit
+- Repository baseline: `8bd2a57`
+- Last implementation commit: `8d3c6a7`
+- EditMode baseline: 27 passed, 0 failed, 0 ignored
+- Runtime Play Mode baseline: 479 passed, 0 failed, 0 ignored
+- Compilation baseline: 0 errors, 0 compiler warnings
 
-## Completed Result
+## Approved Contract
 
-Implemented:
+### Architecture
 
-- Stable `EchoLaunchStatusView.prefab`
-- Stable `EchoLaunchRoot.prefab`
-- Committed folder and prefab GUID metadata
-- Neutral Screen Space Overlay Canvas
-- Complete presenter hierarchy
-- Complete serialized presenter wiring
-- Nested status-view prefab inside the root prefab
-- Null project configuration
-- Canonical Boot mode
-- Automatic root start
-- Non-interactive graphics and slider
-- No input authority
-- No TextMeshPro dependency
-- No project asset dependency
-- Editor-only prefab asset-test assembly
-- Twenty-seven passing EditMode asset tests
-- Retained 479-test Runtime Play Mode suite
-- Temporary authoring helper removal
-- Generated YAML/metadata whitespace cleanup
+```text
+read-only snapshot collector
+    -> immutable project snapshot
+    -> deterministic setup planner
+    -> immutable setup plan
+    -> preview-only Setup window
+```
 
-## Evidence Summary
+Mutation is not implemented in FL-M5-01.
 
-- Implementation commit `8d3c6a7` pushed to `main` and `origin/main`
-- Working tree clean after implementation push
-- EditMode: 27 passed, 0 failed, 0 ignored
-- Runtime Play Mode: 479 passed, 0 failed, 0 ignored
-- Compilation: 0 errors, 0 compiler warnings
-- Both prefabs visible in the package folder
-- `Assets/FLM405Temp` removed
-- No production script changed
+### Setup Window
 
-## Asset Boundary
+Menu:
 
-The package owns neutral immutable templates.
+```text
+Tools > Sperk's Forge > First Light > Setup
+```
 
-Projects own configuration assignment, branding, production art, fonts, layout
-variants, input controls, safe-area behavior, and final scene placement.
+The window can edit an in-memory request, refresh observation, display
+operations/diagnostics, and copy a plain-text report.
 
-Runtime performs no hidden prefab discovery or instantiation.
+The window has no Apply, Repair, Migrate, Create, or Build Settings action.
 
-## Not Run
+### Default Paths
 
-- Final branded project variant
-- Full manual multi-aspect prefab review
-- Editor setup/copy workflow
-- Direct-scene initializer
+```text
+Assets/EchoDevGames/FirstLight
+```
+
+with Configuration, Prefabs, and Scenes children.
+
+The destination scene must already exist.
+
+### Existing Project Safety
+
+- Compatible existing assets: reuse.
+- Incompatible target path: block.
+- Multiple candidates: manual decision.
+- Unsupported schema: block migration.
+- Default Build Settings plan: append if missing.
+- Place-first plan: explicit approval.
+- Unrelated scene order: preserved.
+- Package template: never modified.
+- Project-owned root: future prefab variant.
+- No EditorPrefs project identity.
+- No scene opening during collection.
+
+### Diagnostics
+
+- `ELAUNCH-SETUP-001`
+- `ELAUNCH-SETUP-002`
+- `ELAUNCH-SETUP-003`
+- `ELAUNCH-SETUP-004`
+- `ELAUNCH-SETUP-005`
+- `ELAUNCH-SETUP-006`
+- `ELAUNCH-SETUP-007`
+
+## Implementation Lock
+
+Do not add Editor setup code until the authority commit is pushed.
+
+Required authority commit:
+
+```text
+echo-launch: approve FL-M5-01 non-destructive setup planning
+```
+
+## Expected Final Implementation Scope
+
+- Internal Editor setup value contracts
+- Read-only project snapshot collector
+- Pure deterministic planner
+- Path validation/defaults
+- Plain-text plan formatter
+- Preview-only Setup window
+- Editor test assembly and focused tests
+- No Runtime production change
+- No Assets, scene, prefab, or ProjectSettings change
+
+## Explicit Exclusions
+
+- Plan apply
+- Asset/folder creation
+- Prefab variant creation
 - Boot scene generation
-- Standalone Laboratory
+- Build Settings mutation
+- Undo/backup/receipt
+- Schema migration
+- Direct-scene initializer
+- Validator/simulator/report viewer
+- Test Lab
 - Player builds
-- Clean-project installation
-- External project adoption
-- Performance measurements
 
 ## Handoff Snapshot
 
-FL-M4-05 implementation is complete and pushed at `8d3c6a7`.
+FL-M4-05 is fully closed at `8bd2a57`.
 
-First Light now ships explicit neutral root and presentation prefab templates
-with stable identities and serialized proof.
+FL-M5-01 authority is prepared through specification v1.7.0, ADR-004, and the
+approved Checkpoint Build Plan.
 
-The adjacent FL-M4-05 documentation closeout is the only active repository work.
-
-Tentative next checkpoint: FL-M5-01 - Editor Setup Foundation and
-Non-Destructive Project Plan.
+Editor implementation begins only after the authority commit is confirmed.

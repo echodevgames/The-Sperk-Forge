@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.6.0
+**Specification version:** 1.7.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime implementation proceeds only through the active SFGSS-005 Checkpoint Build Plan. FL-M4-05 is authorized only after the default-prefab/template decision and this v1.6.0 authority update are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-01 is authorized only after the dry-run setup-planning boundary and this v1.7.0 authority update are committed.
 
 ---
 
@@ -33,6 +33,7 @@
 | 1.4.0 | 2026-08-05 | Approved | Selected a standalone project-owned `LaunchDestination` ScriptableObject, assigned destination schema version 1, advanced `EchoLaunchConfiguration` to schema version 3, preserved schema 2 as the historical startup-sequence-only shape, and authorized FL-M3-08 destination handoff work | Jesse “Echo” Adams |
 | 1.5.0 | 2026-08-05 | Approved | Advanced `EchoLaunchConfiguration` to schema version 4 with an optional project-owned `SplashSequence` reference and project-authored reduced-motion default; selected sequential root order of optional splash, startup steps, destination transition; preserved report schema 2; and authorized FL-M4-04 | Jesse “Echo” Adams |
 | 1.6.0 | 2026-08-05 | Approved | Defined two immutable neutral package template prefabs, selected the package-owned Canvas hierarchy and defaults, preserved project ownership of branding/layout variants/input bindings, prohibited hidden prefab discovery or spawning, and authorized FL-M4-05 | Jesse “Echo” Adams |
+| 1.7.0 | 2026-08-05 | Approved | Defined the read-only project snapshot, immutable setup request/plan/operation contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, default project-owned paths, and explicit no-write boundary for FL-M5-01 | Jesse “Echo” Adams |
 
 ---
 
@@ -624,12 +625,15 @@ All configuration, sequence, step, splash, and destination assets are treated as
 
 1. Install or embed `com.echodevgames.echo-launch`.
 2. Open **Tools > Sperk’s Forge > First Light > Setup**.
-3. Select or create the project configuration location and canonical Boot scene path.
-4. Review the dry-run plan.
-5. Create the configuration, startup sequence, splash sequence, root prefab, and Boot scene only when missing.
-6. Add/validate the Boot scene in Build Settings without reordering unrelated project scenes silently.
-7. Open the Standalone Test Lab or project Boot scene.
-8. Run validation and inspect the generated setup report.
+3. Select the project-owned First Light root, Boot scene path, destination scene, optional splash creation, and Build Settings policy.
+4. Refresh the read-only project snapshot.
+5. Review the deterministic dry-run plan and every operation disposition.
+6. Resolve blockers or manual decisions before any apply operation becomes available.
+7. In a later approved apply checkpoint, create only missing project-owned assets and modify only explicitly approved project settings.
+8. Re-run planning and validation until the result is repeat-safe and contains no unexpected create/modify operation.
+
+FL-M5-01 implements steps 2 through 5 only. It provides no Apply, Repair,
+Migrate, Create, Copy, Scene Save, or Build Settings mutation action.
 
 ### 11.2 Setup operations
 
@@ -672,6 +676,134 @@ All configuration, sequence, step, splash, and destination assets are treated as
 | ELAUNCH-VAL-011 | Splash duration/fade values invalid | Error | Yes | Clamp only with explicit apply action |
 | ELAUNCH-VAL-012 | Required step configured to continue on blocking failure | Error | Yes | Policy edit required |
 | ELAUNCH-VAL-013 | Project-owned asset is inside immutable package source | Error | Yes | Move with GUID preservation after preview |
+
+### 11.5 Setup planning contract
+
+The Editor setup foundation separates observation, planning, and mutation:
+
+```text
+EchoLaunchProjectSnapshotCollector
+    -> EchoLaunchProjectSnapshot
+    -> EchoLaunchSetupPlanner
+    -> EchoLaunchSetupPlan
+    -> later approved apply service
+```
+
+FL-M5-01 implements the first four stages only.
+
+The project snapshot is read-only evidence captured from AssetDatabase and
+EditorBuildSettings. The deterministic planner performs no Unity write API call.
+
+Approved immutable Editor contracts:
+
+- `EchoLaunchSetupRequest`
+- `EchoLaunchProjectSnapshot`
+- `EchoLaunchSetupPlan`
+- `EchoLaunchSetupOperation`
+- `EchoLaunchSetupDiagnostic`
+- `EchoLaunchSetupPathSet`
+- `EchoLaunchSetupPlanStatus`
+- `EchoLaunchSetupOperationKind`
+- `EchoLaunchSetupOperationDisposition`
+- `EchoLaunchBuildSettingsPolicy`
+
+Plan statuses:
+
+```text
+Ready
+ReadyWithWarnings
+Blocked
+```
+
+Operation dispositions:
+
+```text
+Create
+Reuse
+NoChange
+ManualDecision
+Conflict
+Unsupported
+```
+
+The planner orders operations deterministically by phase and path so the same
+request and snapshot produce the same plan.
+
+### 11.6 Default project-owned paths
+
+The Setup window proposes, but never silently enforces, this project-owned root:
+
+```text
+Assets/EchoDevGames/FirstLight
+```
+
+Default paths beneath it:
+
+```text
+Configuration/EchoLaunchConfiguration.asset
+Configuration/StartupSequence.asset
+Configuration/LaunchDestination.asset
+Configuration/SplashSequence.asset
+Prefabs/EchoLaunchRoot.prefab
+Scenes/Boot.unity
+```
+
+The splash asset is optional and omitted from the plan unless selected.
+
+The destination scene is selected from an existing project scene. FL-M5-01
+does not create a gameplay or menu destination scene.
+
+A future apply operation creates a project-owned prefab variant from the stable
+package `EchoLaunchRoot.prefab`, rather than editing the immutable package
+template.
+
+### 11.7 Non-destructive planning rules
+
+- Existing compatible assets are reused.
+- Existing paths with an incompatible asset type are conflicts.
+- Existing project assets are never overwritten by planning.
+- Package assets are never modified.
+- Missing folders/assets/scenes produce proposed create operations only.
+- Build Settings inspection is read-only.
+- `AddIfMissingAtEnd` is the default Build Settings policy.
+- Moving Boot to index zero requires a distinct explicit
+  `PlaceFirstAfterApproval` policy.
+- Existing unrelated scene order is preserved in every plan.
+- Unsupported configuration schemas produce a blocked migration diagnostic;
+  FL-M5-01 does not migrate.
+- Ambiguous multiple candidates produce a manual-decision operation.
+- Every operation includes a stable key, target path, reason, and whether later
+  apply would require explicit approval.
+- Refreshing or closing the Setup window changes no project asset, scene,
+  import setting, or Build Settings entry.
+
+### 11.8 Preview-only Setup window
+
+FL-M5-01 provides:
+
+```text
+Tools > Sperk's Forge > First Light > Setup
+```
+
+The window may:
+
+- Edit an in-memory setup request.
+- Refresh project observation.
+- Generate and display a dry-run plan.
+- Filter operations and diagnostics.
+- Copy a plain-text plan report.
+- Ping existing compatible assets.
+
+The window may not:
+
+- Create folders or assets.
+- Copy or variant prefabs.
+- Create, open, save, or modify scenes.
+- Change Build Settings.
+- Modify selection targets.
+- Migrate schemas.
+- Store project identity in EditorPrefs.
+- Call runtime launch behavior.
 
 ---
 
@@ -900,6 +1032,14 @@ EchoLaunch exposes:
 | ELAUNCH-DEST-002 | Blocker | Destination load failed | Inspect scene/build/platform error |
 | ELAUNCH-DIRECT-001 | Warning | Direct-scene helper unavailable or prohibited | Start from Boot scene or enable approved development mode |
 | ELAUNCH-LIFE-001 | Info/Warning | Launch interrupted during shutdown/destruction | Review lifecycle only if unexpected |
+| ELAUNCH-SETUP-001 | Blocker | Setup request contains an invalid or non-project asset path | Correct the project-owned path before apply |
+| ELAUNCH-SETUP-002 | Blocker | Planned target path contains an incompatible existing asset | Select another path or resolve the conflict manually |
+| ELAUNCH-SETUP-003 | Blocker | Existing configuration schema requires an unsupported migration | Run a separately approved migration workflow |
+| ELAUNCH-SETUP-004 | Warning/Manual | Requested Build Settings policy would reorder existing scenes | Review and explicitly approve placement before apply |
+| ELAUNCH-SETUP-005 | Warning/Manual | More than one compatible candidate exists for a required role | Select the intended project asset |
+| ELAUNCH-SETUP-006 | Blocker | Required package template or script identity is unavailable | Repair/reinstall the package before setup |
+| ELAUNCH-SETUP-007 | Info | Existing compatible project asset will be reused | Review the planned reference target |
+
 
 ### 15.4 Observatory bridge
 
@@ -1157,6 +1297,19 @@ Presentation.UGUI/
 └── Prefabs/
     ├── EchoLaunchStatusView.prefab
     └── EchoLaunchRoot.prefab
+
+Editor/
+└── Setup/
+    ├── EchoLaunchBuildSettingsPolicy.cs
+    ├── EchoLaunchProjectSnapshot.cs
+    ├── EchoLaunchProjectSnapshotCollector.cs
+    ├── EchoLaunchSetupDiagnostic.cs
+    ├── EchoLaunchSetupOperation.cs
+    ├── EchoLaunchSetupPathSet.cs
+    ├── EchoLaunchSetupPlan.cs
+    ├── EchoLaunchSetupPlanner.cs
+    ├── EchoLaunchSetupRequest.cs
+    └── EchoLaunchSetupWindow.cs
 ```
 
 The exact file list is not implementation authorization. It is a proposed ownership map to review at M0.
@@ -1322,6 +1475,10 @@ All code examples must compile against the documented release. Menu paths, scree
 | ELAUNCH-T-011 | Invalid destination | Scene not build-loadable | Launch | Preflight blocks with ELAUNCH-DEST-001 | Yes | Not run |
 | ELAUNCH-T-012 | Successful handoff | Valid destination | Launch | Destination activates; one completion event/report | Yes | Not run |
 | ELAUNCH-T-013 | Setup repeatability | Clean project | Run setup 3 times | One config/root/Boot entry; no overwrite | Partly | Not run |
+| ELAUNCH-T-016 | Setup planning purity | Snapshot and request | Generate plan repeatedly | No project writes; plans are value-equivalent | Yes | Not run |
+| ELAUNCH-T-017 | Existing compatible assets | Snapshot with matching targets | Generate plan | Reuse/NoChange, never overwrite | Yes | Not run |
+| ELAUNCH-T-018 | Setup path conflict | Snapshot with wrong asset type at target | Generate plan | Blocked conflict with ELAUNCH-SETUP-002 | Yes | Not run |
+| ELAUNCH-T-019 | Build Settings order safety | Existing unrelated scene order | Plan Boot addition/promotion | Default appends; promotion requires explicit approval | Yes | Not run |
 | ELAUNCH-T-014 | Sample removal | Installed package + imported sample | Delete sample | Runtime/Editor compile | Manual/CI | Not run |
 | ELAUNCH-T-015 | Clean tarball install | New project | Install `.tgz` | Zero compile errors; quick start succeeds | Manual/CI | Not run |
 
@@ -1553,18 +1710,16 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly |
-| Authority commit | `311a9d2` |
-| Implementation commit | `8d3c6a7` |
-| Previous documentation commit | `9d6d469` |
-| Files/assets created | Runtime launch systems, schema-4 launch integration, neutral status/splash presentation, stable status/root package prefabs, nested prefab composition, and isolated Runtime/uGUI/EditMode asset tests |
+| Active authorized checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan |
+| Authority baseline | `8bd2a57` |
+| Last implementation commit | `8d3c6a7` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
 | EditMode tests passed | 27 prefab asset tests |
-| Tests failed | 0 |
-| Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Implemented decisions | Stable neutral prefab identities; Screen Space Overlay Canvas; complete serialized wiring; no package input authority; no hidden prefab spawning; project-owned variants for branding/layout |
-| Known issues | Editor migration/setup, direct-scene initializer tooling, final branded variants, multi-aspect manual review, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Next checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan, tentative and not yet authorized |
+| Authority decisions | Read-only project snapshot; immutable request/plan/operation contracts; deterministic pure planner; preview-only Setup window; stable setup diagnostics; no writes in FL-M5-01 |
+| Default proposed project root | `Assets/EchoDevGames/FirstLight` |
+| Known issues | FL-M5-01 Editor implementation/tests, apply/repair operations, migration, direct-scene initializer, Standalone Laboratory, player builds, and external adoption remain not run |
+| Next action | Commit this authority update before adding Editor setup implementation |
 
 ---
 
@@ -1613,7 +1768,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M4-05 owns only the two neutral package prefab templates, their Canvas hierarchy and serialized wiring, stable asset identity, and focused asset/presentation proof.
+The document is **Approved** as the Level 2 authority for First Light. Implementation remains bounded by the active SFGSS-005 Checkpoint Build Plan; FL-M5-01 owns only the read-only Editor project snapshot, immutable setup planning contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, and focused purity/UI proof.
 
 
 ---
