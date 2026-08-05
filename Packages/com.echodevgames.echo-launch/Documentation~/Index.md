@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Immediate execution skeleton implemented; policy and lifecycle integration pending
+- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -16,7 +16,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M2-07`
   - `FL-M2-08`
   - `FL-M3-01`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, fresh executors, runtime attempt state, and immediate ordered traversal
+  - `FL-M3-02`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware immediate traversal, and structured exception containment
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -40,6 +41,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M2-08 Runtime Test Report](Developer/Test%20Reports/FL-M2-08_Startup_Step_Policy_and_Executor_Contract_Test_Report.md)
 - [FL-M3-01 Startup Sequence Runner Skeleton and Immediate Step Execution](Developer/Checkpoints/FL-M3-01_Startup_Sequence_Runner_Skeleton_and_Immediate_Step_Execution.md)
 - [FL-M3-01 Runtime Test Report](Developer/Test%20Reports/FL-M3-01_Startup_Sequence_Runner_Immediate_Test_Report.md)
+- [FL-M3-02 Step Result Policy Application and Exception Conversion](Developer/Checkpoints/FL-M3-02_Step_Result_Policy_Application_and_Exception_Conversion.md)
+- [FL-M3-02 Runtime Test Report](Developer/Test%20Reports/FL-M3-02_Step_Result_Policy_and_Exception_Test_Report.md)
 
 ## Package Root Documents
 
@@ -80,6 +83,12 @@ First Light currently proves:
 - Fresh executor invocation for enabled entries
 - Authored-order immediate traversal
 - Immediate progress and terminal-result capture
-- One hundred ninety-nine passing Runtime Play Mode tests
+- Explicit continue-with-warning conversion
+- Explicit block-launch conversion and traversal stop
+- Stable `ELAUNCH-STEP-004` exception and contract results
+- Sanitized exception details
+- Attempted, disabled, and unvisited entry accounting
+- Stopping authored-index capture
+- Two hundred thirty-one passing Runtime Play Mode tests
 
-Root integration, policy enforcement, exception conversion, timeout handling, retries, reports, preflight, and lifecycle automation remain outside the implemented scope.
+Timeout handling, retries, cancellation orchestration, reports, preflight, root integration, and lifecycle automation remain outside the implemented scope.

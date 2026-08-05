@@ -8,6 +8,26 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Added
 
+#### FL-M3-02 - Step Result Policy Application and Exception Conversion
+
+- Immutable `StartupStepPolicyDecision`
+- Internal `StartupStepPolicyEvaluator`
+- Explicit `ContinueWithWarning` result conversion
+- Explicit `BlockLaunch` result conversion and traversal stop
+- Cancelled-result preservation and traversal stop
+- Internal `StartupStepExceptionPhase`
+- Internal `StartupStepExceptionConverter`
+- Stable step failure diagnostic `ELAUNCH-STEP-004`
+- Blocking factory-exception containment
+- Blocking null-executor contract containment
+- Policy-aware executor-exception containment
+- Blocking null-result contract containment
+- Sanitized exception type and message details
+- Pre-executor failure capture on `StartupStepExecution`
+- Unvisited-entry and stopping-index accounting on `StartupSequenceRunResult`
+- Sixteen Runtime Play Mode policy-application tests
+- Sixteen Runtime Play Mode runner policy and exception tests
+
 #### FL-M3-01 - Startup Sequence Runner Skeleton and Immediate Step Execution
 
 - Internal runtime-only `StartupStepExecution`
@@ -124,6 +144,14 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Changed
 
+- `StartupSequenceRunner` now applies authored `StartupStepFailureAction` to failure-like terminal results.
+- `ContinueWithWarning` converts recoverable, blocking, and timed-out results to warnings and continues traversal.
+- `BlockLaunch` converts failure-like results to blocking failures and stops before any later executor factory is called.
+- `StartupStepExecution` can now capture a blocking factory or contract failure before execution begins.
+- `StartupSequenceRunResult` now accounts for attempted, disabled, and unvisited entries and records the stopping authored index.
+- Retained immediate-runner tests now assert blocking traversal stops rather than continuation.
+- The intentional synchronous test executor suppresses compiler warning `CS1998` locally.
+
 - `StartupStepDefinition` now requires `CreateExecutor()` to return a fresh single-use runtime executor.
 - `StartupSequenceEntry` now serializes one `StartupStepPolicy`.
 - `StartupSequence.CurrentSchemaVersion` advanced from `1` to `2` because the embedded entry shape now includes policy data.
@@ -138,62 +166,62 @@ The package follows Semantic Versioning once public compatibility commitments be
 ### Fixed
 
 - Corrected Unity Inspector defaults for newly added embedded sequence entries. Unity can create list elements from zeroed serialized data without applying C# field initializers; the serialized model now makes that zero state intentionally safe without adding automatic repair callbacks.
+- Removed the intentional immediate-test `CS1998` warning from normal Unity compilation while preserving synchronous immediate-executor behavior.
 
 ### Tested
 
 Runtime Play Mode totals:
 
-- Passed: `199`
+- Passed: `231`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M3-01 coverage:
+FL-M3-02 coverage:
 
-- Runtime execution metadata copying
-- Initial `NotStarted` state
-- Single legal transition to `Running`
-- Progress rejection before begin and after completion
-- Progress capture while running
-- Null and repeated completion rejection
-- Terminal status and result capture
-- Invalid execution construction rejection
-- Null configuration rejection
-- Missing sequence rejection
-- Empty-sequence result
-- Disabled-entry skipping before factory creation
-- One executor and one invocation per enabled entry
-- Fresh executors across repeated runs
-- Context configuration, sequence, entry, and step identities
-- Authored index and complete authored entry count
-- Cancellation-token pass-through
-- Immediate progress capture
-- Success, warning, recoverable failure, and blocking failure preservation
-- Authored execution order
-- Continued traversal after a blocking result
-- Null executor rejection
-- Definition, entry, policy, sequence, and configuration immutability
+- Null policy-decision input rejection
+- Preserved and converted decision identity
+- Success, warning, and skipped continuation
+- `ContinueWithWarning` conversion
+- `BlockLaunch` conversion and stop
+- Timed-out result policy application
+- Cancelled-result preservation and stop
+- Diagnostic code, message, and details preservation
+- Explicit failure action authority for unusual requirement/action pairs
+- Factory exception containment
+- Null executor containment
+- No later factory creation after factory failure
+- Executor exception conversion and policy application
+- Null result containment
+- Sanitized exception details without stack traces
+- `OperationCanceledException` escape from generic conversion
+- Returned recoverable and blocking result policy application
+- Attempted, disabled, and unvisited accounting
+- Stopping authored-index capture
+- Complete traversal metadata
+- Authored asset immutability
+- Zero compiler errors and zero compiler warnings
 - Expected retained diagnostics `ELAUNCH-ROOT-001` and `ELAUNCH-EVENT-001`
 
 ### Not Included
 
+- Timeout measurement
+- `ILaunchClock`
+- Timeout race
+- Timeout cancellation
+- Retry loops
+- Retry backoff
+- Interactive retry
+- Cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
 - Launch-session lifecycle advancement
-- Step lifecycle public events
-- Exception-to-result conversion
-- Result-to-policy interpretation
-- Blocking-result traversal stop
-- Warning aggregation into a launch report
-- Timeout measurement
-- Clock abstraction
-- Timeout cancellation
-- Retry loops
-- Interactive retry
+- Public step lifecycle events
+- Launch reports
+- Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision scans
 - Runner re-entry protection
 - Asynchronous multi-frame proof
-- Launch reports
 - Splash presentation
 - Scene loading
 - Persistent root lifetime

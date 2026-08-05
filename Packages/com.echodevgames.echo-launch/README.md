@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Immediate execution skeleton implemented; policy and lifecycle integration pending
+- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -18,6 +18,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M2-07` Startup Sequence Definition and Ordered Entry Model
   - `FL-M2-08` Startup Step Policy and Executor Contract
   - `FL-M3-01` Startup Sequence Runner Skeleton and Immediate Step Execution
+  - `FL-M3-02` Step Result Policy Application and Exception Conversion
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -135,13 +136,38 @@ First Light now provides:
 ### Runtime Step Execution
 
 - Internal runtime-only `StartupStepExecution`
-- `NotStarted -> Running -> terminal` attempt path
+- Metadata creation before factory success
+- One fresh executor attachment
+- `NotStarted -> Running -> terminal` normal attempt path
+- `NotStarted -> BlockingFailure` factory-contract path
 - Progress accepted only while running
 - Single terminal-result capture
 - Copied authored identity, position, policy, and label metadata
 - No authored asset mutation
 
-### Immediate Sequence Runner
+### Policy Application
+
+- Immutable `StartupStepPolicyDecision`
+- Internal `StartupStepPolicyEvaluator`
+- Success, warning, and skipped preserve and continue
+- Cancelled preserves and stops
+- `ContinueWithWarning` converts failure-like results to warnings
+- `BlockLaunch` converts failure-like results to blocking failures
+- Code, message, and details preservation
+- Explicit failure action remains authoritative
+
+### Exception Conversion
+
+- Stable `ELAUNCH-STEP-004`
+- Factory exception containment
+- Null executor containment
+- Executor exception conversion before policy
+- Null result containment
+- Sanitized exception type and message
+- No stack trace copying
+- `OperationCanceledException` excluded from generic conversion
+
+### Policy-Aware Immediate Sequence Runner
 
 - Internal `StartupSequenceRunner`
 - Explicit invocation only
@@ -151,9 +177,11 @@ First Light now provides:
 - Immutable context delivery
 - Cancellation-token pass-through
 - Immediate progress capture
-- Immediate terminal-result capture
+- Effective terminal-result capture
+- Blocking traversal stops before later factory creation
 - Immutable `StartupSequenceRunResult`
-- Blocking results recorded without stopping traversal
+- Attempted, disabled, and unvisited accounting
+- Stopping authored-index capture
 
 ## Safe Serialized Entry Defaults
 
@@ -191,7 +219,7 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `199`
+- Passed: `231`
 - Failed: `0`
 - Ignored: `0`
 
@@ -207,21 +235,30 @@ Breakdown:
 - Startup step policy and executor-contract tests: `28`
 - Startup step execution tests: `12`
 - Immediate startup sequence runner tests: `18`
+- Policy-application tests: `16`
+- Runner policy and exception tests: `16`
+
+Compilation:
+
+- Errors: `0`
+- Warnings: `0`
 
 Expected yellow diagnostic evidence:
 
 - `ELAUNCH-ROOT-001` from duplicate-root tests
 - `ELAUNCH-EVENT-001` from broken-listener containment tests
 
-Immediate execution evidence:
+Policy and exception evidence:
 
-- Disabled entries create no executor.
-- Enabled entries create fresh executors.
-- Enabled entries execute in authored order.
-- Context identities, authored index, complete count, cancellation, and progress are preserved.
-- Success, warning, recoverable failure, and blocking failure results are captured exactly.
-- Traversal continues after blocking results because policy application is not implemented yet.
-- Definitions, entries, policies, sequence assets, and configuration assets remain unchanged.
+- Continue-with-warning converts failure-like results and continues.
+- Block-launch converts failure-like results and stops.
+- Cancelled results remain cancelled and stop.
+- Factory and executor failures become structured `ELAUNCH-STEP-004` results.
+- Null executors and null terminal results become blocking contract results.
+- Later factories are never called after a stop.
+- Attempted, disabled, and unvisited counts balance against the authored count.
+- Stopping authored index is preserved.
+- Definitions, entries, policies, sequences, and configurations remain unchanged.
 
 No production asset, scene, prefab, root, or automatic startup setup was required.
 
@@ -229,24 +266,24 @@ No production asset, scene, prefab, root, or automatic startup setup was require
 
 First Light does not yet provide:
 
+- Timeout measurement
+- `ILaunchClock`
+- Timeout race
+- Timeout cancellation
+- Retry loops
+- Retry backoff
+- Interactive retry
+- Cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
 - Launch-session lifecycle advancement
 - Public step lifecycle events
-- Exception-to-result conversion
-- Result-to-policy interpretation
-- Blocking-result traversal stop
-- Warning aggregation
-- Timeout measurement
-- Clock abstraction
-- Timeout cancellation
-- Retry loops
-- Interactive retry
+- Launch reports
+- Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
 - Runner re-entry protection
 - Multi-frame asynchronous proof
-- Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime policy
@@ -270,10 +307,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- One hundred ninety-nine passing Runtime Play Mode tests
+- Two hundred thirty-one passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Explicit immediate startup execution with no root or lifecycle integration
+- Policy-aware immediate startup execution with no root or lifecycle integration
 
 Still `Not run`:
 
@@ -284,6 +321,7 @@ Still `Not run`:
 - Production startup integration
 - Multi-frame asynchronous execution
 - Timeout behavior
+- Cancellation orchestration
 - Performance measurements
 
 ## License

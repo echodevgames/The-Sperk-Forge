@@ -2,55 +2,61 @@
 
 ## Active Checkpoint
 
-- Checkpoint: `FL-M3-01`
-- Title: Startup Sequence Runner Skeleton and Immediate Step Execution
+- Checkpoint: `FL-M3-02`
+- Title: Step Result Policy Application and Exception Conversion
 - Package version: `0.1.0`
 - Implementation status: Complete and pushed
-- Implementation commit: `0864b9c`
+- Implementation commit: `6f2ab12`
 - Documentation closeout: Pending adjacent commit
-- Runtime Play Mode result: 199 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 231 passed, 0 failed, 0 ignored
+- Compilation result: 0 errors, 0 warnings
 
 ## Completed Result
 
 Implemented:
 
-- Runtime-only `StartupStepExecution`
-- Immutable `StartupSequenceRunResult`
-- Internal `StartupSequenceRunner`
-- Authored-order enabled-entry traversal
-- Disabled-entry skipping before factory creation
-- Fresh executor creation per attempt
-- Immutable context delivery
-- Cancellation-token pass-through
-- Immediate progress capture
-- Immediate terminal-result capture
-- Thirty new Runtime Play Mode tests
-- `LaunchMode.Unknown` guard correction
+- Immutable `StartupStepPolicyDecision`
+- Internal `StartupStepPolicyEvaluator`
+- Explicit `ContinueWithWarning`
+- Explicit `BlockLaunch`
+- Cancelled-result preservation
+- Stable `ELAUNCH-STEP-004`
+- Factory exception containment
+- Null executor containment
+- Executor exception conversion
+- Null result containment
+- Sanitized exception details
+- Pre-executor blocking completion
+- Unvisited-entry accounting
+- Stopping authored-index capture
+- Blocking traversal stops
+- Thirty-two new Runtime Play Mode tests
+- Local suppression of the intentional immediate-test `CS1998` warning
 
 ## Evidence Summary
 
 ### Passed
 
-- Runtime attempt metadata
-- `NotStarted -> Running -> terminal` flow
-- Progress-state guards
-- Single terminal completion
-- Invalid construction rejection
-- Null configuration and missing sequence rejection
-- Empty sequence traversal
-- Disabled entry skipping
-- Enabled entry execution
-- Fresh executors across runs
-- Context identities
-- Authored index and complete count
-- Cancellation-token pass-through
-- Immediate progress reporting
-- Success, warning, recoverable, and blocking result capture
-- Authored execution order
-- Continued traversal after blocking result
-- Null executor rejection
+- Success, warning, and skipped continuation
+- Recoverable failure conversion
+- Blocking failure conversion
+- Timed-out result conversion
+- Cancelled preservation
+- Diagnostic text preservation
+- Explicit failure-action authority
+- Factory exception containment
+- Null executor containment
+- No later factory call after stop
+- Executor exception conversion
+- Null result containment
+- Sanitized details without stack traces
+- `OperationCanceledException` escape
+- Attempted, disabled, and unvisited accounting
+- Stopping authored index
+- Complete traversal metadata
 - Authored asset immutability
-- One hundred ninety-nine full Runtime Play Mode tests
+- Full 231-test suite
+- Clean compilation with zero warnings
 
 ### Expected Diagnostics
 
@@ -61,17 +67,19 @@ Retained tests intentionally generated:
 
 These warnings were expected and matched by the automated suite.
 
+`ELAUNCH-STEP-004` is stored in structured step results and is not emitted as a runner warning.
+
 ### Not Run
 
+- Timeout measurement
+- Clock abstraction
+- Timeout cancellation
+- Retry
+- Cancellation orchestration
 - Root integration
 - Automatic startup
 - Lifecycle advancement
-- Step lifecycle events
-- Exception conversion
-- Policy application
-- Blocking traversal stop
-- Timeout
-- Retry
+- Public step events
 - Preflight
 - Reports
 - Splash presentation
@@ -81,23 +89,30 @@ These warnings were expected and matched by the automated suite.
 
 ## Changed Files
 
-Runtime implementation:
+New runtime implementation:
 
-- `Runtime/Execution.meta`
+- `Runtime/Execution/StartupStepPolicyDecision.cs`
+- `Runtime/Execution/StartupStepPolicyEvaluator.cs`
+- `Runtime/Execution/StartupStepExceptionPhase.cs`
+- `Runtime/Execution/StartupStepExceptionConverter.cs`
+- Unity-generated `.meta` files
+
+Modified runtime implementation:
+
 - `Runtime/Execution/StartupStepExecution.cs`
 - `Runtime/Execution/StartupSequenceRunResult.cs`
 - `Runtime/Execution/StartupSequenceRunner.cs`
-- Unity-generated `.meta` files
 
 Automated tests:
 
-- `Tests/Runtime/PlayMode/StartupStepExecutionTests.cs`
-- `Tests/Runtime/PlayMode/StartupSequenceRunnerImmediateTests.cs`
+- `Tests/Runtime/PlayMode/StartupStepPolicyApplicationTests.cs`
+- `Tests/Runtime/PlayMode/StartupSequenceRunnerPolicyAndExceptionTests.cs`
+- Modified `Tests/Runtime/PlayMode/StartupSequenceRunnerImmediateTests.cs`
 - Unity-generated `.meta` files
 
 Checkpoint plan:
 
-- `Plan Documentation/Checkpoint Build Plans/FL-M3-01_Startup_Sequence_Runner_Skeleton_and_Immediate_Step_Execution_Checkpoint_Build_Plan.md`
+- `Plan Documentation/Checkpoint Build Plans/FL-M3-02_Step_Result_Policy_Application_and_Exception_Conversion_Checkpoint_Build_Plan.md`
 
 Adjacent documentation:
 
@@ -108,10 +123,10 @@ Adjacent documentation:
 
 ## Handoff Snapshot
 
-FL-M3-01 implementation is complete and pushed in commit `0864b9c`.
+FL-M3-02 implementation is complete and pushed in commit `6f2ab12`.
 
 The adjacent documentation closeout is ready for final Git review, commit, and push.
 
-Immediate executor invocation is now proven through explicit internal test calls.
+Policy-aware immediate traversal and bounded exception conversion are now proven.
 
-No root, automatic startup, policy interpretation, exception conversion, timeout, report, or lifecycle integration is authorized until the next checkpoint.
+Timeout, retries, reports, root integration, cancellation orchestration, and lifecycle automation remain unauthorized until the next checkpoint.

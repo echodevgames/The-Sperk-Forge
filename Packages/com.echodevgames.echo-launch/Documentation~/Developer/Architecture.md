@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Immediate execution skeleton implemented; policy and lifecycle integration pending
+- Development stage: Policy-aware immediate execution implemented; timeout and lifecycle integration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -14,6 +14,7 @@
   - `FL-M2-07`
   - `FL-M2-08`
   - `FL-M3-01`
+  - `FL-M3-02`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -38,8 +39,12 @@ First Light currently establishes:
 16. Immutable completed traversal summaries
 17. Ordered enabled-entry execution
 18. Immediate executor result capture
+19. Authored failure-policy application
+20. Stable factory and executor exception conversion
+21. Blocking traversal stops
+22. Attempted, disabled, and unvisited entry accounting
 
-First Light now executes startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
+First Light now executes and evaluates startup steps only through explicit internal runner calls. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
 
 ## Implemented Runtime Files
 
@@ -56,7 +61,11 @@ First Light now executes startup steps only through explicit internal runner cal
     ├── Execution/
     │   ├── StartupSequenceRunResult.cs
     │   ├── StartupSequenceRunner.cs
-    │   └── StartupStepExecution.cs
+    │   ├── StartupStepExceptionConverter.cs
+    │   ├── StartupStepExceptionPhase.cs
+    │   ├── StartupStepExecution.cs
+    │   ├── StartupStepPolicyDecision.cs
+    │   └── StartupStepPolicyEvaluator.cs
     ├── Properties/
     │   └── AssemblyInfo.cs
     ├── State/
@@ -87,8 +96,10 @@ First Light now executes startup steps only through explicit internal runner cal
     ├── LaunchStateVocabularyTests.cs
     ├── StartupSequenceDefinitionTests.cs
     ├── StartupSequenceRunnerImmediateTests.cs
+    ├── StartupSequenceRunnerPolicyAndExceptionTests.cs
     ├── StartupStepExecutionTests.cs
-    └── StartupStepPolicyAndExecutorContractTests.cs
+    ├── StartupStepPolicyAndExecutorContractTests.cs
+    └── StartupStepPolicyApplicationTests.cs
 
 ## Authored Definition Boundary
 
@@ -326,30 +337,130 @@ It copies:
 - Authored index
 - Complete authored entry count
 - Authored policy
-- Fresh executor reference
 
 It owns:
 
+- An optional fresh executor
 - Current `StartupStepStatus`
 - Latest `StartupStepProgress`
 - One terminal `StartupStepResult`
 
-The legal path is:
+Normal execution path:
 
     NotStarted
         -> Running
             -> terminal result status
 
+Factory or pre-execution contract failure path:
+
+    NotStarted
+        -> BlockingFailure
+
 Guards:
 
-- Begin is legal exactly once.
+- An executor may be attached exactly once before begin.
+- Begin requires an attached executor.
 - Progress is legal only while running.
-- Completion is legal only while running.
-- A null result is rejected.
+- Normal completion is legal only while running.
+- Pre-start completion accepts one blocking result only.
 - Completion is legal exactly once.
 - Progress after completion is rejected.
 
 No ScriptableObject is mutated.
+
+## Policy Decision
+
+`StartupStepPolicyDecision` stores:
+
+- Original terminal result
+- Effective terminal result
+- Whether traversal continues
+
+Derived reads expose:
+
+- Whether traversal stops
+- Whether policy replaced the immutable result instance
+
+Preserved results retain their original instance.
+
+Converted results are new immutable result instances.
+
+## Policy Evaluation
+
+`StartupStepPolicyEvaluator` applies the explicit authored `FailureAction`.
+
+Preserve and continue:
+
+- `Succeeded`
+- `Warning`
+- `Skipped`
+
+Preserve and stop:
+
+- `Cancelled`
+
+Failure-like statuses:
+
+- `RecoverableFailure`
+- `BlockingFailure`
+- `TimedOut`
+
+`ContinueWithWarning`:
+
+- Converts the effective status to `Warning`.
+- Preserves code, message, and details.
+- Continues traversal.
+
+`BlockLaunch`:
+
+- Converts the effective status to `BlockingFailure` when necessary.
+- Preserves code, message, and details.
+- Stops traversal.
+
+`IsRequired` and `IsOptional` remain authoring intent. They do not secretly override the explicit failure action.
+
+Invalid policy is converted by the runner into a blocking `ELAUNCH-STEP-004` contract result without rewriting the authored asset.
+
+## Exception Conversion
+
+`StartupStepExceptionConverter` uses stable diagnostic code:
+
+    ELAUNCH-STEP-004
+
+Factory exception:
+
+- Converts to `BlockingFailure`.
+- Stops traversal.
+- Does not invoke an executor.
+- Does not follow continue-with-warning policy because no valid executor exists.
+
+Null executor:
+
+- Converts to a blocking contract result.
+- Stops traversal.
+
+Executor exception:
+
+- Converts to a recoverable source result.
+- Then follows authored failure policy.
+
+Null executor result:
+
+- Converts to a blocking contract result.
+- Stops traversal.
+
+Sanitized details contain:
+
+- Exception type
+- Trimmed exception message
+
+They exclude:
+
+- Stack trace
+- Recursive inner-exception graph
+- Unity object dumps
+
+`OperationCanceledException` is not converted by the generic path. Cancellation orchestration remains a later checkpoint.
 
 ## Completed Sequence Run Result
 
@@ -360,18 +471,29 @@ It exposes:
 - Authored entry count
 - Disabled entry count
 - Attempted execution count
+- Unvisited entry count
+- Whether traversal stopped early
+- Stopping authored entry index
 - Indexed completed execution access
 - Warning presence
 - Failure presence
 - Blocking-failure presence
 
-The backing array is private.
+Accounting invariant:
 
-Every completed result must account for each authored entry as either disabled or attempted.
+    attempted + disabled + unvisited = authored
 
-The summary records result classifications but does not interpret `StartupStepPolicy` or claim final launch success.
+A complete traversal has:
 
-## Immediate Sequence Runner
+- Unvisited count `0`
+- `WasStoppedEarly == false`
+- Stopping index `-1`
+
+After a stop, every later authored entry is unvisited because the runner never inspects it.
+
+The backing execution array remains private.
+
+## Policy-Aware Immediate Sequence Runner
 
 `StartupSequenceRunner.RunAsync` accepts:
 
@@ -384,37 +506,44 @@ It then:
 1. Validates the configuration and active launch mode.
 2. Reads the configured startup sequence.
 3. Iterates authored indices directly.
-4. Skips disabled entries before executor creation.
-5. Requires an enabled entry definition.
-6. Calls `CreateExecutor()` once.
-7. Requires a non-null fresh executor.
-8. Creates one `StartupStepExecution`.
+4. Skips and counts disabled entries.
+5. Creates runtime execution metadata.
+6. Calls `CreateExecutor()`.
+7. Converts factory exceptions or null executors to blocking `ELAUNCH-STEP-004`.
+8. Attaches the fresh executor.
 9. Creates immutable `StartupStepContext`.
-10. Begins the execution.
+10. Begins execution.
 11. Awaits `ExecuteAsync(context)`.
-12. Captures the returned terminal result.
-13. Appends the completed execution in authored order.
-14. Returns an immutable run summary.
+12. Converts non-cancellation executor exceptions.
+13. Converts null results to blocking contract failures.
+14. Applies authored failure policy.
+15. Completes the execution with the effective result.
+16. Appends the execution in authored order.
+17. Continues or stops according to the policy decision.
+18. Returns immutable traversal accounting.
 
-FL-M3-01 deliberately does not:
+No later executor factory is called after a stop.
 
-- Interpret policy
-- Stop after blocking results
-- Convert exceptions
+FL-M3-02 deliberately does not:
+
 - Measure timeout
+- Orchestrate cancellation
 - Retry
 - Publish root events
 - Update `LaunchSession`
 - Build a public report
 - Start automatically
 
-## Compile Correction
+## Compile Evidence
 
-The first Phase C runner draft checked for `LaunchMode.None`.
+The retained immediate test executor intentionally completes synchronously.
 
-The approved enum uses `LaunchMode.Unknown` as its inactive value.
+Its local `CS1998` suppression keeps Unity compilation clean without changing immediate execution semantics.
 
-The runner guard was corrected to reject `Unknown` and undefined values. No other runtime behavior changed.
+Final FL-M3-02 compile result:
+
+- Errors: `0`
+- Warnings: `0`
 
 ## Retained Lifecycle Architecture
 
@@ -424,13 +553,13 @@ The runner guard was corrected to reject `Unknown` and undefined values. No othe
 
 Listener failures remain isolated through `ELAUNCH-EVENT-001`.
 
-No FL-M2-08 contract calls or mutates these systems.
+No FL-M3-02 execution or policy path calls or mutates these systems.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `199`
+- Passed: `231`
 - Failed: `0`
 - Ignored: `0`
 
@@ -446,21 +575,31 @@ Breakdown:
 - Startup step policy and executor-contract tests: `28`
 - Startup step execution tests: `12`
 - Immediate startup sequence runner tests: `18`
+- Policy-application tests: `16`
+- Runner policy and exception tests: `16`
 
-Verified execution behavior:
+Verified FL-M3-02 behavior:
 
-- Runtime-only attempt state
-- Progress-state guards
-- Single terminal completion
-- Empty sequence traversal
-- Disabled-entry skipping
-- Fresh executor creation
-- Enabled-entry authored order
-- Context identity and position delivery
-- Cancellation-token pass-through
-- Immediate progress and terminal result capture
-- Continued traversal after blocking results
-- Authored definition immutability
+- Immutable policy decisions
+- Preserved and converted results
+- Explicit failure-action authority
+- Continue-with-warning conversion
+- Block-launch conversion and stop
+- Cancelled-result preservation
+- Factory exception containment
+- Null executor containment
+- Executor exception conversion
+- Null result containment
+- Stable `ELAUNCH-STEP-004`
+- Sanitized exception details
+- Cancellation exception escape
+- No later factory creation after stop
+- Attempted, disabled, and unvisited accounting
+- Stopping authored-index capture
+- Complete traversal metadata
+- Authored asset immutability
+- Zero compiler errors
+- Zero compiler warnings
 
 Expected retained diagnostics:
 
@@ -473,23 +612,24 @@ No production asset, scene, prefab, root, or automatic startup setup was require
 
 Not implemented:
 
+- Timeout measurement
+- `ILaunchClock`
+- Timeout race
+- Timeout cancellation
+- Retry loops
+- Retry backoff
+- Interactive retry
+- Cancellation orchestration
 - `EchoLaunchRoot` runner integration
 - Automatic startup from Unity callbacks
 - Launch-session lifecycle advancement
 - Public step lifecycle events
-- Exception conversion
-- Result-to-policy application
-- Blocking-result short circuit
-- Warning aggregation
-- Timeout clock
-- Timeout cancellation
-- Retry loops
-- Interactive retry
+- Launch reports
+- Warning aggregation outside the run result
 - Configuration or sequence preflight
 - Duplicate-ID collision validation
 - Runner re-entry protection
 - Asynchronous multi-frame proof
-- Launch reports
 - Splash presentation
 - Scene loading
 - Persistent-root lifetime
@@ -500,6 +640,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-01 stops after valid enabled entries execute immediate fresh test executors in authored order and return captured runtime results.
+FL-M3-02 stops after failure policy and bounded exception conversion produce deterministic effective results and blocking decisions stop traversal.
 
 The next runtime slice requires separate approval.

@@ -5,7 +5,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
 **Current focus:** First Light runtime implementation
-**Current checkpoint:** FL-M3-01 documentation closeout
+**Current checkpoint:** FL-M3-02 documentation closeout
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -13,38 +13,41 @@
 
 ### Goal
 
-Close FL-M3-01 after the runtime attempt-state model and immediate startup-sequence runner passed the complete Runtime Play Mode suite and were pushed to `origin/main`.
+Close FL-M3-02 after authored failure policy, stable exception conversion, and blocking traversal stops passed the complete Runtime Play Mode suite and were pushed to `origin/main`.
 
 ### Starting State
 
-- Implementation commit `0864b9c` is pushed.
-- Runtime Play Mode result is 199 passed, 0 failed, 0 ignored.
+- Implementation commit `6f2ab12` is pushed.
+- Runtime Play Mode result is 231 passed, 0 failed, 0 ignored.
+- Unity compilation result is 0 errors and 0 warnings.
 - The working tree was clean after the implementation push.
 - The adjacent documentation closeout is the only active repository work.
-- Policy enforcement, exception conversion, timeout, reports, root integration, and lifecycle automation remain locked.
+- Timeout, retries, reports, root integration, cancellation orchestration, and lifecycle automation remain locked.
 
 ## Active Notes
 
-### August 5, 2026 - FL-M3-01 startup sequence runner skeleton and immediate step execution
+### August 5, 2026 - FL-M3-02 step result policy application and exception conversion
 
-- `[TEST]` Unity compiled the execution-state, run-result, runner, and test files with zero errors after one bounded enum correction.
-- `[BUG]` The first Phase C runner draft referenced `LaunchMode.None`.
-- `[FIX]` The package enum uses `LaunchMode.Unknown`; the runner guard was corrected accordingly.
-- `[TEST]` Focused execution-state fixture passed: 12 passed, 0 failed, 0 ignored.
-- `[TEST]` Full Runtime Play Mode suite passed: 199 passed, 0 failed, 0 ignored.
-- `[TEST]` The full total contains 169 retained tests and 30 FL-M3-01 tests.
+- `[TEST]` Unity compiled the final policy-aware runner and tests with zero errors and zero warnings.
+- `[TEST]` Full Runtime Play Mode suite passed: 231 passed, 0 failed, 0 ignored.
+- `[TEST]` The full total contains 199 retained tests and 32 FL-M3-02 tests.
 - `[TEST]` Retained `ELAUNCH-ROOT-001` and `ELAUNCH-EVENT-001` warnings remained intentional evidence.
-- `[DECISION]` Active attempt state lives in `StartupStepExecution`, never in a ScriptableObject.
-- `[DECISION]` One enabled entry creates one fresh executor and one runtime execution object.
-- `[DECISION]` Disabled entries are skipped before executor factory creation.
-- `[DECISION]` Authored list order controls attempt order.
-- `[DECISION]` Context step index uses authored position and step count uses complete authored entry count.
-- `[DECISION]` Immediate executor progress and terminal results are captured.
-- `[DECISION]` `StartupSequenceRunResult` is immutable and exposes count plus indexed reads.
-- `[DECISION]` Blocking results are recorded but do not yet stop traversal.
-- `[DECISION]` The runner does not interpret policy, catch executor exceptions, measure timeout, retry, publish root events, update launch lifecycle, or build reports.
+- `[DECISION]` Explicit `FailureAction` is the runtime continuation authority.
+- `[DECISION]` Success, warning, and skipped results preserve and continue.
+- `[DECISION]` Cancelled results preserve and stop.
+- `[DECISION]` `ContinueWithWarning` converts recoverable, blocking, and timed-out results to warnings and continues.
+- `[DECISION]` `BlockLaunch` converts failure-like results to blocking failures and stops.
+- `[DECISION]` Factory exceptions and null executors always block because no valid executor contract exists.
+- `[DECISION]` Executor exceptions become recoverable `ELAUNCH-STEP-004` source results before policy applies.
+- `[DECISION]` Null executor results become blocking `ELAUNCH-STEP-004` contract failures.
+- `[DECISION]` Exception details contain sanitized type and message only.
+- `[DECISION]` `OperationCanceledException` remains outside generic exception conversion.
+- `[DECISION]` `StartupStepExecution` can capture one pre-start blocking failure without pretending execution began.
+- `[DECISION]` Run accounting is attempted plus disabled plus unvisited equals authored.
+- `[DECISION]` No later executor factory is called after a stop.
 - `[TEST]` Definitions, entries, policies, sequences, and configurations remained unchanged.
-- `[HANDOFF]` Implementation commit `0864b9c` is synchronized on `main` and `origin/main`.
+- `[FIX]` The intentional immediate-test `CS1998` warning is now locally suppressed.
+- `[HANDOFF]` Implementation commit `6f2ab12` is synchronized on `main` and `origin/main`.
 
 **Promoted to:** package checkpoint, package test report, package architecture, package changelog, package README, package documentation index, and root implementation completion record.
 
@@ -52,23 +55,26 @@ Close FL-M3-01 after the runtime attempt-state model and immediate startup-seque
 
 | Entry | Destination | State |
 |---|---|---|
-| Runtime attempt-state contract | Package architecture and checkpoint | Promoted |
-| Immutable run-result contract | Package architecture and checkpoint | Promoted |
-| Immediate ordered runner contract | Package architecture and checkpoint | Promoted |
-| `LaunchMode.Unknown` correction | Changelog, checkpoint, and test report | Promoted |
-| 199-test evidence | Package test report and completion record | Promoted |
+| Policy decision and evaluator | Package architecture and checkpoint | Promoted |
+| Stable `ELAUNCH-STEP-004` conversion | Architecture, changelog, and test report | Promoted |
+| Blocking traversal stop | Architecture, README, and checkpoint | Promoted |
+| Early-stop accounting | Architecture and checkpoint | Promoted |
+| Zero-warning compile result | Changelog and test report | Promoted |
+| 231-test evidence | Package test report and completion record | Promoted |
 | Documentation closeout commit | Git history | Pending |
 
 ## Latest Validation Snapshot
 
 | Area | Result |
 |---|---|
-| Unity compilation | Pass |
-| Execution-state tests | 12 passed |
-| Immediate runner tests | 18 passed |
-| Full Runtime Play Mode suite | 199 passed |
-| Immediate executor invocation | Pass |
-| Authored-order traversal | Pass |
+| Unity compilation | 0 errors, 0 warnings |
+| Policy-application tests | 16 passed |
+| Runner policy and exception tests | 16 passed |
+| Full Runtime Play Mode suite | 231 passed |
+| Continue-with-warning | Pass |
+| Block-launch stop | Pass |
+| `ELAUNCH-STEP-004` containment | Pass |
+| Early-stop accounting | Pass |
 | Definition immutability | Pass |
 | Root integration | Not implemented |
 | Expected diagnostics | Verified |
@@ -79,23 +85,25 @@ Close FL-M3-01 after the runtime attempt-state model and immediate startup-seque
 ## Checkpoint Closeout Checklist
 
 - [x] Reconcile package and suite Current Notes.
-- [x] Promote runtime attempt-state architecture.
-- [x] Promote immutable run-result architecture.
-- [x] Promote immediate runner behavior and boundaries.
-- [x] Record the `LaunchMode.Unknown` correction.
+- [x] Promote policy-decision architecture.
+- [x] Promote stable exception conversion.
+- [x] Promote blocking traversal stops.
+- [x] Promote unvisited-entry accounting.
+- [x] Record the zero-warning compilation result.
 - [x] Record complete automated evidence.
 - [x] Update architecture, changelog, README, and documentation index.
-- [x] Record implementation commit `0864b9c`.
+- [x] Record implementation commit `6f2ab12`.
 - [ ] Review the staged documentation diff.
 - [ ] Commit and push the adjacent documentation closeout.
 
 ## Handoff Snapshot
 
-**Completed implementation checkpoint:** FL-M3-01 - Startup Sequence Runner Skeleton and Immediate Step Execution
-**Implementation commit:** `0864b9c`
-**Runtime Play Mode:** 199 passed, 0 failed, 0 ignored
-**Immediate executor invocation:** Proven through explicit tests
+**Completed implementation checkpoint:** FL-M3-02 - Step Result Policy Application and Exception Conversion
+**Implementation commit:** `6f2ab12`
+**Runtime Play Mode:** 231 passed, 0 failed, 0 ignored
+**Compilation:** 0 errors, 0 warnings
+**Policy-aware traversal:** Proven through explicit tests
 **Active work:** Adjacent documentation closeout
 **Known blockers:** None
-**Next action:** Review, commit, and push the staged FL-M3-01 documentation set
+**Next action:** Review, commit, and push the staged FL-M3-02 documentation set
 **Later runtime behavior:** Not authorized
