@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
+- Development stage: Explicit root-owned startup execution and lifecycle advancement implemented; immutable reports and destination handoff pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -18,6 +18,7 @@
   - `FL-M3-03`
   - `FL-M3-04`
   - `FL-M3-05`
+  - `FL-M3-06`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -63,8 +64,16 @@ First Light currently establishes:
 37. Duplicate entry-ID and step-ID detection before executor creation
 38. Runner-local atomic active-run gate
 39. Stable concurrent re-entry diagnostic `ELAUNCH-RUN-001`
+40. Internal runner-to-root observation seam
+41. Structured preflight diagnostic exception
+42. Explicit root-owned startup execution
+43. Root lifecycle advancement through validation and execution
+44. Root cancellation command and stable lifecycle diagnostics
+45. Destruction-driven cancellation and late-publication suppression
+46. Success boundary at `Transitioning`
+47. Exact legacy runner exception compatibility
 
-First Light now validates, executes, times, and evaluates startup steps only through explicit internal runner calls. The runner rejects malformed authored data before executor creation and prevents concurrent reuse of one runner instance. It is not connected to `EchoLaunchRoot`, Unity scene callbacks, launch lifecycle, presentation, or destination loading.
+First Light now validates, executes, times, evaluates, and projects startup-sequence work through one explicit root-owned launch run. The authoritative root publishes lifecycle and progress snapshots, contains cancellation and destruction, and stops successful work at `Transitioning`. Automatic Unity-callback startup, immutable launch reports, presentation, and destination loading remain outside the implemented boundary.
 
 ## Implemented Runtime Files
 
@@ -80,7 +89,9 @@ First Light now validates, executes, times, and evaluates startup steps only thr
     │   └── LaunchStateChangedEvent.cs
     ├── Execution/
     │   ├── ILaunchClock.cs
+    │   ├── IStartupSequenceObserver.cs
     │   ├── StartupSequencePreflight.cs
+    │   ├── StartupSequencePreflightException.cs
     │   ├── StartupSequenceRunResult.cs
     │   ├── StartupSequenceRunner.cs
     │   ├── StartupStepAwaitOutcome.cs
@@ -90,6 +101,7 @@ First Light now validates, executes, times, and evaluates startup steps only thr
     │   ├── StartupStepPolicyDecision.cs
     │   ├── StartupStepPolicyEvaluator.cs
     │   ├── StartupStepProgressGate.cs
+    │   ├── StartupStepProgressRelay.cs
     │   ├── StartupStepTimeoutMonitor.cs
     │   ├── StartupStepTiming.cs
     │   └── UnityLaunchClock.cs
@@ -116,6 +128,7 @@ First Light now validates, executes, times, and evaluates startup steps only thr
 
     Tests/Runtime/PlayMode/
     ├── EchoLaunchRootAuthorityTests.cs
+    ├── EchoLaunchRootStartupLifecycleTests.cs
     ├── LaunchClockTimingAndGateTests.cs
     ├── LaunchConfigurationBindingTests.cs
     ├── LaunchLifecycleTransitionTests.cs
@@ -820,6 +833,92 @@ The complete post-acquisition run body is wrapped in `try/finally`. The `finally
 
 The same runner instance may therefore be reused sequentially after the prior run settles, but it cannot own two overlapping traversals.
 
+## Structured Preflight Diagnostic Boundary
+
+`StartupSequencePreflightException` derives from `InvalidOperationException` and preserves:
+
+- Stable diagnostic code
+- Human-readable failure message
+- Searchable formatted exception text
+
+The observer-aware runner overload allows `EchoLaunchRoot` to map preflight rejection into an authoritative `Failed` snapshot without parsing exception text.
+
+The retained three-argument runner overload catches the structured exception and rethrows an exact `InvalidOperationException`. This compatibility adapter preserves the historical direct-runner contract verified by retained NUnit exact-type assertions.
+
+## Runner Observation Boundary
+
+`IStartupSequenceObserver` is an internal neutral sink.
+
+The runner may report:
+
+- Sequence validation
+- Step start
+- Accepted step progress
+- Step completion
+
+`StartupStepProgressRelay` first records progress on the runtime execution, then forwards the accepted value to the observer. The runner remains independent of `EchoLaunchRoot`, scenes, presentation, and destination policy.
+
+## Root-Owned Startup Lifecycle
+
+The authoritative `EchoLaunchRoot` now exposes one internal explicit start boundary:
+
+    StartLaunchAsync()
+
+The method is not called by `Awake`, `Start`, or a scene callback.
+
+One accepted run publishes:
+
+    AuthorityClaimed
+        -> Validating
+            -> Running
+                -> Transitioning
+
+The root translates runner observations into existing immutable `LaunchProgressSnapshot` values.
+
+Terminal mapping:
+
+- Preflight or unexpected failure -> `Failed`
+- Blocking or failed run result -> `Failed`
+- Root or caller cancellation -> `Interrupted`
+- Successful or warning-only run -> `Transitioning`
+
+Success does not publish `Completed`. That state remains reserved for the later initial-destination handoff.
+
+The root retains the latest settled `StartupSequenceRunResult` internally.
+
+## Root Start Gate, Cancellation, and Destruction
+
+One root-local atomic active-launch state prevents overlapping root starts.
+
+Rejected starts use:
+
+    ELAUNCH-LIFE-002
+
+`CancelLaunch(reason)`:
+
+- Requires the authoritative root
+- Requires an active launch
+- Accepts only the first cancellation request
+- Normalizes blank reasons
+- Requests cooperative cancellation
+- Waits for executor settlement through the runner
+- Publishes `Interrupted` exactly once
+
+Lifecycle interruption uses:
+
+    ELAUNCH-LIFE-001
+
+When an active authoritative root is destroyed:
+
+1. The root marks itself as destroying.
+2. It requests cooperative cancellation.
+3. The active run is allowed to settle.
+4. Late state and progress publication is suppressed.
+5. Event delegates are cleared.
+6. Authority is released.
+
+Duplicate roots cannot start or cancel the authoritative launch.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -830,7 +929,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M3-05 compile result:
+Final FL-M3-06 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -839,23 +938,24 @@ Final FL-M3-05 compile result:
 
 `LaunchStateTransitionRules` remains the single internal authority for lifecycle legality.
 
-`EchoLaunchRoot` continues to dispatch accepted state and progress notifications after authoritative state changes.
+`EchoLaunchRoot` publishes runner-derived state and progress only through the existing transactional `LaunchSession.Publish` boundary.
 
 Listener failures remain isolated through `ELAUNCH-EVENT-001`.
 
-No FL-M3-04 timing, timeout, multi-frame, or cancellation path calls or mutates these systems.
+The runner remains neutral: it emits internal observations but does not own root authority, lifecycle transition rules, notification dispatch, presentation, or destination policy.
 
 ## Test Evidence
 
 Runtime Play Mode totals:
 
-- Passed: `288`
+- Passed: `311`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
 - Configuration binding tests: `15`
 - Vocabulary tests: `39`
@@ -871,6 +971,25 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M3-06 and retained behavior:
+
+- Authority claim without automatic startup
+- Root-owned explicit startup execution
+- `Validating`, `Running`, `Failed`, `Interrupted`, and `Transitioning` lifecycle publication
+- Step-start, progress, and completion snapshot translation
+- Warning-only success to `Transitioning`
+- Blocking and preflight failure mapping to `Failed`
+- Cooperative root cancellation after executor settlement
+- Stable `ELAUNCH-LIFE-001` and `ELAUNCH-LIFE-002`
+- Repeated and duplicate-root cancellation rejection
+- Destruction-driven cancellation and late-publication suppression
+- No premature `Completed` publication
+- Direct-scene launch-mode preservation
+- Structured observer-path preflight diagnostics
+- Exact legacy direct-runner exception compatibility
+- Root active-gate release
+- Root-owned authored asset immutability
 
 Verified FL-M3-05 and retained behavior:
 
@@ -922,7 +1041,7 @@ Expected retained diagnostics:
 - `ELAUNCH-ROOT-001`
 - `ELAUNCH-EVENT-001`
 
-No production asset, scene, prefab, root, or automatic startup setup was required.
+No production asset, scene, prefab, or automatic startup setup was required.
 
 ## Current Exclusions
 
@@ -932,13 +1051,10 @@ Not implemented:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Root-level cancellation command
-- Shutdown or destruction cancellation orchestration
-- `EchoLaunchRoot` runner integration
 - Automatic startup from Unity callbacks
-- Launch-session lifecycle advancement
+- Immutable launch reports
+- Public terminal launch events
 - Public step lifecycle events
-- Launch reports
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation
@@ -951,6 +1067,6 @@ Not implemented:
 
 ## Stop Point
 
-FL-M3-05 stops after complete side-effect-free sequence preflight, duplicate identity detection, runner-local concurrent re-entry rejection, and gate-release safety are proven.
+FL-M3-06 stops after one authoritative root can explicitly own, observe, cancel, settle, and project a startup-sequence run through the approved lifecycle.
 
-The next runtime slice requires separate approval.
+It deliberately stops at `Transitioning`. Immutable launch reports, public terminal events, automatic startup, presentation, and destination handoff require separate checkpoints.

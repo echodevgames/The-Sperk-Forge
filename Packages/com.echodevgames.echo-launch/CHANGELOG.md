@@ -7,6 +7,22 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M3-06 - Root-Owned Startup Run and Lifecycle Advancement
+- Explicit root-owned `StartLaunchAsync` execution boundary
+- Public cooperative `CancelLaunch` command for the active authoritative root
+- Root-local active-launch gate with stable `ELAUNCH-LIFE-002`
+- Structured preflight diagnostic preservation through `StartupSequencePreflightException`
+- Internal `IStartupSequenceObserver` runner-to-root observation seam
+- Internal `StartupStepProgressRelay`
+- Authoritative lifecycle publication through `Validating`, `Running`, `Failed`, `Interrupted`, and `Transitioning`
+- Step-start, progress, and completion translation into existing root progress snapshots
+- Stable lifecycle interruption diagnostic `ELAUNCH-LIFE-001`
+- Destruction-driven cooperative cancellation and late-publication suppression
+- Duplicate-root start and cancellation rejection
+- Root-owned run-result retention
+- Success stopping at `Transitioning` until destination handoff exists
+- Legacy three-argument runner exception compatibility
+- Twenty-three Runtime Play Mode root lifecycle tests
 #### FL-M3-05 - Runner Re-entry Protection and Sequence Preflight Boundary
 - Internal side-effect-free `StartupSequencePreflight`
 - Complete configuration and startup-sequence validation before executor creation
@@ -193,6 +209,14 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- `EchoLaunchRoot` now owns one explicit startup-sequence run after authority claim.
+- Root lifecycle publication now advances from `AuthorityClaimed` through `Validating` and `Running`.
+- Successful startup-sequence settlement now advances to `Transitioning`, not `Completed`, because destination handoff remains pending.
+- Blocking or unexpected execution outcomes now advance the authoritative session to `Failed`.
+- Caller or destruction cancellation now settles active work before the authoritative session advances to `Interrupted`.
+- Existing root state and progress events now reflect runner validation, step start, step progress, step completion, and terminal mapping.
+- The observer-aware runner overload preserves structured preflight diagnostics for the root.
+- The legacy three-argument runner overload preserves exact historical `InvalidOperationException` behavior.
 - `StartupSequenceRunner` now performs complete authored preflight before the first executor factory can run.
 - One runner instance now rejects concurrent traversal with `ELAUNCH-RUN-001`.
 - The runner's active-run gate is released through `finally`, preserving later sequential reuse after every terminal path.
@@ -236,6 +260,8 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Restored exact legacy `InvalidOperationException` behavior for direct three-argument runner calls after the first FL-M3-06 full-suite run exposed fifteen retained exact-type assertions.
+- Preserved structured `StartupSequencePreflightException` behavior for root-owned observer runs.
 - Contained the same-tick caller-cancellation race where the executor settled with `OperationCanceledException` before the monitor's next loop.
 - Kept the final FL-M3-04 Unity compilation result at zero errors and zero compiler warnings.
 
@@ -248,9 +274,34 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 Runtime Play Mode totals:
 
-- Passed: `288`
+- Passed: `311`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M3-06 coverage:
+- Authority claim without automatic startup
+- Empty-sequence success to `Transitioning`
+- Approved `AuthorityClaimed -> Validating -> Running -> Transitioning` order
+- Root publication of step start, progress, and completion
+- Warning traversal success to `Transitioning`
+- Blocking traversal failure to `Failed`
+- Structured preflight failure before executor creation
+- Missing-configuration failure mapping
+- Cancellation rejection before launch
+- Cooperative cancellation waiting for executor settlement
+- Stable blank cancellation reason
+- Repeated cancellation request rejection
+- Concurrent root start rejection before a second factory
+- Settled and failed session restart rejection
+- Duplicate-root start and cancellation rejection
+- Destruction cancellation and late-publication suppression
+- No premature `Completed` publication
+- Direct-scene launch-mode preservation
+- Authored asset immutability
+- Runner replacement restriction after lifecycle advancement
+- Active-gate release after preflight failure
+- Exactly one `Interrupted` lifecycle publication
+- Zero compiler errors and zero compiler warnings
 
 FL-M3-05 coverage:
 - Unknown launch-mode rejection before factory creation
@@ -330,13 +381,10 @@ FL-M3-03 coverage:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip presentation
-- Root-level cancellation command
-- Shutdown or destruction cancellation orchestration
-- `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
-- Launch-session lifecycle advancement
+- Public terminal launch events
+- Immutable launch reports
 - Public step lifecycle events
-- Launch reports
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation

@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
+- Development stage: Explicit root-owned startup lifecycle implemented; immutable reports and destination handoff pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -20,7 +20,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M3-03`
   - `FL-M3-04`
   - `FL-M3-05`
-- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, and runner re-entry protection
+  - `FL-M3-06`
+- Current implemented boundary: authority, vocabulary, session state, guarded publication, isolated notifications, launch configuration, ordered definitions, authored policy, runtime attempt state, policy-aware timed traversal, structured exception containment, monotonic deadlines, cooperative timeout cancellation, multi-frame Unity async proof, structured caller cancellation, complete sequence preflight, runner re-entry protection, explicit root-owned startup, cooperative root cancellation, destruction-safe settlement, and lifecycle projection through `Transitioning`
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -52,6 +53,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M3-04 Runtime Test Report](Developer/Test%20Reports/FL-M3-04_Multi-Frame_Async_and_Runner_Cancellation_Test_Report.md)
 - [FL-M3-05 Runner Re-entry Protection and Sequence Preflight Boundary](Developer/Checkpoints/FL-M3-05_Runner_Re-entry_Protection_and_Sequence_Preflight_Boundary.md)
 - [FL-M3-05 Runtime Test Report](Developer/Test%20Reports/FL-M3-05_Preflight_and_Re-entry_Test_Report.md)
+- [FL-M3-06 Root-Owned Startup Run and Lifecycle Advancement](Developer/Checkpoints/FL-M3-06_Root-Owned_Startup_Run_and_Lifecycle_Advancement.md)
+- [FL-M3-06 Runtime Test Report](Developer/Test%20Reports/FL-M3-06_Root-Owned_Startup_Lifecycle_Test_Report.md)
 
 ## Package Root Documents
 
@@ -121,6 +124,14 @@ First Light currently proves:
 - Stable `ELAUNCH-RUN-001`
 - Gate release across all terminal paths
 - Sequential runner reuse after settlement
-- Two hundred eighty-eight passing Runtime Play Mode tests
+- Internal runner-to-root observation seam
+- Explicit root-owned startup execution
+- Root lifecycle advancement through validation and execution
+- Root cancellation after executor settlement
+- Destruction-driven cancellation and late-publication suppression
+- Stable `ELAUNCH-LIFE-001` and `ELAUNCH-LIFE-002`
+- Structured root preflight diagnostics with legacy direct-runner compatibility
+- Successful launch stopping at `Transitioning`
+- Three hundred eleven passing Runtime Play Mode tests
 
-Retries, root cancellation commands, reports, dependency-graph validation, root integration, and lifecycle automation remain outside the implemented scope.
+Retries, immutable reports, public terminal events, dependency-graph validation, automatic startup, presentation, and destination handoff remain outside the implemented scope.

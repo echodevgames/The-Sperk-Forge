@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Startup-sequence preflight and runner re-entry protection implemented; root-owned lifecycle integration pending
+- Development stage: Explicit root-owned startup lifecycle implemented; immutable reports and destination handoff pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -22,6 +22,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M3-03` Monotonic Timeout Clock and Cooperative Cancellation
   - `FL-M3-04` Multi-Frame Async Proof and Runner Cancellation Outcome
   - `FL-M3-05` Runner Re-entry Protection and Sequence Preflight Boundary
+  - `FL-M3-06` Root-Owned Startup Run and Lifecycle Advancement
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -265,6 +266,44 @@ First Light now provides:
 - Later entries remain unvisited
 - Later executor factories are not called
 
+### Root-Owned Explicit Startup
+
+- Internal explicit `EchoLaunchRoot.StartLaunchAsync`
+- No automatic call from `Awake`, `Start`, or scene callbacks
+- One root-local active-launch gate
+- Stable start-gate diagnostic `ELAUNCH-LIFE-002`
+- Latest settled sequence result retained internally
+- Duplicate and previously advanced roots rejected
+
+### Root Lifecycle Projection
+
+- Configuration validation publishes `Validating`
+- Accepted sequence validation publishes `Running`
+- Step start, progress, and completion update existing root snapshots
+- Blocking or unexpected outcomes publish `Failed`
+- Cancellation publishes `Interrupted`
+- Successful and warning-only runs publish `Transitioning`
+- `Completed` remains reserved for later destination handoff
+
+### Root Cancellation and Destruction Safety
+
+- Public cooperative `CancelLaunch(reason)`
+- Blank reason normalization
+- Repeated request rejection
+- Executor settlement before interruption completes
+- Stable interruption diagnostic `ELAUNCH-LIFE-001`
+- Destruction-driven cancellation
+- Late-publication suppression
+- Event cleanup and authority release
+
+### Structured Preflight and Legacy Compatibility
+
+- Internal `StartupSequencePreflightException`
+- Stable diagnostic code and failure message retained for root publication
+- Internal `IStartupSequenceObserver`
+- Internal `StartupStepProgressRelay`
+- Legacy direct-runner calls preserve exact `InvalidOperationException`
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -301,13 +340,14 @@ Active states may also enter:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `288`
+- Passed: `311`
 - Failed: `0`
 - Ignored: `0`
 
 Breakdown:
 
 - Authority tests: `7`
+- Root-owned startup lifecycle tests: `23`
 - Clock, timing, and progress-gate tests: `14`
 - Launch configuration binding tests: `15`
 - Launch-state vocabulary tests: `39`
@@ -351,7 +391,7 @@ Timeout and cancellation evidence:
 - Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
-No production asset, scene, prefab, root, or automatic startup setup was required.
+No production asset, scene, prefab, or automatic startup setup was required.
 
 ## Not Implemented Yet
 
@@ -361,13 +401,10 @@ First Light does not yet provide:
 - Retry count or backoff
 - Interactive retry
 - Retry or skip UI
-- Root-level cancellation command
-- Shutdown or destruction cancellation orchestration
-- `EchoLaunchRoot` runner integration
 - Automatic startup from Unity scene callbacks
-- Launch-session lifecycle advancement
+- Immutable launch reports
+- Public terminal launch events
 - Public step lifecycle events
-- Launch reports
 - Warning aggregation outside the run result
 - Dependency validation
 - Splash presentation
@@ -393,10 +430,10 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Two hundred eighty-eight passing Runtime Play Mode tests
+- Three hundred eleven passing Runtime Play Mode tests
 - Safe policy authoring verification
 - Fresh executor factory contract
-- Policy-aware timed startup execution with complete preflight and runner re-entry protection, but no root or lifecycle integration
+- Policy-aware timed startup execution with explicit root ownership, lifecycle projection, cooperative root cancellation, and success stopping at `Transitioning`
 
 Still `Not run`:
 
@@ -404,8 +441,8 @@ Still `Not run`:
 - Tarball installation
 - Separate clean-project installation
 - Player builds
-- Production startup integration
-- Root cancellation orchestration
+- Automatic production startup
+- Immutable reporting and destination handoff
 - Performance measurements
 
 ## License
