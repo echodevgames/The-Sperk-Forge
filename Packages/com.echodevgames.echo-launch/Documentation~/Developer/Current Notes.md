@@ -1,4 +1,3 @@
-
 # First Light - Current Notes
 
 ## Active Checkpoint
@@ -8,103 +7,80 @@
 - Package version: `0.1.0`
 - Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.6.0
 - ADR: EchoLaunch-ADR-003
-- Status: Authority approved; prefab generation locked until authority commit
-- Repository baseline: `9d6d469`
-- Last implementation commit: `858808b`
-- Runtime Play Mode baseline: 479 passed, 0 failed, 0 ignored
-- Compilation baseline: 0 errors, 0 compiler warnings
+- Authority commit: `311a9d2`
+- Implementation commit: `8d3c6a7`
+- Previous documentation commit: `9d6d469`
+- Implementation status: Complete and pushed
+- Documentation closeout: Pending adjacent commit
+- EditMode result: 27 passed, 0 failed, 0 ignored
+- Runtime Play Mode result: 479 passed, 0 failed, 0 ignored
+- Compilation result: 0 errors, 0 compiler warnings
 
-## Approved Contract
+## Completed Result
 
-### Package Template Assets
+Implemented:
 
-```text
-Presentation.UGUI/Prefabs/EchoLaunchStatusView.prefab
-Presentation.UGUI/Prefabs/EchoLaunchRoot.prefab
-```
-
-Both assets preserve committed stable GUIDs.
-
-### Status Canvas
-
-- Screen Space Overlay
-- Sorting order 1000
-- Scale With Screen Size
-- 1920x1080 reference resolution
-- Match 0.5
-- Hidden through `CanvasGroup` by default
-- Neutral dark backdrop and high-contrast text
-- Built-in legacy uGUI font
-- Splash and status surfaces
-- Distinct determinate and indeterminate progress roots
-- Every existing view reference assigned
-
-### Input Boundary
-
-No EventSystem, input module, GraphicRaycaster, Button, or skip binding.
-
-All graphics are non-raycast targets.
-
-The slider is non-interactable.
-
-Projects route input to `RequestSplashSkip()` through project code.
-
-### Root Template
-
-- One `EchoLaunchRoot`
-- Nested status-view prefab
-- Presenter reference wired
-- Configuration null
-- CanonicalBoot mode
-- Automatic start enabled
-- No project-owned definition asset
-
-### Runtime Boundary
-
-No hidden discovery, `Resources` load, Addressables lookup, or automatic prefab
-instantiation.
-
-Projects or later setup tooling explicitly place or copy the template.
-
-## Implementation Lock
-
-Do not generate or stage prefab assets until the authority commit is pushed.
-
-Required authority commit:
-
-```text
-echo-launch: approve FL-M4-05 neutral presentation prefabs
-```
-
-## Expected Final Scope
-
-- Prefabs folder and `.meta`
-- Two prefab assets and stable `.meta` files
+- Stable `EchoLaunchStatusView.prefab`
+- Stable `EchoLaunchRoot.prefab`
+- Committed folder and prefab GUID metadata
+- Neutral Screen Space Overlay Canvas
+- Complete presenter hierarchy
+- Complete serialized presenter wiring
+- Nested status-view prefab inside the root prefab
+- Null project configuration
+- Canonical Boot mode
+- Automatic root start
+- Non-interactive graphics and slider
+- No input authority
+- No TextMeshPro dependency
+- No project asset dependency
 - Editor-only prefab asset-test assembly
-- Focused prefab asset tests
-- Optional dependency-clean instantiated contract tests
-- No production Runtime script changes
+- Twenty-seven passing EditMode asset tests
+- Retained 479-test Runtime Play Mode suite
+- Temporary authoring helper removal
+- Generated YAML/metadata whitespace cleanup
 
-## Explicit Exclusions
+## Evidence Summary
 
-- Setup/repair tooling
-- Editor migration
+- Implementation commit `8d3c6a7` pushed to `main` and `origin/main`
+- Working tree clean after implementation push
+- EditMode: 27 passed, 0 failed, 0 ignored
+- Runtime Play Mode: 479 passed, 0 failed, 0 ignored
+- Compilation: 0 errors, 0 compiler warnings
+- Both prefabs visible in the package folder
+- `Assets/FLM405Temp` removed
+- No production script changed
+
+## Asset Boundary
+
+The package owns neutral immutable templates.
+
+Projects own configuration assignment, branding, production art, fonts, layout
+variants, input controls, safe-area behavior, and final scene placement.
+
+Runtime performs no hidden prefab discovery or instantiation.
+
+## Not Run
+
+- Final branded project variant
+- Full manual multi-aspect prefab review
+- Editor setup/copy workflow
 - Direct-scene initializer
 - Boot scene generation
-- Test Lab scenes
-- Project branding
-- Custom fonts
-- TextMeshPro
-- Input bindings
-- Safe-area scripts
-- Animation
+- Standalone Laboratory
 - Player builds
+- Clean-project installation
+- External project adoption
+- Performance measurements
 
 ## Handoff Snapshot
 
-FL-M4-04 is fully closed at `9d6d469`.
+FL-M4-05 implementation is complete and pushed at `8d3c6a7`.
 
-FL-M4-05 authority is prepared through specification v1.6.0, ADR-003, and the
-approved Checkpoint Build Plan.
+First Light now ships explicit neutral root and presentation prefab templates
+with stable identities and serialized proof.
 
-Prefab generation begins only after the authority commit is confirmed.
+The adjacent FL-M4-05 documentation closeout is the only active repository work.
+
+Tentative next checkpoint: FL-M5-01 - Editor Setup Foundation and
+Non-Destructive Project Plan.

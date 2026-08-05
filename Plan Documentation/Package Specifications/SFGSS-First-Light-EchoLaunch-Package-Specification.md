@@ -1552,18 +1552,19 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M4-04 — Splash Configuration Schema and Root Playback Integration |
-| Active authorized checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly |
-| Authority baseline | `9d6d469` |
-| Last implementation commit | `858808b` |
-| Files/assets created | Runtime launch systems, schema-4 configuration binding, destination loading, automatic startup, neutral status and splash presentation, deterministic splash definitions/player, root-owned splash preflight/playback, and isolated runtime/uGUI tests |
-| Tests passed | 479 Runtime Play Mode tests |
+| Completed checkpoint | FL-M4-05 — Startup Presentation Prefab and Canvas Assembly |
+| Authority commit | `311a9d2` |
+| Implementation commit | `8d3c6a7` |
+| Previous documentation commit | `9d6d469` |
+| Files/assets created | Runtime launch systems, schema-4 launch integration, neutral status/splash presentation, stable status/root package prefabs, nested prefab composition, and isolated Runtime/uGUI/EditMode asset tests |
+| Runtime tests passed | 479 Runtime Play Mode tests |
+| EditMode tests passed | 27 prefab asset tests |
 | Tests failed | 0 |
 | Tests ignored | 0 |
 | Compilation | 0 errors and 0 compiler warnings |
-| Authority decisions | Stable neutral status/root template prefabs; Screen Space Overlay Canvas; no package input binding; no hidden prefab spawning; project-owned variants for branding/layout |
-| Known issues | FL-M4-05 prefab assets and asset tests, Editor migration/setup, direct-scene initializer tooling, Standalone Laboratory proof, player builds, and external adoption remain not run |
-| Next action | Commit this authority update before generating or staging prefab assets |
+| Implemented decisions | Stable neutral prefab identities; Screen Space Overlay Canvas; complete serialized wiring; no package input authority; no hidden prefab spawning; project-owned variants for branding/layout |
+| Known issues | Editor migration/setup, direct-scene initializer tooling, final branded variants, multi-aspect manual review, Standalone Laboratory proof, player builds, and external adoption remain not run |
+| Next checkpoint | FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan, tentative and not yet authorized |
 
 ---
 

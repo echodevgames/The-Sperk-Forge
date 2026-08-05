@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Configuration schema 4 and sequential root-owned splash playback implemented; prefab and Editor migration pending
+- Development stage: Neutral package presentation prefabs and Canvas assembly implemented; Editor setup and migration pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -25,6 +25,7 @@
   - `FL-M4-02`
   - `FL-M4-03`
   - `FL-M4-04`
+  - `FL-M4-05`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -145,14 +146,30 @@ First Light currently establishes:
 112. Direct-scene mode using the same splash contract
 113. Configuration and splash asset immutability
 114. Report schema 2 preserved
+115. Stable package-owned status-view prefab identity
+116. Stable package-owned root-composition prefab identity
+117. Screen Space Overlay Canvas template
+118. Complete serialized status and splash reference wiring
+119. Neutral non-branded presentation defaults
+120. Project-owned branding and input boundaries
+121. Non-interactive graphics and progress surface
+122. Root prefab with nested status-view prefab
+123. Intentionally unassigned project configuration
+124. Canonical Boot and automatic-start root defaults
+125. No hidden prefab discovery or runtime instantiation
+126. Editor-only serialized asset proof
+127. Prefab dependency and missing-script containment
 
-First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. Splash playback is authoritative, deterministic, cancellation-aware, and sequential with startup execution. Prefab art, Editor migration, direct-scene initializer tooling, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. The package now also ships explicit neutral prefab templates for the root and its removable uGUI presenter. Editor migration, setup tooling, direct-scene initialization, and standalone scene proof remain separate boundaries.
 
 ## Implemented Package Files
 
     Presentation.UGUI/
     ├── EchoDevGames.EchoLaunch.Presentation.UGUI.asmdef
     ├── EchoLaunchStatusView.cs
+    ├── Prefabs/
+    │   ├── EchoLaunchRoot.prefab
+    │   └── EchoLaunchStatusView.prefab
     └── Properties/
         └── AssemblyInfo.cs
 
@@ -233,6 +250,9 @@ First Light now validates, executes, times, evaluates, projects, plays an option
 
     Tests/Presentation.UGUI/
     ├── EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.asmdef
+    ├── EditMode/
+    │   ├── EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.EditMode.asmdef
+    │   └── EchoLaunchPresentationPrefabAssetTests.cs
     └── PlayMode/
         ├── EchoLaunchSplashPresentationTests.cs
         └── EchoLaunchStatusViewTests.cs
@@ -1676,6 +1696,125 @@ Existing report fields carry:
 - Existing startup-step reports.
 - Existing destination metadata.
 
+## Neutral Package Prefab Templates
+
+The removable uGUI assembly now contains two stable public package assets:
+
+```text
+Presentation.UGUI/Prefabs/EchoLaunchStatusView.prefab
+Presentation.UGUI/Prefabs/EchoLaunchRoot.prefab
+```
+
+Their committed `.meta` files establish package asset identity.
+
+### Status-View Prefab
+
+`EchoLaunchStatusView.prefab` is a self-contained startup-only Canvas with:
+
+- `RectTransform`
+- `Canvas`
+- `CanvasScaler`
+- `CanvasGroup`
+- `EchoLaunchStatusView`
+
+Approved Canvas defaults:
+
+```text
+Render Mode: Screen Space Overlay
+Sorting Order: 1000
+Scale Mode: Scale With Screen Size
+Reference Resolution: 1920 x 1080
+Match Width Or Height: 0.5
+Reference Pixels Per Unit: 100
+```
+
+The root Canvas begins hidden and non-interactive:
+
+```text
+CanvasGroup Alpha: 0
+Interactable: false
+Blocks Raycasts: false
+```
+
+The committed hierarchy provides:
+
+```text
+EchoLaunch Status Canvas
+├── Backdrop
+├── Splash Root
+│   ├── Splash Image
+│   └── Splash Label
+└── Status Root
+    ├── State Text
+    ├── Message Text
+    ├── Step Text
+    ├── Determinate Progress Root
+    │   ├── Progress Slider
+    │   └── Progress Text
+    ├── Indeterminate Progress Root
+    │   └── Indeterminate Text
+    └── Elapsed Text
+```
+
+Every existing private serialized view reference is assigned.
+
+The splash and progress roots begin inactive.
+
+All graphics reject raycasts, and the progress slider is non-interactable.
+
+### Root Prefab
+
+`EchoLaunchRoot.prefab` contains:
+
+```text
+EchoLaunch Root
+└── EchoLaunch Status Canvas
+```
+
+The child is a nested instance of `EchoLaunchStatusView.prefab`.
+
+Serialized root defaults:
+
+```text
+Configuration: null
+Launch Mode: CanonicalBoot
+Start Automatically: true
+Status Presenter: nested EchoLaunchStatusView
+```
+
+The null configuration is intentional because launch definitions are
+project-owned.
+
+### Dependency Boundary
+
+The templates contain no:
+
+- Project `Assets/` dependency.
+- Project logo or branded art.
+- Project font.
+- TextMeshPro component.
+- EventSystem or input module.
+- GraphicRaycaster.
+- Button or Toggle.
+- Package-owned skip binding.
+
+Runtime does not discover, load, repair, or instantiate these prefabs
+automatically.
+
+Projects explicitly place the root prefab, make a prefab variant, copy the
+template into project assets, or replace the presenter.
+
+### Asset Authoring
+
+Unity Editor APIs generated the final prefab YAML so private serialized
+references and nested-prefab identity were authored by Unity rather than by
+manual YAML editing.
+
+The temporary authoring helper was deleted before staging.
+
+Generated trailing whitespace was trimmed from prefab YAML and metadata without
+changing GUIDs or serialized behavior.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1686,7 +1825,7 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M4-04 compile result:
+Final FL-M4-05 compile result:
 
 - Errors: `0`
 - Warnings: `0`
@@ -1703,6 +1842,12 @@ The runner remains neutral: it emits internal observations but does not own root
 
 ## Test Evidence
 
+EditMode prefab asset totals:
+
+- Passed: `27`
+- Failed: `0`
+- Ignored: `0`
+
 Runtime Play Mode totals:
 
 - Passed: `479`
@@ -1711,7 +1856,8 @@ Runtime Play Mode totals:
 
 Breakdown:
 
-- Root splash integration tests: `28`
+- Prefab asset tests: `27` EditMode
+- Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
 - Splash playback tests: `26`
 - Splash uGUI presentation tests: `10`
@@ -1736,6 +1882,28 @@ Breakdown:
 - Timeout runner and cancellation tests: `18`
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
+
+Verified FL-M4-05 and retained behavior:
+
+- Stable package prefab paths and distinct GUIDs
+- Approved Canvas and CanvasScaler defaults
+- Hidden/non-interactive initial Canvas state
+- Required status and splash hierarchy
+- Complete serialized view reference wiring
+- Splash and progress roots inactive by default
+- Non-interactive slider and non-raycast graphics
+- No package input authority
+- No TextMeshPro component
+- Built-in non-project font use
+- No project asset dependencies
+- Nested status prefab within the root prefab
+- Presenter reference to the nested view
+- Intentionally null project configuration
+- Canonical Boot and automatic start defaults
+- No missing scripts
+- Successful prefab instantiation
+- Temporary authoring helper removal
+- Retained 479-test Runtime Play Mode suite
 
 Verified FL-M4-04 and retained behavior:
 
@@ -1948,8 +2116,8 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Startup presentation prefab and Canvas assembly
 - Editor migration from historical configuration schemas
+- Direct-scene initializer and setup tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -1959,11 +2127,11 @@ Not implemented:
 
 ## Stop Point
 
-FL-M4-04 stops after schema-4 splash binding, side-effect-free splash and
-startup preflight, sequential root-owned splash playback, cancellation/failure
-settlement, headless fallback, automatic/direct-scene routing, and complete
-automated proof.
+FL-M4-05 stops after the two stable neutral package prefab templates, committed
+asset identities, serialized Canvas and root wiring, input independence,
+dependency containment, twenty-seven EditMode asset tests, and the retained
+four-hundred-seventy-nine-test Runtime Play Mode suite.
 
-Editor migration, package prefab and Canvas assembly, project input binding,
-direct-scene initializer tooling, persistent-root policy, and real Standalone
-Laboratory scene activation require later checkpoints.
+Editor migration, setup/repair tooling, direct-scene initialization, project
+branding and input variants, persistent-root policy, and real Standalone
+Laboratory activation require later checkpoints.

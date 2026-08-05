@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Configuration schema 4 and sequential root-owned splash playback implemented; startup prefab and Editor migration pending
+- Development stage: Neutral startup presentation prefabs and Canvas assembly implemented; Editor setup and migration pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -29,6 +29,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M4-02` Default uGUI Plain Status View and Presentation Assembly
   - `FL-M4-03` Image Splash Definitions and Deterministic Splash Player
   - `FL-M4-04` Splash Configuration Schema and Root Playback Integration
+  - `FL-M4-05` Startup Presentation Prefab and Canvas Assembly
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -85,7 +86,7 @@ First Light now provides:
 
 - Project-owned `EchoLaunchConfiguration`
 - Stable configuration ID
-- Configuration schema version `3`
+- Configuration schema version `4`
 - Passive startup-sequence reference
 - Authority-filtered root binding
 - Invalid identity and schema detection without runtime repair
@@ -449,9 +450,9 @@ First Light now provides:
 - Logging-free headless fallback
 - Default uGUI sprite, label, alpha, and position
 - Public `RequestSplashSkip()` with no EchoInput dependency
-- Configuration schema remains 3
-- Report schema remains 2
-- No root-owned splash integration yet
+- Splash definition schema remains `1`
+- Root integration is supplied by schema-4 configuration
+- Report schema remains `2`
 
 ### Schema-4 Root Splash Integration
 
@@ -476,6 +477,39 @@ First Light now provides:
 - Automatic-start and direct-scene splash routing
 - Configuration and splash immutability
 - Report schema version `2` preserved
+
+### Neutral Startup Presentation Prefabs
+
+The package ships two stable template assets:
+
+```text
+Presentation.UGUI/Prefabs/EchoLaunchStatusView.prefab
+Presentation.UGUI/Prefabs/EchoLaunchRoot.prefab
+```
+
+The status prefab provides:
+
+- Screen Space Overlay Canvas
+- 1920 x 1080 scalable reference resolution
+- Hidden non-interactive CanvasGroup
+- Neutral backdrop and readable legacy uGUI text
+- Splash image and label
+- State, message, step, progress, and elapsed surfaces
+- Complete serialized `EchoLaunchStatusView` references
+- No input authority or project asset dependency
+
+The root prefab provides:
+
+- One `EchoLaunchRoot`
+- Nested `EchoLaunchStatusView.prefab`
+- Wired presenter reference
+- Null project configuration
+- Canonical Boot mode
+- Automatic start enabled
+
+Projects explicitly place, copy, variant, or replace these templates.
+
+Runtime does not locate or instantiate them automatically.
 
 ## Safe Serialized Entry Defaults
 
@@ -511,6 +545,12 @@ Active states may also enter:
 
 ## Verified Behavior
 
+The EditMode prefab asset suite reports:
+
+- Passed: `27`
+- Failed: `0`
+- Ignored: `0`
+
 The Runtime Play Mode suite reports:
 
 - Passed: `479`
@@ -519,7 +559,8 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
-- Root splash integration tests: `28`
+- Prefab asset tests: `27` EditMode
+- Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
 - Splash playback tests: `26`
 - Splash presentation tests: `10`
@@ -585,9 +626,8 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Startup presentation prefab and Canvas assembly
 - Editor migration from historical configuration schemas
-- Splash presentation
+- Direct-scene initializer and setup tooling
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
 - Direct-scene initialization behavior
@@ -611,6 +651,8 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Four hundred seventy-nine passing Runtime Play Mode tests
+- Twenty-seven passing EditMode prefab asset tests
+- Stable neutral package root and status-view prefabs
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view

@@ -7,6 +7,30 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M4-05 - Startup Presentation Prefab and Canvas Assembly
+- Stable package-owned `EchoLaunchStatusView.prefab`
+- Stable package-owned `EchoLaunchRoot.prefab`
+- Committed prefab and folder `.meta` identities
+- Self-contained Screen Space Overlay startup Canvas
+- `CanvasScaler` using 1920 x 1080 reference resolution and 0.5 match
+- Hidden, non-interactive default `CanvasGroup`
+- Neutral high-contrast backdrop and legacy uGUI text
+- Complete splash and status presentation hierarchy
+- Distinct determinate and indeterminate progress surfaces
+- Every `EchoLaunchStatusView` serialized reference assigned
+- Splash root inactive by default
+- Non-interactable progress slider
+- All graphics configured as non-raycast targets
+- No `EventSystem`, input module, `GraphicRaycaster`, `Button`, or package skip binding
+- No TextMeshPro or project-owned asset dependency
+- Root prefab containing one authoritative `EchoLaunchRoot`
+- Nested instance of `EchoLaunchStatusView.prefab`
+- Root presenter reference wired to the nested view
+- Root configuration intentionally unassigned
+- Canonical Boot mode with automatic start enabled
+- Editor-only prefab asset-test assembly
+- Twenty-seven focused EditMode prefab asset tests
+- Temporary Unity authoring helper removed after generation
 #### FL-M4-04 - Splash Configuration Schema and Root Playback Integration
 - `EchoLaunchConfiguration` schema version `4`
 - Optional serialized project-owned `SplashSequence`
@@ -360,6 +384,10 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Seven Runtime Play Mode authority tests
 
 ### Changed
+- First Light now ships inspectable scene-ready presentation templates without adding hidden runtime prefab discovery or instantiation.
+- Package branding remains neutral; production art, fonts, layout variants, and input bindings remain project-owned.
+- The package README now consistently reports configuration schema version `4`.
+- Public prefab identity is preserved through committed `.meta` files while internal decorative child values remain non-contractual.
 - Root preflight now validates configuration identity/schema, the optional splash sequence, the startup sequence, and the initial destination before launch side effects.
 - The authoritative launch order is now optional splash, startup steps, then initial destination.
 - Splash playback and startup-step execution remain sequential rather than concurrent.
@@ -456,6 +484,8 @@ The package follows Semantic Versioning once public compatibility commitments be
 - Existing startup-sequence definition tests now use a test-only executor factory without invoking an executor.
 
 ### Fixed
+- Trimmed Unity-generated trailing whitespace from the committed prefab YAML and generated `.meta` files without changing asset GUIDs or serialized behavior.
+- Removed the temporary `Assets/FLM405Temp` authoring folder and its generated metadata before staging.
 - Replaced a zero-advance synchronous manual clock in `ConcurrentPlaybackIsRejected` that caused an infinite main-thread test loop.
 - Moved three skip requests into deterministic frame presentation so they occur during playback rather than after synchronous completion.
 - Updated the concurrent-playback assertion to consume the faulted `Awaitable`, allowing NUnit to observe `InvalidOperationException`.
@@ -483,11 +513,41 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ### Tested
 
+EditMode prefab asset totals:
+
+- Passed: `27`
+- Failed: `0`
+- Ignored: `0`
+
 Runtime Play Mode totals:
 
 - Passed: `479`
 - Failed: `0`
 - Ignored: `0`
+
+FL-M4-05 coverage:
+- Status-view prefab path and stable GUID
+- Root prefab path and distinct stable GUID
+- Approved status root components
+- Canvas render-mode, sorting, and scaler defaults
+- Hidden and non-interactive initial Canvas state
+- Required named presentation hierarchy
+- Complete serialized presenter references
+- Initial splash and progress-root states
+- Non-interactive slider configuration
+- Non-raycast graphics
+- Absence of EventSystem, input modules, GraphicRaycaster, Button, and Toggle
+- Absence of TextMeshPro components
+- Built-in non-project font references
+- Absence of project `Assets/` dependencies
+- One root and one nested presenter
+- Nested status-prefab identity
+- Presenter reference targeting the nested view
+- Intentionally null root configuration
+- Canonical Boot mode and automatic start
+- No missing scripts
+- Successful prefab instantiation
+- Zero compiler errors and zero compiler warnings
 
 FL-M4-04 coverage:
 - Stable splash diagnostic codes
@@ -753,8 +813,8 @@ FL-M3-03 coverage:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Startup presentation prefab and Canvas assembly
 - Editor migration from historical configuration schemas
+- Direct-scene initializer and setup tooling
 - Real Boot-to-destination Laboratory activation proof
 - Persistent root lifetime policy
 - Direct-scene initializer behavior

@@ -1,11 +1,10 @@
-
 # The Sperk’s Forge — Current Notes
 
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 5, 2026
-**Current focus:** First Light FL-M4-05 authority promotion
+**Current focus:** First Light FL-M4-05 documentation closeout
 **Current checkpoint:** FL-M4-05 — Startup Presentation Prefab and Canvas Assembly
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
@@ -16,57 +15,47 @@
 
 ### Goal
 
-Commit the prefab-template and Canvas hierarchy authority before generating
-public package assets.
+Close FL-M4-05 after stable neutral package prefabs and serialized Canvas/root
+wiring passed EditMode asset proof and retained Runtime proof.
 
 ### Starting State
 
-- FL-M4-04 authority is complete in `90aabd1`.
-- FL-M4-04 implementation is complete in `858808b`.
+- FL-M4-05 authority is complete in `311a9d2`.
+- FL-M4-05 implementation is complete in `8d3c6a7`.
 - FL-M4-04 documentation is complete in `9d6d469`.
-- `main` and `origin/main` are synchronized at `9d6d469`.
-- Working tree is clean.
-- Runtime Play Mode baseline is 479 passed, 0 failed, 0 ignored.
-- Unity compilation baseline is 0 errors and 0 compiler warnings.
-- Configuration schema is 4.
-- Report schema is 2.
-- The plain uGUI presenter and root-owned splash path are implemented.
-- No package prefab or Canvas hierarchy exists yet.
-- FL-M4-05 creates stable public package assets.
-- Prefab generation is locked until this authority update is committed.
+- `main` and `origin/main` are synchronized at `8d3c6a7`.
+- Working tree was clean after the implementation push.
+- EditMode result is 27 passed, 0 failed, 0 ignored.
+- Runtime Play Mode result is 479 passed, 0 failed, 0 ignored.
+- Unity compilation result is 0 errors and 0 compiler warnings.
+- Two stable package prefab assets are committed.
+- The temporary authoring helper is gone.
+- No production C# file changed.
+- The adjacent FL-M4-05 documentation closeout is the only active repository work.
+- Later implementation remains locked until this documentation set is committed and pushed.
 
 ---
 
-## Approved FL-M4-05 Decisions
+## Active Notes
 
-- `[AUTHORITY]` Package specification advances to v1.6.0.
-- `[AUTHORITY]` Package ships `EchoLaunchStatusView.prefab`.
-- `[AUTHORITY]` Package ships `EchoLaunchRoot.prefab`.
-- `[AUTHORITY]` Prefabs live under `Presentation.UGUI/Prefabs`.
-- `[AUTHORITY]` Status prefab is a Screen Space Overlay Canvas.
-- `[AUTHORITY]` Canvas scales from 1920x1080 with 0.5 match.
-- `[AUTHORITY]` Root prefab nests the status prefab.
-- `[AUTHORITY]` Root configuration remains null.
-- `[AUTHORITY]` Root mode is CanonicalBoot with automatic start enabled.
-- `[AUTHORITY]` No project logo, branded art, project font, or project asset.
-- `[AUTHORITY]` No TextMeshPro dependency.
-- `[AUTHORITY]` No EventSystem, input module, GraphicRaycaster, Button, or skip binding.
-- `[AUTHORITY]` All graphics are non-raycast targets.
-- `[AUTHORITY]` Runtime performs no prefab discovery or automatic instantiation.
-- `[AUTHORITY]` Projects customize through copies, variants, or replacement presenters.
-- `[AUTHORITY]` Prefab and folder `.meta` identities become stable package evidence.
-- `[AUTHORITY]` A temporary uncommitted Unity authoring helper may generate YAML but cannot enter final scope.
+### August 5, 2026 — FL-M4-05 startup presentation prefabs
 
----
-
-## Authority Files
-
-- Package specification v1.6.0
-- EchoLaunch ADR-003
-- FL-M4-05 Checkpoint Build Plan
-- Suite Current Notes
-- Package Current Notes
-- Package Documentation Index
+- `[IMPLEMENTATION]` Added stable `EchoLaunchStatusView.prefab`.
+- `[IMPLEMENTATION]` Added stable `EchoLaunchRoot.prefab`.
+- `[IMPLEMENTATION]` Added neutral Screen Space Overlay Canvas defaults.
+- `[IMPLEMENTATION]` Wired all serialized presenter references.
+- `[IMPLEMENTATION]` Nested the status prefab inside the root prefab.
+- `[IMPLEMENTATION]` Left project configuration unassigned.
+- `[IMPLEMENTATION]` Preserved Canonical Boot and automatic start defaults.
+- `[IMPLEMENTATION]` Excluded input authority, TextMeshPro, and project assets.
+- `[IMPLEMENTATION]` Added Editor-only prefab asset tests.
+- `[TEST]` All 27 EditMode prefab asset tests passed.
+- `[TEST]` All 479 retained Runtime Play Mode tests passed.
+- `[TEST]` Unity compiled with 0 errors and 0 compiler warnings.
+- `[FIX]` Trimmed Unity-generated trailing whitespace from prefab YAML and metadata.
+- `[CLEANUP]` Removed `Assets/FLM405Temp` before staging.
+- `[EVIDENCE GAP]` Final branded variants, multi-aspect manual review, setup tooling, and Laboratory scenes remain untested.
+- `[HANDOFF]` Implementation commit `8d3c6a7` is synchronized on `main` and `origin/main`.
 
 ---
 
@@ -74,42 +63,59 @@ public package assets.
 
 | Area | Result |
 |---|---|
-| Repository baseline | `9d6d469` |
-| Last implementation | `858808b` |
-| Runtime Play Mode | 479 passed, 0 failed, 0 ignored |
+| FL-M4-05 authority | `311a9d2` |
+| FL-M4-05 implementation | `8d3c6a7` |
+| Previous documentation | `9d6d469` |
 | Unity compilation | 0 errors, 0 compiler warnings |
-| Configuration schema | 4 |
-| Report schema | 2 |
-| Status view code | Implemented |
-| Package status prefab | Not implemented |
-| Package root prefab | Not implemented |
-| Authority update | Prepared, not committed |
-| Prefab generation | Locked |
+| EditMode | 27 passed, 0 failed, 0 ignored |
+| Runtime Play Mode | 479 passed, 0 failed, 0 ignored |
+| Status prefab | Committed |
+| Root prefab | Committed |
+| Temporary authoring folder | Removed |
+| Production C# changes | None |
+| Repository synchronization | `main` equals `origin/main` |
+| Working tree after implementation push | Clean |
+| Documentation closeout | Pending adjacent commit |
+| Later implementation | Locked |
 
 ---
 
-## Next Action
+## Checkpoint Closeout Checklist
 
-1. Apply the FL-M4-05 authority bundle.
-2. Review the six-file scope.
-3. Commit and push:
-
-```text
-echo-launch: approve FL-M4-05 neutral presentation prefabs
-```
-
-4. Confirm clean synchronized repository.
-5. Generate the prefab assets from that authority commit.
+- [x] Confirm authority commit `311a9d2`.
+- [x] Confirm implementation commit `8d3c6a7`.
+- [x] Record both prefab assets and stable GUID metadata.
+- [x] Record Canvas and hierarchy defaults.
+- [x] Record serialized presenter and root wiring.
+- [x] Record project branding and input boundaries.
+- [x] Record dependency containment.
+- [x] Record temporary authoring-helper removal.
+- [x] Record YAML/metadata whitespace cleanup.
+- [x] Record 27 EditMode tests.
+- [x] Record retained 479 Runtime Play Mode tests.
+- [x] Record 0 compiler errors and 0 compiler warnings.
+- [x] Record remaining evidence gaps.
+- [x] Reconcile package and suite Current Notes.
+- [x] Update architecture, specification status, changelog, README, and index.
+- [x] Create package checkpoint, package test report, and root completion record.
+- [ ] Review the staged documentation diff.
+- [ ] Commit and push the adjacent FL-M4-05 documentation closeout.
+- [ ] Confirm clean synchronized repository.
+- [ ] Open the next approved First Light checkpoint.
 
 ---
 
 ## Handoff Snapshot
 
-**Completed checkpoint:** FL-M4-04
-**Active authority checkpoint:** FL-M4-05
-**Baseline:** `9d6d469`
-**Tests:** 479 passed, 0 failed, 0 ignored
+**Completed implementation checkpoint:** FL-M4-05 — Startup Presentation Prefab and Canvas Assembly
+**Authority commit:** `311a9d2`
+**Implementation commit:** `8d3c6a7`
+**Previous documentation commit:** `9d6d469`
+**EditMode:** 27 passed, 0 failed, 0 ignored
+**Runtime Play Mode:** 479 passed, 0 failed, 0 ignored
 **Compilation:** 0 errors, 0 compiler warnings
+**Active work:** Adjacent FL-M4-05 documentation closeout
 **Known blockers:** None
-**Implementation lock:** Active until authority commit
-**Next implementation boundary:** Two stable neutral package prefab templates and serialized Canvas/root wiring
+**Evidence gap:** Branded variants, multi-aspect manual review, setup tooling, and Laboratory proof not run
+**Next action:** Apply, review, commit, and push the FL-M4-05 documentation set
+**Tentative later checkpoint:** FL-M5-01 — Editor Setup Foundation and Non-Destructive Project Plan
