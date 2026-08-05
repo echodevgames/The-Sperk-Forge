@@ -1,0 +1,23 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.EditMode",
+  "rootNamespace": "EchoDevGames.EchoLaunch.Tests.Presentation.UGUI.EditMode",
+  "references": [
+    "GUID:6370d00c0cfa8144795d367cb689f221",
+    "EchoDevGames.EchoLaunch.Presentation.UGUI",
+    "Unity.ugui"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
