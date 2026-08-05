@@ -1,4 +1,4 @@
-//----- EchoLaunchConfiguration.cs START -----
+//----- StartupStepDefinition.cs START -----
 
 using System;
 using UnityEngine;
@@ -6,31 +6,25 @@ using UnityEngine;
 namespace EchoDevGames.EchoLaunch
 {
     /// <summary>
-    /// Stores the project-owned authored configuration used by First Light.
+    /// Immutable authored definition for one startup operation.
     ///
-    /// This asset contains immutable launch definition data only.
-    /// Active launch state belongs to LaunchSession and must never be
-    /// written back into this ScriptableObject during Play Mode.
+    /// Runtime execution behavior is deliberately introduced by a later
+    /// checkpoint. Active execution state must never be stored here.
     /// </summary>
-    [CreateAssetMenu(
-        fileName = "EchoLaunchConfiguration",
-        menuName =
-            "EchoDevGames/First Light/Launch Configuration",
-        order = 0)]
-    public sealed class EchoLaunchConfiguration :
+    public abstract class StartupStepDefinition :
         ScriptableObject
     {
         /// <summary>
         /// Identifies the currently supported serialized structure of
-        /// EchoLaunchConfiguration assets.
+        /// startup-step definition assets.
         /// </summary>
-        public const int CurrentSchemaVersion = 2;
+        public const int CurrentSchemaVersion = 1;
 
         private const int CanonicalIdLength = 32;
 
         [SerializeField]
         [HideInInspector]
-        private string configurationId =
+        private string stepId =
             Guid.NewGuid().ToString("N");
 
         [SerializeField]
@@ -39,44 +33,45 @@ namespace EchoDevGames.EchoLaunch
             CurrentSchemaVersion;
 
         [SerializeField]
-        private StartupSequence startupSequence;
+        private string displayName =
+            "Startup Step";
 
         /// <summary>
-        /// Gets the stable runtime-safe identity of this configuration.
+        /// Gets the stable runtime-safe identity of this step definition.
         /// </summary>
-        public string ConfigurationId =>
-            configurationId ?? string.Empty;
+        public string StepId =>
+            stepId ?? string.Empty;
 
         /// <summary>
-        /// Gets the serialized structure version of this configuration.
+        /// Gets the serialized structure version of this definition.
         /// </summary>
         public int SchemaVersion =>
             schemaVersion;
 
         /// <summary>
-        /// Gets the project-owned ordered startup sequence assigned to
-        /// this configuration.
+        /// Gets the authored presentation label.
         /// </summary>
-        public StartupSequence StartupSequence =>
-            startupSequence;
+        public string DisplayName =>
+            string.IsNullOrWhiteSpace(displayName)
+                ? name
+                : displayName;
 
         /// <summary>
         /// Returns true when the stored identity uses the canonical
         /// lowercase 32-character hexadecimal format.
         /// </summary>
         internal bool HasValidIdentity =>
-            IsCanonicalConfigurationId(
-                configurationId);
+            IsCanonicalStepId(stepId);
 
         /// <summary>
         /// Returns true when this package version understands the
-        /// configuration's serialized structure.
+        /// definition's serialized structure.
         /// </summary>
         internal bool HasSupportedSchema =>
             schemaVersion ==
             CurrentSchemaVersion;
 
-        private static bool IsCanonicalConfigurationId(
+        private static bool IsCanonicalStepId(
             string value)
         {
             if (string.IsNullOrEmpty(value) ||
@@ -111,4 +106,4 @@ namespace EchoDevGames.EchoLaunch
     }
 }
 
-//----- EchoLaunchConfiguration.cs END -----
+//----- StartupStepDefinition.cs END -----

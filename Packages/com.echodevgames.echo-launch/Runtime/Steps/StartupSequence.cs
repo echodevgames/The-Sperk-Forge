@@ -1,36 +1,36 @@
-//----- EchoLaunchConfiguration.cs START -----
+//----- StartupSequence.cs START -----
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoDevGames.EchoLaunch
 {
     /// <summary>
-    /// Stores the project-owned authored configuration used by First Light.
+    /// Stores one project-owned ordered set of startup-step entries.
     ///
-    /// This asset contains immutable launch definition data only.
-    /// Active launch state belongs to LaunchSession and must never be
-    /// written back into this ScriptableObject during Play Mode.
+    /// This asset contains authored definition data only. Active execution
+    /// state must never be written into the sequence or its entries.
     /// </summary>
     [CreateAssetMenu(
-        fileName = "EchoLaunchConfiguration",
+        fileName = "StartupSequence",
         menuName =
-            "EchoDevGames/First Light/Launch Configuration",
-        order = 0)]
-    public sealed class EchoLaunchConfiguration :
+            "EchoDevGames/First Light/Startup Sequence",
+        order = 1)]
+    public sealed class StartupSequence :
         ScriptableObject
     {
         /// <summary>
         /// Identifies the currently supported serialized structure of
-        /// EchoLaunchConfiguration assets.
+        /// StartupSequence assets.
         /// </summary>
-        public const int CurrentSchemaVersion = 2;
+        public const int CurrentSchemaVersion = 1;
 
         private const int CanonicalIdLength = 32;
 
         [SerializeField]
         [HideInInspector]
-        private string configurationId =
+        private string sequenceId =
             Guid.NewGuid().ToString("N");
 
         [SerializeField]
@@ -39,44 +39,67 @@ namespace EchoDevGames.EchoLaunch
             CurrentSchemaVersion;
 
         [SerializeField]
-        private StartupSequence startupSequence;
+        private List<StartupSequenceEntry> entries =
+            new List<StartupSequenceEntry>();
 
         /// <summary>
-        /// Gets the stable runtime-safe identity of this configuration.
+        /// Gets the stable runtime-safe identity of this sequence.
         /// </summary>
-        public string ConfigurationId =>
-            configurationId ?? string.Empty;
+        public string SequenceId =>
+            sequenceId ?? string.Empty;
 
         /// <summary>
-        /// Gets the serialized structure version of this configuration.
+        /// Gets the serialized structure version of this sequence.
         /// </summary>
         public int SchemaVersion =>
             schemaVersion;
 
         /// <summary>
-        /// Gets the project-owned ordered startup sequence assigned to
-        /// this configuration.
+        /// Gets the number of authored entries in this sequence.
         /// </summary>
-        public StartupSequence StartupSequence =>
-            startupSequence;
+        public int EntryCount =>
+            entries != null
+                ? entries.Count
+                : 0;
+
+        /// <summary>
+        /// Gets one authored entry by its current ordered position.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when the index is outside the current sequence bounds.
+        /// </exception>
+        public StartupSequenceEntry GetEntry(
+            int index)
+        {
+            if (entries == null ||
+                index < 0 ||
+                index >= entries.Count)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(index),
+                    index,
+                    "The startup-sequence entry index is outside the authored sequence bounds.");
+            }
+
+            return entries[index];
+        }
 
         /// <summary>
         /// Returns true when the stored identity uses the canonical
         /// lowercase 32-character hexadecimal format.
         /// </summary>
         internal bool HasValidIdentity =>
-            IsCanonicalConfigurationId(
-                configurationId);
+            IsCanonicalSequenceId(sequenceId);
 
         /// <summary>
         /// Returns true when this package version understands the
-        /// configuration's serialized structure.
+        /// sequence's serialized structure.
         /// </summary>
         internal bool HasSupportedSchema =>
             schemaVersion ==
             CurrentSchemaVersion;
 
-        private static bool IsCanonicalConfigurationId(
+        private static bool IsCanonicalSequenceId(
             string value)
         {
             if (string.IsNullOrEmpty(value) ||
@@ -111,4 +134,4 @@ namespace EchoDevGames.EchoLaunch
     }
 }
 
-//----- EchoLaunchConfiguration.cs END -----
+//----- StartupSequence.cs END -----
