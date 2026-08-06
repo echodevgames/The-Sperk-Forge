@@ -13,11 +13,11 @@
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 5, 2026
+**Last updated:** August 6, 2026
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through the active SFGSS-005 Checkpoint Build Plan. FL-M5-03 is authorized only after the explicit-repair eligibility, ownership proof, backup, rollback, result, and repeatability boundary in this v1.9.0 update and EchoLaunch-ADR-006 are committed.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-03 has implemented and validated only the explicit current-schema repair, ownership proof, backup, rollback, result, and repeatability boundary authorized by this v1.9.0 specification and EchoLaunch-ADR-006. Any later migration, Direct Scene, Validator, Laboratory, receipt, uninstall, or recovery work requires separate committed authority.
 
 ---
 
@@ -1870,20 +1870,20 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M5-02 — Approved Setup Apply Engine and Repeat-Safe Asset Creation |
-| Active authorized checkpoint | FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation |
-| FL-M5-02 authority commit | `208ee71` |
-| Last implementation commit | `f05b95c` |
-| FL-M5-02 documentation closeout | `2ef594c` |
+| Completed checkpoint | FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation |
+| Active authorized checkpoint | None; the next bounded First Light checkpoint has not yet been selected |
+| FL-M5-03 authority commit | `6615c8f` |
+| Last implementation commit | `dd15768` |
+| FL-M5-03 documentation closeout | This closeout change set; final commit recorded by Git history |
 | Runtime tests passed | 479 Runtime Play Mode tests |
-| EditMode tests passed | 197 total: 170 setup/apply and 27 prefab asset tests |
-| Total automated tests | 676 passed, 0 failed, 0 ignored |
+| EditMode tests passed | 236 total: 209 setup/apply/repair and 27 prefab asset tests |
+| Total automated tests | 715 passed, 0 failed, 0 ignored |
 | Compilation | 0 errors and 0 compiler warnings |
-| FL-M5-02 evidence | Fresh-plan gate; Create/Reuse/NoChange only; deterministic creation; project prefab variant; scene preservation; explicit Build Settings approval; single apply; rollback support; first Apply succeeded; second and third Apply returned NoChanges |
-| Stable manual-acceptance fingerprint | `7e669d66eaab2c04a0dfbc4445458fcd976808c83f62db82c3d91a16494fc0c1` |
+| FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; shared mutation gate; exact asset + `.meta` backup; narrow configuration, destination, root-prefab, Boot-scene, and Build Settings repair; complete/incomplete rollback evidence; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
+| Stable manual-acceptance fingerprint | `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f` |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | FL-M5-03 repair implementation/evidence, migration, direct-scene initializer, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push FL-M5-03 authority, then implement only the approved explicit-repair checkpoint plan |
+| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, direct-scene initializer, Validator, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push the FL-M5-03 documentation closeout, then select and approve the next bounded First Light checkpoint before implementation |
 
 ---
 
@@ -1932,7 +1932,7 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 is now authorized to implement only the explicit current-schema repair, ownership/shape proof, backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan. Schema migration, receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator, and Laboratory remain unauthorized.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated only the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan. Schema migration, receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
 
 
 ---

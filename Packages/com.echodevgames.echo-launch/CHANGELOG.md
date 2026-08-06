@@ -7,6 +7,29 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-03 - Explicit Setup Repair and Existing-Asset Reconciliation
+- Separate explicit `Repair Plan...` transaction that does not weaken create-only Apply
+- Read-only repair evidence for configuration, destination, prefab lineage, Boot-scene root shape, and Build Settings identity
+- Deterministic repair fingerprints and fresh-plan rejection before backup or writes
+- Shared single-active mutation gate across Apply and Repair
+- Immutable repair approval, candidate, change, backup, status, and result models
+- Exact current-schema configuration-reference reconciliation
+- Destination-scene-path reconciliation with authored-label preservation
+- Verified project root-prefab configuration binding repair
+- Zero-root canonical Boot-scene repair that preserves unrelated scene objects
+- Missing or uniquely disabled canonical Boot Build Settings reconciliation
+- Byte-for-byte asset and matching `.meta` backup beneath `Library/EchoDevGames/FirstLight/RepairBackups`
+- Hash-verified backup, restore, cleanup, and retained-backup reporting
+- Build Settings mutation performed only after asset, prefab, and scene repair succeeds
+- Complete and incomplete repair rollback diagnostics
+- Plain-text repair-result formatter and Copy Result action
+- Stable `ELAUNCH-SETUP-013` through `ELAUNCH-SETUP-017`
+- Repair path validation before filesystem lookup
+- Distinct `ProjectSettings/EditorBuildSettings.asset` repair-result identity
+- Repeat-safe second and third Repair returning `NoChanges`
+- Two hundred nine Editor setup/apply/repair tests
+- Retained twenty-seven prefab asset tests
+- Retained four-hundred-seventy-nine Runtime Play Mode tests
 #### FL-M5-02 - Approved Setup Apply Engine and Repeat-Safe Asset Creation
 - Fresh-plan-gated create-only Setup Apply service
 - Deterministic plan fingerprints and stale-plan rejection

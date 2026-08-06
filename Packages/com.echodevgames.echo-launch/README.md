@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Create-only repeat-safe Editor setup Apply implemented; explicit repair and migration pending
+- Development stage: Create-only repeat-safe Setup Apply and explicit current-schema Setup Repair implemented; migration and later M5 tooling pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -32,6 +32,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M4-05` Startup Presentation Prefab and Canvas Assembly
   - `FL-M5-01` Editor Setup Foundation and Non-Destructive Project Plan
   - `FL-M5-02` Approved Setup Apply Engine and Repeat-Safe Asset Creation
+  - `FL-M5-03` Explicit Setup Repair and Existing-Asset Reconciliation
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -558,6 +559,40 @@ Moving Boot first requires explicit approval.
 Apply does not repair, migrate, overwrite, move, rename, or delete existing
 project-authored content.
 
+## First Light Setup Repair
+
+`Repair Plan...` is a separate explicit transaction. It is available only when
+the refreshed plan contains narrowly approved current-schema repair operations
+and every required ownership and shape proof succeeds.
+
+FL-M5-03 Repair:
+
+- Keeps `Apply Plan...` create-only.
+- Recollects project evidence, replans, and compares deterministic fingerprints
+  before backup or writes.
+- Shares one active-mutation gate with Apply.
+- Requires explicit Repair confirmation.
+- Reconciles only the approved configuration references, destination scene path,
+  verified root-prefab configuration binding, zero-root canonical Boot scene,
+  and canonical Boot Build Settings entry.
+- Blocks unsupported schemas, invalid identities, ambiguous references, unsafe
+  prefab lineage/root counts, and unsafe scene shapes.
+- Backs up each existing project asset and matching `.meta` bytes beneath
+  `Library/EchoDevGames/FirstLight/RepairBackups/<repair-id>` before mutation.
+- Hash-verifies backup and restoration.
+- Writes Build Settings last.
+- Deletes successful temporary backups.
+- Retains and reports backup paths when rollback cannot complete.
+- Preserves stable IDs, Unity GUIDs, unrelated configuration values, prefab
+  content, unrelated Boot-scene objects, the destination scene, and package
+  templates.
+- Returns `NoChanges` on repeat Repair after the project converges.
+
+Repair does not migrate schemas, regenerate IDs, replace types, edit sequence or
+splash contents, delete duplicate roots, restructure prefabs, clean arbitrary
+scene content, move/rename/delete assets, or modify the selected destination
+scene.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -594,13 +629,13 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `197`
+- Passed: `236`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-02 setup and apply tests:
+Editor setup, apply, and repair tests:
 
-- Passed: `170`
+- Passed: `209`
 - Failed: `0`
 - Ignored: `0`
 
@@ -618,7 +653,7 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
-- Editor setup and apply tests: `170` EditMode
+- Editor setup, apply, and repair tests: `209` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -673,7 +708,7 @@ Timeout and cancellation evidence:
 - Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
-Manual acceptance created the project-owned First Light foundation, appended one Boot scene, proved two no-op reruns, and then removed generated acceptance residue before the implementation commit.
+Manual acceptance created the project-owned First Light foundation, introduced only authorized current-schema drift, repaired five approved surfaces, preserved unrelated content and identities, proved two no-op Repair reruns, and then removed generated acceptance and backup residue before the implementation commit.
 
 ## Not Implemented Yet
 
@@ -686,7 +721,6 @@ First Light does not yet provide:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Explicit setup repair and existing-asset reconciliation
 - Editor migration from historical configuration schemas
 - Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
@@ -711,12 +745,12 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Four hundred seventy-nine passing Runtime Play Mode tests
-- One hundred ninety-seven passing EditMode tests
-- One hundred seventy focused Editor setup-and-apply tests
+- Two hundred thirty-six passing EditMode tests
+- Two hundred nine Editor setup, apply, and repair tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe First Light Setup Apply window
-- Deterministic dry-run plans, freshness fingerprints, rollback evidence, and stable diagnostics
+- Create-only repeat-safe Setup Apply and separate explicit Setup Repair
+- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, and stable diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view

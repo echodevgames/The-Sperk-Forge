@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-02 complete; FL-M5-03 explicit current-schema Setup Repair authority approved and awaiting implementation
+- Development stage: FL-M5-03 explicit current-schema Setup Repair implemented, automated-tested, and manually accepted
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -30,8 +30,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M4-05`
   - `FL-M5-01`
   - `FL-M5-02`
-- Active authority checkpoint: `FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation`
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, and fresh-plan-gated create-only repeat-safe Setup Apply; explicit repair is approved but not yet implemented
+  - `FL-M5-03`
+- Active authority checkpoint: None; the next bounded First Light checkpoint has not yet been selected
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, fresh-plan-gated create-only repeat-safe Setup Apply, and explicit proof-backed current-schema Setup Repair
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -89,15 +90,18 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-01 Editor Setup Planning Test Report](Developer/Test%20Reports/FL-M5-01_Editor_Setup_Planning_Test_Report.md)
 - [FL-M5-02 Approved Setup Apply Engine and Repeat-Safe Asset Creation](Developer/Checkpoints/FL-M5-02_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md)
 - [FL-M5-02 Setup Apply and Repeatability Test Report](Developer/Test%20Reports/FL-M5-02_Setup_Apply_and_Repeatability_Test_Report.md)
+- [FL-M5-03 Explicit Setup Repair and Existing-Asset Reconciliation](Developer/Checkpoints/FL-M5-03_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md)
+- [FL-M5-03 Setup Repair and Reconciliation Test Report](Developer/Test%20Reports/FL-M5-03_Setup_Repair_and_Reconciliation_Test_Report.md)
 
+## Completed FL-M5-03 Boundary
 
-## Active FL-M5-03 Authority
-
-FL-M5-03 is approved to implement a separate explicit Repair transaction for
-narrow current-schema canonical drift. Create-only Apply remains unchanged.
-Repair must prove ownership/shape, back up existing asset and `.meta` bytes
-before writes, preserve unrelated project content, and become `NoChanges` on
-repeat. Implementation evidence is not yet claimed.
+FL-M5-03 implements a separate explicit Repair transaction for narrow,
+proof-backed current-schema canonical drift. Create-only Apply remains
+unchanged. Repair requires a fresh equivalent plan, explicit confirmation,
+type/schema/identity/lineage/shape proof, exact asset plus `.meta` backup before
+writes, Build Settings last, and deterministic result evidence. Manual
+acceptance repaired five approved surfaces, preserved unrelated content and
+identities, and returned `NoChanges` on the second and third Repair.
 
 ## Package Root Documents
 
@@ -248,14 +252,18 @@ First Light currently proves:
 - Read-only project snapshot and deterministic dry-run setup plan
 - Fresh-plan-gated create-only Setup Apply
 - Deterministic fingerprints and stale-plan rejection
-- Single-active-Apply protection
+- Shared single-active Apply/Repair protection
 - Project-owned foundation creation and compatible reuse
 - Build Settings mutation through explicit policy
 - Compensating rollback and immutable result reporting
-- Successful first Apply plus two `NoChanges` reruns
-- One hundred seventy focused Editor setup-and-apply tests
-- One hundred ninety-seven total passing EditMode tests
+- Successful first Apply plus two `NoChanges` Apply reruns
+- Separate proof-backed current-schema Setup Repair
+- Exact asset and `.meta` backup, rollback, and retained-backup reporting
+- Narrow configuration, destination, root-prefab, Boot-scene, and Build Settings reconciliation
+- Successful first Repair plus two `NoChanges` Repair reruns
+- Two hundred nine Editor setup, apply, and repair tests
+- Two hundred thirty-six total passing EditMode tests
 - Four hundred seventy-nine passing Runtime Play Mode tests
-- Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-012`
+- Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 
-FL-M5-02 is implemented, automated-tested, manually accepted, and pushed. Repair, migration, receipts, uninstall, direct-scene initialization, persistent-root policy, normal scene travel, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-03 is implemented, automated-tested, and manually accepted. Schema migration, receipts, uninstall, crash-persistent recovery, direct-scene initialization, Validator, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.

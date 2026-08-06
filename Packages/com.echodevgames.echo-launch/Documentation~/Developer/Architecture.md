@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Create-only repeat-safe Editor setup Apply implemented; explicit repair and migration pending
+- Development stage: Create-only repeat-safe Setup Apply and explicit current-schema Setup Repair implemented; migration and later M5 tooling pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -28,6 +28,7 @@
   - `FL-M4-05`
   - `FL-M5-01`
   - `FL-M5-02`
+  - `FL-M5-03`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -178,8 +179,36 @@ First Light currently establishes:
 142. Deterministic plain-text setup report
 143. Hard no-write Editor boundary
 144. Editor-only focused setup proof
+145. Fresh-plan-gated create-only Setup Apply
+146. Deterministic creation of the project-owned First Light foundation
+147. Project root-prefab variant and canonical Boot-scene creation
+148. Explicit Build Settings mutation policy
+149. Single-active Apply and compensating rollback
+150. Immutable apply results and repeat-safe no-op settlement
+151. Separate explicit current-schema Setup Repair
+152. Read-only repair eligibility and ownership/shape proof
+153. Deterministic repair fingerprints and fresh-plan rejection
+154. Shared single-active Apply/Repair mutation gate
+155. Exact project asset and `.meta` backup before repair
+156. Hash-verified restore, cleanup, and retained-backup reporting
+157. Narrow configuration and destination reconciliation
+158. Verified root-prefab configuration-binding repair
+159. Zero-root canonical Boot-scene repair
+160. Missing or uniquely disabled Boot Build Settings repair
+161. Build Settings mutation after asset/prefab/scene repair
+162. Complete and incomplete repair rollback results
+163. Immutable repair reports and copyable result text
+164. Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
+165. Repeat-safe second and third Repair returning `NoChanges`
 
-First Light now validates, executes, times, evaluates, projects, plays an optional configured splash, runs startup steps, loads one initial destination, finalizes one immutable terminal report, and starts automatically from Unity `Start`. The package also ships neutral presentation prefabs and a preview-only Editor setup-planning layer that can inspect and explain project adoption without modifying project content. Apply/repair, migration, direct-scene initialization, and standalone scene proof remain separate boundaries.
+First Light now validates, executes, times, evaluates, projects, plays an optional
+configured splash, runs startup steps, loads one initial destination, finalizes
+one immutable terminal report, and starts automatically from Unity `Start`. The
+package also ships neutral presentation prefabs plus Editor tooling that can
+inspect, plan, create the missing canonical project foundation, and explicitly
+repair a narrow set of proven current-schema drift. Migration, direct-scene
+initialization, Validator, and standalone scene proof remain separate
+unauthorized boundaries.
 
 ## Implemented Package Files
 
@@ -1962,6 +1991,123 @@ The first accepted manual Apply succeeded. The second and third Apply returned
 - `ELAUNCH-SETUP-011` rollback incomplete; manual recovery required.
 - `ELAUNCH-SETUP-012` unauthorized operation disposition.
 
+## Explicit Current-Schema Setup Repair
+
+FL-M5-03 adds a separate Repair transaction. It does not widen create-only
+Apply and does not treat every existing asset as package-owned.
+
+Approved flow:
+
+```text
+EchoLaunchSetupWindow
+    -> EchoLaunchSetupRequest
+    -> EchoLaunchProjectSnapshotCollector
+    -> EchoLaunchSetupPlanner
+    -> EchoLaunchSetupFingerprint
+    -> EchoLaunchSetupRepairService
+        -> EchoLaunchSetupRepairBackupStore
+        -> EchoLaunchSetupAssetWriter
+        -> EchoLaunchSetupPrefabWriter
+        -> EchoLaunchSetupSceneWriter
+        -> EchoLaunchSetupBuildSettingsWriter
+    -> EchoLaunchSetupRepairResult
+    -> EchoLaunchSetupRepairResultFormatter
+```
+
+### Proof Before Permission
+
+A repair operation is planned only when the snapshot proves the exact
+current-schema target and the narrow authorized change.
+
+The approved matrix is:
+
+- `EchoLaunchConfiguration`: rebind startup sequence, destination, and optional
+  splash only.
+- `LaunchDestination`: reconcile the selected scene path and fill the display
+  label only when it is empty.
+- Project root prefab: prove variant lineage reaches the package root template,
+  prove exactly one `EchoLaunchRoot`, and rebind only its configuration.
+- Canonical Boot scene: prove the exact planned scene has zero roots and add one
+  project-root-prefab instance while preserving unrelated objects.
+- Build Settings: add a missing canonical Boot entry, enable one unique disabled
+  entry, or apply the separately approved place-first policy while preserving
+  unrelated entries.
+
+Unsupported schemas, invalid or empty stable IDs, ambiguous references, wrong
+types, unprovable prefab lineage, unsafe root counts, duplicate Build Settings
+identity, and unsafe open Boot-scene state block before backup or writes.
+
+### Freshness, Approval, and Concurrency
+
+Repair recollects evidence, replans, and compares request, evidence, and plan
+fingerprints immediately before mutation. A changed project is rejected as
+stale.
+
+Repair requires a dedicated immutable approval. `Apply Plan...` rejects plans
+that contain `Repair`. `Repair Plan...` is enabled only when the refreshed plan
+is executable and contains an approved repair operation.
+
+Apply and Repair share one active-mutation gate, so they cannot overlap.
+
+### Byte and Metadata Backup
+
+Before modifying an existing project asset, the repair service copies the exact
+asset bytes and matching `.meta` bytes beneath:
+
+```text
+Library/EchoDevGames/FirstLight/RepairBackups/<repair-id>
+```
+
+Backup paths are validated as project-owned before filesystem lookup. Copied
+bytes are hash-verified.
+
+On success, temporary backup content is deleted. On complete rollback, original
+bytes and Build Settings are restored and imported. If restoration cannot
+complete, the backup is retained and its path is included in the immutable
+result.
+
+### Ordered Narrow Mutation
+
+Repair executes in this order:
+
+1. Create still-missing approved prerequisites when the same Repair transaction
+   contains a partial foundation.
+2. Secure all required existing-file backups.
+3. Repair configuration and destination fields.
+4. Repair the verified root-prefab binding.
+5. Repair the canonical zero-root Boot scene.
+6. Write Build Settings last.
+7. Refresh, recollect, and verify convergence.
+
+Writers return exact before/after evidence and refuse broader mutation.
+Build Settings repair reports `ProjectSettings/EditorBuildSettings.asset` as
+its own repaired path rather than reusing the Boot scene asset path.
+
+### Repair Result and Repeatability
+
+The immutable repair result records:
+
+- Status and message.
+- Final plan status and fingerprint.
+- Created, repaired, reused, and unchanged paths.
+- Approved before/after/proof summaries.
+- Build Settings before and after.
+- Rollback state.
+- Retained backup directory and manual recovery paths when applicable.
+
+The accepted manual Repair changed five approved surfaces, preserved the
+unrelated `FL_M5_03_UnrelatedMarker` Boot-scene object, and converged to the
+same canonical fingerprint used by the freshly generated foundation. The second
+and third Repair returned `NoChanges`.
+
+### Stable Repair Diagnostics
+
+- `ELAUNCH-SETUP-013` explicit repair approval required.
+- `ELAUNCH-SETUP-014` repair backup unavailable.
+- `ELAUNCH-SETUP-015` ownership or shape cannot be proven.
+- `ELAUNCH-SETUP-016` repair failed and rollback completed.
+- `ELAUNCH-SETUP-017` rollback incomplete; backup retained.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -1972,10 +2118,16 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M5-02 compile result:
+Final FL-M5-03 compile result:
 
 - Errors: `0`
 - Warnings: `0`
+
+The first focused EditMode run exposed two implementation defects rather than
+compiler defects. The backup store validated filesystem availability before
+project ownership, and Build Settings repair reused the Boot scene path in
+repaired-path reporting. Both were corrected before the final complete test
+gates.
 
 ## Retained Lifecycle Architecture
 
@@ -1991,13 +2143,13 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `197`
+- Passed: `236`
 - Failed: `0`
 - Ignored: `0`
 
-FL-M5-02 setup and apply tests:
+Editor setup, apply, and repair tests:
 
-- Passed: `170`
+- Passed: `209`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2015,7 +2167,7 @@ Runtime Play Mode totals:
 
 Breakdown:
 
-- Editor setup and apply tests: `170` EditMode
+- Editor setup, apply, and repair tests: `209` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -2043,7 +2195,31 @@ Breakdown:
 - Multi-frame async runner tests: `2`
 - Preflight and re-entry tests: `23`
 
-Verified FL-M5-02 and retained behavior:
+Verified FL-M5-03 behavior:
+
+- Read-only repair evidence collection and deterministic repair fingerprints
+- Separate Apply and Repair authorization
+- Shared single-active mutation gate
+- Current-schema type, identity, reference, prefab-lineage, root-count, scene,
+  and Build Settings proof gates
+- Exact asset and `.meta` backup before modification
+- Backup hash verification, cleanup, exact restore, and retained-backup reporting
+- Narrow configuration and destination repair
+- Verified root-prefab binding repair
+- Zero-root canonical Boot-scene repair with unrelated-object preservation
+- Missing and uniquely disabled Build Settings repair with unrelated-state
+  preservation
+- Build Settings mutation last
+- Complete and incomplete rollback outcomes
+- First manual Repair `Succeeded`
+- Second and third manual Repair `NoChanges`
+- Stable fingerprint
+  `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f`
+- Stable IDs and GUIDs preserved
+- Destination scene and package root template unchanged
+- No generated acceptance or repair-backup residue in the implementation commit
+
+Retained FL-M5-02 and earlier behavior:
 
 - Fresh-plan fingerprint equality and stale-plan rejection
 - Single-active-Apply rejection
@@ -2327,7 +2503,6 @@ Not implemented:
 - Public step lifecycle events
 - Warning aggregation outside the run result
 - Dependency validation
-- Explicit setup repair and existing-asset reconciliation
 - Editor migration from historical configuration schemas
 - Direct-scene initializer tooling
 - Real Boot-to-destination Standalone Laboratory proof
@@ -2338,14 +2513,15 @@ Not implemented:
 
 ## Stop Point
 
-FL-M5-02 stops after the fresh-plan-gated create-only Apply service,
-deterministic project-owned foundation creation, explicit Build Settings
-mutation, compensating rollback, immutable result reporting, one successful
-manual Apply, two repeat-safe `NoChanges` Applies, one hundred ninety-seven
-passing EditMode tests, and four hundred seventy-nine passing Runtime Play Mode
-tests.
+FL-M5-03 stops after the separate proof-backed current-schema Repair service,
+exact asset and metadata backup, narrow configuration/destination/prefab/Boot/
+Build Settings reconciliation, complete and incomplete rollback evidence,
+immutable repair reporting, one successful manual Repair, two repeat-safe
+`NoChanges` Repairs, two hundred thirty-six passing EditMode tests, and four
+hundred seventy-nine passing Runtime Play Mode tests.
 
-Repairing or migrating existing assets, persistent receipts, uninstall/reset,
-crash-persistent recovery, direct-scene initialization, persistent-root policy,
-player builds, external adoption, and real Standalone Laboratory activation
+Schema migration, duplicate-root cleanup, structural prefab or scene rewriting,
+persistent receipts, uninstall/reset, crash-persistent recovery, direct-scene
+initialization, Validator, persistent-root policy, player builds, external
+adoption, performance evidence, and real Standalone Laboratory activation
 require later approved checkpoints.

@@ -3,72 +3,74 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 5, 2026
-**Current focus:** First Light explicit Setup Repair authority
-**Current checkpoint:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation — authority prepared
+**Last reconciled:** August 6, 2026
+**Current focus:** Close FL-M5-03 and select the next bounded First Light checkpoint
+**Current checkpoint:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation — complete pending documentation commit
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Last Completed Checkpoint
+## Completed Checkpoint
 
-FL-M5-02 is fully closed and pushed.
+FL-M5-03 implemented the separate explicit Setup Repair transaction authorized
+by SFGSS-PKG-ECHOLAUNCH-001 v1.9.0 and EchoLaunch-ADR-006.
 
-- Authority: `208ee71`
-- Implementation: `f05b95c`
-- Documentation closeout: `2ef594c`
-- EditMode: `197` passed
-- Runtime Play Mode: `479` passed
+- Authority: `6615c8f`
+- Implementation: `dd15768`
 - Compilation: `0` errors, `0` warnings
-- Manual Apply sequence: `Succeeded`, `NoChanges`, `NoChanges`
-- Working tree at handoff: clean
+- EditMode: `236` passed, `0` failed, `0` ignored
+- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
+- Total automated: `715` passed
+- Manual Repair sequence: `Succeeded`, `NoChanges`, `NoChanges`
+- Stable fingerprint:
+  `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f`
+- Working tree after implementation commit: clean
 
-## Active Authority Preparation
+## Accepted Evidence
 
-FL-M5-03 defines a separate explicit repair transaction for existing
-current-schema First Light project assets. It does not weaken create-only Apply.
+The manual acceptance scenario proved that Repair:
 
-The approved authority set introduces:
+- Rebound only the three approved launch-configuration references.
+- Restored the current-schema destination scene path without changing its
+  authored label, stable ID, schema, or unrelated values.
+- Rebound only the verified root-prefab configuration field.
+- Added one root to a zero-root canonical Boot scene while preserving the
+  unrelated `FL_M5_03_UnrelatedMarker` object.
+- Restored one canonical Boot Build Settings entry without duplicating it or
+  changing unrelated entries.
+- Returned `NoChanges` on the second and third Repair.
+- Preserved configuration assets and `.meta` files, project root-prefab identity,
+  Boot-scene GUID, destination scene and GUID, package template and GUID, and the
+  canonical Build Settings result.
+- Removed successful temporary backups and produced no manual recovery paths.
 
-- SFGSS-PKG-ECHOLAUNCH-001 v1.9.0.
-- EchoLaunch-ADR-006.
-- FL-M5-03 Checkpoint Build Plan.
-- Separate `Repair Plan...` user intent.
-- Proven type/schema/identity/prefab-lineage/scene-shape gates.
-- Exact asset + `.meta` backup under `Library` before modification.
-- Complete and incomplete rollback diagnostics/results.
-- Repeat-safe reconciliation ending in `NoChanges`.
+Two defects found by the first focused EditMode run were corrected before final
+acceptance: path ownership is now validated before filesystem lookup, and Build
+Settings repair reports `ProjectSettings/EditorBuildSettings.asset` as its own
+repaired path.
 
-## Key Boundary
+## Preserved Boundary
 
-Repair may touch only:
-
-- Three canonical configuration references.
-- Destination scene path and an empty-only display label.
-- Configuration binding on a verified root-prefab variant.
-- Root presence in an exact zero-root canonical Boot scene.
-- Canonical Boot Build Settings presence/enabled/approved placement.
-
-Migration, ID regeneration, type replacement, sequence/splash content edits,
-duplicate-root deletion, prefab structural rewrite, move/rename/delete,
-destination-scene modification, receipts, uninstall, crash recovery, Direct
-Scene, Validator, and Laboratory remain deferred.
+FL-M5-03 does not authorize schema migration, ID regeneration, type replacement,
+sequence or splash content edits, duplicate-root deletion, prefab structural
+rewrite, move/rename/delete, destination-scene modification, receipts,
+uninstall/reset, crash-persistent recovery, Direct Scene initialization,
+Validator, Laboratory, player-build evidence, clean external installation, or
+performance claims.
 
 ## Next Action
 
-Apply/review the FL-M5-03 authority bundle, then commit and push:
-
-```text
-echo-launch: approve FL-M5-03 explicit setup repair
-```
-
-Implementation is not authorized until that authority commit is on `main`.
+Commit and push the FL-M5-03 documentation closeout adjacent to `dd15768`.
+Afterward, choose and approve the next bounded First Light checkpoint. No new
+implementation begins until its specification/ADR impact and Checkpoint Build
+Plan are committed.
 
 ## Handoff
 
-**Completed:** FL-M5-02
-**Active:** FL-M5-03 authority
-**Required baseline:** `2ef594c`
+**Completed:** FL-M5-03
+**Authority:** `6615c8f`
+**Implementation:** `dd15768`
+**Documentation:** This closeout change set; final commit recorded by Git history
 **Blockers:** None recorded
-**Implementation state:** Not started
+**Next checkpoint:** Not yet selected or authorized
