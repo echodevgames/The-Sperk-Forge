@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-06 Launch Simulator implemented, automated-tested, manually accepted, and pushed
+- Development stage: FL-M5-06 complete; FL-M5-07 Standalone Test Laboratory authority prepared pending authority commit
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -34,7 +34,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-04`
   - `FL-M5-05`
   - `FL-M5-06`
-- Active authority checkpoint: None
+- Active authority checkpoint: `FL-M5-07` — Standalone Test Laboratory and Importable Package Sample
 - Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator
 - Unity baseline: `6000.3.8f1`
 
@@ -56,6 +56,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [EchoLaunch-ADR-007 Read-Only Validator and Deterministic Project Health Report](Developer/ADR/EchoLaunch-ADR-007_Read-Only_Validator_and_Deterministic_Project_Health_Report.md)
 - [EchoLaunch-ADR-008 Direct Scene Development Initializer and Release-Safe Runtime Gate](Developer/ADR/EchoLaunch-ADR-008_Direct_Scene_Development_Initializer_and_Release-Safe_Runtime_Gate.md)
 - [EchoLaunch-ADR-009 Editor-Only Launch Simulator and Deterministic Failure Injection](Developer/ADR/EchoLaunch-ADR-009_Editor-Only_Launch_Simulator_and_Deterministic_Failure_Injection.md)
+- [EchoLaunch-ADR-010 Importable Standalone Test Laboratory and Sample-Isolation Boundary](Developer/ADR/EchoLaunch-ADR-010_Importable_Standalone_Test_Laboratory_and_Sample-Isolation_Boundary.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -158,6 +159,27 @@ Runtime/player Simulator types, persistent scenario assets, authored
 configuration mutation, root/presentation/destination simulation,
 Standalone Laboratory scenes, build hooks, and report export remain outside
 the implemented boundary.
+
+## Active FL-M5-07 Authority
+
+FL-M5-07 may implement one explicit importable UPM sample named
+`First Light Standalone Test Lab`.
+
+The sample may contain the Boot and Destination Laboratory scenes, visible
+readouts, project-owned sample configuration/sequence assets after import,
+neutral splash media, public-API sample steps, direct-scene setup, duplicate
+root setup, reset instructions, and package-qualified
+`ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` evidence.
+
+Import must remain explicit and user initiated. It may not automatically
+modify Build Settings, ProjectSettings, canonical project setup assets,
+scripting defines, or unrelated scenes. Core package assemblies may not
+depend on sample code or content.
+
+M6 project adoption, optional bridges, Runtime core expansion, automatic
+sample installation, report export, build hooks, migration, receipts,
+uninstall, recovery, player-build claims, and external-adoption claims remain
+unauthorized.
 
 ## Package Root Documents
 
@@ -329,4 +351,4 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-06 is implemented, automated-tested, manually accepted, and pushed. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-06 is implemented, automated-tested, manually accepted, documented, and pushed. FL-M5-07 Standalone Test Laboratory authority is prepared but not yet committed or implemented. M6 project adoption, optional bridges, schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.
