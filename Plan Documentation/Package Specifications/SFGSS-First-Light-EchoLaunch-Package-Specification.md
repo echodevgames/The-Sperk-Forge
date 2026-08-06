@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.11.0
+**Specification version:** 1.12.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,8 +17,8 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-05 has implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor and Development-Build environment policy, `DirectSceneDevelopment` report mode, and activated release-safety Validator rule authorized by this v1.11.0 specification and EchoLaunch-ADR-008.
-Automatic helper installation, non-development release enablement, build hooks, Simulator, Laboratory, migration, receipt, uninstall, or recovery work remains separately unauthorized.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-05 has implemented and validated the project-owned Direct Scene Development Initializer authorized by v1.11.0 and EchoLaunch-ADR-008. FL-M5-06 may implement only the explicit Editor-only Launch Simulator, transient immutable simulation requests/plans, real startup-sequence runner and policy execution, deterministic logical timing, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and release-safe no-production-dependency boundary authorized by this v1.12.0 specification and EchoLaunch-ADR-009 after their authority commit.
+Standalone Laboratory scenes/assets, runtime sample step definitions, automatic scene installation, report export formats, build hooks, migration, receipt, uninstall, or recovery remain separately unauthorized.
 
 ---
 
@@ -39,6 +39,7 @@ Automatic helper installation, non-development release enablement, build hooks, 
 | 1.9.0 | 2026-08-05 | Approved | Authorized explicit Setup Repair for narrowly provable current-schema drift, separate repair confirmation, ownership/shape gates, byte-preserving backup and rollback of modified project assets, immutable repair reporting, and repeat-safe reconciliation for FL-M5-03 | Jesse “Echo” Adams |
 | 1.10.0 | 2026-08-06 | Approved | Authorized the explicit read-only First Light Validator, immutable schema-1 findings and project-health report, stable validation codes, scene-safe enabled-build-scene inspection, deterministic request/evidence/report fingerprints, and copyable project-relative text evidence for FL-M5-04 | Jesse “Echo” Adams |
 | 1.11.0 | 2026-08-06 | Approved | Authorized the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` for FL-M5-05 | Jesse “Echo” Adams |
+| 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
 
 ---
 
@@ -313,7 +314,7 @@ EchoLaunch must:
 | CAP-011 | Direct-scene initializer | Minimum development runtime only when authority is absent | Approved | Yes | Runtime/Sample | Disabled or excluded in release by default |
 | CAP-012 | Setup/repair | Create/repair canonical Boot scene and project-owned assets | Approved | Yes | Editor | Preview and repeat-safe |
 | CAP-013 | Validator | Detect duplicates, missing references, scene/build errors, and unsafe setup | Approved | Yes | Editor | Stable validation IDs |
-| CAP-014 | Delay/failure simulation | Simulate step delays, warnings, and failures | Approved | Yes | Editor/Sample | Development/test only |
+| CAP-014 | Delay/failure simulation | Simulate deterministic success, timed progress, warnings, recoverable failures, blocking failures, timeouts, cancellation, and executor exceptions through the real sequence runner | Approved | Yes | Editor | Explicit invocation; transient in-memory data; no production-runtime dependency |
 | CAP-015 | Portable report export | Export launch report for bug reports | Approved | Later | Editor/Runtime | JSON/text format decision later |
 | CAP-016 | Conditional destination providers | Resolve Main Menu/new game/continue/test/project destination | Approved concept | No | Runtime/Bridge | Post-MVP |
 | CAP-017 | Custom splash adapters | Animation/video/custom presenter adapters | Approved concept | No | Bridge/Runtime | Post-MVP |
@@ -684,7 +685,7 @@ Repair workflow:
 | Startup Sequence Inspector | Programmer | Reorder and validate steps | No |
 | Splash Sequence Inspector | Designer | Preview image order/timing | No |
 | First Light Validator | Tester/maintainer | Run configuration/scene/build/schema checks | No |
-| Launch Simulator | Tester | Inject development failures/delays | No runtime production dependency |
+| Launch Simulator | Tester | Explicitly run transient deterministic startup-step scenarios and copy immutable evidence | Editor assembly only; no authored asset, scene, Build Settings, or player dependency |
 | Launch Report Viewer | Tester | Inspect/copy launch reports | No |
 
 ### 11.4 Validation and repair
@@ -1101,6 +1102,183 @@ Stable runtime diagnostics:
 
 The helper records one immutable/read-only settlement result, logs at most one sanitized message, and disables further helper behavior. It does not become a persistent service.
 
+### 12.6 Launch Simulator
+
+The **First Light Launch Simulator** is an explicit Editor-only diagnostic tool.
+
+Open:
+
+```text
+Tools > Sperk's Forge > First Light > Simulator
+```
+
+Opening, repainting, reloading, entering Play Mode, or importing assets does not
+start a simulation. The user must press `Run Simulation`.
+
+#### Scope boundary
+
+The Simulator proves startup-step execution semantics. It does not claim launch
+authority, play splash presentation, load a destination, modify Build Settings,
+or pretend that a full Boot launch completed.
+
+The later Standalone Laboratory remains responsible for visible root,
+presentation, destination, duplicate, and Boot-to-destination acceptance.
+
+#### Transient simulation model
+
+Every run builds transient `HideAndDontSave` configuration, sequence, entry, and
+step-definition objects in memory. The Simulator never:
+
+- Writes a project asset.
+- Edits an authored `EchoLaunchConfiguration`.
+- Edits an authored `StartupSequence`.
+- Adds a scene object.
+- Saves or dirties a scene.
+- Changes Build Settings.
+- Enters Play Mode automatically.
+- Stores simulation state in runtime ScriptableObjects.
+
+Transient objects are destroyed after settlement, including cancellation and
+failure paths.
+
+#### Real runner, separate report truth
+
+Simulation uses the real `StartupSequenceRunner`, `StartupStepPolicy`,
+`StartupStepResult`, progress gate, timeout monitor, exception conversion, and
+sequence traversal behavior.
+
+It produces `LaunchSimulationReport` schema version `1`, not `LaunchReport`.
+
+This separation is mandatory because the Simulator does not claim a root,
+activate presentation, or complete a destination handoff. A simulation report
+must not falsely claim a completed launch.
+
+#### Built-in scenario presets
+
+The first version supports:
+
+```text
+ImmediateSuccess
+TimedProgressSuccess
+WarningContinues
+RecoverableFailureContinues
+BlockingFailureStops
+TimeoutStops
+ExecutorExceptionStops
+Cancellation
+```
+
+Presets may expose bounded parameters such as logical duration, progress sample
+count, timeout, and message text. Unsupported values block before transient
+objects are created.
+
+Warning and recoverable-failure presets include a later success step so
+continuation is observable. Blocking, timeout, exception, and cancellation
+presets include an unvisited later step so stopping behavior is observable.
+
+#### Deterministic logical timing
+
+Simulation timing is logical rather than wall-clock evidence.
+
+- A simulation clock begins at `0`.
+- Timed executors advance the clock through deterministic scheduled samples.
+- Progress samples have authored logical timestamps.
+- Timeout settlement uses the same runner timeout contract.
+- Identical accepted requests produce identical semantic reports,
+  fingerprints, ordering, progress samples, and copied text.
+- UI repaint frequency, machine performance, and wall-clock date are excluded
+  from report truth.
+
+The window may animate logical progress for readability, but animation does not
+change accepted evidence.
+
+#### Immutable contracts
+
+`LaunchSimulationRequest` contains:
+
+- Report schema version.
+- Scenario preset.
+- Logical duration.
+- Progress sample count.
+- Timeout.
+- Stable optional message.
+- Deterministic request fingerprint.
+
+`LaunchSimulationReport` contains:
+
+- Schema version `1`.
+- Simulator status.
+- Request, plan, and report fingerprints.
+- Scenario preset and normalized parameters.
+- Authored, disabled, attempted, and unvisited counts.
+- Ordered immutable step evidence.
+- Ordered immutable progress evidence.
+- Final effective result.
+- Cancellation state.
+- Sanitized simulator diagnostic.
+- Deterministic copied text.
+
+No Unity object reference survives report construction.
+
+#### Status and diagnostics
+
+Stable statuses:
+
+```text
+NotRun
+Completed
+Cancelled
+InvalidRequest
+Busy
+InfrastructureFailure
+```
+
+Stable diagnostics:
+
+- `ELAUNCH-SIM-001` invalid or unsupported request.
+- `ELAUNCH-SIM-002` a simulation is already active.
+- `ELAUNCH-SIM-003` simulation cancelled by the user.
+- `ELAUNCH-SIM-004` transient-plan or simulator infrastructure failure.
+
+Built-in simulated step results use:
+
+- `ELAUNCH-SIM-STEP-001` warning.
+- `ELAUNCH-SIM-STEP-002` recoverable failure.
+- `ELAUNCH-SIM-STEP-003` blocking failure.
+
+Timeout and executor exceptions continue through the existing canonical step
+diagnostics and exception conversion. The Simulator does not create competing
+timeout or exception semantics.
+
+#### Single-active-run and cancellation
+
+Only one simulation may run at a time.
+
+- Re-entry returns a structured `Busy` report with `ELAUNCH-SIM-002`.
+- `Cancel Simulation` requests cooperative cancellation.
+- Cancellation settles through the real runner cancellation path.
+- The window never abandons transient objects or an active runner.
+- Closing the window requests cancellation and completes cleanup without
+  logging an unhandled exception.
+
+#### Release and dependency boundary
+
+All Simulator window, transient authoring, scenario executor, logical clock,
+formatter, and orchestration code lives in the Editor assembly.
+
+The Runtime assembly may grant the package Editor assembly internal access to
+the existing runner/reporting seams, but FL-M5-06 adds no simulator type or
+player behavior to the Runtime assembly.
+
+The Simulator:
+
+- Is absent from player builds.
+- Adds no scripting define.
+- Adds no build hook.
+- Adds no peer-package dependency.
+- Adds no reflection or hidden discovery.
+- Adds no dependency on Samples or the later Laboratory.
+
 ### 12.5 Scene isolation rule
 
 The Standalone Test Lab contains no Jukebot, EchoUI, EchoSave, EchoSettings, EchoSceneFlow, EchoGameState, EchoInput, EchoDiagnostics, or project-specific runtime assembly. Test utilities live only in the sample/test assemblies.
@@ -1285,6 +1463,10 @@ EchoLaunch exposes:
 | ELAUNCH-DIRECT-001 | Warning | Direct-scene entry is prohibited by policy or runtime environment | Start from Boot or use an approved Editor/development policy |
 | ELAUNCH-DIRECT-002 | Blocker | Direct configuration, prefab, launch mode, launch configuration, or destination is invalid | Assign a supported project-owned direct configuration |
 | ELAUNCH-DIRECT-003 | Error | Direct root instantiation failed unexpectedly | Inspect the prefab/runtime condition and start from Boot while unresolved |
+| ELAUNCH-SIM-001 | Blocker | Launch Simulator request is invalid or unsupported | Correct the selected scenario and bounded parameters |
+| ELAUNCH-SIM-002 | Warning | A Launch Simulator run is already active | Wait for settlement or cancel the active simulation |
+| ELAUNCH-SIM-003 | Information | Launch Simulator run was cancelled by the user | Run the scenario again when ready |
+| ELAUNCH-SIM-004 | Error | Transient simulation planning or execution infrastructure failed | Copy the sanitized report and inspect package implementation |
 | ELAUNCH-LIFE-001 | Info/Warning | Launch interrupted during shutdown/destruction | Review lifecycle only if unexpected |
 | ELAUNCH-SETUP-001 | Blocker | Setup request contains an invalid or non-project asset path | Correct the project-owned path before apply |
 | ELAUNCH-SETUP-002 | Blocker | Planned target path contains an incompatible existing asset | Select another path or resolve the conflict manually |
@@ -1901,6 +2083,7 @@ Automated script rewriting is rejected unless a later migration specification pr
 | ELAUNCH-D-013 | Setup Repair is a separate explicitly approved transaction limited to provable current-schema canonical drift, with pre-write byte/meta backup and rollback | Approved | Prevents create-only Apply from silently becoming destructive while making damaged generated foundations recoverable | Ambiguous ownership, structural edits, and schema changes remain manual or migration work | Yes; EchoLaunch-ADR-006 |
 | ELAUNCH-D-014 | Project health validation is an explicit read-only Editor transaction with immutable schema-1 findings/report, stable codes, scene-safe inspection, and deterministic fingerprints/text | Approved | Keeps diagnosis trustworthy and separate from mutation while preparing release-safety checks for Direct Scene | No auto-fix, build hook, runtime overlay, or direct-helper implementation in FL-M5-04 | Yes; EchoLaunch-ADR-007 |
 | ELAUNCH-D-015 | Direct Scene uses a project-owned immutable direct configuration, Start-time authority reuse, a pre-authored direct root prefab, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, and an unconditional non-development release gate | Approved | Preserves one startup architecture while preventing development bootstrap behavior from running in release | No hidden discovery, runtime asset rewrite, automatic installation, or release enablement | Yes; EchoLaunch-ADR-008 |
+| ELAUNCH-D-016 | Launch simulation is an explicit Editor-only transaction that builds transient in-memory scenario data, executes the real startup-sequence runner and policy contracts against deterministic logical time, and emits a separate immutable schema-1 simulation report | Approved | Proves step behavior without mutating authored content or falsely claiming a full root/destination launch | No persistent scenario assets, runtime simulator code, Play Mode automation, scene mutation, build hooks, or Laboratory implementation | Yes; EchoLaunch-ADR-009 |
 
 ### 27.2 Release-blocking questions
 
@@ -1999,12 +2182,13 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M5-05 — Direct Scene Development Initializer |
-| Active authorized checkpoint | None; the next bounded First Light checkpoint has not yet been selected |
+| Active authorized checkpoint | FL-M5-06 — Launch Simulator and Deterministic Failure Injection |
+| FL-M5-06 authority baseline | `b6df92d` |
 | FL-M5-05 authority commit | `d538b5a` |
 | FL-M5-04 authority commit | `c2397c9` |
 | FL-M5-03 authority commit | `6615c8f` |
 | Last implementation commit | `4aa6ce7` |
-| Last documentation commit | `4e3bf34` |
+| Last documentation commit | `b6df92d` |
 | Runtime tests passed | 503 Runtime Play Mode tests |
 | EditMode tests passed | 266 total: 209 setup/apply/repair, 25 Validator, 5 Direct Scene Validator, and 27 prefab asset tests |
 | Total automated tests | 769 passed, 0 failed, 0 ignored |
@@ -2013,8 +2197,8 @@ Before writing code:
 | FL-M5-04 evidence | Dedicated explicit read-only Validator; immutable schema-1 report; stable validation codes; scene-safe inspection; deterministic healthy report; deliberate blocked report with `002`, path-specific `003`, and `008`; exact restored healthy fingerprints |
 | FL-M5-05 evidence | Project-owned direct configuration; Start-time reuse/create; exactly-one authority; active-destination no reload; unconditional release-player prohibition; truthful direct mode; activated `VAL-009`; manual creation/reuse/convergence; Development-Build Warning; exact restored healthy fingerprints |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic Direct Scene installation, build hooks, Simulator, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push the FL-M5-05 documentation closeout, then select and approve the next bounded First Light checkpoint before implementation |
+| Evidence gaps | FL-M5-06 Simulator implementation/evidence, historical schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic Direct Scene installation, build hooks, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push specification v1.12.0, EchoLaunch-ADR-009, and the FL-M5-06 Checkpoint Build Plan before implementation |
 
 ---
 
@@ -2064,7 +2248,7 @@ A new collaborator can determine from this approved specification:
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
 The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
-FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. Schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic helper installation, build hooks, Simulator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
+FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 may implement only the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, cancellation, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan after authority commit. Schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic helper installation, build hooks, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
 
 
 ---

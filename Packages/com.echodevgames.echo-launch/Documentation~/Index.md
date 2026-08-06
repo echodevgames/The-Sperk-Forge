@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-05 Direct Scene Development Initializer implemented, automated-tested, and manually accepted
+- Development stage: FL-M5-05 complete; FL-M5-06 Launch Simulator authority approved pending authority commit
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -33,7 +33,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-03`
   - `FL-M5-04`
   - `FL-M5-05`
-- Active authority checkpoint: None; the next bounded First Light checkpoint has not yet been selected
+- Active authority checkpoint: `FL-M5-06` — Launch Simulator and Deterministic Failure Injection
 - Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, and release-gated Direct Scene development entry without scene reload
 - Unity baseline: `6000.3.8f1`
 
@@ -54,6 +54,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [EchoLaunch-ADR-006 Explicit Setup Repair and Existing-Asset Reconciliation](Developer/ADR/EchoLaunch-ADR-006_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md)
 - [EchoLaunch-ADR-007 Read-Only Validator and Deterministic Project Health Report](Developer/ADR/EchoLaunch-ADR-007_Read-Only_Validator_and_Deterministic_Project_Health_Report.md)
 - [EchoLaunch-ADR-008 Direct Scene Development Initializer and Release-Safe Runtime Gate](Developer/ADR/EchoLaunch-ADR-008_Direct_Scene_Development_Initializer_and_Release-Safe_Runtime_Gate.md)
+- [EchoLaunch-ADR-009 Editor-Only Launch Simulator and Deterministic Failure Injection](Developer/ADR/EchoLaunch-ADR-009_Editor-Only_Launch_Simulator_and_Deterministic_Failure_Injection.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -135,6 +136,18 @@ read-only `ELAUNCH-VAL-009`.
 Manual acceptance proved direct creation, existing-authority reuse,
 two-initializer convergence, one accepted authority, no scene reload,
 Development-Build warning, and exact restored healthy fingerprints.
+
+## Active FL-M5-06 Authority
+
+FL-M5-06 authorizes only the explicit Editor-only Launch Simulator, transient
+in-memory simulation planning, real startup-sequence runner and policy
+execution, deterministic logical timing, immutable schema-1 simulation reports,
+stable simulation diagnostics, copyable text evidence, cancellation, and
+single-active-run protection.
+
+It does not authorize Runtime/player Simulator types, persistent scenario
+assets, authored configuration mutation, root/presentation/destination
+simulation, Standalone Laboratory scenes, build hooks, or report export.
 
 ## Package Root Documents
 
@@ -305,4 +318,4 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-05 is implemented, automated-tested, and manually accepted. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-05 is implemented, automated-tested, and manually accepted. FL-M5-06 Launch Simulator authority is approved but not yet implemented. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.

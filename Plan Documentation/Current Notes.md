@@ -4,87 +4,72 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 6, 2026
-**Current focus:** First Light FL-M5-05 documentation closeout
-**Current checkpoint:** FL-M5-05 — Direct Scene Development Initializer
+**Current focus:** First Light FL-M5-06 authority
+**Current checkpoint:** FL-M5-06 — Launch Simulator and Deterministic Failure Injection
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Completed Implementation
+## Starting State
 
-- Authority commit: `d538b5a`
-- Implementation commit: `4aa6ce7`
 - Branch: `main`
+- HEAD: `b6df92d`
 - `main` equals `origin/main`
-- Working tree after implementation commit: clean
-- Compilation: `0` errors, `0` warnings
-- Focused Direct Scene EditMode: `5` passed
-- Focused Direct Scene PlayMode: `24` passed
-- Complete EditMode: `266` passed
-- Complete Runtime PlayMode: `503` passed
-- Total automated: `769` passed
-- Failed: `0`
-- Ignored: `0`
+- Working tree: clean
+- FL-M5-05 authority: `d538b5a`
+- FL-M5-05 implementation: `4aa6ce7`
+- FL-M5-05 documentation: `b6df92d`
+- Compilation baseline: `0` errors, `0` warnings
+- EditMode baseline: `266` passed
+- Runtime Play Mode baseline: `503` passed
+- Total automated baseline: `769` passed
+- Specification: v1.11.0 before this authority update
+- FL-M5-06 implementation locked until authority commit
 
-## Accepted FL-M5-05 Outcome
+## Learning Review Decisions
 
-First Light now supports directly opening an explicitly configured gameplay or
-Test Lab scene and entering the normal startup architecture.
+- `[DECISION]` Simulator proves startup-step semantics, not a complete launch.
+- `[DECISION]` Simulator code is Editor-only.
+- `[DECISION]` Use the real `StartupSequenceRunner` and policy contracts.
+- `[DECISION]` Grant intentional friend access to the package Editor assembly.
+- `[DECISION]` Build transient `HideAndDontSave` configuration/sequence objects.
+- `[DECISION]` Never edit authored assets, scenes, or Build Settings.
+- `[DECISION]` Use deterministic logical time rather than wall-clock evidence.
+- `[DECISION]` Emit separate schema-1 `LaunchSimulationReport`, not
+  `LaunchReport`.
+- `[DECISION]` Support success, timed progress, warning, recoverable failure,
+  blocking failure, timeout, exception, and cancellation.
+- `[DECISION]` One active run; re-entry and cancellation are structured.
+- `[DECISION]` Expected simulated failures remain report evidence, not Console
+  warnings/errors.
+- `[DECISION]` Standalone Laboratory remains a later separate checkpoint.
 
-- Existing authority is reused.
-- Missing authority creates one approved direct root.
-- Multiple initializers converge on one accepted authority.
-- Direct destination already active completes without scene reload.
-- Editor-only is the default.
-- Development Builds require explicit opt-in.
-- Non-development release-player root creation is impossible.
-- Validator code `ELAUNCH-VAL-009` is active and read-only.
+## Stable Simulator Diagnostics
 
-## Manual Acceptance
-
-Healthy baseline:
-
-```text
-Request:
-5c8748493af793488d04f400ac2dfd000645315706a0306aafd492ec92a2dfb0
-
-Evidence:
-64706f20f36d21d21bdb61d826f30c698fe7c9cead86109d3ec2132fe075d82e
-
-Report:
-cab6e106a92eda1da382133c809f2bc273c5e36ed279fe7bb37908353106aaa3
-```
-
-Direct Play created one authority, kept `OutdoorsScene` active, and completed
-without destination reload. Existing authority was reused without another clone.
-Two initializers produced one created settlement, one reused settlement, and one
-accepted authority.
-
-Development-Build opt-in returned `NeedsAttention` with one
-`ELAUNCH-VAL-009` Warning. Restoring `EditorOnly` reproduced the exact original
-healthy fingerprints.
-
-## Cleanup and Preservation
-
-- Generated acceptance content removed.
-- `OutdoorsScene`, Build Settings, and solution drift restored.
-- Only approved package runtime/editor/tests/metadata committed.
-- No build hook or automatic helper installation added.
+- `ELAUNCH-SIM-001` invalid request.
+- `ELAUNCH-SIM-002` active-run re-entry.
+- `ELAUNCH-SIM-003` user cancellation.
+- `ELAUNCH-SIM-004` infrastructure failure.
+- `ELAUNCH-SIM-STEP-001` simulated warning.
+- `ELAUNCH-SIM-STEP-002` simulated recoverable failure.
+- `ELAUNCH-SIM-STEP-003` simulated blocking failure.
 
 ## Next Action
 
-Apply, review, commit, and push the eleven-file documentation closeout:
+Commit and push:
 
 ```text
-Close out FL-M5-05 direct scene initializer checkpoint
+Approve FL-M5-06 launch simulator authority
 ```
+
+Implementation may begin only after that commit.
 
 ## Handoff
 
-**Checkpoint:** FL-M5-05
-**Authority:** `d538b5a`
-**Implementation:** `4aa6ce7`
-**Documentation:** Pending adjacent closeout commit
+**Checkpoint:** FL-M5-06
+**Baseline:** `b6df92d`
+**Specification target:** v1.12.0
+**ADR:** EchoLaunch-ADR-009
+**Implementation:** Locked until authority commit
 **Blockers:** None recorded
-**Active next checkpoint:** None
