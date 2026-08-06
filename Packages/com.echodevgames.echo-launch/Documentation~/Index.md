@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-04 read-only Validator implemented, automated-tested, and manually accepted
+- Development stage: FL-M5-04 complete; FL-M5-05 Direct Scene authority approved pending authority commit
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -32,7 +32,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-02`
   - `FL-M5-03`
   - `FL-M5-04`
-- Active authority checkpoint: None; the next bounded First Light checkpoint has not yet been authorized
+- Active authority checkpoint: `FL-M5-05` — Direct Scene Development Initializer
 - Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, fresh-plan-gated create-only repeat-safe Setup Apply, explicit proof-backed current-schema Setup Repair, and deterministic read-only project-health validation
 - Unity baseline: `6000.3.8f1`
 
@@ -52,6 +52,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [EchoLaunch-ADR-005 Approved Setup Apply Engine and Repeat-Safe Asset Creation](Developer/ADR/EchoLaunch-ADR-005_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md)
 - [EchoLaunch-ADR-006 Explicit Setup Repair and Existing-Asset Reconciliation](Developer/ADR/EchoLaunch-ADR-006_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md)
 - [EchoLaunch-ADR-007 Read-Only Validator and Deterministic Project Health Report](Developer/ADR/EchoLaunch-ADR-007_Read-Only_Validator_and_Deterministic_Project_Health_Report.md)
+- [EchoLaunch-ADR-008 Direct Scene Development Initializer and Release-Safe Runtime Gate](Developer/ADR/EchoLaunch-ADR-008_Direct_Scene_Development_Initializer_and_Release-Safe_Runtime_Gate.md)
 - [FL-M2-04 Launch Lifecycle Transition Guard](Developer/Checkpoints/FL-M2-04_Launch_Lifecycle_Transition_Guard.md)
 - [FL-M2-04 Runtime Test Report](Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
 - [FL-M2-05 Lifecycle Notifications](Developer/Checkpoints/FL-M2-05_Lifecycle_Notifications.md)
@@ -119,6 +120,11 @@ exact restored `Healthy` results. The Validator does not authorize or invoke
 auto-fix, Apply, Repair, migration, Direct Scene implementation, build hooks,
 Simulator, or Laboratory.
 
+## Active FL-M5-05 Authority
+
+FL-M5-05 authorizes only the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default with Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated read-only `ELAUNCH-VAL-009`.
+
+It does not authorize a second runner, hidden discovery, runtime asset rewrite, automatic helper installation, build hooks, Simulator, or Laboratory.
 ## Package Root Documents
 
 - [README](../README.md)
@@ -284,4 +290,4 @@ First Light currently proves:
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` reserved
 
-FL-M5-04 is implemented, automated-tested, and manually accepted. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, direct-scene initialization, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-04 is implemented, automated-tested, and manually accepted. FL-M5-05 Direct Scene authority is approved but not yet implemented. Schema migration, receipts, uninstall, crash-persistent recovery, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.

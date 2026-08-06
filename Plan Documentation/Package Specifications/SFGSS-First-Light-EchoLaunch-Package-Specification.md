@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.10.0
+**Specification version:** 1.11.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,8 +17,8 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-04 has implemented and validated the read-only Validator, immutable schema-1 project-health report, stable validation rules, scene-safe inspection, deterministic fingerprints, and copyable text evidence authorized by this v1.10.0 specification and EchoLaunch-ADR-007.
-Migration, Direct Scene implementation, build hooks, Simulator, Laboratory, receipt, uninstall, or recovery work remains separately unauthorized.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-04 has implemented and validated the read-only Validator authorized by v1.10.0 and EchoLaunch-ADR-007. FL-M5-05 may implement only the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor and Development-Build environment policy, `DirectSceneDevelopment` report mode, and activated release-safety Validator rule authorized by this v1.11.0 specification and EchoLaunch-ADR-008 after their authority commit.
+Automatic helper installation, non-development release enablement, build hooks, Simulator, Laboratory, migration, receipt, uninstall, or recovery work remains separately unauthorized.
 
 ---
 
@@ -38,6 +38,7 @@ Migration, Direct Scene implementation, build hooks, Simulator, Laboratory, rece
 | 1.8.0 | 2026-08-05 | Approved | Authorized the fresh-plan-gated create-only setup apply service, deterministic asset/prefab/scene creation order, explicit Build Settings mutation policy, single-active apply gate, compensating rollback journal, immutable apply result, and repeat-safe no-op reruns for FL-M5-02 | Jesse “Echo” Adams |
 | 1.9.0 | 2026-08-05 | Approved | Authorized explicit Setup Repair for narrowly provable current-schema drift, separate repair confirmation, ownership/shape gates, byte-preserving backup and rollback of modified project assets, immutable repair reporting, and repeat-safe reconciliation for FL-M5-03 | Jesse “Echo” Adams |
 | 1.10.0 | 2026-08-06 | Approved | Authorized the explicit read-only First Light Validator, immutable schema-1 findings and project-health report, stable validation codes, scene-safe enabled-build-scene inspection, deterministic request/evidence/report fingerprints, and copyable project-relative text evidence for FL-M5-04 | Jesse “Echo” Adams |
+| 1.11.0 | 2026-08-06 | Approved | Authorized the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` for FL-M5-05 | Jesse “Echo” Adams |
 
 ---
 
@@ -402,7 +403,11 @@ EchoLaunchRoot
 
 Development helper
 EchoDirectSceneInitializer
-└── creates configured development root only when no authority exists
+├── waits until Start so scene roots claim in Awake first
+├── reuses existing authority when present
+├── otherwise instantiates one configured project-owned direct root prefab
+├── permits Editor by default and Development Builds only by explicit opt-in
+└── can never create a development root in a non-development release player
 ```
 
 ### 8.3 Authoritative root
@@ -414,7 +419,7 @@ EchoDirectSceneInitializer
 | Duplicate behavior | First valid claimant wins. A later root records/reports the duplicate and disables or destroys itself before validation, subscriptions, presentation, steps, or loads. |
 | Initialization trigger | Root claims in `Awake`; execution begins through an explicit internal start gate after claim and serialized-reference validation |
 | Shutdown behavior | Cancel active safe operations, finalize an interrupted report, detach presenter, release startup-only resources, clear authority claim at application/domain reset |
-| Direct-scene behavior | Development initializer checks authority, instantiates one configured development root if absent, and marks launch mode as direct-scene development |
+| Direct-scene behavior | Initializer settles once in `Start`, reuses authority claimed during scene `Awake`, otherwise instantiates one project-owned direct root prefab authored for `DirectSceneDevelopment`; when its configured destination is already active, handoff succeeds without reloading the scene |
 | Test injection seam | Explicit clock, step executor/runner, presenter, and destination-loader interfaces or factories; serialized production defaults remain novice-friendly |
 
 ### 8.4 Lifecycle sequence
@@ -471,7 +476,7 @@ Splash playback and startup-step execution are sequential in the MVP. They do no
 | `SplashSequence` | Ordered image splash entries and sequence policy | Yes | No | Yes |
 | `SplashEntry` | Image, label, timing, fade, minimum display, and skip policy | Entry ID required when referenced diagnostically | No | Stored in project-owned sequence |
 | `LaunchDestination` | Validated initial scene reference and display metadata | Yes, destination ID | No | Yes; standalone project-owned ScriptableObject |
-| `DirectSceneConfiguration` | Development-only root prefab/configuration and inclusion policy | Yes | No | Yes |
+| `DirectSceneConfiguration` | Project-owned direct root prefab, environment policy, and stable identity | Yes | No | Yes |
 
 ### 9.2 Runtime state
 
@@ -585,7 +590,7 @@ All configuration, sequence, step, splash, and destination assets are treated as
 | `StartupStepDefinition.CreateExecutor()` | Create a fresh runtime executor | Valid immutable definition | Returns one `IStartupStepExecutor`; null/exception blocks preflight | Main thread |
 | `IStartupStepExecutor.ExecuteAsync(context)` | Perform one step | Valid context and one active execution | Returns `Awaitable<StartupStepResult>`; exceptions converted by runner | Begins on Unity main thread; executor must explicitly marshal any background result before Unity API use |
 | `IInitialDestinationLoader.LoadAsync(destination, progress, cancellation)` | Load initial destination | Valid destination | Returns `Awaitable<InitialDestinationLoadResult>` | Starts on Unity main thread |
-| `EchoDirectSceneInitializer.EnsureDevelopmentLaunch()` | Create/reuse development authority | Editor or approved development build | Reuses existing root or creates exactly one | Main thread |
+| `EchoDirectSceneInitializer.EnsureDevelopmentLaunch()` | Idempotently settle direct-scene authority | Component has not settled | Reuses existing authority, creates one approved root, or returns one blocked/failed result | Main thread; `Start` calls it once |
 
 ### 10.3 Events and callbacks
 
@@ -699,7 +704,7 @@ mutation, auto-fix, migration, or Build Settings writes.
 | ELAUNCH-VAL-006 | Duplicate stable step/definition ID | Blocker | Explicit ID/content correction |
 | ELAUNCH-VAL-007 | Destination missing, invalid, or not uniquely enabled | Blocker | Build Settings/project correction |
 | ELAUNCH-VAL-008 | Boot entry missing, disabled, or duplicated in Build Settings | Blocker | Setup Apply/Repair policy |
-| ELAUNCH-VAL-009 | Direct helper unsafe for release | Reserved | FL-M5-05; not emitted by FL-M5-04 |
+| ELAUNCH-VAL-009 | Direct helper is structurally invalid, targets the wrong scene, appears in Boot, or opts into Development Builds in an enabled build scene | Warning/Blocker | Correct helper/configuration/policy; runtime release creation remains hard-prohibited |
 | ELAUNCH-VAL-010 | Configured visual presentation unavailable | Warning | Assign/repair project root presentation |
 | ELAUNCH-VAL-011 | Splash identity, refs, schema, or timing invalid | Error | Explicit content edit |
 | ELAUNCH-VAL-012 | Required step failure/timeout policy contradictory or unsafe | Error | Explicit policy edit |
@@ -1011,13 +1016,90 @@ A production Boot scene requires:
 
 ### 12.4 Direct-scene setup
 
-- A project may add `EchoDirectSceneInitializer` to a gameplay or Test Lab scene.
-- It first checks whether an authoritative root already exists.
-- When absent and running in the Editor or an explicitly approved development build, it instantiates the configured development root/prefab.
-- The root uses the same authority claim, validation, sequence runner, reporting, and duplicate rules as canonical production startup.
-- The report identifies `DirectSceneDevelopment` launch mode.
-- The helper is disabled/excluded from release by default.
-- A project may mark sensitive scenes as “Boot required,” causing direct entry to stop with an actionable diagnostic.
+A project may add `EchoDirectSceneInitializer` to a gameplay or Test Lab scene.
+
+#### Runtime order
+
+1. Scene-authored `EchoLaunchRoot` objects claim authority in `Awake`.
+2. The initializer settles once in `Start`.
+3. If `EchoLaunchRoot.Current` already exists, the initializer reuses it and creates nothing.
+4. If no authority exists, the initializer validates its environment, policy, project-owned `DirectSceneConfiguration`, direct root prefab, launch mode, configuration, and containing-scene destination.
+5. The initializer instantiates exactly one direct root prefab.
+6. The instantiated root claims through the normal `EchoLaunchRoot.Awake` path and runs the same splash, sequence, report, destination, duplicate, and lifetime rules as canonical Boot.
+
+Multiple initializers cannot create multiple accepted roots. The first accepted prefab claims in its own `Awake`; later initializers reuse that authority.
+
+#### Project-owned direct configuration
+
+`DirectSceneConfiguration` is a project-owned immutable ScriptableObject with schema version `1`, a stable configuration ID, one explicit project-owned direct root prefab, and one `DirectSceneEntryPolicy`.
+
+The referenced prefab must:
+
+- Contain exactly one active `EchoLaunchRoot`.
+- Be authored with `LaunchMode.DirectSceneDevelopment`.
+- Reference a supported project-owned `EchoLaunchConfiguration`.
+- Use a destination whose scene path exactly matches the scene containing the initializer.
+- Retain approved package-template lineage when created from the standard project root.
+- Be assigned explicitly, never discovered through `Resources`, labels, filenames, reflection, or scene-wide search.
+
+The helper never rewrites the prefab, launch configuration, destination, or scene at runtime.
+
+#### Environment policy
+
+Supported policy values:
+
+```text
+EditorOnly
+EditorAndDevelopmentBuilds
+BootRequired
+```
+
+`EditorOnly` is the default.
+
+- `EditorOnly` permits creation only while running in the Unity Editor.
+- `EditorAndDevelopmentBuilds` also permits creation when `Debug.isDebugBuild == true`; this is an explicit project opt-in.
+- `BootRequired` never creates a root and emits `ELAUNCH-DIRECT-001`.
+- A non-development player build is prohibited unconditionally. No serialized value enables release execution.
+- Existing authority reuse creates no development root and remains safe in every environment.
+
+No build hook is added by FL-M5-05. Runtime code itself makes release root creation impossible.
+
+#### Active-destination handoff
+
+A direct configuration targets the scene already open for direct testing.
+
+`UnityInitialDestinationLoader` treats an already loaded, active configured destination as a successful no-reload handoff:
+
+- Progress settles to `1`.
+- No `LoadSceneAsync` operation begins.
+- The scene is not unloaded or reloaded.
+- The final report remains schema version `2`.
+- `LaunchReport.LaunchMode` is `DirectSceneDevelopment`.
+- Destination identity and display metadata remain authored values.
+
+Canonical Boot behavior remains unchanged because its destination is not already active during normal startup.
+
+#### Observable settlement
+
+Stable statuses:
+
+```text
+NotStarted
+ReusedExistingAuthority
+CreatedDevelopmentAuthority
+BlockedByPolicy
+BlockedByEnvironment
+InvalidConfiguration
+InstantiationFailed
+```
+
+Stable runtime diagnostics:
+
+- `ELAUNCH-DIRECT-001` policy or environment prohibits direct entry.
+- `ELAUNCH-DIRECT-002` direct configuration, prefab, launch mode, launch configuration, or destination is invalid.
+- `ELAUNCH-DIRECT-003` direct root instantiation failed unexpectedly.
+
+The helper records one immutable/read-only settlement result, logs at most one sanitized message, and disables further helper behavior. It does not become a persistent service.
 
 ### 12.5 Scene isolation rule
 
@@ -1200,7 +1282,9 @@ EchoLaunch exposes:
 | ELAUNCH-SPLASH-003 | Warning | Splash is configured without a visual splash presenter | Assign an `IImageSplashPresenter` or accept headless timing |
 | ELAUNCH-DEST-001 | Blocker | Destination invalid/not build-loadable | Assign a valid scene and update build settings |
 | ELAUNCH-DEST-002 | Blocker | Destination load failed | Inspect scene/build/platform error |
-| ELAUNCH-DIRECT-001 | Warning | Direct-scene helper unavailable or prohibited | Start from Boot scene or enable approved development mode |
+| ELAUNCH-DIRECT-001 | Warning | Direct-scene entry is prohibited by policy or runtime environment | Start from Boot or use an approved Editor/development policy |
+| ELAUNCH-DIRECT-002 | Blocker | Direct configuration, prefab, launch mode, launch configuration, or destination is invalid | Assign a supported project-owned direct configuration |
+| ELAUNCH-DIRECT-003 | Error | Direct root instantiation failed unexpectedly | Inspect the prefab/runtime condition and start from Boot while unresolved |
 | ELAUNCH-LIFE-001 | Info/Warning | Launch interrupted during shutdown/destruction | Review lifecycle only if unexpected |
 | ELAUNCH-SETUP-001 | Blocker | Setup request contains an invalid or non-project asset path | Correct the project-owned path before apply |
 | ELAUNCH-SETUP-002 | Blocker | Planned target path contains an incompatible existing asset | Select another path or resolve the conflict manually |
@@ -1816,6 +1900,7 @@ Automated script rewriting is rejected unless a later migration specification pr
 | ELAUNCH-D-012 | Minimum public Unity floor is 6000.0; 6000.3.8f1 is the primary development baseline | Approved | Avoids false precision while retaining an honest tested baseline | Additional Unity 6 versions require validation before being listed as tested | No; also recorded suite-wide |
 | ELAUNCH-D-013 | Setup Repair is a separate explicitly approved transaction limited to provable current-schema canonical drift, with pre-write byte/meta backup and rollback | Approved | Prevents create-only Apply from silently becoming destructive while making damaged generated foundations recoverable | Ambiguous ownership, structural edits, and schema changes remain manual or migration work | Yes; EchoLaunch-ADR-006 |
 | ELAUNCH-D-014 | Project health validation is an explicit read-only Editor transaction with immutable schema-1 findings/report, stable codes, scene-safe inspection, and deterministic fingerprints/text | Approved | Keeps diagnosis trustworthy and separate from mutation while preparing release-safety checks for Direct Scene | No auto-fix, build hook, runtime overlay, or direct-helper implementation in FL-M5-04 | Yes; EchoLaunch-ADR-007 |
+| ELAUNCH-D-015 | Direct Scene uses a project-owned immutable direct configuration, Start-time authority reuse, a pre-authored direct root prefab, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, and an unconditional non-development release gate | Approved | Preserves one startup architecture while preventing development bootstrap behavior from running in release | No hidden discovery, runtime asset rewrite, automatic installation, or release enablement | Yes; EchoLaunch-ADR-008 |
 
 ### 27.2 Release-blocking questions
 
@@ -1914,11 +1999,12 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M5-04 — Read-Only Validator and Project Health Report |
-| Active authorized checkpoint | None; the next bounded First Light checkpoint has not yet been selected |
+| Active authorized checkpoint | FL-M5-05 — Direct Scene Development Initializer |
+| FL-M5-05 authority baseline | `4e3bf34` |
 | FL-M5-04 authority commit | `c2397c9` |
 | FL-M5-03 authority commit | `6615c8f` |
 | Last implementation commit | `26732ea` |
-| Last documentation commit | `638e676` |
+| Last documentation commit | `4e3bf34` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
 | EditMode tests passed | 261 total: 209 setup/apply/repair, 25 Validator, and 27 prefab asset tests |
 | Total automated tests | 740 passed, 0 failed, 0 ignored |
@@ -1926,8 +2012,8 @@ Before writing code:
 | FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; exact asset + `.meta` backup; narrow repair; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
 | FL-M5-04 evidence | Dedicated explicit read-only Validator; immutable schema-1 report; stable validation codes; scene-safe inspection; deterministic healthy report; deliberate blocked report with `002`, path-specific `003`, and `008`; exact restored healthy fingerprints |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, direct-scene initializer, build hooks, Simulator, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push the FL-M5-04 documentation closeout, then select and approve the next bounded First Light checkpoint before implementation |
+| Evidence gaps | FL-M5-05 implementation/evidence, historical schema migration, receipts, uninstall/reset, crash-persistent recovery, build hooks, Simulator, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push specification v1.11.0, EchoLaunch-ADR-008, and the FL-M5-05 Checkpoint Build Plan before implementation |
 
 ---
 
@@ -1977,7 +2063,7 @@ A new collaborator can determine from this approved specification:
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
 The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
-FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. Schema migration, receipts, uninstall/reset, crash-persistent recovery, Direct Scene implementation, build hooks, Simulator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
+FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 may implement only the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan after authority commit. Schema migration, receipts, uninstall/reset, crash-persistent recovery, build hooks, Simulator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
 
 
 ---
