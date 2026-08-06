@@ -17,7 +17,8 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-05 has implemented and validated the project-owned Direct Scene Development Initializer authorized by v1.11.0 and EchoLaunch-ADR-008. FL-M5-06 may implement only the explicit Editor-only Launch Simulator, transient immutable simulation requests/plans, real startup-sequence runner and policy execution, deterministic logical timing, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and release-safe no-production-dependency boundary authorized by this v1.12.0 specification and EchoLaunch-ADR-009 after their authority commit.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-06 has implemented and validated the explicit Editor-only Launch Simulator, transient immutable simulation requests/plans, real startup-sequence runner and policy execution, deterministic logical timing, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and release-safe no-production-dependency boundary authorized by v1.12.0 and EchoLaunch-ADR-009.
+No later checkpoint is currently authorized.
 Standalone Laboratory scenes/assets, runtime sample step definitions, automatic scene installation, report export formats, build hooks, migration, receipt, uninstall, or recovery remain separately unauthorized.
 
 ---
@@ -2181,24 +2182,25 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M5-05 — Direct Scene Development Initializer |
-| Active authorized checkpoint | FL-M5-06 — Launch Simulator and Deterministic Failure Injection |
-| FL-M5-06 authority baseline | `b6df92d` |
+| Completed checkpoint | FL-M5-06 — Launch Simulator and Deterministic Failure Injection |
+| Active authorized checkpoint | None |
+| FL-M5-06 authority commit | `a159349` |
 | FL-M5-05 authority commit | `d538b5a` |
 | FL-M5-04 authority commit | `c2397c9` |
 | FL-M5-03 authority commit | `6615c8f` |
-| Last implementation commit | `4aa6ce7` |
-| Last documentation commit | `b6df92d` |
+| Last implementation commit | `956c381` |
+| Last documentation commit | `b6df92d` before this closeout |
 | Runtime tests passed | 503 Runtime Play Mode tests |
-| EditMode tests passed | 266 total: 209 setup/apply/repair, 25 Validator, 5 Direct Scene Validator, and 27 prefab asset tests |
-| Total automated tests | 769 passed, 0 failed, 0 ignored |
+| EditMode tests passed | 290 total: 209 setup/apply/repair, 25 Validator, 5 Direct Scene Validator, 24 Launch Simulator, and 27 prefab asset tests |
+| Total automated tests | 793 passed, 0 failed, 0 ignored |
 | Compilation | 0 errors and 0 compiler warnings |
 | FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; exact asset + `.meta` backup; narrow repair; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
 | FL-M5-04 evidence | Dedicated explicit read-only Validator; immutable schema-1 report; stable validation codes; scene-safe inspection; deterministic healthy report; deliberate blocked report with `002`, path-specific `003`, and `008`; exact restored healthy fingerprints |
 | FL-M5-05 evidence | Project-owned direct configuration; Start-time reuse/create; exactly-one authority; active-destination no reload; unconditional release-player prohibition; truthful direct mode; activated `VAL-009`; manual creation/reuse/convergence; Development-Build Warning; exact restored healthy fingerprints |
+| FL-M5-06 evidence | Explicit Editor-only Simulator; real runner and policy execution; transient authored shape; eight accepted presets; deterministic logical progress; clean expected-failure Console behavior; single-active-run and cancellation; human-click elapsed filtered from copied cancellation evidence; three identical accepted cancellation report fingerprints |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | FL-M5-06 Simulator implementation/evidence, historical schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic Direct Scene installation, build hooks, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push specification v1.12.0, EchoLaunch-ADR-009, and the FL-M5-06 Checkpoint Build Plan before implementation |
+| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic Direct Scene installation, build hooks, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push the FL-M5-06 documentation closeout, then select and authorize the next bounded First Light checkpoint |
 
 ---
 
@@ -2248,7 +2250,7 @@ A new collaborator can determine from this approved specification:
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
 The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
-FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 may implement only the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, cancellation, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan after authority commit. Schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic helper installation, build hooks, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
+FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 implemented and validated the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, single-active-run protection, cancellation, cancellation-evidence determinism correction, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan. Schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic helper installation, build hooks, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
 
 
 ---

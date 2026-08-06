@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, and the release-gated Direct Scene Development Initializer are implemented; later M5 tooling remains pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, and the Editor-only Launch Simulator are implemented; Standalone Laboratory evidence remains pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -31,6 +31,7 @@
   - `FL-M5-03`
   - `FL-M5-04`
   - `FL-M5-05`
+  - `FL-M5-06`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -2344,6 +2345,146 @@ Report:
 cab6e106a92eda1da382133c809f2bc273c5e36ed279fe7bb37908353106aaa3
 ```
 
+## Editor-Only Launch Simulator
+
+FL-M5-06 adds an explicit diagnostic transaction for startup-step semantics
+without claiming a root, activating presentation, or loading a destination.
+
+```text
+Explicit Run Simulation
+    -> validate immutable request
+    -> build transient HideAndDontSave authored shape
+    -> run the real StartupSequenceRunner
+    -> copy immutable schema-1 simulation evidence
+    -> destroy every transient Unity object
+```
+
+The Simulator is available at:
+
+```text
+Tools > Sperk's Forge > First Light > Simulator
+```
+
+Opening or repainting the window performs no run. The user must select a preset
+and press `Run Simulation`.
+
+### Runtime boundary
+
+All Simulator orchestration, logical-clock, transient-authoring, executor,
+reporting, formatting, and window types live in the Editor assembly. Runtime
+changes are limited to intentional friend access for the package-owned Editor
+assembly.
+
+The Simulator adds no:
+
+- Runtime/player Simulator component.
+- Persistent project-owned scenario asset.
+- Scene object or automatic scene installation.
+- Build hook or scripting define.
+- Root authority claim.
+- Splash or status presentation.
+- Destination load or handoff.
+- Peer-package dependency.
+
+### Real runner reuse
+
+The Simulator does not invent a second startup engine. It exercises the existing
+internal:
+
+- `StartupSequenceRunner`
+- `StartupStepPolicy`
+- `StartupStepProgress`
+- timeout monitor
+- exception converter
+- caller-cancellation path
+- traversal and unvisited-entry accounting
+
+This keeps simulated warning, recoverable failure, blocking failure, timeout,
+exception, and cancellation behavior aligned with production startup semantics.
+
+### Transient authored shape
+
+Every accepted request creates temporary `HideAndDontSave` instances for:
+
+- `EchoLaunchConfiguration`
+- `StartupSequence`
+- ordered sequence entries
+- Simulator-owned step definitions
+
+Stable IDs are derived from the normalized request fingerprint. No object is
+written through `AssetDatabase`, saved into a scene, or retained after
+settlement. Cleanup is reverse-ordered and idempotent.
+
+### Deterministic reports
+
+`LaunchSimulationReport` schema version `1` is separate from `LaunchReport`.
+That distinction prevents the Simulator from falsely claiming completed root,
+presentation, or destination work.
+
+The report contains:
+
+- request, plan, and report fingerprints
+- preset and normalized parameters
+- authored, disabled, attempted, and unvisited counts
+- ordered immutable step evidence
+- ordered immutable progress samples
+- cancellation state
+- stable diagnostic evidence
+- deterministic copyable text
+
+Wall-clock date, machine paths, object instance IDs, scene handles, frame rate,
+and repaint frequency are excluded.
+
+The timed-progress preset proved the exact logical sequence:
+
+```text
+25%  at 0.25s
+50%  at 0.5s
+75%  at 0.75s
+100% at 1s
+```
+
+### Cancellation determinism correction
+
+Initial manual cancellation correctly settled through `ELAUNCH-STEP-005`, but
+the copied report contained human-click-dependent logical elapsed evidence.
+That would have changed the report fingerprint depending on how long the user
+waited before pressing Cancel.
+
+The accepted correction remains entirely in the Simulator report-copy layer:
+
+- canonical cancellation code and message remain unchanged
+- Simulator cancellation logical elapsed is normalized to `0`
+- copied details retain `ExecutorCompletedWithoutException: False`
+- copied cancellation text excludes `ElapsedSeconds:`
+
+Three repeated manual cancellation runs produced the exact same fingerprints:
+
+```text
+Request:
+9194366c11d2aadf1ec110389a6a5f2645f30f9c17bfa137da4ac43a06065aa5
+Plan:
+ac3aac48c8ea0724566666627281194242aa4c7a7eddb6d16a7c4560e8ca1e45
+Report:
+e92b028d7798ec597894213539e3ae19b113931e714ef29bae6d8d11bb92362b
+```
+
+### Accepted preset outcomes
+
+| Preset | Attempted / Authored | Accepted result |
+|---|---:|---|
+| Immediate Success | 1 / 1 | Succeeded with determinate completion |
+| Timed Progress Success | 1 / 1 | Succeeded with four ordered logical samples |
+| Warning Continues | 2 / 2 | Warning followed by successful continuation |
+| Recoverable Failure Continues | 2 / 2 | Optional failure converted to Warning, then continued |
+| Blocking Failure Stops | 1 / 2 | `ELAUNCH-SIM-STEP-003`; later step unvisited |
+| Timeout Stops | 1 / 2 | canonical `ELAUNCH-STEP-003`; later step unvisited |
+| Executor Exception Stops | 1 / 2 | canonical `ELAUNCH-STEP-004`; later step unvisited |
+| Cancellation | 1 / 2 | canonical `ELAUNCH-STEP-005`, `ELAUNCH-SIM-003`, later step unvisited |
+
+Expected simulated failures remain report evidence and do not generate Unity
+Console warnings or errors.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -2354,15 +2495,16 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M5-05 compile result:
+Final FL-M5-06 compile result:
 
 - Errors: `0`
 - Warnings: `0`
 
-FL-M5-05 compiled cleanly on its first Unity import.
+FL-M5-06 compiled cleanly after the initial implementation and after the
+cancellation-determinism correction.
 
-No implementation compiler error, package warning, or Direct Scene acceptance
-warning remained at the final gate.
+No implementation compiler error, package warning, expected simulated
+failure warning, or manual acceptance warning remained at the final gate.
 
 ## Retained Lifecycle Architecture
 
@@ -2378,7 +2520,7 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `266`
+- Passed: `290`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2400,6 +2542,12 @@ Direct Scene Validator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Launch Simulator tests:
+
+- Passed: `24`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -2417,6 +2565,7 @@ Breakdown:
 - Editor setup, apply, and repair tests: `209` EditMode
 - Validator tests: `25` EditMode
 - Direct Scene Validator tests: `5` EditMode
+- Launch Simulator tests: `24` EditMode
 - Prefab asset tests: `27` EditMode
 - Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode

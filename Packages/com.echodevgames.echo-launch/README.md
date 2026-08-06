@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, and the release-gated Direct Scene Development Initializer are implemented; later M5 tooling remains pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, and the Editor-only Launch Simulator are implemented; Standalone Laboratory evidence remains pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -35,6 +35,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-03` Explicit Setup Repair and Existing-Asset Reconciliation
   - `FL-M5-04` Read-Only Validator and Project Health Report
   - `FL-M5-05` Direct Scene Development Initializer
+  - `FL-M5-06` Launch Simulator and Deterministic Failure Injection
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -665,6 +666,51 @@ The Validator reports `ELAUNCH-VAL-009` for unsafe Direct Scene authoring.
 A valid `EditorOnly` helper remains Healthy. Explicit Development-Build opt-in
 returns `NeedsAttention` as a visible warning.
 
+## Launch Simulator
+
+Open:
+
+```text
+Tools > Sperk's Forge > First Light > Simulator
+```
+
+The Simulator is an explicit Editor-only diagnostic tool. Opening the window
+does not start a run.
+
+Built-in presets:
+
+```text
+ImmediateSuccess
+TimedProgressSuccess
+WarningContinues
+RecoverableFailureContinues
+BlockingFailureStops
+TimeoutStops
+ExecutorExceptionStops
+Cancellation
+```
+
+Each accepted request builds transient `HideAndDontSave` configuration and
+startup-sequence objects, executes the real First Light sequence runner, copies
+one immutable schema-1 simulation report, and destroys the transient objects.
+
+The Simulator does not:
+
+- edit project-authored configurations or sequences
+- create persistent assets
+- add scene objects
+- change Build Settings
+- claim a launch root
+- play splash/status presentation
+- load a destination
+- run in player builds
+
+Use **Copy Report** to capture deterministic request, plan, report, step, and
+progress evidence.
+
+Expected simulated warning and failure results appear only inside the report.
+They do not create Unity Console warnings or errors.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -701,7 +747,7 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `266`
+- Passed: `290`
 - Failed: `0`
 - Ignored: `0`
 
@@ -723,6 +769,12 @@ Direct Scene Validator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Launch Simulator tests:
+
+- Passed: `24`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -740,6 +792,7 @@ Breakdown:
 - Editor setup, apply, and repair tests: `209` EditMode
 - Validator tests: `25` EditMode
 - Direct Scene Validator tests: `5` EditMode
+- Launch Simulator tests: `24` EditMode
 - Prefab asset tests: `27` EditMode
 - Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
@@ -811,6 +864,10 @@ reload, existing-authority reuse, two-initializer convergence on one authority,
 zero-error startup completion, `ELAUNCH-VAL-009` warning for explicit
 Development-Build opt-in, and exact restored `EditorOnly` healthy fingerprints.
 
+Manual FL-M5-06 acceptance proved all eight Simulator presets, ordered logical
+progress, warning and recoverable-failure continuation, blocking/timeout/exception
+traversal stops, cooperative cancellation, clean Console behavior, and exact
+repeatable cancellation fingerprints after deterministic report normalization.
 ## Not Implemented Yet
 
 First Light does not yet provide:
@@ -846,16 +903,17 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Five hundred three passing Runtime Play Mode tests
-- Two hundred sixty-six passing EditMode tests
+- Two hundred ninety passing EditMode tests
 - Two hundred nine Editor setup, apply, and repair tests
 - Twenty-five focused read-only Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
-- Seven hundred sixty-nine total passing automated tests
+- Twenty-four focused Launch Simulator tests
+- Seven hundred ninety-three total passing automated tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, and release-gated Direct Scene development entry
-- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation fingerprints/reports, and stable setup/validation diagnostics
+- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, and an Editor-only deterministic Launch Simulator
+- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation and simulation fingerprints/reports, and stable setup/validation/simulation diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view

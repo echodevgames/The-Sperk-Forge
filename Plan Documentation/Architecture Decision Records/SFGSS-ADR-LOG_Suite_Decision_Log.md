@@ -58,6 +58,7 @@ Package-local ADRs remain owned by their package documentation and are linked he
 | [EchoLaunch-ADR-006](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-006_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md) | Explicit Setup Repair and Existing-Asset Reconciliation | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-03 |
 | [EchoLaunch-ADR-007](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-007_Read-Only_Validator_and_Deterministic_Project_Health_Report.md) | Read-Only Validator and Deterministic Project Health Report | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-04 |
 | [EchoLaunch-ADR-008](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-008_Direct_Scene_Development_Initializer_and_Release-Safe_Runtime_Gate.md) | Direct Scene Development Initializer and Release-Safe Runtime Gate | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-05 |
+| [EchoLaunch-ADR-009](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-009_Editor-Only_Launch_Simulator_and_Deterministic_Failure_Injection.md) | Editor-Only Launch Simulator and Deterministic Failure Injection | Accepted | Implemented, automated-tested, manually accepted, and cancellation-determinism-corrected in FL-M5-06 |
 
 ## Candidate decisions without allocated IDs
 

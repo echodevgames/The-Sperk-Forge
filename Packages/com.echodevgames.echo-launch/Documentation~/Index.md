@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-05 complete; FL-M5-06 Launch Simulator authority approved pending authority commit
+- Development stage: FL-M5-06 Launch Simulator implemented, automated-tested, manually accepted, and pushed
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -33,8 +33,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-03`
   - `FL-M5-04`
   - `FL-M5-05`
-- Active authority checkpoint: `FL-M5-06` — Launch Simulator and Deterministic Failure Injection
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, and release-gated Direct Scene development entry without scene reload
+  - `FL-M5-06`
+- Active authority checkpoint: None
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -101,6 +102,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-04 Validator and Project Health Test Report](Developer/Test%20Reports/FL-M5-04_Validator_and_Project_Health_Test_Report.md)
 - [FL-M5-05 Direct Scene Development Initializer](Developer/Checkpoints/FL-M5-05_Direct_Scene_Development_Initializer.md)
 - [FL-M5-05 Direct Scene Development Initializer Test Report](Developer/Test%20Reports/FL-M5-05_Direct_Scene_Development_Initializer_Test_Report.md)
+- [FL-M5-06 Launch Simulator and Deterministic Failure Injection](Developer/Checkpoints/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection.md)
+- [FL-M5-06 Launch Simulator Test Report](Developer/Test%20Reports/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -137,17 +140,24 @@ Manual acceptance proved direct creation, existing-authority reuse,
 two-initializer convergence, one accepted authority, no scene reload,
 Development-Build warning, and exact restored healthy fingerprints.
 
-## Active FL-M5-06 Authority
+## Completed FL-M5-06 Boundary
 
-FL-M5-06 authorizes only the explicit Editor-only Launch Simulator, transient
-in-memory simulation planning, real startup-sequence runner and policy
-execution, deterministic logical timing, immutable schema-1 simulation reports,
-stable simulation diagnostics, copyable text evidence, cancellation, and
+FL-M5-06 implements the explicit Editor-only Launch Simulator, transient
+in-memory scenario planning, real startup-sequence runner and policy
+execution, deterministic logical timing, immutable schema-1 simulation
+reports, stable diagnostics, copyable text evidence, cancellation, and
 single-active-run protection.
 
-It does not authorize Runtime/player Simulator types, persistent scenario
-assets, authored configuration mutation, root/presentation/destination
-simulation, Standalone Laboratory scenes, build hooks, or report export.
+Automated acceptance passed `24` focused Simulator tests, `290` complete
+EditMode tests, and `503` Runtime Play Mode tests. Manual acceptance proved
+every preset, clean Console behavior, transient cleanup, and repeatable
+cancellation fingerprints after filtering human-click-dependent elapsed
+evidence.
+
+Runtime/player Simulator types, persistent scenario assets, authored
+configuration mutation, root/presentation/destination simulation,
+Standalone Laboratory scenes, build hooks, and report export remain outside
+the implemented boundary.
 
 ## Package Root Documents
 
@@ -311,11 +321,12 @@ First Light currently proves:
 - Twenty-five focused Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
-- Two hundred sixty-six total passing EditMode tests
+- Twenty-four focused Launch Simulator EditMode tests
+- Two hundred ninety total passing EditMode tests
 - Five hundred three passing Runtime Play Mode tests
-- Seven hundred sixty-nine total passing automated tests
+- Seven hundred ninety-three total passing automated tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-05 is implemented, automated-tested, and manually accepted. FL-M5-06 Launch Simulator authority is approved but not yet implemented. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-06 is implemented, automated-tested, manually accepted, and pushed. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.

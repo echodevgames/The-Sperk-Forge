@@ -7,6 +7,24 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-06 - Launch Simulator and Deterministic Failure Injection
+- Explicit Editor-only `Tools > Sperk's Forge > First Light > Simulator` window
+- No automatic simulation on window open, repaint, import, reload, or Play Mode entry
+- Stable presets for immediate success, timed progress, warning continuation, recoverable-failure continuation, blocking failure, timeout, executor exception, and cancellation
+- Immutable normalized `LaunchSimulationRequest`, deterministic plan values, progress samples, step reports, and schema-1 `LaunchSimulationReport`
+- Stable simulator diagnostics `ELAUNCH-SIM-001` through `ELAUNCH-SIM-004`
+- Stable simulated step diagnostics `ELAUNCH-SIM-STEP-001` through `ELAUNCH-SIM-STEP-003`
+- Transient `HideAndDontSave` configuration, sequence, entry, and step-definition authoring
+- Real `StartupSequenceRunner`, policy, progress, timeout, exception, and cancellation execution
+- Deterministic logical clock and copyable text evidence
+- Single-active-run protection and cooperative cancellation
+- Cancellation report normalization that removes human-click-dependent elapsed evidence while preserving canonical `ELAUNCH-STEP-005`
+- No Runtime/player Simulator implementation, persistent scenario asset, scene mutation, Build Settings mutation, or project-authored asset rewrite
+- Twenty-four focused Simulator EditMode tests
+- Two hundred ninety total passing EditMode tests
+- Five hundred three retained Runtime Play Mode tests
+- Seven hundred ninety-three total passing automated tests
+- Manual acceptance of all eight presets, clean Console behavior, repeatable cancellation fingerprints, and zero transient/project residue
 #### FL-M5-05 - Direct Scene Development Initializer
 - Project-owned immutable `DirectSceneConfiguration` schema version `1`
 - Stable `DirectSceneEntryPolicy` values: `EditorOnly`, `EditorAndDevelopmentBuilds`, and `BootRequired`
