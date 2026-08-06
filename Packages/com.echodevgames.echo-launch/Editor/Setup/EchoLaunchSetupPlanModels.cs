@@ -59,7 +59,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string targetPath,
             string reason,
             string diagnosticCode = null,
-            bool requiresExplicitApproval = false)
+            bool requiresExplicitApproval = false,
+            string existingState = null,
+            string proposedState = null,
+            string proofSummary = null)
         {
             Key = key ?? string.Empty;
             Phase = phase;
@@ -70,6 +73,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             Reason = reason ?? string.Empty;
             DiagnosticCode = diagnosticCode ?? string.Empty;
             RequiresExplicitApproval = requiresExplicitApproval;
+            ExistingState = existingState ?? string.Empty;
+            ProposedState = proposedState ?? string.Empty;
+            ProofSummary = proofSummary ?? string.Empty;
         }
 
         internal string Key { get; }
@@ -80,6 +86,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal string Reason { get; }
         internal string DiagnosticCode { get; }
         internal bool RequiresExplicitApproval { get; }
+        internal string ExistingState { get; }
+        internal string ProposedState { get; }
+        internal string ProofSummary { get; }
 
         public bool Equals(EchoLaunchSetupOperation other)
         {
@@ -98,7 +107,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                        other.DiagnosticCode,
                        StringComparison.Ordinal) &&
                    RequiresExplicitApproval ==
-                   other.RequiresExplicitApproval;
+                   other.RequiresExplicitApproval &&
+                   string.Equals(ExistingState, other.ExistingState, StringComparison.Ordinal) &&
+                   string.Equals(ProposedState, other.ProposedState, StringComparison.Ordinal) &&
+                   string.Equals(ProofSummary, other.ProofSummary, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -171,6 +183,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
         internal bool HasBlockers =>
             Status == EchoLaunchSetupPlanStatus.Blocked;
+
+        internal bool HasRepairs =>
+            CountDisposition(EchoLaunchSetupOperationDisposition.Repair) > 0;
+
+        internal bool HasCreates =>
+            CountDisposition(EchoLaunchSetupOperationDisposition.Create) > 0;
 
         internal bool RequiresExplicitApproval
         {

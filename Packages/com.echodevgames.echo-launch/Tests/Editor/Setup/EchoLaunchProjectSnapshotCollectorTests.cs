@@ -1,4 +1,5 @@
 
+using System;
 using EchoDevGames.EchoLaunch.Editor.Setup;
 using NUnit.Framework;
 using UnityEditor;
@@ -161,6 +162,51 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 Is.False);
         }
 
+
+        [Test]
+        public void CollectorCapturesConfigurationRepairEvidence()
+        {
+            string configurationPath =
+                "Assets/__EchoLaunch_FL_M5_03_ConfigEvidence_" +
+                Guid.NewGuid().ToString("N") + ".asset";
+            EchoLaunchConfiguration configuration =
+                ScriptableObject.CreateInstance<EchoLaunchConfiguration>();
+
+            try
+            {
+                AssetDatabase.CreateAsset(configuration, configurationPath);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(
+                    configurationPath,
+                    ImportAssetOptions.ForceSynchronousImport);
+
+                EchoLaunchSetupRequest request =
+                    new EchoLaunchSetupRequest(
+                        UniqueRoot,
+                        UniqueRoot + "/Scenes/Boot.unity",
+                        UniqueRoot + "/Scenes/Missing.unity",
+                        false,
+                        EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                        configurationPath);
+                EchoLaunchProjectAssetFact fact =
+                    new EchoLaunchProjectSnapshotCollector()
+                        .Collect(request)
+                        .FindAssetFact(configurationPath);
+
+                Assert.That(fact.HasRepairEvidence, Is.True);
+                Assert.That(
+                    fact.ConfigurationSchemaVersion,
+                    Is.EqualTo(
+                        EchoLaunchConfiguration.CurrentSchemaVersion));
+                Assert.That(fact.StableId, Has.Length.EqualTo(32));
+            }
+            finally
+            {
+                AssetDatabase.DeleteAsset(configurationPath);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
 
         [Test]
         public void CollectorProducesNonemptyEvidenceFingerprint()

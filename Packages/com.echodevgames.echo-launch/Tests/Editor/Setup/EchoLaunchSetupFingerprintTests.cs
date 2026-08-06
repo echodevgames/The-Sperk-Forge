@@ -285,6 +285,59 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
+        public void CandidateRepairEvidenceAltersFingerprint()
+        {
+            Dictionary<
+                EchoLaunchSetupAssetRole,
+                IEnumerable<EchoLaunchProjectAssetFact>> firstCandidates =
+                    new Dictionary<
+                        EchoLaunchSetupAssetRole,
+                        IEnumerable<EchoLaunchProjectAssetFact>>();
+            Dictionary<
+                EchoLaunchSetupAssetRole,
+                IEnumerable<EchoLaunchProjectAssetFact>> secondCandidates =
+                    new Dictionary<
+                        EchoLaunchSetupAssetRole,
+                        IEnumerable<EchoLaunchProjectAssetFact>>();
+
+            firstCandidates[EchoLaunchSetupAssetRole.Configuration] =
+                new[]
+                {
+                    new EchoLaunchProjectAssetFact(
+                        "Assets/Candidate.asset",
+                        true,
+                        false,
+                        "candidate-guid",
+                        EchoLaunchSetupAssetTypeNames.Configuration,
+                        EchoLaunchConfiguration.CurrentSchemaVersion,
+                        true,
+                        "0123456789abcdef0123456789abcdef",
+                        "Assets/SequenceA.asset")
+                };
+            secondCandidates[EchoLaunchSetupAssetRole.Configuration] =
+                new[]
+                {
+                    new EchoLaunchProjectAssetFact(
+                        "Assets/Candidate.asset",
+                        true,
+                        false,
+                        "candidate-guid",
+                        EchoLaunchSetupAssetTypeNames.Configuration,
+                        EchoLaunchConfiguration.CurrentSchemaVersion,
+                        true,
+                        "0123456789abcdef0123456789abcdef",
+                        "Assets/SequenceB.asset")
+                };
+
+            Assert.That(
+                EchoLaunchSetupTestFactory.CreateSnapshot(
+                    candidates: firstCandidates).EvidenceFingerprint,
+                Is.Not.EqualTo(
+                    EchoLaunchSetupTestFactory.CreateSnapshot(
+                        candidates: secondCandidates).EvidenceFingerprint));
+        }
+
+        [Test]
         public void HashUsesLowercaseHex()
         {
             string hash = EchoLaunchSetupFingerprint.Hash("First Light");
@@ -313,6 +366,86 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     EchoLaunchSetupOperationDisposition.NoChange,
                     "Assets/Test",
                     "Second.");
+
+            Assert.That(
+                EchoLaunchSetupFingerprint.ForPlan(
+                    "request",
+                    "evidence",
+                    EchoLaunchSetupPlanStatus.Ready,
+                    new[] { first },
+                    null),
+                Is.Not.EqualTo(
+                    EchoLaunchSetupFingerprint.ForPlan(
+                        "request",
+                        "evidence",
+                        EchoLaunchSetupPlanStatus.Ready,
+                        new[] { second },
+                        null)));
+        }
+
+        [Test]
+        public void RepairEvidenceChangeAltersSnapshotFingerprint()
+        {
+            EchoLaunchProjectAssetFact first =
+                new EchoLaunchProjectAssetFact(
+                    "Assets/Configuration.asset",
+                    true,
+                    false,
+                    "guid",
+                    EchoLaunchSetupAssetTypeNames.Configuration,
+                    EchoLaunchConfiguration.CurrentSchemaVersion,
+                    true,
+                    "0123456789abcdef0123456789abcdef",
+                    "Assets/SequenceA.asset");
+            EchoLaunchProjectAssetFact second =
+                new EchoLaunchProjectAssetFact(
+                    "Assets/Configuration.asset",
+                    true,
+                    false,
+                    "guid",
+                    EchoLaunchSetupAssetTypeNames.Configuration,
+                    EchoLaunchConfiguration.CurrentSchemaVersion,
+                    true,
+                    "0123456789abcdef0123456789abcdef",
+                    "Assets/SequenceB.asset");
+
+            Assert.That(
+                EchoLaunchSetupTestFactory.CreateSnapshot(
+                    new[] { first }).EvidenceFingerprint,
+                Is.Not.EqualTo(
+                    EchoLaunchSetupTestFactory.CreateSnapshot(
+                        new[] { second }).EvidenceFingerprint));
+        }
+
+        [Test]
+        public void RepairBeforeAfterAndProofAlterPlanFingerprint()
+        {
+            EchoLaunchSetupOperation first =
+                new EchoLaunchSetupOperation(
+                    "repair",
+                    20,
+                    EchoLaunchSetupOperationKind.ResolveConfiguration,
+                    EchoLaunchSetupOperationDisposition.Repair,
+                    "Assets/Configuration.asset",
+                    "Repair",
+                    EchoLaunchSetupDiagnosticCodes.RepairApprovalRequired,
+                    false,
+                    "Before A",
+                    "After",
+                    "Proof");
+            EchoLaunchSetupOperation second =
+                new EchoLaunchSetupOperation(
+                    "repair",
+                    20,
+                    EchoLaunchSetupOperationKind.ResolveConfiguration,
+                    EchoLaunchSetupOperationDisposition.Repair,
+                    "Assets/Configuration.asset",
+                    "Repair",
+                    EchoLaunchSetupDiagnosticCodes.RepairApprovalRequired,
+                    false,
+                    "Before B",
+                    "After",
+                    "Proof");
 
             Assert.That(
                 EchoLaunchSetupFingerprint.ForPlan(

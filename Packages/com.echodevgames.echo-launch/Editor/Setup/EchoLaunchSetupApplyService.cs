@@ -42,9 +42,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         private readonly List<string> reusedPaths =
             new List<string>();
 
+        private readonly List<string> repairedPaths =
+            new List<string>();
+
         internal IReadOnlyList<EchoLaunchSetupChange> Changes => changes;
         internal IReadOnlyList<string> CreatedPaths => createdPaths;
         internal IReadOnlyList<string> ReusedPaths => reusedPaths;
+        internal IReadOnlyList<string> RepairedPaths => repairedPaths;
 
         internal void Add(
             EchoLaunchSetupChangeKind kind,
@@ -70,6 +74,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             else if (kind == EchoLaunchSetupChangeKind.Reused)
             {
                 AddUnique(reusedPaths, normalized);
+            }
+            else if (kind == EchoLaunchSetupChangeKind.RepairedAsset ||
+                     kind == EchoLaunchSetupChangeKind.RepairedPrefab ||
+                     kind == EchoLaunchSetupChangeKind.RepairedScene ||
+                     kind == EchoLaunchSetupChangeKind.BuildSettingsChanged)
+            {
+                AddUnique(repairedPaths, normalized);
             }
         }
 
@@ -177,11 +188,26 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 throw new ArgumentNullException(nameof(isEditorBusy));
         }
 
-        internal static bool IsApplyActive =>
+        internal static bool IsApplyActive => IsMutationActive;
+
+        internal static bool IsMutationActive =>
             Interlocked.CompareExchange(
                 ref activeApplyState,
                 0,
                 0) != 0;
+
+        internal static bool TryEnterMutationAuthority()
+        {
+            return Interlocked.CompareExchange(
+                ref activeApplyState,
+                1,
+                0) == 0;
+        }
+
+        internal static void ExitMutationAuthority()
+        {
+            Interlocked.Exchange(ref activeApplyState, 0);
+        }
 
         internal static EchoLaunchSetupApplyEligibility EvaluateEligibility(
             EchoLaunchSetupPlan plan,
@@ -223,6 +249,15 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     return Blocked(
                         operation.DiagnosticCode,
                         "The plan contains a non-executable operation.");
+                }
+
+                if (operation.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Repair)
+                {
+                    return Blocked(
+                        EchoLaunchSetupDiagnosticCodes
+                            .UnauthorizedApplyOperation,
+                        "The plan contains existing-asset repairs. Use Repair Plan instead of the create-only Apply action.");
                 }
 
                 if (operation.Disposition ==
@@ -316,10 +351,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     applyRequest.DisplayedPlan);
             }
 
-            if (Interlocked.CompareExchange(
-                    ref activeApplyState,
-                    1,
-                    0) != 0)
+            if (!TryEnterMutationAuthority())
             {
                 return EchoLaunchSetupApplyResult.Simple(
                     EchoLaunchSetupApplyStatus.AlreadyRunning,
@@ -334,7 +366,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
             finally
             {
-                Interlocked.Exchange(ref activeApplyState, 0);
+                ExitMutationAuthority();
             }
         }
 

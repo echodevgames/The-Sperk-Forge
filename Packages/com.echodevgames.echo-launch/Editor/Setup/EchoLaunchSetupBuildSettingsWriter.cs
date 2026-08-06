@@ -13,11 +13,21 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             bool approvePlaceFirst,
             EchoLaunchSetupRollbackJournal journal,
             EchoLaunchSetupExecutionLog log);
+
+        bool Repair(
+            EchoLaunchBuildSettingsPolicy policy,
+            string bootScenePath,
+            bool approvePlaceFirst,
+            EchoLaunchSetupRollbackJournal journal,
+            EchoLaunchSetupExecutionLog log);
     }
 
     internal sealed class EchoLaunchSetupBuildSettingsWriter :
         IEchoLaunchSetupBuildSettingsWriter
     {
+        internal const string BuildSettingsProjectPath =
+            "ProjectSettings/EditorBuildSettings.asset";
+
         public bool Apply(
             EchoLaunchBuildSettingsPolicy policy,
             string bootScenePath,
@@ -72,7 +82,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
                 log.Add(
                     EchoLaunchSetupChangeKind.BuildSettingsChanged,
-                    normalized,
+                    BuildSettingsProjectPath,
                     "Appended one enabled Boot scene entry.");
 
                 return true;
@@ -133,9 +143,84 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
             log.Add(
                 EchoLaunchSetupChangeKind.BuildSettingsChanged,
-                normalized,
+                BuildSettingsProjectPath,
                 "Placed one enabled Boot scene entry at index zero.");
 
+            return true;
+        }
+
+        public bool Repair(
+            EchoLaunchBuildSettingsPolicy policy,
+            string bootScenePath,
+            bool approvePlaceFirst,
+            EchoLaunchSetupRollbackJournal journal,
+            EchoLaunchSetupExecutionLog log)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(
+                    bootScenePath);
+            EditorBuildSettingsScene[] current =
+                Clone(EditorBuildSettings.scenes);
+
+            if (policy == EchoLaunchBuildSettingsPolicy.DoNotChange)
+            {
+                return false;
+            }
+
+            if (policy == EchoLaunchBuildSettingsPolicy.PlaceFirstAfterApproval)
+            {
+                return Apply(
+                    policy,
+                    normalized,
+                    approvePlaceFirst,
+                    journal,
+                    log);
+            }
+
+            int matchIndex = -1;
+            int count = 0;
+            for (int index = 0; index < current.Length; index++)
+            {
+                if (string.Equals(
+                        current[index].path,
+                        normalized,
+                        StringComparison.Ordinal))
+                {
+                    matchIndex = index;
+                    count++;
+                }
+            }
+
+            if (count == 0)
+            {
+                return Apply(
+                    policy,
+                    normalized,
+                    false,
+                    journal,
+                    log);
+            }
+
+            if (count != 1)
+            {
+                throw new InvalidOperationException(
+                    "Append-policy repair requires one unique Boot scene entry.");
+            }
+
+            if (current[matchIndex].enabled)
+            {
+                return false;
+            }
+
+            journal.CaptureBuildSettings();
+            current[matchIndex] =
+                new EditorBuildSettingsScene(normalized, true);
+            EditorBuildSettings.scenes = current;
+            journal.MarkBuildSettingsChanged();
+            log.Add(
+                EchoLaunchSetupChangeKind.BuildSettingsChanged,
+                BuildSettingsProjectPath,
+                "Enabled the unique canonical Boot scene entry without changing its index.");
             return true;
         }
 

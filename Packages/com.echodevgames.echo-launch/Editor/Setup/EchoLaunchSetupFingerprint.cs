@@ -51,6 +51,21 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     fact.ConfigurationSchemaVersion.HasValue
                         ? fact.ConfigurationSchemaVersion.Value.ToString()
                         : string.Empty);
+                Append(builder, "asset.repairEvidence", fact.HasRepairEvidence ? "1" : "0");
+                Append(builder, "asset.stableId", fact.StableId);
+                Append(builder, "asset.sequence", fact.StartupSequencePath);
+                Append(builder, "asset.destination", fact.LaunchDestinationPath);
+                Append(builder, "asset.splash", fact.SplashSequencePath);
+                Append(builder, "asset.destinationScene", fact.DestinationScenePath);
+                Append(builder, "asset.destinationLabel", fact.DestinationDisplayName);
+                Append(builder, "asset.prefabType", fact.PrefabAssetType);
+                Append(builder, "asset.prefabSource", fact.PrefabSourcePath);
+                Append(builder, "asset.prefabLineage", fact.PrefabLineageMatchesTemplate ? "1" : "0");
+                Append(builder, "asset.rootCount", fact.EchoLaunchRootCount.HasValue ? fact.EchoLaunchRootCount.Value.ToString() : string.Empty);
+                Append(builder, "asset.rootConfiguration", fact.RootConfigurationPath);
+                Append(builder, "asset.sceneSafe", fact.SceneInspectionSafe ? "1" : "0");
+                Append(builder, "asset.sceneMessage", fact.SceneInspectionMessage);
+                Append(builder, "asset.sceneWasOpen", fact.SceneWasOpen ? "1" : "0");
             }
 
             for (int index = 0; index < snapshot.BuildSettingsScenes.Count; index++)
@@ -97,6 +112,65 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         candidate.ConfigurationSchemaVersion.HasValue
                             ? candidate.ConfigurationSchemaVersion.Value.ToString()
                             : string.Empty);
+                    Append(
+                        builder,
+                        prefix + ".repairEvidence",
+                        candidate.HasRepairEvidence ? "1" : "0");
+                    Append(builder, prefix + ".stableId", candidate.StableId);
+                    Append(
+                        builder,
+                        prefix + ".sequence",
+                        candidate.StartupSequencePath);
+                    Append(
+                        builder,
+                        prefix + ".destination",
+                        candidate.LaunchDestinationPath);
+                    Append(
+                        builder,
+                        prefix + ".splash",
+                        candidate.SplashSequencePath);
+                    Append(
+                        builder,
+                        prefix + ".destinationScene",
+                        candidate.DestinationScenePath);
+                    Append(
+                        builder,
+                        prefix + ".destinationLabel",
+                        candidate.DestinationDisplayName);
+                    Append(
+                        builder,
+                        prefix + ".prefabType",
+                        candidate.PrefabAssetType);
+                    Append(
+                        builder,
+                        prefix + ".prefabSource",
+                        candidate.PrefabSourcePath);
+                    Append(
+                        builder,
+                        prefix + ".prefabLineage",
+                        candidate.PrefabLineageMatchesTemplate ? "1" : "0");
+                    Append(
+                        builder,
+                        prefix + ".rootCount",
+                        candidate.EchoLaunchRootCount.HasValue
+                            ? candidate.EchoLaunchRootCount.Value.ToString()
+                            : string.Empty);
+                    Append(
+                        builder,
+                        prefix + ".rootConfiguration",
+                        candidate.RootConfigurationPath);
+                    Append(
+                        builder,
+                        prefix + ".sceneSafe",
+                        candidate.SceneInspectionSafe ? "1" : "0");
+                    Append(
+                        builder,
+                        prefix + ".sceneMessage",
+                        candidate.SceneInspectionMessage);
+                    Append(
+                        builder,
+                        prefix + ".sceneWasOpen",
+                        candidate.SceneWasOpen ? "1" : "0");
                 }
             }
 
@@ -140,6 +214,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         builder,
                         "operation.approval",
                         operation.RequiresExplicitApproval ? "1" : "0");
+                    Append(builder, "operation.before", operation.ExistingState);
+                    Append(builder, "operation.after", operation.ProposedState);
+                    Append(builder, "operation.proof", operation.ProofSummary);
                 }
             }
 

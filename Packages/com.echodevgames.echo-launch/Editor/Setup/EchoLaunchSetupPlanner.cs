@@ -165,6 +165,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     snapshot,
                     operations,
                     diagnostics);
+
+                ReconcileExistingTargets(
+                    request,
+                    paths,
+                    snapshot,
+                    operations,
+                    diagnostics);
             }
 
             SortOperations(operations);
@@ -587,8 +594,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             List<EchoLaunchSetupOperation> operations,
             List<EchoLaunchSetupDiagnostic> diagnostics)
         {
-            int existingIndex =
-                snapshot.FindBuildSettingsIndex(paths.BootScenePath);
+            int count =
+                snapshot.CountBuildSettingsEntries(paths.BootScenePath);
+
+            EchoLaunchBuildSettingsSceneFact first =
+                snapshot.FindFirstBuildSettingsFact(paths.BootScenePath);
 
             if (request.BuildSettingsPolicy ==
                 EchoLaunchBuildSettingsPolicy.DoNotChange)
@@ -607,24 +617,68 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             if (request.BuildSettingsPolicy ==
                 EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd)
             {
-                operations.Add(
-                    new EchoLaunchSetupOperation(
+                if (count == 0)
+                {
+                    operations.Add(
+                        new EchoLaunchSetupOperation(
+                            "build-settings.boot",
+                            BuildSettingsPhase,
+                            EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                            EchoLaunchSetupOperationDisposition.Create,
+                            paths.BootScenePath,
+                            "The Boot scene would be appended after all existing Build Settings scenes."));
+                    return;
+                }
+
+                if (count == 1 && first != null && first.Enabled)
+                {
+                    operations.Add(
+                        new EchoLaunchSetupOperation(
+                            "build-settings.boot",
+                            BuildSettingsPhase,
+                            EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                            EchoLaunchSetupOperationDisposition.NoChange,
+                            paths.BootScenePath,
+                            "One enabled Boot scene entry already exists at index " +
+                            first.Index + "."));
+                    return;
+                }
+
+                if (count == 1 && first != null)
+                {
+                    AddRepair(
                         "build-settings.boot",
-                        BuildSettingsPhase,
                         EchoLaunchSetupOperationKind.ResolveBuildSettings,
-                        existingIndex >= 0
-                            ? EchoLaunchSetupOperationDisposition.NoChange
-                            : EchoLaunchSetupOperationDisposition.Create,
                         paths.BootScenePath,
-                        existingIndex >= 0
-                            ? "The Boot scene already exists in Build Settings " +
-                              "at index " + existingIndex + "."
-                            : "The Boot scene would be appended after all " +
-                              "existing Build Settings scenes."));
+                        "The unique Boot scene entry is disabled and can be enabled without changing unrelated entries.",
+                        BuildSettingsPhase,
+                        "Index " + first.Index + ": disabled",
+                        "Index " + first.Index + ": enabled",
+                        "One exact-path Build Settings entry exists.",
+                        false,
+                        operations,
+                        diagnostics);
+                    return;
+                }
+
+                AddRepairConflict(
+                    "build-settings.boot",
+                    EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                    paths.BootScenePath,
+                    "Multiple Boot scene entries are ambiguous under the append policy.",
+                    BuildSettingsPhase,
+                    operations,
+                    diagnostics);
                 return;
             }
 
-            if (existingIndex == 0)
+            bool alreadyCanonical =
+                count == 1 &&
+                first != null &&
+                first.Index == 0 &&
+                first.Enabled;
+
+            if (alreadyCanonical)
             {
                 operations.Add(
                     new EchoLaunchSetupOperation(
@@ -633,7 +687,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         EchoLaunchSetupOperationKind.ResolveBuildSettings,
                         EchoLaunchSetupOperationDisposition.NoChange,
                         paths.BootScenePath,
-                        "The Boot scene is already first in Build Settings."));
+                        "One enabled Boot scene entry is already first in Build Settings."));
                 return;
             }
 
@@ -641,8 +695,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 new EchoLaunchSetupDiagnostic(
                     EchoLaunchSetupDiagnosticCodes.BuildSettingsApproval,
                     EchoLaunchSetupDiagnosticSeverity.Warning,
-                    "Moving the Boot scene to index zero requires explicit " +
-                    "approval. Unrelated scene order must remain unchanged.",
+                    "Normalizing one enabled Boot scene entry at index zero requires explicit approval. Unrelated order and enabled states will be preserved.",
                     paths.BootScenePath));
 
             operations.Add(
@@ -652,14 +705,625 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     EchoLaunchSetupOperationKind.ResolveBuildSettings,
                     EchoLaunchSetupOperationDisposition.ManualDecision,
                     paths.BootScenePath,
-                    existingIndex < 0
-                        ? "The Boot scene would be inserted at index zero " +
-                          "after approval."
-                        : "The Boot scene would move from index " +
-                          existingIndex +
-                          " to index zero after approval.",
+                    "Build Settings can be normalized to one enabled Boot entry at index zero after approval.",
                     EchoLaunchSetupDiagnosticCodes.BuildSettingsApproval,
-                    true));
+                    true,
+                    count == 0
+                        ? "Boot entry missing"
+                        : count + " Boot entry/entries; first index " + first.Index,
+                    "One enabled Boot entry at index zero",
+                    "The exact Boot scene path and unrelated scene order are known."));
+        }
+
+        private static void ReconcileExistingTargets(
+            EchoLaunchSetupRequest request,
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            ReconcileConfiguration(
+                request,
+                paths,
+                snapshot,
+                operations,
+                diagnostics);
+
+            ReconcileDestination(
+                request,
+                paths,
+                snapshot,
+                operations,
+                diagnostics);
+
+            ReconcileRootPrefab(
+                paths,
+                snapshot,
+                operations,
+                diagnostics);
+
+            ReconcileBootScene(
+                paths,
+                snapshot,
+                operations,
+                diagnostics);
+
+            ReconcileBuildSettingsDecision(operations);
+        }
+
+        private static void ReconcileConfiguration(
+            EchoLaunchSetupRequest request,
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            int index = FindOperationIndex(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveConfiguration);
+            if (index < 0)
+            {
+                return;
+            }
+
+            EchoLaunchSetupOperation operation = operations[index];
+            if (operation.Disposition != EchoLaunchSetupOperationDisposition.Reuse ||
+                !string.Equals(operation.TargetPath, paths.ConfigurationAssetPath, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            EchoLaunchProjectAssetFact fact =
+                snapshot.FindAssetFact(operation.TargetPath);
+            if (!fact.HasRepairEvidence)
+            {
+                return;
+            }
+
+            if (!IsCanonicalStableId(fact.StableId))
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    "The existing configuration has no valid stable ID.",
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            string desiredSequence = ResolveOperationPath(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveStartupSequence);
+            string desiredDestination = ResolveOperationPath(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveLaunchDestination);
+            string desiredSplash = request.CreateSplashSequence
+                ? ResolveOperationPath(
+                    operations,
+                    EchoLaunchSetupOperationKind.ResolveSplashSequence)
+                : string.Empty;
+
+            if (PathEquals(fact.StartupSequencePath, desiredSequence) &&
+                PathEquals(fact.LaunchDestinationPath, desiredDestination) &&
+                PathEquals(fact.SplashSequencePath, desiredSplash))
+            {
+                return;
+            }
+
+            RemoveCompatibleReuseDiagnostic(
+                diagnostics,
+                operation.TargetPath);
+            operations[index] = CreateRepairOperation(
+                operation,
+                "The current-schema configuration references can be rebound without changing identity or unrelated settings.",
+                "Sequence=" + fact.StartupSequencePath +
+                "; Destination=" + fact.LaunchDestinationPath +
+                "; Splash=" + NullLabel(fact.SplashSequencePath),
+                "Sequence=" + desiredSequence +
+                "; Destination=" + desiredDestination +
+                "; Splash=" + NullLabel(desiredSplash),
+                "Exact type, current schema, nonempty stable ID, and unique resolved dependencies were proven.");
+        }
+
+        private static void ReconcileDestination(
+            EchoLaunchSetupRequest request,
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            int index = FindOperationIndex(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveLaunchDestination);
+            if (index < 0)
+            {
+                return;
+            }
+
+            EchoLaunchSetupOperation operation = operations[index];
+            if (operation.Disposition != EchoLaunchSetupOperationDisposition.Reuse ||
+                !string.Equals(operation.TargetPath, paths.LaunchDestinationAssetPath, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            EchoLaunchProjectAssetFact fact =
+                snapshot.FindAssetFact(operation.TargetPath);
+            if (!fact.HasRepairEvidence)
+            {
+                return;
+            }
+
+            if (fact.ConfigurationSchemaVersion.HasValue &&
+                fact.ConfigurationSchemaVersion.Value !=
+                    LaunchDestination.CurrentSchemaVersion)
+            {
+                ReplaceWithUnsupportedMigration(
+                    index,
+                    operation,
+                    fact.ConfigurationSchemaVersion.Value,
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            if (!IsCanonicalStableId(fact.StableId))
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    "The existing launch destination has no valid stable ID.",
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            string desiredPath =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(
+                    request.DestinationScenePath);
+            string desiredLabel = string.IsNullOrWhiteSpace(fact.DestinationDisplayName)
+                ? System.IO.Path.GetFileNameWithoutExtension(desiredPath)
+                : fact.DestinationDisplayName;
+
+            if (PathEquals(fact.DestinationScenePath, desiredPath) &&
+                string.Equals(
+                    fact.DestinationDisplayName,
+                    desiredLabel,
+                    StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            RemoveCompatibleReuseDiagnostic(
+                diagnostics,
+                operation.TargetPath);
+            operations[index] = CreateRepairOperation(
+                operation,
+                "The current-schema destination can reconcile its scene path and fill an empty label while preserving identity.",
+                "Scene=" + fact.DestinationScenePath +
+                "; Label=" + fact.DestinationDisplayName,
+                "Scene=" + desiredPath +
+                "; Label=" + desiredLabel,
+                "Exact type, current schema, nonempty stable ID, and selected existing scene were proven.");
+        }
+
+        private static void ReconcileRootPrefab(
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            int index = FindOperationIndex(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveRootPrefabVariant);
+            if (index < 0)
+            {
+                return;
+            }
+
+            EchoLaunchSetupOperation operation = operations[index];
+            if (operation.Disposition != EchoLaunchSetupOperationDisposition.Reuse ||
+                !string.Equals(operation.TargetPath, paths.RootPrefabPath, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            EchoLaunchProjectAssetFact fact =
+                snapshot.FindAssetFact(operation.TargetPath);
+            if (!fact.HasRepairEvidence)
+            {
+                return;
+            }
+
+            bool proven =
+                string.Equals(fact.PrefabAssetType, "Variant", StringComparison.Ordinal) &&
+                fact.PrefabLineageMatchesTemplate &&
+                fact.EchoLaunchRootCount == 1;
+
+            if (!proven)
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    "The root prefab is not a proven one-root variant of the package template.",
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            string desiredConfiguration = ResolveOperationPath(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveConfiguration);
+            if (PathEquals(fact.RootConfigurationPath, desiredConfiguration))
+            {
+                return;
+            }
+
+            RemoveCompatibleReuseDiagnostic(
+                diagnostics,
+                operation.TargetPath);
+            operations[index] = CreateRepairOperation(
+                operation,
+                "The verified root variant can rebind only EchoLaunchRoot.configuration.",
+                "Configuration=" + fact.RootConfigurationPath,
+                "Configuration=" + desiredConfiguration,
+                "Variant lineage reaches the package template and exactly one EchoLaunchRoot exists.");
+        }
+
+        private static void ReconcileBootScene(
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            int index = FindOperationIndex(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveBootScene);
+            if (index < 0)
+            {
+                return;
+            }
+
+            EchoLaunchSetupOperation operation = operations[index];
+            if (operation.Disposition != EchoLaunchSetupOperationDisposition.Reuse)
+            {
+                return;
+            }
+
+            EchoLaunchProjectAssetFact fact =
+                snapshot.FindAssetFact(paths.BootScenePath);
+            if (!fact.SceneInspectionSafe)
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    string.IsNullOrEmpty(fact.SceneInspectionMessage)
+                        ? "The Boot scene could not be inspected safely."
+                        : fact.SceneInspectionMessage,
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            if (!fact.HasRepairEvidence || !fact.EchoLaunchRootCount.HasValue)
+            {
+                return;
+            }
+
+            if (fact.EchoLaunchRootCount.Value == 0)
+            {
+                if (fact.SceneWasOpen)
+                {
+                    ReplaceWithRepairConflict(
+                        index,
+                        operation,
+                        "Close the canonical Boot scene before adding its missing launch root so rollback can restore exact scene bytes safely.",
+                        operations,
+                        diagnostics);
+                    return;
+                }
+
+                RemoveCompatibleReuseDiagnostic(
+                    diagnostics,
+                    operation.TargetPath);
+                string desiredRoot = ResolveOperationPath(
+                    operations,
+                    EchoLaunchSetupOperationKind.ResolveRootPrefabVariant);
+                operations[index] = CreateRepairOperation(
+                    operation,
+                    "The exact canonical Boot scene contains zero launch roots; one verified project-root prefab instance can be added.",
+                    "EchoLaunchRoot count=0",
+                    "EchoLaunchRoot count=1; source=" + desiredRoot,
+                    "The scene loaded safely and no existing EchoLaunchRoot was found.");
+                return;
+            }
+
+            if (fact.EchoLaunchRootCount.Value != 1)
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    "The Boot scene contains multiple EchoLaunchRoot components.",
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            string expectedRoot = ResolveOperationPath(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveRootPrefabVariant);
+            if (!PathEquals(fact.PrefabSourcePath, expectedRoot))
+            {
+                ReplaceWithRepairConflict(
+                    index,
+                    operation,
+                    "The Boot scene root is unpacked or comes from a different prefab.",
+                    operations,
+                    diagnostics);
+            }
+        }
+
+        private static void ReconcileBuildSettingsDecision(
+            List<EchoLaunchSetupOperation> operations)
+        {
+            int buildIndex = FindOperationIndex(
+                operations,
+                EchoLaunchSetupOperationKind.ResolveBuildSettings);
+            if (buildIndex < 0 ||
+                operations[buildIndex].Disposition !=
+                    EchoLaunchSetupOperationDisposition.ManualDecision ||
+                !HasExistingFoundationEvidence(operations))
+            {
+                return;
+            }
+
+            EchoLaunchSetupOperation source = operations[buildIndex];
+            operations[buildIndex] = new EchoLaunchSetupOperation(
+                source.Key,
+                source.Phase,
+                source.Kind,
+                EchoLaunchSetupOperationDisposition.Repair,
+                source.TargetPath,
+                source.Reason,
+                source.DiagnosticCode,
+                true,
+                source.ExistingState,
+                source.ProposedState,
+                source.ProofSummary);
+        }
+
+        private static bool HasExistingFoundationEvidence(
+            List<EchoLaunchSetupOperation> operations)
+        {
+            for (int index = 0; index < operations.Count; index++)
+            {
+                EchoLaunchSetupOperation operation = operations[index];
+                bool coreArtifact =
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveConfiguration ||
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveStartupSequence ||
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveLaunchDestination ||
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveSplashSequence ||
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveRootPrefabVariant ||
+                    operation.Kind == EchoLaunchSetupOperationKind.ResolveBootScene;
+                if (coreArtifact &&
+                    (operation.Disposition ==
+                         EchoLaunchSetupOperationDisposition.Reuse ||
+                     operation.Disposition ==
+                         EchoLaunchSetupOperationDisposition.Repair))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static EchoLaunchSetupOperation CreateRepairOperation(
+            EchoLaunchSetupOperation source,
+            string reason,
+            string existingState,
+            string proposedState,
+            string proofSummary)
+        {
+            return new EchoLaunchSetupOperation(
+                source.Key,
+                source.Phase,
+                source.Kind,
+                EchoLaunchSetupOperationDisposition.Repair,
+                source.TargetPath,
+                reason,
+                EchoLaunchSetupDiagnosticCodes.RepairApprovalRequired,
+                source.RequiresExplicitApproval,
+                existingState,
+                proposedState,
+                proofSummary);
+        }
+
+        private static void AddRepair(
+            string key,
+            EchoLaunchSetupOperationKind kind,
+            string path,
+            string reason,
+            int phase,
+            string existingState,
+            string proposedState,
+            string proofSummary,
+            bool requiresExplicitApproval,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            operations.Add(
+                new EchoLaunchSetupOperation(
+                    key,
+                    phase,
+                    kind,
+                    EchoLaunchSetupOperationDisposition.Repair,
+                    path,
+                    reason,
+                    EchoLaunchSetupDiagnosticCodes.RepairApprovalRequired,
+                    requiresExplicitApproval,
+                    existingState,
+                    proposedState,
+                    proofSummary));
+        }
+
+        private static void ReplaceWithRepairConflict(
+            int index,
+            EchoLaunchSetupOperation source,
+            string message,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            RemoveCompatibleReuseDiagnostic(
+                diagnostics,
+                source.TargetPath);
+            diagnostics.Add(
+                new EchoLaunchSetupDiagnostic(
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence,
+                    EchoLaunchSetupDiagnosticSeverity.Blocker,
+                    message,
+                    source.TargetPath));
+
+            operations[index] =
+                new EchoLaunchSetupOperation(
+                    source.Key,
+                    source.Phase,
+                    source.Kind,
+                    EchoLaunchSetupOperationDisposition.Conflict,
+                    source.TargetPath,
+                    message,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence);
+        }
+
+        private static void RemoveCompatibleReuseDiagnostic(
+            List<EchoLaunchSetupDiagnostic> diagnostics,
+            string path)
+        {
+            for (int index = diagnostics.Count - 1; index >= 0; index--)
+            {
+                if (diagnostics[index].Code ==
+                        EchoLaunchSetupDiagnosticCodes.CompatibleAssetReused &&
+                    string.Equals(
+                        diagnostics[index].TargetPath,
+                        path,
+                        StringComparison.Ordinal))
+                {
+                    diagnostics.RemoveAt(index);
+                }
+            }
+        }
+
+        private static void ReplaceWithUnsupportedMigration(
+            int index,
+            EchoLaunchSetupOperation source,
+            int schemaVersion,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            RemoveCompatibleReuseDiagnostic(
+                diagnostics,
+                source.TargetPath);
+            string message =
+                "The existing asset schema " + schemaVersion +
+                " requires a separately approved migration.";
+            diagnostics.Add(
+                new EchoLaunchSetupDiagnostic(
+                    EchoLaunchSetupDiagnosticCodes.UnsupportedMigration,
+                    EchoLaunchSetupDiagnosticSeverity.Blocker,
+                    message,
+                    source.TargetPath));
+            operations[index] =
+                new EchoLaunchSetupOperation(
+                    source.Key,
+                    source.Phase,
+                    source.Kind,
+                    EchoLaunchSetupOperationDisposition.Unsupported,
+                    source.TargetPath,
+                    message,
+                    EchoLaunchSetupDiagnosticCodes.UnsupportedMigration);
+        }
+
+        private static void AddRepairConflict(
+            string key,
+            EchoLaunchSetupOperationKind kind,
+            string path,
+            string message,
+            int phase,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            diagnostics.Add(
+                new EchoLaunchSetupDiagnostic(
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence,
+                    EchoLaunchSetupDiagnosticSeverity.Blocker,
+                    message,
+                    path));
+            operations.Add(
+                new EchoLaunchSetupOperation(
+                    key,
+                    phase,
+                    kind,
+                    EchoLaunchSetupOperationDisposition.Conflict,
+                    path,
+                    message,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence));
+        }
+
+        private static int FindOperationIndex(
+            List<EchoLaunchSetupOperation> operations,
+            EchoLaunchSetupOperationKind kind)
+        {
+            for (int index = 0; index < operations.Count; index++)
+            {
+                if (operations[index].Kind == kind)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
+        }
+
+        private static string ResolveOperationPath(
+            List<EchoLaunchSetupOperation> operations,
+            EchoLaunchSetupOperationKind kind)
+        {
+            int index = FindOperationIndex(operations, kind);
+            return index < 0 ? string.Empty : operations[index].TargetPath;
+        }
+
+        private static bool IsCanonicalStableId(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length != 32)
+            {
+                return false;
+            }
+
+            for (int index = 0; index < value.Length; index++)
+            {
+                char character = value[index];
+                bool isDigit = character >= '0' && character <= '9';
+                bool isLowerHex = character >= 'a' && character <= 'f';
+                if (!isDigit && !isLowerHex)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool PathEquals(string left, string right)
+        {
+            return string.Equals(
+                EchoLaunchSetupPathUtility.NormalizeSeparators(left),
+                EchoLaunchSetupPathUtility.NormalizeSeparators(right),
+                StringComparison.Ordinal);
+        }
+
+        private static string NullLabel(string value)
+        {
+            return string.IsNullOrEmpty(value) ? "None" : value;
         }
 
         private static void AddInvalidRequest(

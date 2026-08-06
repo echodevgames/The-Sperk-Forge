@@ -14,5 +14,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal const string ApplyFailedRolledBack = "ELAUNCH-SETUP-010";
         internal const string RollbackIncomplete = "ELAUNCH-SETUP-011";
         internal const string UnauthorizedApplyOperation = "ELAUNCH-SETUP-012";
+        internal const string RepairApprovalRequired = "ELAUNCH-SETUP-013";
+        internal const string RepairBackupFailed = "ELAUNCH-SETUP-014";
+        internal const string AmbiguousRepairEvidence = "ELAUNCH-SETUP-015";
+        internal const string RepairFailedRolledBack = "ELAUNCH-SETUP-016";
+        internal const string RepairRollbackIncomplete = "ELAUNCH-SETUP-017";
     }
 }

@@ -868,6 +868,26 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             {
                 calls.Add("configuration");
             }
+
+            public bool RepairLaunchDestination(
+                string path,
+                string destinationScenePath,
+                EchoLaunchSetupExecutionLog log)
+            {
+                calls.Add("repair-destination");
+                return true;
+            }
+
+            public bool RepairConfiguration(
+                string path,
+                string startupSequencePath,
+                string launchDestinationPath,
+                string splashSequencePath,
+                EchoLaunchSetupExecutionLog log)
+            {
+                calls.Add("repair-configuration");
+                return true;
+            }
         }
 
         private sealed class FakePrefabWriter :
@@ -889,6 +909,16 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             {
                 calls.Add("prefab");
             }
+
+            public bool RepairRootConfiguration(
+                string templatePath,
+                string targetPath,
+                string configurationPath,
+                EchoLaunchSetupExecutionLog log)
+            {
+                calls.Add("repair-prefab");
+                return true;
+            }
         }
 
         private sealed class FakeSceneWriter :
@@ -908,6 +938,15 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 EchoLaunchSetupExecutionLog log)
             {
                 calls.Add("scene");
+            }
+
+            public bool RepairBootSceneWithRoot(
+                string scenePath,
+                string rootPrefabPath,
+                EchoLaunchSetupExecutionLog log)
+            {
+                calls.Add("repair-scene");
+                return true;
             }
         }
 
@@ -931,6 +970,18 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 EchoLaunchSetupExecutionLog log)
             {
                 calls.Add("build");
+                ApprovalReceived = approvePlaceFirst;
+                return true;
+            }
+
+            public bool Repair(
+                EchoLaunchBuildSettingsPolicy policy,
+                string bootScenePath,
+                bool approvePlaceFirst,
+                EchoLaunchSetupRollbackJournal journal,
+                EchoLaunchSetupExecutionLog log)
+            {
+                calls.Add("repair-build");
                 ApprovalReceived = approvePlaceFirst;
                 return true;
             }

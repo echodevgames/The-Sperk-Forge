@@ -14,6 +14,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string configurationPath,
             EchoLaunchSetupRollbackJournal journal,
             EchoLaunchSetupExecutionLog log);
+
+        bool RepairRootConfiguration(
+            string templatePath,
+            string targetPath,
+            string configurationPath,
+            EchoLaunchSetupExecutionLog log);
     }
 
     internal sealed class EchoLaunchSetupPrefabWriter :
@@ -172,6 +178,122 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     SceneManager.SetActiveScene(previousActive);
                 }
             }
+        }
+
+        public bool RepairRootConfiguration(
+            string templatePath,
+            string targetPath,
+            string configurationPath,
+            EchoLaunchSetupExecutionLog log)
+        {
+            string normalizedTarget =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(targetPath);
+            GameObject prefab =
+                AssetDatabase.LoadAssetAtPath<GameObject>(normalizedTarget);
+            EchoLaunchConfiguration configuration =
+                AssetDatabase.LoadAssetAtPath<EchoLaunchConfiguration>(
+                    configurationPath);
+
+            if (prefab == null || configuration == null)
+            {
+                throw new InvalidOperationException(
+                    "The root prefab or configuration is unavailable for repair.");
+            }
+
+            if (PrefabUtility.GetPrefabAssetType(prefab) !=
+                PrefabAssetType.Variant ||
+                !LineageContains(prefab, templatePath))
+            {
+                throw new InvalidOperationException(
+                    "Repair requires a verified prefab variant whose lineage reaches the package template.");
+            }
+
+            EchoLaunchRoot[] roots =
+                prefab.GetComponentsInChildren<EchoLaunchRoot>(true);
+            if (roots.Length != 1)
+            {
+                throw new InvalidOperationException(
+                    "Repair requires exactly one EchoLaunchRoot in the root prefab variant.");
+            }
+
+            SerializedObject serialized = new SerializedObject(roots[0]);
+            SerializedProperty property =
+                serialized.FindProperty("configuration");
+            if (property == null)
+            {
+                throw new InvalidOperationException(
+                    "EchoLaunchRoot.configuration is unavailable.");
+            }
+
+            if (property.objectReferenceValue == configuration)
+            {
+                return false;
+            }
+
+            property.objectReferenceValue = configuration;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(roots[0]);
+            PrefabUtility.SavePrefabAsset(prefab);
+            AssetDatabase.ImportAsset(
+                normalizedTarget,
+                ImportAssetOptions.ForceSynchronousImport);
+
+            GameObject verified =
+                AssetDatabase.LoadAssetAtPath<GameObject>(normalizedTarget);
+            EchoLaunchRoot[] verifiedRoots =
+                verified == null
+                    ? Array.Empty<EchoLaunchRoot>()
+                    : verified.GetComponentsInChildren<EchoLaunchRoot>(true);
+            if (verified == null ||
+                PrefabUtility.GetPrefabAssetType(verified) !=
+                    PrefabAssetType.Variant ||
+                verifiedRoots.Length != 1)
+            {
+                throw new InvalidOperationException(
+                    "The repaired root prefab no longer satisfies its variant contract.");
+            }
+
+            SerializedObject verification =
+                new SerializedObject(verifiedRoots[0]);
+            SerializedProperty verifiedProperty =
+                verification.FindProperty("configuration");
+            if (verifiedProperty == null ||
+                verifiedProperty.objectReferenceValue != configuration)
+            {
+                throw new InvalidOperationException(
+                    "The repaired root prefab did not retain its configuration binding.");
+            }
+
+            log.Add(
+                EchoLaunchSetupChangeKind.RepairedPrefab,
+                normalizedTarget,
+                "Rebound EchoLaunchRoot.configuration on the verified prefab variant.");
+            return true;
+        }
+
+        private static bool LineageContains(
+            GameObject prefab,
+            string expectedPath)
+        {
+            string normalizedExpected =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(expectedPath);
+            GameObject current = prefab;
+            int guard = 0;
+            while (current != null && guard++ < 64)
+            {
+                if (string.Equals(
+                        AssetDatabase.GetAssetPath(current),
+                        normalizedExpected,
+                        StringComparison.Ordinal))
+                {
+                    return true;
+                }
+
+                current =
+                    PrefabUtility.GetCorrespondingObjectFromSource(current);
+            }
+
+            return false;
         }
     }
 }

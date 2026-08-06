@@ -79,7 +79,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
-        public void WindowExposesApplyButNoRepairOrMigrateMethod()
+        public void WindowExposesSeparateApplyAndRepairButNoMigrateMethod()
         {
             MethodInfo[] methods =
                 typeof(EchoLaunchSetupWindow).GetMethods(
@@ -89,6 +89,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     BindingFlags.NonPublic);
 
             bool foundApply = false;
+            bool foundRepair = false;
 
             for (int methodIndex = 0;
                  methodIndex < methods.Length;
@@ -103,12 +104,12 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     foundApply = true;
                 }
 
-                Assert.That(
-                    name.IndexOf(
+                if (name.IndexOf(
                         "Repair",
-                        StringComparison.OrdinalIgnoreCase),
-                    Is.LessThan(0),
-                    "Forbidden repair method found: " + name);
+                        StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    foundRepair = true;
+                }
 
                 Assert.That(
                     name.IndexOf(
@@ -119,14 +120,18 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             }
 
             Assert.That(foundApply, Is.True);
+            Assert.That(foundRepair, Is.True);
         }
 
         [Test]
-        public void ApplyBoundaryMessageForbidsOverwrite()
+        public void BoundaryMessageSeparatesApplyAndRepair()
         {
             Assert.That(
                 EchoLaunchSetupWindow.ApplyBoundaryMessage,
-                Does.Contain("never overwritten"));
+                Does.Contain("Apply is create-only"));
+            Assert.That(
+                EchoLaunchSetupWindow.ApplyBoundaryMessage,
+                Does.Contain("Repair is separate"));
         }
 
         [Test]

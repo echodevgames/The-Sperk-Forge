@@ -356,6 +356,59 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
+        public void InitialPlaceFirstRemainsCreateApplyDecision()
+        {
+            EchoLaunchSetupPlan plan =
+                CreatePlan(
+                    request:
+                    EchoLaunchSetupTestFactory.CreateRequest(
+                        policy:
+                        EchoLaunchBuildSettingsPolicy.PlaceFirstAfterApproval));
+
+            AssertDisposition(
+                plan,
+                EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                EchoLaunchSetupOperationDisposition.ManualDecision);
+            Assert.That(
+                EchoLaunchSetupApplyService.EvaluateEligibility(
+                    plan,
+                    true).CanApply,
+                Is.True);
+        }
+
+        [Test]
+        public void PartialFoundationPlaceFirstBecomesRepairDecision()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact existingConfiguration =
+                new EchoLaunchProjectAssetFact(
+                    paths.ConfigurationAssetPath,
+                    true,
+                    false,
+                    "configuration-guid",
+                    EchoLaunchSetupAssetTypeNames.Configuration,
+                    EchoLaunchConfiguration.CurrentSchemaVersion);
+            EchoLaunchSetupPlan plan =
+                CreatePlan(
+                    request:
+                    EchoLaunchSetupTestFactory.CreateRequest(
+                        policy:
+                        EchoLaunchBuildSettingsPolicy.PlaceFirstAfterApproval),
+                    facts: new[] { existingConfiguration });
+
+            AssertDisposition(
+                plan,
+                EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                EchoLaunchSetupOperationDisposition.Repair);
+            Assert.That(
+                EchoLaunchSetupRepairService.EvaluateEligibility(
+                    plan,
+                    true).CanRepair,
+                Is.True);
+        }
+
+        [Test]
         public void PlaceFirstDoesNothingWhenAlreadyFirst()
         {
             EchoLaunchSetupPathSet paths =
@@ -399,6 +452,207 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                         EchoLaunchBuildSettingsPolicy.DoNotChange)),
                 EchoLaunchSetupOperationKind.ResolveBuildSettings,
                 EchoLaunchSetupOperationDisposition.NoChange);
+        }
+
+        [Test]
+        public void CurrentConfigurationReferenceDriftProducesRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact configuration =
+                new EchoLaunchProjectAssetFact(
+                    paths.ConfigurationAssetPath,
+                    true,
+                    false,
+                    "configuration-guid",
+                    EchoLaunchSetupAssetTypeNames.Configuration,
+                    EchoLaunchConfiguration.CurrentSchemaVersion,
+                    true,
+                    "0123456789abcdef0123456789abcdef");
+
+            EchoLaunchSetupPlan plan = CreatePlan(
+                facts: new[] { configuration });
+
+            EchoLaunchSetupOperation operation =
+                EchoLaunchSetupTestFactory.FindOperation(
+                    plan,
+                    EchoLaunchSetupOperationKind.ResolveConfiguration);
+            Assert.That(
+                operation.Disposition,
+                Is.EqualTo(EchoLaunchSetupOperationDisposition.Repair));
+            Assert.That(operation.ProofSummary, Is.Not.Empty);
+        }
+
+        [Test]
+        public void InvalidConfigurationStableIdBlocksRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact configuration =
+                new EchoLaunchProjectAssetFact(
+                    paths.ConfigurationAssetPath,
+                    true,
+                    false,
+                    "configuration-guid",
+                    EchoLaunchSetupAssetTypeNames.Configuration,
+                    EchoLaunchConfiguration.CurrentSchemaVersion,
+                    true,
+                    "NOT-A-CANONICAL-ID");
+
+            EchoLaunchSetupPlan plan = CreatePlan(
+                facts: new[] { configuration });
+
+            Assert.That(
+                plan.Status,
+                Is.EqualTo(EchoLaunchSetupPlanStatus.Blocked));
+            Assert.That(
+                EchoLaunchSetupTestFactory.HasDiagnostic(
+                    plan,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence),
+                Is.True);
+        }
+
+        [Test]
+        public void CurrentDestinationPathDriftProducesRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact destination =
+                new EchoLaunchProjectAssetFact(
+                    paths.LaunchDestinationAssetPath,
+                    true,
+                    false,
+                    "destination-guid",
+                    EchoLaunchSetupAssetTypeNames.LaunchDestination,
+                    LaunchDestination.CurrentSchemaVersion,
+                    true,
+                    "fedcba9876543210fedcba9876543210",
+                    destinationScenePath: "Assets/Scenes/Old.unity",
+                    destinationDisplayName: string.Empty);
+
+            AssertDisposition(
+                CreatePlan(facts: new[] { destination }),
+                EchoLaunchSetupOperationKind.ResolveLaunchDestination,
+                EchoLaunchSetupOperationDisposition.Repair);
+        }
+
+        [Test]
+        public void UnprovenRootPrefabBlocksRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact prefab =
+                new EchoLaunchProjectAssetFact(
+                    paths.RootPrefabPath,
+                    true,
+                    false,
+                    "prefab-guid",
+                    EchoLaunchSetupAssetTypeNames.GameObject,
+                    hasRepairEvidence: true,
+                    prefabAssetType: "Regular",
+                    prefabLineageMatchesTemplate: false,
+                    echoLaunchRootCount: 1);
+
+            EchoLaunchSetupPlan plan = CreatePlan(facts: new[] { prefab });
+            Assert.That(plan.Status, Is.EqualTo(EchoLaunchSetupPlanStatus.Blocked));
+            Assert.That(
+                EchoLaunchSetupTestFactory.HasDiagnostic(
+                    plan,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence),
+                Is.True);
+        }
+
+        [Test]
+        public void EmptyCanonicalBootSceneProducesRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact scene =
+                new EchoLaunchProjectAssetFact(
+                    paths.BootScenePath,
+                    true,
+                    false,
+                    "scene-guid",
+                    EchoLaunchSetupAssetTypeNames.SceneAsset,
+                    hasRepairEvidence: true,
+                    echoLaunchRootCount: 0);
+
+            AssertDisposition(
+                CreatePlan(facts: new[] { scene }),
+                EchoLaunchSetupOperationKind.ResolveBootScene,
+                EchoLaunchSetupOperationDisposition.Repair);
+        }
+
+        [Test]
+        public void OpenZeroRootBootSceneBlocksByteSafeRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchProjectAssetFact scene =
+                new EchoLaunchProjectAssetFact(
+                    paths.BootScenePath,
+                    true,
+                    false,
+                    "scene-guid",
+                    EchoLaunchSetupAssetTypeNames.SceneAsset,
+                    hasRepairEvidence: true,
+                    echoLaunchRootCount: 0,
+                    sceneWasOpen: true);
+
+            EchoLaunchSetupPlan plan = CreatePlan(facts: new[] { scene });
+
+            Assert.That(
+                plan.Status,
+                Is.EqualTo(EchoLaunchSetupPlanStatus.Blocked));
+            Assert.That(
+                EchoLaunchSetupTestFactory.HasDiagnostic(
+                    plan,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence),
+                Is.True);
+        }
+
+        [Test]
+        public void DisabledUniqueBootEntryProducesRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            AssertDisposition(
+                CreatePlan(
+                    buildScenes: new[]
+                    {
+                        new EchoLaunchBuildSettingsSceneFact(
+                            paths.BootScenePath,
+                            false,
+                            2)
+                    }),
+                EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                EchoLaunchSetupOperationDisposition.Repair);
+        }
+
+        [Test]
+        public void DuplicateBootEntriesBlockAppendRepair()
+        {
+            EchoLaunchSetupPathSet paths =
+                EchoLaunchSetupPathSet.CreateDefault();
+            EchoLaunchSetupPlan plan = CreatePlan(
+                buildScenes: new[]
+                {
+                    new EchoLaunchBuildSettingsSceneFact(
+                        paths.BootScenePath,
+                        false,
+                        0),
+                    new EchoLaunchBuildSettingsSceneFact(
+                        paths.BootScenePath,
+                        true,
+                        1)
+                });
+
+            Assert.That(plan.Status, Is.EqualTo(EchoLaunchSetupPlanStatus.Blocked));
+            Assert.That(
+                EchoLaunchSetupTestFactory.HasDiagnostic(
+                    plan,
+                    EchoLaunchSetupDiagnosticCodes.AmbiguousRepairEvidence),
+                Is.True);
         }
 
         [Test]

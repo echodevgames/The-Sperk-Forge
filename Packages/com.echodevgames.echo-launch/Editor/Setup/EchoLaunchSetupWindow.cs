@@ -13,7 +13,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             "Preview only. This checkpoint changes nothing in the project.";
 
         internal const string ApplyBoundaryMessage =
-            "Create-only setup. Existing project assets are never overwritten.";
+            "Apply is create-only. Repair is separate, proof-gated, backed up, and limited to the displayed before/after changes.";
 
         private string projectRootPath;
         private string bootScenePath;
@@ -23,10 +23,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         private bool approvePlaceFirst;
         private EchoLaunchSetupPlan currentPlan;
         private EchoLaunchSetupApplyResult currentApplyResult;
+        private EchoLaunchSetupRepairResult currentRepairResult;
         private string currentPlanReport = string.Empty;
         private string currentApplyReport = string.Empty;
+        private string currentRepairReport = string.Empty;
         private Vector2 scrollPosition;
         private EchoLaunchSetupApplyService applyService;
+        private EchoLaunchSetupRepairService repairService;
 
         [MenuItem(MenuPath)]
         private static void OpenFromMenu()
@@ -63,6 +66,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd;
 
             applyService = new EchoLaunchSetupApplyService();
+            repairService = new EchoLaunchSetupRepairService();
             RefreshPlan();
         }
 
@@ -131,8 +135,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     }
                 }
 
-                EchoLaunchSetupApplyEligibility eligibility =
+                EchoLaunchSetupApplyEligibility applyEligibility =
                     EchoLaunchSetupApplyService.EvaluateEligibility(
+                        currentPlan,
+                        approvePlaceFirst);
+
+                EchoLaunchSetupRepairEligibility repairEligibility =
+                    EchoLaunchSetupRepairService.EvaluateEligibility(
                         currentPlan,
                         approvePlaceFirst);
 
@@ -142,15 +151,28 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     EditorApplication.isPlayingOrWillChangePlaymode;
 
                 using (new EditorGUI.DisabledScope(
-                           !eligibility.CanApply ||
+                           !applyEligibility.CanApply ||
                            editorBusy ||
-                           EchoLaunchSetupApplyService.IsApplyActive))
+                           EchoLaunchSetupApplyService.IsMutationActive))
                 {
                     if (GUILayout.Button(
                             "Apply Plan...",
                             GUILayout.Height(28f)))
                     {
                         ApplyCurrentPlan();
+                    }
+                }
+
+                using (new EditorGUI.DisabledScope(
+                           !repairEligibility.CanRepair ||
+                           editorBusy ||
+                           EchoLaunchSetupApplyService.IsMutationActive))
+                {
+                    if (GUILayout.Button(
+                            "Repair Plan...",
+                            GUILayout.Height(28f)))
+                    {
+                        RepairCurrentPlan();
                     }
                 }
             }
@@ -171,6 +193,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 EditorGUILayout.Space();
                 DrawApplyResult();
+            }
+
+            if (currentRepairResult != null)
+            {
+                EditorGUILayout.Space();
+                DrawRepairResult();
             }
         }
 
@@ -213,6 +241,35 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             return currentApplyResult;
         }
 
+        internal EchoLaunchSetupRepairResult RepairPlanForTests(
+            EchoLaunchSetupPlan plan,
+            bool confirmed,
+            bool placeFirstApproved,
+            EchoLaunchSetupRepairService service = null)
+        {
+            currentPlan = plan;
+            currentRepairResult =
+                (service ?? repairService ?? new EchoLaunchSetupRepairService())
+                    .Repair(
+                        new EchoLaunchSetupRepairRequest(
+                            plan,
+                            confirmed,
+                            placeFirstApproved));
+            currentRepairReport =
+                new EchoLaunchSetupRepairResultFormatter().Format(
+                    currentRepairResult);
+            Repaint();
+            return currentRepairResult;
+        }
+
+        internal bool CanRepairCurrentPlanForTests(
+            bool placeFirstApproved)
+        {
+            return EchoLaunchSetupRepairService.EvaluateEligibility(
+                currentPlan,
+                placeFirstApproved).CanRepair;
+        }
+
         internal bool CanApplyCurrentPlanForTests(
             bool placeFirstApproved)
         {
@@ -223,8 +280,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
         internal string CurrentReportForTests => currentPlanReport;
         internal string CurrentApplyReportForTests => currentApplyReport;
+        internal string CurrentRepairReportForTests => currentRepairReport;
         internal EchoLaunchSetupApplyResult CurrentApplyResultForTests =>
             currentApplyResult;
+        internal EchoLaunchSetupRepairResult CurrentRepairResultForTests =>
+            currentRepairResult;
 
         private void RefreshPlan()
         {
@@ -270,6 +330,68 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     currentApplyResult);
 
             RefreshPlan();
+        }
+
+        private void RepairCurrentPlan()
+        {
+            string confirmation = BuildRepairConfirmationText(
+                currentPlan,
+                approvePlaceFirst);
+            bool confirmed = EditorUtility.DisplayDialog(
+                "Repair First Light Setup",
+                confirmation,
+                "Repair",
+                "Cancel");
+            currentRepairResult = repairService.Repair(
+                new EchoLaunchSetupRepairRequest(
+                    currentPlan,
+                    confirmed,
+                    approvePlaceFirst));
+            currentRepairReport =
+                new EchoLaunchSetupRepairResultFormatter().Format(
+                    currentRepairResult);
+            RefreshPlan();
+        }
+
+        private static string BuildRepairConfirmationText(
+            EchoLaunchSetupPlan plan,
+            bool placeFirstApproved)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(
+                "First Light will back up and perform only the following proven repairs:");
+            bool found = false;
+            for (int index = 0; index < plan.Operations.Count; index++)
+            {
+                EchoLaunchSetupOperation operation = plan.Operations[index];
+                if (operation.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Repair)
+                {
+                    found = true;
+                    builder.AppendLine("- " + operation.TargetPath);
+                    builder.AppendLine("  Before: " + operation.ExistingState);
+                    builder.AppendLine("  After: " + operation.ProposedState);
+                    builder.AppendLine("  Proof: " + operation.ProofSummary);
+                }
+                else if (operation.Disposition ==
+                         EchoLaunchSetupOperationDisposition.Create)
+                {
+                    builder.AppendLine("- Create missing: " + operation.TargetPath);
+                }
+            }
+            if (!found && !plan.HasCreates)
+            {
+                builder.AppendLine("- No changes. This run should settle as NoChanges.");
+            }
+            builder.AppendLine();
+            builder.AppendLine(
+                "Existing asset and .meta bytes are preserved under Library/EchoDevGames/FirstLight/RepairBackups before mutation.");
+            builder.AppendLine(
+                "Place-first approval: " +
+                (placeFirstApproved ? "Approved" : "Not approved"));
+            builder.AppendLine(
+                "No schema migration, ID regeneration, type replacement, deletion, move, rename, or arbitrary scene cleanup is authorized.");
+            return builder.ToString();
         }
 
         private static string BuildConfirmationText(
@@ -357,6 +479,20 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     operation.Reason,
                     EditorStyles.wordWrappedLabel);
 
+                if (operation.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Repair)
+                {
+                    EditorGUILayout.LabelField(
+                        "Before: " + operation.ExistingState,
+                        EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField(
+                        "After: " + operation.ProposedState,
+                        EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.LabelField(
+                        "Proof: " + operation.ProofSummary,
+                        EditorStyles.wordWrappedLabel);
+                }
+
                 EditorGUILayout.Space(4f);
             }
 
@@ -415,6 +551,35 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 EditorGUIUtility.systemCopyBuffer =
                     currentApplyReport;
+            }
+        }
+
+        private void DrawRepairResult()
+        {
+            MessageType messageType =
+                currentRepairResult.Status ==
+                    EchoLaunchSetupRepairStatus.Succeeded ||
+                currentRepairResult.Status ==
+                    EchoLaunchSetupRepairStatus.NoChanges
+                    ? MessageType.Info
+                    : currentRepairResult.Status ==
+                      EchoLaunchSetupRepairStatus.Cancelled
+                        ? MessageType.Warning
+                        : MessageType.Error;
+
+            EditorGUILayout.HelpBox(
+                "Repair status: " + currentRepairResult.Status +
+                "\n" + currentRepairResult.Message +
+                (string.IsNullOrEmpty(currentRepairResult.BackupDirectory)
+                    ? string.Empty
+                    : "\nBackup: " + currentRepairResult.BackupDirectory),
+                messageType);
+
+            if (GUILayout.Button(
+                    "Copy Repair Result",
+                    GUILayout.Height(24f)))
+            {
+                EditorGUIUtility.systemCopyBuffer = currentRepairReport;
             }
         }
     }

@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +13,22 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             bool isFolder,
             string guid,
             string mainAssetTypeName,
-            int? configurationSchemaVersion = null)
+            int? configurationSchemaVersion = null,
+            bool hasRepairEvidence = false,
+            string stableId = null,
+            string startupSequencePath = null,
+            string launchDestinationPath = null,
+            string splashSequencePath = null,
+            string destinationScenePath = null,
+            string destinationDisplayName = null,
+            string prefabAssetType = null,
+            string prefabSourcePath = null,
+            bool prefabLineageMatchesTemplate = false,
+            int? echoLaunchRootCount = null,
+            string rootConfigurationPath = null,
+            bool sceneInspectionSafe = true,
+            string sceneInspectionMessage = null,
+            bool sceneWasOpen = false)
         {
             Path = EchoLaunchSetupPathUtility.NormalizeSeparators(path);
             Exists = exists;
@@ -22,6 +36,21 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             Guid = guid ?? string.Empty;
             MainAssetTypeName = mainAssetTypeName ?? string.Empty;
             ConfigurationSchemaVersion = configurationSchemaVersion;
+            HasRepairEvidence = hasRepairEvidence;
+            StableId = stableId ?? string.Empty;
+            StartupSequencePath = NormalizeOptional(startupSequencePath);
+            LaunchDestinationPath = NormalizeOptional(launchDestinationPath);
+            SplashSequencePath = NormalizeOptional(splashSequencePath);
+            DestinationScenePath = NormalizeOptional(destinationScenePath);
+            DestinationDisplayName = destinationDisplayName ?? string.Empty;
+            PrefabAssetType = prefabAssetType ?? string.Empty;
+            PrefabSourcePath = NormalizeOptional(prefabSourcePath);
+            PrefabLineageMatchesTemplate = prefabLineageMatchesTemplate;
+            EchoLaunchRootCount = echoLaunchRootCount;
+            RootConfigurationPath = NormalizeOptional(rootConfigurationPath);
+            SceneInspectionSafe = sceneInspectionSafe;
+            SceneInspectionMessage = sceneInspectionMessage ?? string.Empty;
+            SceneWasOpen = sceneWasOpen;
         }
 
         internal string Path { get; }
@@ -30,6 +59,21 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal string Guid { get; }
         internal string MainAssetTypeName { get; }
         internal int? ConfigurationSchemaVersion { get; }
+        internal bool HasRepairEvidence { get; }
+        internal string StableId { get; }
+        internal string StartupSequencePath { get; }
+        internal string LaunchDestinationPath { get; }
+        internal string SplashSequencePath { get; }
+        internal string DestinationScenePath { get; }
+        internal string DestinationDisplayName { get; }
+        internal string PrefabAssetType { get; }
+        internal string PrefabSourcePath { get; }
+        internal bool PrefabLineageMatchesTemplate { get; }
+        internal int? EchoLaunchRootCount { get; }
+        internal string RootConfigurationPath { get; }
+        internal bool SceneInspectionSafe { get; }
+        internal string SceneInspectionMessage { get; }
+        internal bool SceneWasOpen { get; }
 
         internal bool IsType(string fullTypeName)
         {
@@ -51,7 +95,22 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                        MainAssetTypeName,
                        other.MainAssetTypeName,
                        StringComparison.Ordinal) &&
-                   ConfigurationSchemaVersion == other.ConfigurationSchemaVersion;
+                   ConfigurationSchemaVersion == other.ConfigurationSchemaVersion &&
+                   HasRepairEvidence == other.HasRepairEvidence &&
+                   string.Equals(StableId, other.StableId, StringComparison.Ordinal) &&
+                   string.Equals(StartupSequencePath, other.StartupSequencePath, StringComparison.Ordinal) &&
+                   string.Equals(LaunchDestinationPath, other.LaunchDestinationPath, StringComparison.Ordinal) &&
+                   string.Equals(SplashSequencePath, other.SplashSequencePath, StringComparison.Ordinal) &&
+                   string.Equals(DestinationScenePath, other.DestinationScenePath, StringComparison.Ordinal) &&
+                   string.Equals(DestinationDisplayName, other.DestinationDisplayName, StringComparison.Ordinal) &&
+                   string.Equals(PrefabAssetType, other.PrefabAssetType, StringComparison.Ordinal) &&
+                   string.Equals(PrefabSourcePath, other.PrefabSourcePath, StringComparison.Ordinal) &&
+                   PrefabLineageMatchesTemplate == other.PrefabLineageMatchesTemplate &&
+                   EchoLaunchRootCount == other.EchoLaunchRootCount &&
+                   string.Equals(RootConfigurationPath, other.RootConfigurationPath, StringComparison.Ordinal) &&
+                   SceneInspectionSafe == other.SceneInspectionSafe &&
+                   string.Equals(SceneInspectionMessage, other.SceneInspectionMessage, StringComparison.Ordinal) &&
+                   SceneWasOpen == other.SceneWasOpen;
         }
 
         public override bool Equals(object obj)
@@ -62,6 +121,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         public override int GetHashCode()
         {
             return Path.GetHashCode();
+        }
+
+        private static string NormalizeOptional(string value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? string.Empty
+                : EchoLaunchSetupPathUtility.NormalizeSeparators(value);
         }
     }
 
@@ -212,11 +278,51 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         normalized,
                         StringComparison.Ordinal))
                 {
-                    return index;
+                    return buildSettingsScenes[index].Index;
                 }
             }
 
             return -1;
+        }
+
+        internal int CountBuildSettingsEntries(string scenePath)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(scenePath);
+            int count = 0;
+
+            for (int index = 0; index < buildSettingsScenes.Count; index++)
+            {
+                if (string.Equals(
+                        buildSettingsScenes[index].Path,
+                        normalized,
+                        StringComparison.Ordinal))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        internal EchoLaunchBuildSettingsSceneFact FindFirstBuildSettingsFact(
+            string scenePath)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(scenePath);
+
+            for (int index = 0; index < buildSettingsScenes.Count; index++)
+            {
+                if (string.Equals(
+                        buildSettingsScenes[index].Path,
+                        normalized,
+                        StringComparison.Ordinal))
+                {
+                    return buildSettingsScenes[index];
+                }
+            }
+
+            return null;
         }
 
         internal string EvidenceFingerprint =>
@@ -224,8 +330,18 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
         internal string CreateEvidenceSummary()
         {
+            int repairEvidenceCount = 0;
+            for (int index = 0; index < assetFacts.Count; index++)
+            {
+                if (assetFacts[index].HasRepairEvidence)
+                {
+                    repairEvidenceCount++;
+                }
+            }
+
             return "Assets=" + assetFacts.Count +
                    ";BuildScenes=" + buildSettingsScenes.Count +
+                   ";RepairEvidence=" + repairEvidenceCount +
                    ";Template=" +
                    (PackageRootTemplateAvailable ? "Present" : "Missing");
         }

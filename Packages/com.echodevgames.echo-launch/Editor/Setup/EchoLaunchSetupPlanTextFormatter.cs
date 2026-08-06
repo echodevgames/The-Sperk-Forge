@@ -60,6 +60,14 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 }
 
                 builder.AppendLine();
+
+                if (operation.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Repair)
+                {
+                    builder.AppendLine("   Before: " + operation.ExistingState);
+                    builder.AppendLine("   After: " + operation.ProposedState);
+                    builder.AppendLine("   Proof: " + operation.ProofSummary);
+                }
             }
 
             builder.AppendLine();

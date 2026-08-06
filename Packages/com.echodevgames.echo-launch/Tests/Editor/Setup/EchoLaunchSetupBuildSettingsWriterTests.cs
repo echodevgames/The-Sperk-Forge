@@ -226,6 +226,61 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
+        public void RepairEnablesUniqueDisabledEntryInPlace()
+        {
+            EditorBuildSettings.scenes =
+                new[]
+                {
+                    new EditorBuildSettingsScene(
+                        "Assets/A.unity",
+                        true),
+                    new EditorBuildSettingsScene(
+                        "Assets/Boot.unity",
+                        false)
+                };
+
+            bool changed =
+                new EchoLaunchSetupBuildSettingsWriter().Repair(
+                    EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                    "Assets/Boot.unity",
+                    false,
+                    new EchoLaunchSetupRollbackJournal(),
+                    new EchoLaunchSetupExecutionLog());
+
+            Assert.That(changed, Is.True);
+            Assert.That(EditorBuildSettings.scenes[1].path,
+                Is.EqualTo("Assets/Boot.unity"));
+            Assert.That(EditorBuildSettings.scenes[1].enabled, Is.True);
+        }
+
+        [Test]
+        public void AppendRepairRejectsDuplicateBootEntries()
+        {
+            EditorBuildSettings.scenes =
+                new[]
+                {
+                    new EditorBuildSettingsScene(
+                        "Assets/Boot.unity",
+                        false),
+                    new EditorBuildSettingsScene(
+                        "Assets/Boot.unity",
+                        true)
+                };
+
+            Assert.That(
+                delegate
+                {
+                    new EchoLaunchSetupBuildSettingsWriter().Repair(
+                        EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                        "Assets/Boot.unity",
+                        false,
+                        new EchoLaunchSetupRollbackJournal(),
+                        new EchoLaunchSetupExecutionLog());
+                },
+                Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
         public void CloneIsDefensive()
         {
             EditorBuildSettingsScene[] source =

@@ -21,7 +21,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         NoChange = 2,
         ManualDecision = 3,
         Conflict = 4,
-        Unsupported = 5
+        Unsupported = 5,
+        Repair = 6
     }
 
     internal enum EchoLaunchSetupOperationKind
@@ -67,6 +68,19 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         FailedRollbackIncomplete = 7
     }
 
+    internal enum EchoLaunchSetupRepairStatus
+    {
+        Succeeded = 0,
+        NoChanges = 1,
+        Cancelled = 2,
+        Blocked = 3,
+        StalePlan = 4,
+        AlreadyRunning = 5,
+        BackupFailed = 6,
+        FailedRolledBack = 7,
+        FailedRollbackIncomplete = 8
+    }
+
     internal enum EchoLaunchSetupChangeKind
     {
         CreatedFolder = 0,
@@ -75,6 +89,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         CreatedScene = 3,
         BuildSettingsChanged = 4,
         Reused = 5,
-        NoChange = 6
+        NoChange = 6,
+        RepairedAsset = 7,
+        RepairedPrefab = 8,
+        RepairedScene = 9
     }
 }

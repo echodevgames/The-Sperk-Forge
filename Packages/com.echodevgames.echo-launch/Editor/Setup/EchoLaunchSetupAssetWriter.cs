@@ -35,6 +35,18 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string splashSequencePath,
             EchoLaunchSetupRollbackJournal journal,
             EchoLaunchSetupExecutionLog log);
+
+        bool RepairLaunchDestination(
+            string path,
+            string destinationScenePath,
+            EchoLaunchSetupExecutionLog log);
+
+        bool RepairConfiguration(
+            string path,
+            string startupSequencePath,
+            string launchDestinationPath,
+            string splashSequencePath,
+            EchoLaunchSetupExecutionLog log);
     }
 
     internal sealed class EchoLaunchSetupAssetWriter :
@@ -241,6 +253,197 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 journal,
                 log,
                 "Created launch configuration with resolved references.");
+        }
+
+        public bool RepairLaunchDestination(
+            string path,
+            string destinationScenePath,
+            EchoLaunchSetupExecutionLog log)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(path);
+            LaunchDestination destination =
+                AssetDatabase.LoadAssetAtPath<LaunchDestination>(normalized);
+            if (destination == null)
+            {
+                throw new InvalidOperationException(
+                    "The launch destination is unavailable for repair.");
+            }
+
+            SerializedObject serialized = new SerializedObject(destination);
+            SerializedProperty scenePath = serialized.FindProperty("scenePath");
+            SerializedProperty displayName = serialized.FindProperty("displayName");
+            if (scenePath == null || displayName == null)
+            {
+                throw new InvalidOperationException(
+                    "LaunchDestination repair fields are unavailable.");
+            }
+
+            ValidateCurrentSchemaAndIdentity(
+                serialized,
+                "destinationId",
+                LaunchDestination.CurrentSchemaVersion,
+                "LaunchDestination");
+
+            string desiredScene =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(
+                    destinationScenePath);
+            if (AssetDatabase.GetMainAssetTypeAtPath(desiredScene) !=
+                typeof(SceneAsset))
+            {
+                throw new InvalidOperationException(
+                    "The selected destination scene is unavailable for repair.");
+            }
+
+            bool changed = !string.Equals(
+                scenePath.stringValue,
+                desiredScene,
+                StringComparison.Ordinal);
+            scenePath.stringValue = desiredScene;
+
+            if (string.IsNullOrWhiteSpace(displayName.stringValue))
+            {
+                displayName.stringValue =
+                    Path.GetFileNameWithoutExtension(desiredScene);
+                changed = true;
+            }
+
+            if (!changed)
+            {
+                return false;
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(destination);
+            AssetDatabase.SaveAssetIfDirty(destination);
+            AssetDatabase.ImportAsset(
+                normalized,
+                ImportAssetOptions.ForceSynchronousImport);
+            log.Add(
+                EchoLaunchSetupChangeKind.RepairedAsset,
+                normalized,
+                "Reconciled launch destination scene path and empty label only.");
+            return true;
+        }
+
+        public bool RepairConfiguration(
+            string path,
+            string startupSequencePath,
+            string launchDestinationPath,
+            string splashSequencePath,
+            EchoLaunchSetupExecutionLog log)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(path);
+            EchoLaunchConfiguration configuration =
+                AssetDatabase.LoadAssetAtPath<EchoLaunchConfiguration>(
+                    normalized);
+            StartupSequence startupSequence =
+                AssetDatabase.LoadAssetAtPath<StartupSequence>(
+                    startupSequencePath);
+            LaunchDestination launchDestination =
+                AssetDatabase.LoadAssetAtPath<LaunchDestination>(
+                    launchDestinationPath);
+            SplashSequence splashSequence =
+                string.IsNullOrEmpty(splashSequencePath)
+                    ? null
+                    : AssetDatabase.LoadAssetAtPath<SplashSequence>(
+                        splashSequencePath);
+
+            if (configuration == null ||
+                startupSequence == null ||
+                launchDestination == null ||
+                (!string.IsNullOrEmpty(splashSequencePath) &&
+                 splashSequence == null))
+            {
+                throw new InvalidOperationException(
+                    "The configuration or one of its resolved dependencies is unavailable for repair.");
+            }
+
+            SerializedObject serialized = new SerializedObject(configuration);
+            ValidateCurrentSchemaAndIdentity(
+                serialized,
+                "configurationId",
+                EchoLaunchConfiguration.CurrentSchemaVersion,
+                "EchoLaunchConfiguration");
+            SerializedProperty sequenceProperty =
+                serialized.FindProperty("startupSequence");
+            SerializedProperty destinationProperty =
+                serialized.FindProperty("initialDestination");
+            SerializedProperty splashProperty =
+                serialized.FindProperty("splashSequence");
+            if (sequenceProperty == null ||
+                destinationProperty == null ||
+                splashProperty == null)
+            {
+                throw new InvalidOperationException(
+                    "EchoLaunchConfiguration repair fields are unavailable.");
+            }
+
+            bool changed =
+                sequenceProperty.objectReferenceValue != startupSequence ||
+                destinationProperty.objectReferenceValue != launchDestination ||
+                splashProperty.objectReferenceValue != splashSequence;
+            if (!changed)
+            {
+                return false;
+            }
+
+            sequenceProperty.objectReferenceValue = startupSequence;
+            destinationProperty.objectReferenceValue = launchDestination;
+            splashProperty.objectReferenceValue = splashSequence;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(configuration);
+            AssetDatabase.SaveAssetIfDirty(configuration);
+            AssetDatabase.ImportAsset(
+                normalized,
+                ImportAssetOptions.ForceSynchronousImport);
+            log.Add(
+                EchoLaunchSetupChangeKind.RepairedAsset,
+                normalized,
+                "Rebound configuration sequence, destination, and optional splash references only.");
+            return true;
+        }
+
+        private static void ValidateCurrentSchemaAndIdentity(
+            SerializedObject serialized,
+            string identityPropertyName,
+            int expectedSchema,
+            string displayType)
+        {
+            SerializedProperty schema = serialized.FindProperty("schemaVersion");
+            SerializedProperty identity =
+                serialized.FindProperty(identityPropertyName);
+            if (schema == null ||
+                schema.intValue != expectedSchema ||
+                identity == null ||
+                !IsCanonicalStableId(identity.stringValue))
+            {
+                throw new InvalidOperationException(
+                    displayType +
+                    " repair requires the current schema and a valid stable ID.");
+            }
+        }
+
+        private static bool IsCanonicalStableId(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length != 32)
+            {
+                return false;
+            }
+
+            for (int index = 0; index < value.Length; index++)
+            {
+                char character = value[index];
+                bool digit = character >= '0' && character <= '9';
+                bool lowerHex = character >= 'a' && character <= 'f';
+                if (!digit && !lowerHex)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static void CreateAsset(
