@@ -113,6 +113,15 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                 {
                     AppendRoot(builder, scene.Roots[rootIndex]);
                 }
+
+                for (int initializerIndex = 0;
+                     initializerIndex < scene.DirectInitializers.Count;
+                     initializerIndex++)
+                {
+                    AppendDirectInitializer(
+                        builder,
+                        scene.DirectInitializers[initializerIndex]);
+                }
             }
 
             for (int index = 0; index < evidence.CollectionIssues.Count; index++)
@@ -219,6 +228,46 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                 .Append('|').Append(root.PrefabSourcePath)
                 .Append('|').Append(Bool(root.HasStatusPresenter))
                 .Append('|').Append(Bool(root.HasImageSplashPresenter))
+                .AppendLine();
+        }
+
+        private static void AppendDirectInitializer(
+            StringBuilder builder,
+            EchoLaunchValidationDirectSceneEvidence initializer)
+        {
+            builder.Append("Direct|")
+                .Append(initializer.ContainingScenePath)
+                .Append('|').Append(Bool(initializer.ComponentEnabled))
+                .Append('|').Append(
+                    initializer.PolicyValue.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(initializer.DirectConfigurationPath)
+                .Append('|').Append(initializer.DirectConfigurationTypeName)
+                .Append('|').Append(initializer.DirectConfigurationId)
+                .Append('|').Append(
+                    initializer.DirectConfigurationSchema.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(initializer.RootPrefabPath)
+                .Append('|').Append(
+                    initializer.RootCount.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(
+                    initializer.ActiveRootCount.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(
+                    Bool(initializer.ReachesPackageTemplate))
+                .Append('|').Append(
+                    initializer.LaunchModeValue.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(initializer.LaunchConfigurationPath)
+                .Append('|').Append(
+                    initializer.LaunchConfigurationSchema.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(initializer.DestinationAssetPath)
+                .Append('|').Append(
+                    initializer.DestinationSchema.ToString(
+                        CultureInfo.InvariantCulture))
+                .Append('|').Append(initializer.DestinationScenePath)
                 .AppendLine();
         }
 

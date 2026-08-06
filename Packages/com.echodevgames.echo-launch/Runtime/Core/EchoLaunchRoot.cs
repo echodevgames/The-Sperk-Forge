@@ -182,6 +182,20 @@ namespace EchoDevGames.EchoLaunch
                 : null;
 
         /// <summary>
+        /// Gets the serialized configuration before authority filtering.
+        /// Direct-scene validation uses this read-only evidence before a
+        /// project-owned prefab is instantiated.
+        /// </summary>
+        internal EchoLaunchConfiguration AuthoredConfiguration =>
+            configuration;
+
+        /// <summary>
+        /// Gets the serialized launch mode before authority filtering.
+        /// </summary>
+        internal LaunchMode AuthoredLaunchMode =>
+            launchMode;
+
+        /// <summary>
         /// Gets the project-owned initial destination assigned through the
         /// authoritative configuration.
         /// </summary>

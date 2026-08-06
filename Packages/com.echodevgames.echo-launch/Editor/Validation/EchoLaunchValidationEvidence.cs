@@ -112,16 +112,87 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
         internal IReadOnlyList<EchoLaunchValidationRootEvidence> Roots => roots;
     }
 
+    internal sealed class EchoLaunchValidationDirectSceneEvidence
+    {
+        internal EchoLaunchValidationDirectSceneEvidence(
+            string containingScenePath,
+            bool componentEnabled,
+            int policyValue,
+            string directConfigurationPath,
+            string directConfigurationTypeName,
+            string directConfigurationId,
+            int directConfigurationSchema,
+            string rootPrefabPath,
+            int rootCount,
+            int activeRootCount,
+            bool reachesPackageTemplate,
+            int launchModeValue,
+            string launchConfigurationPath,
+            int launchConfigurationSchema,
+            string destinationAssetPath,
+            int destinationSchema,
+            string destinationScenePath)
+        {
+            ContainingScenePath = Normalize(containingScenePath);
+            ComponentEnabled = componentEnabled;
+            PolicyValue = policyValue;
+            DirectConfigurationPath = Normalize(directConfigurationPath);
+            DirectConfigurationTypeName =
+                directConfigurationTypeName ?? string.Empty;
+            DirectConfigurationId =
+                directConfigurationId ?? string.Empty;
+            DirectConfigurationSchema = directConfigurationSchema;
+            RootPrefabPath = Normalize(rootPrefabPath);
+            RootCount = rootCount;
+            ActiveRootCount = activeRootCount;
+            ReachesPackageTemplate = reachesPackageTemplate;
+            LaunchModeValue = launchModeValue;
+            LaunchConfigurationPath = Normalize(launchConfigurationPath);
+            LaunchConfigurationSchema = launchConfigurationSchema;
+            DestinationAssetPath = Normalize(destinationAssetPath);
+            DestinationSchema = destinationSchema;
+            DestinationScenePath = Normalize(destinationScenePath);
+        }
+
+        internal string ContainingScenePath { get; }
+        internal bool ComponentEnabled { get; }
+        internal int PolicyValue { get; }
+        internal string DirectConfigurationPath { get; }
+        internal string DirectConfigurationTypeName { get; }
+        internal string DirectConfigurationId { get; }
+        internal int DirectConfigurationSchema { get; }
+        internal string RootPrefabPath { get; }
+        internal int RootCount { get; }
+        internal int ActiveRootCount { get; }
+        internal bool ReachesPackageTemplate { get; }
+        internal int LaunchModeValue { get; }
+        internal string LaunchConfigurationPath { get; }
+        internal int LaunchConfigurationSchema { get; }
+        internal string DestinationAssetPath { get; }
+        internal int DestinationSchema { get; }
+        internal string DestinationScenePath { get; }
+
+        private static string Normalize(string value)
+        {
+            return EchoLaunchSetupPathUtility.NormalizeSeparators(value);
+        }
+    }
+
     internal sealed class EchoLaunchValidationSceneEvidence
     {
         private readonly ReadOnlyCollection<EchoLaunchValidationRootEvidence>
             roots;
 
+        private readonly ReadOnlyCollection<
+            EchoLaunchValidationDirectSceneEvidence> directInitializers;
+
         internal EchoLaunchValidationSceneEvidence(
             string path,
             bool exists,
             bool inspected,
-            IEnumerable<EchoLaunchValidationRootEvidence> roots)
+            IEnumerable<EchoLaunchValidationRootEvidence> roots,
+            IEnumerable<EchoLaunchValidationDirectSceneEvidence>
+                directInitializers = null)
         {
             Path = EchoLaunchSetupPathUtility.NormalizeSeparators(path);
             Exists = exists;
@@ -131,12 +202,25 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                     roots == null
                         ? new List<EchoLaunchValidationRootEvidence>()
                         : new List<EchoLaunchValidationRootEvidence>(roots));
+
+            this.directInitializers =
+                new ReadOnlyCollection<
+                    EchoLaunchValidationDirectSceneEvidence>(
+                        directInitializers == null
+                            ? new List<
+                                EchoLaunchValidationDirectSceneEvidence>()
+                            : new List<
+                                EchoLaunchValidationDirectSceneEvidence>(
+                                    directInitializers));
         }
 
         internal string Path { get; }
         internal bool Exists { get; }
         internal bool Inspected { get; }
         internal IReadOnlyList<EchoLaunchValidationRootEvidence> Roots => roots;
+
+        internal IReadOnlyList<EchoLaunchValidationDirectSceneEvidence>
+            DirectInitializers => directInitializers;
     }
 
     internal sealed class EchoLaunchValidationSequenceEntryEvidence

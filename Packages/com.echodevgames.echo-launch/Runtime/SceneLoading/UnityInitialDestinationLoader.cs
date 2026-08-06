@@ -14,6 +14,9 @@ namespace EchoDevGames.EchoLaunch
     /// Unity scene operations cannot be reliably cancelled after activation
     /// begins. A cancellation request observed after start therefore waits for
     /// the operation to settle before returning a cancelled result.
+    ///
+    /// A configured destination that is already loaded and active settles as a
+    /// successful no-reload handoff for direct-scene development entry.
     /// </summary>
     internal sealed class
         UnityInitialDestinationLoader :
@@ -31,8 +34,42 @@ namespace EchoDevGames.EchoLaunch
         } =
             new UnityInitialDestinationLoader();
 
+        private readonly Func<string, bool>
+            isDestinationActive;
+
+        private readonly Func<string, int>
+            getBuildIndex;
+
+        private readonly Func<string, AsyncOperation>
+            beginSingleSceneLoad;
+
         private UnityInitialDestinationLoader()
+            : this(
+                IsUnityDestinationActive,
+                SceneUtility.GetBuildIndexByScenePath,
+                BeginUnitySingleSceneLoad)
         {
+        }
+
+        internal UnityInitialDestinationLoader(
+            Func<string, bool> isDestinationActive,
+            Func<string, int> getBuildIndex,
+            Func<string, AsyncOperation> beginSingleSceneLoad)
+        {
+            this.isDestinationActive =
+                isDestinationActive ??
+                throw new ArgumentNullException(
+                    nameof(isDestinationActive));
+
+            this.getBuildIndex =
+                getBuildIndex ??
+                throw new ArgumentNullException(
+                    nameof(getBuildIndex));
+
+            this.beginSingleSceneLoad =
+                beginSingleSceneLoad ??
+                throw new ArgumentNullException(
+                    nameof(beginSingleSceneLoad));
         }
 
         public bool TryValidate(
@@ -47,8 +84,13 @@ namespace EchoDevGames.EchoLaunch
                 return false;
             }
 
-            if (SceneUtility.GetBuildIndexByScenePath(
-                    destination.ScenePath) < 0)
+            if (isDestinationActive(destination.ScenePath))
+            {
+                failureMessage = string.Empty;
+                return true;
+            }
+
+            if (getBuildIndex(destination.ScenePath) < 0)
             {
                 failureMessage =
                     "The initial destination scene is not included in the player build settings.";
@@ -103,14 +145,23 @@ namespace EchoDevGames.EchoLaunch
                         failureMessage);
             }
 
+            if (isDestinationActive(destination.ScenePath))
+            {
+                progress.Report(1f);
+
+                return InitialDestinationLoadResult
+                    .Success(
+                        destination.DestinationId,
+                        $"Initial destination '{destination.DisplayName}' is already active.");
+            }
+
             AsyncOperation operation;
 
             try
             {
                 operation =
-                    SceneManager.LoadSceneAsync(
-                        destination.ScenePath,
-                        LoadSceneMode.Single);
+                    beginSingleSceneLoad(
+                        destination.ScenePath);
             }
             catch (Exception exception)
             {
@@ -155,16 +206,11 @@ namespace EchoDevGames.EchoLaunch
                 cancellationObserved = true;
             }
 
-            Scene activeScene =
-                SceneManager.GetActiveScene();
-
-            if (!activeScene.IsValid() ||
-                !activeScene.isLoaded ||
-                !string.Equals(
-                    activeScene.path,
-                    destination.ScenePath,
-                    StringComparison.Ordinal))
+            if (!isDestinationActive(destination.ScenePath))
             {
+                Scene activeScene =
+                    SceneManager.GetActiveScene();
+
                 return InitialDestinationLoadResult
                     .Failed(
                         destination.DestinationId,
@@ -187,6 +233,28 @@ namespace EchoDevGames.EchoLaunch
                 .Success(
                     destination.DestinationId,
                     $"Initial destination '{destination.DisplayName}' activated.");
+        }
+
+        private static bool IsUnityDestinationActive(
+            string scenePath)
+        {
+            Scene activeScene =
+                SceneManager.GetActiveScene();
+
+            return activeScene.IsValid() &&
+                   activeScene.isLoaded &&
+                   string.Equals(
+                       activeScene.path,
+                       scenePath,
+                       StringComparison.Ordinal);
+        }
+
+        private static AsyncOperation BeginUnitySingleSceneLoad(
+            string scenePath)
+        {
+            return SceneManager.LoadSceneAsync(
+                scenePath,
+                LoadSceneMode.Single);
         }
 
         private static float NormalizeProgress(

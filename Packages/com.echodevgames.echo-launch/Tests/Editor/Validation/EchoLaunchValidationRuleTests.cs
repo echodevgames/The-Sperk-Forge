@@ -169,7 +169,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Validation
         }
 
         [Test]
-        public void DirectSceneCodeIsReserved()
+        public void HealthyEvidenceEmitsNoDirectSceneFinding()
         {
             EchoLaunchValidationEvidence evidence =
                 EchoLaunchValidationTestFactory.CreateHealthyEvidence();

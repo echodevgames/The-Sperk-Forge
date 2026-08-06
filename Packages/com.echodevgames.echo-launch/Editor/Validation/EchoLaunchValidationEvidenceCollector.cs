@@ -476,6 +476,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                 List<EchoLaunchValidationRootEvidence> roots =
                     new List<EchoLaunchValidationRootEvidence>();
 
+                List<EchoLaunchValidationDirectSceneEvidence>
+                    directInitializers =
+                        new List<
+                            EchoLaunchValidationDirectSceneEvidence>();
+
                 GameObject[] sceneRoots = scene.GetRootGameObjects();
 
                 for (int rootIndex = 0;
@@ -492,13 +497,32 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                     {
                         roots.Add(CollectRoot(launchRoots[launchIndex]));
                     }
+
+                    EchoDirectSceneInitializer[] initializers =
+                        sceneRoots[rootIndex]
+                            .GetComponentsInChildren<
+                                EchoDirectSceneInitializer>(true);
+
+                    for (int initializerIndex = 0;
+                         initializerIndex < initializers.Length;
+                         initializerIndex++)
+                    {
+                        directInitializers.Add(
+                            CollectDirectInitializer(
+                                path,
+                                initializers[initializerIndex]));
+                    }
                 }
+
+                directInitializers.Sort(
+                    CompareDirectInitializerEvidence);
 
                 return new EchoLaunchValidationSceneEvidence(
                     path,
                     true,
                     true,
-                    roots);
+                    roots,
+                    directInitializers);
             }
             catch (Exception exception)
             {
@@ -568,6 +592,290 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                 sourcePath,
                 presenter is ILaunchStatusPresenter,
                 presenter is IImageSplashPresenter);
+        }
+
+        private static EchoLaunchValidationDirectSceneEvidence
+            CollectDirectInitializer(
+                string containingScenePath,
+                EchoDirectSceneInitializer initializer)
+        {
+            DirectSceneConfiguration directConfiguration =
+                initializer == null
+                    ? null
+                    : initializer.Configuration;
+
+            string directConfigurationPath =
+                AssetDatabase.GetAssetPath(directConfiguration);
+
+            Type directConfigurationType =
+                string.IsNullOrEmpty(directConfigurationPath)
+                    ? null
+                    : AssetDatabase.GetMainAssetTypeAtPath(
+                        directConfigurationPath);
+
+            EchoLaunchRoot rootPrefab =
+                directConfiguration == null
+                    ? null
+                    : directConfiguration.RootPrefab;
+
+            string rootPrefabPath =
+                AssetDatabase.GetAssetPath(rootPrefab);
+
+            EchoLaunchRoot[] roots =
+                rootPrefab == null
+                    ? Array.Empty<EchoLaunchRoot>()
+                    : rootPrefab.gameObject
+                        .GetComponentsInChildren<EchoLaunchRoot>(true);
+
+            int activeRootCount = 0;
+
+            for (int index = 0; index < roots.Length; index++)
+            {
+                if (roots[index] != null &&
+                    roots[index].enabled &&
+                    IsActiveWithinPrefab(roots[index].transform))
+                {
+                    activeRootCount++;
+                }
+            }
+
+            EchoLaunchRoot inspectedRoot =
+                roots.Length == 1
+                    ? roots[0]
+                    : null;
+
+            int launchModeValue = int.MinValue;
+            EchoLaunchConfiguration launchConfiguration = null;
+
+            if (inspectedRoot != null)
+            {
+                SerializedObject serialized =
+                    new SerializedObject(inspectedRoot);
+
+                SerializedProperty launchModeProperty =
+                    serialized.FindProperty("launchMode");
+
+                SerializedProperty configurationProperty =
+                    serialized.FindProperty("configuration");
+
+                if (launchModeProperty != null)
+                {
+                    launchModeValue =
+                        launchModeProperty.enumValueIndex;
+                }
+
+                launchConfiguration =
+                    configurationProperty == null
+                        ? null
+                        : configurationProperty.objectReferenceValue
+                            as EchoLaunchConfiguration;
+            }
+
+            LaunchDestination destination =
+                launchConfiguration == null
+                    ? null
+                    : launchConfiguration.InitialDestination;
+
+            return new EchoLaunchValidationDirectSceneEvidence(
+                containingScenePath,
+                initializer != null && initializer.enabled,
+                directConfiguration == null
+                    ? int.MinValue
+                    : (int)directConfiguration.EntryPolicy,
+                directConfigurationPath,
+                directConfigurationType == null
+                    ? string.Empty
+                    : directConfigurationType.FullName,
+                directConfiguration == null
+                    ? string.Empty
+                    : directConfiguration
+                        .DirectSceneConfigurationId,
+                directConfiguration == null
+                    ? 0
+                    : directConfiguration.SchemaVersion,
+                rootPrefabPath,
+                roots.Length,
+                activeRootCount,
+                rootPrefab != null &&
+                ReachesPackageTemplate(rootPrefab.gameObject),
+                launchModeValue,
+                AssetDatabase.GetAssetPath(launchConfiguration),
+                launchConfiguration == null
+                    ? 0
+                    : launchConfiguration.SchemaVersion,
+                AssetDatabase.GetAssetPath(destination),
+                destination == null
+                    ? 0
+                    : destination.SchemaVersion,
+                destination == null
+                    ? string.Empty
+                    : destination.ScenePath);
+        }
+
+        private static int CompareDirectInitializerEvidence(
+            EchoLaunchValidationDirectSceneEvidence left,
+            EchoLaunchValidationDirectSceneEvidence right)
+        {
+            int comparison = CompareText(
+                left.DirectConfigurationPath,
+                right.DirectConfigurationPath);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison = CompareText(
+                left.RootPrefabPath,
+                right.RootPrefabPath);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.PolicyValue.CompareTo(right.PolicyValue);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.ComponentEnabled.CompareTo(
+                    right.ComponentEnabled);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison = CompareText(
+                left.DirectConfigurationTypeName,
+                right.DirectConfigurationTypeName);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison = CompareText(
+                left.DirectConfigurationId,
+                right.DirectConfigurationId);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.DirectConfigurationSchema.CompareTo(
+                    right.DirectConfigurationSchema);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.RootCount.CompareTo(right.RootCount);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.ActiveRootCount.CompareTo(
+                    right.ActiveRootCount);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.ReachesPackageTemplate.CompareTo(
+                    right.ReachesPackageTemplate);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.LaunchModeValue.CompareTo(
+                    right.LaunchModeValue);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison = CompareText(
+                left.LaunchConfigurationPath,
+                right.LaunchConfigurationPath);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.LaunchConfigurationSchema.CompareTo(
+                    right.LaunchConfigurationSchema);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison = CompareText(
+                left.DestinationAssetPath,
+                right.DestinationAssetPath);
+
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+
+            comparison =
+                left.DestinationSchema.CompareTo(
+                    right.DestinationSchema);
+
+            return comparison != 0
+                ? comparison
+                : CompareText(
+                    left.DestinationScenePath,
+                    right.DestinationScenePath);
+        }
+
+        private static int CompareText(
+            string left,
+            string right)
+        {
+            return string.Compare(
+                left,
+                right,
+                StringComparison.Ordinal);
+        }
+
+        private static bool IsActiveWithinPrefab(Transform target)
+        {
+            Transform current = target;
+
+            while (current != null)
+            {
+                if (!current.gameObject.activeSelf)
+                {
+                    return false;
+                }
+
+                current = current.parent;
+            }
+
+            return true;
         }
 
         private static Dictionary<string, bool> CaptureDirtyScenes()

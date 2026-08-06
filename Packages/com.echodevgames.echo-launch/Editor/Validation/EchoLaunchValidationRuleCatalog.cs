@@ -27,6 +27,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
             ValidateDuplicateIds(evidence, findings);
             ValidateDestination(evidence, findings);
             ValidateBootBuildSettings(evidence, findings);
+            ValidateDirectSceneInitializers(evidence, findings);
             ValidatePresentation(evidence, findings);
             ValidateSplash(evidence, findings);
             ValidatePolicies(evidence, findings);
@@ -597,6 +598,167 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
             }
         }
 
+        private static void ValidateDirectSceneInitializers(
+            EchoLaunchValidationEvidence evidence,
+            List<EchoLaunchValidationFinding> findings)
+        {
+            for (int sceneIndex = 0;
+                 sceneIndex < evidence.SceneEvidence.Count;
+                 sceneIndex++)
+            {
+                EchoLaunchValidationSceneEvidence scene =
+                    evidence.SceneEvidence[sceneIndex];
+
+                for (int initializerIndex = 0;
+                     initializerIndex < scene.DirectInitializers.Count;
+                     initializerIndex++)
+                {
+                    ValidateDirectSceneInitializer(
+                        evidence,
+                        scene,
+                        scene.DirectInitializers[initializerIndex],
+                        findings);
+                }
+            }
+        }
+
+        private static void ValidateDirectSceneInitializer(
+            EchoLaunchValidationEvidence evidence,
+            EchoLaunchValidationSceneEvidence scene,
+            EchoLaunchValidationDirectSceneEvidence initializer,
+            List<EchoLaunchValidationFinding> findings)
+        {
+            bool isBoot =
+                string.Equals(
+                    scene.Path,
+                    evidence.Paths.BootScenePath,
+                    StringComparison.Ordinal);
+
+            if (isBoot)
+            {
+                AddDirectSceneFinding(
+                    findings,
+                    EchoLaunchValidationSeverity.Blocker,
+                    "Direct-scene helper is present in canonical Boot",
+                    scene.Path,
+                    initializer,
+                    "Remove the direct-scene helper from canonical Boot.");
+            }
+
+            if (!initializer.ComponentEnabled)
+            {
+                return;
+            }
+
+            bool policyDefined =
+                Enum.IsDefined(
+                    typeof(DirectSceneEntryPolicy),
+                    initializer.PolicyValue);
+
+            bool directConfigurationValid =
+                IsProjectAssetPath(
+                    initializer.DirectConfigurationPath) &&
+                string.Equals(
+                    initializer.DirectConfigurationTypeName,
+                    typeof(DirectSceneConfiguration).FullName,
+                    StringComparison.Ordinal) &&
+                IsCanonicalId(initializer.DirectConfigurationId) &&
+                initializer.DirectConfigurationSchema ==
+                    DirectSceneConfiguration.CurrentSchemaVersion;
+
+            bool rootPrefabValid =
+                IsProjectAssetPath(initializer.RootPrefabPath) &&
+                initializer.RootCount == 1 &&
+                initializer.ActiveRootCount == 1;
+
+            bool launchModeValid =
+                initializer.LaunchModeValue ==
+                    (int)LaunchMode.DirectSceneDevelopment;
+
+            bool launchConfigurationValid =
+                IsProjectAssetPath(
+                    initializer.LaunchConfigurationPath) &&
+                initializer.LaunchConfigurationSchema ==
+                    EchoLaunchConfiguration.CurrentSchemaVersion;
+
+            bool destinationValid =
+                IsProjectAssetPath(initializer.DestinationAssetPath) &&
+                initializer.DestinationSchema ==
+                    LaunchDestination.CurrentSchemaVersion &&
+                string.Equals(
+                    initializer.DestinationScenePath,
+                    scene.Path,
+                    StringComparison.Ordinal);
+
+            if (!policyDefined ||
+                !directConfigurationValid ||
+                !rootPrefabValid ||
+                !launchModeValid ||
+                !launchConfigurationValid ||
+                !destinationValid)
+            {
+                AddDirectSceneFinding(
+                    findings,
+                    EchoLaunchValidationSeverity.Blocker,
+                    "Direct-scene helper configuration is unsafe",
+                    scene.Path,
+                    initializer,
+                    "Assign a supported project-owned direct configuration and prefab whose destination matches this scene.");
+
+                return;
+            }
+
+            if (initializer.PolicyValue ==
+                    (int)DirectSceneEntryPolicy
+                        .EditorAndDevelopmentBuilds &&
+                CountBuildScene(
+                    evidence,
+                    scene.Path,
+                    true) > 0)
+            {
+                AddDirectSceneFinding(
+                    findings,
+                    EchoLaunchValidationSeverity.Warning,
+                    "Direct-scene helper is enabled for Development Builds",
+                    scene.Path,
+                    initializer,
+                    "Use EditorOnly unless this enabled build scene intentionally supports direct entry in Development Builds.");
+            }
+        }
+
+        private static void AddDirectSceneFinding(
+            List<EchoLaunchValidationFinding> findings,
+            EchoLaunchValidationSeverity severity,
+            string title,
+            string scenePath,
+            EchoLaunchValidationDirectSceneEvidence initializer,
+            string action)
+        {
+            Add(
+                findings,
+                EchoLaunchValidationDiagnosticCodes
+                    .DirectSceneReleaseSafety,
+                severity,
+                title,
+                "The direct-scene initializer does not satisfy the approved release-safe development boundary.",
+                scenePath,
+                "Enabled=" + initializer.ComponentEnabled +
+                "; Policy=" + initializer.PolicyValue +
+                "; DirectConfiguration=" +
+                initializer.DirectConfigurationPath +
+                "; RootPrefab=" + initializer.RootPrefabPath +
+                "; RootCount=" + initializer.RootCount +
+                "; ActiveRootCount=" + initializer.ActiveRootCount +
+                "; LaunchMode=" + initializer.LaunchModeValue +
+                "; LaunchConfiguration=" +
+                initializer.LaunchConfigurationPath +
+                "; DestinationAsset=" +
+                initializer.DestinationAssetPath +
+                "; DestinationScene=" +
+                initializer.DestinationScenePath + ".",
+                action);
+        }
+
         private static void ValidatePackageOwnedReferences(
             EchoLaunchValidationEvidence evidence,
             List<EchoLaunchValidationFinding> findings)
@@ -704,6 +866,14 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
             }
 
             return count;
+        }
+
+        private static bool IsProjectAssetPath(string value)
+        {
+            return !string.IsNullOrWhiteSpace(value) &&
+                   value.StartsWith(
+                       "Assets/",
+                       StringComparison.Ordinal);
         }
 
         private static bool IsProjectScenePath(string value)
