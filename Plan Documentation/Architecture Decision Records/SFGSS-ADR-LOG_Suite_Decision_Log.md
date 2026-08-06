@@ -57,6 +57,7 @@ Package-local ADRs remain owned by their package documentation and are linked he
 | [EchoLaunch-ADR-005](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-005_Approved_Setup_Apply_Engine_and_Repeat-Safe_Asset_Creation.md) | Approved Setup Apply Engine and Repeat-Safe Asset Creation | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-02 |
 | [EchoLaunch-ADR-006](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-006_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md) | Explicit Setup Repair and Existing-Asset Reconciliation | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-03 |
 | [EchoLaunch-ADR-007](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-007_Read-Only_Validator_and_Deterministic_Project_Health_Report.md) | Read-Only Validator and Deterministic Project Health Report | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-04 |
+| [EchoLaunch-ADR-008](../../Packages/com.echodevgames.echo-launch/Documentation~/Developer/ADR/EchoLaunch-ADR-008_Direct_Scene_Development_Initializer_and_Release-Safe_Runtime_Gate.md) | Direct Scene Development Initializer and Release-Safe Runtime Gate | Accepted | Implemented, automated-tested, and manually accepted in FL-M5-05 |
 
 ## Candidate decisions without allocated IDs
 

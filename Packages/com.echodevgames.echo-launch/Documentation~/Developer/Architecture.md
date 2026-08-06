@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, and the read-only project Validator are implemented; Direct Scene and later M5 tooling remain pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, and the release-gated Direct Scene Development Initializer are implemented; later M5 tooling remains pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -30,6 +30,7 @@
   - `FL-M5-02`
   - `FL-M5-03`
   - `FL-M5-04`
+  - `FL-M5-05`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -216,15 +217,28 @@ First Light currently establishes:
 178. Single-active validation-run gate
 179. Sanitized evidence-failure containment
 180. Healthy-to-blocked-to-healthy manual acceptance with exact fingerprint restoration
+181. Project-owned immutable `DirectSceneConfiguration` schema version `1`
+182. Stable direct-entry policy and settlement vocabulary
+183. Start-time existing-authority reuse
+184. Exactly-one approved direct root creation
+185. Multiple-initializer convergence on one authority
+186. Unconditional non-development release-player creation prohibition
+187. Active-destination success without scene reload
+188. Truthful `DirectSceneDevelopment` report mode using report schema version `2`
+189. Stable `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
+190. Activated read-only `ELAUNCH-VAL-009`
+191. Direct-play creation, reuse, convergence, warning, and restoration acceptance
 
 First Light now validates, executes, times, evaluates, projects, plays an optional
-configured splash, runs startup steps, loads one initial destination, finalizes
-one immutable terminal report, and starts automatically from Unity `Start`. The
-package also ships neutral presentation prefabs plus Editor tooling that can
-inspect, plan, create, explicitly repair, and independently validate the
-canonical project-owned First Light foundation. Migration, Direct Scene,
-Simulator, Laboratory, and standalone release proof remain separate
-unauthorized boundaries.
+configured splash, runs startup steps, loads or settles one initial destination,
+finalizes one immutable terminal report, and starts automatically from Unity
+`Start`. The package also ships neutral presentation prefabs plus Editor tooling
+that can inspect, plan, create, explicitly repair, and independently validate the
+canonical project-owned First Light foundation. Directly opened gameplay or Test
+Lab scenes may enter the same launch architecture through an explicitly authored
+release-gated Direct Scene configuration. Migration, automatic helper
+installation, build hooks, Simulator, Laboratory, and standalone release proof
+remain separate unauthorized boundaries.
 
 ## Implemented Package Files
 
@@ -2265,6 +2279,71 @@ returned `Blocked` with:
 After explicit restoration, validation returned the exact original healthy
 request, evidence, and report fingerprints.
 
+## Direct Scene Development Initializer
+
+FL-M5-05 adds a development entry helper without creating a second launch
+pipeline.
+
+```text
+Scene Awake
+    -> scene-authored EchoLaunchRoot claims first
+
+Initializer Start
+    -> authority exists: reuse it
+    -> no authority: validate project-owned direct configuration
+                    -> instantiate one DirectSceneDevelopment root
+                    -> normal EchoLaunchRoot pipeline
+```
+
+`DirectSceneConfiguration` is an immutable project-authored ScriptableObject with
+schema version `1`, a stable ID, one explicit project-owned root prefab, and one
+entry policy.
+
+Supported policies are:
+
+```text
+EditorOnly
+EditorAndDevelopmentBuilds
+BootRequired
+```
+
+`EditorOnly` is the default. Development-Build entry requires explicit opt-in.
+A non-development player build cannot create a direct-scene root for any
+serialized policy.
+
+The initializer settles once from `Start`. Existing authority is reused before
+creation. Multiple initializers converge because the first created root claims
+in its own `Awake`; later initializers reuse that authority.
+
+`UnityInitialDestinationLoader` now detects when the configured destination is
+already loaded and active. It reports progress `1`, returns normal success, and
+does not call `LoadSceneAsync`, unload, or reload the directly opened scene.
+
+FL-M5-05 activates `ELAUNCH-VAL-009`. A valid `EditorOnly` helper outside Boot
+produces no finding. Development-Build opt-in in an enabled build scene produces
+a Warning. Unsafe ownership, root shape, mode, destination, or Boot placement
+produces a Blocker. Validation remains explicit and read-only.
+
+Manual acceptance proved:
+
+- One direct authority created with `OutdoorsScene` remaining active.
+- Existing authority reused with no extra clone.
+- Two initializers converged on one accepted authority.
+- Development-Build opt-in produced `NeedsAttention` with one
+  `ELAUNCH-VAL-009` Warning.
+- Restoring `EditorOnly` reproduced the exact healthy evidence and report
+  fingerprints.
+
+Healthy fingerprints:
+
+```text
+Evidence:
+64706f20f36d21d21bdb61d826f30c698fe7c9cead86109d3ec2132fe075d82e
+
+Report:
+cab6e106a92eda1da382133c809f2bc273c5e36ed279fe7bb37908353106aaa3
+```
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -2275,20 +2354,15 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M5-04 compile result:
+Final FL-M5-05 compile result:
 
 - Errors: `0`
 - Warnings: `0`
 
-The first FL-M5-04 compile exposed an accessibility mismatch in one
-parameterized test method: a public NUnit method accepted internal validation
-enum parameters. The test was retained as a public parameterless method that
-proves all four severity-to-health mappings without widening the package Editor
-API.
+FL-M5-05 compiled cleanly on its first Unity import.
 
-The Visual Studio integration emitted one temporary UDP-port warning unrelated
-to First Light. Closing competing tooling and reopening Unity restored the final
-zero-warning Console gate.
+No implementation compiler error, package warning, or Direct Scene acceptance
+warning remained at the final gate.
 
 ## Retained Lifecycle Architecture
 
@@ -2304,7 +2378,7 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `261`
+- Passed: `266`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2320,6 +2394,12 @@ Read-only Validator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Direct Scene Validator tests:
+
+- Passed: `5`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -2328,7 +2408,7 @@ Retained prefab asset tests:
 
 Runtime Play Mode totals:
 
-- Passed: `479`
+- Passed: `503`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2336,7 +2416,9 @@ Breakdown:
 
 - Editor setup, apply, and repair tests: `209` EditMode
 - Validator tests: `25` EditMode
+- Direct Scene Validator tests: `5` EditMode
 - Prefab asset tests: `27` EditMode
+- Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
 - Splash playback tests: `26`
@@ -2672,24 +2754,24 @@ Not implemented:
 - Warning aggregation outside the run result
 - Dependency validation
 - Editor migration from historical configuration schemas
-- Direct-scene initializer tooling
+- Automatic Direct Scene helper installation
+- Direct Scene build hooks or automatic build blocking
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
-- Direct-scene initialization behavior
 - Standalone Laboratory
 - Peer-package bridges
 
 ## Stop Point
 
-FL-M5-03 stops after the separate proof-backed current-schema Repair service,
-exact asset and metadata backup, narrow configuration/destination/prefab/Boot/
-Build Settings reconciliation, complete and incomplete rollback evidence,
-immutable repair reporting, one successful manual Repair, two repeat-safe
-`NoChanges` Repairs, two hundred thirty-six passing EditMode tests, and four
-hundred seventy-nine passing Runtime Play Mode tests.
+FL-M5-05 stops after the project-owned Direct Scene configuration and initializer,
+Start-time authority reuse, exactly-one root creation, active-destination
+no-reload handoff, release-player creation prohibition, truthful
+`DirectSceneDevelopment` report mode, activated read-only `ELAUNCH-VAL-009`,
+two hundred sixty-six passing EditMode tests, five hundred three passing Runtime
+Play Mode tests, manual creation/reuse/convergence acceptance, and exact healthy
+Validator restoration.
 
-Schema migration, duplicate-root cleanup, structural prefab or scene rewriting,
-persistent receipts, uninstall/reset, crash-persistent recovery, direct-scene
-initialization, Validator, persistent-root policy, player builds, external
-adoption, performance evidence, and real Standalone Laboratory activation
-require later approved checkpoints.
+Automatic helper installation, build hooks, Simulator, Laboratory, schema
+migration, receipts, uninstall/reset, crash-persistent recovery, persistent-root
+policy, player builds, external adoption, performance evidence, and standalone
+release proof require later approved checkpoints.

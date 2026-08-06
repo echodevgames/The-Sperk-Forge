@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-04 complete; FL-M5-05 Direct Scene authority approved pending authority commit
+- Development stage: FL-M5-05 Direct Scene Development Initializer implemented, automated-tested, and manually accepted
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -32,8 +32,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-02`
   - `FL-M5-03`
   - `FL-M5-04`
-- Active authority checkpoint: `FL-M5-05` — Direct Scene Development Initializer
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, fresh-plan-gated create-only repeat-safe Setup Apply, explicit proof-backed current-schema Setup Repair, and deterministic read-only project-health validation
+  - `FL-M5-05`
+- Active authority checkpoint: None; the next bounded First Light checkpoint has not yet been selected
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, and release-gated Direct Scene development entry without scene reload
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -97,6 +98,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-03 Setup Repair and Reconciliation Test Report](Developer/Test%20Reports/FL-M5-03_Setup_Repair_and_Reconciliation_Test_Report.md)
 - [FL-M5-04 Read-Only Validator and Project Health Report](Developer/Checkpoints/FL-M5-04_Read-Only_Validator_and_Project_Health_Report.md)
 - [FL-M5-04 Validator and Project Health Test Report](Developer/Test%20Reports/FL-M5-04_Validator_and_Project_Health_Test_Report.md)
+- [FL-M5-05 Direct Scene Development Initializer](Developer/Checkpoints/FL-M5-05_Direct_Scene_Development_Initializer.md)
+- [FL-M5-05 Direct Scene Development Initializer Test Report](Developer/Test%20Reports/FL-M5-05_Direct_Scene_Development_Initializer_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -120,11 +123,19 @@ exact restored `Healthy` results. The Validator does not authorize or invoke
 auto-fix, Apply, Repair, migration, Direct Scene implementation, build hooks,
 Simulator, or Laboratory.
 
-## Active FL-M5-05 Authority
+## Completed FL-M5-05 Boundary
 
-FL-M5-05 authorizes only the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default with Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated read-only `ELAUNCH-VAL-009`.
+FL-M5-05 implements the project-owned Direct Scene Development Initializer,
+Start-time authority reuse, exactly-one approved direct root creation,
+active-destination no-reload handoff, `EditorOnly` default with explicit
+Development-Build opt-in, unconditional non-development release-player
+prohibition, truthful `DirectSceneDevelopment` report mode, and activated
+read-only `ELAUNCH-VAL-009`.
 
-It does not authorize a second runner, hidden discovery, runtime asset rewrite, automatic helper installation, build hooks, Simulator, or Laboratory.
+Manual acceptance proved direct creation, existing-authority reuse,
+two-initializer convergence, one accepted authority, no scene reload,
+Development-Build warning, and exact restored healthy fingerprints.
+
 ## Package Root Documents
 
 - [README](../README.md)
@@ -264,7 +275,7 @@ First Light currently proves:
 - Duplicate-root, automatic-start, and direct-scene splash containment
 - Configuration and splash asset immutability
 - Report schema 2 preserved
-- Four hundred seventy-nine passing Runtime Play Mode tests
+- Five hundred three passing Runtime Play Mode tests
 - Twenty-seven passing EditMode prefab asset tests
 - Stable neutral status-view and root prefab identities
 - Complete serialized Canvas and presenter wiring
@@ -285,9 +296,13 @@ First Light currently proves:
 - Successful first Repair plus two `NoChanges` Repair reruns
 - Two hundred nine Editor setup, apply, and repair tests
 - Twenty-five focused Validator tests
-- Two hundred sixty-one total passing EditMode tests
-- Four hundred seventy-nine passing Runtime Play Mode tests
+- Five focused Direct Scene Validator tests
+- Twenty-four focused Direct Scene runtime tests
+- Two hundred sixty-six total passing EditMode tests
+- Five hundred three passing Runtime Play Mode tests
+- Seven hundred sixty-nine total passing automated tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
-- Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` reserved
+- Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
+- Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-04 is implemented, automated-tested, and manually accepted. FL-M5-05 Direct Scene authority is approved but not yet implemented. Schema migration, receipts, uninstall, crash-persistent recovery, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-05 is implemented, automated-tested, and manually accepted. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.

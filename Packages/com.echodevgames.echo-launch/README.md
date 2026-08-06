@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, and the read-only project Validator are implemented; Direct Scene and later M5 tooling remain pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, and the release-gated Direct Scene Development Initializer are implemented; later M5 tooling remains pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -34,6 +34,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-02` Approved Setup Apply Engine and Repeat-Safe Asset Creation
   - `FL-M5-03` Explicit Setup Repair and Existing-Asset Reconciliation
   - `FL-M5-04` Read-Only Validator and Project Health Report
+  - `FL-M5-05` Direct Scene Development Initializer
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -617,7 +618,7 @@ FL-M5-04 Validator:
   Build Settings.
 - Returns immutable schema-1 findings and one derived project-health result.
 - Uses stable `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`.
-- Reserves `ELAUNCH-VAL-009` for later Direct Scene release-safety work.
+- Activates `ELAUNCH-VAL-009` for Direct Scene structure, destination, and Development-Build policy safety.
 - Produces deterministic request, evidence, and report fingerprints.
 - Copies a deterministic project-relative plain-text report.
 - Rejects absolute machine paths from finding output.
@@ -634,6 +635,35 @@ Info    -> Healthy
 ```
 
 The Validator may recommend opening Setup, but it never invokes Apply or Repair.
+
+## Direct Scene Development Entry
+
+Add `EchoDirectSceneInitializer` to a gameplay or Test Lab scene and assign one
+project-owned `DirectSceneConfiguration`.
+
+Supported policies:
+
+```text
+EditorOnly
+EditorAndDevelopmentBuilds
+BootRequired
+```
+
+`EditorOnly` is the default. A non-development release player can never create a
+direct root.
+
+At Play, scene-authored roots claim first in `Awake`. The helper settles once in
+`Start`, reuses existing authority, or creates one approved
+`DirectSceneDevelopment` root. If the configured destination is already active,
+startup completes without reloading the scene.
+
+The helper uses the normal First Light root, splash, sequence, report,
+destination, duplicate-authority, and lifetime behavior. It is not a second
+bootstrap pipeline.
+
+The Validator reports `ELAUNCH-VAL-009` for unsafe Direct Scene authoring.
+A valid `EditorOnly` helper remains Healthy. Explicit Development-Build opt-in
+returns `NeedsAttention` as a visible warning.
 
 ## Safe Serialized Entry Defaults
 
@@ -671,7 +701,7 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `261`
+- Passed: `266`
 - Failed: `0`
 - Ignored: `0`
 
@@ -687,6 +717,12 @@ Read-only Validator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Direct Scene Validator tests:
+
+- Passed: `5`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -695,7 +731,7 @@ Retained prefab asset tests:
 
 The Runtime Play Mode suite reports:
 
-- Passed: `479`
+- Passed: `503`
 - Failed: `0`
 - Ignored: `0`
 
@@ -703,7 +739,9 @@ Breakdown:
 
 - Editor setup, apply, and repair tests: `209` EditMode
 - Validator tests: `25` EditMode
+- Direct Scene Validator tests: `5` EditMode
 - Prefab asset tests: `27` EditMode
+- Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
 - Splash playback tests: `26`
@@ -768,6 +806,11 @@ introduced root-binding, duplicate-root, and Boot Build Settings faults, observe
 `ELAUNCH-VAL-008`, restored the project explicitly, and reproduced the exact
 original healthy request, evidence, and report fingerprints.
 
+Manual FL-M5-05 acceptance proved direct-play root creation without scene
+reload, existing-authority reuse, two-initializer convergence on one authority,
+zero-error startup completion, `ELAUNCH-VAL-009` warning for explicit
+Development-Build opt-in, and exact restored `EditorOnly` healthy fingerprints.
+
 ## Not Implemented Yet
 
 First Light does not yet provide:
@@ -780,10 +823,10 @@ First Light does not yet provide:
 - Warning aggregation outside the run result
 - Dependency validation
 - Editor migration from historical configuration schemas
-- Direct-scene initializer tooling
+- Automatic Direct Scene helper installation
+- Direct Scene build hooks or automatic build blocking
 - Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
-- Direct-scene initialization behavior
 - Standalone Laboratory
 - Peer-package bridges
 
@@ -802,13 +845,16 @@ Available evidence:
 - Unity restart
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
-- Four hundred seventy-nine passing Runtime Play Mode tests
-- Two hundred sixty-one passing EditMode tests
+- Five hundred three passing Runtime Play Mode tests
+- Two hundred sixty-six passing EditMode tests
 - Two hundred nine Editor setup, apply, and repair tests
 - Twenty-five focused read-only Validator tests
+- Five focused Direct Scene Validator tests
+- Twenty-four focused Direct Scene runtime tests
+- Seven hundred sixty-nine total passing automated tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, and a dedicated read-only Validator
+- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, and release-gated Direct Scene development entry
 - Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation fingerprints/reports, and stable setup/validation diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract

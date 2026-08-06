@@ -7,6 +7,26 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-05 - Direct Scene Development Initializer
+- Project-owned immutable `DirectSceneConfiguration` schema version `1`
+- Stable `DirectSceneEntryPolicy` values: `EditorOnly`, `EditorAndDevelopmentBuilds`, and `BootRequired`
+- Stable direct-scene settlement states and immutable result evidence
+- Stable runtime diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
+- One-shot `EchoDirectSceneInitializer` settlement from `Start`
+- Existing-authority reuse before creation
+- Exactly-one approved `DirectSceneDevelopment` root creation
+- Multiple-initializer convergence on one accepted authority
+- Editor-only default policy and explicit Development-Build opt-in
+- Unconditional non-development release-player creation prohibition
+- Active-destination success without `LoadSceneAsync` or scene reload
+- Existing launch-report schema version `2` with truthful Direct Scene mode
+- Activated read-only `ELAUNCH-VAL-009`
+- Five focused Direct Scene EditMode tests
+- Twenty-four focused Direct Scene Runtime Play Mode tests
+- Two hundred sixty-six total passing EditMode tests
+- Five hundred three total passing Runtime Play Mode tests
+- Seven hundred sixty-nine total passing automated tests
+- Manual creation, reuse, convergence, warning, and exact healthy-restoration acceptance
 #### FL-M5-04 - Read-Only Validator and Project Health Report
 - Dedicated `Tools > Sperk's Forge > First Light > Validator` Editor window
 - Explicit `Validate Project` action with no automatic validation on window open, repaint, import, reload, or Play Mode entry
