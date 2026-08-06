@@ -7,6 +7,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-04 - Read-Only Validator and Project Health Report
+- Dedicated `Tools > Sperk's Forge > First Light > Validator` Editor window
+- Explicit `Validate Project` action with no automatic validation on window open, repaint, import, reload, or Play Mode entry
+- Immutable validation request, evidence, finding, and schema-1 report contracts
+- Stable project-health states: `Healthy`, `NeedsAttention`, `Invalid`, and `Blocked`
+- Stable validation severities: Information, Warning, Error, and Blocker
+- Stable `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`
+- Reserved `ELAUNCH-VAL-009` for later Direct Scene release-safety authority
+- Read-only canonical configuration, startup-sequence, destination, splash, root-prefab, Boot-scene, and Build Settings inspection
+- Enabled-build-scene duplicate-root inspection
+- Scene-safe additive inspection with active/open/dirty scene-state preservation
+- Deterministic request, evidence, and report fingerprints
+- Deterministic plain-text `Copy Report` evidence
+- Project-relative finding paths with absolute machine-path rejection
+- Single-active validation-run protection and `ELAUNCH-VAL-015`
+- Sanitized evidence-failure containment through `ELAUNCH-VAL-014`
+- Twenty-five focused Validator EditMode tests
+- Two hundred sixty-one total passing EditMode tests
+- Retained four-hundred-seventy-nine Runtime Play Mode tests
+- Manual healthy-to-blocked-to-healthy validation acceptance
+- Exact restored healthy request, evidence, and report fingerprints
 #### FL-M5-03 - Explicit Setup Repair and Existing-Asset Reconciliation
 - Separate explicit `Repair Plan...` transaction that does not weaken create-only Apply
 - Read-only repair evidence for configuration, destination, prefab lineage, Boot-scene root shape, and Build Settings identity

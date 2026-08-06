@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Create-only repeat-safe Setup Apply and explicit current-schema Setup Repair implemented; migration and later M5 tooling pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, and the read-only project Validator are implemented; Direct Scene and later M5 tooling remain pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -29,6 +29,7 @@
   - `FL-M5-01`
   - `FL-M5-02`
   - `FL-M5-03`
+  - `FL-M5-04`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -200,14 +201,29 @@ First Light currently establishes:
 163. Immutable repair reports and copyable result text
 164. Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 165. Repeat-safe second and third Repair returning `NoChanges`
+166. Dedicated explicit read-only Validator window
+167. Immutable validation request, evidence, finding, and schema-1 report contracts
+168. Stable `Healthy`, `NeedsAttention`, `Invalid`, and `Blocked` project-health outcomes
+169. Stable Information, Warning, Error, and Blocker validation severities
+170. Stable `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`
+171. Reserved Direct Scene release-safety diagnostic `ELAUNCH-VAL-009`
+172. Canonical asset, prefab, scene, and Build Settings health inspection
+173. Enabled-build-scene duplicate-root inspection
+174. Scene-safe additive inspection with open, active, and dirty state preservation
+175. Deterministic request, evidence, and report fingerprints
+176. Deterministic project-relative plain-text validation report
+177. Absolute machine-path rejection from finding output
+178. Single-active validation-run gate
+179. Sanitized evidence-failure containment
+180. Healthy-to-blocked-to-healthy manual acceptance with exact fingerprint restoration
 
 First Light now validates, executes, times, evaluates, projects, plays an optional
 configured splash, runs startup steps, loads one initial destination, finalizes
 one immutable terminal report, and starts automatically from Unity `Start`. The
 package also ships neutral presentation prefabs plus Editor tooling that can
-inspect, plan, create the missing canonical project foundation, and explicitly
-repair a narrow set of proven current-schema drift. Migration, direct-scene
-initialization, Validator, and standalone scene proof remain separate
+inspect, plan, create, explicitly repair, and independently validate the
+canonical project-owned First Light foundation. Migration, Direct Scene,
+Simulator, Laboratory, and standalone release proof remain separate
 unauthorized boundaries.
 
 ## Implemented Package Files
@@ -224,7 +240,7 @@ unauthorized boundaries.
     Editor/
     ├── Properties/
     │   └── AssemblyInfo.cs
-    └── Setup/
+    ├── Setup/
         ├── EchoLaunchProjectSnapshot.cs
         ├── EchoLaunchProjectSnapshotCollector.cs
         ├── EchoLaunchSetupDiagnosticCodes.cs
@@ -235,6 +251,19 @@ unauthorized boundaries.
         ├── EchoLaunchSetupPlanner.cs
         ├── EchoLaunchSetupRequest.cs
         └── EchoLaunchSetupWindow.cs
+    └── Validation/
+        ├── EchoLaunchValidationDiagnosticCodes.cs
+        ├── EchoLaunchValidationEnums.cs
+        ├── EchoLaunchValidationEvidence.cs
+        ├── EchoLaunchValidationEvidenceCollector.cs
+        ├── EchoLaunchValidationFinding.cs
+        ├── EchoLaunchValidationFingerprint.cs
+        ├── EchoLaunchValidationReport.cs
+        ├── EchoLaunchValidationRequest.cs
+        ├── EchoLaunchValidationRuleCatalog.cs
+        ├── EchoLaunchValidationService.cs
+        ├── EchoLaunchValidationTextFormatter.cs
+        └── EchoLaunchValidatorWindow.cs
 
     Runtime/
     ├── Configuration/
@@ -2108,6 +2137,134 @@ and third Repair returned `NoChanges`.
 - `ELAUNCH-SETUP-016` repair failed and rollback completed.
 - `ELAUNCH-SETUP-017` rollback incomplete; backup retained.
 
+## Read-Only Validator and Project Health Report
+
+FL-M5-04 adds an Editor-only validation path that is deliberately separate from
+Setup planning, Apply, and Repair.
+
+```text
+EchoLaunchValidatorWindow
+    -> EchoLaunchValidationRequest
+    -> EchoLaunchValidationEvidenceCollector
+        -> project-owned asset evidence
+        -> root-prefab lineage and binding evidence
+        -> canonical Boot and enabled-build-scene evidence
+        -> Editor Build Settings evidence
+    -> EchoLaunchValidationRuleCatalog
+    -> EchoLaunchValidationReport
+    -> EchoLaunchValidationTextFormatter
+```
+
+### Explicit Invocation
+
+Opening or repainting the Validator does not run validation. The user explicitly
+presses `Validate Project`.
+
+The window exposes no Apply, Repair, migration, delete, move, rename, save, or
+auto-fix action. `Copy Report` copies only the accepted immutable report.
+
+### Immutable Health Contracts
+
+`EchoLaunchValidationRequest`, evidence values,
+`EchoLaunchValidationFinding`, and `EchoLaunchValidationReport` retain copied,
+sanitized data rather than live Unity objects.
+
+Report schema version `1` records:
+
+- Requested project root.
+- Request, evidence, and report fingerprints.
+- Derived project health.
+- Severity counts.
+- Deterministically ordered findings.
+
+Health precedence is:
+
+```text
+Blocked > Invalid > NeedsAttention > Healthy
+```
+
+Information findings do not reduce health.
+
+### Read-Only Evidence Collection
+
+The collector inspects:
+
+- Canonical configuration, startup sequence, destination, and optional splash.
+- Canonical project root-prefab existence, lineage, root count, configuration
+  binding, and presentation capability.
+- Canonical Boot scene.
+- Enabled Editor Build Settings scenes.
+- Effective launch-root count across the inspected scene set.
+- Destination and Boot Build Settings uniqueness and enabled state.
+- Project-owned configuration references that incorrectly resolve beneath
+  immutable package source.
+
+Closed scenes may be opened additively for inspection. Validation closes only
+the scenes it opened and restores the previously active scene. It does not save
+scenes or write Build Settings.
+
+Inspection failures are converted into sanitized `ELAUNCH-VAL-014` findings
+instead of escaping as unhandled exceptions.
+
+### Stable Validation Codes
+
+FL-M5-04 implements:
+
+- `ELAUNCH-VAL-001` missing or invalid canonical Boot scene.
+- `ELAUNCH-VAL-002` multiple effective launch roots.
+- `ELAUNCH-VAL-003` invalid canonical root binding or Boot root shape.
+- `ELAUNCH-VAL-004` missing or unsupported launch configuration.
+- `ELAUNCH-VAL-005` invalid startup sequence or entry content.
+- `ELAUNCH-VAL-006` duplicate stable sequence or step IDs.
+- `ELAUNCH-VAL-007` invalid or non-unique enabled destination.
+- `ELAUNCH-VAL-008` missing, disabled, or duplicated Boot Build Settings entry.
+- `ELAUNCH-VAL-010` unavailable configured visual presentation.
+- `ELAUNCH-VAL-011` invalid splash identity, reference, or timing.
+- `ELAUNCH-VAL-012` unsafe startup-step policy.
+- `ELAUNCH-VAL-013` project-owned configuration referencing package-owned
+  authored content.
+- `ELAUNCH-VAL-014` required evidence unavailable.
+- `ELAUNCH-VAL-015` validation re-entry.
+
+`ELAUNCH-VAL-009` is reserved for the later Direct Scene release-safety rule and
+is not emitted by FL-M5-04.
+
+### Determinism and Re-entry
+
+The same request and unchanged evidence produce the same finding order,
+fingerprints, and copied text. Wall-clock time, absolute machine paths, object
+instance IDs, and scene handles are excluded.
+
+Only one validation run may be active. Re-entry returns a structured
+`ELAUNCH-VAL-015` warning report without starting a second evidence scan.
+
+### Manual Acceptance
+
+The accepted canonical foundation produced:
+
+```text
+Health: Healthy
+Request fingerprint:
+5c8748493af793488d04f400ac2dfd000645315706a0306aafd492ec92a2dfb0
+Evidence fingerprint:
+a847886c1303998c51e47cba2f697dc102cb9574dad5302de72a19333a055803
+Report fingerprint:
+287af851bf779eff65bc4791d9d33048851871e53a164edae5e3819d30f6f74c
+```
+
+A second unchanged validation reproduced the exact report.
+
+The acceptance then cleared the canonical root-prefab configuration, introduced
+one extra Boot-scene root, and removed Boot from Build Settings. Validation
+returned `Blocked` with:
+
+- `ELAUNCH-VAL-002`
+- Two path-specific `ELAUNCH-VAL-003` findings
+- `ELAUNCH-VAL-008`
+
+After explicit restoration, validation returned the exact original healthy
+request, evidence, and report fingerprints.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -2118,16 +2275,20 @@ One test helper was adapted to the Unity `6000.3.8f1` by-value `AwaitableComplet
 
 The retained immediate fixture was realigned to preserve FL-M3-02 policy-aware assertions plus the FL-M3-03 linked-token assertion.
 
-Final FL-M5-03 compile result:
+Final FL-M5-04 compile result:
 
 - Errors: `0`
 - Warnings: `0`
 
-The first focused EditMode run exposed two implementation defects rather than
-compiler defects. The backup store validated filesystem availability before
-project ownership, and Build Settings repair reused the Boot scene path in
-repaired-path reporting. Both were corrected before the final complete test
-gates.
+The first FL-M5-04 compile exposed an accessibility mismatch in one
+parameterized test method: a public NUnit method accepted internal validation
+enum parameters. The test was retained as a public parameterless method that
+proves all four severity-to-health mappings without widening the package Editor
+API.
+
+The Visual Studio integration emitted one temporary UDP-port warning unrelated
+to First Light. Closing competing tooling and reopening Unity restored the final
+zero-warning Console gate.
 
 ## Retained Lifecycle Architecture
 
@@ -2143,13 +2304,19 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `236`
+- Passed: `261`
 - Failed: `0`
 - Ignored: `0`
 
 Editor setup, apply, and repair tests:
 
 - Passed: `209`
+- Failed: `0`
+- Ignored: `0`
+
+Read-only Validator tests:
+
+- Passed: `25`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2168,6 +2335,7 @@ Runtime Play Mode totals:
 Breakdown:
 
 - Editor setup, apply, and repair tests: `209` EditMode
+- Validator tests: `25` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`

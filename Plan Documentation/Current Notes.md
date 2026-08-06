@@ -4,76 +4,93 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 6, 2026
-**Current focus:** First Light FL-M5-04 authority
+**Current focus:** First Light FL-M5-04 documentation closeout
 **Current checkpoint:** FL-M5-04 — Read-Only Validator and Project Health Report
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Current Focus
+## Completed Implementation
 
-Approve the first dedicated read-only project-health surface for First Light.
-
-FL-M5-04 adds one explicit Validator action, stable `ELAUNCH-VAL-*` findings,
-scene-safe inspection, immutable health reporting, and deterministic copyable
-evidence. It does not add a fix button or weaken Setup Apply/Repair boundaries.
-
-## Starting State
-
+- Authority commit: `c2397c9`
+- Implementation commit: `26732ea`
 - Branch: `main`
-- HEAD: `638e676`
 - `main` equals `origin/main`
-- Working tree: clean
-- FL-M5-03 authority: `6615c8f`
-- FL-M5-03 implementation: `dd15768`
-- FL-M5-03 documentation: `638e676`
-- Compilation baseline: `0` errors, `0` warnings
-- EditMode baseline: `236` passed
-- Runtime Play Mode baseline: `479` passed
-- Total automated baseline: `715` passed
-- Current specification: v1.9.0 before this authority update
-- FL-M5-04 implementation locked until authority commit
+- Working tree after implementation commit: clean
+- Compilation: `0` errors, `0` warnings
+- Focused Validator EditMode: `25` passed
+- Complete EditMode: `261` passed
+- Runtime Play Mode: `479` passed
+- Total automated: `740` passed
+- Failed: `0`
+- Ignored: `0`
 
-## Checkpoint Learning Review
+## Accepted FL-M5-04 Outcome
 
-- `[DECISION]` Validation is observation, not repair.
-- `[DECISION]` Use a dedicated Validator window and explicit `Validate Project`.
-- `[DECISION]` Do not validate on import, reload, Play Mode entry, window open, or repaint.
-- `[DECISION]` Default to `Assets/EchoDevGames/FirstLight`, with an editable project root.
-- `[DECISION]` Inspect Boot and enabled build scenes without saving them.
-- `[DECISION]` Preserve open scenes, active scene, dirty states, assets, prefabs, and Build Settings.
-- `[DECISION]` Return immutable schema-1 findings/report values.
-- `[DECISION]` Derive `Healthy`, `NeedsAttention`, `Invalid`, or `Blocked` from stable severities.
-- `[DECISION]` Produce deterministic request, evidence, and report fingerprints.
-- `[DECISION]` Copy plain-text project-relative evidence with no machine paths.
-- `[DECISION]` Reserve `ELAUNCH-VAL-009` for FL-M5-05 direct-scene release safety.
-- `[DECISION]` Keep Apply, Repair, migration, direct scene, build hooks, Simulator, and Laboratory outside FL-M5-04.
+First Light now has a dedicated explicit read-only Validator that:
 
-## Stable Validation Codes
+- Does not run on window open or repaint.
+- Inspects the canonical First Light foundation and enabled build scenes.
+- Preserves scene and Build Settings state.
+- Returns immutable schema-1 findings and project health.
+- Uses stable `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`.
+- Reserves `ELAUNCH-VAL-009` for later Direct Scene authority.
+- Produces deterministic request, evidence, and report fingerprints.
+- Produces deterministic project-relative copied text.
+- Never invokes Apply, Repair, migration, or auto-fix.
 
-FL-M5-04 authorizes `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`.
+## Manual Acceptance
 
-`ELAUNCH-VAL-009` is reserved and must not be emitted until the direct-scene
-helper exists under later authority.
+Healthy baseline:
+
+```text
+Health: Healthy
+Request:  5c8748493af793488d04f400ac2dfd000645315706a0306aafd492ec92a2dfb0
+Evidence: a847886c1303998c51e47cba2f697dc102cb9574dad5302de72a19333a055803
+Report:   287af851bf779eff65bc4791d9d33048851871e53a164edae5e3819d30f6f74c
+```
+
+Deliberate faults:
+
+- Cleared canonical root-prefab configuration.
+- Added one extra Boot-scene `EchoLaunchRoot`.
+- Removed Boot from Build Settings.
+
+Blocked report:
+
+- Health: `Blocked`
+- Blockers: `4`
+- `ELAUNCH-VAL-002`
+- Two path-specific `ELAUNCH-VAL-003` findings
+- `ELAUNCH-VAL-008`
+
+After explicit restoration, the Validator returned the exact original healthy
+request, evidence, and report fingerprints.
+
+## Implementation Corrections
+
+- Corrected one NUnit accessibility mismatch without widening internal Editor
+  enums.
+- Corrected generated Validator `.meta` trailing whitespace before staging.
+- Replaced the original Python-dependent delivery helper with a CMD-only helper.
+- Removed all temporary acceptance assets and restored Build Settings before the
+  implementation commit.
 
 ## Next Action
 
-Apply, review, commit, and push the six-file authority update:
+Apply, review, commit, and push the eleven-file documentation closeout:
 
 ```text
-Approve FL-M5-04 read-only validator authority
+Close out FL-M5-04 validator checkpoint
 ```
-
-After that commit, implementation may begin only within ADR-007 and the
-FL-M5-04 Checkpoint Build Plan.
 
 ## Handoff
 
 **Checkpoint:** FL-M5-04
-**Baseline:** `638e676`
-**Specification target:** v1.10.0
-**ADR:** EchoLaunch-ADR-007
-**Implementation:** Locked until authority commit
+**Authority:** `c2397c9`
+**Implementation:** `26732ea`
+**Documentation:** Pending adjacent closeout commit
 **Blockers:** None recorded
-**Next:** Implement read-only Validator after authority commit
+**Active next checkpoint:** None
+**Next candidate:** FL-M5-05 Direct Scene Development Initializer, pending a new just-in-time learning and authority review

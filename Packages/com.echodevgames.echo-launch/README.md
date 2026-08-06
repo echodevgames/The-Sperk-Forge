@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Create-only repeat-safe Setup Apply and explicit current-schema Setup Repair implemented; migration and later M5 tooling pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, and the read-only project Validator are implemented; Direct Scene and later M5 tooling remain pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -33,6 +33,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-01` Editor Setup Foundation and Non-Destructive Project Plan
   - `FL-M5-02` Approved Setup Apply Engine and Repeat-Safe Asset Creation
   - `FL-M5-03` Explicit Setup Repair and Existing-Asset Reconciliation
+  - `FL-M5-04` Read-Only Validator and Project Health Report
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -593,6 +594,47 @@ splash contents, delete duplicate roots, restructure prefabs, clean arbitrary
 scene content, move/rename/delete assets, or modify the selected destination
 scene.
 
+## First Light Validator
+
+Open:
+
+```text
+Tools > Sperk's Forge > First Light > Validator
+```
+
+The Validator runs only after the user presses `Validate Project`. Opening,
+repainting, importing, reloading, or entering Play Mode does not run it
+automatically.
+
+FL-M5-04 Validator:
+
+- Inspects the canonical project-owned First Light root.
+- Reads configuration, startup sequence, destination, optional splash, root
+  prefab, Boot scene, enabled Build Settings scenes, and Build Settings entries.
+- Opens closed scenes only for additive read-only inspection.
+- Preserves the user's active, open, and dirty scene state.
+- Never applies, repairs, migrates, saves, deletes, moves, renames, or changes
+  Build Settings.
+- Returns immutable schema-1 findings and one derived project-health result.
+- Uses stable `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`.
+- Reserves `ELAUNCH-VAL-009` for later Direct Scene release-safety work.
+- Produces deterministic request, evidence, and report fingerprints.
+- Copies a deterministic project-relative plain-text report.
+- Rejects absolute machine paths from finding output.
+- Contains evidence failures through `ELAUNCH-VAL-014`.
+- Rejects a second concurrent run through `ELAUNCH-VAL-015`.
+
+Project health is derived from the highest finding severity:
+
+```text
+Blocker -> Blocked
+Error   -> Invalid
+Warning -> NeedsAttention
+Info    -> Healthy
+```
+
+The Validator may recommend opening Setup, but it never invokes Apply or Repair.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -629,13 +671,19 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `236`
+- Passed: `261`
 - Failed: `0`
 - Ignored: `0`
 
 Editor setup, apply, and repair tests:
 
 - Passed: `209`
+- Failed: `0`
+- Ignored: `0`
+
+Read-only Validator tests:
+
+- Passed: `25`
 - Failed: `0`
 - Ignored: `0`
 
@@ -654,6 +702,7 @@ The Runtime Play Mode suite reports:
 Breakdown:
 
 - Editor setup, apply, and repair tests: `209` EditMode
+- Validator tests: `25` EditMode
 - Prefab asset tests: `27` EditMode
 - Root splash integration tests: `28` Runtime Play Mode
 - Additional schema-history test: `1`
@@ -708,7 +757,16 @@ Timeout and cancellation evidence:
 - Backward clocks become blocking timing-contract results.
 - Definitions, entries, policies, sequences, and configurations remain unchanged.
 
-Manual acceptance created the project-owned First Light foundation, introduced only authorized current-schema drift, repaired five approved surfaces, preserved unrelated content and identities, proved two no-op Repair reruns, and then removed generated acceptance and backup residue before the implementation commit.
+Manual FL-M5-03 acceptance created the project-owned First Light foundation,
+introduced only authorized current-schema drift, repaired five approved
+surfaces, preserved unrelated content and identities, proved two no-op Repair
+reruns, and removed generated acceptance and backup residue.
+
+Manual FL-M5-04 acceptance then proved deterministic `Healthy` reporting,
+introduced root-binding, duplicate-root, and Boot Build Settings faults, observed
+`Blocked` with `ELAUNCH-VAL-002`, path-specific `ELAUNCH-VAL-003`, and
+`ELAUNCH-VAL-008`, restored the project explicitly, and reproduced the exact
+original healthy request, evidence, and report fingerprints.
 
 ## Not Implemented Yet
 
@@ -745,12 +803,13 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Four hundred seventy-nine passing Runtime Play Mode tests
-- Two hundred thirty-six passing EditMode tests
+- Two hundred sixty-one passing EditMode tests
 - Two hundred nine Editor setup, apply, and repair tests
+- Twenty-five focused read-only Validator tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply and separate explicit Setup Repair
-- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, and stable diagnostics
+- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, and a dedicated read-only Validator
+- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation fingerprints/reports, and stable setup/validation diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view

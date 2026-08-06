@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-03 complete; FL-M5-04 read-only Validator authority approved pending authority commit
+- Development stage: FL-M5-04 read-only Validator implemented, automated-tested, and manually accepted
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -31,8 +31,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-01`
   - `FL-M5-02`
   - `FL-M5-03`
-- Active authority checkpoint: `FL-M5-04` — Read-Only Validator and Project Health Report
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, fresh-plan-gated create-only repeat-safe Setup Apply, and explicit proof-backed current-schema Setup Repair
+  - `FL-M5-04`
+- Active authority checkpoint: None; the next bounded First Light checkpoint has not yet been authorized
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only project setup planning, fresh-plan-gated create-only repeat-safe Setup Apply, explicit proof-backed current-schema Setup Repair, and deterministic read-only project-health validation
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -93,6 +94,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-02 Setup Apply and Repeatability Test Report](Developer/Test%20Reports/FL-M5-02_Setup_Apply_and_Repeatability_Test_Report.md)
 - [FL-M5-03 Explicit Setup Repair and Existing-Asset Reconciliation](Developer/Checkpoints/FL-M5-03_Explicit_Setup_Repair_and_Existing-Asset_Reconciliation.md)
 - [FL-M5-03 Setup Repair and Reconciliation Test Report](Developer/Test%20Reports/FL-M5-03_Setup_Repair_and_Reconciliation_Test_Report.md)
+- [FL-M5-04 Read-Only Validator and Project Health Report](Developer/Checkpoints/FL-M5-04_Read-Only_Validator_and_Project_Health_Report.md)
+- [FL-M5-04 Validator and Project Health Test Report](Developer/Test%20Reports/FL-M5-04_Validator_and_Project_Health_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -104,13 +107,17 @@ writes, Build Settings last, and deterministic result evidence. Manual
 acceptance repaired five approved surfaces, preserved unrelated content and
 identities, and returned `NoChanges` on the second and third Repair.
 
-## Active FL-M5-04 Authority
+## Completed FL-M5-04 Boundary
 
-FL-M5-04 authorizes a dedicated explicit read-only Validator, immutable
+FL-M5-04 implements a dedicated explicit read-only Validator, immutable
 schema-1 project-health findings/report, stable `ELAUNCH-VAL-*` rules,
 scene-safe enabled-build-scene inspection, deterministic fingerprints, and a
-copyable project-relative text report. It does not authorize auto-fix, mutation,
-migration, Direct Scene implementation, build hooks, Simulator, or Laboratory.
+copyable project-relative text report.
+
+Manual acceptance proved deterministic `Healthy`, deliberate `Blocked`, and
+exact restored `Healthy` results. The Validator does not authorize or invoke
+auto-fix, Apply, Repair, migration, Direct Scene implementation, build hooks,
+Simulator, or Laboratory.
 
 ## Package Root Documents
 
@@ -271,8 +278,10 @@ First Light currently proves:
 - Narrow configuration, destination, root-prefab, Boot-scene, and Build Settings reconciliation
 - Successful first Repair plus two `NoChanges` Repair reruns
 - Two hundred nine Editor setup, apply, and repair tests
-- Two hundred thirty-six total passing EditMode tests
+- Twenty-five focused Validator tests
+- Two hundred sixty-one total passing EditMode tests
 - Four hundred seventy-nine passing Runtime Play Mode tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
+- Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` reserved
 
-FL-M5-03 is implemented, automated-tested, and manually accepted. FL-M5-04 Validator authority is approved but not yet implemented. Schema migration, receipts, uninstall, crash-persistent recovery, direct-scene initialization, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-04 is implemented, automated-tested, and manually accepted. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, direct-scene initialization, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
