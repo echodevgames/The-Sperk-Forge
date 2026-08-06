@@ -3,6 +3,10 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo(
+    "EchoDevGames.EchoLaunch.Editor"
+)]
+
+[assembly: InternalsVisibleTo(
     "EchoDevGames.EchoLaunch.Tests.Runtime"
 )]
 
