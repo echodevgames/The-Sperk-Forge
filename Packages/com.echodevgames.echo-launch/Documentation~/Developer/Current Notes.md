@@ -1,79 +1,82 @@
 # First Light - Current Notes
 
-## Current Status
+## Active Checkpoint
 
-- Last reconciled: August 6, 2026
+- Checkpoint: `FL-M5-04`
+- Title: Read-Only Validator and Project Health Report
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.9.0
-- Completed checkpoint: `FL-M5-03`
-- Title: Explicit Setup Repair and Existing-Asset Reconciliation
-- ADR: EchoLaunch-ADR-006
-- Authority commit: `6615c8f`
-- Implementation commit: `dd15768`
-- Status: Implemented, automated-tested, manually accepted, and ready for documentation closeout
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.10.0
+- ADR: EchoLaunch-ADR-007
+- Authority baseline: `638e676`
+- Previous authority: `6615c8f`
+- Previous implementation: `dd15768`
+- Previous documentation: `638e676`
+- Status: Authority prepared; implementation locked
+- Compilation baseline: `0` errors, `0` warnings
+- EditMode baseline: `236` passed
+- Runtime Play Mode baseline: `479` passed
+- Total automated baseline: `715` passed
 
-## Delivered FL-M5-03 Boundary
+## Approved Outcome
 
-First Light now exposes a separate explicit repair transaction without weakening
-create-only Apply.
+First Light gains a dedicated read-only Validator window that explicitly inspects
+the installed canonical foundation and returns one immutable deterministic
+project-health report.
 
-Implemented repair surfaces:
+The Validator reports. It does not create, repair, migrate, save, delete, move,
+rename, or dirty project content.
 
-- Reconcile configuration sequence, destination, and optional splash references.
-- Reconcile the current-schema destination scene path while preserving an
-  authored non-empty label.
-- Rebind configuration on a verified package-template root-prefab variant.
-- Add one project-root-prefab instance to the exact canonical Boot scene only
-  when zero roots are present.
-- Add or enable the uniquely identified canonical Boot Build Settings entry
-  under the approved policy.
-- Create still-missing foundation targets inside the same explicitly approved
-  repair transaction when needed.
+## Validator Boundary
 
-Every existing-file repair requires fresh evidence, explicit confirmation,
-proven type/schema/identity/lineage/shape, and byte-for-byte asset plus `.meta`
-backup before modification.
+- Dedicated `Tools > Sperk's Forge > First Light > Validator`
+- Explicit `Validate Project`
+- Canonical default root with editable project-root field
+- No auto-run on window open/repaint/import/reload/Play Mode
+- Read-only asset, prefab, scene, and Build Settings inspection
+- Open/active/dirty scene-state preservation
+- Immutable schema-1 request/finding/report contracts
+- Stable health and severity model
+- Deterministic request/evidence/report fingerprints
+- Project-relative copyable text report
+- One active validation run
+- Per-rule exception containment
+- No Setup mutation invocation
 
-## Validation
+## Rule Boundary
 
-- Compilation: `0` errors, `0` warnings
-- EditMode: `236` passed, `0` failed, `0` ignored
-- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
-- Total automated: `715` passed
-- Manual Repair 1: `Succeeded`
-- Manual Repair 2: `NoChanges`
-- Manual Repair 3: `NoChanges`
-- Stable accepted fingerprint:
-  `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f`
-- Stable IDs and Unity GUIDs preserved
-- Unrelated configuration values, prefab content, Boot-scene marker object,
-  destination scene, package root template, and unrelated Build Settings state
-  preserved
-- Successful transaction left no retained backup or manual recovery path
-- Generated acceptance assets and Build Settings drift removed before staging
+FL-M5-04 implements stable validation codes `ELAUNCH-VAL-001` through
+`ELAUNCH-VAL-015`, except:
 
-The first focused EditMode run exposed two defects: project-path validation
-occurred after filesystem lookup, and Build Settings repair reused the Boot
-scene path in repaired-path reporting. Both were corrected before the final
-complete EditMode and Runtime Play Mode gates.
+```text
+ELAUNCH-VAL-009
+```
+
+is reserved for FL-M5-05 direct-scene release safety and is not emitted in this
+checkpoint.
 
 ## Preserved Boundary
 
-FL-M5-03 does not authorize:
+FL-M5-04 does not authorize:
 
-- Runtime changes.
-- Schema migration or stable-ID regeneration.
-- Type replacement.
-- Sequence or splash content repair.
-- Duplicate-root deletion or arbitrary scene cleanup.
-- Prefab replacement, rebase, unpack, or structural rewrite.
-- Move, rename, delete, or relocation.
-- Destination-scene modification.
-- Receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator,
-  or Laboratory.
+- Runtime or presentation changes.
+- Apply or Repair from the Validator.
+- Auto-fix.
+- Migration or stable-ID regeneration.
+- Asset/prefab/scene/Build Settings writes.
+- Duplicate-root deletion.
+- Direct-scene initializer.
+- Build hooks or automatic build blocking.
+- Simulator or Laboratory.
+- Runtime Observatory integration.
+- JSON/support-bundle export.
+- Receipt, uninstall/reset, move, rename, or delete tools.
 
 ## Next Action
 
-Close out FL-M5-03 documentation adjacent to implementation commit `dd15768`.
-After closeout, select and approve the next bounded First Light checkpoint before
-any further implementation. No later M5 capability is authorized by this note.
+Commit and push:
+
+```text
+Approve FL-M5-04 read-only validator authority
+```
+
+Then implement only the approved Editor validation surface and tests.

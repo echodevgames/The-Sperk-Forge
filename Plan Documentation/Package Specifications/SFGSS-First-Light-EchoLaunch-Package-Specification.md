@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.9.0
+**Specification version:** 1.10.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,8 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-03 has implemented and validated only the explicit current-schema repair, ownership proof, backup, rollback, result, and repeatability boundary authorized by this v1.9.0 specification and EchoLaunch-ADR-006. Any later migration, Direct Scene, Validator, Laboratory, receipt, uninstall, or recovery work requires separate committed authority.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-03 has implemented and validated the explicit current-schema repair boundary authorized by v1.9.0 and EchoLaunch-ADR-006. FL-M5-04 may implement only the read-only Validator, immutable schema-1 project-health report, stable validation rules, scene-safe inspection, deterministic fingerprints, and copyable text evidence authorized by this v1.10.0 specification and EchoLaunch-ADR-007 after their authority commit.
+Migration, Direct Scene implementation, build hooks, Simulator, Laboratory, receipt, uninstall, or recovery work remains separately unauthorized.
 
 ---
 
@@ -36,6 +37,7 @@
 | 1.7.0 | 2026-08-05 | Approved | Defined the read-only project snapshot, immutable setup request/plan/operation contracts, deterministic dry-run planner, preview-only Setup window, stable setup diagnostics, default project-owned paths, and explicit no-write boundary for FL-M5-01 | Jesse “Echo” Adams |
 | 1.8.0 | 2026-08-05 | Approved | Authorized the fresh-plan-gated create-only setup apply service, deterministic asset/prefab/scene creation order, explicit Build Settings mutation policy, single-active apply gate, compensating rollback journal, immutable apply result, and repeat-safe no-op reruns for FL-M5-02 | Jesse “Echo” Adams |
 | 1.9.0 | 2026-08-05 | Approved | Authorized explicit Setup Repair for narrowly provable current-schema drift, separate repair confirmation, ownership/shape gates, byte-preserving backup and rollback of modified project assets, immutable repair reporting, and repeat-safe reconciliation for FL-M5-03 | Jesse “Echo” Adams |
+| 1.10.0 | 2026-08-06 | Approved | Authorized the explicit read-only First Light Validator, immutable schema-1 findings and project-health report, stable validation codes, scene-safe enabled-build-scene inspection, deterministic request/evidence/report fingerprints, and copyable project-relative text evidence for FL-M5-04 | Jesse “Echo” Adams |
 
 ---
 
@@ -682,26 +684,44 @@ Repair workflow:
 
 ### 11.4 Validation and repair
 
-| Check ID | Condition | Severity | Fix available? | Safe auto-fix? |
-|---|---|---|---:|---:|
-| ELAUNCH-VAL-001 | No canonical Boot scene configured | Blocker | Yes | Create-only after preview |
-| ELAUNCH-VAL-002 | More than one enabled root in Boot scene | Blocker | Manual only | No |
-| ELAUNCH-VAL-003 | Verified canonical root has no/mismatched configuration | Blocker | Yes | Explicit repair only |
-| ELAUNCH-VAL-004 | Configuration schema unsupported | Blocker | Maybe | Explicit migration only |
-| ELAUNCH-VAL-005 | Startup sequence contains null entry | Error | Yes | No silent deletion |
-| ELAUNCH-VAL-006 | Duplicate step ID | Blocker | Yes | Explicit content editing only |
-| ELAUNCH-VAL-007 | Final destination missing from build scenes | Blocker | Yes | Preview/approval |
-| ELAUNCH-VAL-008 | Boot scene missing/disabled in build scenes | Blocker | Yes | Explicit apply/repair policy |
-| ELAUNCH-VAL-009 | Direct helper in release | Warning/Blocker | Yes | Approved disable |
-| ELAUNCH-VAL-010 | Presenter missing but required | Blocker | Yes | Assign default when available; no FL-M5-03 replacement |
-| ELAUNCH-VAL-011 | Invalid splash timing | Error | Yes | Explicit content edit only |
-| ELAUNCH-VAL-012 | Required step has unsafe failure policy | Error | Yes | Policy edit |
-| ELAUNCH-VAL-013 | Project asset inside package source | Error | Yes | Later GUID-preserving move |
+Validation is a separate read-only authority from Setup Apply and Repair.
+
+The dedicated Validator runs only after explicit user action. It never invokes
+mutation, auto-fix, migration, or Build Settings writes.
+
+| Check ID | Condition | Severity | Fix boundary |
+|---|---|---|---|
+| ELAUNCH-VAL-001 | Canonical Boot scene missing or invalid | Blocker | Setup Apply or explicit project choice |
+| ELAUNCH-VAL-002 | Multiple effective launch roots across Boot/enabled scenes | Blocker | Manual resolution; never auto-delete |
+| ELAUNCH-VAL-003 | Canonical root configuration missing or mismatched | Blocker | Explicit Setup Repair when eligible |
+| ELAUNCH-VAL-004 | Configuration missing, wrong type/identity, or unsupported schema | Blocker | Repair only for authorized refs; migration otherwise |
+| ELAUNCH-VAL-005 | Startup sequence/entry/definition incomplete or invalid | Error | Explicit content edit |
+| ELAUNCH-VAL-006 | Duplicate stable step/definition ID | Blocker | Explicit ID/content correction |
+| ELAUNCH-VAL-007 | Destination missing, invalid, or not uniquely enabled | Blocker | Build Settings/project correction |
+| ELAUNCH-VAL-008 | Boot entry missing, disabled, or duplicated in Build Settings | Blocker | Setup Apply/Repair policy |
+| ELAUNCH-VAL-009 | Direct helper unsafe for release | Reserved | FL-M5-05; not emitted by FL-M5-04 |
+| ELAUNCH-VAL-010 | Configured visual presentation unavailable | Warning | Assign/repair project root presentation |
+| ELAUNCH-VAL-011 | Splash identity, refs, schema, or timing invalid | Error | Explicit content edit |
+| ELAUNCH-VAL-012 | Required step failure/timeout policy contradictory or unsafe | Error | Explicit policy edit |
+| ELAUNCH-VAL-013 | Project-owned configuration content resolves inside package source | Error | Later GUID-preserving move/manual correction |
+| ELAUNCH-VAL-014 | Required evidence could not be inspected safely | Blocker | Resolve scene/asset/import failure |
+| ELAUNCH-VAL-015 | Validation run already active | Warning | Wait for current run |
+
+Health is derived from the highest finding severity:
+
+```text
+Blocker -> Blocked
+Error   -> Invalid
+Warning -> NeedsAttention
+Info    -> Healthy
+```
+
+The Validator may suggest opening Setup, but it never performs Apply or Repair.
 
 ### 11.5 Setup architecture
 
 ```text
-collector -> snapshot -> planner -> plan
+setup collector -> setup snapshot -> planner -> plan
     -> create-only apply service
         -> create writers
         -> Build Settings writer
@@ -712,6 +732,12 @@ collector -> snapshot -> planner -> plan
         -> asset/prefab/scene/Build Settings repair writers
         -> repair rollback
     -> immutable apply/repair result
+
+validation evidence collector
+    -> ordered read-only validation rules
+    -> immutable schema-1 validation report
+    -> deterministic text formatter
+    -> dedicated Validator window
 ```
 
 Observation and planning remain side-effect free.
@@ -729,6 +755,22 @@ and request/snapshot/plan fingerprints.
 FL-M5-03 adds immutable repair approval, repair candidate, repair change,
 backup record, and repair result values. Results defensively copy collections
 and contain project-relative paths and sanitized data, not mutable Unity objects.
+
+
+### 11.6.1 Validator contracts and determinism
+
+FL-M5-04 adds immutable `EchoLaunchValidationRequest`,
+`EchoLaunchValidationFinding`, and `EchoLaunchValidationReport` values.
+
+The report schema is version `1`. It records health, severity counts, stable
+findings, target root, and request/evidence/report fingerprints. It contains no
+mutable Unity objects, absolute machine paths, wall-clock timestamp, random ID,
+scene handle, or object instance ID.
+
+Unchanged evidence and the same request produce the same finding order,
+fingerprints, and copied text. Validation may inspect closed scenes additively,
+but it must preserve the user's open scene set, active scene, dirty states,
+assets, prefabs, scenes, and Build Settings exactly.
 
 ### 11.7 Default paths
 
@@ -1773,6 +1815,7 @@ Automated script rewriting is rejected unless a later migration specification pr
 | ELAUNCH-D-011 | Startup authoring uses immutable `StartupStepDefinition` ScriptableObjects that create single-use `IStartupStepExecutor` runtime instances | Approved | Combines inspector-friendly assets with strict definition/runtime-state separation | Custom steps require a definition and executor pair | No |
 | ELAUNCH-D-012 | Minimum public Unity floor is 6000.0; 6000.3.8f1 is the primary development baseline | Approved | Avoids false precision while retaining an honest tested baseline | Additional Unity 6 versions require validation before being listed as tested | No; also recorded suite-wide |
 | ELAUNCH-D-013 | Setup Repair is a separate explicitly approved transaction limited to provable current-schema canonical drift, with pre-write byte/meta backup and rollback | Approved | Prevents create-only Apply from silently becoming destructive while making damaged generated foundations recoverable | Ambiguous ownership, structural edits, and schema changes remain manual or migration work | Yes; EchoLaunch-ADR-006 |
+| ELAUNCH-D-014 | Project health validation is an explicit read-only Editor transaction with immutable schema-1 findings/report, stable codes, scene-safe inspection, and deterministic fingerprints/text | Approved | Keeps diagnosis trustworthy and separate from mutation while preparing release-safety checks for Direct Scene | No auto-fix, build hook, runtime overlay, or direct-helper implementation in FL-M5-04 | Yes; EchoLaunch-ADR-007 |
 
 ### 27.2 Release-blocking questions
 
@@ -1871,19 +1914,20 @@ Before writing code:
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
 | Completed checkpoint | FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation |
-| Active authorized checkpoint | None; the next bounded First Light checkpoint has not yet been selected |
+| Active authorized checkpoint | FL-M5-04 — Read-Only Validator and Project Health Report |
+| FL-M5-04 authority baseline | `638e676` |
 | FL-M5-03 authority commit | `6615c8f` |
 | Last implementation commit | `dd15768` |
-| FL-M5-03 documentation closeout | This closeout change set; final commit recorded by Git history |
+| Last documentation commit | `638e676` |
 | Runtime tests passed | 479 Runtime Play Mode tests |
 | EditMode tests passed | 236 total: 209 setup/apply/repair and 27 prefab asset tests |
 | Total automated tests | 715 passed, 0 failed, 0 ignored |
 | Compilation | 0 errors and 0 compiler warnings |
-| FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; shared mutation gate; exact asset + `.meta` backup; narrow configuration, destination, root-prefab, Boot-scene, and Build Settings repair; complete/incomplete rollback evidence; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
-| Stable manual-acceptance fingerprint | `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f` |
+| FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; exact asset + `.meta` backup; narrow repair; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
+| FL-M5-04 authority | Specification v1.10.0, EchoLaunch-ADR-007, and the FL-M5-04 Checkpoint Build Plan authorize only the explicit read-only Validator and deterministic schema-1 project-health report after authority commit |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, direct-scene initializer, Validator, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push the FL-M5-03 documentation closeout, then select and approve the next bounded First Light checkpoint before implementation |
+| Evidence gaps | Validator implementation/evidence, historical schema migration, receipts, uninstall/reset, crash-persistent recovery, direct-scene initializer, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
+| Next action | Commit and push v1.10.0, EchoLaunch-ADR-007, and the FL-M5-04 plan before implementation |
 
 ---
 
@@ -1932,7 +1976,8 @@ A new collaborator can determine from this approved specification:
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
-The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated only the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan. Schema migration, receipts, uninstall/reset, automatic crash recovery, Direct Scene, Validator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
+The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
+FL-M5-04 may implement only the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan after authority commit. Schema migration, receipts, uninstall/reset, crash-persistent recovery, Direct Scene implementation, build hooks, Simulator, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
 
 
 ---

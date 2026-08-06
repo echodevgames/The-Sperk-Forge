@@ -4,73 +4,76 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 6, 2026
-**Current focus:** Close FL-M5-03 and select the next bounded First Light checkpoint
-**Current checkpoint:** FL-M5-03 — Explicit Setup Repair and Existing-Asset Reconciliation — complete pending documentation commit
+**Current focus:** First Light FL-M5-04 authority
+**Current checkpoint:** FL-M5-04 — Read-Only Validator and Project Health Report
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Completed Checkpoint
+## Current Focus
 
-FL-M5-03 implemented the separate explicit Setup Repair transaction authorized
-by SFGSS-PKG-ECHOLAUNCH-001 v1.9.0 and EchoLaunch-ADR-006.
+Approve the first dedicated read-only project-health surface for First Light.
 
-- Authority: `6615c8f`
-- Implementation: `dd15768`
-- Compilation: `0` errors, `0` warnings
-- EditMode: `236` passed, `0` failed, `0` ignored
-- Runtime Play Mode: `479` passed, `0` failed, `0` ignored
-- Total automated: `715` passed
-- Manual Repair sequence: `Succeeded`, `NoChanges`, `NoChanges`
-- Stable fingerprint:
-  `56526ade68938e38bb6e87fde77d17b6f89329731a813fdf5a36c1a1c57bf77f`
-- Working tree after implementation commit: clean
+FL-M5-04 adds one explicit Validator action, stable `ELAUNCH-VAL-*` findings,
+scene-safe inspection, immutable health reporting, and deterministic copyable
+evidence. It does not add a fix button or weaken Setup Apply/Repair boundaries.
 
-## Accepted Evidence
+## Starting State
 
-The manual acceptance scenario proved that Repair:
+- Branch: `main`
+- HEAD: `638e676`
+- `main` equals `origin/main`
+- Working tree: clean
+- FL-M5-03 authority: `6615c8f`
+- FL-M5-03 implementation: `dd15768`
+- FL-M5-03 documentation: `638e676`
+- Compilation baseline: `0` errors, `0` warnings
+- EditMode baseline: `236` passed
+- Runtime Play Mode baseline: `479` passed
+- Total automated baseline: `715` passed
+- Current specification: v1.9.0 before this authority update
+- FL-M5-04 implementation locked until authority commit
 
-- Rebound only the three approved launch-configuration references.
-- Restored the current-schema destination scene path without changing its
-  authored label, stable ID, schema, or unrelated values.
-- Rebound only the verified root-prefab configuration field.
-- Added one root to a zero-root canonical Boot scene while preserving the
-  unrelated `FL_M5_03_UnrelatedMarker` object.
-- Restored one canonical Boot Build Settings entry without duplicating it or
-  changing unrelated entries.
-- Returned `NoChanges` on the second and third Repair.
-- Preserved configuration assets and `.meta` files, project root-prefab identity,
-  Boot-scene GUID, destination scene and GUID, package template and GUID, and the
-  canonical Build Settings result.
-- Removed successful temporary backups and produced no manual recovery paths.
+## Checkpoint Learning Review
 
-Two defects found by the first focused EditMode run were corrected before final
-acceptance: path ownership is now validated before filesystem lookup, and Build
-Settings repair reports `ProjectSettings/EditorBuildSettings.asset` as its own
-repaired path.
+- `[DECISION]` Validation is observation, not repair.
+- `[DECISION]` Use a dedicated Validator window and explicit `Validate Project`.
+- `[DECISION]` Do not validate on import, reload, Play Mode entry, window open, or repaint.
+- `[DECISION]` Default to `Assets/EchoDevGames/FirstLight`, with an editable project root.
+- `[DECISION]` Inspect Boot and enabled build scenes without saving them.
+- `[DECISION]` Preserve open scenes, active scene, dirty states, assets, prefabs, and Build Settings.
+- `[DECISION]` Return immutable schema-1 findings/report values.
+- `[DECISION]` Derive `Healthy`, `NeedsAttention`, `Invalid`, or `Blocked` from stable severities.
+- `[DECISION]` Produce deterministic request, evidence, and report fingerprints.
+- `[DECISION]` Copy plain-text project-relative evidence with no machine paths.
+- `[DECISION]` Reserve `ELAUNCH-VAL-009` for FL-M5-05 direct-scene release safety.
+- `[DECISION]` Keep Apply, Repair, migration, direct scene, build hooks, Simulator, and Laboratory outside FL-M5-04.
 
-## Preserved Boundary
+## Stable Validation Codes
 
-FL-M5-03 does not authorize schema migration, ID regeneration, type replacement,
-sequence or splash content edits, duplicate-root deletion, prefab structural
-rewrite, move/rename/delete, destination-scene modification, receipts,
-uninstall/reset, crash-persistent recovery, Direct Scene initialization,
-Validator, Laboratory, player-build evidence, clean external installation, or
-performance claims.
+FL-M5-04 authorizes `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`.
+
+`ELAUNCH-VAL-009` is reserved and must not be emitted until the direct-scene
+helper exists under later authority.
 
 ## Next Action
 
-Commit and push the FL-M5-03 documentation closeout adjacent to `dd15768`.
-Afterward, choose and approve the next bounded First Light checkpoint. No new
-implementation begins until its specification/ADR impact and Checkpoint Build
-Plan are committed.
+Apply, review, commit, and push the six-file authority update:
+
+```text
+Approve FL-M5-04 read-only validator authority
+```
+
+After that commit, implementation may begin only within ADR-007 and the
+FL-M5-04 Checkpoint Build Plan.
 
 ## Handoff
 
-**Completed:** FL-M5-03
-**Authority:** `6615c8f`
-**Implementation:** `dd15768`
-**Documentation:** This closeout change set; final commit recorded by Git history
+**Checkpoint:** FL-M5-04
+**Baseline:** `638e676`
+**Specification target:** v1.10.0
+**ADR:** EchoLaunch-ADR-007
+**Implementation:** Locked until authority commit
 **Blockers:** None recorded
-**Next checkpoint:** Not yet selected or authorized
+**Next:** Implement read-only Validator after authority commit
