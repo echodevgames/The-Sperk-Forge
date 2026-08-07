@@ -1,87 +1,94 @@
 # First Light Quick Start
 
-## Current Capability
+This path creates one project-owned First Light Boot scene and launches one
+existing destination scene. Complete [Installation](Installation.md) first.
 
-First Light version `0.1.0` currently provides:
+## 1. Create the destination
 
-- Launch-authority ownership
-- Neutral launch-state vocabulary
-- One live read-only launch session
-- Guarded lifecycle publication
+Create or choose the scene that should open after startup, then save it beneath
+`Assets/`.
 
-It does not yet execute startup sequences automatically.
+Open **File > Build Profiles** and add the destination exactly once, enabled,
+to the active Scene List. If the profile does not override Scene List, Unity
+uses the global scene list.
 
-## Approved Lifecycle
+## 2. Open First Light Setup
 
-The active lifecycle is:
+Use:
 
-    AuthorityClaimed
-        -> Validating
-            -> Running
-                -> Transitioning
-                    -> Completed
+```text
+Tools > Sperk's Forge > First Light > Setup
+```
 
-Any active phase may also enter:
+For a new project, keep the default paths:
 
-    Failed
-    Interrupted
+```text
+Project Root: Assets/EchoDevGames/FirstLight
+Boot Scene:   Assets/EchoDevGames/FirstLight/Scenes/Boot.unity
+```
 
-## Same-State Progress
+Assign the saved destination scene.
 
-An active state may publish another snapshot with the same status.
+Set **Build Settings Policy** to `PlaceFirstAfterApproval`, then check the
+separate approval box. This makes the generated Boot scene the first player
+scene while preserving the unrelated scene order.
 
-Example:
+Leave **Create Splash Sequence** off for the smallest setup. It may be enabled
+when you want an empty project-owned splash asset to author later.
 
-    Running at 25%
-        -> Running at 50%
-            -> Running at 80%
+## 3. Review and apply
 
-This changes progress without changing lifecycle phase.
+1. Press **Refresh Plan**.
+2. Read the complete plan and diagnostics.
+3. Press **Apply Plan...**.
+4. Confirm the displayed changes.
+5. Wait for Unity to finish importing/saving.
 
-## Illegal Transitions
+Apply creates missing project-owned assets and reuses compatible content. It
+does not edit the destination scene.
 
-First Light rejects:
+Press **Refresh Plan** again. A correctly converged project should contain only
+reuse/no-change results; a repeat Apply should settle as `NoChanges`.
 
-- Backward transitions
-- Skipped required phases
-- `LaunchStatus.None` in an active session
-- Publication after a terminal state
-- Undefined status values
+## 4. Validate
 
-A rejected publication leaves the previous snapshot unchanged.
+Open:
 
-## Terminal States
+```text
+Tools > Sperk's Forge > First Light > Validator
+```
 
-These states permanently end the current session:
+Press **Validate Project**.
 
-    Completed
-    Failed
-    Interrupted
+The expected new-project result is `Healthy`. If it is not, copy the report and
+follow [Troubleshooting and Known Limitations](Troubleshooting%20and%20Known%20Limitations.md).
 
-A new launch requires a new `LaunchSession`.
+## 5. Run canonical Boot
 
-## What This Does Not Do Yet
+1. Open `Assets/EchoDevGames/FirstLight/Scenes/Boot.unity`.
+2. Enter Play Mode.
+3. Confirm First Light reaches the chosen destination.
+4. Confirm the final state is `Completed` and no unexpected Console error
+   appears.
 
-The package does not yet:
+The initial `StartupSequence` is intentionally empty. Empty startup still
+validates, reports, and hands off to the destination.
 
-- Advance the lifecycle automatically
-- Run startup steps
-- Publish public lifecycle events
-- Build a final launch report
-- Display a splash
-- Load an initial scene
-- Persist between scenes
-- Create project setup automatically
+## Success checklist
 
-## Automated Evidence
+- One First Light root has authority.
+- Boot is first in the Scene List.
+- Destination appears exactly once and enabled.
+- Validator reports `Healthy`.
+- Canonical Boot reaches the destination.
+- Repeat Setup returns `NoChanges`.
+- Project-owned content lives beneath `Assets/EchoDevGames/FirstLight`.
 
-The Runtime Play Mode suite reports:
+## Next steps
 
-- Passed: `82`
-- Failed: `0`
-- Ignored: `0`
-
-See:
-
-- [FL-M2-04 Runtime Test Report](../Developer/Test%20Reports/FL-M2-04_Launch_Lifecycle_Transition_Test_Report.md)
-- [Developer Architecture](../Developer/Architecture.md)
+- Add project startup operations with [Startup Step Authoring](Startup%20Step%20Authoring.md).
+- Configure splash/status presentation from project-owned assets and prefab
+  overrides.
+- Import the Standalone Test Lab for visible warning/failure/direct-scene proof.
+- Read [Setup and Validation](Setup%20and%20Validation.md) before using Repair or
+  changing Build Settings policy in an existing project.

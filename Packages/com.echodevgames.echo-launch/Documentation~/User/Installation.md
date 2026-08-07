@@ -1,100 +1,101 @@
 # Installing First Light
 
-## Current Development Status
+First Light is a Unity Package Manager package for ordered startup, launch-only
+presentation, launch reporting, Direct Scene development entry, and final
+destination handoff.
 
-First Light is currently an embedded development package.
-
-Package version:
-
-    0.1.0
-
-Runtime startup behavior is not implemented in this version.
-
-## Tested Installation Method
-
-The verified installation method is embedding the package directly inside the Unity project at:
-
-    Packages/com.echodevgames.echo-launch
-
-Unity recognizes the folder as a package because it contains:
-
-    package.json
-
-The package is recorded in:
-
-    Packages/packages-lock.json
-
-with the source:
-
-    embedded
-
-## Current Unity Requirements
-
-- Minimum declared Unity version: `6000.0`
-- Primary development baseline: `6000.3.8f1`
-- Required uGUI package version: `2.0.0`
-
-The declared minimum version is an architectural compatibility target.
-
-Only the primary development baseline has been used during the package-skeleton checkpoint.
-
-## Verifying the Embedded Package
-
-Open Unity Package Manager and confirm that the package appears as:
-
-    First Light - Startup and Launch
-
-The package should report:
+## Current release state
 
 - Package ID: `com.echodevgames.echo-launch`
-- Version: `0.1.0`
-- Source: Custom or Embedded
-- uGUI dependency: `2.0.0`
+- Development version: `0.1.0`
+- Primary tested development baseline: Unity `6000.3.8f1`
+- Declared Unity floor: `6000.0`
+- Required dependency: `com.unity.ugui` `2.0.0`
+- Package-local evidence: `299` EditMode and `503` Runtime Play Mode tests;
+  `802` total passed with no failures or ignored tests
+- Distribution state: private-beta preparation; no public release is claimed
 
-The Unity Console should contain zero package-related errors.
+The package-local MVP and Standalone Laboratory are complete. External
+clean-project tarball installation remains `Not run` until FL-M6-02.
 
-## Current Package Structure
+## Installation-route status
 
-The package currently contains:
+| Route | Current status | Claim |
+|---|---|---|
+| Embedded package in the development repository | Passed | Development only |
+| Local `.tgz` tarball | Planned for FL-M6-02 | Private beta route after evidence passes |
+| Local folder reference | Not run | Not currently claimed |
+| Git URL/tag | Not run | Not currently claimed |
+| Scoped registry | Not run | Not currently claimed |
+| Workshop install | Not implemented | Not currently claimed |
 
-    package.json
-    README.md
-    CHANGELOG.md
-    LICENSE.md
-    Third Party Notices.md
-    Runtime/
-    Editor/
-    Tests/
-    Documentation~/
+Do not describe a planned route as supported until its retained report passes.
 
-The Runtime, Editor, and test folders contain assembly definitions only.
+## Install a private candidate tarball
 
-## Removal and Reinstallation Evidence
+When EchoDevGames supplies the candidate `.tgz` and checksum:
 
-The embedded package was temporarily moved outside the Unity project and then restored from the same folder.
+1. Create or open the intended Unity `6000.3.8f1` project.
+2. Open **Window > Package Management > Package Manager**.
+3. Select **Add (+) > Install package from tarball**.
+4. Choose the supplied `.tgz` file. Unity's file picker recognizes the `.tgz`
+   extension for this route.
+5. Wait for dependency resolution and compilation.
+6. Select **First Light — Startup and Launch** in Package Manager.
+7. Confirm the package ID, candidate version, and uGUI dependency match the
+   supplied release record.
+8. Confirm the Console has no package-related compile error.
 
-The project compiled with zero red Console errors while First Light was absent.
+Unity documents the tarball workflow here:
+[Install a UPM package from a local tarball](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-ui-tarball.html).
 
-After restoration:
+## Embedded development package
 
-- First Light returned in Package Manager as version `0.1.0`.
-- uGUI remained resolved as `2.0.0`.
-- The project compiled with zero red Console errors.
-- Runtime asmdef GUID remained `6370d00c0cfa8144795d367cb689f221`.
-- Editor asmdef GUID remained `994a9bf984e48cc4a9c5139c901e11f6`.
+The suite repository currently develops First Light at:
 
-Because version `0.1.0` contains no runtime configuration, scene objects, prefabs, save data, or generated project content, removal affected only the package skeleton.
+```text
+Packages/com.echodevgames.echo-launch
+```
 
-## Not Yet Verified
+This editable embedded source is not the consumer artifact. Use it only while
+developing the package in The Sperk's Forge repository.
 
-The following installation methods have not been tested:
+## Verify the installed package
 
-- Git URL installation
-- Git tag installation
-- Local package reference outside the project
-- Tarball installation
-- Scoped registry installation
-- Package Manager installation from a public registry
-- Installation into a separate clean Unity project
+Package Manager should show:
 
-These methods must not be described as supported until their evidence is recorded.
+```text
+Display name: First Light — Startup and Launch
+Package ID:   com.echodevgames.echo-launch
+Version:      supplied candidate version
+Dependency:   com.unity.ugui 2.0.0
+```
+
+The package contains current Runtime, Presentation.UGUI, Editor, Tests,
+Documentation~, and Samples~ surfaces. It is not an assembly-definition-only
+skeleton.
+
+## Import the Standalone Test Lab
+
+1. Select First Light in Package Manager.
+2. Find **First Light Standalone Test Lab** under Samples.
+3. Press **Import**.
+4. Follow the imported `README.md`.
+
+Unity copies imported samples beneath:
+
+```text
+Assets/Samples/First Light — Startup and Launch/<version>/First Light Standalone Test Lab
+```
+
+Sample import is explicit. It does not automatically run Setup, modify Build
+Settings/Build Profiles, open a scene, enter Play Mode, or make the sample the
+project's canonical First Light foundation.
+
+## Next
+
+- [Quick Start](Quick%20Start.md)
+- [Setup and Validation](Setup%20and%20Validation.md)
+- [Troubleshooting and Known Limitations](Troubleshooting%20and%20Known%20Limitations.md)
+- [Removal and Reinstallation](Removal%20and%20Reinstallation.md)
+- [Private Beta Test Guide](Private%20Beta%20Test%20Guide.md)

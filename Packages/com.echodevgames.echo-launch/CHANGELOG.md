@@ -7,6 +7,18 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M6-01 - Documentation and Release-Plan Reconciliation
+- SFGSS-ADR-005 standalone release before optional adoption policy
+- Rebaselined M6 documentation, clean-project candidate, private tester, and
+  private beta sequence
+- Current Installation and five-minute Quick Start guidance
+- Full Setup/Repair/Validator guidance
+- Public startup-step authoring example
+- Troubleshooting, diagnostic, known-limitations, removal, reinstall, and
+  private-beta test guidance
+- Private beta release checklist targeting `0.1.0-beta.1` after FL-M6-02
+- No Runtime, Editor, test, prefab, scene, sample, or package-manifest change
+
 #### FL-M5-07 - Standalone Test Laboratory and Importable Package Sample
 - Exactly one Package Manager sample named `First Light Standalone Test Lab`
 - Explicit user-initiated import with no automatic Build Settings, ProjectSettings, Setup, Repair, Validator, scripting-define, scene-open, or Play Mode mutation

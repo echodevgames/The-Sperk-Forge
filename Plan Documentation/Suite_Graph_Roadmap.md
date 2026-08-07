@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-04
+updated: 2026-08-07
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,7 +12,7 @@ updated: 2026-08-04
 **Document role:** Obsidian navigation hub and visual roadmap  
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current work item:** FL-M1-01 - First Light Package Skeleton  
+**Current work item:** FL-M6-01 — First Light Documentation and Release-Plan Reconciliation
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -45,8 +45,10 @@ flowchart LR
     K --> Handoff[Documentation and Learning Handoff Audit]
     Handoff --> R1[PKG-LEARN-001 First Light Complete]
     R1 --> M[SUITE-DOC-33 Gate — Passed]
-    M --> I1[FL-M1-01 First Light Skeleton — Active]
-    I1 --> J[Just-in-Time Review Before Each Later Package]
+    M --> I1[FL-M5-07 First Light Laboratory — Complete]
+    I1 --> I2[FL-M6-01 Documentation Reconciliation — Active]
+    I2 --> I3[FL-M6-02 to 04 Private Beta]
+    I3 --> J[Just-in-Time Review Before Each Later Package]
 ```
 
 ## Package waves
@@ -264,9 +266,9 @@ flowchart TB
 
 ## Active implementation route
 
-- [[Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report|SUITE-DOC-33 Initial Implementation Readiness Gate]]
-- [[Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan|FL-M1-01 First Light Package Skeleton Plan]]
-- [[Learning Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review|PKG-LEARN-001 First Light Learning Review]]
+- [[Checkpoint Build Plans/FL-M6-01_Documentation_and_Release_Plan_Reconciliation_Checkpoint_Build_Plan|FL-M6-01 Documentation and Release-Plan Reconciliation]]
+- [[Release Records/FL-M6_First_Light_Private_Beta_Release_Plan|FL-M6 Private Beta Release Plan]]
+- [[Architecture Decision Records/SFGSS-ADR-005_Standalone_Release_Before_Optional_Adoption|ADR-005 Standalone Release Before Optional Adoption]]
 
 ## Learning review flow
 
@@ -275,12 +277,13 @@ flowchart LR
     H[Full Suite Handoff Guide] --> C[Package Learning Catalog]
     C --> R1[PKG-LEARN-001 First Light — Complete]
     R1 --> G[SUITE-DOC-33 — Passed]
-    G --> I[FL-M1-01 First Light Skeleton — Active]
-    I --> R2[PKG-LEARN-002 Observatory when EchoDiagnostics is next]
+    G --> I[FL-M1-01 through FL-M5-07 — Complete]
+    I --> B[FL-M6-01 through FL-M6-04 — Standalone Beta]
+    B --> R2[Next package review when selected]
     R2 --> D[Repeat just-in-time through PKG-LEARN-028]
 ```
 
 - Completed review: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
-- Paused review: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
+- No adoption target or next package has been selected.
 - Tracker: `Learning Reviews/PKG-LEARN-TRACKER.json`
-- Implementation is activated only for FL-M1-01; every later package remains locally locked.
+- First Light is active only for FL-M6 release work; every later package remains locally locked until selected and reviewed.

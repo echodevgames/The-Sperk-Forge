@@ -1,16 +1,16 @@
 # The Sperk's Forge - New-Project Guided Pathways Standard
 
 **Document ID:** SFGSS-006  
-**Version:** 1.0.0  
+**Version:** 1.1.0
 **Status:** Approved guided-composition and project-start standard  
 **Owner:** Jesse "Echo" Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.15.0  
-**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-INT-FOUNDATION-001, SFGSS-INT-EXPANSION-001, SFGSS-INT-ADVANCED-001  
+**Parent authority:** SFGSS-000 v0.24.0
+**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-004, SFGSS-005, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-ADR-005, SFGSS-INT-FOUNDATION-001, SFGSS-INT-EXPANSION-001, SFGSS-INT-ADVANCED-001
 **Primary composer:** The Workshop (`EchoGameStarter`)  
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > A pathway is a lantern and a map, not a wagon that secretly carries the whole Forge.
 
@@ -195,6 +195,13 @@ Every pathway record includes how optional packages, bridges, providers, samples
 ### 4.10 Learning is a pathway output
 
 A successful pathway leaves the developer able to name each selected authority, explain why it exists, and identify the project's own remaining responsibilities.
+
+### 4.11 Package pre-release and project adoption are separate stages
+
+A package may complete its clean-project standalone pre-release before any
+existing project selects PATH-110. PATH-110 begins only when a working project
+deliberately chooses an adoption target. It is not a universal prerequisite for
+advancing to the next package.
 
 ---
 
@@ -756,6 +763,10 @@ At least two providers execute the same slice before provider selection.
 
 **Purpose:** Replace a project-specific system without destabilizing the working game.
 
+This pathway is optional after the replacement package's applicable standalone
+and clean-project evidence passes. Selecting a package beta does not silently
+select an adoption target.
+
 ### Required sequence
 
 1. Inventory the current authority, data, scenes, prefabs, API callers, and known behavior.
@@ -944,7 +955,8 @@ A fresh collaborator should be able to answer what was selected, why, what remai
 - [x] Existing-project adoption preserves working systems until parity.
 - [x] Workshop mapping preserves dry-run visibility and manual composition.
 - [x] Laboratories and evidence remain `Not run` until executed.
-- [x] Package implementation remains locked by the Full Suite Documentation and Learning Gate.
+- [x] Package implementation remains checkpoint-controlled and every new
+      package retains its just-in-time learning gate.
 
 ### 36.2 Approval record
 

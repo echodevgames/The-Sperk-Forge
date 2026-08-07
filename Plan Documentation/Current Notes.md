@@ -4,97 +4,80 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 7, 2026
-**Current focus:** First Light FL-M5-07 closeout
-**Current checkpoint:** FL-M5-07 — Standalone Test Laboratory and Importable Package Sample
+**Current focus:** First Light release preparation
+**Current checkpoint:** FL-M6-01 — Documentation and Release-Plan Reconciliation
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
----
+## Repository baseline
 
-## Checkpoint State
+- Branch: `main`.
+- Last completed implementation: `583b91a` — Implement FL-M5-07 standalone
+  test laboratory.
+- Last completed documentation: `daa40c3` — Close out FL-M5-07 standalone
+  test laboratory.
+- Remote state at the completed gate: `main == origin/main == daa40c3`.
+- Working tree at the completed gate: clean.
+- Package version: `0.1.0` development.
 
-- Branch: `main`
-- Authority commit: `741b77d`
-- Implementation commit: `583b91a`
-- Documentation closeout commit: pending
-- Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.13.0
-- ADR: EchoLaunch-ADR-010
-- Status: implementation complete; documentation commit and push pending
-- Compilation: `0` errors, `0` warnings
-- Focused Laboratory EditMode: `7` passed
-- Complete EditMode: `299` passed
-- Runtime Play Mode: `503` passed
-- Total automated: `802` passed, `0` failed, `0` ignored
+## Completed First Light evidence
 
-## Delivered Outcome
+- Package-local MVP complete through FL-M5-07.
+- Standalone Test Lab is one explicit removable Package Manager sample.
+- `299` EditMode tests passed.
+- `503` Runtime Play Mode tests passed.
+- `802` total automated tests passed; `0` failed; `0` ignored.
+- `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` passed manually.
+- Setup/Repair sample isolation and persistent Direct Scene configuration
+  reference defects were corrected and regression-tested.
 
-- One UPM sample is declared as `First Light Standalone Test Lab`.
-- Package Manager import is explicit and creates one editable project-owned copy.
-- The sample contains Boot and Destination scenes, neutral presentation,
-  pre-authored scenario configurations, public-API sample steps, a visible
-  readout, a duplicate-root fixture, and Direct Scene proof.
-- Import does not automatically change Build Settings, ProjectSettings,
-  canonical setup assets, or scripting defines.
-- Sample Runtime code references only First Light Runtime and approved Unity
-  modules; core assemblies do not reference sample code or content.
-- The imported sample is excluded from automatic Setup/Repair candidate
-  discovery.
-- Direct Scene sample generation reloads and verifies the persistent
-  `DirectSceneConfiguration` before saving its scene reference.
-- Sample removal preserves package compilation and tools; reimport restores
-  one clean copy.
+## FL-M6-01 findings
 
-## Accepted Evidence
+1. The living suite status documents still pointed to FL-M1-01 and claimed
+   First Light implementation had not begun.
+2. Package Installation and Quick Start pages still described the skeleton and
+   FL-M2-04 boundaries.
+3. SFGSS-000 required both clean-project and real-project integration before
+   leaving beta, while SFGSS-004's beta gate did not universally require
+   adoption.
+4. SFGSS-001 and the First Light milestone table placed integration before
+   release even though the suite's standalone-first rule requires clean-project
+   proof first.
+5. No current release plan, private tester guide, removal guide, troubleshooting
+   guide, or package-local beta checklist existed.
 
-- `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`: passed.
-- Canonical Boot launch completed and handed off to Destination.
-- Timed progress, warning continuation, recoverable-failure continuation, and
-  blocking failure behaved according to authored policy.
-- Missing configuration blocked with `ELAUNCH-CFG-001`.
-- Duplicate authority was rejected with `ELAUNCH-ROOT-001` and no duplicate
-  launch side effects.
-- Invalid destination blocked with `ELAUNCH-DEST-001`.
-- Direct Scene creation and existing-authority reuse completed without scene
-  reload; the final imported Destination initializer retained its serialized
-  `LaboratoryDirectSceneConfiguration` reference.
-- Early splash skip remained bounded by the configured minimum duration.
-- Import, removal, reimport, three-run Setup/Repair repeatability, canonical
-  asset preservation, and repair-backup cleanup were accepted.
-- Final implementation staging excluded imported `Assets/Samples`, temporary
-  authoring content, Build Settings, ProjectSettings, and generated solution
-  drift.
+## Promoted decision
 
-## Narrow Checkpoint-Owned Corrections
+SFGSS-ADR-005 is accepted:
 
-1. Setup/Repair candidate collection now ignores imported First Light sample
-   definitions and root prefabs so sample content cannot become canonical
-   project setup by discovery.
-2. Laboratory authoring now saves, imports, reloads, and verifies the
-   persistent Direct Scene configuration before the Destination scene is
-   saved, preventing a `{fileID: 0}` serialized reference.
+- package-local implementation and Laboratory proof;
+- clean-project pre-release proof;
+- invited private test;
+- private beta closeout;
+- optional later adoption only when deliberately selected.
 
-Both corrections are covered by focused regression tests and the complete
-`299` EditMode plus `503` Runtime Play Mode suites.
+A private beta may close one package cycle and allow the next package's
+just-in-time learning review. Adoption remains required before its specific
+parity/integration claim, not before every package beta.
 
-## Deferred Beyond FL-M5-07
+## Approved First Light M6 path
 
-- M6 project adoption and optional bridges
-- Git URL, tarball, and separate clean-project installation evidence
-- player builds and automatic production-startup evidence
-- historical configuration migration
-- receipts, uninstall/reset implementation, and crash-persistent recovery
-- automatic Direct Scene installation and build hooks
-- persistent-root lifetime policy
-- performance evidence and external adoption
+1. `FL-M6-01` — Documentation and Release-Plan Reconciliation.
+2. `FL-M6-02` — Clean-Project Private-Beta Candidate Validation.
+3. `FL-M6-03` — Private Tester Handoff and Findings.
+4. `FL-M6-04` — Private Beta Closeout and Tag.
+5. Optional M7 adoption/bridge work only after a separate selection.
 
-## Next Action
+No Echo Systems Lab, Rescuers2D, or Don’t Get Vince’d integration is active.
 
-Review and commit the documentation closeout:
+## Honest evidence boundary
 
-```text
-Close out FL-M5-07 standalone laboratory checkpoint
-```
+Clean-project `.tgz` installation, Windows player build, private tester results,
+Git/registry routes, broad compatibility, performance, historical migration,
+and adoption remain `Not run`.
 
-Then push `main`, confirm `main == origin/main`, and confirm a clean working
-tree before selecting the next just-in-time learning review.
+## Next action
+
+Apply and inspect the FL-M6-01 documentation bundle, commit/push it adjacent to
+`daa40c3`, confirm a clean synchronized repository, and stop before package
+versioning or candidate artifact generation. FL-M6-02 requires a new plan.

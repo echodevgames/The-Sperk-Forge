@@ -1,15 +1,15 @@
 # The Sperk’s Forge – Testing, Validation, Test Labs, and Release Standard
 
 **Document ID:** SFGSS-004  
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Status:** Approved architecture and quality standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.17.0  
-**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.24.0
+**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-005
 **Current development baseline:** Unity 6000.3.8f1  
 **Minimum planned public Unity floor:** Unity 6000.0  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > A blueprint may predict where the bridge should stand. Only evidence proves that it holds weight.
 
@@ -1275,6 +1275,8 @@ A package may enter beta when:
 - Known limitations, diagnostics, installation, quick start, and troubleshooting are accurate.
 - Licenses and third-party notices are complete.
 - Upgrade behavior from any previous public beta in the supported window is tested.
+- Real-project adoption is not required unless the beta advertises a named
+  project, adapter, bridge, or parity claim.
 
 ### 27.4 Release candidate
 
@@ -1394,9 +1396,25 @@ The Foundation specifications remain architecturally compatible, but the standar
 
 These are documentation reconciliation items. They do not authorize implementation or invalidate the approved package authorities.
 
-### 29.3 No current release evidence
+### 29.3 Current implementation evidence boundary
 
-All Foundation implementation, clean-install, performance, migration, platform, device, provider, and Laboratory results remain **Not run**. The approved specifications define intended evidence only.
+The original SUITE-DOC-30 statement that all Foundation implementation evidence
+was `Not run` is historical. First Light now has package-local implementation,
+automated tests, manual acceptance, setup/repair/Validator/Direct Scene/
+Simulator evidence, and one importable Standalone Laboratory through FL-M5-07.
+
+For First Light, clean-project tarball installation, private tester execution,
+Windows player build, performance, historical migration, and real-project
+adoption remain `Not run` until their named M6 or later records pass. Every
+other package retains its own current evidence state; no First Light result is
+promoted to another package.
+
+### 29.4 Release before optional adoption
+
+Under SFGSS-ADR-005, a clean-project package pre-release may precede
+existing-project adoption. Adoption evidence remains mandatory before an
+adoption/parity claim and when an approved package stable gate explicitly
+requires it.
 
 ---
 
@@ -1416,7 +1434,7 @@ All Foundation implementation, clean-install, performance, migration, platform, 
 - [x] Beta, release-candidate, and stable gates are measurable.
 - [x] Foundation reconciliation items are recorded for SUITE-DOC-30.
 - [x] No implementation evidence has been invented.
-- [x] Package implementation remains locked by SFGSS-ADR-002.
+- [x] At original approval, package implementation remained locked by SFGSS-ADR-002; subsequent implementation requires checkpoint-local authorization.
 
 ### 30.2 Approval record
 
@@ -1459,7 +1477,10 @@ The consistency review resolved the Foundation-wide test-shape queue without cla
 - Workshop’s Editor Laboratory remains valid standalone proof for an Editor-only package.
 - Real device/provider/platform evidence is required wherever simulation cannot prove the public claim.
 
-All package tests, Laboratories, compatibility claims, and release gates remain `Not run`.
+At SUITE-DOC-30, all package tests, Laboratories, compatibility claims, and
+release gates remained `Not run`. That sentence is historical. First Light's
+current evidence and remaining gaps are recorded in Section 29.3; other
+packages require their own retained execution records.
 
 ## Graph Navigation
 

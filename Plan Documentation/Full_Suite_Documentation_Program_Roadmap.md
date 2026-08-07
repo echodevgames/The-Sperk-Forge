@@ -3,10 +3,10 @@
 **Document role:** Level 4 planning and checkpoint record  
 **Status:** Active; implementation program activated under checkpoint control  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.23.0, SFGSS-001 v1.2.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.2.0, SFGSS-005 v1.4.0, SFGSS-ADR-002, and SFGSS-ADR-004
+**Parent authority:** SFGSS-000 v0.24.0, SFGSS-001 v1.3.0, SFGSS-002 v1.1.0, SFGSS-003 v1.1.0, SFGSS-004 v1.3.0, SFGSS-005 v1.4.0, SFGSS-ADR-002, SFGSS-ADR-004, and SFGSS-ADR-005
 **Workflow authority:** SFGSS-005 v1.4.0  
 **Unity baseline:** Unity 6000.3.8f1  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > Finish the package blueprints first. Use the standards as rails beneath them, not as a tunnel before them.
 
@@ -14,7 +14,9 @@
 
 ## 1. Purpose
 
-This roadmap completes the package foundations named in SFGSS-000 Sections 7.2 and 7.3 before implementation begins.
+This roadmap preserves the completed full-suite documentation program and now
+tracks its checkpoint-controlled transition into package implementation and
+release preparation.
 
 The owner’s intended meaning of “continue until all documentation is ready” is now explicit:
 
@@ -28,9 +30,11 @@ SFGSS-002, SFGSS-003, and SFGSS-004 remain approved and immediately useful. They
 
 ## 2. Gate rule
 
-SUITE-DOC-33 has activated the implementation program only through FL-M1-01. Each package remains individually locked until its own learning review is complete and an approved package-local checkpoint is activated.
-
-FL-M1-01 is active. It authorizes only the package skeleton and explicitly excludes C# and launch behavior.
+SUITE-DOC-33 historically activated FL-M1-01. First Light has since completed
+FL-M1-01 through FL-M5-07. FL-M6-01 is active and authorizes documentation and
+release-plan reconciliation only. Each later package remains individually
+locked until selected, learned/refreshed, and activated by an approved local
+checkpoint.
 
 ## 3. Honest completeness boundary
 
@@ -52,27 +56,30 @@ FL-M1-01 is active. It authorizes only the package skeleton and explicitly exclu
 - Migration evidence from shipped versions.
 - Multiplayer prototype results and final provider approval.
 
-These remain visibly `Not run` or conditional until implementation or research execution produces evidence.
+First Light now has retained compile, automated, manual, Editor, Runtime, and
+package-local Laboratory evidence through FL-M5-07. Its clean-project tarball,
+Windows player, private tester, performance, migration, and adoption evidence
+remain pending. Other packages keep their own evidence state.
 
 ## 4. Completed baseline
 
 | Area | Status |
 |---|---|
-| SFGSS-000 | Approved v0.23.0 |
-| SFGSS-001 | Approved v1.1.0 |
+| SFGSS-000 | Approved v0.24.0 |
+| SFGSS-001 | Approved v1.3.0 |
 | SFGSS-002 | Approved v1.0.0 |
 | SFGSS-003 | Approved v1.0.0 |
-| SFGSS-004 | Approved v1.1.0 |
+| SFGSS-004 | Approved v1.3.0 |
 | SFGSS-005 | Approved v1.4.0 |
-| SFGSS-006 | Approved v1.0.0 |
+| SFGSS-006 | Approved v1.1.0 |
 | SFGSS-007 | Approved v1.0.0 |
 | SFGSS-008 | Approved v1.0.0 |
-| SFGSS-009 | Approved v1.0.0 |
+| SFGSS-009 | Approved v1.1.0 |
 | Foundation package specifications | 10 of 10 approved |
 | Expansion package specifications | 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
-| Package implementation | FL-M1-01 active; First Light implementation not started |
+| Package implementation | First Light package-local MVP complete through FL-M5-07; FL-M6-01 active |
 
 ## 5. Phase B - Expansion package specifications
 
@@ -141,21 +148,23 @@ These standards now follow the package foundations so they can describe the actu
 
 `Package_Learning_Review_Catalog.md` tracks twenty-eight individual package reviews. PKG-LEARN-001 is complete. The remaining reviews occur just before their related package implementation checkpoints.
 
-The graph and learning orientation remains active. SUITE-DOC-33 and PKG-LEARN-001 are complete. PKG-LEARN-002 is paused until EchoDiagnostics implementation approaches. The active checkpoint is FL-M1-01.
+The graph and learning orientation remains active. SUITE-DOC-33 and
+PKG-LEARN-001 are complete. PKG-LEARN-002 is paused until EchoDiagnostics
+implementation approaches. The active checkpoint is FL-M6-01.
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | SUITE-DOC-33 – Initial Implementation Readiness Gate passed with advisory |
+| Completed checkpoint | FL-M5-07 – First Light Standalone Test Laboratory; documentation `daa40c3` |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **FL-M1-01 – First Light Package Skeleton** |
+| Active checkpoint | **FL-M6-01 – Documentation and Release-Plan Reconciliation** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
-| Package implementation | First Light authorized; not started |
-| Active implementation plan | FL-M1-01 v1.3.0 |
-| Runtime authorization | None; FL-M1-01 contains no C# or launch behavior |
+| Package implementation | First Light package-local MVP complete; other packages not started |
+| Active plan | FL-M6-01 documentation/release-plan checkpoint |
+| Runtime authorization | None in FL-M6-01; no package source or manifest change |
 | Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
 | Graph roadmap | Active and linked from all package specifications and learning hubs |
 | Initial implementation gate | SUITE-DOC-33 passed |
@@ -274,3 +283,16 @@ The complete documentation program, full-suite matrices, handoff audit, SFGSS-AD
 The live Unity compile, Git state, existing package path, and exact uGUI version remain `Not run` and must be verified before file creation. Every package other than First Light remains locally locked.
 
 **Next checkpoint:** FL-M1-01 – First Light Package Skeleton.
+
+
+## FL-M6-01 Release-Preparation Rebaseline
+
+FL-M1-01 through FL-M5-07 are complete. First Light's package-local MVP closed
+at implementation commit `583b91a` and documentation commit `daa40c3` with
+`802` automated passes and all twelve Standalone Laboratory cases accepted.
+
+SFGSS-ADR-005 corrects the remaining order: documentation reconciliation,
+clean-project private-beta candidate, invited private tester, and beta closeout
+now precede any optional existing-project adoption. No adoption target is
+selected. The current checkpoint is FL-M6-01; FL-M6-02 starts only after the
+documentation commit is pushed and clean.

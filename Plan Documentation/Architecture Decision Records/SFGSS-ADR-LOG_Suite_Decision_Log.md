@@ -13,7 +13,7 @@ updated: 2026-08-07
 **Authority:** Index only; each ADR and its affected higher-authority documents remain authoritative
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Standard:** [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007]]
-**Next available suite ADR:** `SFGSS-ADR-005`
+**Next available suite ADR:** `SFGSS-ADR-006`
 
 > The log tells us which doors were chosen. The ADRs explain why, and the specifications define what lies beyond them.
 
@@ -25,6 +25,7 @@ updated: 2026-08-07
 | [[SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|SFGSS-ADR-002]] | Full Suite Documentation Gate and Learning-Oriented Implementation | 1.0.0 | Not applicable to runtime evidence | Suite governance and implementation workflow | Final readiness gate, owner workflow change, or learning reviews change implementation order |
 | [[SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|SFGSS-ADR-003]] | Graph Roadmap and Package Learning Review | 1.0.0 | Not applicable to runtime evidence | Documentation navigation and learning; sequencing partially superseded by ADR-004 | Graph becomes unmanageable, package grouping changes, or reviews expose a better order |
 | [[SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|SFGSS-ADR-004]] | Just-in-Time Package Learning Gate | 1.0.0 | Not applicable to runtime evidence | Package-local learning and implementation authorization | Package learning cadence changes or multi-package implementation makes the local gate impractical |
+| [[SFGSS-ADR-005_Standalone_Release_Before_Optional_Adoption|SFGSS-ADR-005]] | Standalone Release Before Optional Adoption | 1.0.0 | First Light package-local evidence passed; clean-project/private-beta evidence pending | Suite package release and adoption sequencing | A package requires a real production environment for meaningful standalone proof, or a stable package gate explicitly requires adoption |
 
 ## Proposed suite ADRs
 

@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.13.0
+**Specification version:** 1.14.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -12,13 +12,12 @@
 **Planned repository:** `EchoDevGames/EchoLaunch`
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
-**Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 6, 2026
+**Parent authority:** SFGSS-000 v0.24.0 and SFGSS-001 v1.3.0
+**Last updated:** August 7, 2026
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime, Editor, sample, and Laboratory implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 has implemented and validated the v1.13.0 and EchoLaunch-ADR-010 boundary: one explicitly imported package-owned Standalone Test Laboratory, isolated sample assemblies/assets, Boot and Destination scenes, visible public-API scenarios, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, and removal/reimport proof. Further implementation requires new committed authority.
-M6 project adoption, optional bridges, automatic sample installation, Runtime core feature expansion, report export formats, build hooks, migration, receipts, uninstall, recovery, player-build claims, and external-adoption claims remain separately unauthorized.
+> **Approval rule:** This specification is the approved package authority. Runtime, Editor, sample, and Laboratory implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 implemented and validated the v1.13.0 and EchoLaunch-ADR-010 boundary: one explicitly imported package-owned Standalone Test Laboratory, isolated sample assemblies/assets, Boot and Destination scenes, visible public-API scenarios, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, and removal/reimport proof. FL-M6-01 reconciles documentation and release authority only. FL-M6-02 through FL-M6-04 own clean-project validation, private tester evidence, and private beta closeout. Optional adoption/bridges move to M7 and remain unauthorized.
 
 ---
 
@@ -41,6 +40,7 @@ M6 project adoption, optional bridges, automatic sample installation, Runtime co
 | 1.11.0 | 2026-08-06 | Approved | Authorized the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` for FL-M5-05 | Jesse “Echo” Adams |
 | 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
 | 1.13.0 | 2026-08-06 | Approved | Selected FL-M5-07 as the bounded Standalone Test Laboratory checkpoint; defined one explicit importable UPM sample, sample/core isolation, Boot and Destination Laboratory scenes, public-API sample steps, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, explicit Build Settings instructions, removal/reimport proof, and the boundary before M6 adoption | Jesse “Echo” Adams |
+| 1.14.0 | 2026-08-07 | Approved | Recorded the completed `583b91a`/`daa40c3` FL-M5-07 baseline, reconciled the executed test registry and user-documentation requirements, applied SFGSS-ADR-005, redefined M6 as clean-project/private-beta release work, and moved optional adoption/bridges to M7 | Jesse “Echo” Adams |
 
 ---
 
@@ -1298,7 +1298,7 @@ scene, and support direct-scene development.
 FL-M5-07 closes the package-local standalone evidence deferred while Runtime,
 presentation, setup, validation, Direct Scene, and Simulator contracts were
 implemented. It does not retroactively renumber completed checkpoints and it
-does not begin M6 adoption or bridge work.
+did not begin any external adoption or bridge work.
 
 ### 13.2 Package sample and import model
 
@@ -2012,40 +2012,40 @@ All code examples must compile against the documented release. Menu paths, scree
 
 ### 23.3 Test case registry
 
-| Test ID | Requirement | Setup | Action | Expected result | Automated? | Status |
-|---|---|---|---|---|---:|---|
-| ELAUNCH-T-001 | One authority | Scene with two roots | Enter Play | One root executes; duplicate zero side effects | Yes | Not run |
-| ELAUNCH-T-002 | Static reset | Domain reload disabled | Enter/exit Play twice | Fresh claim each session | Yes | Not run |
-| ELAUNCH-T-003 | Ordered steps | Three deterministic steps | Launch | Results order equals sequence order | Yes | Not run |
-| ELAUNCH-T-004 | Warning continuation | Warning step then success | Launch | Both execute; report success-with-warning | Yes | Not run |
-| ELAUNCH-T-005 | Blocking failure | Blocking step before destination | Launch | Later steps per policy stop; destination not loaded | Yes | Not run |
-| ELAUNCH-T-006 | Timeout | Non-completing test step | Launch | Timeout result/code and policy applied | Yes | Not run |
-| ELAUNCH-T-007 | Exception conversion | Throwing test step | Launch | Structured failure, no unhandled crash | Yes | Not run |
-| ELAUNCH-T-008 | Asset safety | Sequence/config assets | Launch | Assets remain unchanged/not dirty | Yes | Not run |
-| ELAUNCH-T-009 | Direct scene | Scene with helper, no root | Enter Play | Development root created once and mode recorded | Yes | Not run |
-| ELAUNCH-T-010 | Existing authority direct scene | Existing root + helper | Enter Play | No duplicate created | Yes | Not run |
-| ELAUNCH-T-011 | Invalid destination | Scene not build-loadable | Launch | Preflight blocks with ELAUNCH-DEST-001 | Yes | Not run |
-| ELAUNCH-T-012 | Successful handoff | Valid destination | Launch | Destination activates; one completion event/report | Yes | Not run |
-| ELAUNCH-T-013 | Setup repeatability | Clean temporary root | Apply setup 3 times | One config/root/Boot entry; second/third apply NoChanges | Yes | Not run |
-| ELAUNCH-T-016 | Setup planning purity | Snapshot and request | Generate plan repeatedly | No writes; plans value-equivalent | Yes | Pass in FL-M5-01 |
-| ELAUNCH-T-017 | Existing compatible assets | Matching targets | Plan/apply | Reuse/NoChange; never overwrite or dirty | Yes | Planning pass; apply not run |
-| ELAUNCH-T-018 | Setup path conflict | Wrong type at target | Plan/apply | ELAUNCH-SETUP-002; no writes | Yes | Planning pass; apply not run |
-| ELAUNCH-T-019 | Build Settings order safety | Existing unrelated order | Apply append/promotion | Append default; approval for promotion; unrelated order preserved | Yes | Planning pass; apply not run |
-| ELAUNCH-T-020 | Stale plan safety | Preview then change evidence | Apply displayed plan | ELAUNCH-SETUP-008 before writes | Yes | Not run |
-| ELAUNCH-T-021 | Apply rollback | Inject failure after partial creation | Apply | Active-attempt content removed and settings restored | Yes | Not run |
-| ELAUNCH-T-022 | Prefab variant adoption | Package template + new root | Apply | Valid bound project variant; template not dirty | Yes | Not run |
-| ELAUNCH-T-023 | Scene-state preservation | Open/active/dirty scenes | Create Boot | Existing scene state unchanged | Yes | Not run |
-| ELAUNCH-T-024 | Explicit repair gate | Repairable current-schema drift | Refresh then press Apply | Create Apply rejects repair; Repair requires confirmation | Yes | Not run |
-| ELAUNCH-T-025 | Configuration reference repair | Valid schema-4 config with wrong/null canonical refs | Repair | Only three approved references reconcile; other values and stable ID unchanged | Yes | Not run |
-| ELAUNCH-T-026 | Destination repair | Valid schema-1 destination with stale path | Repair | Scene path reconciles; non-empty authored label preserved | Yes | Not run |
-| ELAUNCH-T-027 | Prefab binding repair | Verified template variant with wrong/null config | Repair | Config binding reconciles; other overrides/presenter preserved; template not dirty | Yes | Not run |
-| ELAUNCH-T-028 | Boot root-presence repair | Exact Boot scene with zero roots and unrelated objects | Repair | One project-prefab root added; unrelated scene/open/active/dirty state preserved | Yes | Not run |
-| ELAUNCH-T-029 | Ambiguous/unsafe repair rejection | Multiple roots, wrong prefab lineage, wrong type, or unsupported schema | Plan/repair | ELAUNCH-SETUP-003/015; no backup or writes | Yes | Not run |
-| ELAUNCH-T-030 | Repair backup and rollback | Existing repairable files + injected failure | Repair | Exact bytes/meta/settings restored; ELAUNCH-SETUP-016 | Yes | Not run |
-| ELAUNCH-T-031 | Incomplete repair rollback | Inject restore failure | Repair | ELAUNCH-SETUP-017 and retained backup/manual paths | Yes | Not run |
-| ELAUNCH-T-032 | Repair repeatability | Repairable partial foundation | Repair 3 times | First succeeds; second/third NoChanges; GUIDs/IDs stable; no duplicates | Yes | Not run |
-| ELAUNCH-T-014 | Sample removal | Installed package + imported sample | Delete sample | Runtime/Editor compile | Manual/CI | Not run |
-| ELAUNCH-T-015 | Clean tarball install | New project | Install `.tgz` | Zero compile errors; quick start succeeds | Manual/CI | Not run |
+| Test ID | Requirement | Automation | Status | Evidence |
+|---|---|---|---|---|
+| ELAUNCH-T-001 | One authority and duplicate zero side effects | Automated + manual | Pass | FL-M2-01; FL-M5-07 `ELAUNCH-LAB-006` |
+| ELAUNCH-T-002 | Static reset across supported Editor play sessions | Automated | Pass | FL-M2-01 retained Runtime suite |
+| ELAUNCH-T-003 | Deterministic authored step order | Automated + manual | Pass | FL-M3-01; FL-M5-07 canonical/timed runs |
+| ELAUNCH-T-004 | Warning continuation and retained warning evidence | Automated + manual | Pass | FL-M3-02; `ELAUNCH-LAB-003` |
+| ELAUNCH-T-005 | Blocking failure stops later work and handoff | Automated + manual | Pass | FL-M3-02; `ELAUNCH-LAB-005` |
+| ELAUNCH-T-006 | Timeout and policy settlement | Automated + Simulator | Pass | FL-M3-03; FL-M5-06 Timeout preset |
+| ELAUNCH-T-007 | Exception conversion without unhandled crash | Automated + Simulator | Pass | FL-M3-02; FL-M5-06 exception preset |
+| ELAUNCH-T-008 | Project definitions remain immutable during execution | Automated | Pass | Retained Runtime and Editor suites through FL-M5-07 |
+| ELAUNCH-T-009 | Direct Scene creates one development authority | Automated + manual | Pass | FL-M5-05; `ELAUNCH-LAB-008` |
+| ELAUNCH-T-010 | Direct Scene reuses an existing authority | Automated + manual | Pass | FL-M5-05; `ELAUNCH-LAB-009` |
+| ELAUNCH-T-011 | Invalid destination blocks with `ELAUNCH-DEST-001` | Automated + manual | Pass | FL-M3-08; `ELAUNCH-LAB-007` |
+| ELAUNCH-T-012 | Valid destination activates with one completion report/event | Automated + manual | Pass | FL-M3-08; `ELAUNCH-LAB-001` |
+| ELAUNCH-T-013 | Setup Apply is repeat-safe | Automated + manual | Pass | FL-M5-02; FL-M5-07 three-run acceptance |
+| ELAUNCH-T-016 | Setup planning is read-only and deterministic | Automated | Pass | FL-M5-01 report |
+| ELAUNCH-T-017 | Compatible existing assets are reused without overwrite | Automated + manual | Pass | FL-M5-02 report |
+| ELAUNCH-T-018 | Incompatible target blocks with no writes | Automated | Pass | FL-M5-01/02 reports |
+| ELAUNCH-T-019 | Boot Scene List order changes only under approved policy | Automated + manual | Pass | FL-M5-02 report |
+| ELAUNCH-T-020 | Stale plan rejects before writes | Automated | Pass | FL-M5-02 report |
+| ELAUNCH-T-021 | Failed create attempt compensates active-attempt changes | Automated | Pass | FL-M5-02 report |
+| ELAUNCH-T-022 | Project root prefab variant binds without dirtying template | Automated + manual | Pass | FL-M5-02 report |
+| ELAUNCH-T-023 | Existing open/active/dirty scene state is preserved | Automated | Pass | FL-M5-02 report |
+| ELAUNCH-T-024 | Apply remains create-only; Repair requires confirmation | Automated + manual | Pass | FL-M5-03 report |
+| ELAUNCH-T-025 | Configuration references repair narrowly | Automated + manual | Pass | FL-M5-03 report |
+| ELAUNCH-T-026 | Destination path repair preserves authored identity/label | Automated + manual | Pass | FL-M5-03 report |
+| ELAUNCH-T-027 | Verified prefab binding repair preserves unrelated content | Automated + manual | Pass | FL-M5-03 report |
+| ELAUNCH-T-028 | Zero-root canonical Boot repair adds one approved root | Automated + manual | Pass | FL-M5-03 report |
+| ELAUNCH-T-029 | Ambiguous/unsafe repair is rejected before mutation | Automated | Pass | FL-M5-03 report |
+| ELAUNCH-T-030 | Repair failure restores exact bytes/meta/settings | Automated | Pass | FL-M5-03 report |
+| ELAUNCH-T-031 | Incomplete rollback retains actionable backup evidence | Automated | Pass | FL-M5-03 report |
+| ELAUNCH-T-032 | Repair converges and repeat runs return `NoChanges` | Automated + manual | Pass | FL-M5-03; FL-M5-07 repeatability acceptance |
+| ELAUNCH-T-014 | Imported sample can be removed and reimported | Automated + manual | Pass | FL-M5-07 `ELAUNCH-LAB-011` and `012` |
+| ELAUNCH-T-015 | Candidate `.tgz` installs and Quick Start succeeds in a genuinely new project | Manual/CI | Not run | FL-M6-02 |
 
 ---
 
@@ -2066,50 +2066,74 @@ All code examples must compile against the documented release. Menu paths, scree
 
 ### 24.2 Implementation gate
 
-- [ ] Runtime compiles with declared dependencies only.
-- [ ] Editor code is isolated.
-- [ ] Duplicate claim occurs before side effects.
-- [ ] Setup/repair is repeatable and non-destructive.
-- [ ] Configuration assets remain immutable at runtime.
-- [ ] Public API matches this specification or specification/ADR changed first.
+- [x] Runtime compiles with declared dependencies only.
+- [x] Editor code is isolated.
+- [x] Duplicate claim occurs before side effects.
+- [x] Setup/repair is repeatable and non-destructive within the implemented boundary.
+- [x] Configuration assets remain immutable at runtime.
+- [x] Public API matches this specification through FL-M5-07.
 
 ### 24.3 Standalone gate
 
 - [ ] Clean-project install succeeds.
-- [ ] No other Sperk’s Forge runtime package is installed.
-- [ ] Standalone Test Lab passes.
-- [ ] Samples can be removed safely.
-- [ ] Direct-scene behavior matches documentation.
-- [ ] Final destination loads through standalone loader.
+- [x] Package/sample assemblies require no other Sperk’s Forge runtime package.
+- [x] Standalone Test Lab passes in the package-development project.
+- [x] Imported sample can be removed and reimported safely in the package-development project.
+- [x] Direct-scene behavior matches current package documentation.
+- [x] Final destination loads through the standalone loader.
+- [ ] The same Laboratory, removal, Direct Scene, and destination path passes
+      from the FL-M6-02 clean consumer project.
 
 ### 24.4 Quality gate
 
-- [ ] Automated tests pass.
-- [ ] Manual Test Lab checklist passes.
-- [ ] No blocker or critical defect remains.
+- [x] `802` package-development automated tests pass with no failure/ignore.
+- [x] Manual FL-M5-07 Test Lab checklist passes.
+- [x] No known blocker or critical defect remains in the package-local MVP.
 - [ ] Performance targets pass.
-- [ ] Diagnostic codes are actionable and stable.
-- [ ] Documentation matches build/API.
-- [ ] `Current Notes.md` is reconciled.
-- [ ] Durable decisions are promoted to specification/ADRs.
-- [ ] License and notices are complete.
+- [x] Implemented diagnostic codes are actionable and stable.
+- [x] FL-M6-01 user documentation matches the implemented build/API and menu paths.
+- [x] Root and package `Current Notes.md` are reconciled through FL-M6-01.
+- [x] Durable release/adoption decisions are promoted to SFGSS-ADR-005 and this specification.
+- [x] The all-rights-reserved private-development license and current notices are present.
 
 ### 24.5 Distribution gate
 
-- [ ] Manifest is valid.
-- [ ] Supported Unity floor and exact dependencies are declared.
+- [x] Development manifest is valid and recognized as an embedded package.
+- [x] Supported Unity floor and exact dependencies are declared.
 - [ ] Version and changelog are updated.
-- [ ] Stable `.meta` files are included.
-- [ ] Local, tarball, and Git installation routes are tested as claimed.
-- [ ] Repository tag/release is prepared.
-- [ ] Documentation/current status are committed and pushed.
-- [ ] Central compatibility catalog is updated.
+- [x] Stable committed `.meta` files are included.
+- [ ] The claimed private-beta tarball installation route is tested.
+- [ ] Annotated candidate tag and private release record are prepared.
+- [ ] FL-M6-01 documentation/current status are committed and pushed.
+- [x] Central compatibility catalog is not applicable to this standalone
+      private beta; no integration compatibility snapshot is claimed.
+
+### 24.6 Private beta gate
+
+The active release claims only a private local-tarball beta:
+
+- [ ] Candidate version `0.1.0-beta.1` matches manifest, changelog, tag, and artifact.
+- [ ] Candidate `.tgz` and SHA-256 are retained.
+- [ ] Genuinely new Windows Unity `6000.3.8f1` project passes installation,
+      Quick Start, Setup repeatability, Validator, Laboratory, sample removal,
+      package removal/reinstall, and canonical Boot.
+- [ ] Non-development Windows player starts through Boot and reaches Destination.
+- [ ] Invited tester completes the documented path without undocumented help.
+- [ ] Tester findings are resolved or explicitly block the release.
+- [ ] Final full regression matrix passes from the release commit.
+
+Git URL, registry, stable, public, adoption, bridge, broad compatibility,
+migration, and performance claims remain outside this private beta.
 
 ---
 
 ## 25. Adoption and Migration Plan
 
 ### 25.1 Initial integration targets
+
+These are later optional candidates, not an ordered or authorized M6 task.
+Selecting one requires a separate decision and checkpoint after the standalone
+private beta closes.
 
 | Project | Existing system | Replacement strategy | Parity gate | Rollback |
 |---|---|---|---|---|
@@ -2218,29 +2242,24 @@ None. The implementation-shaping questions from specification 0.1.0 were resolve
 | M3 — Startup sequence | Ordered immediate/async steps and failure policy | Step API, runner, progress, timeout/cancellation, result handling | Automated tests and headless lab proof |
 | M4 — Presentation and handoff | Complete standalone MVP user loop | Image splashes, status view, destination load, handoff | Standalone Test Lab checklist |
 | M5 — Tooling and direct scene | Safe setup/repair/validation and development entry | Setup, validator, simulator, direct initializer | Repeatability and direct-scene tests |
-| M6 — First adoption/integration | One real-project adoption or optional bridge | Project adapter or first bridge without core dependency | Parity/integration report |
-| M7 — Release | Distribution-ready beta/stable candidate | Docs, license, tarball, clean install, catalog | Release checklist and external clean-project test |
+| M6 — Standalone private beta | Documentation, clean-project artifact proof, invited test, and immutable pre-release | FL-M6-01 through FL-M6-04; no project adoption | Documentation audit, clean external `.tgz` install, Laboratory, Windows player, tester report, release checklist |
+| M7 — Optional adoption/integration | One deliberately selected real-project adoption or optional bridge | Project adapter or bridge without core dependency | Parity/integration/rollback report |
 
 ### 28.2 Checkpoint rule
 
 Every milestone is divided into small Checkpoint Build Plans. Each checkpoint reconciles Current Notes, promotes durable decisions, updates tests/issues/docs/changelog, verifies documentation against committed implementation, and commits/pushes documentation with or immediately adjacent to code.
 
-### 28.3 First implementation checkpoint
+### 28.3 Current checkpoint sequence
 
-**Checkpoint FL-M1-01 — Package Skeleton**
+FL-M1-01 through FL-M5-07 are complete. The active release sequence is:
 
-Authorized outcome:
+1. FL-M6-01 documentation and release-plan reconciliation.
+2. FL-M6-02 clean-project private-beta candidate validation.
+3. FL-M6-03 private tester handoff and findings.
+4. FL-M6-04 private beta closeout and tag.
 
-- Create the installable UPM package directory and manifest.
-- Create compile-safe Runtime, Editor, and test assembly definitions.
-- Create the package README, changelog, development license notice, third-party notice, and documentation shell.
-- Verify the package is recognized by Unity and compiles without runtime behavior.
-
-Explicit stop point:
-
-- Do not create `EchoLaunchRoot`, startup steps, ScriptableObjects, prefabs, scenes, presenters, setup tools, or launch behavior during FL-M1-01.
-
-The complete plan lives at `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` and is governed by SFGSS-005.
+Stop after FL-M6-01 before changing `package.json` or generating a tarball.
+Optional M7 adoption requires its own explicit selection and plan.
 
 ---
 
@@ -2277,16 +2296,16 @@ Before writing code:
 
 | Field | Current value |
 |---|---|
-| Package version | `0.1.0` embedded package implementation |
+| Package version | `0.1.0` embedded development package; planned private candidate `0.1.0-beta.1` |
 | Completed checkpoint | FL-M5-07 — Standalone Test Laboratory and Importable Package Sample |
-| Active authorized checkpoint | None; new just-in-time learning review and committed authority required |
+| Active authorized checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
 | FL-M5-07 authority commit | `741b77d` |
 | FL-M5-06 authority commit | `a159349` |
 | FL-M5-05 authority commit | `d538b5a` |
 | FL-M5-04 authority commit | `c2397c9` |
 | FL-M5-03 authority commit | `6615c8f` |
 | Last implementation commit | `583b91a` |
-| Last documentation commit | Pending this closeout |
+| Last completed documentation commit | `daa40c3` — FL-M5-07 closeout |
 | Runtime tests passed | 503 Runtime Play Mode tests |
 | EditMode tests passed | 299 total: 211 setup/apply/repair, 25 Validator, 5 Direct Scene Validator, 24 Launch Simulator, 7 Standalone Laboratory package tests, and 27 prefab asset tests |
 | Total automated tests | 802 passed, 0 failed, 0 ignored |
@@ -2297,8 +2316,8 @@ Before writing code:
 | FL-M5-06 evidence | Explicit Editor-only Simulator; real runner and policy execution; transient authored shape; eight accepted presets; deterministic logical progress; clean expected-failure Console behavior; single-active-run and cancellation; human-click elapsed filtered from copied cancellation evidence; three identical accepted cancellation report fingerprints |
 | FL-M5-07 evidence | One explicit importable UPM sample; Boot/Destination scenes; isolated public-API steps; visible scenario assets/readout; Direct Scene and duplicate fixtures; all `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` passed; sample removal/reimport and three-run Setup/Repair repeatability accepted; no core or peer dependency; final imported content and project-setting residue removed before implementation commit |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Historical schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, automatic Direct Scene installation, build hooks, player builds, Git/tarball/clean-project installation, external adoption, persistent-root lifetime, and performance evidence remain not run |
-| Next action | Commit the FL-M5-07 documentation closeout, push `main`, confirm synchronization and cleanliness, then perform the next just-in-time learning review |
+| Evidence gaps | Clean-project tarball installation, private tester execution, Windows player build, historical schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, automatic Direct Scene installation, build hooks, external adoption, persistent-root lifetime, and performance evidence remain not run |
+| Next action | Commit and push FL-M6-01 documentation; then begin FL-M6-02 from a clean documentation baseline without selecting an adoption target |
 
 ---
 
@@ -2348,7 +2367,7 @@ A new collaborator can determine from this approved specification:
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
 
 The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
-FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 implemented and validated the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, single-active-run protection, cancellation, cancellation-evidence determinism correction, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan. FL-M5-07 implemented and validated the importable package-owned Standalone Test Laboratory, isolated sample code/assets/scenes, public-API steps, explicit import/Build Settings/scenario/reset instructions, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, Direct Scene persistent-reference repair, imported-sample Setup/Repair candidate isolation, and removal/reimport evidence defined by EchoLaunch-ADR-010 and its approved SFGSS-005 plan. M6 adoption, optional bridges, automatic sample installation, Runtime core expansion, schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, build hooks, player-build evidence, clean external adoption, report export, and performance claims remain unauthorized.
+FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 implemented and validated the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, single-active-run protection, cancellation, cancellation-evidence determinism correction, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan. FL-M5-07 implemented and validated the importable package-owned Standalone Test Laboratory, isolated sample code/assets/scenes, public-API steps, explicit import/scene-list/scenario/reset instructions, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, Direct Scene persistent-reference repair, imported-sample Setup/Repair candidate isolation, and removal/reimport evidence defined by EchoLaunch-ADR-010 and its approved SFGSS-005 plan. FL-M6 release work is limited to documentation reconciliation, clean-project candidate proof, invited private testing, and beta closeout. Optional M7 adoption/bridges, automatic sample installation, Runtime core expansion, schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, build hooks beyond the named Windows player proof, report export, and performance claims remain unauthorized.
 
 
 ---

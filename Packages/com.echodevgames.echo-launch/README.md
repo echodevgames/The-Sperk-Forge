@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: package-local MVP implementation and standalone Laboratory evidence are complete through FL-M5-07; documentation commit and push remain pending
+- Development stage: package-local MVP and Standalone Laboratory complete through FL-M5-07 at `daa40c3`; FL-M6-01 documentation/private-beta planning active
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -40,6 +40,11 @@ It coordinates ordered application initialization and final handoff without owni
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
+
+The next release path is documentation reconciliation, a clean-project local
+tarball candidate, one invited private test, and private beta closeout. Existing
+project adoption and optional bridges are deferred to a later deliberate M7
+decision.
 
 ## Implemented Runtime Scope
 
@@ -929,7 +934,16 @@ First Light does not yet provide:
 
 ## Documentation
 
-Package documentation lives under `Documentation~`.
+Start here:
+
+- [Installation](Documentation~/User/Installation.md)
+- [Quick Start](Documentation~/User/Quick%20Start.md)
+- [Setup and Validation](Documentation~/User/Setup%20and%20Validation.md)
+- [Startup Step Authoring](Documentation~/User/Startup%20Step%20Authoring.md)
+- [Troubleshooting and Known Limitations](Documentation~/User/Troubleshooting%20and%20Known%20Limitations.md)
+- [Removal and Reinstallation](Documentation~/User/Removal%20and%20Reinstallation.md)
+- [Private Beta Test Guide](Documentation~/User/Private%20Beta%20Test%20Guide.md)
+- [Documentation Index](Documentation~/Index.md)
 
 The suite-wide architecture and approved First Light specification live in the repository's `Plan Documentation` vault.
 
@@ -966,7 +980,9 @@ Still `Not run`:
 - Tarball installation
 - Separate clean-project installation
 - Player builds
-- Automatic production startup
+- Automatic production startup in a player build
+- Invited private-tester execution
+- Existing-project adoption or peer-package integration
 - Performance measurements
 
 ## License

@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: package-local MVP implementation and standalone Laboratory evidence are complete through FL-M5-07; documentation commit and push remain pending
+- Development stage: package-local MVP and Standalone Laboratory complete through FL-M5-07 at `daa40c3`; FL-M6-01 documentation/private-beta planning active
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -33,6 +33,8 @@
   - `FL-M5-05`
   - `FL-M5-06`
   - `FL-M5-07`
+- Active documentation checkpoint:
+  - `FL-M6-01`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -2991,14 +2993,16 @@ Not implemented:
 
 ## Stop Point
 
-FL-M5-07 stops after one isolated importable Standalone Test Lab, Boot and
-Destination proof, public-API sample steps, twelve accepted Laboratory cases,
-sample removal and reimport, two narrow checkpoint-owned corrections, `299`
-passing EditMode tests, `503` passing Runtime Play Mode tests, `802` total
-automated passes, and clean implementation commit `583b91a`.
+FL-M5-07 is fully closed at documentation commit `daa40c3` after one isolated
+importable Standalone Test Lab, Boot and Destination proof, public-API sample
+steps, twelve accepted Laboratory cases, sample removal/reimport, two narrow
+corrections, `299` passing EditMode tests, `503` passing Runtime Play Mode tests,
+and `802` total automated passes.
 
-Automatic sample installation, automatic Direct Scene installation, build
-hooks, schema migration, receipts, uninstall/reset implementation,
-crash-persistent recovery, persistent-root policy, player builds, clean
-external installation, M6 adoption, and performance evidence require later
-approved checkpoints.
+FL-M6-01 changes documentation and release authority only. Stop before changing
+the package manifest or generating a candidate artifact. Clean external
+installation and a Windows player belong to FL-M6-02; invited testing belongs
+to FL-M6-03; private beta tagging belongs to FL-M6-04. Automatic sample/Direct
+Scene installation, build hooks, schema migration, receipts, uninstall/reset
+implementation, crash-persistent recovery, persistent-root policy,
+performance evidence, peer bridges, and optional M7 adoption remain later work.

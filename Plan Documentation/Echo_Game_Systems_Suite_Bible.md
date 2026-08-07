@@ -1,14 +1,16 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000  
-**Version:** 0.23.0
+**Version:** 0.24.0
 **Status:** Approved lead architecture baseline; implementation program activated under checkpoint control  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
 **Current development baseline:** Unity 6000.3.8f1  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
+
+> **v0.24.0 release-sequencing reconciliation:** SFGSS-ADR-005 makes clean-project standalone proof and an honestly labeled package pre-release the default boundary before optional existing-project adoption. Adoption remains required before an adoption/parity claim, but it is not a universal prerequisite for private beta or for advancing to the next standalone package.
 
 ---
 
@@ -2179,18 +2181,26 @@ Every package specification must define tests in these categories.
 
 ### 15.6 Release gate
 
-A package does not leave beta until:
+SFGSS-004 owns the exact alpha, beta, release-candidate, and stable gates. The
+suite-wide sequence is:
 
-- Its MVP capabilities pass automated and manual acceptance tests.
-- Its clean-project and real-project integrations both work.
-- Its documentation matches the shipped API.
-- Known limitations are listed.
-- Upgrade/migration behavior is tested.
-- Licenses and credits are complete.
-- Stable `.meta` files and GUIDs are preserved or intentionally migrated.
-- Setup, generation, repair, and migration actions pass a repeat-run test without duplicating or overwriting project-owned content.
-- Standalone Test Lab and advertised Integration Lab scenes pass from a clean project.
-- The distributable tarball installs successfully.
+```text
+Package-local MVP
+    -> clean-project Standalone Laboratory and install proof
+        -> honestly labeled package pre-release
+            -> optional later adoption/bridges when selected
+```
+
+A package may enter beta when its applicable SFGSS-004 beta evidence passes,
+including MVP acceptance, clean-project proof, current documentation, known
+limitations, declared installation routes, repeat-safe setup, licenses/notices,
+and no unresolved release blocker.
+
+Real-project adoption is required before claiming that adoption, parity, or
+project compatibility. It is not a universal prerequisite for a private beta
+or for beginning the next package's just-in-time learning review. Advertised
+bridges still require their own Integration Laboratories. Stable releases retain
+any adoption requirement explicitly approved by the package specification.
 
 ---
 
@@ -2244,15 +2254,22 @@ Documentation readiness is honest rather than theatrical. Before code, the suite
 
 ### Wave 1 — Runtime origin and dual proof packages
 
-1. EchoLaunch.
-2. EchoDiagnostics startup visualization and minimum runtime overlay.
-3. Jukebot standalone audio foundation.
-4. EchoUI standalone root, screen stack, and visual shell foundation.
-5. Jukebot integration into Rescuers2D.
-6. Jukebot integration into Don’t Get Vince’d.
-7. EchoUI integration into Rescuers2D without making Jukebot or EchoLaunch mandatory.
+1. EchoLaunch package-local MVP, clean-project proof, and private beta.
+2. EchoDiagnostics startup visualization and minimum runtime overlay, followed
+   by its own standalone pre-release gate.
+3. Jukebot standalone audio foundation, followed by its own standalone
+   pre-release gate.
+4. EchoUI standalone root, screen stack, and visual shell foundation, followed
+   by its own standalone pre-release gate.
+5. Review optional Jukebot adoption in Rescuers2D and Don’t Get Vince’d only
+   when Jesse deliberately selects those targets.
+6. Review optional EchoUI adoption in Rescuers2D without making Jukebot or
+   EchoLaunch mandatory.
 
-Jukebot and EchoUI proceed side by side after the smallest viable First Light foundation. Each must pass its own Standalone Test Lab before either is connected to the other. This proves both a nonvisual runtime authority and a visual framework can operate alone, integrate through First Light when selected, and replace project-specific infrastructure.
+Jukebot and EchoUI may proceed after their preceding package gates without
+waiting for First Light adoption. Each package passes its own Standalone Test
+Lab and clean-project pre-release gate before any project replacement or bridge
+claim. Later adoption remains incremental and reversible.
 
 ### Wave 2 — Shared application shell
 
@@ -2782,6 +2799,7 @@ The following decisions form the approved starting baseline for the suite:
 153. Initial implementation activation is checkpoint-specific. It does not authorize a milestone, package family, later First Light behavior, or another package.
 154. FL-M1-01 must verify the live Unity compile, working tree, package path, and exact baseline uGUI version before creating files; these empirical checks remain `Not run` at documentation-gate closeout.
 155. First Light may proceed because PKG-LEARN-001 is complete. Every later package remains locally locked until its own just-in-time learning review and readiness decision activate an approved Checkpoint Build Plan.
+156. SFGSS-ADR-005 separates standalone package release evidence from optional existing-project adoption. Clean-project proof and an honestly labeled pre-release may close one package cycle and allow the next package's learning review; adoption remains required only before its specific parity/integration claim or when an approved stable gate explicitly requires it.
 
 ---
 
@@ -2819,27 +2837,28 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred fifty-five decisions in Section 21 are approved. The complete documentation program, integration matrices, handoff audit, SFGSS-ADR-004, and PKG-LEARN-001 support the initial implementation gate.
+The suite identity and the one hundred fifty-six decisions in Section 21 are
+approved. First Light completed its package-local MVP and FL-M5-07 Standalone
+Laboratory at documentation commit `daa40c3` with `802` automated tests passed
+and all twelve package Laboratory cases accepted.
 
-SUITE-DOC-33 passes with advisory and activates only:
+The active package sequence is now:
 
 ```text
-FL-M1-01 – First Light Package Skeleton
+FL-M6-01 — Documentation and Release-Plan Reconciliation
+    -> FL-M6-02 — Clean-Project Private-Beta Candidate Validation
+        -> FL-M6-03 — Private Tester Handoff and Findings
+            -> FL-M6-04 — Private Beta Closeout and Tag
 ```
 
-Follow `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` v1.3.0 and SFGSS-005 v1.4.0.
+FL-M6-01 changes documentation and authority only. It does not change package
+source, manifest version, scenes, prefabs, tests, or sample assets. After its
+documentation commit is clean and pushed, stop before candidate versioning or
+tarball creation and begin FL-M6-02 through a separate Checkpoint Build Plan.
 
-Before creating files:
-
-1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
-2. Review Git status and preserve unrelated work.
-3. Confirm the First Light package path is absent or safely reviewed.
-4. Inspect the exact baseline `com.unity.ugui` version.
-5. Stop if any starting condition conflicts with the approved plan.
-
-FL-M1-01 authorizes only the package manifest, four assembly definitions, documentation shell, generated `.meta` files, and bounded validation. It authorizes no C# file or launch behavior.
-
-After FL-M1-01 closes, do not begin FL-M2-01 automatically. Create and approve its Checkpoint Build Plan. Before another package begins implementation, complete that package's own just-in-time learning review.
+Echo Systems Lab, Rescuers2D, Don’t Get Vince’d, optional bridges, and project
+adapters remain outside the active M6 boundary. After FL-M6-04, choose the next
+package and complete or refresh that package's just-in-time learning review.
 
 
 ---

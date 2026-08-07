@@ -1,68 +1,57 @@
-# The Sperk’s Forge – Suite Health Check and Remaining Documentation
+# The Sperk’s Forge — Suite Health Check and Remaining Documentation
 
-**Updated:** August 4, 2026  
-**Completed checkpoint:** SUITE-DOC-33 – Initial Implementation Readiness Gate  
-**Active checkpoint:** FL-M1-01 – First Light Package Skeleton  
-**Implementation:** First Light authorized; not started
+**Updated:** August 7, 2026
+**Latest completed checkpoint:** FL-M5-07 — First Light Standalone Test Laboratory
+**Active checkpoint:** FL-M6-01 — Documentation and Release-Plan Reconciliation
+**Implementation:** First Light package-local MVP complete; clean-project/private-beta evidence pending
 
 ## Current health
 
 | Area | Status |
 |---|---|
-| Suite Bible | Approved v0.23.0 |
-| Standards | SFGSS-001 through SFGSS-010 complete; SFGSS-005 v1.4.0 |
-| Package authorities | 28 of 28 approved |
+| Suite Bible | Approved v0.24.0 |
+| Standards | SFGSS-001 through SFGSS-010 complete; release sequencing reconciled by SFGSS-ADR-005 |
+| Package authorities | 28 of 28 approved; First Light v1.14.0 current |
 | Cross-package matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
-| Documentation handoff | Passed |
-| Initial implementation gate | Passed with advisory |
+| Documentation handoff | Active repository-first protocol |
 | Learning workflow | Just-in-time package-local gate |
-| Package learning reviews | 1 complete, 1 paused, 26 not started |
-| First Light local learning gate | Passed |
-| FL-M1-01 | Active and authorized |
-| First Light implementation | Not started |
-| Other package implementations | Locked |
-| Empirical evidence | `Not run` unless a retained evidence record states otherwise |
-| Release-blocking architecture conflicts | None recorded |
+| First Light learning review | Complete; no new learning gate required for documentation/release validation |
+| First Light implementation | Package-local MVP complete through FL-M5-07 |
+| Automated First Light evidence | 802 passed; 0 failed; 0 ignored |
+| Manual First Light Laboratory | 12 of 12 package cases passed |
+| First Light release state | FL-M6-01 active; clean-project/private-beta evidence not run |
+| Existing-project adoption | Deferred to optional M7; no target selected |
+| Other package implementations | Locked until selected and locally learned/authorized |
+| Release-blocking architecture conflicts | None after SFGSS-ADR-005 reconciliation |
 
-## Required checks before the first skeleton file
+## Current First Light path
 
-1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
-2. Review Git status and preserve unrelated work.
-3. Confirm `Packages/com.echodevgames.echo-launch/` is absent or safely reviewed.
-4. Inspect the exact baseline `com.unity.ugui` version.
-5. Stop if any current authority contradicts FL-M1-01.
-
-These are implementation-start conditions, not documentation blockers.
-
-## Authorized First Light work
-
-FL-M1-01 may create:
-
-- The UPM package manifest.
-- Four assembly definitions.
-- Root package documentation.
-- The minimal `Documentation~` shell.
-- Stable Unity `.meta` files.
-- Skeleton validation and retained evidence.
-
-It may not create C#, scenes, prefabs, ScriptableObjects, samples, setup tools, bridges, or launch behavior.
-
-## Later package rule
-
-Before any other package begins implementation, complete or refresh its own `PKG-LEARN-###` review and activate an approved package-local checkpoint. Observatory remains paused until EchoDiagnostics reaches the front of the implementation queue.
+1. FL-M6-01 updates living authorities and user/release documentation.
+2. FL-M6-02 creates and validates the exact `0.1.0-beta.1` candidate in a new
+   Windows Unity `6000.3.8f1` project.
+3. FL-M6-03 hands the same documented path to an invited tester.
+4. FL-M6-04 closes the private beta with a matching tag/artifact/checksum.
 
 ## Honest evidence boundary
 
-The documentation proves approved design, static consistency, navigation, learning status, handoff readiness, and checkpoint authorization. It does not prove compilation, package import, runtime behavior, performance, platform compatibility, provider compatibility, migration, multiplayer prototypes, packaging, or release readiness.
+First Light has strong package-development evidence. It does not yet have a
+clean external tarball install, Windows player build, invited tester result,
+performance result, historical migration result, public distribution route, or
+existing-project adoption claim.
+
+The other twenty-seven packages retain their individual pre-implementation
+states. First Light evidence does not transfer to them.
 
 ## Current stop point
 
-Begin FL-M1-01 at its starting-condition checks. Stop before the first `.cs` file and before FL-M2-01.
+Commit and push FL-M6-01 documentation, confirm a clean synchronized repository,
+then stop before changing `package.json` or building a `.tgz`. FL-M6-02 requires
+its own Checkpoint Build Plan.
 
 ## Navigation
 
-- [SUITE-DOC-33 Readiness Report](Test%20Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md)
-- [FL-M1-01 Checkpoint Build Plan](Checkpoint%20Build%20Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md)
-- [First Light Learning Review](Learning%20Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review.md)
 - [Current Notes](Current%20Notes.md)
+- [SFGSS-ADR-005](Architecture%20Decision%20Records/SFGSS-ADR-005_Standalone_Release_Before_Optional_Adoption.md)
+- [First Light Specification](Package%20Specifications/SFGSS-First-Light-EchoLaunch-Package-Specification.md)
+- [First Light Private Beta Release Plan](Release%20Records/FL-M6_First_Light_Private_Beta_Release_Plan.md)
 - [Suite Graph Roadmap](Suite_Graph_Roadmap.md)

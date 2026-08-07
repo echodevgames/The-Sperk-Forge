@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-07 Standalone Test Laboratory implementation and acceptance complete; documentation commit and push pending
+- Development stage: FL-M5-07 fully closed at `daa40c3`; FL-M6-01 documentation and private-beta release-plan reconciliation active
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -35,7 +35,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-05`
   - `FL-M5-06`
   - `FL-M5-07`
-- Active authority checkpoint: none; the next checkpoint requires a new just-in-time learning review and committed authority
+- Active authority checkpoint: `FL-M6-01` — Documentation and Release-Plan Reconciliation
 - Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one isolated importable Standalone Test Lab sample
 - Unity baseline: `6000.3.8f1`
 
@@ -43,6 +43,11 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 
 - [Installation](User/Installation.md)
 - [Quick Start](User/Quick%20Start.md)
+- [Setup and Validation](User/Setup%20and%20Validation.md)
+- [Startup Step Authoring](User/Startup%20Step%20Authoring.md)
+- [Troubleshooting and Known Limitations](User/Troubleshooting%20and%20Known%20Limitations.md)
+- [Removal and Reinstallation](User/Removal%20and%20Reinstallation.md)
+- [Private Beta Test Guide](User/Private%20Beta%20Test%20Guide.md)
 
 ## Developer Documentation
 
@@ -108,6 +113,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-06 Launch Simulator Test Report](Developer/Test%20Reports/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection_Test_Report.md)
 - [FL-M5-07 Standalone Test Laboratory and Importable Package Sample](Developer/Checkpoints/FL-M5-07_Standalone_Test_Laboratory_and_Importable_Package_Sample.md)
 - [FL-M5-07 Standalone Test Laboratory Test Report](Developer/Test%20Reports/FL-M5-07_Standalone_Test_Laboratory_and_Importable_Package_Sample_Test_Report.md)
+- [FL-M6-01 Documentation and Release-Plan Reconciliation](Developer/Checkpoints/FL-M6-01_Documentation_and_Release_Plan_Reconciliation.md)
+- [FL-M6-01 Documentation Audit Report](Developer/Test%20Reports/FL-M6-01_Documentation_and_Release_Plan_Audit_Report.md)
+- [Private Beta Release Checklist](Developer/Release/Private%20Beta%20Release%20Checklist.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -173,7 +181,7 @@ presentation, project-owned sample configuration/sequence assets, public-API
 immediate/timed/warning/recoverable/blocking steps, duplicate-root and Direct
 Scene fixtures, and a complete reset/removal/reimport guide.
 
-Import remains explicit and does not automatically modify Build Settings,
+Import remains explicit and does not automatically modify the Build Profiles Scene List,
 ProjectSettings, canonical project setup assets, scripting defines, scenes, or
 Play Mode. Core assemblies do not depend on sample code or content. Setup and
 Repair exclude imported sample assets from automatic candidate discovery.
@@ -183,10 +191,11 @@ EditMode tests, and `503` Runtime Play Mode tests. Manual acceptance passed
 `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, including removal, clean reimport,
 and three-run Setup/Repair repeatability.
 
-M6 project adoption, optional bridges, automatic sample installation, report
-export, build hooks, migration, receipts, uninstall/reset implementation,
-recovery, player-build claims, clean external installation, performance, and
-external-adoption claims remain outside this completed checkpoint.
+FL-M6-01 replaces the obsolete skeleton-era user guides and records the
+clean-project/private-beta sequence. It makes no new implementation or
+distribution claim. Clean external installation, player builds, and private
+tester evidence remain `Not run`; project adoption and optional bridges move to
+later M7.
 
 ## Package Root Documents
 
@@ -359,4 +368,11 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-07 is implemented, automated-tested, manually accepted, and committed in `583b91a`; documentation commit and push remain pending. M6 project adoption, optional bridges, schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build and clean external-install evidence, external adoption, and performance evidence remain outside the implemented boundary.
+FL-M5-07 is implemented in `583b91a`, documented in `daa40c3`, synchronized to
+`origin/main`, and supported by `802` passed automated tests plus all twelve
+manual Laboratory cases. FL-M6-01 changes documentation and release sequencing
+only. Schema migration, receipts, uninstall/reset implementation,
+crash-persistent recovery, automatic Direct Scene installation, build hooks,
+persistent-root policy, normal scene travel, player-build and clean external
+install evidence, adoption, bridges, and performance evidence remain outside
+the implemented boundary.

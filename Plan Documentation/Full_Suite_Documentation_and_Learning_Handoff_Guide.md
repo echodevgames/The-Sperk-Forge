@@ -4,7 +4,7 @@ tags:
   - sfgss/learning
   - sfgss/navigation
 status: approved
-updated: 2026-08-04
+updated: 2026-08-07
 ---
 
 # The Sperk’s Forge – Full Suite Documentation and Learning Handoff Guide
@@ -13,13 +13,15 @@ updated: 2026-08-04
 **Authority:** Navigation and guidance only; it does not override SFGSS-000, package authorities, standards, ADRs, or integration specifications  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Approved checkpoint:** SUITE-DOC-32  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > Enter through the map, follow the authority trail, and leave chat history outside the load-bearing walls.
 
 ## 1. Purpose
 
-This guide lets Jesse, a fresh ChatGPT conversation, or another collaborator recover the complete pre-code state of **The Sperk’s Forge – EchoDevGames Game Systems Suite** without reading an old conversation transcript.
+This guide lets Jesse, a fresh ChatGPT conversation, or another collaborator
+recover the current checkpoint-controlled state of **The Sperk’s Forge –
+EchoDevGames Game Systems Suite** without reading an old conversation transcript.
 
 It provides:
 
@@ -34,16 +36,16 @@ It provides:
 
 | Area | State |
 |---|---|
-| Suite Bible | SFGSS-000 v0.21.0 |
+| Suite Bible | SFGSS-000 v0.24.0 |
 | Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
 | Cross-package reviews | Foundation, Expansion, Advanced, Standards/Package, and Full Suite passed |
 | Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
-| Runtime implementation | Not started |
-| Empirical evidence | `Not run` unless an evidence record says otherwise |
-| Active phase after SUITE-DOC-32 | Initial implementation activation, then interleaved learning and implementation |
+| Runtime implementation | First Light package-local MVP complete through FL-M5-07; other packages not started |
+| Empirical evidence | First Light has retained evidence through `daa40c3`; every other claim remains package-specific |
+| Active phase | First Light FL-M6 private-beta release preparation |
 | Completed learning review | PKG-LEARN-001 – First Light (`EchoLaunch`) |
-| Initial implementation gate | SUITE-DOC-33 |
+| Active checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
 
 ## 3. Authority versus navigation
 
@@ -141,19 +143,14 @@ A completed learning review is educational evidence. It is not compilation, comp
 
 ## 7. Honest evidence boundary
 
-The vault currently proves documentation structure, static consistency, naming, authority, and planned tests. It does not prove:
+The vault now retains First Light compilation, Editor/runtime behavior,
+automated tests, manual Setup/Repair/Validator/Direct Scene/Simulator evidence,
+and package-local Standalone Laboratory acceptance through FL-M5-07.
 
-- Compilation.
-- Runtime behavior.
-- Editor behavior.
-- Performance or allocation budgets.
-- Platform compatibility.
-- Provider compatibility.
-- Migration from shipped versions.
-- Multiplayer prototype outcomes.
-- Distribution or release readiness.
-
-Those remain `Not run` until executed evidence exists under SFGSS-004.
+First Light clean-project tarball installation, Windows player build, private
+tester execution, performance, historical migration, broad compatibility, and
+existing-project adoption remain `Not run`. Other package evidence remains
+`Not run` unless its own retained record states otherwise.
 
 ## 8. Fresh ChatGPT handoff prompt
 
@@ -172,10 +169,13 @@ Read in this order:
 7. SFGSS-005 and SFGSS-010
 8. The active package specification/foundation and applicable ADRs, matrices, research records, and tests
 
-Current phase: checkpoint-controlled implementation with just-in-time learning.
-Current checkpoint: FL-M1-01 – First Light Package Skeleton.
-First Light learning review: complete.
-Other packages remain locally locked until their own learning review and readiness decision activate a Checkpoint Build Plan.
+Current phase: First Light standalone private-beta release preparation.
+Current checkpoint: FL-M6-01 – Documentation and Release-Plan Reconciliation.
+Completed First Light baseline: FL-M5-07 at 583b91a/daa40c3, 802 automated
+tests passed, 12 of 12 Laboratory cases passed.
+No existing-project adoption target is selected. Optional adoption is M7.
+Other packages remain locally locked until selected and their own learning
+review/readiness decision activates a Checkpoint Build Plan.
 
 For the active review:
 - Preserve the source terminology and authority boundaries.
@@ -196,12 +196,9 @@ For the active review:
 
 ## 10. Package-local unlock boundary
 
-SUITE-DOC-33 has activated only FL-M1-01 because:
-
-- The complete documentation program passed.
-- PKG-LEARN-001 is complete.
-- The tracker, Current Notes, roadmap, graph, health check, package specification, and checkpoint plan agree.
-- FL-M1-01 is bounded to a package skeleton and excludes C# or launch behavior.
+First Light passed its learning gate and completed package-local implementation
+through FL-M5-07. FL-M6 documentation, clean-project, private-test, and release
+checkpoints remain individually bounded; they do not authorize adoption.
 
 Every later package remains locked until:
 
@@ -211,6 +208,8 @@ Every later package remains locked until:
 - Jesse is ready to receive the complete visible files or code and implement them himself.
 
 Learning completion never authorizes an entire milestone or another package.
+After First Light FL-M6-04 private beta closeout, the next package still requires
+its own just-in-time review/readiness decision.
 
 ## 11. Navigation
 
@@ -228,7 +227,18 @@ Learning completion never authorizes an entire milestone or another package.
 
 SUITE-DOC-33 passed with advisory on August 4, 2026.
 
-- FL-M1-01 is active.
-- First Light implementation is authorized but not started.
-- The live Unity compile, Git state, package path, and exact uGUI version must be verified before file creation.
-- Every other package remains locally locked until its just-in-time learning review and package-local readiness decision pass.
+- At that gate, FL-M1-01 became active.
+- First Light implementation was authorized but had not started.
+- The live Unity compile, Git state, package path, and exact uGUI version were deferred for verification before file creation.
+- Every other package remained locally locked until its just-in-time learning review and package-local readiness decision.
+
+This addendum is historical implementation-start evidence. FL-M1-01 through
+FL-M5-07 are now complete.
+
+## FL-M6-01 Release-Sequencing Addendum
+
+SFGSS-ADR-005 was accepted on August 7, 2026. First Light now completes
+documentation, clean-project candidate proof, invited private testing, and
+private beta closeout before any optional existing-project adoption. A private
+beta may close the current package cycle and permit selection of the next
+package; it does not claim adoption or stable public support.

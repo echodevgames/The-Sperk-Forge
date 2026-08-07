@@ -1,15 +1,15 @@
 # The Sperk’s Forge – Repository, Versioning, and Integration Workspace Standard
 
 **Document ID:** SFGSS-009  
-**Version:** 1.0.0  
+**Version:** 1.1.0
 **Status:** Approved repository and release-governance standard  
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
 **Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.18.0  
-**Related authorities:** SFGSS-002, SFGSS-003, SFGSS-004 v1.1.0, SFGSS-005 v1.2.0, SFGSS-007, SFGSS-008, SFGSS-ADR-001 through SFGSS-ADR-003, and the Foundation, Expansion, and Advanced integration matrices  
+**Parent authority:** SFGSS-000 v0.24.0
+**Related authorities:** SFGSS-002, SFGSS-003, SFGSS-004 v1.3.0, SFGSS-005, SFGSS-007, SFGSS-008, SFGSS-ADR-001 through SFGSS-ADR-005, and the Foundation, Expansion, and Advanced integration matrices
 **Current development baseline:** Unity 6000.3.8f1  
 **Initial public Unity floor:** Unity 6000.0  
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > Give every artifact one home, every release one immutable marker, and every compatibility claim one reproducible workspace.
 
@@ -620,7 +620,9 @@ Examples:
 ### 14.2 Beta
 
 - MVP is substantially implemented.
-- Public testing and real-project integration are underway.
+- Private or public testing is underway against a reproducible artifact.
+- Real-project integration may remain deferred unless the beta advertises a
+  named adoption, adapter, bridge, or parity claim.
 - Known limitations and migration behavior are documented.
 
 ### 14.3 Release candidate
@@ -1241,7 +1243,7 @@ The SUITE-DOC-28 repository audit found no authority collision. It recorded thes
 **Decision:** Approved  
 **Approved by:** Jesse “Echo” Adams / EchoDevGames  
 **Date:** August 4, 2026  
-**Conditions:** The actual central and Integration Lab remote URLs, repository protections, CI, package registry, and release automation become factual only after creation and retained evidence. Package implementation remains locked.
+**Conditions at original approval:** The actual central and Integration Lab remote URLs, repository protections, CI, package registry, and release automation become factual only after creation and retained evidence. Package implementation was then still locked; later checkpoint records now govern implemented packages.
 
 ---
 

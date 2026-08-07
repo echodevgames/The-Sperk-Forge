@@ -2,7 +2,7 @@
 
 **Document ID:** SFGSS-001
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 
 **Status:** Approved documentation standard
 
@@ -10,11 +10,11 @@
 
 **Project boundary:** Independent solo project; not an Isekai Studios product
 
-**Parent authority:** SFGSS-000 v0.20.0 — The Sperk’s Forge Game Systems Suite Bible
+**Parent authority:** SFGSS-000 v0.24.0 — The Sperk’s Forge Game Systems Suite Bible
 
 **Current development baseline:** Unity 6000.3.8f1
 
-**Last updated:** August 4, 2026
+**Last updated:** August 7, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
@@ -919,6 +919,14 @@ This scan order must be stated in the package's contributor/development guide.
 - [ ] Repository documentation and current status are committed and pushed.
 - [ ] Compatibility catalog is updated.
 
+### 24.6 Release-sequencing rule
+
+Clean-project package release proof and existing-project adoption are separate
+gates. A package may enter an honestly labeled pre-release and the suite may
+advance to another standalone package after the applicable SFGSS-004 gate
+passes. Adoption, project-adapter, and bridge evidence is required before the
+corresponding claim, not before every private beta.
+
 ---
 
 ## 25. Adoption and Migration Plan
@@ -991,8 +999,9 @@ Required risks to evaluate:
 | M2 — Runtime core | Smallest authoritative behavior | `<CAPABILITIES>` | Automated tests |
 | M3 — Test Lab | Isolated usable proof | `<CAPABILITIES>` | Manual/automated checklist |
 | M4 — Tooling | Safe setup and validation | `<CAPABILITIES>` | Repeatability tests |
-| M5 — Integration | First optional bridge/project adoption | `<CAPABILITIES>` | Integration Lab/parity report |
-| M6 — Release | Distribution-ready version | Docs, licenses, package | Clean external install |
+| M5 — Release preparation | Distribution-ready pre-release | Docs, licenses, package, clean project | Clean external install and stage gate |
+| M6 — Private/public pre-release | Exact advertised standalone claim | Artifact, Laboratory, tester evidence | SFGSS-004 alpha/beta/RC gate |
+| M7 — Optional adoption/integration | First selected bridge or project target | `<CAPABILITIES>` | Integration Lab/parity/rollback report |
 
 ### 28.2 Checkpoint rule
 
@@ -1109,6 +1118,14 @@ This template now assumes the complete standards set SFGSS-002 through SFGSS-010
 - Unity asset GUIDs, domain IDs, and runtime instance IDs remain distinct under SFGSS-003.
 - Unknown optional data and unknown fields require explicit opaque-record or extension-capable preservation strategies.
 - Every approved package maintains Graph Navigation and participates in the pre-implementation learning review.
+
+## FL-M6-01 Release-Sequencing Amendment
+
+SFGSS-ADR-005 changes the template default from integration-before-release to
+clean-project pre-release before optional adoption. Existing specifications may
+retain historical milestone numbering, but their living release plan must
+follow SFGSS-000 v0.24.0 and identify any package-specific stable-adoption gate
+explicitly.
 
 ## Graph Navigation
 

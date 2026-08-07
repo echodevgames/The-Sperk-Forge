@@ -19,10 +19,10 @@ The imported path follows this pattern:
 Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Standalone Test Lab
 ```
 
-Import does not change Build Settings, ProjectSettings, canonical First Light
+Import does not change the Build Profiles Scene List, ProjectSettings, canonical First Light
 setup assets, scripting defines, open scenes, or Play Mode.
 
-## Scenes and Build Settings
+## Scenes and Build Profiles
 
 The final distribution scenes are:
 
@@ -31,12 +31,13 @@ Generated/Scenes/FirstLight_Boot_Lab.unity
 Generated/Scenes/FirstLight_Destination_Lab.unity
 ```
 
-For Boot testing, add them explicitly to Build Settings in this order:
+For Boot testing, add them explicitly to **File > Build Profiles > Scene List**
+in this order:
 
 1. `FirstLight_Boot_Lab`
 2. `FirstLight_Destination_Lab`
 
-Do not replace unrelated project Build Settings permanently. Restore the
+Do not replace unrelated project scene entries permanently. Restore the
 project's original scene list after Laboratory testing.
 
 ## Canonical Boot Run
@@ -107,9 +108,9 @@ Tools > Sperk's Forge > First Light > Laboratory > Build Imported Laboratory
 
 Use it only when intentionally rebuilding the generated Laboratory payload.
 It replaces the imported sample's `Generated` folder, validates serialized
-references, and exports that generated folder back to the embedded package
+   references, and exports that generated folder back to the embedded package
 sample. It does not run automatically on import, reload, repaint, or Play Mode
-entry, and it does not change Build Settings or ProjectSettings.
+entry, and it does not change the Build Profiles Scene List or ProjectSettings.
 
 ## Reset, Removal, and Reimport
 
@@ -119,7 +120,7 @@ To reset a scenario:
 2. Restore `SuccessConfiguration.asset` on the Boot root.
 3. Disable the duplicate fixture in Boot.
 4. Disable the existing-root fixture in Destination.
-5. Restore the project's original Build Settings.
+5. Restore the project's original Build Profiles Scene List.
 
 To remove the sample, delete only its imported folder beneath `Assets/Samples`.
 First Light Runtime, Editor tools, Setup, Validator, and Simulator do not
@@ -137,7 +138,7 @@ Importing or using the sample does not:
 - grant sample code access to First Light internals
 - make sample assets canonical Setup/Repair candidates
 - automatically run Setup, Apply, Repair, Validator, or Simulator
-- automatically edit Build Settings or ProjectSettings
+- automatically edit the Build Profiles Scene List or ProjectSettings
 - install a production startup or Direct Scene build hook
 
 Generated Laboratory assets are examples. Copy and adapt them deliberately;

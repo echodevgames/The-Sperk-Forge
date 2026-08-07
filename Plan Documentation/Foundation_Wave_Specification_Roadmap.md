@@ -1,12 +1,12 @@
 # The Sperk’s Forge — Foundation Wave Specification Roadmap
 
 **Document role:** Level 4 planning and checkpoint record  
-**Status:** Foundation documentation pass complete; implementation activation superseded by SFGSS-ADR-002  
+**Status:** Foundation documentation pass complete; current implementation/release state tracked by the Full Suite Roadmap
 **Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Parent authority:** SFGSS-000 v0.9.0, SFGSS-001 v1.1.0, and SFGSS-ADR-002  
+**Parent authority:** SFGSS-000 v0.24.0, SFGSS-001 v1.3.0, SFGSS-ADR-002, and SFGSS-ADR-005
 **Unity baseline:** Unity 6000.3.8f1  
 **Public Unity floor:** Unity 6000.0  
-**Last updated:** August 3, 2026
+**Last updated:** August 7, 2026
 
 > Draw every load-bearing line before the Forge gets hot.
 
@@ -182,9 +182,9 @@ The documentation gate passes only when:
 - [x] SFGSS-000, Current Notes, roadmap, and package statuses agree in the generated checkpoint.
 - [x] Documentation checkpoint content is reconciled and ready for commit/push.
 - [x] The first implementation checkpoint is selected and written as a Checkpoint Build Plan.
-- [ ] FW-DOC-12 commit and push are confirmed by the user.
+- [x] FW-DOC-12 commit and push were confirmed by the user.
 
-The expected first implementation checkpoint after this gate is **First Light M1 — Package Skeleton**, unless the consistency review records a reason to revise that order.
+At this historical gate, the expected first implementation checkpoint was **First Light M1 — Package Skeleton**. That checkpoint and the later First Light package-local milestones are now complete through FL-M5-07.
 
 ---
 
@@ -197,11 +197,12 @@ The expected first implementation checkpoint after this gate is **First Light M1
 | In drafting | 0 |
 | Remaining | 0 |
 | Completed documentation checkpoint | FW-DOC-12 — Documentation Readiness Gate |
-| Active implementation checkpoint | FL-M1-01 — First Light Package Skeleton |
-| Package implementation | First Light authorized; not started |
-| Runtime behavior authorization | None; FL-M1-01 authorizes skeleton files only, while later packages require their own just-in-time learning review |
-| Known blockers | None; live Unity, Git, package-path, and uGUI checks remain before file creation |
-| Commit/push | SUITE-DOC-33 pending user confirmation |
+| Latest completed First Light checkpoint | FL-M5-07 — Standalone Test Laboratory; `daa40c3` |
+| Active checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
+| Package implementation | First Light package-local MVP complete; other Foundation packages not started |
+| Runtime behavior authorization | None in FL-M6-01; later packages retain their just-in-time learning gate |
+| Known blockers | Clean-project/private-beta evidence remains `Not run`, not an architecture blocker |
+| Commit/push | FL-M6-01 documentation pending application/commit |
 
 
 ---
@@ -229,13 +230,13 @@ The Documentation Readiness Gate verified the ten package specifications, SFGSS-
 1. SFGSS-005 was referenced but absent; v1.0.0 is now approved.
 2. First Light still pointed to the completed documentation gate; v1.1.0 now records FL-M1-01.
 
-The first authorized implementation checkpoint is:
+The first checkpoint authorized by this historical gate was:
 
 ```text
 FL-M1-01 — First Light Package Skeleton
 ```
 
-Authorization is limited to package manifest, asmdefs, documentation shell, compile/import validation, and closeout evidence. No C# implementation or launch behavior is authorized.
+That authorization was limited to package manifest, asmdefs, documentation shell, compile/import validation, and closeout evidence. Later approved checkpoints supplied the completed package-local implementation now recorded in Section 9.
 
 
 ---
@@ -244,10 +245,10 @@ Authorization is limited to package manifest, asmdefs, documentation shell, comp
 
 SFGSS-ADR-002 preserves this roadmap as the completed Foundation documentation record but supersedes its immediate implementation activation.
 
-- SUITE-DOC-33 has activated FL-M1-01.
+- SUITE-DOC-33 historically activated FL-M1-01.
 - The active roadmap is `Full_Suite_Documentation_Program_Roadmap.md`.
-- The active checkpoint is FL-M1-01.
-- FL-M1-01 may create only its package skeleton. No C# or launch behavior is authorized. Later packages remain individually locked until their learning review passes.
+- FL-M1-01 through FL-M5-07 are complete.
+- The active checkpoint is FL-M6-01. Later packages remain individually locked until selected and their learning review passes.
 
 
 ---
@@ -257,3 +258,15 @@ SFGSS-ADR-002 preserves this roadmap as the completed Foundation documentation r
 **Decision:** Passed with advisory.
 
 PKG-LEARN-001 satisfies the First Light learning gate and FL-M1-01 v1.3.0 is active. The checkpoint must begin by verifying the live Unity compile, Git state, package path, and exact uGUI version. No C# or launch behavior is authorized.
+
+This is retained historical activation evidence; FL-M1-01 later completed.
+
+---
+
+## 14. FL-M6-01 release-sequencing result
+
+First Light completed its package-local MVP and Standalone Laboratory before
+clean-project release validation. Under SFGSS-ADR-005, FL-M6 now performs
+documentation reconciliation, clean-project candidate proof, invited private
+testing, and beta closeout. Optional adoption is M7 and does not block selecting
+the next Foundation package after FL-M6-04.

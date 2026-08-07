@@ -13,3 +13,8 @@ This notice is temporary. It will be reviewed, replaced, or revised before any p
 Third-party materials, when present, remain governed by their own licenses and must be listed separately in `Third Party Notices.md`.
 
 This notice is not an open-source license.
+
+Invited private testers may receive separate, limited written permission from
+the copyright holder to install and evaluate a named candidate. That permission
+does not grant public redistribution, sublicensing, publication, or reuse rights
+unless the written invitation explicitly says otherwise.
