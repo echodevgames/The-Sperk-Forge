@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-06 Launch Simulator implemented, automated-tested, manually accepted, and pushed
+- Development stage: FL-M5-06 complete; FL-M5-07 Standalone Test Laboratory authority approved, implementation not yet started
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -34,8 +34,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-04`
   - `FL-M5-05`
   - `FL-M5-06`
-- Active authority checkpoint: None
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator
+- Active authority checkpoint: `FL-M5-07` — Standalone Test Laboratory and Importable UPM Sample
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator. FL-M5-07 authorizes only the importable Standalone Laboratory sample and evidence-gated sample-isolation correction described by specification v1.13.0.
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -329,4 +329,4 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-06 is implemented, automated-tested, manually accepted, and pushed. No later checkpoint is currently authorized. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, performance evidence, and real Standalone Laboratory activation remain outside the implemented boundary.
+FL-M5-06 is implemented, automated-tested, manually accepted, documented, and pushed. FL-M5-07 is the active authority checkpoint and may add exactly one fully-authored importable Standalone Laboratory UPM sample plus a narrowly evidence-gated automatic Setup-candidate isolation correction if required. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.

@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.12.0
+**Specification version:** 1.13.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -13,13 +13,12 @@
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 6, 2026
+**Last updated:** August 7, 2026
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-06 has implemented and validated the explicit Editor-only Launch Simulator, transient immutable simulation requests/plans, real startup-sequence runner and policy execution, deterministic logical timing, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and release-safe no-production-dependency boundary authorized by v1.12.0 and EchoLaunch-ADR-009.
-No later checkpoint is currently authorized.
-Standalone Laboratory scenes/assets, runtime sample step definitions, automatic scene installation, report export formats, build hooks, migration, receipt, uninstall, or recovery remain separately unauthorized.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-06 is complete at documentation closeout commit `e28ff09`. FL-M5-07 is now authorized to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample. The sample must exercise existing production contracts rather than introduce another launch or setup pipeline.
+FL-M5-07 adds no automatic sample generation, automatic scene installation, import-time Build Settings mutation, peer-package dependency, schema migration, report export format, receipt, uninstall, crash-persistent recovery, or build hook. Existing Runtime and Editor behavior may change only when Laboratory evidence demonstrates a bounded defect and the checkpoint plan explicitly permits the correction.
 
 ---
 
@@ -41,6 +40,7 @@ Standalone Laboratory scenes/assets, runtime sample step definitions, automatic 
 | 1.10.0 | 2026-08-06 | Approved | Authorized the explicit read-only First Light Validator, immutable schema-1 findings and project-health report, stable validation codes, scene-safe enabled-build-scene inspection, deterministic request/evidence/report fingerprints, and copyable project-relative text evidence for FL-M5-04 | Jesse “Echo” Adams |
 | 1.11.0 | 2026-08-06 | Approved | Authorized the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` for FL-M5-05 | Jesse “Echo” Adams |
 | 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
+| 1.13.0 | 2026-08-07 | Approved | Authorized FL-M5-07 to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample; prohibited a shipped sample generator and import-time side effects; required serialized reference integrity, sample-only assembly isolation, removal proof, and evidence-gated Setup candidate isolation only if imported sample content is shown to affect automatic discovery | Jesse “Echo” Adams |
 
 ---
 
@@ -1306,6 +1306,47 @@ The **First Light Standalone Test Lab** proves the complete MVP launch loop in i
 - Reset instructions.
 - Sample README with exact import/setup/test steps.
 
+#### 13.2.1 FL-M5-07 authored UPM sample boundary
+
+FL-M5-07 implements this approved Laboratory as exactly one UPM sample declared
+in `package.json` and stored directly beneath:
+
+```text
+Samples~/First Light Standalone Test Lab/
+```
+
+The distributed sample is the authored artifact. Unity Package Manager's normal
+sample import copies that content into the consuming project's `Assets/Samples`
+area. First Light must not ship a second sample-authoring or sample-generation
+pipeline merely to recreate the same scenes, configurations, prefabs, or art
+after import.
+
+The FL-M5-07 sample therefore obeys these additional implementation rules:
+
+- `package.json` exposes exactly one First Light sample for this checkpoint.
+- Importing the sample performs no automatic generation, Setup/Repair, Validator,
+  Simulator, Play Mode, scene-save, or Build Settings action.
+- Scene, configuration, destination, splash, sequence, prefab, and direct-scene
+  references are serialized in the shipped sample and must remain valid after
+  normal UPM import without hand repair.
+- Sample-only executable helpers live in a dedicated sample assembly and may
+  depend on EchoLaunch plus its declared Unity dependencies only.
+- No project-specific runtime assembly and no peer Sperk's Forge package is part
+  of Standalone Laboratory proof.
+- The imported sample may be deleted completely; Runtime and Editor package
+  assemblies must continue to compile and package tooling must remain available.
+- Package Runtime, presentation, Direct Scene, Setup/Repair, Validator, and
+  Simulator behavior remains unchanged unless the Laboratory exposes a
+  reproducible existing-contract defect.
+- If imported `Assets/Samples/**` content is proven to enter automatic Setup
+  candidate discovery, FL-M5-07 may add only a narrow imported-sample exclusion
+  for automatic discovery. Explicit user selection remains permitted and the
+  correction requires focused regression coverage.
+
+This boundary is intentionally simpler than an Editor generation subsystem: the
+Laboratory demonstrates First Light; it does not become another First Light
+authority.
+
 ### 13.3 Test Lab acceptance checklist
 
 | Test | Action | Expected result | Automated/manual | Status |
@@ -2122,6 +2163,7 @@ None. The implementation-shaping questions from specification 0.1.0 were resolve
 | M3 — Startup sequence | Ordered immediate/async steps and failure policy | Step API, runner, progress, timeout/cancellation, result handling | Automated tests and headless lab proof |
 | M4 — Presentation and handoff | Complete standalone MVP user loop | Image splashes, status view, destination load, handoff | Standalone Test Lab checklist |
 | M5 — Tooling and direct scene | Safe setup/repair/validation and development entry | Setup, validator, simulator, direct initializer | Repeatability and direct-scene tests |
+| M5.5 — Standalone Laboratory | Importable isolated proof of the complete MVP launch loop | One fully-authored UPM sample, sample-only helpers, LAB-001 through LAB-012 | Package sample source checks, imported-sample manual matrix, sample-removal proof, retained regression suites |
 | M6 — First adoption/integration | One real-project adoption or optional bridge | Project adapter or first bridge without core dependency | Parity/integration report |
 | M7 — Release | Distribution-ready beta/stable candidate | Docs, license, tarball, clean install, catalog | Release checklist and external clean-project test |
 
@@ -2145,6 +2187,31 @@ Explicit stop point:
 - Do not create `EchoLaunchRoot`, startup steps, ScriptableObjects, prefabs, scenes, presenters, setup tools, or launch behavior during FL-M1-01.
 
 The complete plan lives at `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` and is governed by SFGSS-005.
+
+---
+
+## 28.4 Current Authorized Checkpoint — FL-M5-07
+
+**FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample** is the
+current implementation authorization.
+
+Authorized outcome:
+
+- declare exactly one First Light UPM sample;
+- ship the approved Boot and destination Laboratory scenes as fully-authored sample content;
+- ship minimal sample-owned configuration, sequence, destination, splash, root/direct-scene configuration, placeholder art, step definitions, and readout;
+- keep sample executable helpers inside a narrow sample assembly;
+- prove imported reference integrity without hand repair;
+- execute and record LAB-001 through LAB-012;
+- preserve the `793`-test FL-M5-06 baseline and add only focused sample/source regression coverage;
+- permit one conditional production Editor correction only if imported sample content is empirically shown to pollute automatic Setup candidate discovery, with explicit-selection behavior preserved.
+
+Explicit stop point:
+
+Do not add a shipped sample generator, automatic import actions, report export,
+schema migration, receipts, uninstall, crash recovery, build hooks, peer-package
+integration, or unrelated Runtime/Editor refactors. Any other discovered defect
+returns to authority review before implementation expands.
 
 ---
 

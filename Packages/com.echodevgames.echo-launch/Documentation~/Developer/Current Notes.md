@@ -1,88 +1,81 @@
 # First Light - Current Notes
 
+## Active Checkpoint
+
+- Checkpoint: `FL-M5-07`
+- Title: Standalone Test Laboratory and Importable UPM Sample
+- Package version: `0.1.0`
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.13.0
+- Starting implementation baseline: FL-M5-06 closeout commit `e28ff09`, followed only by bounded living-note drift reconciliation
+- Status: Authorized; implementation not yet started
+- Compilation baseline: `0` errors, `0` warnings
+- Complete EditMode baseline: `290` passed
+- Runtime Play Mode baseline: `503` passed
+- Total automated baseline: `793` passed
+
 ## Latest Completed Checkpoint
 
 - Checkpoint: `FL-M5-06`
 - Title: Launch Simulator and Deterministic Failure Injection
-- Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.12.0
-- ADR: EchoLaunch-ADR-009
 - Authority commit: `a159349`
 - Implementation commit: `956c381`
 - Documentation closeout: `e28ff09`
-- Status: Complete, documented, automated-tested, manually accepted, and pushed
-- Compilation revalidated August 7: `0` errors, `0` warnings
-- Focused Simulator EditMode: `24` passed
-- Complete EditMode revalidated August 7: `290` passed
-- Runtime Play Mode revalidated August 7: `503` passed
-- Total automated baseline: `793` passed
+- ADR: EchoLaunch-ADR-009
+- Status: Complete
 
-## Post-Rewind Reconciliation
+## FL-M5-07 Authorized Outcome
 
-The active `main` history was intentionally returned to FL-M5-06 closeout commit
-`e28ff09`. Later work is not authoritative unless a new approved checkpoint
-reintroduces it.
+First Light will gain exactly one separately importable UPM sample named
+**First Light Standalone Test Lab**. The sample proves the complete MVP launch
+loop using existing production contracts rather than adding another launch or
+setup pipeline.
 
-The closeout commit left this living page with stale wording that still said
-FL-M5-06 documentation was pending. This reconciliation corrects that status
-only. It changes no package implementation, public API, assets, schemas,
-diagnostics, manifest, or test behavior.
-
-## Implemented Outcome
-
-The explicit Editor-only Simulator runs transient deterministic startup-step
-scenarios through the real sequence runner and produces an immutable copyable
-schema-1 simulation report.
-
-Accepted presets:
-
-- Immediate success
-- Timed progress success
-- Warning continuation
-- Recoverable-failure continuation
-- Blocking failure
-- Timeout
-- Executor exception
-- Cancellation
-
-## Retained Boundary
-
-- No automatic Simulator run.
-- No Play Mode requirement for Simulator use.
-- No Simulator root, splash, presentation, or destination claim.
-- Real runner, policy, progress, timeout, exception, and cancellation behavior.
-- Transient `HideAndDontSave` authored shape.
-- Deterministic logical timing and fingerprints.
-- Separate truthful simulation report.
-- One active run and cooperative cancellation.
-- No authored asset, scene, Build Settings, or ProjectSettings mutation.
-- No Simulator implementation in Runtime/player assemblies.
-- Standalone Laboratory remains separate and unauthorized until the next authority checkpoint is approved.
-
-## Accepted Determinism Correction
-
-Manual cancellation initially exposed human-click-dependent elapsed evidence.
-The final implementation normalizes Simulator cancellation elapsed to zero,
-preserves canonical `ELAUNCH-STEP-005`, removes `ElapsedSeconds:` from copied
-cancellation evidence, and produces repeatable report fingerprints.
-
-Accepted cancellation report fingerprint:
+The shipped sample is fully authored beneath:
 
 ```text
-e92b028d7798ec597894213539e3ae19b113931e714ef29bae6d8d11bb92362b
+Samples~/First Light Standalone Test Lab/
 ```
 
-## Fresh Baseline Evidence — August 7, 2026
+Unity Package Manager import is the only normal installation action. Importing
+the sample must not run a generator, mutate Build Settings, invoke Setup or
+Repair, launch the Simulator, enter Play Mode, or edit unrelated project data.
 
-```text
-Compilation: 0 errors / 0 warnings
-EditMode:    290 passed / 0 failed / 0 ignored
-PlayMode:    503 passed / 0 failed / 0 ignored
-Total:       793 passed
-```
+## Sample Isolation Boundary
+
+- No other Sperk's Forge runtime package.
+- No project-specific runtime assembly.
+- Sample-only executable helpers live in a narrow sample assembly.
+- Sample definitions/configurations/scenes/prefabs are already serialized and reference-complete before distribution.
+- The sample may depend only on EchoLaunch and its declared Unity dependency surface.
+- The imported sample becomes removable project content under Unity's normal `Assets/Samples/...` location.
+- Removing that imported sample must leave EchoLaunch Runtime and Editor assemblies healthy.
+- Existing production contracts remain unchanged unless the Laboratory proves a reproducible defect.
+
+## Required Acceptance Cases
+
+`LAB-001` through `LAB-012` remain exactly the approved cases in the package
+specification. Manual evidence is paired with existing or new automated proof
+where practical.
+
+## Conditional Setup Isolation Correction
+
+If and only if evidence shows imported `Assets/Samples/**` scenes are being
+included as automatic Setup candidates, FL-M5-07 may add a narrow exclusion for
+standard imported-sample roots. Explicit project selection must remain possible,
+and the change requires regression tests. No broader Setup behavior change is
+authorized.
+
+## Explicitly Not Authorized
+
+- Shipped sample generator/authoring engine.
+- Automatic scene or configuration generation after import.
+- Import-time Build Settings mutation.
+- Automatic Simulator/Validator/Setup execution.
+- New runtime authority or launch pipeline.
+- Schema migration, receipts, uninstall, recovery, or build hooks.
+- Peer-package integration.
 
 ## Next Action
 
-Draft and approve a fresh FL-M5-07 Standalone Test Laboratory checkpoint from
-the reconciled FL-M5-06 baseline. No Laboratory implementation is authorized by
-this reconciliation alone.
+Commit and push the FL-M5-07 authority documents, then begin implementation with
+the package manifest/sample declaration and fully-authored sample source only.
