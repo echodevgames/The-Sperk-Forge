@@ -1,0 +1,19 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Samples.StandaloneLab.Editor",
+  "rootNamespace": "EchoDevGames.EchoLaunch.Samples.StandaloneLab.Editor",
+  "references": [
+    "EchoDevGames.EchoLaunch.Runtime",
+    "EchoDevGames.EchoLaunch.Samples.StandaloneLab"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

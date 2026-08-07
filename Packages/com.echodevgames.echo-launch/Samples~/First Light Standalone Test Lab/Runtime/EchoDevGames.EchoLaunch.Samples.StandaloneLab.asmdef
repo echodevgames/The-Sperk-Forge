@@ -1,0 +1,16 @@
+{
+  "name": "EchoDevGames.EchoLaunch.Samples.StandaloneLab",
+  "rootNamespace": "EchoDevGames.EchoLaunch.Samples.StandaloneLab",
+  "references": [
+    "EchoDevGames.EchoLaunch.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

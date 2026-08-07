@@ -1,12 +1,19 @@
 {
   "name": "com.echodevgames.echo-launch",
   "version": "0.1.0",
-  "displayName": "First Light \u2014 Startup and Launch",
+  "displayName": "First Light — Startup and Launch",
   "description": "Coordinates ordered application startup, launch reporting, launch-only presentation, direct-scene development initialization, and final handoff without owning peer package behavior.",
   "unity": "6000.0",
   "dependencies": {
     "com.unity.ugui": "2.0.0"
   },
+  "samples": [
+    {
+      "displayName": "First Light Standalone Test Lab",
+      "description": "Importable isolated laboratory for canonical Boot, destination handoff, startup-step outcomes, splash timing, duplicate-root protection, and direct-scene development evidence.",
+      "path": "Samples~/First Light Standalone Test Lab"
+    }
+  ],
   "author": {
     "name": "Jesse \"Echo\" Adams / EchoDevGames"
   }

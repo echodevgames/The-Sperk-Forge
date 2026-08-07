@@ -10,6 +10,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
     internal sealed class EchoLaunchProjectSnapshotCollector :
         IEchoLaunchSetupSnapshotSource
     {
+        private const string ImportedSamplesRoot =
+            "Assets/Samples/";
+
         public EchoLaunchProjectSnapshot Collect(
             EchoLaunchSetupRequest request)
         {
@@ -290,7 +293,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[index]);
 
-                if (!path.StartsWith("Assets/", StringComparison.Ordinal))
+                if (!IsAutomaticCandidatePath(path))
                 {
                     continue;
                 }
@@ -315,7 +318,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[index]);
 
-                if (!path.StartsWith("Assets/", StringComparison.Ordinal))
+                if (!IsAutomaticCandidatePath(path))
                 {
                     continue;
                 }
@@ -330,6 +333,20 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
 
             return result;
+        }
+
+        private static bool IsAutomaticCandidatePath(
+            string path)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(path);
+
+            return normalized.StartsWith(
+                       "Assets/",
+                       StringComparison.Ordinal) &&
+                   !normalized.StartsWith(
+                       ImportedSamplesRoot,
+                       StringComparison.Ordinal);
         }
 
         private static int? ReadInt(

@@ -1,0 +1,24 @@
+First Light Standalone Test Lab
+
+Assign one configuration to the Boot root prefab or scene root before Play:
+- SuccessConfiguration.asset
+- WarningConfiguration.asset
+- RecoverableConfiguration.asset
+- BlockingConfiguration.asset
+- InvalidDestinationConfiguration.asset
+
+Missing configuration:
+Clear the root Configuration field before Play, then restore it.
+
+Duplicate root:
+Enable the inactive duplicate fixture in the Boot scene.
+
+Direct Scene reuse:
+Enable the inactive existing-root fixture in the Destination scene.
+
+Generated asset IDs:
+0123456789abcdef0123456789abcdef
+1123456789abcdef0123456789abcdef
+2123456789abcdef0123456789abcdef
+3123456789abcdef0123456789abcdef
+4123456789abcdef0123456789abcdef

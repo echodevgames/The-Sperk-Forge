@@ -209,6 +209,131 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
+        public void ImportedSampleDefinitionIsNotAutomaticCandidate()
+        {
+            bool samplesRootExisted =
+                AssetDatabase.IsValidFolder("Assets/Samples");
+
+            string folder =
+                "Assets/Samples/__EchoLaunch_FL_M5_07_Definition_" +
+                Guid.NewGuid().ToString("N");
+
+            string assetPath =
+                folder + "/SampleConfiguration.asset";
+
+            EchoLaunchConfiguration configuration =
+                ScriptableObject.CreateInstance<
+                    EchoLaunchConfiguration>();
+
+            try
+            {
+                EnsureFolder(folder);
+                AssetDatabase.CreateAsset(
+                    configuration,
+                    assetPath);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(
+                    assetPath,
+                    ImportAssetOptions.ForceSynchronousImport);
+
+                EchoLaunchSetupRequest request =
+                    new EchoLaunchSetupRequest(
+                        UniqueRoot,
+                        UniqueRoot + "/Scenes/Boot.unity",
+                        UniqueRoot + "/Scenes/Missing.unity",
+                        false,
+                        EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                        assetPath);
+
+                EchoLaunchProjectSnapshot snapshot =
+                    new EchoLaunchProjectSnapshotCollector()
+                        .Collect(request);
+
+                Assert.That(
+                    snapshot.FindAssetFact(assetPath).Exists,
+                    Is.True,
+                    "An explicitly selected sample asset must remain inspectable.");
+
+                Assert.That(
+                    ContainsCandidate(
+                        snapshot.GetCandidates(
+                            EchoLaunchSetupAssetRole.Configuration),
+                        assetPath),
+                    Is.False,
+                    "Imported sample definitions must not become automatic setup candidates.");
+            }
+            finally
+            {
+                AssetDatabase.DeleteAsset(folder);
+                RemoveSamplesRootIfCreated(
+                    samplesRootExisted);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        [Test]
+        public void ImportedSampleRootPrefabIsNotAutomaticCandidate()
+        {
+            bool samplesRootExisted =
+                AssetDatabase.IsValidFolder("Assets/Samples");
+
+            string folder =
+                "Assets/Samples/__EchoLaunch_FL_M5_07_Root_" +
+                Guid.NewGuid().ToString("N");
+
+            string prefabPath =
+                folder + "/EchoLaunchImportedSampleRoot.prefab";
+
+            GameObject instance =
+                new GameObject(
+                    "EchoLaunch Imported Sample Root");
+
+            try
+            {
+                instance.AddComponent<EchoLaunchRoot>();
+                EnsureFolder(folder);
+
+                GameObject prefab =
+                    PrefabUtility.SaveAsPrefabAsset(
+                        instance,
+                        prefabPath);
+
+                Assert.That(prefab, Is.Not.Null);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(
+                    prefabPath,
+                    ImportAssetOptions.ForceSynchronousImport);
+
+                EchoLaunchProjectSnapshot snapshot =
+                    Collect();
+
+                Assert.That(
+                    ContainsCandidate(
+                        snapshot.GetCandidates(
+                            EchoLaunchSetupAssetRole.RootPrefab),
+                        prefabPath),
+                    Is.False,
+                    "Imported sample root prefabs must not become automatic setup candidates.");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(
+                    instance);
+
+                AssetDatabase.DeleteAsset(folder);
+                RemoveSamplesRootIfCreated(
+                    samplesRootExisted);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        [Test]
         public void CollectorProducesNonemptyEvidenceFingerprint()
         {
             Assert.That(
@@ -222,6 +347,74 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             Assert.That(
                 Collect().EvidenceFingerprint,
                 Is.EqualTo(Collect().EvidenceFingerprint));
+        }
+
+        private static bool ContainsCandidate(
+            System.Collections.Generic.IReadOnlyList<
+                EchoLaunchProjectAssetFact> candidates,
+            string path)
+        {
+            for (int index = 0;
+                 index < candidates.Count;
+                 index++)
+            {
+                if (string.Equals(
+                        candidates[index].Path,
+                        path,
+                        StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void EnsureFolder(
+            string path)
+        {
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(path);
+
+            if (AssetDatabase.IsValidFolder(normalized))
+            {
+                return;
+            }
+
+            string parent =
+                System.IO.Path.GetDirectoryName(normalized)
+                    ?.Replace('\\', '/');
+
+            string name =
+                System.IO.Path.GetFileName(normalized);
+
+            Assert.That(
+                parent,
+                Is.Not.Null.And.Not.Empty);
+
+            Assert.That(
+                name,
+                Is.Not.Null.And.Not.Empty);
+
+            EnsureFolder(parent);
+
+            string guid =
+                AssetDatabase.CreateFolder(
+                    parent,
+                    name);
+
+            Assert.That(guid, Is.Not.Empty);
+        }
+
+        private static void RemoveSamplesRootIfCreated(
+            bool samplesRootExisted)
+        {
+            if (!samplesRootExisted &&
+                AssetDatabase.IsValidFolder("Assets/Samples"))
+            {
+                AssetDatabase.DeleteAsset(
+                    "Assets/Samples");
+            }
         }
 
         private static EchoLaunchProjectSnapshot Collect()
