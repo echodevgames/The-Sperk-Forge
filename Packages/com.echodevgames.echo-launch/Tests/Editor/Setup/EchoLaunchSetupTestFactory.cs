@@ -126,5 +126,59 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
 
             return false;
         }
+
+        internal static EchoLaunchProjectSnapshot CreateIsolatedSnapshot(
+            EchoLaunchSetupRequest request)
+        {
+            return new EchoLaunchSetupIsolatedSnapshotSource().Collect(request);
+        }
+
+        internal static EchoLaunchSetupApplyService CreateIsolatedApplyService(
+            IEchoLaunchSetupFailureInjector failureInjector = null)
+        {
+            return new EchoLaunchSetupApplyService(
+                new EchoLaunchSetupIsolatedSnapshotSource(),
+                new EchoLaunchSetupPlanner(),
+                new EchoLaunchSetupAssetWriter(),
+                new EchoLaunchSetupPrefabWriter(),
+                new EchoLaunchSetupSceneWriter(),
+                new EchoLaunchSetupBuildSettingsWriter(),
+                failureInjector ?? new EchoLaunchSetupNoFailureInjector(),
+                delegate { return false; });
+        }
+
+        internal static EchoLaunchSetupRepairService CreateIsolatedRepairService(
+            IEchoLaunchSetupFailureInjector failureInjector = null)
+        {
+            return new EchoLaunchSetupRepairService(
+                new EchoLaunchSetupIsolatedSnapshotSource(),
+                new EchoLaunchSetupPlanner(),
+                new EchoLaunchSetupAssetWriter(),
+                new EchoLaunchSetupPrefabWriter(),
+                new EchoLaunchSetupSceneWriter(),
+                new EchoLaunchSetupBuildSettingsWriter(),
+                new EchoLaunchSetupRepairBackupStore(),
+                failureInjector ?? new EchoLaunchSetupNoFailureInjector(),
+                delegate { return false; });
+        }
+    }
+
+    internal sealed class EchoLaunchSetupIsolatedSnapshotSource :
+        IEchoLaunchSetupSnapshotSource
+    {
+        private readonly EchoLaunchProjectSnapshotCollector source =
+            new EchoLaunchProjectSnapshotCollector();
+
+        public EchoLaunchProjectSnapshot Collect(
+            EchoLaunchSetupRequest request)
+        {
+            EchoLaunchProjectSnapshot live = source.Collect(request);
+
+            return new EchoLaunchProjectSnapshot(
+                live.AssetFacts,
+                live.BuildSettingsScenes,
+                live.PackageRootTemplateAvailable,
+                live.PackageRootTemplateGuid);
+        }
     }
 }

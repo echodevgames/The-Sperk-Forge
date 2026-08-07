@@ -46,7 +46,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 CreateDestination(destinationFolder, destinationScenePath);
                 EchoLaunchSetupPlan createPlan = Refresh(request);
                 EchoLaunchSetupApplyResult applyResult =
-                    new EchoLaunchSetupApplyService().Apply(
+                    EchoLaunchSetupTestFactory.CreateIsolatedApplyService().Apply(
                         new EchoLaunchSetupApplyRequest(
                             createPlan,
                             true,
@@ -90,7 +90,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     Is.False);
 
                 EchoLaunchSetupRepairService service =
-                    new EchoLaunchSetupRepairService();
+                    EchoLaunchSetupTestFactory.CreateIsolatedRepairService();
                 EchoLaunchSetupRepairResult first =
                     service.Repair(
                         new EchoLaunchSetupRepairRequest(
@@ -213,7 +213,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             {
                 CreateDestination(destinationFolder, destinationScenePath);
                 EchoLaunchSetupApplyResult apply =
-                    new EchoLaunchSetupApplyService().Apply(
+                    EchoLaunchSetupTestFactory.CreateIsolatedApplyService().Apply(
                         new EchoLaunchSetupApplyRequest(
                             Refresh(createRequest),
                             true,
@@ -265,16 +265,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                                 .ResolveRootPrefabVariant
                     };
                 EchoLaunchSetupRepairService service =
-                    new EchoLaunchSetupRepairService(
-                        new EchoLaunchProjectSnapshotCollector(),
-                        new EchoLaunchSetupPlanner(),
-                        new EchoLaunchSetupAssetWriter(),
-                        new EchoLaunchSetupPrefabWriter(),
-                        new EchoLaunchSetupSceneWriter(),
-                        new EchoLaunchSetupBuildSettingsWriter(),
-                        new EchoLaunchSetupRepairBackupStore(),
-                        injector,
-                        delegate { return false; });
+                    EchoLaunchSetupTestFactory.CreateIsolatedRepairService(
+                        injector);
 
                 EchoLaunchSetupRepairResult result =
                     service.Repair(
@@ -328,7 +320,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             EchoLaunchSetupRequest request)
         {
             EchoLaunchProjectSnapshot snapshot =
-                new EchoLaunchProjectSnapshotCollector().Collect(request);
+                EchoLaunchSetupTestFactory.CreateIsolatedSnapshot(request);
             return new EchoLaunchSetupPlanner().CreatePlan(request, snapshot);
         }
 

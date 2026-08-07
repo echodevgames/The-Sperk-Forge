@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EchoDevGames.EchoLaunch.Editor.Setup;
-using UnityEditor;
 
 namespace EchoDevGames.EchoLaunch.Editor.Validation
 {
@@ -378,8 +377,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Validation
                     true);
 
             bool sceneExists =
-                AssetDatabase.LoadAssetAtPath<SceneAsset>(
-                    evidence.DestinationScenePath) != null;
+                evidence.FindScene(evidence.DestinationScenePath).Exists;
 
             bool valid =
                 destination.Exists &&

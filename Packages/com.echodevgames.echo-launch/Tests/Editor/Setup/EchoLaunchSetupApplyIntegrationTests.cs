@@ -75,7 +75,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 EchoLaunchSetupPlan displayedPlan = RefreshPlan();
 
                 EchoLaunchSetupApplyService service =
-                    new EchoLaunchSetupApplyService();
+                    EchoLaunchSetupTestFactory.CreateIsolatedApplyService();
 
                 firstResult =
                     service.Apply(
@@ -424,7 +424,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         private EchoLaunchSetupPlan RefreshPlan()
         {
             EchoLaunchProjectSnapshot snapshot =
-                new EchoLaunchProjectSnapshotCollector().Collect(request);
+                EchoLaunchSetupTestFactory.CreateIsolatedSnapshot(request);
 
             return new EchoLaunchSetupPlanner().CreatePlan(
                 request,

@@ -39,7 +39,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                         EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd);
 
                 EchoLaunchProjectSnapshot snapshot =
-                    new EchoLaunchProjectSnapshotCollector().Collect(request);
+                    EchoLaunchSetupTestFactory.CreateIsolatedSnapshot(request);
 
                 EchoLaunchSetupPlan plan =
                     new EchoLaunchSetupPlanner().CreatePlan(
@@ -55,15 +55,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     };
 
                 EchoLaunchSetupApplyService service =
-                    new EchoLaunchSetupApplyService(
-                        new EchoLaunchProjectSnapshotCollector(),
-                        new EchoLaunchSetupPlanner(),
-                        new EchoLaunchSetupAssetWriter(),
-                        new EchoLaunchSetupPrefabWriter(),
-                        new EchoLaunchSetupSceneWriter(),
-                        new EchoLaunchSetupBuildSettingsWriter(),
-                        injector,
-                        delegate { return false; });
+                    EchoLaunchSetupTestFactory.CreateIsolatedApplyService(
+                        injector);
 
                 EchoLaunchSetupApplyResult result =
                     service.Apply(
@@ -127,8 +120,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 EchoLaunchSetupPlan plan =
                     new EchoLaunchSetupPlanner().CreatePlan(
                         request,
-                        new EchoLaunchProjectSnapshotCollector()
-                            .Collect(request));
+                        EchoLaunchSetupTestFactory.CreateIsolatedSnapshot(
+                            request));
 
                 EchoLaunchSetupFailureInjector injector =
                     new EchoLaunchSetupFailureInjector
@@ -139,15 +132,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     };
 
                 EchoLaunchSetupApplyService service =
-                    new EchoLaunchSetupApplyService(
-                        new EchoLaunchProjectSnapshotCollector(),
-                        new EchoLaunchSetupPlanner(),
-                        new EchoLaunchSetupAssetWriter(),
-                        new EchoLaunchSetupPrefabWriter(),
-                        new EchoLaunchSetupSceneWriter(),
-                        new EchoLaunchSetupBuildSettingsWriter(),
-                        injector,
-                        delegate { return false; });
+                    EchoLaunchSetupTestFactory.CreateIsolatedApplyService(
+                        injector);
 
                 EchoLaunchSetupApplyResult result =
                     service.Apply(
