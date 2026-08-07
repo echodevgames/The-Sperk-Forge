@@ -610,9 +610,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Runtime
             StartImmediate(root);
 
             Assert.That(root.LastReport.ReportSchemaVersion, Is.EqualTo(2));
-            Assert.That(root.LastReport.PackageVersion, Is.EqualTo("0.1.0"));
+            Assert.That(root.LastReport.PackageVersion, Is.EqualTo("0.1.0-beta.1"));
             Assert.That(LaunchReport.CurrentSchemaVersion, Is.EqualTo(2));
-            Assert.That(LaunchReport.CurrentPackageVersion, Is.EqualTo("0.1.0"));
+            Assert.That(LaunchReport.CurrentPackageVersion, Is.EqualTo("0.1.0-beta.1"));
         }
 
         [Test]

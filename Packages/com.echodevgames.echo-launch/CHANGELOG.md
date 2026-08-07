@@ -6,6 +6,19 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ## [Unreleased]
 
+No changes are recorded after the current private-beta candidate.
+
+## [0.1.0-beta.1] - 2026-08-07 (candidate under validation)
+
+### Changed
+
+#### FL-M6-02 - Candidate Preparation
+- Advanced the package manifest from development version `0.1.0` to private-beta candidate identity `0.1.0-beta.1`
+- Aligned `LaunchReport.CurrentPackageVersion` and its retained Runtime Play Mode assertions with the candidate identity
+- Authorized exact-commit candidate packaging and clean Windows Unity `6000.3.8f1` validation under a dedicated Checkpoint Build Plan
+- Preserved every external tarball, clean-project, player-build, tester, tag, and release result as `Not run` until evidence exists
+- Made no runtime behavior, API-shape, Editor, prefab, scene, sample, assembly, or dependency change
+
 ### Added
 #### FL-M6-01 - Documentation and Release-Plan Reconciliation
 - SFGSS-ADR-005 standalone release before optional adoption policy

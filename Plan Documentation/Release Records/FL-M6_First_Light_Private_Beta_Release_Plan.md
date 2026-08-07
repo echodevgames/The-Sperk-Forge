@@ -1,9 +1,9 @@
 # FL-M6 — First Light Private Beta Release Plan
 
 **Package:** First Light — Startup and Launch (`EchoLaunch`)
-**Current package version:** `0.1.0` development
-**Planned candidate:** `0.1.0-beta.1`
-**Baseline before candidate work:** FL-M6-01 documentation closeout
+**Current package version:** `0.1.0-beta.1` candidate identity after preparation
+**Planned private beta:** `0.1.0-beta.1`
+**Baseline before candidate work:** `5c21ea4` — FL-M6-01 documentation closeout
 **Release audience:** Jesse and specifically invited private testers
 **Public release:** Not authorized
 

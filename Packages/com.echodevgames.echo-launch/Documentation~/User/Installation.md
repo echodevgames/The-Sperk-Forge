@@ -7,23 +7,25 @@ destination handoff.
 ## Current release state
 
 - Package ID: `com.echodevgames.echo-launch`
-- Development version: `0.1.0`
+- Candidate manifest version: `0.1.0-beta.1`
 - Primary tested development baseline: Unity `6000.3.8f1`
 - Declared Unity floor: `6000.0`
 - Required dependency: `com.unity.ugui` `2.0.0`
 - Package-local evidence: `299` EditMode and `503` Runtime Play Mode tests;
   `802` total passed with no failures or ignored tests
-- Distribution state: private-beta preparation; no public release is claimed
+- Distribution state: private-beta candidate preparation and validation; no
+  tarball route, tag, public release, or stable release is claimed yet
 
-The package-local MVP and Standalone Laboratory are complete. External
-clean-project tarball installation remains `Not run` until FL-M6-02.
+The package-local MVP and Standalone Laboratory are complete. The candidate
+identity is present in the manifest. External clean-project tarball installation
+remains `Not run` until the retained FL-M6-02 evidence passes.
 
 ## Installation-route status
 
 | Route | Current status | Claim |
 |---|---|---|
 | Embedded package in the development repository | Passed | Development only |
-| Local `.tgz` tarball | Planned for FL-M6-02 | Private beta route after evidence passes |
+| Local `.tgz` tarball | FL-M6-02 validation active; not yet passed | Private beta route only after retained evidence passes |
 | Local folder reference | Not run | Not currently claimed |
 | Git URL/tag | Not run | Not currently claimed |
 | Scoped registry | Not run | Not currently claimed |

@@ -24,7 +24,7 @@ namespace EchoDevGames.EchoLaunch
         /// <summary>
         /// Gets the package version that produced this report.
         /// </summary>
-        public const string CurrentPackageVersion = "0.1.0";
+        public const string CurrentPackageVersion = "0.1.0-beta.1";
 
         private readonly LaunchStepReport[] stepReports;
 

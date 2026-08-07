@@ -197,12 +197,12 @@ At this historical gate, the expected first implementation checkpoint was **Firs
 | In drafting | 0 |
 | Remaining | 0 |
 | Completed documentation checkpoint | FW-DOC-12 — Documentation Readiness Gate |
-| Latest completed First Light checkpoint | FL-M5-07 — Standalone Test Laboratory; `daa40c3` |
-| Active checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
+| Latest completed First Light checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation; `5c21ea4` |
+| Active checkpoint | FL-M6-02 — Clean-Project Private-Beta Candidate Validation |
 | Package implementation | First Light package-local MVP complete; other Foundation packages not started |
-| Runtime behavior authorization | None in FL-M6-01; later packages retain their just-in-time learning gate |
+| Runtime behavior authorization | No new runtime feature in FL-M6-02; later packages retain their just-in-time learning gate |
 | Known blockers | Clean-project/private-beta evidence remains `Not run`, not an architecture blocker |
-| Commit/push | FL-M6-01 documentation pending application/commit |
+| Commit/push | FL-M6-01 synchronized at `5c21ea4`; FL-M6-02 candidate preparation pending application/commit |
 
 
 ---

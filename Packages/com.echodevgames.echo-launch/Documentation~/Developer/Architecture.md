@@ -2,8 +2,8 @@
 
 ## Document Status
 
-- Package version: `0.1.0`
-- Development stage: package-local MVP and Standalone Laboratory complete through FL-M5-07 at `daa40c3`; FL-M6-01 documentation/private-beta planning active
+- Package version: `0.1.0-beta.1` candidate identity
+- Development stage: FL-M6-01 documentation reconciliation closed at `5c21ea4`; FL-M6-02 clean-project private-beta candidate validation active
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -33,8 +33,8 @@
   - `FL-M5-05`
   - `FL-M5-06`
   - `FL-M5-07`
-- Active documentation checkpoint:
-  - `FL-M6-01`
+- Active release checkpoint:
+  - `FL-M6-02`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -1214,7 +1214,7 @@ Current report schema:
 
 Producing package version:
 
-    LaunchReport.CurrentPackageVersion = "0.1.0"
+    LaunchReport.CurrentPackageVersion = "0.1.0-beta.1"
 
 FL-M3-08 permits finalized statuses for:
 
@@ -2999,10 +2999,11 @@ steps, twelve accepted Laboratory cases, sample removal/reimport, two narrow
 corrections, `299` passing EditMode tests, `503` passing Runtime Play Mode tests,
 and `802` total automated passes.
 
-FL-M6-01 changes documentation and release authority only. Stop before changing
-the package manifest or generating a candidate artifact. Clean external
-installation and a Windows player belong to FL-M6-02; invited testing belongs
-to FL-M6-03; private beta tagging belongs to FL-M6-04. Automatic sample/Direct
+FL-M6-01 changed documentation and release authority only and closed at
+`5c21ea4`. FL-M6-02 aligns candidate identity, reruns the development matrix,
+creates one exact-commit tarball, and validates clean external installation and
+a Windows player. Invited testing belongs to FL-M6-03; private beta tagging
+belongs to FL-M6-04. Automatic sample/Direct
 Scene installation, build hooks, schema migration, receipts, uninstall/reset
 implementation, crash-persistent recovery, persistent-root policy,
 performance evidence, peer bridges, and optional M7 adoption remain later work.

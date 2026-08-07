@@ -31,10 +31,10 @@ SFGSS-002, SFGSS-003, and SFGSS-004 remain approved and immediately useful. They
 ## 2. Gate rule
 
 SUITE-DOC-33 historically activated FL-M1-01. First Light has since completed
-FL-M1-01 through FL-M5-07. FL-M6-01 is active and authorizes documentation and
-release-plan reconciliation only. Each later package remains individually
-locked until selected, learned/refreshed, and activated by an approved local
-checkpoint.
+FL-M1-01 through FL-M5-07 and closed FL-M6-01 at `5c21ea4`. FL-M6-02 is active
+and authorizes candidate identity, exact-commit packaging, and clean-project
+validation only. Each later package remains individually locked until selected,
+learned/refreshed, and activated by an approved local checkpoint.
 
 ## 3. Honest completeness boundary
 
@@ -79,7 +79,7 @@ remain pending. Other packages keep their own evidence state.
 | Expansion package specifications | 13 of 13 approved; Impact, The Wellspring, The Ascent, The Foundry, Many Tongues, Voices, The Path, The Vault, The Hand, The Eye, The Fellowship, The Vessel, and The Crucible v1.0.0 |
 | Foundation cross-package matrix | Approved |
 | Foundation readiness gate | Passed historically; implementation re-locked by ADR-002 |
-| Package implementation | First Light package-local MVP complete through FL-M5-07; FL-M6-01 active |
+| Package implementation | First Light package-local MVP complete through FL-M5-07; FL-M6-02 candidate validation active |
 
 ## 5. Phase B - Expansion package specifications
 
@@ -150,21 +150,21 @@ These standards now follow the package foundations so they can describe the actu
 
 The graph and learning orientation remains active. SUITE-DOC-33 and
 PKG-LEARN-001 are complete. PKG-LEARN-002 is paused until EchoDiagnostics
-implementation approaches. The active checkpoint is FL-M6-01.
+implementation approaches. The active checkpoint is FL-M6-02.
 
 ## 10. Current status
 
 | Field | Value |
 |---|---|
-| Completed checkpoint | FL-M5-07 – First Light Standalone Test Laboratory; documentation `daa40c3` |
+| Completed checkpoint | FL-M6-01 – Documentation and Release-Plan Reconciliation; `5c21ea4` |
 | Clarification checkpoint | Package Specification Priority Rebaseline - approved August 4, 2026 |
-| Active checkpoint | **FL-M6-01 – Documentation and Release-Plan Reconciliation** |
+| Active checkpoint | **FL-M6-02 – Clean-Project Private-Beta Candidate Validation** |
 | Foundation specifications | 10 of 10 approved |
 | Expansion specifications | 13 of 13 approved |
 | Advanced package foundations | 5 of 5 approved foundations |
 | Package implementation | First Light package-local MVP complete; other packages not started |
-| Active plan | FL-M6-01 documentation/release-plan checkpoint |
-| Runtime authorization | None in FL-M6-01; no package source or manifest change |
+| Active plan | FL-M6-02 candidate identity, packaging, and clean-project validation |
+| Runtime authorization | No runtime feature change; manifest candidate identity and external validation only |
 | Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
 | Graph roadmap | Active and linked from all package specifications and learning hubs |
 | Initial implementation gate | SUITE-DOC-33 passed |

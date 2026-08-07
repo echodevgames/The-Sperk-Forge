@@ -4,8 +4,8 @@ This folder is the living planning, architecture, test, and handoff record for *
 
 The Markdown files in this folder are committed to Git and opened directly in Obsidian. Do not maintain a second copied vault. Git preserves documentation history; Obsidian is the editing and navigation surface.
 
-Current work: First Light FL-M6-01 documentation and private-beta release-plan
-reconciliation after the fully closed `daa40c3` FL-M5-07 baseline.
+Current work: First Light FL-M6-02 clean-project private-beta candidate
+validation after the fully closed `5c21ea4` FL-M6-01 documentation baseline.
 
 ---
 

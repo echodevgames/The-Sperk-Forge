@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.14.0
+**Specification version:** 1.15.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -17,7 +17,7 @@
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime, Editor, sample, and Laboratory implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 implemented and validated the v1.13.0 and EchoLaunch-ADR-010 boundary: one explicitly imported package-owned Standalone Test Laboratory, isolated sample assemblies/assets, Boot and Destination scenes, visible public-API scenarios, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, and removal/reimport proof. FL-M6-01 reconciles documentation and release authority only. FL-M6-02 through FL-M6-04 own clean-project validation, private tester evidence, and private beta closeout. Optional adoption/bridges move to M7 and remain unauthorized.
+> **Approval rule:** This specification is the approved package authority. Runtime, Editor, sample, and Laboratory implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 implemented and validated the v1.13.0 and EchoLaunch-ADR-010 boundary: one explicitly imported package-owned Standalone Test Laboratory, isolated sample assemblies/assets, Boot and Destination scenes, visible public-API scenarios, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, and removal/reimport proof. FL-M6-01 reconciled documentation and release authority at `5c21ea4`. FL-M6-02 is now authorized to assign candidate identity consistently across the manifest, launch-report version constant, retained assertions, and living documents; re-run the development matrix; create one exact-commit checksummed `.tgz`; and validate it in a genuinely new project. FL-M6-03 and FL-M6-04 retain private tester evidence and beta closeout. Optional adoption/bridges remain unauthorized M7 work.
 
 ---
 
@@ -41,6 +41,7 @@
 | 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
 | 1.13.0 | 2026-08-06 | Approved | Selected FL-M5-07 as the bounded Standalone Test Laboratory checkpoint; defined one explicit importable UPM sample, sample/core isolation, Boot and Destination Laboratory scenes, public-API sample steps, package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, explicit Build Settings instructions, removal/reimport proof, and the boundary before M6 adoption | Jesse “Echo” Adams |
 | 1.14.0 | 2026-08-07 | Approved | Recorded the completed `583b91a`/`daa40c3` FL-M5-07 baseline, reconciled the executed test registry and user-documentation requirements, applied SFGSS-ADR-005, redefined M6 as clean-project/private-beta release work, and moved optional adoption/bridges to M7 | Jesse “Echo” Adams |
+| 1.15.0 | 2026-08-07 | Approved | Recorded `5c21ea4` as the closed FL-M6-01 baseline, authorized aligned FL-M6-02 manifest/report candidate identity and exact-commit tarball preparation, and fixed the clean-project acceptance boundary without claiming unrun evidence | Jesse “Echo” Adams |
 
 ---
 
@@ -2100,11 +2101,11 @@ All code examples must compile against the documented release. Menu paths, scree
 
 - [x] Development manifest is valid and recognized as an embedded package.
 - [x] Supported Unity floor and exact dependencies are declared.
-- [ ] Version and changelog are updated.
+- [x] Candidate version and changelog are updated to `0.1.0-beta.1`; final tag/artifact agreement remains an FL-M6-04 gate.
 - [x] Stable committed `.meta` files are included.
 - [ ] The claimed private-beta tarball installation route is tested.
 - [ ] Annotated candidate tag and private release record are prepared.
-- [ ] FL-M6-01 documentation/current status are committed and pushed.
+- [x] FL-M6-01 documentation/current status are committed and pushed at `5c21ea4`.
 - [x] Central compatibility catalog is not applicable to this standalone
       private beta; no integration compatibility snapshot is claimed.
 
@@ -2258,8 +2259,10 @@ FL-M1-01 through FL-M5-07 are complete. The active release sequence is:
 3. FL-M6-03 private tester handoff and findings.
 4. FL-M6-04 private beta closeout and tag.
 
-Stop after FL-M6-01 before changing `package.json` or generating a tarball.
-Optional M7 adoption requires its own explicit selection and plan.
+FL-M6-02 begins from clean synchronized `5c21ea4`. Assign and commit candidate
+identity first, re-run the development matrix second, and create the `.tgz`
+only from the resulting exact clean candidate commit. Optional M7 adoption
+requires its own explicit selection and plan.
 
 ---
 
@@ -2296,9 +2299,9 @@ Before writing code:
 
 | Field | Current value |
 |---|---|
-| Package version | `0.1.0` embedded development package; planned private candidate `0.1.0-beta.1` |
-| Completed checkpoint | FL-M5-07 — Standalone Test Laboratory and Importable Package Sample |
-| Active authorized checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
+| Package version | `0.1.0-beta.1` private-beta candidate identity after preparation |
+| Completed checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation (`5c21ea4`) |
+| Active authorized checkpoint | FL-M6-02 — Clean-Project Private-Beta Candidate Validation |
 | FL-M5-07 authority commit | `741b77d` |
 | FL-M5-06 authority commit | `a159349` |
 | FL-M5-05 authority commit | `d538b5a` |
@@ -2317,7 +2320,7 @@ Before writing code:
 | FL-M5-07 evidence | One explicit importable UPM sample; Boot/Destination scenes; isolated public-API steps; visible scenario assets/readout; Direct Scene and duplicate fixtures; all `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` passed; sample removal/reimport and three-run Setup/Repair repeatability accepted; no core or peer dependency; final imported content and project-setting residue removed before implementation commit |
 | Default project root | `Assets/EchoDevGames/FirstLight` |
 | Evidence gaps | Clean-project tarball installation, private tester execution, Windows player build, historical schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, automatic Direct Scene installation, build hooks, external adoption, persistent-root lifetime, and performance evidence remain not run |
-| Next action | Commit and push FL-M6-01 documentation; then begin FL-M6-02 from a clean documentation baseline without selecting an adoption target |
+| Next action | Apply, inspect, commit, and push FL-M6-02 candidate preparation; then run the full development matrix before producing the exact-commit `.tgz` |
 
 ---
 

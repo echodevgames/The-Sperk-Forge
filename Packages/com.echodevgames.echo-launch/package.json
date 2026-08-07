@@ -1,6 +1,6 @@
 {
   "name": "com.echodevgames.echo-launch",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "displayName": "First Light — Startup and Launch",
   "description": "Coordinates ordered application startup, launch reporting, launch-only presentation, direct-scene development initialization, and final handoff without owning peer package behavior.",
   "unity": "6000.0",

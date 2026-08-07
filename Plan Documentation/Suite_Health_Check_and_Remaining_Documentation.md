@@ -1,8 +1,8 @@
 # The Sperk’s Forge — Suite Health Check and Remaining Documentation
 
 **Updated:** August 7, 2026
-**Latest completed checkpoint:** FL-M5-07 — First Light Standalone Test Laboratory
-**Active checkpoint:** FL-M6-01 — Documentation and Release-Plan Reconciliation
+**Latest completed checkpoint:** FL-M6-01 — Documentation and Release-Plan Reconciliation (`5c21ea4`)
+**Active checkpoint:** FL-M6-02 — Clean-Project Private-Beta Candidate Validation
 **Implementation:** First Light package-local MVP complete; clean-project/private-beta evidence pending
 
 ## Current health
@@ -11,7 +11,7 @@
 |---|---|
 | Suite Bible | Approved v0.24.0 |
 | Standards | SFGSS-001 through SFGSS-010 complete; release sequencing reconciled by SFGSS-ADR-005 |
-| Package authorities | 28 of 28 approved; First Light v1.14.0 current |
+| Package authorities | 28 of 28 approved; First Light v1.15.0 current |
 | Cross-package matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
 | Documentation handoff | Active repository-first protocol |
 | Learning workflow | Just-in-time package-local gate |
@@ -19,7 +19,7 @@
 | First Light implementation | Package-local MVP complete through FL-M5-07 |
 | Automated First Light evidence | 802 passed; 0 failed; 0 ignored |
 | Manual First Light Laboratory | 12 of 12 package cases passed |
-| First Light release state | FL-M6-01 active; clean-project/private-beta evidence not run |
+| First Light release state | FL-M6-02 candidate preparation active; external clean-project/private-beta evidence not run |
 | Existing-project adoption | Deferred to optional M7; no target selected |
 | Other package implementations | Locked until selected and locally learned/authorized |
 | Release-blocking architecture conflicts | None after SFGSS-ADR-005 reconciliation |
@@ -44,9 +44,9 @@ states. First Light evidence does not transfer to them.
 
 ## Current stop point
 
-Commit and push FL-M6-01 documentation, confirm a clean synchronized repository,
-then stop before changing `package.json` or building a `.tgz`. FL-M6-02 requires
-its own Checkpoint Build Plan.
+Apply, commit, and synchronize FL-M6-02 candidate preparation against `5c21ea4`.
+Then run the full development matrix before building an exact-commit `.tgz`.
+Stop on any failed gate; do not tag, release, or hand the package to a tester.
 
 ## Navigation
 

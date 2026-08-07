@@ -1,7 +1,7 @@
 # First Light — Current Notes
 
 **Last reconciled:** August 7, 2026
-**Working status:** FL-M6-01 documentation bundle prepared; commit/push pending
+**Working status:** FL-M6-01 closed at `5c21ea4`; FL-M6-02 candidate preparation active
 **Authority:** Working context only
 
 ## Completed baseline
@@ -10,9 +10,10 @@
 - Authority baseline before FL-M5-07: `741b77d`.
 - Implementation commit: `583b91a`.
 - Documentation closeout: `daa40c3`.
-- Remote state at closeout: `main == origin/main == daa40c3`.
-- Package version: `0.1.0` development.
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.14.0 after FL-M6-01.
+- FL-M6-01 documentation reconciliation: `5c21ea4`.
+- Remote state at the FL-M6-01 gate: `main == origin/main == 5c21ea4`.
+- Package version: `0.1.0-beta.1` candidate identity after FL-M6-02 preparation applies.
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.15.0 after FL-M6-02 authorization.
 - Compilation: `0` errors, `0` warnings.
 - EditMode: `299` passed.
 - Runtime Play Mode: `503` passed.
@@ -21,24 +22,24 @@
 
 ## Active checkpoint
 
-`FL-M6-01 — Documentation and Release-Plan Reconciliation`
+`FL-M6-02 — Clean-Project Private-Beta Candidate Validation`
 
-This checkpoint:
+This checkpoint first gives the package the intended `0.1.0-beta.1` manifest
+identity, then requires a fresh development-repository regression, an
+exact-commit checksummed `.tgz`, and a genuinely new Windows Unity `6000.3.8f1`
+consumer project. The clean project must follow only shipped instructions for
+installation, Quick Start, repeat Setup, Validator, canonical Boot, Laboratory,
+sample removal/reimport, package removal/reinstall, and a non-development
+Windows player.
 
-- replaces the FL-M1/FL-M2-era Installation and Quick Start pages;
-- documents Setup, Apply, Repair, Validator, Boot, startup-step authoring,
-  troubleshooting, removal, reinstall, and private testing;
-- accepts SFGSS-ADR-005;
-- moves optional project adoption/bridges to M7; and
-- defines FL-M6-02 through FL-M6-04 as clean-project candidate, private tester,
-  and private beta closeout work.
-
-It changes no Runtime, Editor, test, prefab, scene, sample, or package-manifest
-file and claims no new Unity evidence.
+Candidate preparation aligns the manifest and the existing public launch-report
+package-version constant, plus its retained assertions. It changes no runtime
+behavior, API shape, Editor code, prefab, scene, sample, assembly, or dependency.
+It does not itself prove any external gate.
 
 ## Release target
 
-- Planned candidate: `0.1.0-beta.1`.
+- Candidate identity: `0.1.0-beta.1`.
 - Claimed consumer route: local `.tgz` only after FL-M6-02 passes.
 - Baseline: new Windows Unity `6000.3.8f1` project.
 - Required proof: install, Quick Start, Setup repeatability, Validator,
@@ -64,6 +65,6 @@ file and claims no new Unity evidence.
 
 ## Next action
 
-Apply, inspect, commit, and push the FL-M6-01 documentation bundle. Confirm a
-clean synchronized repository, then create the separate FL-M6-02 plan before
-changing `package.json` or producing a `.tgz`.
+Apply and inspect the FL-M6-02 candidate-preparation bundle against clean
+`5c21ea4`. Commit and synchronize the candidate identity and plan before running
+Unity or creating the `.tgz`. Do not create a tag or claim a tarball route yet.

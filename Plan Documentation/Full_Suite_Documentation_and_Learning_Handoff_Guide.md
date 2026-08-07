@@ -42,10 +42,10 @@ It provides:
 | Cross-package reviews | Foundation, Expansion, Advanced, Standards/Package, and Full Suite passed |
 | Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
 | Runtime implementation | First Light package-local MVP complete through FL-M5-07; other packages not started |
-| Empirical evidence | First Light has retained evidence through `daa40c3`; every other claim remains package-specific |
+| Empirical evidence | First Light has retained package-local evidence through `daa40c3` and documentation authority through `5c21ea4`; external FL-M6-02 evidence remains not run |
 | Active phase | First Light FL-M6 private-beta release preparation |
 | Completed learning review | PKG-LEARN-001 – First Light (`EchoLaunch`) |
-| Active checkpoint | FL-M6-01 — Documentation and Release-Plan Reconciliation |
+| Active checkpoint | FL-M6-02 — Clean-Project Private-Beta Candidate Validation |
 
 ## 3. Authority versus navigation
 

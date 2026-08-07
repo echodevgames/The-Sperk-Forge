@@ -4,8 +4,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 
 ## Current Status
 
-- Package version: `0.1.0`
-- Development stage: FL-M5-07 fully closed at `daa40c3`; FL-M6-01 documentation and private-beta release-plan reconciliation active
+- Package version: `0.1.0-beta.1` candidate identity
+- Development stage: FL-M6-01 closed at `5c21ea4`; FL-M6-02 clean-project private-beta candidate validation active
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -35,7 +35,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-05`
   - `FL-M5-06`
   - `FL-M5-07`
-- Active authority checkpoint: `FL-M6-01` — Documentation and Release-Plan Reconciliation
+- Active authority checkpoint: `FL-M6-02` — Clean-Project Private-Beta Candidate Validation
 - Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one isolated importable Standalone Test Lab sample
 - Unity baseline: `6000.3.8f1`
 

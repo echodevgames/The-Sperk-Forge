@@ -20,6 +20,7 @@ The Unity-provided license and notices for the installed package remain authorit
 
 No other third-party source code, compiled libraries, fonts, artwork, audio,
 data, or other external materials are included directly in First Light at
-version `0.1.0`. The Standalone Test Lab splash is package-owned project art.
+candidate version `0.1.0-beta.1`. The Standalone Test Lab splash is
+package-owned project art.
 
 This notice must be updated whenever a third-party dependency or included material is added, removed, or changed.

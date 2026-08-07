@@ -1,7 +1,8 @@
 # First Light Setup and Validation
 
 This guide explains the implemented project-owned setup path for First Light
-version `0.1.0`. It applies to the Unity `6000.3.8f1` development baseline.
+candidate `0.1.0-beta.1`. It applies to the Unity `6000.3.8f1` private-beta
+validation baseline.
 
 ## Before opening Setup
 

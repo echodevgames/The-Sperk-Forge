@@ -6,8 +6,8 @@ It coordinates ordered application initialization and final handoff without owni
 
 ## Package Status
 
-- Package version: `0.1.0`
-- Development stage: package-local MVP and Standalone Laboratory complete through FL-M5-07 at `daa40c3`; FL-M6-01 documentation/private-beta planning active
+- Package version: `0.1.0-beta.1` candidate identity
+- Development stage: FL-M6-01 documentation reconciliation closed at `5c21ea4`; FL-M6-02 clean-project private-beta candidate validation active
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -41,10 +41,12 @@ It coordinates ordered application initialization and final handoff without owni
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
 
-The next release path is documentation reconciliation, a clean-project local
-tarball candidate, one invited private test, and private beta closeout. Existing
-project adoption and optional bridges are deferred to a later deliberate M7
-decision.
+The active release path is an exact-commit local tarball candidate, clean-project
+validation, one invited private test, and private beta closeout. The manifest
+now carries the intended candidate identity, but no tarball-installation,
+clean-project, player-build, tester, tag, or release claim exists until its
+later gate passes. Existing-project adoption and optional bridges are deferred
+to a later deliberate M7 decision.
 
 ## Implemented Runtime Scope
 
@@ -328,7 +330,7 @@ First Light now provides:
 - Public immutable `LaunchStepReport`
 - Public immutable `LaunchReport`
 - Report schema version `2`
-- Producing package version `0.1.0`
+- Producing package version `0.1.0-beta.1`
 - Copied identity, policy, progress, result, and timing values
 - Attempted, disabled, and unvisited accounting
 - Warning, failure, blocking-failure, and cancellation summaries
