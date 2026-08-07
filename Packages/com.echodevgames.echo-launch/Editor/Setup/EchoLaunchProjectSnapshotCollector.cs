@@ -290,7 +290,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[index]);
 
-                if (!path.StartsWith("Assets/", StringComparison.Ordinal))
+                if (!IsAutomaticDiscoveryCandidatePath(path))
                 {
                     continue;
                 }
@@ -315,7 +315,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[index]);
 
-                if (!path.StartsWith("Assets/", StringComparison.Ordinal))
+                if (!IsAutomaticDiscoveryCandidatePath(path))
                 {
                     continue;
                 }
@@ -330,6 +330,33 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
 
             return result;
+        }
+
+        private static bool IsAutomaticDiscoveryCandidatePath(
+            string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            string normalized =
+                EchoLaunchSetupPathUtility.NormalizeSeparators(path);
+
+            if (!normalized.StartsWith(
+                    "Assets/",
+                    StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return !string.Equals(
+                       normalized,
+                       "Assets/Samples",
+                       StringComparison.OrdinalIgnoreCase) &&
+                   !normalized.StartsWith(
+                       "Assets/Samples/",
+                       StringComparison.OrdinalIgnoreCase);
         }
 
         private static int? ReadInt(

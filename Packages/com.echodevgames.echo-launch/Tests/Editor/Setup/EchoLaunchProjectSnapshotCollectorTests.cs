@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using EchoDevGames.EchoLaunch.Editor.Setup;
 using NUnit.Framework;
 using UnityEditor;
@@ -209,6 +210,171 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         [Test]
+        public void CollectorExcludesImportedSamplesFromAutomaticCandidates()
+        {
+            bool samplesRootExisted =
+                AssetDatabase.IsValidFolder("Assets/Samples");
+
+            string testRoot =
+                "Assets/Samples/__EchoLaunch_FL_M5_07_CandidateIsolation_" +
+                Guid.NewGuid().ToString("N");
+
+            string configurationPath =
+                testRoot + "/ImportedConfiguration.asset";
+
+            string startupSequencePath =
+                testRoot + "/ImportedStartupSequence.asset";
+
+            string destinationPath =
+                testRoot + "/ImportedDestination.asset";
+
+            string splashPath =
+                testRoot + "/ImportedSplashSequence.asset";
+
+            string rootPrefabPath =
+                testRoot + "/EchoLaunchRoot_ImportedSampleCandidate.prefab";
+
+            try
+            {
+                EnsureFolder("Assets/Samples");
+                EnsureFolder(testRoot);
+
+                CreateAsset<EchoLaunchConfiguration>(
+                    configurationPath);
+
+                CreateAsset<StartupSequence>(
+                    startupSequencePath);
+
+                CreateAsset<LaunchDestination>(
+                    destinationPath);
+
+                CreateAsset<SplashSequence>(
+                    splashPath);
+
+                Assert.That(
+                    AssetDatabase.CopyAsset(
+                        EchoLaunchSetupPathSet.PackageRootPrefabTemplatePath,
+                        rootPrefabPath),
+                    Is.True);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                EchoLaunchProjectSnapshot snapshot =
+                    Collect();
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.Configuration,
+                    configurationPath);
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.StartupSequence,
+                    startupSequencePath);
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.LaunchDestination,
+                    destinationPath);
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.SplashSequence,
+                    splashPath);
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.RootPrefab,
+                    rootPrefabPath);
+
+                AssertNoAutomaticCandidateUnderImportedSamples(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.Configuration);
+
+                AssertNoAutomaticCandidateUnderImportedSamples(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.StartupSequence);
+
+                AssertNoAutomaticCandidateUnderImportedSamples(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.LaunchDestination);
+
+                AssertNoAutomaticCandidateUnderImportedSamples(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.SplashSequence);
+
+                AssertNoAutomaticCandidateUnderImportedSamples(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.RootPrefab);
+            }
+            finally
+            {
+                CleanupImportedSampleTestRoot(
+                    testRoot,
+                    samplesRootExisted);
+            }
+        }
+
+        [Test]
+        public void ExplicitImportedSampleSelectionRemainsAddressable()
+        {
+            bool samplesRootExisted =
+                AssetDatabase.IsValidFolder("Assets/Samples");
+
+            string testRoot =
+                "Assets/Samples/__EchoLaunch_FL_M5_07_ExplicitSelection_" +
+                Guid.NewGuid().ToString("N");
+
+            string configurationPath =
+                testRoot + "/ExplicitConfiguration.asset";
+
+            try
+            {
+                EnsureFolder("Assets/Samples");
+                EnsureFolder(testRoot);
+
+                CreateAsset<EchoLaunchConfiguration>(
+                    configurationPath);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                EchoLaunchSetupRequest request =
+                    new EchoLaunchSetupRequest(
+                        UniqueRoot,
+                        UniqueRoot + "/Scenes/Boot.unity",
+                        UniqueRoot + "/Scenes/Missing.unity",
+                        false,
+                        EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                        configurationPath);
+
+                EchoLaunchProjectSnapshot snapshot =
+                    new EchoLaunchProjectSnapshotCollector()
+                        .Collect(request);
+
+                EchoLaunchProjectAssetFact selectedFact =
+                    snapshot.FindAssetFact(configurationPath);
+
+                Assert.That(selectedFact.Exists, Is.True);
+                Assert.That(
+                    selectedFact.Path,
+                    Is.EqualTo(configurationPath));
+
+                AssertCandidatePathAbsent(
+                    snapshot,
+                    EchoLaunchSetupAssetRole.Configuration,
+                    configurationPath);
+            }
+            finally
+            {
+                CleanupImportedSampleTestRoot(
+                    testRoot,
+                    samplesRootExisted);
+            }
+        }
+
+        [Test]
         public void CollectorProducesNonemptyEvidenceFingerprint()
         {
             Assert.That(
@@ -222,6 +388,103 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             Assert.That(
                 Collect().EvidenceFingerprint,
                 Is.EqualTo(Collect().EvidenceFingerprint));
+        }
+
+        private static void CreateAsset<T>(
+            string path)
+            where T : ScriptableObject
+        {
+            T asset =
+                ScriptableObject.CreateInstance<T>();
+
+            AssetDatabase.CreateAsset(
+                asset,
+                path);
+        }
+
+        private static void EnsureFolder(
+            string path)
+        {
+            string normalized =
+                path.Replace('\\', '/');
+
+            string[] segments =
+                normalized.Split('/');
+
+            string current =
+                segments[0];
+
+            for (int index = 1;
+                index < segments.Length;
+                index++)
+            {
+                string next =
+                    current + "/" + segments[index];
+
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(
+                        current,
+                        segments[index]);
+                }
+
+                current = next;
+            }
+        }
+
+        private static void AssertCandidatePathAbsent(
+            EchoLaunchProjectSnapshot snapshot,
+            EchoLaunchSetupAssetRole role,
+            string path)
+        {
+            IReadOnlyList<EchoLaunchProjectAssetFact> candidates =
+                snapshot.GetCandidates(role);
+
+            for (int index = 0;
+                index < candidates.Count;
+                index++)
+            {
+                Assert.That(
+                    candidates[index].Path,
+                    Is.Not.EqualTo(path),
+                    role + " should not automatically discover imported sample content.");
+            }
+        }
+
+        private static void AssertNoAutomaticCandidateUnderImportedSamples(
+            EchoLaunchProjectSnapshot snapshot,
+            EchoLaunchSetupAssetRole role)
+        {
+            IReadOnlyList<EchoLaunchProjectAssetFact> candidates =
+                snapshot.GetCandidates(role);
+
+            for (int index = 0;
+                index < candidates.Count;
+                index++)
+            {
+                Assert.That(
+                    candidates[index].Path.StartsWith(
+                        "Assets/Samples/",
+                        StringComparison.OrdinalIgnoreCase),
+                    Is.False,
+                    role + " candidate escaped the imported-sample isolation boundary.");
+            }
+        }
+
+        private static void CleanupImportedSampleTestRoot(
+            string testRoot,
+            bool samplesRootExisted)
+        {
+            AssetDatabase.DeleteAsset(testRoot);
+
+            if (!samplesRootExisted &&
+                AssetDatabase.IsValidFolder("Assets/Samples"))
+            {
+                AssetDatabase.DeleteAsset("Assets/Samples");
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private static EchoLaunchProjectSnapshot Collect()
