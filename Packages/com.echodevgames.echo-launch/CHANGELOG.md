@@ -7,6 +7,23 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-07 - Standalone Test Laboratory and Importable Package Sample
+- Exactly one Package Manager sample named `First Light Standalone Test Lab`
+- Explicit user-initiated import with no automatic Build Settings, ProjectSettings, Setup, Repair, Validator, scripting-define, scene-open, or Play Mode mutation
+- Package-owned Boot and Destination Laboratory scenes with visible status, destination, report, and warning evidence
+- Public-API immediate-success, timed-progress, warning, recoverable-failure, and blocking-failure sample steps
+- Pre-authored success, warning, recoverable, blocking, and invalid-destination configurations
+- Duplicate-root, missing-configuration, invalid-destination, Direct Scene creation/reuse, and minimum-duration splash-skip fixtures
+- Imported sample content that is project-owned, removable, and reimportable
+- Explicit optional Laboratory authoring command with persistent Direct Scene reference verification
+- Sample/core assembly isolation, no friend access, no hidden discovery, and no peer-package or project-specific runtime dependency
+- Setup/Repair candidate isolation for imported First Light sample definitions and root prefabs
+- Stable package acceptance registry `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`
+- Seven focused Laboratory package EditMode tests
+- Two hundred ninety-nine total passing EditMode tests
+- Five hundred three retained Runtime Play Mode tests
+- Eight hundred two total passing automated tests
+- Manual acceptance of all twelve Laboratory cases, sample removal, clean reimport, three-run Setup/Repair repeatability, and final repository cleanup
 #### FL-M5-06 - Launch Simulator and Deterministic Failure Injection
 - Explicit Editor-only `Tools > Sperk's Forge > First Light > Simulator` window
 - No automatic simulation on window open, repaint, import, reload, or Play Mode entry

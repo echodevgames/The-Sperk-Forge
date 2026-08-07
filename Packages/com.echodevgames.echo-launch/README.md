@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, and the Editor-only Launch Simulator are implemented; Standalone Laboratory evidence remains pending
+- Development stage: package-local MVP implementation and standalone Laboratory evidence are complete through FL-M5-07; documentation commit and push remain pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -36,6 +36,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-04` Read-Only Validator and Project Health Report
   - `FL-M5-05` Direct Scene Development Initializer
   - `FL-M5-06` Launch Simulator and Deterministic Failure Injection
+  - `FL-M5-07` Standalone Test Laboratory and Importable Package Sample
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -711,6 +712,31 @@ progress evidence.
 Expected simulated warning and failure results appear only inside the report.
 They do not create Unity Console warnings or errors.
 
+## First Light Standalone Test Lab
+
+Package Manager exposes exactly one explicit sample:
+
+```text
+First Light Standalone Test Lab
+```
+
+The sample contains Boot and Destination scenes, neutral splash and status
+presentation, visible launch evidence, pre-authored success/warning/failure
+configurations, public-API sample steps, a duplicate-root fixture, and Direct
+Scene creation/reuse proof.
+
+Import is user initiated. It does not automatically modify Build Settings,
+ProjectSettings, canonical First Light setup assets, scripting defines, open
+scenes, or Play Mode. Imported content is project-owned and removable.
+
+The sample Runtime assembly references only First Light Runtime and approved
+Unity modules. Core package assemblies do not reference sample code or content,
+and no peer Sperk's Forge package is required.
+
+See the imported sample's `README.md` for explicit Build Settings order,
+scenario selection, Direct Scene checks, splash skip, reset, removal, and
+reimport instructions.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -747,13 +773,13 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `290`
+- Passed: `299`
 - Failed: `0`
 - Ignored: `0`
 
 Editor setup, apply, and repair tests:
 
-- Passed: `209`
+- Passed: `211`
 - Failed: `0`
 - Ignored: `0`
 
@@ -775,6 +801,12 @@ Launch Simulator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Standalone Laboratory package tests:
+
+- Passed: `7`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -789,10 +821,11 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
-- Editor setup, apply, and repair tests: `209` EditMode
+- Editor setup, apply, and repair tests: `211` EditMode
 - Validator tests: `25` EditMode
 - Direct Scene Validator tests: `5` EditMode
 - Launch Simulator tests: `24` EditMode
+- Standalone Laboratory package tests: `7` EditMode
 - Prefab asset tests: `27` EditMode
 - Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
@@ -868,6 +901,15 @@ Manual FL-M5-06 acceptance proved all eight Simulator presets, ordered logical
 progress, warning and recoverable-failure continuation, blocking/timeout/exception
 traversal stops, cooperative cancellation, clean Console behavior, and exact
 repeatable cancellation fingerprints after deterministic report normalization.
+
+Manual FL-M5-07 acceptance proved `ELAUNCH-LAB-001` through
+`ELAUNCH-LAB-012`: explicit import, canonical Boot handoff, timed progress,
+warning and recoverable continuation, missing configuration, blocking failure,
+duplicate-root containment, invalid destination, Direct Scene creation/reuse,
+minimum-duration splash skip, sample removal, and clean reimport with repeatable
+Setup/Repair separation. Final regressions passed `299` EditMode and `503`
+Runtime Play Mode tests for `802` total automated tests with no failures or
+ignored tests.
 ## Not Implemented Yet
 
 First Light does not yet provide:
@@ -882,9 +924,7 @@ First Light does not yet provide:
 - Editor migration from historical configuration schemas
 - Automatic Direct Scene helper installation
 - Direct Scene build hooks or automatic build blocking
-- Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
-- Standalone Laboratory
 - Peer-package bridges
 
 ## Documentation
@@ -903,20 +943,22 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Five hundred three passing Runtime Play Mode tests
-- Two hundred ninety passing EditMode tests
-- Two hundred nine Editor setup, apply, and repair tests
+- Two hundred ninety-nine passing EditMode tests
+- Two hundred eleven Editor setup, apply, and repair tests
 - Twenty-five focused read-only Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
 - Twenty-four focused Launch Simulator tests
-- Seven hundred ninety-three total passing automated tests
+- Seven focused Standalone Laboratory package tests
+- Eight hundred two total passing automated tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, and an Editor-only deterministic Launch Simulator
+- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, an Editor-only deterministic Launch Simulator, and one isolated importable Standalone Test Lab sample
 - Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation and simulation fingerprints/reports, and stable setup/validation/simulation diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
 - Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
+- Explicit Package Manager sample import, Boot-to-Destination Laboratory activation, public-API sample isolation, Direct Scene creation/reuse, duplicate-root containment, sample removal, and reimport evidence
 
 Still `Not run`:
 
@@ -925,7 +967,6 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Automatic production startup
-- Real Boot-to-destination Standalone Laboratory activation
 - Performance measurements
 
 ## License

@@ -3,7 +3,7 @@
 ## Document Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, and the Editor-only Launch Simulator are implemented; Standalone Laboratory evidence remains pending
+- Development stage: package-local MVP implementation and standalone Laboratory evidence are complete through FL-M5-07; documentation commit and push remain pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -32,6 +32,7 @@
   - `FL-M5-04`
   - `FL-M5-05`
   - `FL-M5-06`
+  - `FL-M5-07`
 - Unity baseline: `6000.3.8f1`
 
 ## Current Architecture
@@ -229,6 +230,15 @@ First Light currently establishes:
 189. Stable `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 190. Activated read-only `ELAUNCH-VAL-009`
 191. Direct-play creation, reuse, convergence, warning, and restoration acceptance
+192. Explicit Editor-only Launch Simulator using the real startup runner and policy contracts
+193. Transient deterministic Simulator requests, plans, progress, and schema-1 reports
+194. Exactly one explicit importable UPM Standalone Test Lab sample
+195. Sample-owned public-API steps, Boot/Destination scenes, scenario assets, and visible readout
+196. Sample/core assembly isolation with no friend access, hidden discovery, peer package, or project assembly
+197. Imported sample exclusion from automatic Setup/Repair candidate discovery
+198. Persistent GUID-backed Direct Scene sample reference verification
+199. Package-qualified `ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` acceptance
+200. Sample removal, clean reimport, and repeatable Setup/Repair proof
 
 First Light now validates, executes, times, evaluates, projects, plays an optional
 configured splash, runs startup steps, loads or settles one initial destination,
@@ -237,9 +247,12 @@ finalizes one immutable terminal report, and starts automatically from Unity
 that can inspect, plan, create, explicitly repair, and independently validate the
 canonical project-owned First Light foundation. Directly opened gameplay or Test
 Lab scenes may enter the same launch architecture through an explicitly authored
-release-gated Direct Scene configuration. Migration, automatic helper
-installation, build hooks, Simulator, Laboratory, and standalone release proof
-remain separate unauthorized boundaries.
+release-gated Direct Scene configuration. The package also ships one isolated,
+explicitly imported Standalone Test Lab that proves Boot, Direct Scene,
+presentation, warning/failure policy, duplicate authority, removal, and reimport
+through public consumer APIs. Migration, automatic helper installation, build
+hooks, player builds, clean external installation, and adoption remain separate
+boundaries.
 
 ## Implemented Package Files
 
@@ -2485,6 +2498,63 @@ e92b028d7798ec597894213539e3ae19b113931e714ef29bae6d8d11bb92362b
 Expected simulated failures remain report evidence and do not generate Unity
 Console warnings or errors.
 
+## Importable Standalone Test Laboratory
+
+FL-M5-07 adds one Package Manager sample:
+
+```text
+First Light Standalone Test Lab
+```
+
+The Laboratory is an explicit consumer-facing proof surface, not a second
+production launch system. Its Boot and Destination scenes use the established
+root, presentation, splash, sequence, destination, report, duplicate-authority,
+and Direct Scene contracts.
+
+The imported sample owns:
+
+- immediate, timed-progress, warning, recoverable-failure, and blocking steps
+- visible pre-authored configurations and sequences
+- Boot and Destination scenes
+- neutral presentation and readout fixtures
+- duplicate-root and existing-authority fixtures
+- one project-owned Direct Scene configuration
+- explicit reset, removal, and reimport instructions
+
+The sample Runtime assembly references only the public First Light Runtime
+assembly and approved Unity modules. Core Runtime, Presentation, and Editor
+assemblies do not reference sample code or content. There is no friend access,
+reflection, hidden discovery, peer-package dependency, or project-specific
+runtime reference.
+
+Import performs no automatic project mutation. Build Settings selection,
+scenario choice, Setup/Repair runs, Direct Scene fixtures, and Play Mode entry
+remain explicit user actions.
+
+### Narrow checkpoint-owned corrections
+
+Laboratory acceptance exposed two bounded defects in approved behavior:
+
+1. The Setup snapshot collector could treat Package Manager sample assets as
+   automatic canonical candidates. First Light sample roots are now excluded
+   from candidate discovery.
+2. The Laboratory authoring command could save the Destination scene before a
+   newly created `DirectSceneConfiguration` had been reloaded as a persistent
+   asset, producing a null serialized scene reference. Authoring now saves,
+   imports, reloads, and verifies the GUID-backed asset reference before scene
+   save.
+
+The final generated and imported Destination scenes retain the same persistent
+configuration identity and a non-null serialized reference.
+
+### Accepted Laboratory evidence
+
+`ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` passed. The accepted matrix covers
+canonical Boot handoff, timed progress, warning/recoverable continuation,
+missing configuration, blocking failure, duplicate authority, invalid
+destination, Direct Scene creation and reuse, splash minimum timing, sample
+removal, clean reimport, and three-run Setup/Repair repeatability.
+
 ## Compile Evidence
 
 The deterministic manual-clock helpers and immediate executors intentionally complete synchronously.
@@ -2506,6 +2576,10 @@ cancellation-determinism correction.
 No implementation compiler error, package warning, expected simulated
 failure warning, or manual acceptance warning remained at the final gate.
 
+Final FL-M5-07 compilation also completed with `0` errors and `0` warnings
+after imported-sample candidate isolation and Direct Scene serialization
+corrections.
+
 ## Retained Lifecycle Architecture
 
 `LaunchStateTransitionRules` remains the single internal authority for lifecycle legality.
@@ -2520,13 +2594,13 @@ The runner remains neutral: it emits internal observations but does not own root
 
 Full EditMode totals:
 
-- Passed: `290`
+- Passed: `299`
 - Failed: `0`
 - Ignored: `0`
 
 Editor setup, apply, and repair tests:
 
-- Passed: `209`
+- Passed: `211`
 - Failed: `0`
 - Ignored: `0`
 
@@ -2548,6 +2622,12 @@ Launch Simulator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Standalone Laboratory package tests:
+
+- Passed: `7`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -2562,10 +2642,11 @@ Runtime Play Mode totals:
 
 Breakdown:
 
-- Editor setup, apply, and repair tests: `209` EditMode
+- Editor setup, apply, and repair tests: `211` EditMode
 - Validator tests: `25` EditMode
 - Direct Scene Validator tests: `5` EditMode
 - Launch Simulator tests: `24` EditMode
+- Standalone Laboratory package tests: `7` EditMode
 - Prefab asset tests: `27` EditMode
 - Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
@@ -2905,22 +2986,19 @@ Not implemented:
 - Editor migration from historical configuration schemas
 - Automatic Direct Scene helper installation
 - Direct Scene build hooks or automatic build blocking
-- Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
-- Standalone Laboratory
 - Peer-package bridges
 
 ## Stop Point
 
-FL-M5-05 stops after the project-owned Direct Scene configuration and initializer,
-Start-time authority reuse, exactly-one root creation, active-destination
-no-reload handoff, release-player creation prohibition, truthful
-`DirectSceneDevelopment` report mode, activated read-only `ELAUNCH-VAL-009`,
-two hundred sixty-six passing EditMode tests, five hundred three passing Runtime
-Play Mode tests, manual creation/reuse/convergence acceptance, and exact healthy
-Validator restoration.
+FL-M5-07 stops after one isolated importable Standalone Test Lab, Boot and
+Destination proof, public-API sample steps, twelve accepted Laboratory cases,
+sample removal and reimport, two narrow checkpoint-owned corrections, `299`
+passing EditMode tests, `503` passing Runtime Play Mode tests, `802` total
+automated passes, and clean implementation commit `583b91a`.
 
-Automatic helper installation, build hooks, Simulator, Laboratory, schema
-migration, receipts, uninstall/reset, crash-persistent recovery, persistent-root
-policy, player builds, external adoption, performance evidence, and standalone
-release proof require later approved checkpoints.
+Automatic sample installation, automatic Direct Scene installation, build
+hooks, schema migration, receipts, uninstall/reset implementation,
+crash-persistent recovery, persistent-root policy, player builds, clean
+external installation, M6 adoption, and performance evidence require later
+approved checkpoints.

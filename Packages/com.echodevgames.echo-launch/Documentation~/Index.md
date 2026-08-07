@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-06 complete; FL-M5-07 Standalone Test Laboratory authority prepared pending authority commit
+- Development stage: FL-M5-07 Standalone Test Laboratory implementation and acceptance complete; documentation commit and push pending
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -34,8 +34,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-04`
   - `FL-M5-05`
   - `FL-M5-06`
-- Active authority checkpoint: `FL-M5-07` — Standalone Test Laboratory and Importable Package Sample
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator
+  - `FL-M5-07`
+- Active authority checkpoint: none; the next checkpoint requires a new just-in-time learning review and committed authority
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one isolated importable Standalone Test Lab sample
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -105,6 +106,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-05 Direct Scene Development Initializer Test Report](Developer/Test%20Reports/FL-M5-05_Direct_Scene_Development_Initializer_Test_Report.md)
 - [FL-M5-06 Launch Simulator and Deterministic Failure Injection](Developer/Checkpoints/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection.md)
 - [FL-M5-06 Launch Simulator Test Report](Developer/Test%20Reports/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection_Test_Report.md)
+- [FL-M5-07 Standalone Test Laboratory and Importable Package Sample](Developer/Checkpoints/FL-M5-07_Standalone_Test_Laboratory_and_Importable_Package_Sample.md)
+- [FL-M5-07 Standalone Test Laboratory Test Report](Developer/Test%20Reports/FL-M5-07_Standalone_Test_Laboratory_and_Importable_Package_Sample_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -160,26 +163,30 @@ configuration mutation, root/presentation/destination simulation,
 Standalone Laboratory scenes, build hooks, and report export remain outside
 the implemented boundary.
 
-## Active FL-M5-07 Authority
+## Completed FL-M5-07 Boundary
 
-FL-M5-07 may implement one explicit importable UPM sample named
+FL-M5-07 implements exactly one explicit importable UPM sample named
 `First Light Standalone Test Lab`.
 
-The sample may contain the Boot and Destination Laboratory scenes, visible
-readouts, project-owned sample configuration/sequence assets after import,
-neutral splash media, public-API sample steps, direct-scene setup, duplicate
-root setup, reset instructions, and package-qualified
-`ELAUNCH-LAB-001` through `ELAUNCH-LAB-012` evidence.
+The sample contains Boot and Destination scenes, visible readout and neutral
+presentation, project-owned sample configuration/sequence assets, public-API
+immediate/timed/warning/recoverable/blocking steps, duplicate-root and Direct
+Scene fixtures, and a complete reset/removal/reimport guide.
 
-Import must remain explicit and user initiated. It may not automatically
-modify Build Settings, ProjectSettings, canonical project setup assets,
-scripting defines, or unrelated scenes. Core package assemblies may not
-depend on sample code or content.
+Import remains explicit and does not automatically modify Build Settings,
+ProjectSettings, canonical project setup assets, scripting defines, scenes, or
+Play Mode. Core assemblies do not depend on sample code or content. Setup and
+Repair exclude imported sample assets from automatic candidate discovery.
 
-M6 project adoption, optional bridges, Runtime core expansion, automatic
-sample installation, report export, build hooks, migration, receipts,
-uninstall, recovery, player-build claims, and external-adoption claims remain
-unauthorized.
+Automated acceptance passed `7` focused Laboratory tests, `299` complete
+EditMode tests, and `503` Runtime Play Mode tests. Manual acceptance passed
+`ELAUNCH-LAB-001` through `ELAUNCH-LAB-012`, including removal, clean reimport,
+and three-run Setup/Repair repeatability.
+
+M6 project adoption, optional bridges, automatic sample installation, report
+export, build hooks, migration, receipts, uninstall/reset implementation,
+recovery, player-build claims, clean external installation, performance, and
+external-adoption claims remain outside this completed checkpoint.
 
 ## Package Root Documents
 
@@ -339,16 +346,17 @@ First Light currently proves:
 - Exact asset and `.meta` backup, rollback, and retained-backup reporting
 - Narrow configuration, destination, root-prefab, Boot-scene, and Build Settings reconciliation
 - Successful first Repair plus two `NoChanges` Repair reruns
-- Two hundred nine Editor setup, apply, and repair tests
+- Two hundred eleven Editor setup, apply, and repair tests
 - Twenty-five focused Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
 - Twenty-four focused Launch Simulator EditMode tests
-- Two hundred ninety total passing EditMode tests
+- Seven focused Standalone Laboratory package tests
+- Two hundred ninety-nine total passing EditMode tests
 - Five hundred three passing Runtime Play Mode tests
-- Seven hundred ninety-three total passing automated tests
+- Eight hundred two total passing automated tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-06 is implemented, automated-tested, manually accepted, documented, and pushed. FL-M5-07 Standalone Test Laboratory authority is prepared but not yet committed or implemented. M6 project adoption, optional bridges, schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.
+FL-M5-07 is implemented, automated-tested, manually accepted, and committed in `583b91a`; documentation commit and push remain pending. M6 project adoption, optional bridges, schema migration, receipts, uninstall/reset implementation, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build and clean external-install evidence, external adoption, and performance evidence remain outside the implemented boundary.
