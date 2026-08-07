@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c457f5ce903cb4b92f6cf2d5e60ce4, type: 3}
+  m_Name: InvalidDestination
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.LaunchDestination
+  destinationId: e29a66c4bf3d4fc1a8bbe8282f1e2576
+  schemaVersion: 1
+  displayName: Missing Laboratory Destination
+  scenePath: "Assets/Samples/First Light \u2014 Startup and Launch/0.1.0/First Light
+    Standalone Test Lab/Scenes/Missing_Laboratory_Destination.unity"

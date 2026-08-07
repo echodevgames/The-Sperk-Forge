@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549b0d22cb1ca60a759995360d2ff298, type: 3}
+  m_Name: LaboratoryDirectSceneConfiguration
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.DirectSceneConfiguration
+  directSceneConfigurationId: dd47273f46c74121b97fd6f164b41723
+  schemaVersion: 1
+  rootPrefab: {fileID: 560176712239517934, guid: fe6d5d696cd1e1e438a8388c453bae5f, type: 3}
+  entryPolicy: 0
