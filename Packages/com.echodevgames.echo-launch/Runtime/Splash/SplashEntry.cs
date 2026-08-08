@@ -6,8 +6,9 @@ using UnityEngine;
 namespace EchoDevGames.EchoLaunch
 {
     /// <summary>
-    /// Stores immutable authored data for one image startup splash and
-    /// optional preferred audio-content intent.
+    /// Stores immutable authored data for one image startup splash,
+    /// optional preferred audio-content intent, and bounded presentation
+    /// motion metadata.
     ///
     /// The definition owns no playback index, elapsed time, alpha, skip
     /// request, cancellation state, or presenter state.
@@ -55,6 +56,20 @@ namespace EchoDevGames.EchoLaunch
         private SplashSkipPolicy skipPolicy =
             SplashSkipPolicy
                 .AfterMinimumDisplay;
+
+        [SerializeField]
+        private SplashMotionStyle motionStyle =
+            SplashMotionStyle.None;
+
+        [SerializeField]
+        [Min(1f)]
+        private float pulseMaximumScale =
+            1.05f;
+
+        [SerializeField]
+        [Min(0.01f)]
+        private float pulseCycleSeconds =
+            1f;
 
         /// <summary>
         /// Gets the stable diagnostic identity of this entry.
@@ -115,6 +130,24 @@ namespace EchoDevGames.EchoLaunch
             skipPolicy;
 
         /// <summary>
+        /// Gets the bounded authored image motion style.
+        /// </summary>
+        public SplashMotionStyle MotionStyle =>
+            motionStyle;
+
+        /// <summary>
+        /// Gets the authored maximum Pulse image scale.
+        /// </summary>
+        public double PulseMaximumScale =>
+            pulseMaximumScale;
+
+        /// <summary>
+        /// Gets the authored Pulse cycle duration.
+        /// </summary>
+        public double PulseCycleSeconds =>
+            pulseCycleSeconds;
+
+        /// <summary>
         /// Gets the authored fade/hold/fade duration before minimum-time
         /// expansion.
         /// </summary>
@@ -139,7 +172,11 @@ namespace EchoDevGames.EchoLaunch
                 MinimumDisplaySeconds) &&
             Enum.IsDefined(
                 typeof(SplashSkipPolicy),
-                skipPolicy);
+                skipPolicy) &&
+            Enum.IsDefined(
+                typeof(SplashMotionStyle),
+                motionStyle) &&
+            HasValidMotionDefinition;
 
         internal SplashEntry(
             string authoredEntryId,
@@ -150,7 +187,11 @@ namespace EchoDevGames.EchoLaunch
             double authoredFadeOutSeconds,
             double authoredMinimumDisplaySeconds,
             SplashSkipPolicy authoredSkipPolicy,
-            AudioClip authoredPreferredAudioClip = null)
+            AudioClip authoredPreferredAudioClip = null,
+            SplashMotionStyle authoredMotionStyle =
+                SplashMotionStyle.None,
+            double authoredPulseMaximumScale = 1.05d,
+            double authoredPulseCycleSeconds = 1d)
         {
             entryId =
                 authoredEntryId;
@@ -198,10 +239,73 @@ namespace EchoDevGames.EchoLaunch
 
             preferredAudioClip =
                 authoredPreferredAudioClip;
+
+            if (!Enum.IsDefined(
+                    typeof(SplashMotionStyle),
+                    authoredMotionStyle))
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(authoredMotionStyle));
+            }
+
+            motionStyle =
+                authoredMotionStyle;
+
+            pulseMaximumScale =
+                ToSerializedPulseMaximumScale(
+                    authoredPulseMaximumScale);
+
+            pulseCycleSeconds =
+                ToSerializedPulseCycleSeconds(
+                    authoredPulseCycleSeconds);
         }
 
         public SplashEntry()
         {
+        }
+
+        private bool HasValidMotionDefinition =>
+            motionStyle !=
+                SplashMotionStyle.Pulse ||
+            (
+                IsFinite(
+                    PulseMaximumScale) &&
+                PulseMaximumScale >= 1d &&
+                IsFinite(
+                    PulseCycleSeconds) &&
+                PulseCycleSeconds > 0d
+            );
+
+        private static float ToSerializedPulseMaximumScale(
+            double value)
+        {
+            if (!IsFinite(value) ||
+                value < 1d ||
+                value > float.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    value,
+                    "Pulse maximum scale must be finite, at least 1, and representable as a Unity float.");
+            }
+
+            return (float)value;
+        }
+
+        private static float ToSerializedPulseCycleSeconds(
+            double value)
+        {
+            if (!IsFinite(value) ||
+                value <= 0d ||
+                value > float.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    value,
+                    "Pulse cycle duration must be finite, positive, and representable as a Unity float.");
+            }
+
+            return (float)value;
         }
 
         private static float ToSerializedSeconds(
@@ -224,9 +328,16 @@ namespace EchoDevGames.EchoLaunch
             double value)
         {
             return
-                !double.IsNaN(value) &&
-                !double.IsInfinity(value) &&
+                IsFinite(value) &&
                 value >= 0d;
+        }
+
+        private static bool IsFinite(
+            double value)
+        {
+            return
+                !double.IsNaN(value) &&
+                !double.IsInfinity(value);
         }
 
         private static bool IsCanonicalId(

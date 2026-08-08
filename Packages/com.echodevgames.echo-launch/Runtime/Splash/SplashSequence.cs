@@ -34,6 +34,9 @@ namespace EchoDevGames.EchoLaunch
             CurrentSchemaVersion;
 
         [SerializeField]
+        private SplashPresentationSettings presentationSettings;
+
+        [SerializeField]
         private List<SplashEntry> entries =
             new List<SplashEntry>();
 
@@ -56,6 +59,23 @@ namespace EchoDevGames.EchoLaunch
             entries == null
                 ? 0
                 : entries.Count;
+
+        /// <summary>
+        /// Gets the effective splash presentation definition.
+        ///
+        /// A missing serialized value is the schema-1 legacy state and
+        /// resolves without rewriting the project-owned asset.
+        /// </summary>
+        public SplashPresentationSettings PresentationSettings =>
+            presentationSettings ??
+            SplashPresentationSettings.LegacyDefaults;
+
+        /// <summary>
+        /// Gets whether this asset explicitly stores A1 presentation
+        /// settings rather than using the schema-1 legacy fallback.
+        /// </summary>
+        public bool HasAuthoredPresentationSettings =>
+            presentationSettings != null;
 
         internal bool HasValidIdentity =>
             IsCanonicalId(sequenceId);
@@ -94,6 +114,15 @@ namespace EchoDevGames.EchoLaunch
                     $"Splash sequence schema {schemaVersion} is unsupported. Expected {CurrentSchemaVersion}.");
             }
 
+            SplashPresentationSettings effectivePresentation =
+                PresentationSettings;
+
+            if (!effectivePresentation.HasValidDefinition)
+            {
+                throw new InvalidOperationException(
+                    "The splash sequence presentation settings are invalid.");
+            }
+
             if (entries == null)
             {
                 throw new InvalidOperationException(
@@ -129,7 +158,23 @@ namespace EchoDevGames.EchoLaunch
                     throw new InvalidOperationException(
                         $"Splash entry ID '{entry.EntryId}' is duplicated.");
                 }
+
+                if (!effectivePresentation.AllowUserAdvance &&
+                    entry.SkipPolicy ==
+                        SplashSkipPolicy
+                            .WaitForInputAfterMinimum)
+                {
+                    throw new InvalidOperationException(
+                        $"Splash entry {index} waits for user input, but the sequence disables user advancement.");
+                }
             }
+        }
+
+        internal void SetPresentationSettingsForTesting(
+            SplashPresentationSettings configuredPresentationSettings)
+        {
+            presentationSettings =
+                configuredPresentationSettings;
         }
 
         internal void SetEntriesForTesting(

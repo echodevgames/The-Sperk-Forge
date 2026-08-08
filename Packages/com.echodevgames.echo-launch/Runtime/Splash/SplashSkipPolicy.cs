@@ -21,6 +21,13 @@ namespace EchoDevGames.EchoLaunch
         /// Requests received earlier remain latched until that boundary.
         /// </summary>
         AfterMinimumDisplay = 1,
+
+        /// <summary>
+        /// The entry waits for a neutral advance request after its minimum
+        /// display time instead of completing automatically.
+        /// Requests received earlier remain latched until that boundary.
+        /// </summary>
+        WaitForInputAfterMinimum = 2,
     }
 }
 
