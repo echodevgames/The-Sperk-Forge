@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 8, 2026
-**Current focus:** First Light FL-M5-07 documentation closeout
-**Current checkpoint:** FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample
+**Current focus:** Suite Reference Showcase authority and First Light production-use phase
+**Current checkpoint:** Suite authority update — SFGSS-ADR-005; FL-M6-01 authority follows after commit
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -13,89 +13,108 @@
 
 ## Current State
 
-- Package: First Light (`EchoLaunch`)
-- Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.13.0
-- Unity baseline: `6000.3.8f1`
-- Authority commit: `8ff4109`
-- Sample shell implementation: `ff0feff`
-- Authored Laboratory assets: `a51c054`
-- Imported-sample candidate isolation: `02429fb`
-- Final acceptance fixes: `f1665f7`
-- Working tree was clean after the final implementation push.
+- First Light FL-M5-07 is complete and closed at documentation commit `710aec3`.
+- Final FL-M5-07 automated evidence: `809 / 809`.
+- Final FL-M5-07 manual Laboratory evidence: `12 / 12`.
+- Repository baseline for this authority change: exact clean `710aec3`.
+- First Light package version remains `0.1.0`.
+- First Light package specification remains v1.13.0 until the fresh M6 package-authority revision is approved.
 
-## FL-M5-07 Implemented Outcome
+## Newly Approved Suite Direction
 
-- `[DECISION]` First Light ships exactly one separately importable UPM sample named **First Light Standalone Test Lab**.
-- `[DECISION]` The Laboratory is fully authored under `Samples~/First Light Standalone Test Lab/`; no second setup or launch engine is shipped.
-- `[DECISION]` Standard imported `Assets/Samples/**` content is excluded from automatic Setup candidate discovery while explicit user selection remains supported.
-- `[DECISION]` The canonical Boot Laboratory inherits `SuccessConfiguration` from the Laboratory root prefab and must not serialize a null scene override for that configuration.
-- `[DECISION]` LAB-010 uses a sample-only manual skip-request surface routed through the existing uGUI splash presenter API. Production input ownership remains unchanged.
-- `[DECISION]` The Laboratory splash minimum is five seconds so the manual minimum-duration/early-skip proof is human-observable.
-- `[DECISION]` No package Runtime authority, Setup Apply/Repair write authority, Validator authority, Simulator authority, schema, or diagnostic ownership was broadened.
+`[DECISION]` Every package will receive a clean in-house **Package Reference Showcase** after its isolated Standalone Test Lab proof.
 
-## Final Automated Validation
+The intended evidence layers are now:
 
 ```text
-Focused package tests: 6 / 6
-Focused asset tests:   8 / 8
-
-EditMode: 306 / 306
-PlayMode: 503 / 503
-Total:    809 / 809
-
-Failed:   0
-Ignored:  0
-Errors:   0
-Warnings: 0
+Package implementation
+        ↓
+Standalone Test Lab
+engineering microscope
+        ↓
+Package Reference Showcase
+production-style display case
+        ↓
+Clean-project reproduction
+outside-consumer proof
+        ↓
+Integration demonstrations / the Suite Showcase Hub
+suite collection and composition
 ```
 
-## Manual Laboratory Acceptance
+The Reference Showcase:
 
-All twelve approved cases passed: `LAB-001` through `LAB-012`.
+- is project-owned rather than immutable package source;
+- uses the same documented public setup/configuration/API surfaces available to an outside consumer;
+- must not depend on test-only APIs, hidden internals, or unrelated package code;
+- shows the normal front-facing happy path by default;
+- may use one scene or the smallest scene set required by the real workflow;
+- has an Editor/workspace equivalent for genuinely non-scene packages;
+- normally lives under `Assets/EchoDevGames/SuiteShowcase/<Package>/`.
 
-Setup repeatability:
+`[DECISION]` A future project-owned **Suite Showcase Hub** will link or launch package Reference Showcases and integrated demonstrations but is not a runtime package, authority, or substitute for package evidence. **Suite Showcase Hub is a functional placeholder name only.** Its final lore-facing name remains intentionally unresolved and may draw from the Hackulos / Sperk-galaxy large computer-brain cosmology.
+
+## Official Package Graduation Loop
 
 ```text
-Run 1: Succeeded
-Run 2: NoChanges
-Run 3: NoChanges
+Learning / package authority
+        ↓
+Implementation + automated regression
+        ↓
+Standalone Test Lab
+        ↓
+Package Reference Showcase
+        ↓
+Clean-project reproduction
+        ↓
+Release qualification
+        ↓
+Private beta / external adoption
 ```
 
-Repair repeatability:
+This is the suite-wide development-to-release rhythm. The display case is the bridge between engineering proof and real consumer/release proof, not a substitute for either.
 
-```text
-Run 1: Succeeded — one deliberately cleared StartupSequence reference repaired
-Run 2: NoChanges
-Run 3: NoChanges
-```
+## First Light Next Phase
 
-Healthy settled plan fingerprint:
+The next First Light work will establish the pattern.
 
-```text
-7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c
-```
+The planned M6 sequence is:
 
-## Acceptance Findings Resolved During FL-M5-07
+1. **FL-M6-01 — First Light Production Reference Showcase**
+   - create the first in-house display case;
+   - use project-owned real/front-facing splash configuration;
+   - show normal Boot → splash(es) → startup → destination behavior;
+   - keep diagnostics secondary;
+   - use only public First Light consumer surfaces.
 
-- `[BUG][RESOLVED]` Imported sample content initially polluted automatic Setup candidate discovery. The bounded `Assets/Samples/**` automatic-discovery exclusion restored the full suite while preserving explicit selection.
-- `[BUG][RESOLVED]` The authored Boot Laboratory scene serialized a null `configuration` prefab-instance override. The override was removed and regression-tested.
-- `[BUG][RESOLVED]` LAB-010 had no practical manual skip-request surface. A sample-only readout control and live elapsed/minimum/`CanSkipNow` evidence were added.
-- `[NOTE]` The Laboratory-only minimum splash duration was increased from one second to five seconds for reliable manual observation.
+2. **FL-M6-02 — Clean-Project Consumer Reproduction**
+   - install First Light into a genuinely clean Unity project;
+   - reproduce the same production-style startup flow;
+   - prove no hidden repository-local dependency.
 
-## Unity Editor Session-Restore Observation
+3. Later M6/M7 release qualification
+   - Git/tarball route proof;
+   - player builds;
+   - performance evidence;
+   - packaging/version/release candidate;
+   - private-beta handoff.
 
-During LAB-012, Unity `6000.3.8f1` repeatedly hung during startup while restoring/opening the generated Boot asset path. Isolation showed that the hang followed the path/GUID even when scene contents were replaced with empty or known-good contents. The evidence does not support attributing this observation to First Light runtime or Laboratory scene contents.
+This ordering keeps the exciting visible proof small and understandable before returning to heavier release qualification.
 
-## Repository Cleanup
+## Authority Boundary
 
-- Imported `Assets/Samples` acceptance content removed.
-- LAB-012 generated `Assets/EchoDevGames/FirstLight` content removed.
-- Temporary Build Settings changes restored.
-- Generated solution-file drift restored.
-- Final implementation staging contained package/test files only.
-- Final implementation commit pushed as `f1665f7`.
+This suite authority change does **not** authorize FL-M6-01 implementation by itself.
+
+After the suite authority commit:
+
+- update First Light package specification from the synchronized baseline;
+- create a fresh FL-M6-01 Checkpoint Build Plan;
+- perform another drift audit before implementation;
+- do not resurrect discarded post-rewind M6 work unless a specific item is deliberately reviewed and reintroduced.
 
 ## Next Action
 
-Commit and push the FL-M5-07 documentation closeout. After that commit is synchronized, select the next First Light checkpoint deliberately.
+1. Audit exact clean `710aec3`.
+2. Apply and review SFGSS-000 v0.24.0, SFGSS-001 v1.3.0, SFGSS-004 v1.3.0, SFGSS-ADR-005, ADR log, Suite Graph Roadmap, and this Current Notes update.
+3. Commit and push the suite Reference Showcase authority.
+4. Build fresh FL-M6-01 First Light authority from the resulting synchronized commit.

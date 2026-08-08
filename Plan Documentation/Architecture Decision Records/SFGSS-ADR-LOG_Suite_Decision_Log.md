@@ -4,7 +4,7 @@ tags:
   - sfgss/decision-log
   - sfgss/navigation
 status: active
-updated: 2026-08-06
+updated: 2026-08-08
 ---
 
 # The Sperk’s Forge — Suite Architecture Decision Log
@@ -13,7 +13,7 @@ updated: 2026-08-06
 **Authority:** Index only; each ADR and its affected higher-authority documents remain authoritative
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Standard:** [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007]]
-**Next available suite ADR:** `SFGSS-ADR-005`
+**Next available suite ADR:** `SFGSS-ADR-006`
 
 > The log tells us which doors were chosen. The ADRs explain why, and the specifications define what lies beyond them.
 
@@ -25,6 +25,7 @@ updated: 2026-08-06
 | [[SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|SFGSS-ADR-002]] | Full Suite Documentation Gate and Learning-Oriented Implementation | 1.0.0 | Not applicable to runtime evidence | Suite governance and implementation workflow | Final readiness gate, owner workflow change, or learning reviews change implementation order |
 | [[SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|SFGSS-ADR-003]] | Graph Roadmap and Package Learning Review | 1.0.0 | Not applicable to runtime evidence | Documentation navigation and learning; sequencing partially superseded by ADR-004 | Graph becomes unmanageable, package grouping changes, or reviews expose a better order |
 | [[SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|SFGSS-ADR-004]] | Just-in-Time Package Learning Gate | 1.0.0 | Not applicable to runtime evidence | Package-local learning and implementation authorization | Package learning cadence changes or multi-package implementation makes the local gate impractical |
+| [[SFGSS-ADR-005_Package_Reference_Showcases_and_Suite_Showcase_Hub|SFGSS-ADR-005]] | Package Reference Showcases and the Suite Showcase Hub | 1.0.0 | Design approved; first implementation pending | Suite package demonstration, consumer proof, and portfolio/showcase architecture | Three package showcases reveal a better standard, the Suite Showcase Hub begins implementation, or beta workflow exposes a mismatch |
 
 ## Proposed suite ADRs
 

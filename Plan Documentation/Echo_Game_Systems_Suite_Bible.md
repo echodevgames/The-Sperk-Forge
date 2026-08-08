@@ -1,12 +1,12 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
-**Document ID:** SFGSS-000  
-**Version:** 0.23.0
-**Status:** Approved lead architecture baseline; implementation program activated under checkpoint control  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
-**Current development baseline:** Unity 6000.3.8f1  
-**Last updated:** August 4, 2026
+**Document ID:** SFGSS-000
+**Version:** 0.24.0
+**Status:** Approved lead architecture baseline; implementation program activated under checkpoint control
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
+**Current development baseline:** Unity 6000.3.8f1
+**Last updated:** August 8, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
@@ -375,28 +375,78 @@ The package README remains concise and routes readers into `Documentation~`. Pro
 
 Existing projects are evidence of design intent and proven workflows, not templates to copy blindly. The suite preserves their successful separation, data-driven authoring, event flow, stable IDs, and focused components while correcting accumulated project shortcuts such as multiple independent persistent managers, hard-coded scene names, fixed save filenames, project-specific database references, and mutable runtime state stored in shared definition assets.
 
-### 4.18 Scene-first isolation standard
+### 4.18 Scene-first isolation and Reference Showcase standard
 
 Every package and independently selectable feature must be demonstrable in its own isolated Unity scene wherever a scene is technically meaningful.
 
-- A **Standalone Test Lab** scene may depend only on the package under test, its declared Unity dependencies, and redistributable sample assets.
-- An **Integration Lab** scene tests one explicit bridge or selected package combination and remains separate from standalone proof.
-- A **Showcase** scene may present many systems together, but it never replaces isolated testing.
+- A **Standalone Test Lab** is the engineering proof. It may depend only on the package under test, its declared Unity dependencies, and redistributable sample assets.
+- An **Integration Lab** tests one explicit bridge, provider adapter, or selected package combination and remains separate from standalone proof.
+- A **Package Reference Showcase** is the in-house production-style consumer proof. After the Standalone Test Lab passes, every scene-meaningful package must receive the smallest clean showcase scene or scene set needed to demonstrate how a real game would use the package correctly.
+- A Reference Showcase uses documented public setup, configuration, prefabs, APIs, and extension seams. It must not depend on test-only APIs, hidden package internals, privileged repository state, or unrelated package code merely because it lives in the suite workspace.
+- Reference Showcase content is project-owned and lives outside immutable package source, normally under `Assets/EchoDevGames/SuiteShowcase/<Package>/` in the integration/development workspace. A package may separately ship a redistributable Showcase sample only when its package specification explicitly approves that distribution surface.
+- The Reference Showcase defaults to the player/developer-facing experience rather than a wall of diagnostics. Diagnostic overlays may exist, but they are secondary and removable.
+- A package may use one scene or a small scene set. The architecture must not force “one package = one scene” when the real workflow requires Boot/destination, hub/target, or comparable scene pairs.
+- Editor-only or otherwise non-scene packages provide the equivalent clean in-house reference workspace/window demonstration and document why a runtime scene is not applicable.
+- A later **Suite Showcase Hub**, working title **Suite Showcase Hub**, may link or launch the package Reference Showcases and combined integration demonstrations. the Suite Showcase Hub is project-owned composition and never replaces Standalone or Integration evidence.
 - Each controller preset in the controller library receives its own scene rather than sharing one controller-dependent test level.
 - Direct-scene development helpers may create only the minimum authority required for that lab and must use the same duplicate-safety rules as production.
 - Lightweight project adapters translate between packages; they must not recreate either package’s authority.
-- A package is not release-ready if its sample works only because unrelated package code happens to be present in the project.
+- A package is not release-ready if its sample or Reference Showcase works only because unrelated package code happens to be present in the project.
 
-The preferred sample layout is:
+The preferred distributed sample layout remains:
 
 ```text
 Samples~/
 ├── Standalone Labs/
 │   └── <Feature> Lab/
-├── Integration Labs/
-│   └── <Package A> + <Package B>/
-└── Showcase/
+└── Integration Labs/
+    └── <Package A> + <Package B>/
 ```
+
+The preferred in-house showcase layout is:
+
+```text
+Assets/EchoDevGames/SuiteShowcase/
+├── <Package A>/
+│   ├── Scenes/
+│   ├── Configuration/
+│   └── Presentation/
+├── <Package B>/
+└── Integrated/
+    └── the Suite Showcase Hub/
+```
+
+### 4.18.1 Official package development-to-release loop
+
+Every package follows the same graduation rhythm. A package may add package-specific checkpoints, but it may not silently skip these evidence stages without an explicit Not applicable justification:
+
+```text
+Just-in-time package learning / research
+        ↓
+Package authority + approved Checkpoint Build Plan
+        ↓
+Implementation + automated regression
+        ↓
+Standalone Test Lab
+isolated engineering proof
+        ↓
+Package Reference Showcase
+project-owned production-style consumer proof
+        ↓
+Clean-project reproduction
+same happy path outside the development repository
+        ↓
+Release qualification
+installation routes, player/build proof, performance, packaging/versioning as applicable
+        ↓
+Private beta / external adoption
+        ↓
+Feedback, maintenance, and later integration evidence
+```
+
+A green Standalone Test Lab proves the machinery. A green Package Reference Showcase proves that the package is understandable and usable through its public consumer surfaces in-house. A green clean-project reproduction proves that the same happy path does not depend on hidden repository-local state. Release qualification then proves the distributable artifact and supported deployment routes.
+
+The future Suite Showcase Hub may collect completed package displays and integration demonstrations, but it never changes, replaces, or short-circuits this graduation loop.
 
 ### 4.19 Diagnostics without mandatory coupling
 
@@ -473,7 +523,8 @@ Before a package can be called release-ready, it should contain:
 - A tarball installation test.
 - A project-specific integration test in at least one real game.
 - At least one isolated Standalone Test Lab scene whenever the package has scene-visible behavior.
-- Separate Integration Lab scenes for any advertised bridge; a combined showcase is optional and never substitutes for isolation.
+- A project-owned in-house Package Reference Showcase, or documented non-scene equivalent, before the package is presented as an external beta candidate.
+- Separate Integration Lab scenes for any advertised bridge; combined suite showcases never substitute for isolation or the package Reference Showcase.
 
 ### 5.3 Configuration ownership
 
@@ -2174,7 +2225,8 @@ Every package specification must define tests in these categories.
 - Sample can be removed without breaking the runtime package.
 - Every Standalone Test Lab passes with no unrelated Sperk’s Forge package installed.
 - Every advertised bridge has a separate Integration Lab that declares both sides explicitly.
-- Showcase scenes are tested only after the standalone and bridge labs pass.
+- A Package Reference Showcase is tested only after the package Standalone Lab passes and must exercise documented consumer-facing setup rather than test-only seams.
+- Combined Suite Showcase scenes are tested only after the relevant standalone, Reference Showcase, and bridge/provider evidence passes.
 - Each controller preset passes in its own scene with only its declared input/physics dependencies.
 
 ### 15.6 Release gate
@@ -2190,6 +2242,7 @@ A package does not leave beta until:
 - Stable `.meta` files and GUIDs are preserved or intentionally migrated.
 - Setup, generation, repair, and migration actions pass a repeat-run test without duplicating or overwriting project-owned content.
 - Standalone Test Lab and advertised Integration Lab scenes pass from a clean project.
+- The in-house Package Reference Showcase demonstrates the advertised happy path through public consumer surfaces, or the package records a justified non-scene equivalent.
 - The distributable tarball installs successfully.
 
 ---
@@ -2782,6 +2835,7 @@ The following decisions form the approved starting baseline for the suite:
 153. Initial implementation activation is checkpoint-specific. It does not authorize a milestone, package family, later First Light behavior, or another package.
 154. FL-M1-01 must verify the live Unity compile, working tree, package path, and exact baseline uGUI version before creating files; these empirical checks remain `Not run` at documentation-gate closeout.
 155. First Light may proceed because PKG-LEARN-001 is complete. Every later package remains locally locked until its own just-in-time learning review and readiness decision activate an approved Checkpoint Build Plan.
+156. Every package receives an in-house Package Reference Showcase after isolated proof and before external beta presentation. The Showcase is project-owned consumer-style evidence built only through documented public surfaces; it is separate from the Standalone Test Lab, does not become a runtime dependency, and may later be linked from the project-owned **Suite Showcase Hub**. SFGSS-ADR-005 records the decision.
 
 ---
 
@@ -2810,6 +2864,8 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 - Hackulos can use the general packages plus optional RPG data without forcing RPG concepts into every game.
 - Character management, crafting, and multiplayer connect through explicit contracts rather than circular dependencies.
 - Every package and controller preset proves itself in an isolated Test Lab before combined showcase scenes are treated as success.
+- Every package has a clean in-house Package Reference Showcase that demonstrates correct real-world use through the same public surfaces available to an outside consumer.
+- The project-owned **Suite Showcase Hub** can eventually present the collection without becoming proof of package independence.
 - A developer can enable a polished in-game diagnostic overlay that clearly shows startup, package health, performance, scene, and runtime state without making diagnostics a mandatory dependency.
 - Package samples prove behavior but never become production requirements.
 - Documentation is accurate enough for a fresh collaborator or ChatGPT conversation to continue from the current checkpoint.
@@ -2819,30 +2875,20 @@ The Sperk’s Forge Game Systems Suite succeeds when:
 
 ## 24. Immediate Next Step
 
-The suite identity and the one hundred fifty-five decisions in Section 21 are approved. The complete documentation program, integration matrices, handoff audit, SFGSS-ADR-004, and PKG-LEARN-001 support the initial implementation gate.
+First Light has advanced through FL-M5-07 and completed its Standalone Test Laboratory with `809 / 809` final automated tests and `12 / 12` manual Laboratory cases.
 
-SUITE-DOC-33 passes with advisory and activates only:
+The newly approved suite-wide Package Reference Showcase rule is promoted through SFGSS-ADR-005, SFGSS-001, and SFGSS-004 before the next First Light implementation checkpoint begins.
 
-```text
-FL-M1-01 – First Light Package Skeleton
-```
+After that authority commit is synchronized:
 
-Follow `Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md` v1.3.0 and SFGSS-005 v1.4.0.
+1. Draft and approve a fresh First Light specification revision for its production-style Reference Showcase and clean consumer proof.
+2. Create a fresh `FL-M6-01` Checkpoint Build Plan from the synchronized baseline.
+3. Build the first in-house Package Reference Showcase under project-owned `Assets/EchoDevGames/SuiteShowcase/FirstLight/`.
+4. Prove the front-facing startup experience with real project-owned splash configuration and a normal destination scene.
+5. Keep the Standalone Test Laboratory intact as engineering proof; the Reference Showcase is a separate display-case surface.
+6. Do not resurrect discarded post-rewind M6 history unless a specific piece is deliberately reviewed and reintroduced through current authority.
 
-Before creating files:
-
-1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
-2. Review Git status and preserve unrelated work.
-3. Confirm the First Light package path is absent or safely reviewed.
-4. Inspect the exact baseline `com.unity.ugui` version.
-5. Stop if any starting condition conflicts with the approved plan.
-
-FL-M1-01 authorizes only the package manifest, four assembly definitions, documentation shell, generated `.meta` files, and bounded validation. It authorizes no C# file or launch behavior.
-
-After FL-M1-01 closes, do not begin FL-M2-01 automatically. Create and approve its Checkpoint Build Plan. Before another package begins implementation, complete that package's own just-in-time learning review.
-
-
----
+No First Light M6 implementation is authorized by this suite-wide authority update alone.
 
 ## Graph Navigation
 

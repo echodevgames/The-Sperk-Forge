@@ -1,15 +1,15 @@
 # The Sperk’s Forge – Testing, Validation, Test Labs, and Release Standard
 
-**Document ID:** SFGSS-004  
-**Version:** 1.2.0
-**Status:** Approved architecture and quality standard  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 v0.17.0  
-**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002  
-**Current development baseline:** Unity 6000.3.8f1  
-**Minimum planned public Unity floor:** Unity 6000.0  
-**Last updated:** August 4, 2026
+**Document ID:** SFGSS-004
+**Version:** 1.3.0
+**Status:** Approved architecture and quality standard
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
+**Parent authority:** SFGSS-000 v0.24.0
+**Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-005
+**Current development baseline:** Unity 6000.3.8f1
+**Minimum planned public Unity floor:** Unity 6000.0
+**Last updated:** August 8, 2026
 
 > A blueprint may predict where the bridge should stand. Only evidence proves that it holds weight.
 
@@ -33,7 +33,7 @@
 12. Editor tooling, setup, repair, and migration testing
 13. Standalone Laboratory standard
 14. Integration Laboratory standard
-15. Showcase and sample verification
+15. Reference showcases, integrated showcases, and sample verification
 16. Clean-project installation and package-route proof
 17. Upgrade, migration, removal, and reinstall proof
 18. Lifecycle, direct-scene, and domain-reload proof
@@ -137,7 +137,8 @@ This standard does not define:
 | **Standalone Laboratory** | The isolated user-visible proof of one package or independently selectable feature with only declared hard dependencies. |
 | **Editor Laboratory** | An Editor-only interactive proof for a package whose central behavior is not a runtime scene. |
 | **Integration Laboratory** | A separate proof owned by a bridge/provider artifact and containing every declared peer/provider dependency. |
-| **Showcase** | A combined presentation scene or project that demonstrates composition after standalone and integration evidence exists. |
+| **Package Reference Showcase** | A project-owned in-house production-style demonstration of one package through documented consumer-facing setup and public surfaces after standalone proof exists. |
+| **Integrated Showcase** | A combined presentation scene or project, including the Suite Showcase Hub, that demonstrates composition after the relevant standalone, Reference Showcase, and integration evidence exists. |
 | **Clean project** | A disposable Unity project created from a known template with no unrelated Sperk’s Forge package or project code. |
 | **Installation route** | Embedded, local path, Git URL, tarball, registry, or Workshop-driven installation path. |
 | **Compatibility claim** | A statement that a package works with a specific Unity version, platform, dependency version, provider, device family, or project context. |
@@ -681,15 +682,42 @@ Project-local adapters are tested in the consuming project and may use the Integ
 
 ---
 
-## 15. Showcase and sample verification
+## 15. Reference showcases, integrated showcases, and sample verification
+### 15.1 Package Reference Showcase role
 
-### 15.1 Showcase role
+A Package Reference Showcase is required in-house consumer evidence for every scene-meaningful package before external beta presentation unless the package specification records a justified non-scene equivalent.
 
-A Showcase demonstrates composition, visual polish, portfolio value, and realistic workflow. It is optional and never substitutes for Standalone or Integration Laboratories.
+It demonstrates:
 
-### 15.2 Sample import rules
+- the normal front-facing happy path;
+- the documented setup/configuration path a consumer actually follows;
+- project-owned presentation, scenes, and configuration;
+- public APIs and prefabs rather than test-only or hidden implementation seams;
+- realistic workflow and portfolio-quality understanding without pretending to be exhaustive failure testing.
 
-Every sample tests that:
+A Reference Showcase never substitutes for a Standalone or Integration Laboratory. It answers “what does correct real-world use look like?” rather than “what edge cases can this package survive?”
+
+### 15.2 Reference Showcase independence rules
+
+The Reference Showcase:
+
+- lives outside immutable package source, normally in the suite integration/development workspace;
+- must not become a runtime dependency or a prerequisite for package compilation;
+- must not rely on unrelated Echo package code unless the specific showcase is explicitly an integration demonstration;
+- may use EchoDevGames/Sperk’s Forge branding and placeholder art because it is project-owned in-house content;
+- should hide or minimize diagnostic instrumentation by default;
+- must remain reproducible through the documented consumer workflow in a clean project;
+- may consist of one scene or the smallest scene set necessary to represent the actual workflow.
+
+### 15.3 Integrated Showcase and the Suite Showcase Hub
+
+An Integrated Showcase demonstrates composition, visual polish, portfolio value, and realistic multi-package workflow after the required package evidence exists.
+
+The project-owned **Suite Showcase Hub** may link or launch Package Reference Showcases and integrated demonstrations. It is never package independence evidence and does not create a new runtime package authority.
+
+### 15.4 Sample import rules
+
+Every distributed sample tests that:
 
 - Import does not modify immutable package source.
 - Required dependencies are declared and explained.
@@ -699,15 +727,33 @@ Every sample tests that:
 - Deleting the sample leaves the package compiling and functional.
 - Reimport does not duplicate project-owned data unexpectedly.
 
-### 15.3 Sample state
+### 15.5 Sample state
 
-Samples may contain safe placeholder definitions and configuration. They must not be mistaken for production project data, migration fixtures, or package-owned mutable state.
+Samples may contain safe placeholder definitions and configuration. They must not be mistaken for production project data, migration fixtures, package-owned mutable state, or the project-owned in-house Reference Showcase.
 
-### 15.4 Controller and feature isolation
+### 15.6 Controller and feature isolation
 
-Every independently selectable controller preset or feature receives its own Laboratory when SFGSS-000 or the package specification requires it. A large omnibus sample does not prove each module independently.
+Every independently selectable controller preset or feature receives its own Laboratory when SFGSS-000 or the package specification requires it. A large omnibus sample or Gallery scene does not prove each module independently.
 
----
+### 15.7 Official evidence graduation loop
+
+The required evidence sequence is:
+
+```text
+Implementation regression
+→ Standalone Test Lab
+→ Package Reference Showcase
+→ Clean-project reproduction
+→ Release qualification
+→ Private beta / external adoption
+```
+
+A later stage may reuse earlier evidence, but it cannot replace it:
+
+- showcase polish does not replace Standalone failure and edge-case proof;
+- clean-project installation does not replace in-house consumer ergonomics proof;
+- player-build proof does not replace package-route installation proof;
+- the Suite Showcase Hub does not replace package-specific evidence.
 
 ## 16. Clean-project installation and package-route proof
 
@@ -745,7 +791,7 @@ The clean project must not contain unrelated Echo packages, old project assembli
 
 ### 16.4 Compile is necessary but insufficient
 
-A successful import must be followed by the package’s smallest documented functional proof, validator pass, or Laboratory workflow.
+A successful import must be followed by the package’s smallest documented functional proof, validator pass, or Laboratory workflow. Before beta, the clean-project proof must also reproduce the Reference Showcase’s normal consumer-facing happy path or its package-approved non-scene equivalent.
 
 ### 16.5 Package artifact integrity
 
@@ -1268,6 +1314,7 @@ A package may enter beta when:
 
 - MVP automated and manual tests pass.
 - Standalone Laboratory passes from a clean project.
+- The Package Reference Showcase passes in-house and its normal happy path is reproducible through documented public consumer setup in a clean project.
 - Required setup/repair repeatability passes.
 - Git/local/tarball routes claimed for beta pass.
 - No Blocker or Critical defect remains.
@@ -1420,9 +1467,9 @@ All Foundation implementation, clean-install, performance, migration, platform, 
 
 ### 30.2 Approval record
 
-**Decision:** Approved  
-**Approved by:** Jesse “Echo” Adams / EchoDevGames  
-**Date:** August 4, 2026  
+**Decision:** Approved
+**Approved by:** Jesse “Echo” Adams / EchoDevGames
+**Date:** August 4, 2026
 **Conditions:** Reconcile the Foundation package specifications and SFGSS-001/SFGSS-005 terminology during SUITE-DOC-30. Exact Unity Test Framework/package versions and all execution evidence remain pending until implementation.
 
 ---
@@ -1434,7 +1481,7 @@ SFGSS-004 is complete when a fresh collaborator can determine:
 1. Which test layers prove a package, bridge, provider, sample, migration, or release claim.
 2. Whether a result is planned, passed, advisory, failed, blocked, or not applicable.
 3. What evidence supports each public compatibility and release statement.
-4. Why a Standalone Laboratory, Integration Laboratory, and Showcase are different evidence.
+4. Why a Standalone Laboratory, Package Reference Showcase, Integration Laboratory, and Integrated Showcase are different evidence.
 5. How clean installation, repeatability, upgrade, removal, reinstall, performance, platform, accessibility, privacy, and recovery are proven.
 6. How defects, flaky tests, retries, exclusions, and advisories affect release.
 7. What must pass before beta, release candidate, and stable release.

@@ -2,7 +2,7 @@
 
 **Document ID:** SFGSS-001
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 
 **Status:** Approved documentation standard
 
@@ -10,13 +10,15 @@
 
 **Project boundary:** Independent solo project; not an Isekai Studios product
 
-**Parent authority:** SFGSS-000 v0.20.0 — The Sperk’s Forge Game Systems Suite Bible
+**Parent authority:** SFGSS-000 v0.24.0 — The Sperk’s Forge Game Systems Suite Bible
 
 **Current development baseline:** Unity 6000.3.8f1
 
-**Last updated:** August 4, 2026
+**Last updated:** August 8, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
+
+> **v1.3.0 Reference Showcase reconciliation:** Every package specification now defines an in-house production-style Package Reference Showcase, or a justified non-scene equivalent, in addition to its Standalone Test Lab. The Reference Showcase is project-owned consumer proof and never replaces isolated Laboratory evidence.
 
 ---
 
@@ -174,6 +176,7 @@ Document where flavor may appear and confirm that runtime use does not require H
 - `<PACKAGE>` installs into a clean supported Unity project with zero compile errors.
 - Its core feature runs with no other Sperk’s Forge runtime package installed.
 - Its Standalone Test Lab proves the advertised MVP.
+- Its Package Reference Showcase demonstrates the normal consumer-facing happy path through documented public setup and APIs.
 - Removing its samples does not break runtime code.
 - Removing optional bridges does not break the package.
 - Setup and repair operations are repeatable and non-destructive by default.
@@ -479,11 +482,10 @@ Every scene-visible package feature must be provable in an isolated scene that c
 
 ---
 
-## 13. Standalone Test Lab and Samples
-
+## 13. Standalone Test Lab, Package Reference Showcase, and Samples
 ### 13.1 Standalone Test Lab purpose
 
-`<Define the one scene that proves the package’s core loop by itself.>`
+`<Define the one scene or minimal scene set that proves the package’s core loop by itself as engineering evidence.>`
 
 ### 13.2 Required Test Lab contents
 
@@ -502,7 +504,34 @@ Every scene-visible package feature must be provable in an isolated scene that c
 |---|---|---|---|---|
 | LAB-001 | `<ACTION>` | `<RESULT>` | `<TYPE>` | Not run |
 
-### 13.4 Optional showcase and integration samples
+### 13.4 Required in-house Package Reference Showcase
+
+Define the smallest clean project-owned scene, scene set, or Editor workspace that demonstrates how a real consumer uses the package correctly after the Standalone Test Lab has passed.
+
+The Reference Showcase must:
+
+- use only documented public package setup, configuration, prefabs, APIs, and extension seams;
+- avoid test-only APIs, hidden internals, privileged repository state, and unrelated package dependencies;
+- default to the front-facing production-style experience rather than diagnostic instrumentation;
+- keep game/studio art, scenes, configuration, and branding project-owned;
+- live outside immutable package source, normally under `Assets/EchoDevGames/SuiteShowcase/<Package>/` in the integration/development workspace;
+- remain conceptually reproducible in a clean consumer project;
+- document when one scene is insufficient and a minimal scene set is required;
+- use a non-scene equivalent only when the package is genuinely Editor-only or otherwise has no meaningful runtime scene.
+
+| Reference Showcase field | Required definition |
+|---|---|
+| Project-owned path | `<PATH>` |
+| Scene(s)/workspace | `<SCENES OR EDITOR SURFACE>` |
+| Consumer setup path exercised | `<SETUP / ASSET / PREFAB / API>` |
+| Front-facing happy path | `<WHAT A USER/PLAYER SEES>` |
+| Diagnostics default | `<HIDDEN / OPTIONAL / DEVELOPMENT>` |
+| Clean-project reproduction | `<HOW THIS FLOW IS REPRODUCED>` |
+| Not a proof of | `<STANDALONE EDGE CASES / BRIDGE / PROVIDER / OTHER>` |
+
+### 13.5 Optional distributed showcase and integration samples
+
+A package may additionally distribute a showcase or integration sample when useful. That sample is a package distribution surface and remains separate from the required in-house Reference Showcase.
 
 | Sample | Packages involved | Purpose | Why it is not standalone proof |
 |---|---|---|---|
@@ -510,7 +539,9 @@ Every scene-visible package feature must be provable in an isolated scene that c
 
 Samples must be separately importable and removable.
 
----
+### 13.6 Suite Showcase Hub relationship
+
+The project-owned **Suite Showcase Hub** may later link or launch package Reference Showcases and combined demonstrations. It is an integration/presentation surface, not a runtime package, dependency, or substitute for package-specific evidence.
 
 ## 14. Presentation, UI, and Accessibility
 
@@ -839,9 +870,10 @@ This scan order must be stated in the package's contributor/development guide.
 |---|---|---|---:|
 | EditMode unit | Definitions, validation, pure policies | `<EXAMPLES>` | Yes |
 | PlayMode unit/integration | Runtime lifecycle and behavior | `<EXAMPLES>` | Yes |
-| Standalone Test Lab | User-visible isolated core loop | `<EXAMPLES>` | Yes |
+| Standalone Test Lab | User-visible isolated engineering proof | `<EXAMPLES>` | Yes |
+| Package Reference Showcase | Project-owned consumer-style happy path | `<EXAMPLES>` | Yes before external beta unless justified Not applicable |
 | Bridge Integration Lab | Optional package connection | `<EXAMPLES>` | When bridge ships |
-| Showcase | Combined presentation | `<EXAMPLES>` | No |
+| Combined/Suite Showcase | Multi-system presentation such as the Suite Showcase Hub | `<EXAMPLES>` | No; later integration evidence |
 | Clean-project install | Packaging and missing-dependency proof | `<EXAMPLES>` | Yes |
 | Existing-project migration | Adoption without regressions | `<EXAMPLES>` | Before integration claim |
 
@@ -879,6 +911,7 @@ This scan order must be stated in the package's contributor/development guide.
 - [ ] Required dependencies are explicit.
 - [ ] Public API and data model are defined.
 - [ ] Standalone Test Lab is designed.
+- [ ] Package Reference Showcase or justified non-scene equivalent is defined.
 - [ ] Release-blocking questions are resolved.
 
 ### 24.2 Implementation gate
@@ -904,6 +937,7 @@ This scan order must be stated in the package's contributor/development guide.
 - [ ] No known blocker or critical defect remains.
 - [ ] Performance targets pass.
 - [ ] Diagnostics are actionable.
+- [ ] Package Reference Showcase demonstrates the normal happy path through documented public consumer surfaces.
 - [ ] Documentation matches the build.
 - [ ] `Current Notes.md` has been reconciled for this checkpoint.
 - [ ] Durable decisions have been promoted into the specification or ADRs.
@@ -1047,6 +1081,23 @@ Before writing code:
 
 ---
 
+## 29.1 Package Graduation Path
+
+Each package specification must map its work onto the suite graduation loop:
+
+| Graduation stage | Package-specific proof |
+|---|---|
+| Learning / research | `<PACKAGE LEARNING REVIEW>` |
+| Authority / plan | `<SPEC VERSION + CHECKPOINT BUILD PLAN>` |
+| Implementation / regression | `<AUTOMATED TEST GATES>` |
+| Standalone Test Lab | `<ISOLATED ENGINEERING PROOF>` |
+| Package Reference Showcase | `<IN-HOUSE CONSUMER HAPPY PATH>` |
+| Clean-project reproduction | `<OUTSIDE-REPOSITORY CONSUMER PROOF>` |
+| Release qualification | `<INSTALL ROUTES / PLAYER BUILDS / PERFORMANCE / VERSIONING AS APPLICABLE>` |
+| Private beta / external adoption | `<HANDOFF + FEEDBACK PLAN>` |
+
+A package may add stages, but it may not collapse the Standalone Test Lab, Package Reference Showcase, and clean-project reproduction into one artifact or one proof.
+
 ## 30. Approval
 
 ### 30.1 Approval checklist
@@ -1058,6 +1109,7 @@ Before writing code:
 - [ ] Public API, data, lifecycle, and failure behavior are specified.
 - [ ] Setup and direct-scene workflows are understandable.
 - [ ] Standalone Test Lab is fully defined.
+- [ ] Package Reference Showcase or justified non-scene equivalent is fully defined.
 - [ ] Diagnostics exist without requiring the Observatory.
 - [ ] Optional integrations are explicitly separated.
 - [ ] Test and release gates are measurable.

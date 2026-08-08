@@ -4,15 +4,15 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-04
+updated: 2026-08-08
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
 
-**Document role:** Obsidian navigation hub and visual roadmap  
-**Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current work item:** FL-M1-01 - First Light Package Skeleton  
+**Document role:** Obsidian navigation hub and visual roadmap
+**Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Current work item:** SFGSS-ADR-005 - Package Reference Showcases; First Light M6 authority next
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -48,6 +48,21 @@ flowchart LR
     M --> I1[FL-M1-01 First Light Skeleton — Active]
     I1 --> J[Just-in-Time Review Before Each Later Package]
 ```
+
+## Package Reference Showcase path
+
+```mermaid
+flowchart LR
+    Lab[Standalone Test Lab — engineering proof] --> Ref[Package Reference Showcase — consumer proof]
+    Ref --> Clean[Clean-project reproduction]
+    Ref --> Gallery[Suite Showcase Hub]
+    Integration[Integration Labs] --> Gallery
+    Gallery -. never substitutes for .-> Lab
+```
+
+- Every package Reference Showcase is project-owned and uses documented public consumer surfaces.
+- Reference Showcases live outside immutable package source, normally under `Assets/EchoDevGames/SuiteShowcase/<Package>/`.
+- the Suite Showcase Hub is a future project-owned navigation/presentation hub, not a runtime package authority.
 
 ## Package waves
 
@@ -163,6 +178,7 @@ flowchart LR
 - [[Architecture Decision Records/SFGSS-ADR-002_Full_Suite_Documentation_Gate_and_Learning_Implementation|ADR-002 — Documentation Gate and Learning Implementation]]
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]
 - [[Architecture Decision Records/SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|ADR-004 — Just-in-Time Package Learning Gate]]
+- [[Architecture Decision Records/SFGSS-ADR-005_Package_Reference_Showcases_and_Suite_Showcase_Hub|ADR-005 — Package Reference Showcases and the Suite Showcase Hub]]
 - [[Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log|Suite ADR Decision Log]]
 - [[Architecture Decision Records/SFGSS-ADR-TEMPLATE|Reusable ADR Template]]
 
