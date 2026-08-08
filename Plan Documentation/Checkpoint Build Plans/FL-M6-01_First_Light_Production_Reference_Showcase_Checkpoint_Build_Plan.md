@@ -3,7 +3,7 @@
 **Document role:** SFGSS-005 Checkpoint Build Plan
 **Package:** First Light — Startup and Launch (`EchoLaunch`)
 **Checkpoint:** `FL-M6-01`
-**Status:** Approved; FL-M6-01-H1 consumer-authoring identity hotfix authorized after bounded authority commit
+**Status:** Approved and in progress; FL-M6-01-H1 proven, FL-M6-01-H2 destination Build Settings conformance hotfix authorized after bounded authority commit
 **Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.14.0
 **Suite showcase authority:** SFGSS-ADR-005
 **Unity baseline:** `6000.3.8f1`
@@ -255,6 +255,74 @@ The dedicated amendment record is:
 Plan Documentation/Checkpoint Build Plans/FL-M6-01-H1_Splash_Entry_Authoring_Identity_Hotfix_Amendment.md
 ```
 
+## 9.2 Destination Build Settings Conformance — FL-M6-01-H2
+
+After FL-M6-01-H1 removed the invalid splash-entry identity blocker, the same real consumer Showcase run advanced to destination validation and exposed a second bounded conformance defect:
+
+```text
+First Light Setup result: Succeeded
+Configured initial destination: FirstLight_Showcase_MainMenu.unity
+Build Settings after Setup:
+  0: OutdoorsScene.unity
+  1: FirstLight_Showcase_Boot.unity
+
+Play Boot
+→ [ELAUNCH-DEST-001] The initial destination scene is not included in the player build settings.
+```
+
+This proves Setup can currently report success while producing a Boot/configuration pair that runtime correctly refuses to launch.
+
+### 9.2.1 Bounded hotfix authority
+
+FL-M6-01-H2 may change only First Light Setup planning/apply/repair behavior and focused Editor tests required to enforce destination Build Settings conformance.
+
+For a non-null destination scene selected in Setup:
+
+- the destination scene must be present exactly once as an **enabled** Build Settings scene before Setup may report `Succeeded` or `NoChanges`;
+- the Boot scene must also remain present exactly once as an enabled Build Settings scene;
+- under `Add If Missing At End`, missing required scenes are appended without reordering unrelated existing scenes;
+- when both Boot and destination are missing, Boot is appended first and destination second;
+- when one required scene already exists enabled, only the missing required scene is appended;
+- an already correct Boot + destination arrangement yields `NoChanges` on repeat Apply;
+- Setup preview/result evidence must show destination Build Settings handling explicitly;
+- runtime `ELAUNCH-DEST-001` validation remains unchanged and authoritative;
+- no scene deletion, arbitrary reordering, disabling, GUID regeneration, schema migration, or package Runtime behavior change is authorized.
+
+If a required scene is disabled, duplicated, or otherwise ambiguous beyond current approved repair proof, Setup must block or surface explicit repair evidence rather than silently rewriting unrelated Build Settings state.
+
+### 9.2.2 Focused tests
+
+Editor tests must prove at minimum:
+
+1. missing Boot + missing destination under `Add If Missing At End` produces two deterministic Build Settings additions in Boot-then-destination order;
+2. existing enabled destination + missing Boot adds only Boot;
+3. existing enabled Boot + missing destination adds only destination;
+4. existing enabled Boot + destination produces `NoChanges`;
+5. unrelated existing Build Settings scenes preserve their relative order;
+6. destination addition is visible in preview/apply evidence;
+7. package Runtime source and destination runtime validation remain unchanged.
+
+### 9.2.3 Showcase acceptance
+
+After focused Editor tests pass:
+
+1. reopen the existing First Light Setup request for `Assets/EchoDevGames/SuiteShowcase/FirstLight`;
+2. Refresh Plan;
+3. verify `FirstLight_Showcase_MainMenu.unity` is explicitly planned for Build Settings addition;
+4. Apply;
+5. Apply the identical request again and verify `NoChanges`;
+6. verify Build Settings contain the unrelated existing scenes unchanged plus Boot and MainMenu enabled exactly once;
+7. play `FirstLight_Showcase_Boot`;
+8. confirm `ELAUNCH-DEST-001` no longer blocks the configured destination.
+
+If Setup still requires a manual Build Settings edit to make its own generated configuration launchable, stop before widening H2.
+
+The dedicated amendment record is:
+
+```text
+Plan Documentation/Checkpoint Build Plans/FL-M6-01-H2_Destination_Build_Settings_Conformance_Hotfix_Amendment.md
+```
+
 ## 10. Implementation Slices
 
 ### Slice A — Deferred audio-intent data seam
@@ -269,7 +337,7 @@ Use First Light Setup to create/reuse configuration, startup sequence, launch de
 ### Slice D — Splash art + authoring
 Create the two project-owned images and configure them through the public SplashSequence authoring surface.
 
-**Slice D is currently paused at FL-M6-01-H1.** Normal Inspector-added entries serialized blank hidden identities and blocked with `ELAUNCH-SPLASH-001`. Apply and prove the bounded Editor-only authoring-identity hotfix before continuing front-facing acceptance.
+**Slice D passed FL-M6-01-H1:** normal Inspector authoring now supplies canonical hidden SplashEntry identities and focused Editor tests pass `5 / 5`. Slice D is now paused at **FL-M6-01-H2** because Setup reported success without ensuring the configured MainMenu destination was enabled in Build Settings, causing `ELAUNCH-DEST-001`.
 
 ### Slice E — Front-facing acceptance
 Play the Boot scene and prove ordered splashes, completed handoff, and clean destination presentation.
@@ -284,7 +352,8 @@ Run retained focused tests, complete EditMode, complete Runtime Play Mode, inspe
 | SHOW-001 | Inspect starting repository/showcase path | Clean synchronized baseline; no accidental prior display case |
 | SHOW-002 | Preview/apply public Setup request | Ready plan; only approved project-owned foundation created/reused |
 | SHOW-003 | Repeat identical Setup | `NoChanges`; no duplicates or Build Settings drift |
-| SHOW-H1 | Author valid splash identities through public Inspector | Blank hidden identities are generated automatically by Editor tooling; existing non-empty identity is preserved; no YAML edit |
+| SHOW-H1 | Author valid splash identities through public Inspector | **PASS** — blank identities generated automatically; focused Editor tests `5 / 5`; no YAML edit |
+| SHOW-H2 | Setup ensures configured destination is build-loadable | Boot and destination enabled exactly once; identical rerun is `NoChanges`; no manual Build Settings edit |
 | SHOW-004 | Play showcase Boot | Studio splash then First Light splash, visibly ordered |
 | SHOW-005 | Continue launch | Startup settles; destination validates/loads; handoff completes |
 | SHOW-006 | Inspect destination | Clean main-menu-style display; no Laboratory diagnostic wall |
@@ -309,7 +378,7 @@ Additive project-owned showcase tests may increase totals. Existing tests may no
 
 ## 13. Explicitly Out of Scope
 
-- package Runtime/Editor code changes other than `SplashEntry.PreferredAudioClip` plus focused tests and the exact FL-M6-01-H1 Editor-only blank-identity authoring correction;
+- package Runtime/Editor code changes other than `SplashEntry.PreferredAudioClip` plus focused tests, the exact FL-M6-01-H1 Editor-only blank-identity authoring correction, and the exact FL-M6-01-H2 Setup destination Build Settings conformance correction;
 - new schema or diagnostic code;
 - starter splash generator/preset;
 - package sample changes;
@@ -333,7 +402,7 @@ Stop if:
 - splash authoring requires hidden API/YAML manipulation;
 - successful presentation cannot reasonably become front-facing through public serialized surfaces;
 - Setup mutates package source/unrelated content;
-- package Runtime/Editor changes beyond the exact `PreferredAudioClip` metadata seam and FL-M6-01-H1 Editor-only blank-identity authoring correction appear necessary;
+- package Runtime/Editor changes beyond the exact `PreferredAudioClip` metadata seam, FL-M6-01-H1 Editor-only blank-identity authoring correction, and FL-M6-01-H2 Setup destination Build Settings conformance correction appear necessary;
 - retained regression turns red for unexplained reasons;
 - another Sperk’s Forge package becomes required.
 

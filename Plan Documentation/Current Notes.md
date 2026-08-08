@@ -21,7 +21,8 @@
 - First Light package specification advances to v1.14.0 in this authority checkpoint.
 - FL-M6-01 authority is committed at `889bd64`; the deferred splash-audio intent seam is committed at `833484a`; the public Setup-built Showcase foundation is committed at `076a623`.
 - `SHOW-002` and `SHOW-003` passed: public Setup created the intended project-owned foundation and an identical rerun returned `NoChanges`.
-- Slice D is paused on FL-M6-01-H1 after the normal SplashSequence Inspector authored two entries with blank hidden `entryId` values, causing `ELAUNCH-SPLASH-001` before playback.
+- FL-M6-01-H1 is implemented and manually proven: focused Editor tests passed `5 / 5`, two existing blank Showcase SplashEntry identities were generated through the normal Inspector, and `ELAUNCH-SPLASH-001` no longer blocks.
+- Slice D is now paused on FL-M6-01-H2: Setup reported `Succeeded` while adding only the Boot scene to Build Settings; the configured `FirstLight_Showcase_MainMenu.unity` destination remained absent and runtime correctly blocked with `ELAUNCH-DEST-001`.
 
 ## First Light Display-Case Goal
 
@@ -115,6 +116,44 @@ Assets/EchoDevGames/SuiteShowcase/FirstLight/Configuration/SplashSequence.asset
 Assets/EchoDevGames/SuiteShowcase/FirstLight/Art/**
 ```
 
+## FL-M6-01-H2 — Destination Build Settings Conformance
+
+`[DEFECT]` The public Setup workflow currently permits this contradictory state:
+
+```text
+Setup Apply: Succeeded
+Boot scene: enabled in Build Settings
+Configured destination: FirstLight_Showcase_MainMenu.unity
+Configured destination in Build Settings: absent
+Boot Play: [ELAUNCH-DEST-001]
+```
+
+Observed Build Settings evidence:
+
+```text
+0:On:Assets/OutdoorsScene.unity
+1:On:Assets/EchoDevGames/SuiteShowcase/FirstLight/Scenes/FirstLight_Showcase_Boot.unity
+```
+
+Runtime is correct to reject this state. H2 changes Setup conformance only.
+
+Authorized correction:
+
+```text
+selected destination
++ selected Boot scene
+        ↓
+Setup preview/apply
+        ↓
+both enabled exactly once in Build Settings
+        ↓
+repeat identical Apply = NoChanges
+```
+
+Under `Add If Missing At End`, unrelated existing scene order is preserved; when both required scenes are missing, Boot is appended before destination.
+
+No Runtime change, schema change, manual Build Settings workaround, arbitrary scene cleanup, or unrelated reordering is authorized.
+
 ## Starter Splash Convenience Question
 
 A one-click starter splash template/preset is **not** pre-authorized.
@@ -155,7 +194,7 @@ The future suite showcase/navigation identity remains intentionally unnamed. Eme
 
 ## Next Action
 
-1. Commit/push the FL-M6-01-H1 bounded authority amendment while preserving the unstaged project-owned Showcase WIP.
-2. Implement only the Editor-side blank `SplashEntry.entryId` authoring correction plus focused Editor tests.
-3. Reopen the existing `SplashSequence.asset` in the normal Inspector and prove identities are generated without YAML editing.
-4. Resume `SHOW-004` through `SHOW-009` only after `ELAUNCH-SPLASH-001` is cleared by the public authoring path.
+1. Commit/push the FL-M6-01-H2 bounded authority amendment while preserving the unstaged project-owned Showcase WIP.
+2. Implement only Setup destination Build Settings conformance plus focused Editor tests.
+3. Re-run the same Showcase Setup request and prove MainMenu destination addition is explicit, Apply succeeds, and identical rerun is `NoChanges`.
+4. Resume `SHOW-004` through `SHOW-009` only after `ELAUNCH-DEST-001` is cleared without manual Build Settings editing.

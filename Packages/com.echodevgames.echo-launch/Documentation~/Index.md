@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M6-01 Production Reference Showcase in progress; Slice D paused for FL-M6-01-H1 splash-entry authoring identity hotfix
+- Development stage: FL-M6-01 Production Reference Showcase in progress; FL-M6-01-H1 proven; Slice D paused for FL-M6-01-H2 destination Build Settings conformance hotfix
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -207,6 +207,10 @@ package internals, peer packages, or repository-only shortcuts.
 FL-M6-01 additionally permits one narrow backward-compatible Runtime data addition: `SplashEntry.PreferredAudioClip`. The field stores optional project-owned audio content intent only; EchoLaunch still performs no playback. A future Jukebot bridge owns translation of that intent into real cue playback.
 
 During real Showcase authoring, the default Inspector produced blank hidden SplashEntry identities and runtime blocked with `ELAUNCH-SPLASH-001`. FL-M6-01-H1 therefore permits only the Editor-side generation of missing blank identities plus focused tests. Existing non-empty IDs remain untouched and Runtime stays read-only.
+
+FL-M6-01-H1 is manually proven: focused Editor tests passed `5 / 5`, the two existing blank Showcase identities were generated through the normal Inspector, and launch advanced beyond `ELAUNCH-SPLASH-001`.
+
+The next consumer run exposed FL-M6-01-H2: Setup had reported success while the configured MainMenu destination was absent from Build Settings, so runtime correctly blocked with `ELAUNCH-DEST-001`. H2 permits only Setup-side Build Settings conformance so Boot and the selected destination are enabled exactly once, with repeat-safe `NoChanges` behavior and no Runtime/schema change.
 
 No starter splash generator/preset, clean-project qualification, player build,
 performance claim, distribution-route proof, package versioning, or private beta

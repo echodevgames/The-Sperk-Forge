@@ -9,7 +9,7 @@
 - Unity baseline: `6000.3.8f1`
 - Suite showcase authority: SFGSS-ADR-005 / `8c3f3b3`
 - Previous checkpoint: FL-M5-07 complete at `710aec3`
-- Status: FL-M6-01 in progress; Slice D paused at FL-M6-01-H1 consumer-authoring identity defect
+- Status: FL-M6-01 in progress; FL-M6-01-H1 proven; Slice D paused at FL-M6-01-H2 destination Build Settings conformance defect
 
 ## Retained Baseline
 
@@ -67,10 +67,31 @@ Authorized package change:
 
 Project-owned Showcase art and `SplashSequence.asset` WIP remain outside package-source mutation and must be preserved.
 
+## FL-M6-01-H2 Destination Build Settings Defect
+
+H1 is proven: the focused Editor suite passed `5 / 5`, normal Inspector authoring populated both blank hidden SplashEntry identities, and splash-definition validation advanced beyond `ELAUNCH-SPLASH-001`.
+
+The next consumer run then blocked with:
+
+```text
+[ELAUNCH-DEST-001] The initial destination scene is not included in the player build settings.
+```
+
+Setup had previously reported success while Build Settings contained the Showcase Boot scene but not the configured Showcase MainMenu destination.
+
+Authorized package change:
+
+- Setup planner/apply/repair support only;
+- ensure selected destination and Boot are enabled exactly once before `Succeeded` / `NoChanges`;
+- `Add If Missing At End` preserves unrelated scene order and appends Boot before destination when both are missing;
+- repeat Apply is `NoChanges`;
+- preview/apply evidence exposes destination Build Settings handling;
+- no Runtime or schema change.
+
 ## Acceptance
 
-`SHOW-002` and `SHOW-003` are passed. Prove FL-M6-01-H1 first, then resume `SHOW-004` through `SHOW-009`. Preserve every retained test; additive audio-intent and Editor-authoring tests may increase totals above `809`.
+`SHOW-002`, `SHOW-003`, and `SHOW-H1` are passed. Prove FL-M6-01-H2 next, then resume `SHOW-004` through `SHOW-009`. Preserve every retained test; additive audio-intent, authoring, and Setup-conformance tests may increase totals above `809`.
 
 ## Next Action
 
-Commit/push FL-M6-01-H1 authority while preserving unstaged Showcase WIP, then implement only the Editor-side blank-identity authoring correction and focused tests.
+Commit/push FL-M6-01-H2 authority while preserving unstaged Showcase WIP, then implement only Setup destination Build Settings conformance and focused tests.
