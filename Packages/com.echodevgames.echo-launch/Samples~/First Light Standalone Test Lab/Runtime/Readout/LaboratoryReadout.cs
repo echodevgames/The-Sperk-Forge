@@ -1,3 +1,4 @@
+using EchoDevGames.EchoLaunch.Presentation.UGUI;
 using UnityEngine;
 
 namespace EchoDevGames.EchoLaunch.Samples.StandaloneLab
@@ -15,11 +16,18 @@ namespace EchoDevGames.EchoLaunch.Samples.StandaloneLab
         private string sceneRole = "First Light Laboratory";
 
         private EchoDirectSceneInitializer directSceneInitializer;
+        private EchoLaunchStatusView statusView;
+
+        private string lastSkipRequest =
+            "LAB-010: no splash skip request has been routed.";
 
         private void Awake()
         {
             directSceneInitializer =
                 Object.FindFirstObjectByType<EchoDirectSceneInitializer>();
+
+            statusView =
+                Object.FindFirstObjectByType<EchoLaunchStatusView>();
         }
 
         private void OnGUI()
@@ -36,8 +44,8 @@ namespace EchoDevGames.EchoLaunch.Samples.StandaloneLab
                 new Rect(
                     16f,
                     16f,
-                    470f,
-                    330f),
+                    500f,
+                    455f),
                 GUI.skin.box);
 
             GUILayout.Label(
@@ -116,7 +124,60 @@ namespace EchoDevGames.EchoLaunch.Samples.StandaloneLab
                 }
             }
 
+            DrawSplashSkipFixture();
+
             GUILayout.EndArea();
+        }
+
+        private void DrawSplashSkipFixture()
+        {
+            GUILayout.Space(8f);
+
+            GUILayout.Label(
+                "LAB-010 Splash Skip Fixture");
+
+            if (statusView == null)
+            {
+                GUILayout.Label(
+                    "Status view: unavailable");
+
+                return;
+            }
+
+            SplashPresentationFrame frame =
+                statusView.LastSplashFrame;
+
+            if (frame == null)
+            {
+                GUILayout.Label(
+                    "Splash: inactive");
+
+                GUILayout.Label(
+                    lastSkipRequest);
+
+                return;
+            }
+
+            GUILayout.Label(
+                $"Splash elapsed / minimum: {frame.ElapsedSeconds:F2}s / {frame.MinimumDisplaySeconds:F2}s");
+
+            GUILayout.Label(
+                $"Skip permitted now: {frame.CanSkipNow}");
+
+            if (GUILayout.Button(
+                    "Request Splash Skip (LAB-010)"))
+            {
+                bool routed =
+                    statusView.RequestSplashSkip();
+
+                lastSkipRequest =
+                    routed
+                        ? $"Skip request routed at {frame.ElapsedSeconds:F2}s; minimum {frame.MinimumDisplaySeconds:F2}s; permitted now: {frame.CanSkipNow}."
+                        : "Skip request was not routed.";
+            }
+
+            GUILayout.Label(
+                lastSkipRequest);
         }
     }
 }

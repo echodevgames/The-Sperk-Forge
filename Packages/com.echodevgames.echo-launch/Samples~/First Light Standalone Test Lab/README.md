@@ -50,5 +50,32 @@ The completed Laboratory proves:
 11. Sample removal.
 12. Setup/Repair repeatability.
 
+## LAB-010 splash skip fixture
+
+The Laboratory readout includes a sample-only IMGUI control named:
+
+```text
+Request Splash Skip (LAB-010)
+```
+
+Run the Boot Lab with `SuccessConfiguration.asset`. During the authored splash,
+click the control while the readout still reports:
+
+```text
+Skip permitted now: False
+```
+
+The control routes the request through the default First Light uGUI presenter's
+public `RequestSplashSkip()` method. The request is intentionally latched by the
+existing splash player. The splash must remain visible until the readout reaches
+the authored minimum duration and the policy permits the skip.
+
+The readout also displays the live elapsed time, authored minimum duration, and
+current `CanSkipNow` state so the manual evidence can be captured without adding
+a package-owned keyboard/controller binding.
+
+This control is Laboratory acceptance UI only. It does not become production
+input ownership or another launch/presentation authority.
+
 The imported sample is acceptance content only. Package Runtime and Editor
 assemblies must remain healthy when it is absent.

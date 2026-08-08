@@ -245,6 +245,13 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
                     readoutScriptGuid));
 
             Assert.That(
+                ContainsNullObjectReferenceOverride(
+                    bootYaml,
+                    "configuration"),
+                Is.False,
+                "The canonical Boot scene must inherit the Laboratory root prefab configuration instead of overriding it with null.");
+
+            Assert.That(
                 destinationYaml,
                 Does.Contain(
                     "guid: " +
@@ -277,7 +284,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
             Assert.That(
                 yaml,
                 Does.Contain(
-                    "minimumDisplaySeconds: 1"));
+                    "minimumDisplaySeconds: 5"));
 
             Assert.That(
                 yaml,
@@ -464,6 +471,56 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
             }
 
             return decoded.ToString();
+        }
+
+        private static bool ContainsNullObjectReferenceOverride(
+            string yaml,
+            string propertyPath)
+        {
+            string normalized =
+                yaml.Replace(
+                    "\r\n",
+                    "\n");
+
+            string[] lines =
+                normalized.Split('\n');
+
+            string expectedProperty =
+                "propertyPath: " +
+                propertyPath;
+
+            for (int index = 0;
+                index < lines.Length;
+                index++)
+            {
+                if (!string.Equals(
+                        lines[index].Trim(),
+                        expectedProperty,
+                        StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                int limit =
+                    Math.Min(
+                        lines.Length,
+                        index + 5);
+
+                for (int candidate = index + 1;
+                    candidate < limit;
+                    candidate++)
+                {
+                    if (string.Equals(
+                            lines[candidate].Trim(),
+                            "objectReference: {fileID: 0}",
+                            StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static void AssertReferences(

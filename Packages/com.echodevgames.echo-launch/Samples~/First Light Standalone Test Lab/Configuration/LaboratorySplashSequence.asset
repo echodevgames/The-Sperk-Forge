@@ -21,5 +21,5 @@ MonoBehaviour:
     fadeInSeconds: 0.25
     holdSeconds: 1
     fadeOutSeconds: 0.25
-    minimumDisplaySeconds: 1
+    minimumDisplaySeconds: 5
     skipPolicy: 1

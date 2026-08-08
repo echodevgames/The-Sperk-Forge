@@ -275,10 +275,6 @@ PrefabInstance:
       propertyPath: launchMode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 560176712239517934, guid: fe6d5d696cd1e1e438a8388c453bae5f, type: 3}
-      propertyPath: configuration
-      value:
-      objectReference: {fileID: 0}
     - target: {fileID: 1614065589512207924, guid: fe6d5d696cd1e1e438a8388c453bae5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -23,6 +23,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
         private const string RuntimeAssemblyGuidReference =
             "GUID:6370d00c0cfa8144795d367cb689f221";
 
+        private const string PresentationAssemblyGuidReference =
+            "GUID:0b148482ba0e46c4084e2d36a24141de";
+
         private static readonly string[] RequiredSourceFiles =
         {
             "Runtime/Readout/LaboratoryReadout.cs",
@@ -94,10 +97,30 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
                     Is.True,
                     relativePath);
             }
+
+            string readoutSource =
+                File.ReadAllText(
+                    Path.Combine(
+                        SampleRoot,
+                        "Runtime",
+                        "Readout",
+                        "LaboratoryReadout.cs"));
+
+            Assert.That(
+                readoutSource,
+                Does.Contain("RequestSplashSkip()"));
+
+            Assert.That(
+                readoutSource,
+                Does.Contain("MinimumDisplaySeconds"));
+
+            Assert.That(
+                readoutSource,
+                Does.Contain("CanSkipNow"));
         }
 
         [Test]
-        public void SampleRuntimeAssemblyReferencesOnlyFirstLightRuntime()
+        public void SampleRuntimeAssemblyReferencesOnlyRequiredFirstLightAssemblies()
         {
             AssemblyDefinition definition =
                 JsonUtility.FromJson<AssemblyDefinition>(
@@ -116,7 +139,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
                 Is.EquivalentTo(
                     new[]
                     {
-                        RuntimeAssemblyGuidReference
+                        RuntimeAssemblyGuidReference,
+                        PresentationAssemblyGuidReference
                     }));
         }
 
