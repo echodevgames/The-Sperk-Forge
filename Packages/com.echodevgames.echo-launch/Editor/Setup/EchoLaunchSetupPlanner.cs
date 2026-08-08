@@ -594,79 +594,70 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             List<EchoLaunchSetupOperation> operations,
             List<EchoLaunchSetupDiagnostic> diagnostics)
         {
+            ResolveBootBuildSettings(
+                request,
+                paths,
+                snapshot,
+                operations,
+                diagnostics);
+
+            if (!EchoLaunchSetupPathUtility.TryNormalizeProjectAssetPath(
+                    request.DestinationScenePath,
+                    ".unity",
+                    out string destinationScenePath,
+                    out _))
+            {
+                return;
+            }
+
+            ResolveDestinationBuildSettings(
+                request,
+                destinationScenePath,
+                snapshot,
+                operations,
+                diagnostics);
+        }
+
+        private static void ResolveBootBuildSettings(
+            EchoLaunchSetupRequest request,
+            EchoLaunchSetupPathSet paths,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
             int count =
-                snapshot.CountBuildSettingsEntries(paths.BootScenePath);
+                snapshot.CountBuildSettingsEntries(
+                    paths.BootScenePath);
 
             EchoLaunchBuildSettingsSceneFact first =
-                snapshot.FindFirstBuildSettingsFact(paths.BootScenePath);
+                snapshot.FindFirstBuildSettingsFact(
+                    paths.BootScenePath);
 
             if (request.BuildSettingsPolicy ==
                 EchoLaunchBuildSettingsPolicy.DoNotChange)
             {
-                operations.Add(
-                    new EchoLaunchSetupOperation(
-                        "build-settings.boot",
-                        BuildSettingsPhase,
-                        EchoLaunchSetupOperationKind.ResolveBuildSettings,
-                        EchoLaunchSetupOperationDisposition.NoChange,
-                        paths.BootScenePath,
-                        "The request explicitly leaves Build Settings unchanged."));
+                AddDoNotChangeBuildSettingsRequirement(
+                    "build-settings.boot",
+                    EchoLaunchSetupOperationKind.ResolveBuildSettings,
+                    paths.BootScenePath,
+                    "Boot",
+                    count,
+                    first,
+                    operations,
+                    diagnostics);
                 return;
             }
 
             if (request.BuildSettingsPolicy ==
                 EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd)
             {
-                if (count == 0)
-                {
-                    operations.Add(
-                        new EchoLaunchSetupOperation(
-                            "build-settings.boot",
-                            BuildSettingsPhase,
-                            EchoLaunchSetupOperationKind.ResolveBuildSettings,
-                            EchoLaunchSetupOperationDisposition.Create,
-                            paths.BootScenePath,
-                            "The Boot scene would be appended after all existing Build Settings scenes."));
-                    return;
-                }
-
-                if (count == 1 && first != null && first.Enabled)
-                {
-                    operations.Add(
-                        new EchoLaunchSetupOperation(
-                            "build-settings.boot",
-                            BuildSettingsPhase,
-                            EchoLaunchSetupOperationKind.ResolveBuildSettings,
-                            EchoLaunchSetupOperationDisposition.NoChange,
-                            paths.BootScenePath,
-                            "One enabled Boot scene entry already exists at index " +
-                            first.Index + "."));
-                    return;
-                }
-
-                if (count == 1 && first != null)
-                {
-                    AddRepair(
-                        "build-settings.boot",
-                        EchoLaunchSetupOperationKind.ResolveBuildSettings,
-                        paths.BootScenePath,
-                        "The unique Boot scene entry is disabled and can be enabled without changing unrelated entries.",
-                        BuildSettingsPhase,
-                        "Index " + first.Index + ": disabled",
-                        "Index " + first.Index + ": enabled",
-                        "One exact-path Build Settings entry exists.",
-                        false,
-                        operations,
-                        diagnostics);
-                    return;
-                }
-
-                AddRepairConflict(
+                ResolveAppendRequiredBuildSettingsScene(
                     "build-settings.boot",
                     EchoLaunchSetupOperationKind.ResolveBuildSettings,
                     paths.BootScenePath,
-                    "Multiple Boot scene entries are ambiguous under the append policy.",
-                    BuildSettingsPhase,
+                    "Boot",
+                    count,
+                    first,
                     operations,
                     diagnostics);
                 return;
@@ -713,6 +704,165 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         : count + " Boot entry/entries; first index " + first.Index,
                     "One enabled Boot entry at index zero",
                     "The exact Boot scene path and unrelated scene order are known."));
+        }
+
+        private static void ResolveDestinationBuildSettings(
+            EchoLaunchSetupRequest request,
+            string destinationScenePath,
+            EchoLaunchProjectSnapshot snapshot,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            int count =
+                snapshot.CountBuildSettingsEntries(
+                    destinationScenePath);
+
+            EchoLaunchBuildSettingsSceneFact first =
+                snapshot.FindFirstBuildSettingsFact(
+                    destinationScenePath);
+
+            if (request.BuildSettingsPolicy ==
+                EchoLaunchBuildSettingsPolicy.DoNotChange)
+            {
+                AddDoNotChangeBuildSettingsRequirement(
+                    "build-settings.destination",
+                    EchoLaunchSetupOperationKind
+                        .ResolveDestinationBuildSettings,
+                    destinationScenePath,
+                    "destination",
+                    count,
+                    first,
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            ResolveAppendRequiredBuildSettingsScene(
+                "build-settings.destination",
+                EchoLaunchSetupOperationKind
+                    .ResolveDestinationBuildSettings,
+                destinationScenePath,
+                "destination",
+                count,
+                first,
+                operations,
+                diagnostics);
+        }
+
+        private static void ResolveAppendRequiredBuildSettingsScene(
+            string key,
+            EchoLaunchSetupOperationKind kind,
+            string targetPath,
+            string sceneLabel,
+            int count,
+            EchoLaunchBuildSettingsSceneFact first,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            if (count == 0)
+            {
+                operations.Add(
+                    new EchoLaunchSetupOperation(
+                        key,
+                        BuildSettingsPhase,
+                        kind,
+                        EchoLaunchSetupOperationDisposition.Create,
+                        targetPath,
+                        "The " + sceneLabel +
+                        " scene would be appended after all existing Build Settings scenes."));
+                return;
+            }
+
+            if (count == 1 &&
+                first != null &&
+                first.Enabled)
+            {
+                operations.Add(
+                    new EchoLaunchSetupOperation(
+                        key,
+                        BuildSettingsPhase,
+                        kind,
+                        EchoLaunchSetupOperationDisposition.NoChange,
+                        targetPath,
+                        "One enabled " + sceneLabel +
+                        " scene entry already exists at index " +
+                        first.Index + "."));
+                return;
+            }
+
+            if (count == 1 &&
+                first != null)
+            {
+                AddRepair(
+                    key,
+                    kind,
+                    targetPath,
+                    "The unique " + sceneLabel +
+                    " scene entry is disabled and can be enabled without changing unrelated entries.",
+                    BuildSettingsPhase,
+                    "Index " + first.Index + ": disabled",
+                    "Index " + first.Index + ": enabled",
+                    "One exact-path Build Settings entry exists.",
+                    false,
+                    operations,
+                    diagnostics);
+                return;
+            }
+
+            AddRepairConflict(
+                key,
+                kind,
+                targetPath,
+                "Multiple " + sceneLabel +
+                " scene entries are ambiguous under the append policy.",
+                BuildSettingsPhase,
+                operations,
+                diagnostics);
+        }
+
+        private static void AddDoNotChangeBuildSettingsRequirement(
+            string key,
+            EchoLaunchSetupOperationKind kind,
+            string targetPath,
+            string sceneLabel,
+            int count,
+            EchoLaunchBuildSettingsSceneFact first,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            bool satisfied =
+                count == 1 &&
+                first != null &&
+                first.Enabled;
+
+            operations.Add(
+                new EchoLaunchSetupOperation(
+                    key,
+                    BuildSettingsPhase,
+                    kind,
+                    EchoLaunchSetupOperationDisposition.NoChange,
+                    targetPath,
+                    satisfied
+                        ? "The request leaves Build Settings unchanged and one enabled " +
+                          sceneLabel + " scene entry already exists."
+                        : "The request leaves Build Settings unchanged, but the required " +
+                          sceneLabel + " scene entry is not currently canonical.",
+                    satisfied
+                        ? string.Empty
+                        : EchoLaunchSetupDiagnosticCodes.InvalidRequest));
+
+            if (satisfied)
+            {
+                return;
+            }
+
+            diagnostics.Add(
+                new EchoLaunchSetupDiagnostic(
+                    EchoLaunchSetupDiagnosticCodes.InvalidRequest,
+                    EchoLaunchSetupDiagnosticSeverity.Blocker,
+                    "Build Settings policy is Do Not Change, but First Light requires exactly one enabled " +
+                    sceneLabel + " scene entry before Setup can succeed.",
+                    targetPath));
         }
 
         private static void ReconcileExistingTargets(

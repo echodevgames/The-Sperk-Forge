@@ -83,7 +83,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 log.Add(
                     EchoLaunchSetupChangeKind.BuildSettingsChanged,
                     BuildSettingsProjectPath,
-                    "Appended one enabled Boot scene entry.");
+                    "Appended one enabled required scene entry: " + normalized + ".");
 
                 return true;
             }
@@ -220,7 +220,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             log.Add(
                 EchoLaunchSetupChangeKind.BuildSettingsChanged,
                 BuildSettingsProjectPath,
-                "Enabled the unique canonical Boot scene entry without changing its index.");
+                "Enabled the unique required scene entry without changing its index: " + normalized + ".");
             return true;
         }
 

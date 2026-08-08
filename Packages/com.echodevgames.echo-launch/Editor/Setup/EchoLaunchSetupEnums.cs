@@ -37,7 +37,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         ResolveSplashSequence = 7,
         ResolveRootPrefabVariant = 8,
         ResolveBootScene = 9,
-        ResolveBuildSettings = 10
+        ResolveBuildSettings = 10,
+        ResolveDestinationBuildSettings = 11
     }
 
     internal enum EchoLaunchSetupDiagnosticSeverity

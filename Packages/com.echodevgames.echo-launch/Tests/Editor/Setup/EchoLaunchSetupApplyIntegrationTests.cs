@@ -25,6 +25,8 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         private int sceneCountBefore;
         private bool packageTemplateDirtyBefore;
         private Dictionary<string, string> createdGuids;
+        private IEchoLaunchSetupSnapshotSource snapshotSource;
+        private IEchoLaunchSetupPlanSource planSource;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -72,10 +74,25 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                         projectRoot,
                         request.BootScenePath);
 
-                EchoLaunchSetupPlan displayedPlan = RefreshPlan();
+                snapshotSource =
+                    new CandidateIsolatingSnapshotSource();
+
+                planSource =
+                    new EchoLaunchSetupPlanner();
+
+                EchoLaunchSetupPlan displayedPlan =
+                    RefreshPlan();
 
                 EchoLaunchSetupApplyService service =
-                    new EchoLaunchSetupApplyService();
+                    new EchoLaunchSetupApplyService(
+                        snapshotSource,
+                        planSource,
+                        new EchoLaunchSetupAssetWriter(),
+                        new EchoLaunchSetupPrefabWriter(),
+                        new EchoLaunchSetupSceneWriter(),
+                        new EchoLaunchSetupBuildSettingsWriter(),
+                        new EchoLaunchSetupNoFailureInjector(),
+                        () => false);
 
                 firstResult =
                     service.Apply(
@@ -365,16 +382,64 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         [Test]
         public void BootBuildEntryIsEnabled()
         {
-            EditorBuildSettingsScene[] scenes =
-                EditorBuildSettings.scenes;
+            int index =
+                FindBuildEntryIndex(
+                    paths.BootScenePath);
 
             Assert.That(
-                scenes[scenes.Length - 1].path,
-                Is.EqualTo(paths.BootScenePath));
+                index,
+                Is.GreaterThanOrEqualTo(0));
 
             Assert.That(
-                scenes[scenes.Length - 1].enabled,
+                EditorBuildSettings.scenes[index].enabled,
                 Is.True);
+        }
+
+        [Test]
+        public void BuildSettingsContainsOneDestinationEntry()
+        {
+            Assert.That(
+                CountBuildEntries(
+                    destinationScenePath),
+                Is.EqualTo(1));
+        }
+
+        [Test]
+        public void DestinationBuildEntryIsEnabled()
+        {
+            int index =
+                FindBuildEntryIndex(
+                    destinationScenePath);
+
+            Assert.That(
+                index,
+                Is.GreaterThanOrEqualTo(0));
+
+            Assert.That(
+                EditorBuildSettings.scenes[index].enabled,
+                Is.True);
+        }
+
+        [Test]
+        public void MissingBootAndDestinationAreAppendedInThatOrder()
+        {
+            int bootIndex =
+                FindBuildEntryIndex(
+                    paths.BootScenePath);
+
+            int destinationIndex =
+                FindBuildEntryIndex(
+                    destinationScenePath);
+
+            Assert.That(
+                bootIndex,
+                Is.EqualTo(
+                    originalBuildSettings.Length));
+
+            Assert.That(
+                destinationIndex,
+                Is.EqualTo(
+                    originalBuildSettings.Length + 1));
         }
 
         [Test]
@@ -424,9 +489,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         private EchoLaunchSetupPlan RefreshPlan()
         {
             EchoLaunchProjectSnapshot snapshot =
-                new EchoLaunchProjectSnapshotCollector().Collect(request);
+                snapshotSource.Collect(
+                    request);
 
-            return new EchoLaunchSetupPlanner().CreatePlan(
+            return planSource.CreatePlan(
                 request,
                 snapshot);
         }
@@ -572,19 +638,64 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
 
         private int CountBootEntries()
         {
+            return CountBuildEntries(
+                paths.BootScenePath);
+        }
+
+        private static int CountBuildEntries(
+            string scenePath)
+        {
             int count = 0;
             EditorBuildSettingsScene[] scenes =
                 EditorBuildSettings.scenes;
 
             for (int index = 0; index < scenes.Length; index++)
             {
-                if (scenes[index].path == paths.BootScenePath)
+                if (scenes[index].path == scenePath)
                 {
                     count++;
                 }
             }
 
             return count;
+        }
+
+        private static int FindBuildEntryIndex(
+            string scenePath)
+        {
+            EditorBuildSettingsScene[] scenes =
+                EditorBuildSettings.scenes;
+
+            for (int index = 0; index < scenes.Length; index++)
+            {
+                if (scenes[index].path == scenePath)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
+        }
+
+        private sealed class CandidateIsolatingSnapshotSource :
+            IEchoLaunchSetupSnapshotSource
+        {
+            private readonly EchoLaunchProjectSnapshotCollector collector =
+                new EchoLaunchProjectSnapshotCollector();
+
+            public EchoLaunchProjectSnapshot Collect(
+                EchoLaunchSetupRequest request)
+            {
+                EchoLaunchProjectSnapshot collected =
+                    collector.Collect(
+                        request);
+
+                return new EchoLaunchProjectSnapshot(
+                    collected.AssetFacts,
+                    collected.BuildSettingsScenes,
+                    collected.PackageRootTemplateAvailable,
+                    collected.PackageRootTemplateGuid);
+            }
         }
 
         private void Cleanup()

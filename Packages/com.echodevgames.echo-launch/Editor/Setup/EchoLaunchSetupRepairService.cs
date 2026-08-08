@@ -557,6 +557,37 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     journal,
                     log);
             }
+
+            EchoLaunchSetupOperation destinationBuild =
+                FindOperation(
+                    plan,
+                    EchoLaunchSetupOperationKind
+                        .ResolveDestinationBuildSettings);
+
+            if (IsCreate(destinationBuild))
+            {
+                failureInjector.ThrowIfRequested(
+                    destinationBuild.Kind);
+
+                buildSettingsWriter.Apply(
+                    EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                    destinationBuild.TargetPath,
+                    false,
+                    journal,
+                    log);
+            }
+            else if (IsRepair(destinationBuild))
+            {
+                failureInjector.ThrowIfRequested(
+                    destinationBuild.Kind);
+
+                buildSettingsWriter.Repair(
+                    EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                    destinationBuild.TargetPath,
+                    false,
+                    journal,
+                    log);
+            }
         }
 
         private void ExecuteFolderCreates(
@@ -605,6 +636,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                         EchoLaunchSetupOperationDisposition.Repair &&
                     operation.Kind !=
                         EchoLaunchSetupOperationKind.ResolveBuildSettings &&
+                    operation.Kind !=
+                        EchoLaunchSetupOperationKind
+                            .ResolveDestinationBuildSettings &&
                     !result.Contains(operation.TargetPath))
                 {
                     result.Add(operation.TargetPath);
@@ -661,7 +695,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                    kind == EchoLaunchSetupOperationKind.ResolveLaunchDestination ||
                    kind == EchoLaunchSetupOperationKind.ResolveRootPrefabVariant ||
                    kind == EchoLaunchSetupOperationKind.ResolveBootScene ||
-                   kind == EchoLaunchSetupOperationKind.ResolveBuildSettings;
+                   kind == EchoLaunchSetupOperationKind.ResolveBuildSettings ||
+                   kind ==
+                       EchoLaunchSetupOperationKind
+                           .ResolveDestinationBuildSettings;
         }
 
         private static bool IsCreate(EchoLaunchSetupOperation operation)

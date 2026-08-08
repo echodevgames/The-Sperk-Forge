@@ -641,6 +641,28 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     journal,
                     log);
             }
+
+            EchoLaunchSetupOperation destinationBuildSettings =
+                FindOperation(
+                    plan,
+                    EchoLaunchSetupOperationKind
+                        .ResolveDestinationBuildSettings);
+
+            if (destinationBuildSettings != null &&
+                destinationBuildSettings.Disposition ==
+                    EchoLaunchSetupOperationDisposition.Create)
+            {
+                failureInjector.ThrowIfRequested(
+                    EchoLaunchSetupOperationKind
+                        .ResolveDestinationBuildSettings);
+
+                buildSettingsWriter.Apply(
+                    EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd,
+                    destinationBuildSettings.TargetPath,
+                    false,
+                    journal,
+                    log);
+            }
         }
 
         private void ExecuteFolderCreates(
@@ -776,7 +798,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                    kind == EchoLaunchSetupOperationKind.ResolveSplashSequence ||
                    kind == EchoLaunchSetupOperationKind.ResolveRootPrefabVariant ||
                    kind == EchoLaunchSetupOperationKind.ResolveBootScene ||
-                   kind == EchoLaunchSetupOperationKind.ResolveBuildSettings;
+                   kind == EchoLaunchSetupOperationKind.ResolveBuildSettings ||
+                   kind ==
+                       EchoLaunchSetupOperationKind
+                           .ResolveDestinationBuildSettings;
         }
 
         private static EchoLaunchSetupApplyResult CreateSettledResult(
