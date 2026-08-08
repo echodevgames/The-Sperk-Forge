@@ -88,6 +88,9 @@ namespace EchoDevGames.EchoLaunch
             int presentedEntryCount = 0;
             int skippedEntryCount = 0;
 
+            SplashPresentationSettings presentationSettings =
+                sequence.PresentationSettings;
+
             presenter.SkipRequested +=
                 OnSkipRequested;
 
@@ -113,6 +116,7 @@ namespace EchoDevGames.EchoLaunch
                     bool skipped =
                         await PlayEntryAsync(
                             sequence.SequenceId,
+                            presentationSettings,
                             entry,
                             index,
                             sequence.EntryCount,
@@ -160,6 +164,7 @@ namespace EchoDevGames.EchoLaunch
         private async Awaitable<bool>
             PlayEntryAsync(
                 string sequenceId,
+                SplashPresentationSettings presentationSettings,
                 SplashEntry entry,
                 int entryIndex,
                 int entryCount,
@@ -201,6 +206,14 @@ namespace EchoDevGames.EchoLaunch
             double previousSeconds =
                 entryStartSeconds;
 
+            bool waitsForInput =
+                entry.SkipPolicy ==
+                    SplashSkipPolicy
+                        .WaitForInputAfterMinimum;
+
+            double? waitFadeOutStartSeconds =
+                null;
+
             while (true)
             {
                 cancellationToken
@@ -218,16 +231,38 @@ namespace EchoDevGames.EchoLaunch
                     currentSeconds -
                     entryStartSeconds;
 
+                bool minimumSatisfied =
+                    elapsedSeconds >=
+                        entry.MinimumDisplaySeconds;
+
+                bool canAdvanceNow =
+                    presentationSettings
+                        .AllowUserAdvance &&
+                    entry.SkipPolicy !=
+                        SplashSkipPolicy
+                            .Disallowed &&
+                    minimumSatisfied;
+
                 bool canSkipNow =
+                    presentationSettings
+                        .AllowUserAdvance &&
                     entry.SkipPolicy ==
                         SplashSkipPolicy
                             .AfterMinimumDisplay &&
-                    elapsedSeconds >=
-                        entry.MinimumDisplaySeconds;
+                    minimumSatisfied;
+
+                double? waitFadeOutElapsedSeconds =
+                    waitFadeOutStartSeconds.HasValue
+                        ? Math.Max(
+                            0d,
+                            currentSeconds -
+                            waitFadeOutStartSeconds.Value)
+                        : (double?)null;
 
                 SplashPresentationFrame frame =
                     CreateFrame(
                         sequenceId,
+                        presentationSettings,
                         entry,
                         entryIndex,
                         entryCount,
@@ -235,23 +270,51 @@ namespace EchoDevGames.EchoLaunch
                         holdSeconds,
                         fadeOutSeconds,
                         elapsedSeconds,
+                        waitFadeOutElapsedSeconds,
+                        canAdvanceNow,
                         canSkipNow,
                         reducedMotion);
 
                 presenter.PresentSplash(frame);
 
-                bool skipRequested =
+                bool advanceRequested =
                     Volatile.Read(
                         ref skipRequestedState) != 0;
 
-                if (skipRequested &&
+                if (entry.SkipPolicy ==
+                        SplashSkipPolicy
+                            .AfterMinimumDisplay &&
+                    advanceRequested &&
                     canSkipNow)
                 {
                     return true;
                 }
 
-                if (elapsedSeconds >=
-                    totalSeconds)
+                if (waitsForInput)
+                {
+                    if (waitFadeOutStartSeconds.HasValue)
+                    {
+                        if (waitFadeOutElapsedSeconds
+                                .GetValueOrDefault() >=
+                            fadeOutSeconds)
+                        {
+                            return false;
+                        }
+                    }
+                    else if (advanceRequested &&
+                             canAdvanceNow)
+                    {
+                        if (fadeOutSeconds <= 0d)
+                        {
+                            return false;
+                        }
+
+                        waitFadeOutStartSeconds =
+                            currentSeconds;
+                    }
+                }
+                else if (elapsedSeconds >=
+                         totalSeconds)
                 {
                     return false;
                 }
@@ -264,6 +327,7 @@ namespace EchoDevGames.EchoLaunch
         private static SplashPresentationFrame
             CreateFrame(
                 string sequenceId,
+                SplashPresentationSettings presentationSettings,
                 SplashEntry entry,
                 int entryIndex,
                 int entryCount,
@@ -271,15 +335,39 @@ namespace EchoDevGames.EchoLaunch
                 double holdSeconds,
                 double fadeOutSeconds,
                 double elapsedSeconds,
+                double? waitFadeOutElapsedSeconds,
+                bool canAdvanceNow,
                 bool canSkipNow,
                 bool reducedMotion)
         {
             SplashPlaybackPhase phase;
             float alpha;
 
-            if (fadeInSeconds > 0d &&
-                elapsedSeconds <
-                    fadeInSeconds)
+            bool waitsForInput =
+                entry.SkipPolicy ==
+                    SplashSkipPolicy
+                        .WaitForInputAfterMinimum;
+
+            if (waitsForInput &&
+                waitFadeOutElapsedSeconds.HasValue)
+            {
+                phase =
+                    SplashPlaybackPhase
+                        .FadeOut;
+
+                alpha =
+                    fadeOutSeconds <= 0d
+                        ? 0f
+                        : Mathf.Clamp01(
+                            1f -
+                            (float)(
+                                waitFadeOutElapsedSeconds
+                                    .Value /
+                                fadeOutSeconds));
+            }
+            else if (fadeInSeconds > 0d &&
+                     elapsedSeconds <
+                         fadeInSeconds)
             {
                 phase =
                     SplashPlaybackPhase
@@ -291,9 +379,17 @@ namespace EchoDevGames.EchoLaunch
                             elapsedSeconds /
                             fadeInSeconds));
             }
+            else if (waitsForInput)
+            {
+                phase =
+                    SplashPlaybackPhase
+                        .Hold;
+
+                alpha = 1f;
+            }
             else if (elapsedSeconds <
-                fadeInSeconds +
-                holdSeconds)
+                     fadeInSeconds +
+                     holdSeconds)
             {
                 phase =
                     SplashPlaybackPhase
@@ -328,6 +424,12 @@ namespace EchoDevGames.EchoLaunch
                 alpha = 1f;
             }
 
+            float imageScale =
+                CalculateImageScale(
+                    entry,
+                    elapsedSeconds,
+                    reducedMotion);
+
             return new SplashPresentationFrame(
                 sequenceId,
                 entry,
@@ -339,8 +441,49 @@ namespace EchoDevGames.EchoLaunch
                     0d,
                     elapsedSeconds),
                 entry.MinimumDisplaySeconds,
+                presentationSettings,
+                imageScale,
+                canAdvanceNow,
                 canSkipNow,
                 reducedMotion);
+        }
+
+        private static float CalculateImageScale(
+            SplashEntry entry,
+            double elapsedSeconds,
+            bool reducedMotion)
+        {
+            if (reducedMotion ||
+                entry.MotionStyle !=
+                    SplashMotionStyle.Pulse)
+            {
+                return 1f;
+            }
+
+            double cycleSeconds =
+                entry.PulseCycleSeconds;
+
+            double normalizedCycle =
+                elapsedSeconds /
+                cycleSeconds;
+
+            double pulse01 =
+                0.5d -
+                0.5d *
+                Math.Cos(
+                    normalizedCycle *
+                    Math.PI *
+                    2d);
+
+            double scale =
+                1d +
+                (
+                    entry.PulseMaximumScale -
+                    1d
+                ) *
+                pulse01;
+
+            return (float)scale;
         }
 
         private double ReadClock(

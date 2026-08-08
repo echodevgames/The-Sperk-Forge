@@ -21,6 +21,37 @@ namespace EchoDevGames.EchoLaunch
             double minimumDisplaySeconds,
             bool canSkipNow,
             bool reducedMotion)
+            : this(
+                sequenceId,
+                entry,
+                entryIndex,
+                entryCount,
+                phase,
+                alpha,
+                elapsedSeconds,
+                minimumDisplaySeconds,
+                SplashPresentationSettings.LegacyDefaults,
+                1f,
+                canSkipNow,
+                canSkipNow,
+                reducedMotion)
+        {
+        }
+
+        internal SplashPresentationFrame(
+            string sequenceId,
+            SplashEntry entry,
+            int entryIndex,
+            int entryCount,
+            SplashPlaybackPhase phase,
+            float alpha,
+            double elapsedSeconds,
+            double minimumDisplaySeconds,
+            SplashPresentationSettings presentationSettings,
+            float imageScale,
+            bool canAdvanceNow,
+            bool canSkipNow,
+            bool reducedMotion)
         {
             if (string.IsNullOrWhiteSpace(
                     sequenceId))
@@ -76,6 +107,27 @@ namespace EchoDevGames.EchoLaunch
                 minimumDisplaySeconds,
                 nameof(minimumDisplaySeconds));
 
+            if (presentationSettings == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(presentationSettings));
+            }
+
+            if (!presentationSettings.HasValidDefinition)
+            {
+                throw new ArgumentException(
+                    "Splash presentation settings are invalid.",
+                    nameof(presentationSettings));
+            }
+
+            if (float.IsNaN(imageScale) ||
+                float.IsInfinity(imageScale) ||
+                imageScale < 1f)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(imageScale));
+            }
+
             SequenceId =
                 sequenceId.Trim();
 
@@ -105,6 +157,27 @@ namespace EchoDevGames.EchoLaunch
 
             MinimumDisplaySeconds =
                 minimumDisplaySeconds;
+
+            PresentationMode =
+                presentationSettings
+                    .PresentationMode;
+
+            BackgroundColor =
+                presentationSettings
+                    .BackgroundColor;
+
+            AllowUserAdvance =
+                presentationSettings
+                    .AllowUserAdvance;
+
+            AdvancePolicy =
+                entry.SkipPolicy;
+
+            ImageScale =
+                imageScale;
+
+            CanAdvanceNow =
+                canAdvanceNow;
 
             CanSkipNow =
                 canSkipNow;
@@ -159,6 +232,36 @@ namespace EchoDevGames.EchoLaunch
         }
 
         public double MinimumDisplaySeconds
+        {
+            get;
+        }
+
+        public SplashPresentationMode PresentationMode
+        {
+            get;
+        }
+
+        public Color BackgroundColor
+        {
+            get;
+        }
+
+        public bool AllowUserAdvance
+        {
+            get;
+        }
+
+        public SplashSkipPolicy AdvancePolicy
+        {
+            get;
+        }
+
+        public float ImageScale
+        {
+            get;
+        }
+
+        public bool CanAdvanceNow
         {
             get;
         }
