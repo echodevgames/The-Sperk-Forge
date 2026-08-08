@@ -2,7 +2,7 @@
 
 **Package:** First Light (`EchoLaunch`)
 **Checkpoint:** FL-M5-07
-**Status:** Approved for implementation after authority commit
+**Status:** Complete — implementation, acceptance, final regression, and repository cleanup passed
 **Specification authority:** SFGSS-PKG-ECHOLAUNCH-001 v1.13.0
 **Starting implementation baseline:** FL-M5-06 closeout commit `e28ff09`, followed only by the bounded two-note post-rewind drift reconciliation
 **Unity baseline:** `6000.3.8f1`
@@ -437,6 +437,59 @@ During implementation:
 - if the Laboratory cannot pass without broad runtime/setup redesign, discard the
   implementation attempt and return to the authority checkpoint instead of
   widening scope in place.
+
+---
+
+## 12.1 Implementation Closeout Evidence
+
+FL-M5-07 completed against the approved authority without widening First Light's
+runtime or mutation ownership.
+
+Implementation commits:
+
+```text
+8ff4109  Approve FL-M5-07 standalone laboratory authority
+ff0feff  Implement FL-M5-07 standalone sample shell
+a51c054  Author FL-M5-07 standalone laboratory assets
+02429fb  Isolate imported samples from First Light setup discovery
+f1665f7  Complete FL-M5-07 standalone laboratory acceptance fixes
+```
+
+Final evidence:
+
+```text
+Focused package tests: 6 / 6
+Focused asset tests:   8 / 8
+Complete EditMode:     306 / 306
+Runtime Play Mode:     503 / 503
+Total automated:       809 / 809
+Manual LAB matrix:      12 / 12
+Failures:                0
+Errors:                  0
+Warnings:                0
+```
+
+The conditional section 4.6 imported-sample candidate-isolation correction was
+required and remained within its approved boundary. Standard `Assets/Samples/**`
+content is excluded from automatic Setup discovery while explicit selection is
+still supported.
+
+Manual acceptance also corrected a null canonical Boot configuration override
+and added a sample-only LAB-010 skip-request evidence surface. The Laboratory
+splash minimum is five seconds so the manual early-skip proof is observable.
+
+LAB-012 Setup and Repair repeatability settled as `Succeeded`, `NoChanges`,
+`NoChanges` for each workflow, with healthy plan fingerprint
+`7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c`.
+
+A separate Unity `6000.3.8f1` editor-session restoration hang was isolated while
+reopening the generated Boot asset path. The hang followed the persisted
+path/GUID even with empty or known-good scene contents, so the evidence does not
+attribute the observation to First Light runtime or Laboratory scene contents.
+
+Final cleanup removed imported sample copies, generated Setup/Repair acceptance
+content, Build Settings drift, and solution-file drift before final regression
+and staging.
 
 ---
 

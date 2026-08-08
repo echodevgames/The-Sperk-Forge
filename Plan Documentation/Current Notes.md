@@ -3,71 +3,99 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 7, 2026
-**Current focus:** First Light FL-M5-07 Standalone Test Laboratory
+**Last reconciled:** August 8, 2026
+**Current focus:** First Light FL-M5-07 documentation closeout
 **Current checkpoint:** FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
 ---
 
-## Canonical Starting Baseline
+## Current State
 
 - Package: First Light (`EchoLaunch`)
 - Package version: `0.1.0`
-- FL-M5-06 closeout baseline: `e28ff09`
-- Post-rewind reconciliation: two living `Current Notes.md` pages only; no implementation change
 - Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.13.0
-- Compilation baseline: `0` errors, `0` warnings
-- Complete EditMode baseline: `290` passed
-- Runtime Play Mode baseline: `503` passed
-- Total automated baseline: `793` passed
-- Working tree required clean before FL-M5-07 implementation begins
+- Unity baseline: `6000.3.8f1`
+- Authority commit: `8ff4109`
+- Sample shell implementation: `ff0feff`
+- Authored Laboratory assets: `a51c054`
+- Imported-sample candidate isolation: `02429fb`
+- Final acceptance fixes: `f1665f7`
+- Working tree was clean after the final implementation push.
 
-## Active FL-M5-07 Authority
+## FL-M5-07 Implemented Outcome
 
-- `[DECISION]` FL-M5-07 implements the already-approved First Light Standalone Test Laboratory as exactly one UPM sample named **First Light Standalone Test Lab**.
-- `[DECISION]` The shipped sample is fully authored content under `Samples~/First Light Standalone Test Lab/`; it does not ship a second setup/generation engine.
-- `[DECISION]` Importing the sample copies authored content into Unity's normal `Assets/Samples/...` destination and performs no automatic generation, scene mutation, Build Settings mutation, Setup/Repair invocation, validation run, Simulator run, or Play Mode action.
-- `[DECISION]` The sample contains its own narrow sample assembly for sample-only step/readout code. No project-specific runtime assembly and no unrelated Sperk's Forge package is permitted.
-- `[DECISION]` Sample scenes/configurations/prefabs are serialized with their required references before distribution. Imported reference integrity is an acceptance gate; users must not hand-repair missing references to make the sample pass.
-- `[DECISION]` Package Runtime, Direct Scene, Setup/Repair, Validator, Simulator, presentation, schema, and diagnostic contracts remain unchanged unless the Laboratory exposes a reproducible defect in an existing contract.
-- `[DECISION]` If imported `Assets/Samples/**` content is found to pollute automatic Setup candidate discovery, only a narrow standard imported-sample exclusion may be added, with explicit user selection remaining available and dedicated regression coverage required. No speculative production Editor change is authorized without that evidence.
-- `[DECISION]` FL-M5-07 does not resurrect or copy implementation from discarded post-`e28ff09` history. All implementation is reviewed against this fresh authority and current source.
+- `[DECISION]` First Light ships exactly one separately importable UPM sample named **First Light Standalone Test Lab**.
+- `[DECISION]` The Laboratory is fully authored under `Samples~/First Light Standalone Test Lab/`; no second setup or launch engine is shipped.
+- `[DECISION]` Standard imported `Assets/Samples/**` content is excluded from automatic Setup candidate discovery while explicit user selection remains supported.
+- `[DECISION]` The canonical Boot Laboratory inherits `SuccessConfiguration` from the Laboratory root prefab and must not serialize a null scene override for that configuration.
+- `[DECISION]` LAB-010 uses a sample-only manual skip-request surface routed through the existing uGUI splash presenter API. Production input ownership remains unchanged.
+- `[DECISION]` The Laboratory splash minimum is five seconds so the manual minimum-duration/early-skip proof is human-observable.
+- `[DECISION]` No package Runtime authority, Setup Apply/Repair write authority, Validator authority, Simulator authority, schema, or diagnostic ownership was broadened.
 
-## Required Laboratory Proof
+## Final Automated Validation
 
-FL-M5-07 must exercise the twelve previously approved package acceptance cases:
+```text
+Focused package tests: 6 / 6
+Focused asset tests:   8 / 8
 
-1. `LAB-001` canonical Boot success.
-2. `LAB-002` timed progress.
-3. `LAB-003` warning continues.
-4. `LAB-004` missing configuration blocks with `ELAUNCH-CFG-001`.
-5. `LAB-005` blocking failure stops before destination handoff.
-6. `LAB-006` duplicate authority is rejected with `ELAUNCH-ROOT-001` and zero duplicate side effects.
-7. `LAB-007` invalid destination blocks with `ELAUNCH-DEST-001`.
-8. `LAB-008` direct-scene entry creates one development authority when absent.
-9. `LAB-009` direct-scene entry reuses an existing authority without duplication.
-10. `LAB-010` minimum splash duration and skip policy remain enforced.
-11. `LAB-011` removing the imported sample leaves package compilation/tooling healthy.
-12. `LAB-012` Setup and Repair remain repeat-safe across three runs.
+EditMode: 306 / 306
+PlayMode: 503 / 503
+Total:    809 / 809
 
-## Explicit Exclusions
+Failed:   0
+Ignored:  0
+Errors:   0
+Warnings: 0
+```
 
-FL-M5-07 does not authorize:
+## Manual Laboratory Acceptance
 
-- a sample authoring/generation window or shipped generation service;
-- automatic sample scene installation;
-- automatic Build Settings edits on sample import;
-- runtime discovery of package/sample content;
-- another launch pipeline or sample-specific launch authority;
-- report export formats;
-- schema migration;
-- receipts, uninstall, or crash-persistent recovery;
-- build hooks;
-- external package integrations;
-- unrelated Runtime or Editor refactors.
+All twelve approved cases passed: `LAB-001` through `LAB-012`.
+
+Setup repeatability:
+
+```text
+Run 1: Succeeded
+Run 2: NoChanges
+Run 3: NoChanges
+```
+
+Repair repeatability:
+
+```text
+Run 1: Succeeded — one deliberately cleared StartupSequence reference repaired
+Run 2: NoChanges
+Run 3: NoChanges
+```
+
+Healthy settled plan fingerprint:
+
+```text
+7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c
+```
+
+## Acceptance Findings Resolved During FL-M5-07
+
+- `[BUG][RESOLVED]` Imported sample content initially polluted automatic Setup candidate discovery. The bounded `Assets/Samples/**` automatic-discovery exclusion restored the full suite while preserving explicit selection.
+- `[BUG][RESOLVED]` The authored Boot Laboratory scene serialized a null `configuration` prefab-instance override. The override was removed and regression-tested.
+- `[BUG][RESOLVED]` LAB-010 had no practical manual skip-request surface. A sample-only readout control and live elapsed/minimum/`CanSkipNow` evidence were added.
+- `[NOTE]` The Laboratory-only minimum splash duration was increased from one second to five seconds for reliable manual observation.
+
+## Unity Editor Session-Restore Observation
+
+During LAB-012, Unity `6000.3.8f1` repeatedly hung during startup while restoring/opening the generated Boot asset path. Isolation showed that the hang followed the path/GUID even when scene contents were replaced with empty or known-good contents. The evidence does not support attributing this observation to First Light runtime or Laboratory scene contents.
+
+## Repository Cleanup
+
+- Imported `Assets/Samples` acceptance content removed.
+- LAB-012 generated `Assets/EchoDevGames/FirstLight` content removed.
+- Temporary Build Settings changes restored.
+- Generated solution-file drift restored.
+- Final implementation staging contained package/test files only.
+- Final implementation commit pushed as `f1665f7`.
 
 ## Next Action
 
-Commit and push this FL-M5-07 authority package. Then implement only the files and conditional defect corrections named by the checkpoint plan.
+Commit and push the FL-M5-07 documentation closeout. After that commit is synchronized, select the next First Light checkpoint deliberately.

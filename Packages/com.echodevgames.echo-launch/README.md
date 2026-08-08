@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, and the Editor-only Launch Simulator are implemented; Standalone Laboratory evidence remains pending
+- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, the Editor-only Launch Simulator, and the importable Standalone Test Laboratory are implemented and accepted
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -36,6 +36,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-04` Read-Only Validator and Project Health Report
   - `FL-M5-05` Direct Scene Development Initializer
   - `FL-M5-06` Launch Simulator and Deterministic Failure Injection
+  - `FL-M5-07` Standalone Test Laboratory and Importable UPM Sample
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -711,6 +712,43 @@ progress evidence.
 Expected simulated warning and failure results appear only inside the report.
 They do not create Unity Console warnings or errors.
 
+## Standalone Test Laboratory
+
+First Light ships exactly one separately importable Unity Package Manager sample:
+
+```text
+First Light Standalone Test Lab
+```
+
+Import it through the package's **Samples** section in Unity Package Manager.
+
+The sample contains:
+
+- a canonical Boot Laboratory scene;
+- a destination Laboratory scene;
+- authored success, timed-progress, warning, recoverable-failure, blocking-failure,
+  and invalid-destination scenarios;
+- a Laboratory root prefab and duplicate-root fixture;
+- a Direct Scene configuration;
+- redistributable placeholder splash art;
+- sample-only runtime step/readout helpers;
+- a sample-only LAB-010 splash skip-request control routed through the existing
+  `EchoLaunchStatusView.RequestSplashSkip()` API.
+
+The sample does not automatically run Setup, Repair, Validator, Simulator, Play
+Mode, or modify Build Settings when imported.
+
+Standard imported `Assets/Samples/**` content is excluded from automatic First
+Light Setup candidate discovery. Explicit user selection of imported sample
+assets remains supported.
+
+The Laboratory splash minimum is five seconds so the manual early-skip
+acceptance proof is human-observable. This changes Laboratory evidence timing
+only and does not change production splash or input ownership.
+
+Removing the imported sample leaves the package Runtime and Editor tooling
+healthy.
+
 ## Safe Serialized Entry Defaults
 
 Unity can create new embedded list elements from zeroed serialized data.
@@ -747,13 +785,13 @@ Active states may also enter:
 
 The full EditMode suite reports:
 
-- Passed: `290`
+- Passed: `306`
 - Failed: `0`
 - Ignored: `0`
 
 Editor setup, apply, and repair tests:
 
-- Passed: `209`
+- Passed: `211`
 - Failed: `0`
 - Ignored: `0`
 
@@ -775,6 +813,18 @@ Launch Simulator tests:
 - Failed: `0`
 - Ignored: `0`
 
+Standalone Laboratory package/distribution tests:
+
+- Passed: `6`
+- Failed: `0`
+- Ignored: `0`
+
+Standalone Laboratory authored-asset tests:
+
+- Passed: `8`
+- Failed: `0`
+- Ignored: `0`
+
 Retained prefab asset tests:
 
 - Passed: `27`
@@ -789,10 +839,12 @@ The Runtime Play Mode suite reports:
 
 Breakdown:
 
-- Editor setup, apply, and repair tests: `209` EditMode
+- Editor setup, apply, and repair tests: `211` EditMode
 - Validator tests: `25` EditMode
 - Direct Scene Validator tests: `5` EditMode
 - Launch Simulator tests: `24` EditMode
+- Standalone Laboratory package/distribution tests: `6` EditMode
+- Standalone Laboratory authored-asset tests: `8` EditMode
 - Prefab asset tests: `27` EditMode
 - Direct Scene runtime tests: `24` Runtime Play Mode
 - Root splash integration tests: `28` Runtime Play Mode
@@ -868,6 +920,15 @@ Manual FL-M5-06 acceptance proved all eight Simulator presets, ordered logical
 progress, warning and recoverable-failure continuation, blocking/timeout/exception
 traversal stops, cooperative cancellation, clean Console behavior, and exact
 repeatable cancellation fingerprints after deterministic report normalization.
+Manual FL-M5-07 acceptance proved all twelve approved Laboratory cases,
+including canonical Boot handoff, timed progress, warning continuation,
+configuration and destination preflight blocking, authored blocking failure,
+duplicate-root rejection, Direct Scene creation/reuse, minimum-duration splash
+skip gating, sample removal, and three-run Setup/Repair repeatability. Imported
+sample acceptance also exposed and resolved the bounded automatic
+`Assets/Samples/**` candidate-isolation defect and a null Boot-scene
+configuration override.
+
 ## Not Implemented Yet
 
 First Light does not yet provide:
@@ -882,9 +943,7 @@ First Light does not yet provide:
 - Editor migration from historical configuration schemas
 - Automatic Direct Scene helper installation
 - Direct Scene build hooks or automatic build blocking
-- Real Boot-to-destination Standalone Laboratory proof
 - Persistent-root lifetime policy
-- Standalone Laboratory
 - Peer-package bridges
 
 ## Documentation
@@ -903,16 +962,19 @@ Available evidence:
 - Embedded-package removal and reinstallation
 - Stable assembly-definition GUIDs
 - Five hundred three passing Runtime Play Mode tests
-- Two hundred ninety passing EditMode tests
-- Two hundred nine Editor setup, apply, and repair tests
+- Three hundred six passing EditMode tests
+- Two hundred eleven Editor setup, apply, and repair tests
 - Twenty-five focused read-only Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
 - Twenty-four focused Launch Simulator tests
-- Seven hundred ninety-three total passing automated tests
+- Six focused Standalone Laboratory package/distribution tests
+- Eight focused Standalone Laboratory authored-asset tests
+- Fourteen focused project-snapshot collector tests with imported-sample isolation coverage
+- Eight hundred nine total passing automated tests
 - Twenty-seven retained prefab asset tests
 - Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, and an Editor-only deterministic Launch Simulator
+- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample
 - Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation and simulation fingerprints/reports, and stable setup/validation/simulation diagnostics
 - Safe policy authoring verification
 - Fresh executor factory contract
@@ -925,7 +987,6 @@ Still `Not run`:
 - Separate clean-project installation
 - Player builds
 - Automatic production startup
-- Real Boot-to-destination Standalone Laboratory activation
 - Performance measurements
 
 ## License

@@ -7,6 +7,27 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M5-07 - Standalone Test Laboratory and Importable UPM Sample
+* Exactly one package sample named **First Light Standalone Test Lab**
+* Fully authored UPM sample scenes, configurations, sequences, step definitions, root prefab, Direct Scene configuration, splash art, and sample-only runtime helpers
+* Normal Package Manager import with no automatic Setup/Repair, Validator, Simulator, Play Mode, or Build Settings side effects
+* Standard imported `Assets/Samples/**` exclusion from automatic Setup candidate discovery while explicit selection remains supported
+* Canonical Boot Laboratory configuration inheritance with null scene override rejection
+* Sample-only LAB-010 manual splash-skip request control through the existing uGUI presenter API
+* Five-second Laboratory minimum splash for observable manual early-skip evidence
+* Six focused package/distribution tests
+* Eight focused authored-asset tests
+* Fourteen focused project-snapshot collector tests with imported-sample isolation coverage
+* Three hundred six total passing EditMode tests
+* Five hundred three retained Runtime Play Mode tests
+* Eight hundred nine total passing automated tests
+* Twelve of twelve manual Laboratory acceptance cases passed
+* Setup repeatability: `Succeeded`, `NoChanges`, `NoChanges`
+* Repair repeatability: `Succeeded`, `NoChanges`, `NoChanges`
+* Stable healthy Setup/Repair plan fingerprint `7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c`
+* Imported sample removal and repository cleanup proof
+* Unity `6000.3.8f1` editor-session Boot restore hang retained as a separate tooling observation; evidence does not attribute it to First Light runtime or Laboratory scene contents
+
 #### FL-M5-06 - Launch Simulator and Deterministic Failure Injection
 - Explicit Editor-only `Tools > Sperk's Forge > First Light > Simulator` window
 - No automatic simulation on window open, repaint, import, reload, or Play Mode entry

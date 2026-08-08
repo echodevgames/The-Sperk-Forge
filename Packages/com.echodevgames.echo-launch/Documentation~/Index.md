@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-06 complete; FL-M5-07 Standalone Test Laboratory authority approved, implementation not yet started
+- Development stage: FL-M5-07 Standalone Test Laboratory and Importable UPM Sample complete
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -34,8 +34,9 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-04`
   - `FL-M5-05`
   - `FL-M5-06`
-- Active authority checkpoint: `FL-M5-07` — Standalone Test Laboratory and Importable UPM Sample
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, and an Editor-only deterministic Launch Simulator. FL-M5-07 authorizes only the importable Standalone Laboratory sample and evidence-gated sample-isolation correction described by specification v1.13.0.
+  - `FL-M5-07`
+- Active authority checkpoint: None — FL-M5-07 documentation closeout complete; next checkpoint requires deliberate selection
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample. FL-M5-07 completed the importable Laboratory and exercised the specification v1.13.0 evidence-gated imported-sample candidate-isolation correction without widening Setup mutation authority.
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -104,6 +105,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-05 Direct Scene Development Initializer Test Report](Developer/Test%20Reports/FL-M5-05_Direct_Scene_Development_Initializer_Test_Report.md)
 - [FL-M5-06 Launch Simulator and Deterministic Failure Injection](Developer/Checkpoints/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection.md)
 - [FL-M5-06 Launch Simulator Test Report](Developer/Test%20Reports/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection_Test_Report.md)
+- [FL-M5-07 Standalone Test Laboratory and Importable UPM Sample](Developer/Checkpoints/FL-M5-07_Standalone_Test_Laboratory_and_Importable_UPM_Sample.md)
+- [FL-M5-07 Standalone Test Laboratory Test Report](Developer/Test%20Reports/FL-M5-07_Standalone_Test_Laboratory_and_Importable_UPM_Sample_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -158,6 +161,29 @@ Runtime/player Simulator types, persistent scenario assets, authored
 configuration mutation, root/presentation/destination simulation,
 Standalone Laboratory scenes, build hooks, and report export remain outside
 the implemented boundary.
+
+## Completed FL-M5-07 Boundary
+
+FL-M5-07 implements exactly one fully-authored importable UPM Standalone Test
+Laboratory, sample-only readout/step helpers, authored scenes and scenario
+assets, normal Package Manager import/removal, and the evidence-gated standard
+`Assets/Samples/**` automatic Setup-candidate exclusion while preserving
+explicit selection.
+
+Automated acceptance passed `6` focused package tests, `8` focused asset tests,
+`306` complete EditMode tests, and `503` Runtime Play Mode tests for `809 / 809`
+total. Manual acceptance passed `LAB-001` through `LAB-012` (`12 / 12`). Setup
+and Repair each settled `Succeeded`, `NoChanges`, `NoChanges` without duplicate
+assets or Build Settings entries.
+
+Manual acceptance corrected a null Boot-scene configuration override and added
+a sample-only manual LAB-010 skip-request surface with a five-second Laboratory
+minimum display. Production runtime/input authority remained unchanged.
+
+A separate Unity `6000.3.8f1` editor-session restoration hang was isolated while
+reopening the generated Boot asset path. The available evidence followed the
+persisted path/GUID even after scene-content substitution and does not attribute
+the observation to First Light runtime or Laboratory scene contents.
 
 ## Package Root Documents
 
@@ -317,16 +343,19 @@ First Light currently proves:
 - Exact asset and `.meta` backup, rollback, and retained-backup reporting
 - Narrow configuration, destination, root-prefab, Boot-scene, and Build Settings reconciliation
 - Successful first Repair plus two `NoChanges` Repair reruns
-- Two hundred nine Editor setup, apply, and repair tests
+- Two hundred eleven Editor setup, apply, and repair tests
 - Twenty-five focused Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
 - Twenty-four focused Launch Simulator EditMode tests
-- Two hundred ninety total passing EditMode tests
+- Six focused Standalone Laboratory package/distribution tests
+- Eight focused Standalone Laboratory authored-asset tests
+- Twelve of twelve manual Laboratory acceptance cases passed
+- Three hundred six total passing EditMode tests
 - Five hundred three passing Runtime Play Mode tests
-- Seven hundred ninety-three total passing automated tests
+- Eight hundred nine total passing automated tests
 - Stable setup diagnostics `ELAUNCH-SETUP-001` through `ELAUNCH-SETUP-017`
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-06 is implemented, automated-tested, manually accepted, documented, and pushed. FL-M5-07 is the active authority checkpoint and may add exactly one fully-authored importable Standalone Laboratory UPM sample plus a narrowly evidence-gated automatic Setup-candidate isolation correction if required. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.
+FL-M5-07 is implemented, automated-tested, manually accepted, cleaned, and ready for documentation closeout commit. No next checkpoint is active until deliberately selected. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.
