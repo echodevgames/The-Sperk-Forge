@@ -34,6 +34,10 @@ namespace EchoDevGames.EchoLaunch
             CurrentSchemaVersion;
 
         [SerializeField]
+        [HideInInspector]
+        private bool hasAuthoredPresentationSettings;
+
+        [SerializeField]
         private SplashPresentationSettings presentationSettings;
 
         [SerializeField]
@@ -67,15 +71,22 @@ namespace EchoDevGames.EchoLaunch
         /// resolves without rewriting the project-owned asset.
         /// </summary>
         public SplashPresentationSettings PresentationSettings =>
-            presentationSettings ??
-            SplashPresentationSettings.LegacyDefaults;
+            hasAuthoredPresentationSettings &&
+            presentationSettings != null
+                ? presentationSettings
+                : SplashPresentationSettings.LegacyDefaults;
 
         /// <summary>
-        /// Gets whether this asset explicitly stores A1 presentation
+        /// Gets whether this asset explicitly opts into A1 presentation
         /// settings rather than using the schema-1 legacy fallback.
+        ///
+        /// Unity may materialize inline serialized reference fields while an
+        /// asset is inspected, so null is not a stable authored-state marker.
+        /// This explicit additive flag preserves legacy behavior without a
+        /// schema migration.
         /// </summary>
         public bool HasAuthoredPresentationSettings =>
-            presentationSettings != null;
+            hasAuthoredPresentationSettings;
 
         internal bool HasValidIdentity =>
             IsCanonicalId(sequenceId);
@@ -175,6 +186,9 @@ namespace EchoDevGames.EchoLaunch
         {
             presentationSettings =
                 configuredPresentationSettings;
+
+            hasAuthoredPresentationSettings =
+                configuredPresentationSettings != null;
         }
 
         internal void SetEntriesForTesting(
