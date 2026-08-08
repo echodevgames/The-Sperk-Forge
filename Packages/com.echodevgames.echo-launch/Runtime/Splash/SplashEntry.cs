@@ -6,7 +6,8 @@ using UnityEngine;
 namespace EchoDevGames.EchoLaunch
 {
     /// <summary>
-    /// Stores immutable authored data for one image-only startup splash.
+    /// Stores immutable authored data for one image startup splash and
+    /// optional preferred audio-content intent.
     ///
     /// The definition owns no playback index, elapsed time, alpha, skip
     /// request, cancellation state, or presenter state.
@@ -23,6 +24,9 @@ namespace EchoDevGames.EchoLaunch
 
         [SerializeField]
         private Sprite image;
+
+        [SerializeField]
+        private AudioClip preferredAudioClip;
 
         [SerializeField]
         private string displayLabel =
@@ -63,6 +67,13 @@ namespace EchoDevGames.EchoLaunch
         /// </summary>
         public Sprite Image =>
             image;
+
+        /// <summary>
+        /// Gets the optional project-owned audio content intended to
+        /// accompany this splash. EchoLaunch does not play this clip.
+        /// </summary>
+        public AudioClip PreferredAudioClip =>
+            preferredAudioClip;
 
         /// <summary>
         /// Gets the replaceable user-facing label.
@@ -138,7 +149,8 @@ namespace EchoDevGames.EchoLaunch
             double authoredHoldSeconds,
             double authoredFadeOutSeconds,
             double authoredMinimumDisplaySeconds,
-            SplashSkipPolicy authoredSkipPolicy)
+            SplashSkipPolicy authoredSkipPolicy,
+            AudioClip authoredPreferredAudioClip = null)
         {
             entryId =
                 authoredEntryId;
@@ -183,6 +195,9 @@ namespace EchoDevGames.EchoLaunch
 
             skipPolicy =
                 authoredSkipPolicy;
+
+            preferredAudioClip =
+                authoredPreferredAudioClip;
         }
 
         public SplashEntry()
