@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 8, 2026
-**Current focus:** Suite Reference Showcase authority and First Light production-use phase
-**Current checkpoint:** Suite authority update — SFGSS-ADR-005; FL-M6-01 authority follows after commit
+**Current focus:** First Light FL-M6-01 Production Reference Showcase authority
+**Current checkpoint:** FL-M6-01 — First Light Production Reference Showcase
 
 > Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
 
@@ -13,108 +13,104 @@
 
 ## Current State
 
-- First Light FL-M5-07 is complete and closed at documentation commit `710aec3`.
-- Final FL-M5-07 automated evidence: `809 / 809`.
-- Final FL-M5-07 manual Laboratory evidence: `12 / 12`.
-- Repository baseline for this authority change: exact clean `710aec3`.
+- Suite Package Reference Showcase graduation authority is committed at `8c3f3b3`.
+- First Light FL-M5-07 is complete and closed at `710aec3`.
+- FL-M5-07 final automated evidence: `809 / 809`.
+- FL-M5-07 manual Laboratory evidence: `12 / 12`.
 - First Light package version remains `0.1.0`.
-- First Light package specification remains v1.13.0 until the fresh M6 package-authority revision is approved.
+- First Light package specification advances to v1.14.0 in this authority checkpoint.
+- FL-M6-01 is authority/documentation only until its commit is synchronized and a fresh implementation drift audit passes.
 
-## Newly Approved Suite Direction
-
-`[DECISION]` Every package will receive a clean in-house **Package Reference Showcase** after its isolated Standalone Test Lab proof.
-
-The intended evidence layers are now:
+## First Light Display-Case Goal
 
 ```text
-Package implementation
-        ↓
-Standalone Test Lab
-engineering microscope
-        ↓
-Package Reference Showcase
-production-style display case
-        ↓
-Clean-project reproduction
-outside-consumer proof
-        ↓
-Integration demonstrations / the Suite Showcase Hub
-suite collection and composition
+FirstLight_Showcase_Boot
+→ EchoDevGames / studio image splash
+→ First Light — Startup and Launch image splash
+→ valid startup sequence settles
+→ destination validation + load
+→ FirstLight_Showcase_MainMenu
 ```
 
-The Reference Showcase:
+The display case should be simple to watch because the complexity now lives underneath it.
 
-- is project-owned rather than immutable package source;
-- uses the same documented public setup/configuration/API surfaces available to an outside consumer;
-- must not depend on test-only APIs, hidden internals, or unrelated package code;
-- shows the normal front-facing happy path by default;
-- may use one scene or the smallest scene set required by the real workflow;
-- has an Editor/workspace equivalent for genuinely non-scene packages;
-- normally lives under `Assets/EchoDevGames/SuiteShowcase/<Package>/`.
+## Reference Showcase Boundary
 
-`[DECISION]` A future project-owned **Suite Showcase Hub** will link or launch package Reference Showcases and integrated demonstrations but is not a runtime package, authority, or substitute for package evidence. **Suite Showcase Hub is a functional placeholder name only.** Its final lore-facing name remains intentionally unresolved and may draw from the Hackulos / Sperk-galaxy large computer-brain cosmology.
-
-## Official Package Graduation Loop
+Canonical project-owned root:
 
 ```text
-Learning / package authority
-        ↓
-Implementation + automated regression
-        ↓
-Standalone Test Lab
-        ↓
-Package Reference Showcase
-        ↓
-Clean-project reproduction
-        ↓
-Release qualification
-        ↓
-Private beta / external adoption
+Assets/EchoDevGames/SuiteShowcase/FirstLight/
 ```
 
-This is the suite-wide development-to-release rhythm. The display case is the bridge between engineering proof and real consumer/release proof, not a substitute for either.
+The Showcase:
 
-## First Light Next Phase
+- is project-owned and remains outside `Packages/**` and `Samples~/**`;
+- uses documented First Light Setup and public configuration/presentation surfaces;
+- uses two project-owned image splashes;
+- uses an empty valid startup sequence for the smallest real consumer happy path;
+- uses a project-owned main-menu-style destination without transferring menu authority to First Light;
+- keeps diagnostics secondary;
+- uses no sample-only helper, test assembly, hidden API, reflection, or peer package;
+- contains no First Light-owned audio playback. Each splash entry may carry an optional project-owned `PreferredAudioClip` as stored presentation intent for a future Jukebot bridge.
 
-The next First Light work will establish the pattern.
+## Splash Audio Intent
 
-The planned M6 sequence is:
+`[DECISION]` A `SplashEntry` may remember which project-owned `AudioClip` the designer intends to accompany that splash even before Jukebot exists.
 
-1. **FL-M6-01 — First Light Production Reference Showcase**
-   - create the first in-house display case;
-   - use project-owned real/front-facing splash configuration;
-   - show normal Boot → splash(es) → startup → destination behavior;
-   - keep diagnostics secondary;
-   - use only public First Light consumer surfaces.
+```text
+SplashEntry
+├── Image
+├── Timing / fade / skip policy
+└── PreferredAudioClip   ← optional content intent only
+```
 
-2. **FL-M6-02 — Clean-Project Consumer Reproduction**
-   - install First Light into a genuinely clean Unity project;
-   - reproduce the same production-style startup flow;
-   - prove no hidden repository-local dependency.
+First Light owns the **choice/reference**, not playback.
 
-3. Later M6/M7 release qualification
-   - Git/tarball route proof;
-   - player builds;
-   - performance evidence;
-   - packaging/version/release candidate;
-   - private-beta handoff.
+A future First Light ↔ Jukebot bridge can read the entry stable ID and preferred clip, create/resolve the appropriate Jukebot cue, then ask Jukebot to play it. Mixer routing, volume, variations, concurrency, fades, voice management, and actual `AudioSource` work remain Jukebot authority.
 
-This ordering keeps the exciting visible proof small and understandable before returning to heavier release qualification.
+The field is optional backward-compatible metadata. Null means “no audio selected yet” and changes no current launch behavior.
 
-## Authority Boundary
+## Starter Splash Convenience Question
 
-This suite authority change does **not** authorize FL-M6-01 implementation by itself.
+A one-click starter splash template/preset is **not** pre-authorized.
 
-After the suite authority commit:
+We first use the real consumer path:
 
-- update First Light package specification from the synchronized baseline;
-- create a fresh FL-M6-01 Checkpoint Build Plan;
-- perform another drift audit before implementation;
-- do not resurrect discarded post-rewind M6 work unless a specific item is deliberately reviewed and reintroduced.
+```text
+Setup
+→ project-owned SplashSequence
+→ assign project-owned images/timing
+→ project-owned root/presentation
+→ Play
+```
+
+If our own display case cannot be built comfortably through that workflow, stop and capture the usability evidence before authorizing a convenience improvement.
+
+## Acceptance
+
+`SHOW-001` through `SHOW-009` prove the display case, public Setup/no-op rerun, ordered splashes, clean destination handoff, stored optional splash-audio intent, project ownership, and retained automated regression.
+
+## Official Graduation Loop
+
+```text
+Learning / authority
+→ implementation
+→ Standalone Test Lab
+→ Package Reference Showcase   ← First Light is here
+→ clean-project reproduction
+→ release qualification
+→ private beta / external adoption
+```
+
+FL-M6-02 will reproduce the same happy path in a genuinely clean consumer project.
+
+## Suite Cosmology Note
+
+The future suite showcase/navigation identity remains intentionally unnamed. Emerging visual language is a constellation forming a humanoid-ish computational/cosmic entity, with completed systems mapping to functions of that body. This is creative direction only, not FL-M6-01 implementation authority.
 
 ## Next Action
 
-1. Audit exact clean `710aec3`.
-2. Apply and review SFGSS-000 v0.24.0, SFGSS-001 v1.3.0, SFGSS-004 v1.3.0, SFGSS-ADR-005, ADR log, Suite Graph Roadmap, and this Current Notes update.
-3. Commit and push the suite Reference Showcase authority.
-4. Build fresh FL-M6-01 First Light authority from the resulting synchronized commit.
+1. Commit/push First Light specification v1.14.0 and FL-M6-01 authority.
+2. Verify `main == origin/main` and a clean tree.
+3. Run the fresh FL-M6-01 implementation drift audit.
+4. Only then create showcase assets.

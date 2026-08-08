@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.13.0
+**Specification version:** 1.14.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -13,12 +13,12 @@
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 7, 2026
+**Last updated:** August 8, 2026
 
 > “Awaken the systems this project needs.”
 
-> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-06 is complete at documentation closeout commit `e28ff09`. FL-M5-07 is now authorized to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample. The sample must exercise existing production contracts rather than introduce another launch or setup pipeline.
-FL-M5-07 adds no automatic sample generation, automatic scene installation, import-time Build Settings mutation, peer-package dependency, schema migration, report export format, receipt, uninstall, crash-persistent recovery, or build hook. Existing Runtime and Editor behavior may change only when Laboratory evidence demonstrates a bounded defect and the checkpoint plan explicitly permits the correction.
+> **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 is complete at documentation closeout commit `710aec3`. Suite authority commit `8c3f3b3` adds the required Package Reference Showcase graduation stage through SFGSS-ADR-005. FL-M6-01 is authorized to create First Light's first project-owned Production Reference Showcase using the package's existing documented public consumer surfaces.
+FL-M6-01 pre-authorizes exactly one bounded Runtime data-contract addition: each `SplashEntry` may store one optional project-owned `AudioClip PreferredAudioClip` as declarative presentation intent. EchoLaunch never plays, routes, mixes, loops, fades, or otherwise executes that audio reference. All actual playback remains Jukebot/bridge authority. No other package Runtime or Editor code change, clean-project qualification, player build, Git/tarball distribution proof, performance claim, package versioning, private beta, peer-package integration, or splash-template generator is authorized. If the current public workflow cannot create the Showcase without hidden/test-only manipulation, stop and return to bounded authority review before any other package code change.
 
 ---
 
@@ -41,6 +41,7 @@ FL-M5-07 adds no automatic sample generation, automatic scene installation, impo
 | 1.11.0 | 2026-08-06 | Approved | Authorized the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, unconditional non-development release prohibition, `DirectSceneDevelopment` report mode, and activated `ELAUNCH-VAL-009` for FL-M5-05 | Jesse “Echo” Adams |
 | 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
 | 1.13.0 | 2026-08-07 | Approved | Authorized FL-M5-07 to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample; prohibited a shipped sample generator and import-time side effects; required serialized reference integrity, sample-only assembly isolation, removal proof, and evidence-gated Setup candidate isolation only if imported sample content is shown to affect automatic discovery | Jesse “Echo” Adams |
+| 1.14.0 | 2026-08-08 | Approved | Adopted SFGSS-ADR-005 for First Light, defined the project-owned Production Reference Showcase and package graduation path, authorized FL-M6-01 to prove the normal Boot → project-owned image splashes → startup → destination experience through existing public consumer surfaces, and deferred clean-project reproduction and any convenience-generator changes to later authority | Jesse “Echo” Adams |
 
 ---
 
@@ -153,6 +154,7 @@ This creates four recurring costs:
 - EchoLaunch installs into a clean supported Unity project with zero compile errors.
 - Its MVP runs with no other Sperk’s Forge runtime package installed.
 - The Standalone Test Lab proves canonical Boot launch, direct-scene launch, duplicate rejection, success, warning, recoverable failure, and blocking failure.
+- The project-owned First Light Production Reference Showcase demonstrates the normal front-facing consumer happy path through documented Setup/configuration/presentation surfaces without test-only APIs or peer-package dependencies.
 - A duplicate root performs no startup step, scene load, event subscription, splash playback, or other launch side effect.
 - Every launch attempt ends with a structured report, including blocked launches.
 - Re-running setup creates no duplicate root, duplicate configuration, duplicate Boot scene, or duplicate build-settings entry.
@@ -186,6 +188,7 @@ This creates four recurring costs:
 | UC-008 | Add optional package initialization | Package developer | Both packages installed | A bridge contributes an explicit startup step; neither core package gains a hidden dependency | Later/integration |
 | UC-009 | Select destination by save or progression state | Project developer | Destination provider installed | Provider resolves main menu, continue, test, or project-defined target | Later |
 | UC-010 | Visualize launch graph in Observatory | Tester | Optional bridge installed | Observatory shows phases, steps, timings, state, warnings, and handoff | Later/integration |
+| UC-011 | Run the First Light Production Reference Showcase | Developer/maintainer | Project-owned showcase configured through public First Light Setup and authoring surfaces | Project-owned studio/system image splashes display in order, startup completes, and a clean project-owned destination scene appears with diagnostics secondary by default | M6/reference showcase |
 
 ### 4.3 Explicitly unsupported use cases
 
@@ -476,7 +479,7 @@ Splash playback and startup-step execution are sequential in the MVP. They do no
 | `StartupSequence` | Ordered list of startup-step definitions | Yes | No | Yes |
 | `StartupStep` | Base definition and execution contract for one launch operation | Yes, step ID | Definition no; active execution state is separate | Usually yes; package may ship safe test/sample steps |
 | `SplashSequence` | Ordered image splash entries and sequence policy | Yes | No | Yes |
-| `SplashEntry` | Image, label, timing, fade, minimum display, and skip policy | Entry ID required when referenced diagnostically | No | Stored in project-owned sequence |
+| `SplashEntry` | Image, label, timing, fade, minimum display, skip policy, and optional preferred audio-content reference | Entry ID required when referenced diagnostically | No | Stored in project-owned sequence |
 | `LaunchDestination` | Validated initial scene reference and display metadata | Yes, destination ID | No | Yes; standalone project-owned ScriptableObject |
 | `DirectSceneConfiguration` | Project-owned direct root prefab, environment policy, and stable identity | Yes | No | Yes |
 
@@ -538,6 +541,7 @@ All configuration, sequence, step, splash, and destination assets are treated as
 - Configuration schema `4` adds the optional serialized project-owned `SplashSequence` reference and the project-authored reduced-motion default.
 - `LaunchDestination.CurrentSchemaVersion` remains `1`.
 - `SplashSequence.CurrentSchemaVersion` remains `1`.
+- FL-M6-01 adds an optional nullable `PreferredAudioClip` reference to `SplashEntry` as backward-compatible, non-executing metadata. Existing schema-1 sequences deserialize with no preferred clip and remain valid; no migration or runtime rewrite is required.
 - `LaunchReport.CurrentSchemaVersion` remains `2`.
 - Successful splash timing contributes to the report's existing total launch elapsed time.
 - Splash failures use the existing immutable final-result code/message surface; report schema 2 gains no splash-specific fields.
@@ -566,7 +570,7 @@ All configuration, sequence, step, splash, and destination assets are treated as
 | `StartupStepResult` | Immutable struct/class | Success, warning, recoverable failure, blocking failure, code, message, details | Returned by step execution |
 | `StartupStepPolicy` | Serializable struct/class | Required/optional, failure action, timeout, skip/retry metadata | Stored in sequence entry |
 | `SplashSequence` | ScriptableObject | Ordered image splash configuration | Project-owned |
-| `SplashEntry` | Serializable definition | Image and timing/skip metadata | Owned by sequence |
+| `SplashEntry` | Serializable definition | Image, timing/skip metadata, and optional `PreferredAudioClip` content intent | Owned by sequence; EchoLaunch never plays the clip |
 | `SplashSequencePlayer` | Class | Deterministic clock-driven traversal of one assigned sequence | Root-owned per launch attempt |
 | `IImageSplashPresenter` | Interface | Receives immutable splash frames and project-routed skip requests | Default uGUI view, project adapter, or headless fallback |
 | `SplashPlaybackResult` | Immutable class | Completed splash traversal summary | Produced by player; retained only as temporary root execution evidence in FL-M4-04 |
@@ -624,7 +628,7 @@ All configuration, sequence, step, splash, and destination assets are treated as
 
 ### 10.5 API ergonomics
 
-**Novice path:** Run setup, assign a configuration, add built-in/sample steps from a validated list, configure image splashes and destination, press Play.
+**Novice path:** Run setup, assign a configuration, add built-in/sample steps from a validated list, configure image splashes, optional preferred splash-audio clips, and destination, press Play.
 
 **Programmer path:** Implement/derive a custom startup step or provide an explicit adapter, return structured results, report progress, and test with injected clock/presenter/destination loader.
 
@@ -684,7 +688,7 @@ Repair workflow:
 | First Light Setup | Novice/maintainer | Preview, create, and explicitly repair the canonical foundation | No |
 | Launch Configuration Inspector | Designer/programmer | Edit references/policies with validation | No |
 | Startup Sequence Inspector | Programmer | Reorder and validate steps | No |
-| Splash Sequence Inspector | Designer | Preview image order/timing | No |
+| Splash Sequence Inspector | Designer | Preview image order/timing and author optional preferred audio-content references | No |
 | First Light Validator | Tester/maintainer | Run configuration/scene/build/schema checks | No |
 | Launch Simulator | Tester | Explicitly run transient deterministic startup-step scenarios and copy immutable evidence | Editor assembly only; no authored asset, scene, Build Settings, or player dependency |
 | Launch Report Viewer | Tester | Inspect/copy launch reports | No |
@@ -1364,7 +1368,71 @@ authority.
 | LAB-011 | Delete sample assets after import | Runtime package remains compiling and setup tool opens | Manual clean-project | Not run |
 | LAB-012 | Re-run setup and repair three times | No duplicates or silent overwrite | Manual + EditMode where practical | Not run |
 
-### 13.4 Optional showcase and integration samples
+### 13.4 Required in-house Package Reference Showcase
+
+The **First Light Production Reference Showcase** is the project-owned consumer proof required by SFGSS-ADR-005. It is separate from the distributed Standalone Test Laboratory.
+
+Canonical project-owned root:
+
+```text
+Assets/EchoDevGames/SuiteShowcase/FirstLight/
+```
+
+Required showcase content:
+
+```text
+Assets/EchoDevGames/SuiteShowcase/FirstLight/
+├── README.md
+├── Art/
+│   ├── EchoDevGames_StudioSplash.png
+│   └── FirstLight_ShowcaseSplash.png
+├── Configuration/
+│   ├── EchoLaunchConfiguration.asset
+│   ├── StartupSequence.asset
+│   ├── LaunchDestination.asset
+│   └── SplashSequence.asset
+├── Prefabs/
+│   └── EchoLaunchRoot.prefab
+└── Scenes/
+    ├── FirstLight_Showcase_Boot.unity
+    └── FirstLight_Showcase_MainMenu.unity
+```
+
+Rules:
+
+- The Showcase is project-owned `Assets/**` content, not `Samples~` or package source.
+- The Boot foundation is created/configured through the documented public First Light Setup workflow.
+- `FirstLight_Showcase_MainMenu.unity` is only a project-owned destination presentation; First Light still does not own menus or normal scene flow.
+- Use one valid project-owned configuration, startup sequence, destination, splash sequence, and project-owned root prefab variant.
+- FL-M6-01 intentionally permits an empty valid startup sequence. The Standalone Laboratory already proves step behaviors; the Showcase proves the smallest real consumer happy path.
+- The splash sequence contains two project-owned image entries: EchoDevGames/studio identity, then First Light display identity.
+- Successful playback defaults to a clean player-facing presentation. Diagnostics may remain available for development but must not dominate the display.
+- No Laboratory helper, sample-only step, test assembly, hidden package API, reflection probe, peer package, or repository-only shortcut may be required.
+- First Light owns no startup music/SFX in this showcase. Audio remains a later Resonance/Jukebot integration concern.
+- A splash entry may nevertheless carry an optional project-owned `PreferredAudioClip` reference. This is declarative content intent only: “this is the sound intended to accompany this splash.”
+- EchoLaunch must not create an `AudioSource`, invoke clip playback, choose mixer/routing/volume/concurrency, or require Jukebot.
+- A future EchoLaunch ↔ Jukebot bridge may use the splash entry stable ID plus `PreferredAudioClip` to create/resolve a Jukebot cue and request playback through Jukebot authority.
+- If a project has not selected splash audio yet, the reference remains null and launch behavior is unchanged.
+- Package Runtime/Editor source remains unchanged during FL-M6-01 **except** for the explicitly authorized additive `SplashEntry.PreferredAudioClip` data field and its focused tests. Any other consumer-facing blocker returns to authority review before package code changes.
+- A one-click starter splash generator/preset is intentionally not assumed. FL-M6-01 first tests the existing Setup + Inspector authoring workflow; genuine friction becomes evidence for a later bounded convenience checkpoint.
+
+#### 13.4.1 Reference Showcase acceptance checklist
+
+| ID | Action | Expected result | Evidence |
+|---|---|---|---|
+| SHOW-001 | Inspect repository before showcase creation | Showcase path absent or intentionally reviewed; package source clean | Git + filesystem |
+| SHOW-002 | Use public Setup with showcase root/Boot/destination, splash creation enabled, reviewed Build Settings policy | Ready plan; Apply creates/reuses only approved project-owned foundation | Setup result |
+| SHOW-003 | Repeat identical Setup | `NoChanges`; no duplicates or Build Settings drift | Setup result |
+| SHOW-004 | Play showcase Boot | EchoDevGames image appears, then First Light image appears in authored order | Manual |
+| SHOW-005 | Allow normal launch to continue | Startup settles, destination validates/loads, handoff completes | Manual + report |
+| SHOW-006 | Observe destination after handoff | Clean main-menu-style display; no Laboratory diagnostic wall | Manual |
+| SHOW-007 | Inspect Git ownership | Showcase stays under `Assets/EchoDevGames/SuiteShowcase/FirstLight`; package changes are limited to the authorized `SplashEntry.PreferredAudioClip` seam and focused tests | Git diff |
+| SHOW-008 | Run retained regression | Existing First Light automated baseline remains green; additive focused tests may raise totals | Test Runner |
+| SHOW-009 | Author/inspect preferred splash audio intent | Each splash entry can retain an optional project-owned `AudioClip` reference; no sound plays without a later audio bridge/provider | Inspector + focused automated test |
+
+FL-M6-01 proves only the in-house Reference Showcase. Clean-project reproduction of this exact happy path is FL-M6-02.
+
+### 13.5 Optional distributed showcase and integration samples
 
 | Sample | Packages involved | Purpose | Why it is not standalone proof |
 |---|---|---|---|
@@ -2126,6 +2194,7 @@ Automated script rewriting is rejected unless a later migration specification pr
 | ELAUNCH-D-014 | Project health validation is an explicit read-only Editor transaction with immutable schema-1 findings/report, stable codes, scene-safe inspection, and deterministic fingerprints/text | Approved | Keeps diagnosis trustworthy and separate from mutation while preparing release-safety checks for Direct Scene | No auto-fix, build hook, runtime overlay, or direct-helper implementation in FL-M5-04 | Yes; EchoLaunch-ADR-007 |
 | ELAUNCH-D-015 | Direct Scene uses a project-owned immutable direct configuration, Start-time authority reuse, a pre-authored direct root prefab, active-destination no-reload handoff, Editor-only default policy, explicit Development-Build opt-in, and an unconditional non-development release gate | Approved | Preserves one startup architecture while preventing development bootstrap behavior from running in release | No hidden discovery, runtime asset rewrite, automatic installation, or release enablement | Yes; EchoLaunch-ADR-008 |
 | ELAUNCH-D-016 | Launch simulation is an explicit Editor-only transaction that builds transient in-memory scenario data, executes the real startup-sequence runner and policy contracts against deterministic logical time, and emits a separate immutable schema-1 simulation report | Approved | Proves step behavior without mutating authored content or falsely claiming a full root/destination launch | No persistent scenario assets, runtime simulator code, Play Mode automation, scene mutation, build hooks, or Laboratory implementation | Yes; EchoLaunch-ADR-009 |
+| ELAUNCH-D-017 | First Light's Package Reference Showcase is project-owned consumer evidence built through documented public Setup/configuration/presentation surfaces and remains separate from the Standalone Test Laboratory and package distribution | Approved by SFGSS-ADR-005 | Makes correct real-world use visible without weakening isolated proof or package ownership boundaries | Showcase content lives under project `Assets/**`; clean-project reproduction is a later evidence stage | No; suite ADR authority |
 
 ### 27.2 Release-blocking questions
 
@@ -2148,6 +2217,7 @@ None. The implementation-shaping questions from specification 0.1.0 were resolve
 - Whether automatic retry belongs in core after MVP.
 - Whether destination definitions are standalone assets or embedded configuration data.
 - Which bridge is the first integration proof after standalone release.
+- Whether FL-M6-01 consumer ergonomics justify a later optional starter splash preset/generator; no such generator is authorized until Showcase evidence demonstrates a real need.
 
 ---
 
@@ -2164,8 +2234,8 @@ None. The implementation-shaping questions from specification 0.1.0 were resolve
 | M4 — Presentation and handoff | Complete standalone MVP user loop | Image splashes, status view, destination load, handoff | Standalone Test Lab checklist |
 | M5 — Tooling and direct scene | Safe setup/repair/validation and development entry | Setup, validator, simulator, direct initializer | Repeatability and direct-scene tests |
 | M5.5 — Standalone Laboratory | Importable isolated proof of the complete MVP launch loop | One fully-authored UPM sample, sample-only helpers, LAB-001 through LAB-012 | Package sample source checks, imported-sample manual matrix, sample-removal proof, retained regression suites |
-| M6 — First adoption/integration | One real-project adoption or optional bridge | Project adapter or first bridge without core dependency | Parity/integration report |
-| M7 — Release | Distribution-ready beta/stable candidate | Docs, license, tarball, clean install, catalog | Release checklist and external clean-project test |
+| M6 — Reference Showcase and consumer proof | Visible production-style use of First Light followed by clean-project reproduction | Project-owned Reference Showcase, public Setup/configuration/presentation workflow, clean consumer reproduction | SHOW acceptance + clean-project consumer report |
+| M7 — Release qualification | Distribution-ready beta/stable candidate | Git/tarball route proof, player builds, performance evidence, docs/license/versioning, private-beta handoff | Release checklist and external adoption evidence |
 
 ### 28.2 Checkpoint rule
 
@@ -2190,30 +2260,33 @@ The complete plan lives at `Checkpoint Build Plans/First_Light_M1_Package_Skelet
 
 ---
 
-## 28.4 Current Authorized Checkpoint — FL-M5-07
+## 28.4 Current Authorized Checkpoint — FL-M6-01
 
-**FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample** is the
-current implementation authorization.
+**FL-M6-01 — First Light Production Reference Showcase** is the current implementation authorization.
 
 Authorized outcome:
 
-- declare exactly one First Light UPM sample;
-- ship the approved Boot and destination Laboratory scenes as fully-authored sample content;
-- ship minimal sample-owned configuration, sequence, destination, splash, root/direct-scene configuration, placeholder art, step definitions, and readout;
-- keep sample executable helpers inside a narrow sample assembly;
-- prove imported reference integrity without hand repair;
-- execute and record LAB-001 through LAB-012;
-- preserve the `793`-test FL-M5-06 baseline and add only focused sample/source regression coverage;
-- permit one conditional production Editor correction only if imported sample content is empirically shown to pollute automatic Setup candidate discovery, with explicit-selection behavior preserved.
+- create the first project-owned Package Reference Showcase under `Assets/EchoDevGames/SuiteShowcase/FirstLight/`;
+- author one clean project-owned main-menu-style destination scene without transferring menu authority to First Light;
+- use the existing public First Light Setup workflow to create/reuse the showcase configuration, startup sequence, splash sequence, root prefab variant, and Boot scene;
+- author two project-owned in-house image splashes for the visible success path;
+- keep the startup sequence empty-but-valid for this minimal consumer proof unless later authority explicitly adds a real project-owned custom step;
+- configure the success path so diagnostics remain secondary rather than the front-facing experience;
+- document the exact consumer authoring sequence used to build the display case;
+- execute `SHOW-001` through `SHOW-009`;
+- preserve the `809 / 809` FL-M5-07 automated baseline and existing Standalone Laboratory source/distribution evidence.
 
 Explicit stop point:
 
-Do not add a shipped sample generator, automatic import actions, report export,
-schema migration, receipts, uninstall, crash recovery, build hooks, peer-package
-integration, or unrelated Runtime/Editor refactors. Any other discovered defect
-returns to authority review before implementation expands.
+Do not modify package Runtime/Editor code beyond the exact additive `SplashEntry.PreferredAudioClip` metadata seam and focused tests, create a splash generator/preset, perform clean-project reproduction, run player-build qualification, prove Git/tarball distribution routes, add audio playback ownership, add peer-package integration, bump package version, or begin private beta during FL-M6-01. If the existing public workflow cannot produce the Reference Showcase without hidden/test-only manipulation, stop and return to authority review.
 
----
+The complete plan lives at:
+
+```text
+Plan Documentation/Checkpoint Build Plans/FL-M6-01_First_Light_Production_Reference_Showcase_Checkpoint_Build_Plan.md
+```
+
+and is governed by SFGSS-005 and SFGSS-ADR-005.
 
 ## 29. New-Conversation Handoff
 
@@ -2245,31 +2318,27 @@ Before writing code:
 ```
 
 ### 29.1 Current status record
-
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Completed checkpoint | FL-M5-06 — Launch Simulator and Deterministic Failure Injection |
-| Active authorized checkpoint | None |
-| FL-M5-06 authority commit | `a159349` |
-| FL-M5-05 authority commit | `d538b5a` |
-| FL-M5-04 authority commit | `c2397c9` |
-| FL-M5-03 authority commit | `6615c8f` |
-| Last implementation commit | `956c381` |
-| Last documentation commit | `b6df92d` before this closeout |
+| Package specification | SFGSS-PKG-ECHOLAUNCH-001 v1.14.0 |
+| Completed checkpoint | FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample |
+| Active authorized checkpoint | FL-M6-01 — First Light Production Reference Showcase |
+| Suite Reference Showcase authority | SFGSS-ADR-005 accepted at `8c3f3b3` |
+| FL-M5-07 documentation closeout | `710aec3` |
+| Last implementation commit | `f1665f7` |
 | Runtime tests passed | 503 Runtime Play Mode tests |
-| EditMode tests passed | 290 total: 209 setup/apply/repair, 25 Validator, 5 Direct Scene Validator, 24 Launch Simulator, and 27 prefab asset tests |
-| Total automated tests | 793 passed, 0 failed, 0 ignored |
-| Compilation | 0 errors and 0 compiler warnings |
-| FL-M5-03 evidence | Separate explicit Repair; proof-backed current-schema eligibility; fresh-plan gate; exact asset + `.meta` backup; narrow repair; first Repair succeeded; second and third Repair returned NoChanges; stable IDs/GUIDs and unrelated content preserved |
-| FL-M5-04 evidence | Dedicated explicit read-only Validator; immutable schema-1 report; stable validation codes; scene-safe inspection; deterministic healthy report; deliberate blocked report with `002`, path-specific `003`, and `008`; exact restored healthy fingerprints |
-| FL-M5-05 evidence | Project-owned direct configuration; Start-time reuse/create; exactly-one authority; active-destination no reload; unconditional release-player prohibition; truthful direct mode; activated `VAL-009`; manual creation/reuse/convergence; Development-Build Warning; exact restored healthy fingerprints |
-| FL-M5-06 evidence | Explicit Editor-only Simulator; real runner and policy execution; transient authored shape; eight accepted presets; deterministic logical progress; clean expected-failure Console behavior; single-active-run and cancellation; human-click elapsed filtered from copied cancellation evidence; three identical accepted cancellation report fingerprints |
-| Default project root | `Assets/EchoDevGames/FirstLight` |
-| Evidence gaps | Historical schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic Direct Scene installation, build hooks, Laboratory, player builds, clean install, external adoption, and performance evidence remain not run |
-| Next action | Commit and push the FL-M5-06 documentation closeout, then select and authorize the next bounded First Light checkpoint |
-
----
+| EditMode tests passed | 306 total |
+| Total automated tests | 809 passed, 0 failed, 0 ignored |
+| Manual Standalone Laboratory | LAB-001 through LAB-012 passed (`12 / 12`) |
+| Compilation | 0 errors and 0 compiler warnings at FL-M5-07 closeout |
+| Setup repeatability evidence | `Succeeded`, `NoChanges`, `NoChanges` |
+| Repair repeatability evidence | `Succeeded`, `NoChanges`, `NoChanges` |
+| Healthy Setup/Repair fingerprint | `7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c` |
+| Reference Showcase target root | `Assets/EchoDevGames/SuiteShowcase/FirstLight` |
+| FL-M6-01 package code-change authority | Only additive `SplashEntry.PreferredAudioClip` metadata + focused tests; no playback implementation |
+| Evidence gaps after FL-M6-01 | Clean-project reproduction, supported package-route installs, player builds, performance, release packaging/versioning, private beta/external adoption |
+| Next action | Commit/push v1.14.0 + FL-M6-01 authority, then perform a fresh implementation drift audit before creating showcase assets |
 
 ## 30. Approval
 
@@ -2285,6 +2354,7 @@ Before writing code:
 - [x] Root lifetime default is approved.
 - [x] Setup and direct-scene workflows are understandable.
 - [x] Standalone Test Lab is fully defined.
+- [x] Package Reference Showcase is fully defined for FL-M6-01.
 - [x] Diagnostics exist without the Observatory.
 - [x] Optional integrations are separated.
 - [x] Test and release gates are measurable.
@@ -2297,7 +2367,7 @@ Before writing code:
 **Decision:** Approved
 **Approved by:** Jesse “Echo” Adams
 **Date:** August 3, 2026
-**Conditions or notes:** The design is approved. FL-M4-04 may implement configuration schema 4 and the accepted sequential optional-splash-before-startup root contract only through its approved Checkpoint Build Plan. Report schema 2 remains unchanged. Runtime migration, concurrent splash/step execution, and silent asset rewriting remain prohibited.
+**Conditions or notes:** The package design remains approved. Specification v1.14.0 adopts the suite Package Reference Showcase graduation standard and authorizes FL-M6-01 project-owned showcase work plus exactly one additive `SplashEntry.PreferredAudioClip` metadata seam with focused tests. EchoLaunch still performs no audio playback. All other package Runtime/Editor changes, clean-project reproduction, release qualification, and a splash convenience generator remain outside FL-M6-01 authority unless separately approved.
 
 ---
 
@@ -2315,6 +2385,7 @@ A new collaborator can determine from this approved specification:
 8. The isolated Test Lab and acceptance registry are defined.
 9. Optional packages connect only through bridges or project adapters.
 10. Release evidence is defined across specification, implementation, standalone, quality, distribution, adoption, and documentation gates.
+11. The Package Reference Showcase and clean-project reproduction are distinct graduation stages: the Showcase proves public consumer use in-house; FL-M6-02 later proves the same happy path outside the development repository.
 
 The document is **Approved** as the Level 2 authority for First Light. FL-M5-01 implemented the read-only snapshot and dry-run planner. FL-M5-02 implemented and validated the fresh-plan-gated create-only apply service, deterministic foundation creation, approved Build Settings mutation, compensating rollback, immutable results, and repeat-safe no-op reruns defined by EchoLaunch-ADR-005. FL-M5-03 implemented and validated the separate explicit current-schema repair, ownership/shape proof, byte-preserving backup, rollback, immutable result, and repeatability boundary defined by EchoLaunch-ADR-006 and its SFGSS-005 plan.
 FL-M5-04 implemented and validated the explicit read-only Validator, immutable schema-1 project-health findings/report, stable validation rules, scene-safe enabled-build-scene inspection, deterministic fingerprints, and copyable project-relative text defined by EchoLaunch-ADR-007 and its approved plan. FL-M5-05 implemented and validated the project-owned Direct Scene Development Initializer, Start-time authority reuse, active-destination no-reload handoff, explicit Editor/development environment policy, `DirectSceneDevelopment` report mode, unconditional non-development release-player creation prohibition, and activated `ELAUNCH-VAL-009` checks defined by EchoLaunch-ADR-008 and its approved plan. FL-M5-06 implemented and validated the explicit Editor-only Launch Simulator, transient deterministic scenario planning, real startup-sequence runner/policy execution, immutable schema-1 simulation reporting, copyable evidence, single-active-run protection, cancellation, cancellation-evidence determinism correction, and no-production-dependency boundary defined by EchoLaunch-ADR-009 and its approved plan. Schema migration, receipts, uninstall/reset, crash-persistent recovery, automatic helper installation, build hooks, Laboratory, player-build evidence, clean external installation, and performance claims remain unauthorized.
@@ -2327,7 +2398,7 @@ FL-M5-04 implemented and validated the explicit read-only Validator, immutable s
 
 **Review status:** Passed
 **Review date:** August 4, 2026
-**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.4.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-004; and the approved Foundation, Expansion, and Advanced integration matrices.
+**Current governing authorities:** SFGSS-000 v0.24.0; SFGSS-001 v1.3.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.3.0; SFGSS-005 v1.4.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-005; and the approved Foundation, Expansion, and Advanced integration matrices.
 
 The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
 

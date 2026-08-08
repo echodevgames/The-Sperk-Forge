@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M5-07 Standalone Test Laboratory and Importable UPM Sample complete
+- Development stage: FL-M6-01 Production Reference Showcase authorized; implementation not started
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -35,8 +35,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
   - `FL-M5-05`
   - `FL-M5-06`
   - `FL-M5-07`
-- Active authority checkpoint: None — FL-M5-07 documentation closeout complete; next checkpoint requires deliberate selection
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample. FL-M5-07 completed the importable Laboratory and exercised the specification v1.13.0 evidence-gated imported-sample candidate-isolation correction without widening Setup mutation authority.
+- Active authority checkpoint: `FL-M6-01` — First Light Production Reference Showcase
+- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample. Specification v1.14.0 now authorizes FL-M6-01 to add only the project-owned Production Reference Showcase required by SFGSS-ADR-005; package Runtime/Editor implementation remains unchanged unless later authority explicitly permits a correction.
 - Unity baseline: `6000.3.8f1`
 
 ## User Documentation
@@ -184,6 +184,31 @@ A separate Unity `6000.3.8f1` editor-session restoration hang was isolated while
 reopening the generated Boot asset path. The available evidence followed the
 persisted path/GUID even after scene-content substitution and does not attribute
 the observation to First Light runtime or Laboratory scene contents.
+
+## Active FL-M6-01 Authority
+
+FL-M6-01 creates First Light's first in-house Production Reference Showcase under
+`Assets/EchoDevGames/SuiteShowcase/FirstLight/`.
+
+It exercises the public consumer path:
+
+```text
+First Light Setup
+→ project-owned configuration / splash sequence / root / Boot scene
+→ two project-owned image splashes
+→ valid startup sequence
+→ project-owned main-menu-style destination
+```
+
+The Reference Showcase is separate from the distributed Standalone Test
+Laboratory and may not depend on Laboratory helpers, test-only APIs, hidden
+package internals, peer packages, or repository-only shortcuts.
+
+FL-M6-01 additionally permits one narrow backward-compatible Runtime data addition: `SplashEntry.PreferredAudioClip`. The field stores optional project-owned audio content intent only; EchoLaunch still performs no playback. A future Jukebot bridge owns translation of that intent into real cue playback.
+
+No starter splash generator/preset, clean-project qualification, player build,
+performance claim, distribution-route proof, package versioning, or private beta
+is authorized by FL-M6-01.
 
 ## Package Root Documents
 
