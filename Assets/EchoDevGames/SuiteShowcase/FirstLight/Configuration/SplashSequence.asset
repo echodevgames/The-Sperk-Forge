@@ -14,4 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.SplashSequence
   sequenceId: 22dfa9278bc84acc8715431ee710f775
   schemaVersion: 1
-  entries: []
+  entries:
+  - entryId: 74533cadf2c34866816f99b52b1f2392
+    image: {fileID: 21300000, guid: 9d0f5cc735c0ee24495b44e86b7d7162, type: 3}
+    preferredAudioClip: {fileID: 0}
+    displayLabel: EchoDevGames Studio
+    fadeInSeconds: 0.75
+    holdSeconds: 2.5
+    fadeOutSeconds: 0.75
+    minimumDisplaySeconds: 1.5
+    skipPolicy: 1
+  - entryId: aead8cd4f3a34e1c8b7a7c0d7b503791
+    image: {fileID: 21300000, guid: 3268917a7027c1748b6c98517914f5ab, type: 3}
+    preferredAudioClip: {fileID: 0}
+    displayLabel: First Light - Startup and Launch
+    fadeInSeconds: 0.75
+    holdSeconds: 3
+    fadeOutSeconds: 0.75
+    minimumDisplaySeconds: 1.5
+    skipPolicy: 1
