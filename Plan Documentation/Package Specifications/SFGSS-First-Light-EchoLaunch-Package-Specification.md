@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.14.0
+**Specification version:** 1.15.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -18,7 +18,7 @@
 > “Awaken the systems this project needs.”
 
 > **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 is complete at documentation closeout commit `710aec3`. Suite authority commit `8c3f3b3` adds the required Package Reference Showcase graduation stage through SFGSS-ADR-005. FL-M6-01 is authorized to create First Light's first project-owned Production Reference Showcase using the package's existing documented public consumer surfaces.
-FL-M6-01 pre-authorizes exactly one bounded Runtime data-contract addition: each `SplashEntry` may store one optional project-owned `AudioClip PreferredAudioClip` as declarative presentation intent. EchoLaunch never plays, routes, mixes, loops, fades, or otherwise executes that audio reference. All actual playback remains Jukebot/bridge authority. No other package Runtime or Editor code change, clean-project qualification, player build, Git/tarball distribution proof, performance claim, package versioning, private beta, peer-package integration, or splash-template generator is authorized. If the current public workflow cannot create the Showcase without hidden/test-only manipulation, stop and return to bounded authority review before any other package code change.
+FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata seam and the bounded H1/H2 consumer-conformance corrections. FL-M6-01-A1 now authorizes the Splash Presentation & Authoring Expansion proven useful by the real Reference Showcase: sequence-level Splash Only / Splash + Status presentation, project-owned background color, a neutral user-advance gate, per-entry None/Pulse motion, one wait-for-input advancement mode, default uGUI rendering support, and guided creation-time authoring in First Light Setup plus the normal SplashSequence Inspector. Existing schema-1 splash sequences remain valid without migration and preserve legacy-compatible defaults. EchoLaunch still owns no audio playback, save/persistence behavior, project input binding, EventSystem/input-module choice, general effects framework, menus, or normal scene flow.
 
 ---
 
@@ -42,6 +42,7 @@ FL-M6-01 pre-authorizes exactly one bounded Runtime data-contract addition: each
 | 1.12.0 | 2026-08-06 | Approved | Authorized the explicit Editor-only Launch Simulator, transient immutable scenario planning, real startup-sequence runner/policy execution, deterministic logical timing and progress, stable simulation diagnostics, immutable schema-1 simulation reports, copyable text evidence, cancellation, and zero production-runtime dependency for FL-M5-06 | Jesse “Echo” Adams |
 | 1.13.0 | 2026-08-07 | Approved | Authorized FL-M5-07 to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample; prohibited a shipped sample generator and import-time side effects; required serialized reference integrity, sample-only assembly isolation, removal proof, and evidence-gated Setup candidate isolation only if imported sample content is shown to affect automatic discovery | Jesse “Echo” Adams |
 | 1.14.0 | 2026-08-08 | Approved | Adopted SFGSS-ADR-005 for First Light, defined the project-owned Production Reference Showcase and package graduation path, authorized FL-M6-01 to prove the normal Boot → project-owned image splashes → startup → destination experience through existing public consumer surfaces, and deferred clean-project reproduction and any convenience-generator changes to later authority | Jesse “Echo” Adams |
+| 1.15.0 | 2026-08-08 | Approved | Authorized FL-M6-01-A1 Splash Presentation & Authoring Expansion: Splash Only / Splash + Status, project-owned background color, neutral advancement policy, None/Pulse motion, wait-for-input advancement, Setup creation-time splash authoring, and matching Inspector semantics while preserving schema-1 compatibility and external audio/input/persistence ownership | Jesse “Echo” Adams |
 
 ---
 
@@ -533,6 +534,96 @@ All configuration, sequence, step, splash, and destination assets are treated as
 - Successful splash completion clears splash presentation before startup-step presentation begins.
 - Runtime reads but never rewrites configuration or splash assets.
 
+### 9.4.3 FL-M6-01-A1 splash presentation and authoring decision
+
+The real Production Reference Showcase proves the core Boot → splashes → destination path. A1 refines the public presentation and authoring layer without widening First Light into a general UI, input, audio, persistence, or effects framework.
+
+`SplashSequence` may own one optional serialized `SplashPresentationSettings` value.
+
+Legacy compatibility:
+
+- existing schema-1 sequences with no A1 settings remain valid;
+- missing A1 settings resolve to `SplashAndStatus`, black background, and user advancement allowed;
+- new sequences created through First Light Setup default to `SplashOnly`, black background, and user advancement allowed;
+- `SplashSequence.CurrentSchemaVersion` remains `1`;
+- `EchoLaunchConfiguration.CurrentSchemaVersion` remains `4`;
+- runtime reads but never rewrites authored assets.
+
+Approved sequence-level presentation:
+
+```text
+SplashPresentationSettings
+├── PresentationMode
+│   ├── SplashAndStatus
+│   └── SplashOnly
+├── BackgroundColor
+└── AllowUserAdvance
+```
+
+`SplashOnly` is a clean happy-path mode. Routine status/progress chrome stays hidden, the splash surface appears only while a splash is active, and clearing the final splash removes the overlay before destination handoff. Blocking or interrupted terminal failure must still become visibly readable.
+
+Per-entry advancement preserves the existing serialized/public `SplashSkipPolicy` type and existing numeric meanings. User-facing labels are:
+
+```text
+Disallowed
+→ Automatic
+
+AfterMinimumDisplay
+→ Skippable After Minimum
+
+WaitForInputAfterMinimum
+→ Wait For Input After Minimum
+```
+
+`WaitForInputAfterMinimum` is the only new advancement value. Early neutral requests remain latched until the minimum-display boundary. If sequence-level advancement is disabled, Wait For Input is invalid and validation/preflight must reject the definition rather than permit an unfinishable splash.
+
+Per-entry motion is deliberately limited to:
+
+```text
+SplashMotionStyle
+├── None
+└── Pulse
+```
+
+Pulse may expose maximum image scale and cycle duration. The deterministic player computes effective presentation scale; the default uGUI presenter renders the immutable frame value. Reduced-motion mode forces effective scale to `1`.
+
+Input ownership does not change. EchoLaunch owns only the neutral advance request and whether the authored splash permits it. Keyboard/controller bindings remain project-owned. A1 adds no EchoInput dependency, no required Unity Input System dependency, and no package-owned EventSystem/input module. Pointer/tap convenience may be wired through a compatible project-owned UI/EventSystem surface, but First Light does not choose the project's input backend.
+
+First Light Setup may expose `Presentation` and `Splashes` controls when creating a **new** project-owned SplashSequence. Setup remains create-only and must never overwrite or re-author a reused existing sequence. Reused sequences are edited through the normal SplashSequence Inspector, which exposes the same semantic controls and retains H1 stable-ID authoring.
+
+Approved user-facing target:
+
+```text
+FIRST LIGHT SETUP
+
+Launch
+  Destination .......... MainMenu
+
+Splash Sequence
+  ☑ Create Splash Sequence
+
+Presentation
+  Mode ................ Splash Only
+  Background .......... Black
+  Allow Advancement ... Yes
+
+Splashes
+  ┌ Studio Logo
+  │ Image ............. EchoDevGamesBanner3
+  │ Audio Intent ...... StudioStinger
+  │ Motion ............ Pulse
+  │ Advance ........... Skippable After Minimum
+  │ Minimum ........... 1.5 sec
+  │
+  └ First Light
+    Image ............. FirstLightLogo
+    Audio Intent ...... FirstLightChime
+    Motion ............ None
+    Advance ........... Automatic
+```
+
+Existing image, display label, fade-in, hold, fade-out, minimum display, stable identity, and `PreferredAudioClip` fields remain. `PreferredAudioClip` is still metadata only; A1 adds no audio playback.
+
 ### 9.5 Serialization and migration
 
 - `EchoLaunchConfiguration.CurrentSchemaVersion` is `4`.
@@ -542,6 +633,7 @@ All configuration, sequence, step, splash, and destination assets are treated as
 - `LaunchDestination.CurrentSchemaVersion` remains `1`.
 - `SplashSequence.CurrentSchemaVersion` remains `1`.
 - FL-M6-01 adds an optional nullable `PreferredAudioClip` reference to `SplashEntry` as backward-compatible, non-executing metadata. Existing schema-1 sequences deserialize with no preferred clip and remain valid; no migration or runtime rewrite is required.
+- FL-M6-01-A1 adds optional sequence presentation settings, one additive advancement value, and optional per-entry motion metadata. Missing A1 data resolves to legacy-compatible behavior; no migration or runtime asset rewrite is required.
 - `LaunchReport.CurrentSchemaVersion` remains `2`.
 - Successful splash timing contributes to the report's existing total launch elapsed time.
 - Splash failures use the existing immutable final-result code/message surface; report schema 2 gains no splash-specific fields.

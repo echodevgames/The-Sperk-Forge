@@ -5,11 +5,11 @@
 - Checkpoint: `FL-M6-01`
 - Title: First Light Production Reference Showcase
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.14.0
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.15.0
 - Unity baseline: `6000.3.8f1`
 - Suite showcase authority: SFGSS-ADR-005 / `8c3f3b3`
 - Previous checkpoint: FL-M5-07 complete at `710aec3`
-- Status: FL-M6-01 in progress; FL-M6-01-H1 proven; Slice D paused at FL-M6-01-H2 destination Build Settings conformance defect
+- Status: FL-M6-01 in progress; H1/H2 proven in real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion authorized before final front-facing acceptance
 
 ## Retained Baseline
 
@@ -87,6 +87,22 @@ Authorized package change:
 - repeat Apply is `NoChanges`;
 - preview/apply evidence exposes destination Build Settings handling;
 - no Runtime or schema change.
+
+## FL-M6-01-A1 Splash Presentation & Authoring Expansion
+
+Approved expansion:
+
+- Presentation Mode: Splash Only / Splash + Status;
+- project-owned Background;
+- Allow Advancement;
+- per-entry Motion: None / Pulse;
+- advancement labels: Automatic / Skippable After Minimum / Wait For Input After Minimum;
+- Setup creation-time authoring for new SplashSequence assets;
+- matching normal SplashSequence Inspector semantics.
+
+Compatibility: SplashSequence schema 1, EchoLaunchConfiguration schema 4, legacy sequences valid, reduced motion suppresses Pulse, SplashOnly keeps blocking/interrupted failures readable, and Setup never overwrites reused sequences.
+
+Audio playback, project input binding, save/persistence, video, EventSystem ownership, and a general effects framework remain out of scope.
 
 ## Acceptance
 

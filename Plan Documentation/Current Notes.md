@@ -154,6 +154,45 @@ Under `Add If Missing At End`, unrelated existing scene order is preserved; when
 
 No Runtime change, schema change, manual Build Settings workaround, arbitrary scene cleanup, or unrelated reordering is authorized.
 
+## FL-M6-01-A1 — Splash Presentation & Authoring Expansion
+
+H1/H2 are now proven in the real Showcase, including the `35 / 35` H2 focused gate and successful Boot → two splashes → MainMenu run. The authored Showcase state is committed at `55a3204`.
+
+Approved Setup target:
+
+```text
+FIRST LIGHT SETUP
+
+Launch
+  Destination .......... MainMenu
+
+Splash Sequence
+  ☑ Create Splash Sequence
+
+Presentation
+  Mode ................ Splash Only
+  Background .......... Black
+  Allow Advancement ... Yes
+
+Splashes
+  ┌ Studio Logo
+  │ Image ............. EchoDevGamesBanner3
+  │ Audio Intent ...... StudioStinger
+  │ Motion ............ Pulse
+  │ Advance ........... Skippable After Minimum
+  │ Minimum ........... 1.5 sec
+  │
+  └ First Light
+    Image ............. FirstLightLogo
+    Audio Intent ...... FirstLightChime
+    Motion ............ None
+    Advance ........... Automatic
+```
+
+A1 keeps SplashSequence schema 1 / configuration schema 4, preserves legacy sequences, limits motion to None/Pulse, adds one wait-for-input advancement value, hides routine status on SplashOnly success while retaining failure visibility, and lets Setup author only newly-created sequences. Existing/reused sequences are not overwritten.
+
+Audio remains metadata only. Input binding, EventSystem choice, save/persistence, video, and generalized effects remain outside First Light authority.
+
 ## Starter Splash Convenience Question
 
 A one-click starter splash template/preset is **not** pre-authorized.
@@ -193,6 +232,12 @@ FL-M6-02 will reproduce the same happy path in a genuinely clean consumer projec
 The future suite showcase/navigation identity remains intentionally unnamed. Emerging visual language is a constellation forming a humanoid-ish computational/cosmic entity, with completed systems mapping to functions of that body. This is creative direction only, not FL-M6-01 implementation authority.
 
 ## Next Action
+
+1. Commit/push FL-M6-01-A1 authority from exact clean `55a3204`.
+2. Implement A1 in bounded slices: data compatibility → deterministic player behavior → uGUI presentation → Inspector → Setup creation-time authoring.
+3. Preserve/re-author the Showcase only through public authoring surfaces.
+4. Run focused A1 proof and complete retained regression before FL-M6-01 closeout.
+
 
 1. Commit/push the FL-M6-01-H2 bounded authority amendment while preserving the unstaged project-owned Showcase WIP.
 2. Implement only Setup destination Build Settings conformance plus focused Editor tests.

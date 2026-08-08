@@ -5,7 +5,7 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M6-01 Production Reference Showcase in progress; FL-M6-01-H1 proven; Slice D paused for FL-M6-01-H2 destination Build Settings conformance hotfix
+- Development stage: FL-M6-01 Production Reference Showcase in progress; H1/H2 proven; FL-M6-01-A1 Splash Presentation & Authoring Expansion authorized before final front-facing acceptance
 - Completed checkpoints:
   - `FL-M2-01`
   - `FL-M2-02`
@@ -215,6 +215,22 @@ The next consumer run exposed FL-M6-01-H2: Setup had reported success while the 
 No starter splash generator/preset, clean-project qualification, player build,
 performance claim, distribution-route proof, package versioning, or private beta
 is authorized by FL-M6-01.
+
+## Active FL-M6-01-A1 Authority
+
+Specification v1.15.0 authorizes the bounded Splash Presentation & Authoring Expansion after the real Reference Showcase proved Boot → two image splashes → MainMenu.
+
+A1 adds only:
+
+- Splash Only / Splash + Status;
+- project-owned background;
+- neutral advancement gate;
+- None / Pulse motion;
+- Wait For Input After Minimum;
+- create-time Setup authoring for new sequences;
+- matching normal SplashSequence Inspector authoring.
+
+Schemas remain unchanged. Legacy sequences remain valid. Audio playback, project input binding, persistence, video, and generalized effects remain outside First Light.
 
 ## Package Root Documents
 

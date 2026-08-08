@@ -3,8 +3,8 @@
 **Document role:** SFGSS-005 Checkpoint Build Plan
 **Package:** First Light — Startup and Launch (`EchoLaunch`)
 **Checkpoint:** `FL-M6-01`
-**Status:** Approved and in progress; FL-M6-01-H1 proven, FL-M6-01-H2 destination Build Settings conformance hotfix authorized after bounded authority commit
-**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.14.0
+**Status:** Approved and in progress; H1/H2 proven in the real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion authorized before final front-facing acceptance
+**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.15.0
 **Suite showcase authority:** SFGSS-ADR-005
 **Unity baseline:** `6000.3.8f1`
 **Repository baseline:** exact clean `8c3f3b3` before this authority commit
@@ -322,6 +322,49 @@ The dedicated amendment record is:
 ```text
 Plan Documentation/Checkpoint Build Plans/FL-M6-01-H2_Destination_Build_Settings_Conformance_Hotfix_Amendment.md
 ```
+
+## 9.3 Splash Presentation & Authoring Expansion — FL-M6-01-A1
+
+The real Reference Showcase now completes Boot → two project-owned image splashes → `FirstLight_Showcase_MainMenu`. H1/H2 are proven. A1 is a deliberate product-facing expansion before final M6-01 acceptance.
+
+Approved target:
+
+```text
+FIRST LIGHT SETUP
+
+Launch
+  Destination .......... MainMenu
+
+Splash Sequence
+  ☑ Create Splash Sequence
+
+Presentation
+  Mode ................ Splash Only
+  Background .......... Black
+  Allow Advancement ... Yes
+
+Splashes
+  ┌ Studio Logo
+  │ Image ............. EchoDevGamesBanner3
+  │ Audio Intent ...... StudioStinger
+  │ Motion ............ Pulse
+  │ Advance ........... Skippable After Minimum
+  │ Minimum ........... 1.5 sec
+  │
+  └ First Light
+    Image ............. FirstLightLogo
+    Audio Intent ...... FirstLightChime
+    Motion ............ None
+    Advance ........... Automatic
+```
+
+A1 may add only the Runtime/Data/Presentation/Editor seams required for optional sequence presentation settings, Splash Only / Splash + Status, project-owned background, a neutral advancement gate, None/Pulse motion, Wait For Input After Minimum, reduced-motion Pulse suppression, matching Inspector controls, and Setup creation-time authoring of a new sequence.
+
+Setup remains create-only and may not overwrite a reused existing SplashSequence.
+
+Compatibility remains `SplashSequence` schema 1 and `EchoLaunchConfiguration` schema 4. Existing sequences stay valid and existing `SplashSkipPolicy` values retain meaning.
+
+Audio playback, save/persistence, input backend ownership, package-owned EventSystem/input module, video, generalized effects, branded presets, and clean-project FL-M6-02 remain out of scope.
 
 ## 10. Implementation Slices
 
