@@ -1867,6 +1867,9 @@ namespace EchoDevGames.EchoLaunch
                 statusPresenter ??
                 NullLaunchStatusPresenter.Shared;
 
+            ConfigureSplashPresentation(
+                presenter);
+
             LaunchStatusPresenterDispatcher
                 .TryBind(
                     presenter,
@@ -1876,6 +1879,53 @@ namespace EchoDevGames.EchoLaunch
                     this);
 
             isStatusPresenterBound = true;
+        }
+
+        private void ConfigureSplashPresentation(
+            ILaunchStatusPresenter presenter)
+        {
+            if (!(presenter is
+                    ISplashPresentationSettingsReceiver
+                        receiver))
+            {
+                return;
+            }
+
+            SplashPresentationSettings settings =
+                SplashPresentationSettings
+                    .LegacyDefaults;
+
+            SplashSequence configuredSequence =
+                configuration == null
+                    ? null
+                    : configuration
+                        .SplashSequence;
+
+            if (configuredSequence != null &&
+                configuredSequence
+                    .PresentationSettings
+                    .HasValidDefinition)
+            {
+                settings =
+                    configuredSequence
+                        .PresentationSettings;
+            }
+
+            try
+            {
+                receiver
+                    .ConfigureSplashPresentation(
+                        settings);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError(
+                    $"[{PresenterFailureDiagnosticCode}] " +
+                    "Splash presentation configuration failed. " +
+                    $"{exception.GetType().Name}: " +
+                    $"{exception.Message}",
+                    this);
+            }
         }
 
         private void PresentStatusSnapshot(

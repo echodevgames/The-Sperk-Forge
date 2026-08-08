@@ -21,7 +21,8 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
     public sealed class EchoLaunchStatusView :
         MonoBehaviour,
         ILaunchStatusPresenter,
-        IImageSplashPresenter
+        IImageSplashPresenter,
+        ISplashPresentationSettingsReceiver
     {
         [Header("References")]
         [SerializeField]
@@ -50,6 +51,13 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
         [SerializeField]
         private GameObject indeterminateProgressRoot;
+
+        [Header("Presentation References")]
+        [SerializeField]
+        private GameObject statusRoot;
+
+        [SerializeField]
+        private Image backdropImage;
 
         [Header("Splash References")]
         [SerializeField]
@@ -117,6 +125,16 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         [SerializeField]
         private bool clearOnUnbind;
 
+        private SplashPresentationMode
+            activePresentationMode =
+                SplashPresentationMode
+                    .SplashAndStatus;
+
+        private Color statusBackdropColor =
+            Color.black;
+
+        private bool hasCapturedStatusBackdropColor;
+
         /// <summary>
         /// Gets whether the view is currently bound to an authoritative
         /// launch attempt.
@@ -175,6 +193,19 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             canvasGroup.alpha > 0.001f;
 
         /// <summary>
+        /// Gets whether the routine launch-status surface is active.
+        /// </summary>
+        public bool IsShowingStatus =>
+            statusRoot == null ||
+            statusRoot.activeSelf;
+
+        /// <summary>
+        /// Gets the effective splash presentation mode.
+        /// </summary>
+        public SplashPresentationMode ActivePresentationMode =>
+            activePresentationMode;
+
+        /// <summary>
         /// Gets whether the determinate progress surface is active.
         /// </summary>
         public bool IsShowingDeterminateProgress =>
@@ -198,8 +229,42 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         {
             ResolveCanvasGroup();
             NormalizeSlider();
+            CaptureStatusBackdropColor();
 
             if (hideOnUnbind)
+            {
+                SetVisible(false);
+            }
+        }
+
+        /// <inheritdoc />
+        public void ConfigureSplashPresentation(
+            SplashPresentationSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(settings));
+            }
+
+            activePresentationMode =
+                settings.PresentationMode;
+
+            ApplyBackdropColor(
+                settings.BackgroundColor);
+
+            bool showsRoutineStatus =
+                activePresentationMode ==
+                    SplashPresentationMode
+                        .SplashAndStatus;
+
+            SetStatusVisible(
+                showsRoutineStatus);
+
+            if (activePresentationMode ==
+                    SplashPresentationMode
+                        .SplashOnly &&
+                !IsShowingSplash)
             {
                 SetVisible(false);
             }
@@ -216,9 +281,22 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             LastReport = null;
             ClearSplash();
 
-            if (showOnBind)
+            bool showsRoutineStatus =
+                activePresentationMode ==
+                    SplashPresentationMode
+                        .SplashAndStatus;
+
+            SetStatusVisible(
+                showsRoutineStatus);
+
+            if (showOnBind &&
+                showsRoutineStatus)
             {
                 SetVisible(true);
+            }
+            else if (!showsRoutineStatus)
+            {
+                SetVisible(false);
             }
 
             ApplySnapshot(
@@ -253,6 +331,24 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             }
 
             LastReport = report;
+
+            if (report.FinalStatus ==
+                    LaunchStatus.Failed ||
+                report.FinalStatus ==
+                    LaunchStatus.Interrupted)
+            {
+                RevealStatusDiagnostics();
+            }
+            else if (
+                report.FinalStatus ==
+                    LaunchStatus.Completed &&
+                activePresentationMode ==
+                    SplashPresentationMode
+                        .SplashOnly)
+            {
+                SetStatusVisible(false);
+                SetVisible(false);
+            }
 
             SetText(
                 stateText,
@@ -306,6 +402,19 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
             LastSplashFrame = frame;
 
+            activePresentationMode =
+                frame.PresentationMode;
+
+            ApplyBackdropColor(
+                frame.BackgroundColor);
+
+            SetStatusVisible(
+                activePresentationMode ==
+                    SplashPresentationMode
+                        .SplashAndStatus);
+
+            SetVisible(true);
+
             if (splashRoot != null)
             {
                 splashRoot.SetActive(true);
@@ -324,24 +433,34 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
                 splashImage.color =
                     color;
+
+                splashImage.rectTransform
+                    .localScale =
+                        Vector3.one *
+                        frame.ImageScale;
             }
 
             SetText(
                 splashLabelText,
                 frame.DisplayLabel);
 
-            SetText(
-                stateText,
-                showingSplashText);
+            if (activePresentationMode ==
+                SplashPresentationMode
+                    .SplashAndStatus)
+            {
+                SetText(
+                    stateText,
+                    showingSplashText);
 
-            SetText(
-                messageText,
-                frame.DisplayLabel);
+                SetText(
+                    messageText,
+                    frame.DisplayLabel);
 
-            SetText(
-                stepText,
-                $"Splash {frame.EntryIndex + 1} " +
-                $"of {frame.EntryCount}");
+                SetText(
+                    stepText,
+                    $"Splash {frame.EntryIndex + 1} " +
+                    $"of {frame.EntryCount}");
+            }
         }
 
         /// <inheritdoc />
@@ -365,11 +484,29 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
 
                 splashImage.color =
                     color;
+
+                splashImage.rectTransform
+                    .localScale =
+                        Vector3.one;
             }
 
             SetText(
                 splashLabelText,
                 string.Empty);
+
+            RestoreStatusBackdropColor();
+
+            if (activePresentationMode ==
+                SplashPresentationMode
+                    .SplashOnly)
+            {
+                SetStatusVisible(false);
+                SetVisible(false);
+            }
+            else
+            {
+                SetStatusVisible(true);
+            }
         }
 
         /// <summary>
@@ -380,6 +517,13 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         {
             if (!IsBound ||
                 !IsShowingSplash)
+            {
+                return false;
+            }
+
+            if (LastSplashFrame != null &&
+                !LastSplashFrame
+                    .AllowUserAdvance)
             {
                 return false;
             }
@@ -472,6 +616,28 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             }
         }
 
+        internal void ConfigurePresentationForTesting(
+            GameObject configuredStatusRoot,
+            Image configuredBackdropImage)
+        {
+            if (IsBound)
+            {
+                throw new InvalidOperationException(
+                    "Presentation references cannot be reconfigured while bound.");
+            }
+
+            statusRoot =
+                configuredStatusRoot;
+
+            backdropImage =
+                configuredBackdropImage;
+
+            hasCapturedStatusBackdropColor =
+                false;
+
+            CaptureStatusBackdropColor();
+        }
+
         internal void ConfigureSplashForTesting(
             GameObject configuredSplashRoot,
             Image configuredSplashImage,
@@ -550,6 +716,14 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
                 snapshot.Progress01,
                 snapshot
                     .IsProgressIndeterminate);
+
+            if (snapshot.Status ==
+                    LaunchStatus.Failed ||
+                snapshot.Status ==
+                    LaunchStatus.Interrupted)
+            {
+                RevealStatusDiagnostics();
+            }
         }
 
         private string GetSnapshotStateText(
@@ -784,6 +958,59 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
                 indeterminateProgressRoot
                     .SetActive(false);
             }
+        }
+
+        private void SetStatusVisible(
+            bool visible)
+        {
+            if (statusRoot != null)
+            {
+                statusRoot.SetActive(
+                    visible);
+            }
+        }
+
+        private void ApplyBackdropColor(
+            Color color)
+        {
+            if (backdropImage != null)
+            {
+                backdropImage.color =
+                    color;
+            }
+        }
+
+        private void CaptureStatusBackdropColor()
+        {
+            if (hasCapturedStatusBackdropColor ||
+                backdropImage == null)
+            {
+                return;
+            }
+
+            statusBackdropColor =
+                backdropImage.color;
+
+            hasCapturedStatusBackdropColor =
+                true;
+        }
+
+        private void RestoreStatusBackdropColor()
+        {
+            if (!hasCapturedStatusBackdropColor)
+            {
+                return;
+            }
+
+            ApplyBackdropColor(
+                statusBackdropColor);
+        }
+
+        private void RevealStatusDiagnostics()
+        {
+            RestoreStatusBackdropColor();
+            SetStatusVisible(true);
+            SetVisible(true);
         }
 
         private void ResolveCanvasGroup()

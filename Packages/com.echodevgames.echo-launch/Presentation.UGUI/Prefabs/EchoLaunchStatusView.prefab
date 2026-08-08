@@ -547,6 +547,8 @@ MonoBehaviour:
   determinateProgress: {fileID: 6147519624732510110}
   determinateProgressRoot: {fileID: 4538076126320376765}
   indeterminateProgressRoot: {fileID: 5525419626378415739}
+  statusRoot: {fileID: 2772765313693910959}
+  backdropImage: {fileID: 4969603155781093463}
   splashRoot: {fileID: 1613082797341567032}
   splashImage: {fileID: 5275881517651610538}
   splashLabelText: {fileID: 6546407136690329237}
