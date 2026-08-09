@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** PKG-LEARN-009 — The Chronicle (`EchoSave`) persistence/lifetime architecture review
-**Current checkpoint:** PKG-LEARN-009 — The Chronicle (`EchoSave`) — **Learning in progress; implementation locked**
+**Current focus:** ESV-M1-01 — Chronicle Installable Skeleton and Duplicate-Safe Authority Claim
+**Current checkpoint:** ESV-M1-01 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -50,11 +50,12 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 ## Chronicle Learning Gate
 
 - Review: `PKG-LEARN-009_EchoSave_Learning_Review.md`
-- Status: **In progress**
-- Implementation authorization: **None**
+- Status: **Complete**
+- Implementation authorization: **ESV-M1-01 active / authorized**
 - First implementation checkpoint scaffold: `ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim`
-- ESV-M1-01 remains locked until the review/teach-back is complete and Jesse explicitly activates it.
-- Serializer/file-format implementation choices are intentionally not the next task. The review first establishes authority, lifetime, payload, standalone, bridge, and failure mental models.
+- Jesse completed the Chronicle teach-back and explicitly activated implementation on 2026-08-09.
+- The completed teach-back covered runtime truth versus durable snapshots, scopes/policies, participant ownership, migrations, transactional candidate safety, required/optional participation, known-good generations, duplicate-safe authority, shutdown, operation gating, coherent capture, coordinated restore/rollback, dirty state versus save policy, and separation of save model/serialization/storage.
+- Serializer/file-format implementation choices remain intentionally deferred because ESV-M1-01 proves lifecycle and duplicate safety without real durable storage.
 
 
 ## Suite Distribution Kit Standard
@@ -240,8 +241,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Work through PKG-LEARN-009 for The Chronicle in plain language before writing production code.
-2. Complete Jesse's Chronicle teach-back on durable persistence vs runtime truth vs Unity object lifetime, participant ownership, standalone behavior, and project-owned long-lived composition.
-3. Resolve only learning questions that materially affect the approved Chronicle boundary; keep serializer/file-format implementation research deferred until the learning gate actually reaches it.
-4. After the review passes, explicitly activate `ESV-M1-01` and rehydrate the live repository/Unity baseline before implementation.
+1. Rehydrate the live repository/Unity baseline at committed Chronicle activation.
+2. Implement only `ESV-M1-01`: installable package shell, project-owned Chronicle configuration, package-local duplicate-safe authority, explicit initialize/shutdown lifecycle, neutral contracts/injection seams, and focused tests.
+3. Write **no real save files** in ESV-M1-01.
+4. Keep serializer/file-format, slot/generation, participant capture/apply, recovery, bridges, and project-wide DDOL composition deferred to later authorized checkpoints.
 5. Keep Accord, Resonance, and Looking Glass planned behind Chronicle in the Game Shell initiative, with each package independently gated by its own just-in-time review.

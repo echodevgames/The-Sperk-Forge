@@ -21,8 +21,8 @@
 | Permanent First Light Gallery | **Complete** — First Light Example + UMBRA Example |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) active** |
-| Chronicle implementation | Locked pending teach-back and explicit ESV-M1-01 activation |
+| Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
+| Chronicle implementation | **ESV-M1-01 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -97,4 +97,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-Chronicle is in **learning only**. Production code, serializer/file-format implementation, storage writes, save-slot behavior, and ESV-M1-01 implementation remain locked until PKG-LEARN-009 completes and Jesse explicitly activates the checkpoint.
+PKG-LEARN-009 is **complete** and `ESV-M1-01` is **active / authorized**. Production work is limited to the installable skeleton and duplicate-safe Chronicle authority claim. Serializer/file-format implementation, storage writes, save-slot behavior, real participant persistence, and project-wide DDOL composition remain locked for later checkpoints.

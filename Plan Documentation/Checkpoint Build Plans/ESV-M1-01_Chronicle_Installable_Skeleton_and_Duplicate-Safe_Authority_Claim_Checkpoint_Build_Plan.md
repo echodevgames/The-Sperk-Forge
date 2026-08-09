@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: scaffolded-locked
+status: active-authorized
 updated: 2026-08-09
 ---
 
@@ -12,18 +12,20 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M1-01
 **Milestone:** M1 — Skeleton
-**Status:** **SCAFFOLDED / LOCKED / NOT AUTHORIZED**
+**Status:** **ACTIVE / AUTHORIZED**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.2.0
 **Suite authorities:** SFGSS-000 v0.26.0; SFGSS-001 v1.5.0; SFGSS-ADR-006; SFGSS-INT-SUITE-001 v1.1.0
-**Learning prerequisite:** PKG-LEARN-009 — **In progress**
-**Implementation permission:** None
+**Learning prerequisite:** PKG-LEARN-009 — **Complete**
+**Implementation permission:** Authorized 2026-08-09 after completed teach-back and Jesse's explicit activation
 **Unity baseline at scaffold time:** 6000.3.8f1; must be reverified when activated
 
-> This file defines the first implementation boundary so the learning review has a concrete destination. It does not authorize implementation.
+> **Activation record:** PKG-LEARN-009 completed on 2026-08-09. Jesse explicitly activated Chronicle implementation by asking to begin building. This checkpoint is now the active implementation boundary.
 
 ## 1. Activation gate
 
-Do not write production Chronicle code from this plan until all are true:
+**Gate result: PASSED 2026-08-09.**
+
+The following activation conditions are satisfied before production Chronicle code begins:
 
 1. PKG-LEARN-009 is Complete.
 2. Jesse has completed the Chronicle teach-back.
@@ -32,7 +34,7 @@ Do not write production Chronicle code from this plan until all are true:
 5. The repository and Unity project are rehydrated at the then-current exact baseline.
 6. The working tree is clean or intentionally partitioned under checkpoint rules.
 
-## 2. Intended outcome after later activation
+## 2. Intended outcome
 
 Create the smallest installable Chronicle package shell that proves **package-local runtime authority** without performing real durable storage.
 
@@ -52,9 +54,9 @@ neutral provider/value/result contracts compile
 NO real save file written
 ```
 
-## 3. Later-authorized implementation scope
+## 3. Authorized implementation scope
 
-Only after activation:
+Authorized now:
 
 - package manifest and asmdefs;
 - package README / Documentation shell / package Current Notes;
@@ -69,7 +71,7 @@ Only after activation:
 
 ## 4. Explicitly out of scope for ESV-M1-01
 
-Even after activation, this checkpoint does **not** authorize:
+This checkpoint does **not** authorize:
 
 - actual save-file writes or reads;
 - slot directories;
@@ -160,8 +162,8 @@ Stop and return to authority if implementation pressure suggests:
 
 | Evidence | Status |
 |---|---|
-| PKG-LEARN-009 | In progress |
-| Teach-back | Not complete |
+| PKG-LEARN-009 | Complete |
+| Teach-back | Complete |
 | Implementation commit | Not started |
 | Compile result | Not run |
 | Focused EditMode tests | Not run |
@@ -172,4 +174,4 @@ Stop and return to authority if implementation pressure suggests:
 
 ## 10. Next action
 
-Complete PKG-LEARN-009. Do not implement this checkpoint until explicit activation.
+Implement the bounded ESV-M1-01 skeleton against the exact rehydrated repository/Unity baseline. Keep all durable file I/O, serializer selection, slot/generation behavior, peer bridges, and project-wide DDOL composition out of scope.

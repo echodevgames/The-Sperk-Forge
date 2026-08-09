@@ -11,9 +11,9 @@ updated: 2026-08-09
 **Document role:** Learning-phase index and operating guide
 **Authority:** Navigation and educational workflow only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current progress:** 1 of 28 complete
-**Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`)
-**Active review:** PKG-LEARN-009 – The Chronicle (`EchoSave`); PKG-LEARN-002 remains paused until EchoDiagnostics implementation
+**Current progress:** 2 of 28 complete
+**Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`); PKG-LEARN-009 – The Chronicle (`EchoSave`)
+**Active review:** None; PKG-LEARN-002 remains paused until EchoDiagnostics implementation
 
 ## Purpose
 
@@ -72,6 +72,6 @@ A review may use diagrams, examples, and tiny pseudocode for teaching. It must n
 
 - PKG-LEARN-001 is complete.
 - PKG-LEARN-002 remains paused until EchoDiagnostics implementation approaches.
-- PKG-LEARN-009 – The Chronicle (`EchoSave`) is the active just-in-time review.
-- `ESV-M1-01` is scaffolded but remains locked until PKG-LEARN-009 teach-back completes and Jesse explicitly activates it.
+- PKG-LEARN-009 – The Chronicle (`EchoSave`) is complete.
+- `ESV-M1-01` is active / authorized after completed teach-back and Jesse's explicit activation.
 - Accord, Resonance, and Looking Glass remain planned members of the Game Shell initiative; their implementation remains independently gated by their own reviews.

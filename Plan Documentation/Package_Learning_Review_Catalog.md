@@ -9,7 +9,7 @@ updated: 2026-08-04
 # The Sperk’s Forge – Package Learning Review Catalog
 
 **Purpose:** Provide a plain-language bridge between the architectural specifications and later implementation.
-**Status:** Active just-in-time learning program; PKG-LEARN-009 is in progress.
+**Status:** Active just-in-time learning program; PKG-LEARN-009 is complete and ESV-M1-01 is active.
 **Gate:** All 28 reviews must be complete before SUITE-DOC-33 may consider code authorization.
 **Tracker:** `Learning Reviews/PKG-LEARN-TRACKER.json`
 **Template:** [[Learning Reviews/PKG-LEARN-TEMPLATE|Package Learning Review Template]]
@@ -51,7 +51,7 @@ Earlier planning aliases such as `PKG-LEARN-F01`, `PKG-LEARN-E01`, and `PKG-LEAR
 | PKG-LEARN-006 | [[Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification|Resonance (`Jukebot`)]] | Not started | Owns music, SFX, ambience, pooled voices, playback handles, concurrency, crossfades, and mixer routing. | Exploration music crossfades into danger music while a shield bash and ambience continue independently without duplicated tracks. |
 | PKG-LEARN-007 | [[Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification|The Will (`EchoInput`)]] | Not started | Owns input contexts, reason-based locks, device detection, rebinding transactions, override data, and glyph resolution. | Opening inventory disables gameplay actions, enables UI navigation, and changes prompts from keyboard keys to controller glyphs. |
 | PKG-LEARN-008 | [[Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification|The Looking Glass (`EchoUI`)]] | Not started | Owns reusable screen, HUD, modal, notification, prompt, focus, navigation, theme, and UI lifecycle infrastructure. | A Main Menu opens Settings, a confirmation modal traps focus correctly, and returning restores the previously selected button. |
-| PKG-LEARN-009 | [[Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification|The Chronicle (`EchoSave`)]] | **In progress** | Owns save slots, immutable generations, manifests, participant payload transport, migration, integrity, backup, and corruption recovery without becoming participant runtime truth or project-wide service composition. | An autosave is interrupted; the next launch rejects the incomplete generation and restores the most recent verified save. |
+| PKG-LEARN-009 | [[Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification|The Chronicle (`EchoSave`)]] | **Complete** | Owns save slots, immutable generations, manifests, participant payload transport, migration, integrity, backup, and corruption recovery without becoming participant runtime truth or project-wide service composition. | An autosave is interrupted; the next launch rejects the incomplete generation and restores the most recent verified save. |
 | PKG-LEARN-010 | [[Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification|The Workshop (`EchoGameStarter`)]] | Not started | Owns Editor-time package selection, dry-run planning, installation coordination, project generation, repair, receipts, and removal guidance. | A new game-jam project selects Launch, UI, Input, Audio, and no game saves, previews every file, then generates a visible starter foundation. |
 
 ### Expansion Wave
@@ -100,18 +100,18 @@ PKG-LEARN-001 is complete for First Light. PKG-LEARN-002 is paused until EchoDia
 
 | Wave | Complete | Total |
 |---|---:|---:|
-| Foundation | 1 | 10 |
+| Foundation | 2 | 10 |
 | Expansion | 0 | 13 |
 | Advanced | 0 | 5 |
-| **Total** | **1** | **28** |
+| **Total** | **2** | **28** |
 
 ## Current learning state
 
-- Complete: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
+- Complete: **PKG-LEARN-001 – First Light (`EchoLaunch`)** and **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
 - Paused: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
-- Active: **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
+- Active learning review: **None while ESV-M1-01 is being implemented**
 - Current initiative: **Game Shell / Front Door** — Chronicle → Accord → Resonance → Looking Glass, each remaining independently gated
-- Chronicle implementation checkpoint: **ESV-M1-01 scaffolded / locked**
+- Chronicle implementation checkpoint: **ESV-M1-01 active / authorized**
 - Next review trigger after Chronicle: selected deliberately from the initiative; current planned order is Accord, Resonance, then Looking Glass
 
 ## Navigation

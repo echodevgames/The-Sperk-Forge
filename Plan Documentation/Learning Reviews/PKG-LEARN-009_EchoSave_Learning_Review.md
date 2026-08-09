@@ -3,7 +3,7 @@ tags:
   - sfgss/learning
   - sfgss/wave/foundation
   - sfgss/persistence
-status: in-progress
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,12 +12,12 @@ updated: 2026-08-09
 **Review ID:** `PKG-LEARN-009`
 **Package authority:** [[../Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification|The Chronicle (`EchoSave`) Package Specification]]
 **Wave:** Foundation
-**Review status:** In progress
+**Review status:** Complete
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-09
-**Completed:** NOT COMPLETE
+**Completed:** 2026-08-09
 **Package authority version reviewed:** 1.2.0
-**Implementation authorization:** None
+**Implementation authorization:** `ESV-M1-01` activated after completed teach-back
 
 > This review teaches the architecture. It does not replace the package authority and does not authorize code.
 
@@ -266,7 +266,29 @@ Before implementation, Jesse should be able to answer:
 
 ### Jesse’s explanation
 
-**Pending.** This is the active learning step. Jesse should explain the concepts in his own words before implementation is authorized.
+**Completed 2026-08-09.** Jesse demonstrated the Chronicle mental model interactively in his own words across the full review boundary:
+
+- `DontDestroyOnLoad` is Unity object lifetime inside one running application; it is not process-to-process durability.
+- Package runtime systems own live truth. Chronicle retains durable snapshots and uses an explicit load to reconstruct participant-owned runtime truth.
+- Save scope and durability policy are distinct ideas; a datum's conceptual ownership does not by itself dictate when it is written.
+- Inventory and other peer systems own their payload meaning, capture/restore semantics, and payload-schema migration. Chronicle owns the envelope, routing, transaction, integrity, and recovery behavior.
+- Peer packages remain independently usable. Chronicle participation belongs in optional adapters/bridges rather than hard core dependencies.
+- The consumer project owns long-lived service composition. `EchoSaveRoot` owns Chronicle only and has no authority over Accord, Resonance, UI, Inventory, or other peers.
+- A duplicate `EchoSaveRoot` must lose its package-local authority claim before path, callback, participant, storage, or operation side effects.
+- Shutdown must settle/cancel active Chronicle work safely, preserve the previous known-good durable state, release resources, and release the Chronicle authority claim last.
+- Save candidates are transactional: required participant failure rejects the candidate and preserves the previous known-good generation.
+- Optional participant failure may allow commit with an advisory and an omitted section; Chronicle must not fabricate or silently stale-copy participant payloads.
+- Missing required participants block a coherent load; missing optional participants may be skipped with preserved payload and advisory.
+- Chronicle envelope-format versions and participant payload-schema versions evolve independently.
+- Save/load operations require exclusive orchestration. A load must not race an active save.
+- A committed snapshot must represent one coherent logical runtime state; participant-level success alone is not sufficient if capture spans inconsistent moments.
+- Coordinated load must not expose half-restored runtime state. Apply failure requires abort/recovery rather than continuing with mixed old/new truth.
+- Runtime may become dirty after a load without creating a new generation. A generation exists only after a successful durable commit.
+- Dirty state and save policy are separate. Project/game policy decides when to request a save; Chronicle owns safe persistence mechanics.
+- Save model, serialization, and storage are separate responsibilities so Chronicle is not welded to one serializer, local filesystem, test backend, or future platform provider.
+
+Jesse explicitly asked to begin building on 2026-08-09, satisfying the explicit activation requirement for `ESV-M1-01`.
+
 
 ### Check questions
 
@@ -280,22 +302,23 @@ Before implementation, Jesse should be able to answer:
 
 ### Remaining questions or confusion
 
-- Pending Jesse teach-back.
-- Exact serializer/file-format/backend research is deliberately deferred until a later learning/implementation question requires it.
-- Exact project-owned runtime-composition authoring experience is deferred; SFGSS-ADR-006 fixes the ownership boundary now.
+- No learning blocker remains for `ESV-M1-01`.
+- Exact serializer/file-format/backend research remains deliberately deferred; M1 does not require choosing or implementing one.
+- Exact project-owned runtime-composition authoring experience remains deferred; SFGSS-ADR-006 fixes the ownership boundary now.
+- Later milestones must return to transactional save/load, generation publication, recovery, participant transport, and provider design before implementing those capabilities.
 
 ## 13. Completion decision
 
 | Requirement | Result |
 |---|---|
-| Purpose understood | REVISIT — teach-back pending |
-| Authority boundary understood | REVISIT — teach-back pending |
-| Lifecycle understood | REVISIT — teach-back pending |
-| Practical use visualized | REVISIT — teach-back pending |
-| Laboratory understood | REVISIT — teach-back pending |
-| Teach-back completed | REVISIT |
+| Purpose understood | PASS |
+| Authority boundary understood | PASS |
+| Lifecycle understood | PASS |
+| Practical use visualized | PASS |
+| Laboratory understood | PASS |
+| Teach-back completed | PASS |
 | Source conflict unresolved | NO |
 
-**Decision:** Needs revisit / in progress
-**Next implementation gate:** `ESV-M1-01` remains locked
+**Decision:** Complete
+**Next implementation gate:** `ESV-M1-01` is explicitly activated for implementation
 **Notes promoted to:** SFGSS-000 v0.26.0; SFGSS-001 v1.5.0; SFGSS-ADR-006; SFGSS-INT-SUITE-001 v1.1.0; Chronicle specification v1.2.0
