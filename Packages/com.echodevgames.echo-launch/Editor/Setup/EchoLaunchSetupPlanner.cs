@@ -468,6 +468,24 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 return;
             }
 
+            if (request.FoundationResolutionPolicy ==
+                EchoLaunchSetupFoundationResolutionPolicy
+                    .CreateProjectOwnedSetup)
+            {
+                operations.Add(
+                    new EchoLaunchSetupOperation(
+                        key,
+                        phase,
+                        kind,
+                        EchoLaunchSetupOperationDisposition.Create,
+                        targetPath,
+                        "The requested project-owned asset is missing. " +
+                        "Create Project-Owned Setup is selected, so " +
+                        "compatible assets outside the requested target " +
+                        "will not substitute for it."));
+                return;
+            }
+
             string selectedPath = request.GetSelectedPath(role);
 
             if (!string.IsNullOrWhiteSpace(selectedPath))

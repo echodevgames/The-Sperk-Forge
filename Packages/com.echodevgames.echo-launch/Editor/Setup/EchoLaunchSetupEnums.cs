@@ -7,6 +7,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         PlaceFirstAfterApproval = 2
     }
 
+    internal enum EchoLaunchSetupFoundationResolutionPolicy
+    {
+        ReuseCompatibleAssets = 0,
+        CreateProjectOwnedSetup = 1
+    }
+
     internal enum EchoLaunchSetupPlanStatus
     {
         Ready = 0,

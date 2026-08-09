@@ -31,6 +31,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     "Boot scene: " + plan.Paths.BootScenePath);
             }
 
+            builder.AppendLine(
+                "Foundation asset resolution: " +
+                FormatFoundationResolution(
+                    plan.Request.FoundationResolutionPolicy));
+
             if (plan.Request.SplashAuthoring != null)
             {
                 builder.AppendLine(
@@ -110,6 +115,20 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             }
 
             return builder.ToString();
+        }
+
+        private static string FormatFoundationResolution(
+            EchoLaunchSetupFoundationResolutionPolicy policy)
+        {
+            switch (policy)
+            {
+                case EchoLaunchSetupFoundationResolutionPolicy
+                    .CreateProjectOwnedSetup:
+                    return "Create Project-Owned Setup";
+
+                default:
+                    return "Reuse Compatible Assets";
+            }
         }
     }
 }

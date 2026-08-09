@@ -23,6 +23,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         private bool createSplashSequence;
 
         [SerializeField]
+        private EchoLaunchSetupFoundationResolutionPolicy
+            foundationResolutionPolicy =
+                EchoLaunchSetupFoundationResolutionPolicy
+                    .ReuseCompatibleAssets;
+
+        [SerializeField]
         private SplashPresentationMode splashPresentationMode =
             SplashPresentationMode.SplashOnly;
 
@@ -124,6 +130,35 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     destinationScene,
                     typeof(SceneAsset),
                     false);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(
+                "Foundation",
+                EditorStyles.boldLabel);
+
+            foundationResolutionPolicy =
+                (EchoLaunchSetupFoundationResolutionPolicy)
+                EditorGUILayout.EnumPopup(
+                    "Asset Resolution",
+                    foundationResolutionPolicy);
+
+            if (foundationResolutionPolicy ==
+                EchoLaunchSetupFoundationResolutionPolicy
+                    .CreateProjectOwnedSetup)
+            {
+                EditorGUILayout.HelpBox(
+                    "Missing First Light foundation assets will be created " +
+                    "under the requested Project Root instead of reusing " +
+                    "compatible assets elsewhere in the project. Existing " +
+                    "compatible target assets and the selected destination " +
+                    "scene remain untouched.",
+                    MessageType.Info);
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(
+                "Splash Sequence",
+                EditorStyles.boldLabel);
 
             createSplashSequence = EditorGUILayout.Toggle(
                 "Create Splash Sequence",
@@ -337,7 +372,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     splashAuthoring:
                         createSplashSequence
                             ? BuildSplashAuthoringRequest()
-                            : null);
+                            : null,
+                    foundationResolutionPolicy:
+                        foundationResolutionPolicy);
 
             RefreshPlanForTests(request);
         }

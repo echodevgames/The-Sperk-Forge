@@ -20,6 +20,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             Append(builder, "destination", request.DestinationScenePath);
             Append(builder, "splash", request.CreateSplashSequence ? "1" : "0");
             Append(builder, "build", ((int)request.BuildSettingsPolicy).ToString());
+            Append(
+                builder,
+                "foundationResolution",
+                ((int)request.FoundationResolutionPolicy).ToString());
             Append(builder, "configuration", request.SelectedConfigurationPath);
             Append(builder, "sequence", request.SelectedStartupSequencePath);
             Append(builder, "launchDestination", request.SelectedLaunchDestinationPath);

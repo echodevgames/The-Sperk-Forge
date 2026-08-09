@@ -16,7 +16,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string selectedLaunchDestinationPath = null,
             string selectedSplashSequencePath = null,
             string selectedRootPrefabPath = null,
-            EchoLaunchSetupSplashAuthoringRequest splashAuthoring = null)
+            EchoLaunchSetupSplashAuthoringRequest splashAuthoring = null,
+            EchoLaunchSetupFoundationResolutionPolicy
+                foundationResolutionPolicy =
+                    EchoLaunchSetupFoundationResolutionPolicy
+                        .ReuseCompatibleAssets)
         {
             ProjectRootPath =
                 EchoLaunchSetupPathUtility.NormalizeSeparators(
@@ -36,6 +40,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             SelectedSplashSequencePath = NormalizeOptional(selectedSplashSequencePath);
             SelectedRootPrefabPath = NormalizeOptional(selectedRootPrefabPath);
             SplashAuthoring = splashAuthoring;
+            FoundationResolutionPolicy =
+                foundationResolutionPolicy;
         }
 
         internal string ProjectRootPath { get; }
@@ -49,6 +55,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal string SelectedSplashSequencePath { get; }
         internal string SelectedRootPrefabPath { get; }
         internal EchoLaunchSetupSplashAuthoringRequest SplashAuthoring { get; }
+        internal EchoLaunchSetupFoundationResolutionPolicy
+            FoundationResolutionPolicy { get; }
 
         internal static EchoLaunchSetupRequest CreateDefault()
         {
@@ -114,7 +122,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                        StringComparison.Ordinal) &&
                    Equals(
                        SplashAuthoring,
-                       other.SplashAuthoring);
+                       other.SplashAuthoring) &&
+                   FoundationResolutionPolicy ==
+                       other.FoundationResolutionPolicy;
         }
 
         public override bool Equals(object obj)
@@ -131,6 +141,9 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 hash = (hash * 397) ^ DestinationScenePath.GetHashCode();
                 hash = (hash * 397) ^ CreateSplashSequence.GetHashCode();
                 hash = (hash * 397) ^ BuildSettingsPolicy.GetHashCode();
+                hash =
+                    (hash * 397) ^
+                    FoundationResolutionPolicy.GetHashCode();
 
                 if (SplashAuthoring != null)
                 {
