@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** FL-M6-01 – First Light Production Reference Showcase
-**Current implementation state:** First Light complete/frozen; The Chronicle learning review active; Chronicle implementation locked
+**Completed package checkpoint:** ESV-M1-01 – Chronicle Installable Skeleton and Duplicate-Safe Authority Claim
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M1-01 complete; ESV-M2-01 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M1-01 active / authorized** |
+| Chronicle implementation | **ESV-M1-01 complete; ESV-M2-01 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -68,17 +68,16 @@ No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Fu
 
 ## Active next-package work
 
-The next package has now been selected deliberately: **The Chronicle (`EchoSave`)**.
+The next package is **The Chronicle (`EchoSave`)**.
 
-Before Chronicle implementation:
+Chronicle M1 is complete:
+1. PKG-LEARN-009 and Jesse's teach-back are complete.
+2. ESV-M1-01 implementation is committed at `ecfa922`.
+3. Embedded Package Manager resolution is committed at `2c70b1d`.
+4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
+5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
 
-1. complete PKG-LEARN-009 and Jesse's teach-back;
-2. preserve SFGSS-ADR-006 separation between durable persistence, runtime truth, and Unity object lifetime;
-3. keep peer-package persistence optional through bridges/adapters rather than core dependencies;
-4. keep long-lived service composition project-owned rather than turning Chronicle or First Light into a universal service root;
-5. explicitly activate ESV-M1-01 only after the learning gate passes;
-6. rehydrate Unity/Git at that implementation checkpoint;
-7. preserve the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop.
+`ESV-M2-01` is active / authorized. It may introduce the first real storage-provider I/O, safe local-root resolution, path validation, and sandbox backend tests. It must preserve SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -97,4 +96,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-PKG-LEARN-009 is **complete** and `ESV-M1-01` is **active / authorized**. Production work is limited to the installable skeleton and duplicate-safe Chronicle authority claim. Serializer/file-format implementation, storage writes, save-slot behavior, real participant persistence, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M1-01` is **complete**. `ESV-M2-01` is **active / authorized** for storage-root resolution, path safety, and the default local backend foundation. Chronicle document serialization, slots/generations, participants, recovery/autosave, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

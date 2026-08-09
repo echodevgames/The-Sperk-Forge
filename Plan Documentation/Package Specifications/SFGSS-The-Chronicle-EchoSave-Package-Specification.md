@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.2.0
+**Specification version:** 1.3.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009 is now the active just-in-time learning gate. Runtime implementation remains locked until that review/teach-back passes and Jesse explicitly activates ESV-M1-01.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009 and ESV-M1-01 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M2-01` is the active storage-foundation checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -34,6 +34,7 @@
 | 1.0.0 | 2026-08-03 | Approved | Approved slot models, immutable save generations, participant payloads, two-phase load, metadata, serialization, migration, recovery, autosave, diagnostics, tooling, and the isolated Save Laboratory | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID versus optional runtime/export save-configuration identity. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-09 | Approved | Reconciled SFGSS-ADR-006: durable save transport, participant runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local; cross-package persistence stays optional; PKG-LEARN-009 becomes the active implementation gate. | Jesse “Echo” Adams |
+| 1.3.0 | 2026-08-09 | Approved | Reconciled completed PKG-LEARN-009 and ESV-M1-01 evidence; recorded commits `ecfa922` / `2c70b1d`; activated bounded ESV-M2-01 storage-root, path-safety, and local-backend work without changing ownership boundaries. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1904,22 +1905,38 @@ This approval completes the ninth of ten Foundation package specifications. No E
 4. Conflicts are reconciled into specs, SFGSS-000, or ADRs.
 5. Current Notes explicitly authorizes M1 work.
 
-### 28.3 First recommended implementation checkpoint after the gate
-
-**Current state:** Scaffolded and **LOCKED**. PKG-LEARN-009 must complete before Jesse explicitly activates implementation.
+### 28.3 Completed first implementation checkpoint
 
 **ESV-M1-01 - Installable skeleton and duplicate-safe authority claim**
 
+**Status:** Complete.
+
+Outcome achieved:
+- package manifest, asmdefs, documentation shell, configuration, and lifecycle shell;
+- provider interfaces/value IDs/results without file writes;
+- duplicate rejection before storage/path/callback side effects;
+- initial lifecycle/EditMode tests;
+- Unity compile/import and focused Chronicle Editor gate all green;
+- implementation commit `ecfa922`;
+- embedded Package Manager resolution commit `2c70b1d`.
+
+Stop point preserved: M1 writes no real save file.
+
+### 28.4 Active implementation checkpoint
+
+**ESV-M2-01 - Storage root, path safety, and local backend foundation**
+
+**Status:** Active / authorized.
+
 Outcome:
+- resolve the configured default local storage root beneath `Application.persistentDataPath`;
+- add strict safe relative-path/key handling;
+- implement the replaceable local filesystem backend behind `ISaveStorageBackend`;
+- use injected sandbox roots for automated tests;
+- prove backend byte primitives and path escape rejection;
+- preserve duplicate rejection before storage-root/backend side effects.
 
-- create package manifest and asmdefs;
-- add documentation shell and package Current Notes;
-- add configuration type and root lifecycle shell;
-- define provider interfaces/value IDs/results without file writes;
-- implement duplicate rejection before storage/path/callback side effects;
-- add initial lifecycle/EditMode tests.
-
-Stop point: clean compile, one root claims, duplicate has zero side effects, shutdown clears authority, no real save file is written yet.
+Stop point: first real storage-provider I/O exists and is path-safe in a sandbox, but save documents, serializer implementation, slots, generations, participants, recovery, and peer bridges remain unimplemented.
 
 ## 29. New-Conversation Handoff
 
@@ -1927,43 +1944,45 @@ Stop point: clean compile, one root claims, duplicate has zero side effects, shu
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.2.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.3.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.2.0
-Current milestone/checkpoint: PKG-LEARN-009 active; ESV-M1-01 scaffolded and locked
+Current specification version: 1.3.0
+Completed checkpoint: ESV-M1-01
+Current milestone/checkpoint: ESV-M2-01 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: Not started
+Current implementation status: M1 skeleton complete; storage foundation next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing code:
-1. Complete PKG-LEARN-009 and Jesse's teach-back. If it is not complete, do not implement.
-2. Summarize EchoSave authority and independence constraints.
-3. Explain durable persistence versus participant runtime truth versus Unity object lifetime.
-4. Preserve project-owned schemas and mutable runtime state.
-5. Keep global preferences, scene travel, UI, game-state rules, peer service composition, and cloud providers outside core.
-6. Keep peer persistence optional through bridges/participant adapters; no core package gains a hard EchoSave dependency merely to be save-capable.
-7. Preserve unknown participant payloads by default.
-8. Explicitly activate ESV-M1-01 before production code and continue using the Checkpoint Build Plan format.
+Before writing M2-01 code:
+1. Rehydrate the exact repository/Unity baseline after the ESV-M1-01 closeout.
+2. Preserve EchoSave authority and SFGSS-ADR-006 lifetime separation.
+3. Keep project gameplay schemas and mutable runtime truth outside Chronicle.
+4. Keep global preferences, scene travel, UI, game-state rules, peer service composition, and cloud providers outside core.
+5. Keep peer persistence optional through bridges/participant adapters.
+6. Implement only storage-root resolution, path safety, the default local backend, necessary storage results/diagnostics, and sandbox tests.
+7. Preserve duplicate rejection before storage-root/backend side effects.
+8. Do not yet implement save documents, serializer payloads, slots, generations, participants, migration, recovery, autosave, or project-wide DDOL composition.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Specification v1.2.0; runtime package not started |
-| Completed checkpoint | FW-DOC-09 - The Chronicle specification |
-| Files/assets created | Package specification and Foundation checkpoint documentation |
-| Tests passed | Specification structure/reconciliation audit only; implementation tests not run |
-| Tests failed | None |
-| Known issues | None blocking |
-| Decisions added | ESV-D-001 through ESV-D-021 |
-| Planned implementation tests | 100 |
-| Active learning checkpoint | PKG-LEARN-009 – The Chronicle (`EchoSave`) |
-| Implementation permission | Locked pending PKG-LEARN-009 completion and explicit ESV-M1-01 activation |
+| Package version | Runtime package `0.1.0`; Specification v1.3.0 |
+| Completed checkpoint | ESV-M1-01 - Installable Skeleton and Duplicate-Safe Authority Claim |
+| Files/assets created | `com.echodevgames.echo-save` package shell, configuration, lifecycle authority, provider identity seams, focused tests, package documentation |
+| Tests passed | Unity compile/import green; focused Chronicle Editor gate all green; exact numeric count not captured |
+| Tests failed | None reported at ESV-M1-01 closeout |
+| Known issues | None blocking M2-01 |
+| Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
+| Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
+| Active learning checkpoint | PKG-LEARN-009 complete |
+| Implementation permission | ESV-M2-01 active / authorized |
+
 
 ## 30. Approval
 
@@ -1983,7 +2002,7 @@ Before writing code:
 - [x] Test/release gates are measurable.
 - [x] No Isekai Studios identity or ownership has been introduced.
 - [x] Jesse’s standing approval to select the most effective long-term architecture has been applied.
-- [x] Foundation implementation remains locked.
+- [x] Runtime implementation advances only through explicit bounded checkpoint gates.
 
 ### 30.2 Approval record
 
@@ -2009,7 +2028,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.2.0**. PKG-LEARN-009 is the active just-in-time review; ESV-M1-01 remains scaffolded and locked.
+The Chronicle specification is complete and **Approved v1.3.0**. PKG-LEARN-009 and ESV-M1-01 are complete; ESV-M2-01 is the active bounded implementation checkpoint.
 
 
 ---

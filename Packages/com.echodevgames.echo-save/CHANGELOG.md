@@ -18,3 +18,14 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Test-only lifecycle probe seam with no real storage implementation.
 - Focused Editor tests for authority, duplicate safety, initialization, shutdown, re-claim, and zero-storage-side-effect proof.
 - No durable save I/O, serializer implementation, slot/generation behavior, peer bridge, or project-wide DDOL composition.
+
+### Verified
+
+#### ESV-M1-01 Closeout
+
+- Unity compile/import reported green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate reported all green.
+- Exact numeric test count was not captured, so no count is claimed.
+- Implementation committed at `ecfa922`.
+- Embedded Package Manager resolution committed at `2c70b1d`.
+- No real durable save I/O was introduced by M1.

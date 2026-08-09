@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M1-01 — Chronicle Installable Skeleton and Duplicate-Safe Authority Claim
-**Current checkpoint:** ESV-M1-01 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M2-01 — Chronicle Storage Root, Path Safety, and Local Backend Foundation
+**Current checkpoint:** ESV-M2-01 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -56,6 +56,38 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Jesse completed the Chronicle teach-back and explicitly activated implementation on 2026-08-09.
 - The completed teach-back covered runtime truth versus durable snapshots, scopes/policies, participant ownership, migrations, transactional candidate safety, required/optional participation, known-good generations, duplicate-safe authority, shutdown, operation gating, coherent capture, coordinated restore/rollback, dirty state versus save policy, and separation of save model/serialization/storage.
 - Serializer/file-format implementation choices remain intentionally deferred because ESV-M1-01 proves lifecycle and duplicate safety without real durable storage.
+
+## Chronicle ESV-M1-01 Closeout
+
+- Learning/activation commit: `5b05d9d`.
+- Chronicle package implementation commit: `ecfa922`.
+- Embedded Package Manager resolution commit: `2c70b1d`.
+- Package ID/version: `com.echodevgames.echo-save` `0.1.0`.
+- Unity compile/import: **Pass / green**.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate: **all green**; exact numeric count not captured, so no count is claimed.
+- Apply-time M1 guards passed: no `System.IO` implementation, no `Application.persistentDataPath` resolution, no Chronicle-owned `DontDestroyOnLoad`, and no peer Echo runtime reference.
+- ESV-M1-01 proved package-local authority, duplicate rejection before service construction/initialization, explicit initialize/shutdown, re-claim after shutdown, configuration blocking, stable provider IDs, and zero durable-storage side effects.
+
+## Active Chronicle M2 Slice
+
+`ESV-M2-01 — Chronicle Storage Root, Path Safety, and Local Backend Foundation` is active / authorized.
+
+Authorized next:
+- first real Chronicle storage-provider I/O;
+- safe configured root resolution beneath `Application.persistentDataPath` for the default local provider;
+- strict safe relative-path/key handling;
+- a replaceable local filesystem backend behind the existing storage-provider seam;
+- injected sandbox roots for tests;
+- preservation of duplicate-before-storage-side-effect behavior.
+
+Still deferred:
+- Chronicle envelope/serializer implementation;
+- slots/catalogs;
+- immutable generations and head publication;
+- participants;
+- migrations/checksums/recovery/autosave/prepared loads;
+- peer persistence bridges;
+- project-wide DDOL composition.
 
 
 ## Suite Distribution Kit Standard
@@ -241,8 +273,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the live repository/Unity baseline at committed Chronicle activation.
-2. Implement only `ESV-M1-01`: installable package shell, project-owned Chronicle configuration, package-local duplicate-safe authority, explicit initialize/shutdown lifecycle, neutral contracts/injection seams, and focused tests.
-3. Write **no real save files** in ESV-M1-01.
-4. Keep serializer/file-format, slot/generation, participant capture/apply, recovery, bridges, and project-wide DDOL composition deferred to later authorized checkpoints.
-5. Keep Accord, Resonance, and Looking Glass planned behind Chronicle in the Game Shell initiative, with each package independently gated by its own just-in-time review.
+1. Rehydrate the live repository/Unity baseline at the committed ESV-M1-01 closeout.
+2. Implement only `ESV-M2-01`: storage-root resolution, path safety, the default local backend foundation, injection/test seams, and sandboxed storage tests.
+3. Preserve duplicate rejection before any storage-root/backend side effect.
+4. Do **not** implement Chronicle save documents, serializers, slots, generations, head publication, participants, recovery/autosave, peer bridges, or project-wide DDOL composition in M2-01.
+5. Keep Accord, Resonance, and Looking Glass planned behind Chronicle in the Game Shell initiative, with each package retaining independent package authority.

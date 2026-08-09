@@ -6,9 +6,9 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` begins with **ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim**.
+Version `0.1.0` has completed **ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim**. The active checkpoint is **ESV-M2-01 — Storage Root, Path Safety, and Local Backend Foundation**.
 
-This checkpoint intentionally proves only:
+ESV-M1-01 proved:
 
 - the package installs without another Echo package;
 - one `EchoSaveRoot` claims package-local Chronicle authority;
@@ -21,7 +21,7 @@ This checkpoint intentionally proves only:
 
 ## Not implemented yet
 
-This checkpoint does **not** write or read save files. It does not create slots, generations, manifests, payloads, migrations, backups, recovery records, autosaves, prepared loads, participant payloads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+ESV-M1-01 does **not** write or read save files. ESV-M2-01 may introduce storage-root resolution, path validation, and local-backend primitives, but it still does not authorize Chronicle save documents, slots, generations, participant payloads, migrations, recovery, autosaves, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 Those capabilities remain governed by later Chronicle checkpoints.
 

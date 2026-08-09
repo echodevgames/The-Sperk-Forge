@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,14 +12,14 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M1-01
 **Milestone:** M1 — Skeleton
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.2.0
 **Suite authorities:** SFGSS-000 v0.26.0; SFGSS-001 v1.5.0; SFGSS-ADR-006; SFGSS-INT-SUITE-001 v1.1.0
 **Learning prerequisite:** PKG-LEARN-009 — **Complete**
 **Implementation permission:** Authorized 2026-08-09 after completed teach-back and Jesse's explicit activation
 **Unity baseline at scaffold time:** 6000.3.8f1; must be reverified when activated
 
-> **Activation record:** PKG-LEARN-009 completed on 2026-08-09. Jesse explicitly activated Chronicle implementation by asking to begin building. This checkpoint is now the active implementation boundary.
+> **Closeout record:** PKG-LEARN-009 completed and activated ESV-M1-01 on 2026-08-09. Implementation committed at `ecfa922`; embedded Package Manager resolution committed at `2c70b1d`. Unity compile/import and the focused Chronicle Editor gate were reported all green. No real durable save I/O was introduced.
 
 ## 1. Activation gate
 
@@ -111,19 +111,19 @@ The activated checkpoint must demonstrate:
 
 ## 6. Proposed focused tests
 
-All statuses are `Not run` until implementation is explicitly activated and executed.
+The implementation is complete. The focused Chronicle Editor gate was reported all green; the exact numeric test count was not captured, so this record does not invent one.
 
 | Test intent | Planned result | Status |
 |---|---|---|
-| One configured root claims authority | Exactly one authority | Not run |
-| Duplicate root appears | Duplicate exits before side effects | Not run |
-| Initialize twice | Deterministic idempotent/structured behavior per spec | Not run |
-| Shutdown | Admission stops and authority clears | Not run |
-| Reinitialize after clean shutdown | New valid authority may claim | Not run |
-| Missing/invalid config | Structured failure, no storage side effects | Not run |
-| Peer packages absent | Package compiles/initializes standalone | Not run |
-| Filesystem spy | Zero real save files written by M1 | Not run |
-| Scene-lifetime path if included | Root lifetime works without becoming project composition authority | Not run |
+| One configured root claims authority | Exactly one authority | **Pass** |
+| Duplicate root appears | Duplicate exits before side effects | **Pass** |
+| Initialize twice | Deterministic idempotent/structured behavior per spec | **Pass** |
+| Shutdown | Admission stops and authority clears | **Pass** |
+| Reinitialize after clean shutdown | New valid authority may claim | **Pass** |
+| Missing/invalid config | Structured failure, no storage side effects | **Pass** |
+| Peer packages absent | Package compiles/initializes standalone | **Pass** |
+| Filesystem spy | Zero real save files written by M1 | **Pass** |
+| Scene-lifetime path if included | Not included; project-owned DDOL composition remains out of M1 | **Not applicable** |
 
 ## 7. Intended file families
 
@@ -164,14 +164,14 @@ Stop and return to authority if implementation pressure suggests:
 |---|---|
 | PKG-LEARN-009 | Complete |
 | Teach-back | Complete |
-| Implementation commit | Not started |
-| Compile result | Not run |
-| Focused EditMode tests | Not run |
-| Standalone Laboratory | Not run |
-| Reference Showcase | Not run |
-| Clean-project proof | Not run |
-| Distribution Kit | Not run |
+| Implementation commit | `ecfa922` |
+| Compile result | **Pass** — Unity compile/import green |
+| Focused EditMode tests | **Pass** — all green; exact numeric count not captured |
+| Standalone Laboratory | Deferred to Chronicle M5 tooling/Laboratory milestone |
+| Reference Showcase | Future package graduation stage |
+| Clean-project proof | Future package graduation/release stage |
+| Distribution Kit | Future package graduation/release stage |
 
 ## 10. Next action
 
-Implement the bounded ESV-M1-01 skeleton against the exact rehydrated repository/Unity baseline. Keep all durable file I/O, serializer selection, slot/generation behavior, peer bridges, and project-wide DDOL composition out of scope.
+ESV-M1-01 is closed. Continue with `ESV-M2-01 — Chronicle Storage Root, Path Safety, and Local Backend Foundation`. M2-01 is the first checkpoint allowed to introduce real storage-provider I/O, but it must not yet implement save slots, Chronicle documents, serializer payloads, generations, head publication, participants, or recovery.

@@ -2,25 +2,39 @@
 
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
-**Current checkpoint:** ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim
-**Status:** Implementation candidate applied; Unity compile/tests pending
+**Package version:** `0.1.0`
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.3.0
+**Completed checkpoint:** ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim
+**Current checkpoint:** ESV-M2-01 — Storage Root, Path Safety, and Local Backend Foundation
+**Status:** ESV-M1-01 complete; ESV-M2-01 active / authorized
 
-## Active boundary
+## ESV-M1-01 closeout
 
-This checkpoint implements only:
+- Learning/activation commit `5b05d9d`.
+- Package implementation commit `ecfa922`.
+- Embedded package-resolution commit `2c70b1d`.
+- Unity compile/import: **green**.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **all green**.
+- Exact numeric test count was not captured and is not claimed.
+- M1 performs zero durable-storage operations.
 
-- package shell;
-- `EchoSaveConfiguration`;
-- package-local duplicate-safe `EchoSaveRoot`;
-- explicit initialize/shutdown lifecycle;
-- neutral provider/value/result contracts needed for the skeleton;
-- deterministic lifecycle test seams;
-- focused Editor tests.
+## Active ESV-M2-01 boundary
 
-## Explicitly absent
+Authorized:
+- configured storage-root resolution beneath `Application.persistentDataPath`;
+- safe relative-path/key validation;
+- replaceable local filesystem backend;
+- first real storage-provider I/O;
+- injected sandbox roots and focused storage tests;
+- duplicate-before-storage-side-effect regression proof.
 
-No real save-file I/O, slot directories, generations, manifests, serializer implementation, migration, integrity hashing, recovery, autosave, prepared loads, participant persistence, peer-package adapters, or project-owned DDOL composition is implemented here.
+Still absent:
+- save-envelope serialization;
+- slot/catalog behavior;
+- immutable generations/head publication;
+- participants;
+- migrations/checksums/recovery/autosave/prepared loads;
+- peer-package adapters;
+- Chronicle-owned or suite-wide DDOL composition.
 
-## Acceptance target
-
-The package must compile standalone and the focused ESV-M1-01 tests must pass before the checkpoint is committed.
+The project owns long-lived service composition. Chronicle owns only Chronicle.
