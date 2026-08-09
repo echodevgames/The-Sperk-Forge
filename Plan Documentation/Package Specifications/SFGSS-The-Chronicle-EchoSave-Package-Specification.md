@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.7.0
+**Specification version:** 1.8.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, and Chronicle M2 through ESV-M2-04 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-01` is the active participant-contract/registry-foundation checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-02` is the active detached-capture/payload-entry checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -39,6 +39,7 @@
 | 1.5.0 | 2026-08-09 | Approved | Closed ESV-M2-02 at `6404037` with focused Chronicle Editor evidence `57 / 57`; activated bounded ESV-M2-03 generation/slot technical IDs, package commit-document contracts, and SHA-256 integrity prerequisites while keeping physical generation/head publication separate. | Jesse “Echo” Adams |
 | 1.6.0 | 2026-08-09 | Approved | Closed ESV-M2-03 at `ad3b646` with focused Chronicle Editor evidence `87 / 87`; activated bounded ESV-M2-04 physical immutable-generation publication and head-last commit behavior for the package-owned transport path while keeping slots, participants, recovery, retention, autosave, and prepared loads separate. | Jesse “Echo” Adams |
 | 1.7.0 | 2026-08-09 | Approved | Closed ESV-M2-04 at `01b7ad3` with focused Chronicle Editor evidence `102 / 102`; marked bounded M2 document/storage core complete and activated ESV-M3-01 participant IDs, descriptors, registration lifetime, and duplicate-safe deterministic registry behavior without capture/save/load/apply orchestration. | Jesse “Echo” Adams |
+| 1.8.0 | 2026-08-09 | Approved | Closed ESV-M3-01 at `b3b5f9f` with focused Chronicle Editor evidence `147 / 147`; locked the open-ended no-central-participant-catalog invariant and activated ESV-M3-02 deterministic detached capture, live-registration DTO type routing, serializer resolution, and in-memory payload-entry construction without physical generation publication. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -661,6 +662,9 @@ Rules:
 - Payload DTOs reference project definitions by stable project-owned IDs.
 - Participant order is deterministic by canonical participant ID.
 - Duplicate participant IDs block the later registration.
+- Chronicle contains no compile-time catalog of known persistence participants.
+- A participant introduced after Chronicle ships registers through the same public contract; adding that participant must not require a Chronicle core source edit.
+- Runtime detached DTO type authority comes from the active registered participant, never from a CLR type name stored in save data.
 - Required participant capture failure aborts save.
 - Optional failure policy is explicit; default is still to abort rather than silently create a partial save.
 - Apply events fire only after authoritative participant state changes.
@@ -2004,26 +2008,53 @@ Outcome achieved:
 
 Milestone consequence: **M2 - Document / Storage Core is complete for the approved bounded implementation path.**
 
-### 28.8 Active participant-registry checkpoint
+### 28.8 Completed participant-registry checkpoint
 
 **ESV-M3-01 - Participant contracts, descriptor validation, and duplicate-safe registry foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- stable canonical `SaveParticipantId`;
+- Required/Optional criticality;
+- InitializeDefault/Ignore/Fail missing-payload policy;
+- validated descriptors with bounded aliases;
+- open-ended public `ISaveParticipant`;
+- structured registration results;
+- disposable/idempotent ownership leases;
+- duplicate-safe deterministic registry;
+- canonical/alias collision rejection;
+- stale-registration ownership-token protection;
+- immutable deterministic registry snapshots;
+- no registry durable I/O;
+- no registry capture/apply invocation;
+- implementation commit `b3b5f9f`;
+- focused Chronicle Editor gate **147 / 147**.
+
+Architectural invariant proven: Chronicle has no predefined participant catalog. A future system can register through the same public participant contract without editing Chronicle core.
+
+### 28.9 Active detached-capture checkpoint
+
+**ESV-M3-02 - Detached participant capture, runtime type routing, and payload-entry construction foundation**
 
 **Status:** Active / authorized.
 
 Outcome:
-- implement stable package `SaveParticipantId`;
-- define Required/Optional participant criticality;
-- define missing-payload policy: InitializeDefault, Ignore, or Fail;
-- define `SaveParticipantDescriptor` with ID, current schema version, criticality, missing-payload policy, serializer ID, and bounded prior-ID aliases;
-- define `ISaveParticipant` capture/apply-facing contract without owning project gameplay DTO schemas;
-- implement structured participant registration results and stable diagnostics;
-- implement disposable/idempotent `SaveParticipantRegistration`;
-- implement `SaveParticipantRegistry`;
-- reject invalid descriptors, duplicate canonical IDs, and alias collisions before registry mutation;
-- expose deterministic canonical-ID ordering and bounded immutable registry snapshots;
-- preserve all 102 prior focused regressions.
+- establish runtime-only detached DTO type authority on the active participant contract;
+- allow serializer providers to serialize/deserialize using a runtime `Type` supplied by trusted live registration code while preserving existing generic APIs where practical;
+- never persist or activate CLR type names from save data;
+- capture active participants in deterministic canonical-ID order;
+- validate capture success, non-null detached state, and compatibility with the participant-declared DTO type;
+- resolve the selected serializer by stable `SaveSerializerId`;
+- serialize detached participant DTOs in memory;
+- compute UTF-8 payload byte length and per-entry integrity checksum;
+- construct `SavePayloadEntry` and matching `SavePayloadInventoryEntry` records;
+- project participant schema version, serializer ID, and required/optional metadata into package transport entries;
+- abort the whole capture batch on participant/type/serializer/integrity failure rather than producing a silently partial candidate;
+- return structured capture-batch diagnostics/results;
+- preserve all 147 prior focused regressions.
 
-Stop point: Chronicle can safely identify/register/unregister participant authorities in application-session runtime state, but ESV-M3-01 does not capture them into a save, apply loaded state, preserve unknown payloads, execute migrations, or implement prepared loads.
+Stop point: Chronicle can convert the current participant registry into a fully validated in-memory participant transport batch, but ESV-M3-02 does not write that batch into a generation, call the M2 publication coordinator, implement production `SaveAsync`, load/apply state, preserve unknown payloads, or migrate data.
 
 ## 29. New-Conversation Handoff
 
@@ -2036,39 +2067,39 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.7.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04
-Current milestone/checkpoint: ESV-M3-01 active / authorized
+Current specification version: 1.8.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01
+Current milestone/checkpoint: ESV-M3-02 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: bounded M2 document/storage core complete through verified immutable-generation publication/head-last selection; participant contract/registry foundation next
+Current implementation status: M2 durable transport core complete and M3-01 open-ended participant registry complete; deterministic detached capture and in-memory payload-entry construction next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing M3-01 code:
-1. Rehydrate the exact repository/Unity baseline after the ESV-M2-04 closeout.
-2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, storage-provider independence, and the 102 / 102 regression floor.
-3. Implement participant identity/descriptor/registration contracts and the duplicate-safe deterministic registry only.
-4. Keep participant registry state application-session runtime state; registration itself performs no durable I/O.
-5. Define capture/apply-facing interfaces without wiring production `SaveAsync`, load/apply, unknown payloads, or project gameplay DTO ownership.
-6. Reject duplicate IDs and alias collisions before registry mutation.
-7. Do not activate prepared loads, migrations, slot catalogs, recovery, retention, autosave, peer bridges, or project-wide DDOL.
-8. Preserve deterministic registry ordering by canonical participant ID.
+Before writing M3-02 code:
+1. Rehydrate the exact repository/Unity baseline after the ESV-M3-01 closeout.
+2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, the open-ended participant invariant, and the 147 / 147 regression floor.
+3. Add trusted live-registration DTO type routing only; never serialize CLR type names into save documents or activate types requested by save data.
+4. Invoke participant capture in deterministic canonical-ID order and validate detached-state type/null semantics.
+5. Resolve serializers through stable provider IDs and calculate per-entry UTF-8 byte length/checksum in memory.
+6. Build package `SavePayloadEntry` and `SavePayloadInventoryEntry` records only.
+7. Abort the whole capture batch on capture/type/serializer/integrity failure rather than silently producing a partial participant set.
+8. Do not write generation files, call the M2 publication coordinator, update `head.json`, apply loads, preserve unknown payloads, execute migrations, or activate slot/recovery/autosave policy.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.7.0 |
-| Completed checkpoint | ESV-M2-04 - Immutable Generation Publication and Head-Last Commit Foundation |
-| Files/assets created | M1 lifecycle foundation; M2 storage/path/serializer/documents/technical IDs/integrity; M2-04 verified immutable-generation publication/head-last selection; focused tests |
-| Tests passed | ESV-M2-04 focused Chronicle Editor gate `102 / 102`; Unity compile/import green |
-| Tests failed | Final ESV-M2-04 gate: `0` |
-| Known issues | None blocking M3-01 |
+| Package version | Runtime package `0.1.0`; Specification v1.8.0 |
+| Completed checkpoint | ESV-M3-01 - Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation |
+| Files/assets created | M1 lifecycle; complete bounded M2 durable transport; M3-01 participant IDs/descriptors/contracts/registration/registry; focused tests |
+| Tests passed | ESV-M3-01 focused Chronicle Editor gate `147 / 147`; Unity compile/import green |
+| Tests failed | Final ESV-M3-01 gate: `0` |
+| Known issues | None blocking M3-02 |
 | Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M3-01 active / authorized |
+| Implementation permission | ESV-M3-02 active / authorized |
 
 
 ## 30. Approval

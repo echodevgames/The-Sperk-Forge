@@ -18,15 +18,17 @@
 - [[Developer/Test Reports/ESV-M2-03_Chronicle_Generation_Identity_Integrity_and_Commit-Document_Foundation_Test_Report|ESV-M2-03 Test Report]]
 - [[Developer/Checkpoints/ESV-M2-04_Chronicle_Immutable_Generation_Publication_and_Head-Last_Commit_Foundation|ESV-M2-04 Closeout]]
 - [[Developer/Test Reports/ESV-M2-04_Chronicle_Immutable_Generation_Publication_and_Head-Last_Commit_Foundation_Test_Report|ESV-M2-04 Test Report]]
+- [[Developer/Checkpoints/ESV-M3-01_Chronicle_Participant_Contracts_Descriptor_Validation_and_Duplicate-Safe_Registry_Foundation|ESV-M3-01 Closeout]]
+- [[Developer/Test Reports/ESV-M3-01_Chronicle_Participant_Contracts_Descriptor_Validation_and_Duplicate-Safe_Registry_Foundation_Test_Report|ESV-M3-01 Test Report]]
 
-## Completed milestone
+## Completed checkpoint
 
-`M2 — Chronicle Document / Storage Core`
+`ESV-M3-01 — Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation`
 
-The bounded storage/document core culminates in verified immutable generation publication and head-last current selection at **102 / 102** focused Chronicle Editor tests.
+Chronicle's participant registry is open-ended, duplicate-safe, alias-safe, deterministic, and memory-only at **147 / 147** focused Chronicle Editor tests.
 
 ## Current checkpoint
 
-`ESV-M3-01 — Chronicle Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation`
+`ESV-M3-02 — Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation`
 
-This checkpoint establishes participant identity and safe runtime registration only. It does not yet capture, persist, load, or apply participant state.
+This checkpoint may turn registered participant snapshots into verified in-memory payload entries. It still performs no physical save-generation publication.

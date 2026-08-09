@@ -125,3 +125,32 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Published generations remain create-only and duplicate generation publication is rejected.
 - A failed final head publication does not silently make an orphaned generation current.
 - The local backend explicitly does not claim universal power-loss atomicity.
+
+### Added
+
+#### ESV-M3-01 — Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation
+
+- Canonical `SaveParticipantId`.
+- Required/Optional participant criticality.
+- InitializeDefault/Ignore/Fail missing-payload policy.
+- Validated `SaveParticipantDescriptor` with bounded prior-ID aliases.
+- Public open-ended `ISaveParticipant` capture/apply-facing contract.
+- Participant capture/apply result contracts.
+- Structured registration status/result.
+- Disposable/idempotent `SaveParticipantRegistration`.
+- Immutable participant registry snapshots.
+- Duplicate-safe deterministic `SaveParticipantRegistry`.
+- Canonical/alias collision rejection.
+- Stale-registration ownership-token protection.
+- Explicit proof that a future participant can register without a Chronicle compile-time catalog.
+
+### Verified
+
+#### ESV-M3-01 Closeout
+
+- Implementation committed at `b3b5f9f`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **147 / 147**, with `0` failed.
+- All prior **102 / 102** Chronicle regressions remained green.
+- Registry operations perform no durable I/O and do not invoke participant capture/apply.
+- Chronicle core contains no predefined participant catalog.

@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-01
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.7.0
 **Prior checkpoint:** ESV-M2-04 — **Complete**
 **Prior milestone:** M2 — **Complete for bounded document/storage-core path**
@@ -128,31 +128,41 @@ M3-01 tests must prove:
 - aliases never create duplicate ordered entries;
 - no registry operation touches storage or publishes a generation.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- canonical participant-ID acceptance;
-- malformed/noncanonical/path-like ID rejection;
-- descriptor positive schema-version validation;
-- criticality/payload-policy preservation;
-- bounded alias validation;
-- unique registration succeeds;
-- duplicate canonical registration rejected;
-- canonical/alias collision matrix rejected;
-- deterministic ordering;
-- canonical and alias lookup resolve the same active participant;
-- registration dispose/unregister;
-- idempotent disposal;
-- stale-handle generation/token safety;
-- registry snapshot immutability;
-- zero storage/publication side effects;
-- all prior **102 / 102** Chronicle tests remain green.
+- canonical participant-ID acceptance — **Pass**;
+- malformed/noncanonical/path-like ID rejection — **Pass**;
+- descriptor positive schema-version validation — **Pass**;
+- criticality and missing-payload-policy preservation — **Pass**;
+- bounded alias validation — **Pass**;
+- unique registration succeeds — **Pass**;
+- duplicate canonical registration rejected — **Pass**;
+- canonical/alias collision matrix rejected — **Pass**;
+- deterministic registry ordering — **Pass**;
+- canonical and alias lookup resolve the same active participant — **Pass**;
+- registration dispose/unregister — **Pass**;
+- idempotent disposal — **Pass**;
+- stale-handle ownership-token safety — **Pass**;
+- registry snapshot immutability — **Pass**;
+- registry never invokes participant capture/apply — **Pass**;
+- registry performs zero durable storage/publication work — **Pass**;
+- arbitrary future participant registration requires no Chronicle core edit or predefined catalog — **Pass**;
+- all prior 102 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **147 / 147 passed, 0 failed**.
 
 ## 7. Stop point
 
-Stop when Chronicle can safely identify, validate, register, enumerate, resolve, and unregister participant authorities in runtime memory.
+**Reached.** Chronicle can safely identify, validate, register, enumerate, resolve, and unregister open-ended participant authorities in runtime memory.
 
-Do not wire those participants into physical save publication or loading during ESV-M3-01.
+Implementation commit: `b3b5f9f`.
 
-The next M3 checkpoint may then begin detached participant capture and package-owned payload-entry construction while preserving the already-proven generation/head transaction.
+Final focused Chronicle Editor gate: **147 / 147 passed, 0 failed**.
+
+The open-ended seat invariant is now proven: Chronicle contains no compile-time catalog of known participants. A future system can implement the same public participant contract and register without editing Chronicle core.
+
+Next bounded checkpoint:
+
+`ESV-M3-02 — Chronicle Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation`
+
+M3-02 may invoke participant capture and convert detached DTOs into validated in-memory package transport entries. It must still stop before physical generation publication, production `SaveAsync`, loading/apply, unknown-payload carry-forward, or migration.
