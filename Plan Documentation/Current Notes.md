@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation
-**Current checkpoint:** ESV-M2-04 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-01 — Chronicle Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation
+**Current checkpoint:** ESV-M3-01 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,47 +78,66 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M2-03 Closeout
+## Chronicle ESV-M2-04 Closeout
 
-- Implementation commit: `ad3b646`.
+- Implementation commit: `01b7ad3`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **87 / 87 passed, 0 failed**.
-- M2-03 added canonical `SaveSlotId` / sortable `SaveGenerationId`, manifest/payload/head commit-document contracts, transport inventory records, structured document validation, `IIntegrityProvider`, and the default `Sha256IntegrityProvider`.
-- Commit-document validation is side-effect free and proves identity, detached byte length, checksum, integrity-provider identity, and transport inventory agreement.
-- The package still performs no physical generation publication and does not mutate `head.json`.
-- No slot catalog/policy, participant capture/apply, migration/recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **102 / 102 passed, 0 failed**.
+- M2-04 added the optional provider-neutral storage publication seam, explicit publication capabilities, local same-root candidate-to-generation publication, small-current-object move/replace publication, generation storage keys, and the bounded package transport publication coordinator.
+- First and subsequent transport generations publish generation-first and head-last.
+- Pre-head failures preserve the previously authoritative head/generation.
+- A verified generation orphaned by failed head publication remains non-current.
+- Published generation files remain create-only.
+- The local backend explicitly does **not** claim universal power-loss atomicity.
+- No slot catalog/policy, participant capture/apply, recovery, retention, autosave, prepared load, migration, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Active Chronicle M2 Slice
+## Milestone State
 
-`ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation` is active / authorized.
+`M2 — Document / Storage Core` is complete for the approved bounded Chronicle implementation path.
+
+Chronicle now has:
+- safe local storage and path containment;
+- package document serialization;
+- stable slot/generation technical IDs;
+- manifest/payload/head commit documents;
+- SHA-256 integrity;
+- immutable generation publication;
+- head-last current-generation selection;
+- previous-known-good preservation across injected publication failures.
+
+## Active Chronicle M3 Slice
+
+`ESV-M3-01 — Chronicle Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation` is active / authorized.
 
 Authorized next:
-- provider-neutral publication capability seam without teaching the backend Chronicle generation semantics;
-- default local backend support for publishing a new candidate tree and replacing/publishing the small head pointer with capability-accurate semantics;
-- package-owned generation publication coordinator for the already-proven empty/transport payload path;
-- candidate keys beneath `slots/<slot-id>/incomplete/<generation-id>/`;
-- final immutable keys beneath `slots/<slot-id>/generations/<generation-id>/`;
-- write complete payload + final manifest bytes before publication;
-- verify detached payload bytes and package documents before generation publication;
-- publish the verified generation before any head mutation;
-- publish/update `head.json` last;
-- preserve the previously current head/generation on every failure before successful head publication;
-- preserve failed/uncommitted candidate data for later recovery/quarantine policy rather than treating it as current;
-- sandboxed interruption/failure tests across commit boundaries;
-- all prior **87 / 87** Chronicle regressions.
+- package-owned `SaveParticipantId` stable value type;
+- participant criticality enum: Required / Optional;
+- missing-payload policy enum: InitializeDefault / Ignore / Fail;
+- `SaveParticipantDescriptor` with stable participant ID, schema version, criticality, missing-payload policy, serializer ID, and bounded aliases;
+- `ISaveParticipant` contract for detached capture/apply participation without project gameplay type ownership;
+- structured participant registration result/status/diagnostics;
+- disposable/idempotent `SaveParticipantRegistration`;
+- `SaveParticipantRegistry`;
+- duplicate rejection before registry mutation;
+- descriptor/alias collision rejection;
+- deterministic registry ordering by canonical participant ID;
+- registration disposal/unregister behavior;
+- bounded immutable registry snapshots needed for later diagnostics/orchestration;
+- focused tests preserving all prior **102 / 102** Chronicle regressions.
 
 Still deferred:
-- slot catalog/cache and active-slot policy;
-- participant registry/capture/apply and project gameplay payload meaning;
-- recovery candidate selection/execution;
-- retention cleanup;
-- autosave/coalescing;
-- prepared loads;
-- migrations;
-- peer persistence bridges;
-- project-wide DDOL composition.
+- capture orchestration into physical `SavePayloadEntry` records;
+- participant serialization/type binding orchestration;
+- `SaveAsync` production operation orchestration;
+- participant apply;
+- prepared loads and convenience loads;
+- unknown-payload store/carry-forward;
+- participant/document migrations;
+- slot catalog/policy and active-slot service;
+- recovery/retention/autosave;
+- peer bridges and project-wide DDOL composition.
 
-M2-04 must not claim universal atomicity. The local backend may advertise and use atomic replacement only where the runtime/platform primitive actually supports it; fallback behavior must be documented and tested without overstating guarantees.
+M3-01 defines who may participate and how registrations remain safe. It does not yet cause a participant to be captured, saved, loaded, or applied.
 
 
 ## Suite Distribution Kit Standard
@@ -304,9 +323,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the exact repository/Unity baseline after the ESV-M2-03 closeout.
-2. Implement only `ESV-M2-04`: provider-neutral publication primitives, local candidate/generation publication, verified package-document writes, and head-last publication.
-3. Prove that failures before successful head publication leave the previous known-good generation/head authoritative and unchanged.
-4. Use the existing empty/transport payload path only; do **not** activate participants or project gameplay payload ownership.
-5. Do **not** add slot catalog/policy, recovery selection/execution, retention cleanup, autosave, prepared loads, migrations, peer bridges, or project-wide DDOL composition.
-6. Preserve the complete `87 / 87` Chronicle regression floor while adding interruption/publication proof.
+1. Rehydrate the exact repository/Unity baseline after the ESV-M2-04 closeout.
+2. Implement only `ESV-M3-01`: participant stable IDs, descriptor/policy contracts, `ISaveParticipant`, registration results/leases, and duplicate-safe deterministic registry behavior.
+3. Keep the registry independent from physical save publication. Registration must not capture, serialize, write, load, or apply participant state.
+4. Do **not** activate unknown-payload carry-forward, migrations, prepared loads, slot catalog/policy, recovery, retention, autosave, peer bridges, or project-wide DDOL composition.
+5. Preserve the complete `102 / 102` Chronicle regression floor while adding participant-contract/registry proof.

@@ -3,52 +3,56 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.6.0
-**Completed checkpoint:** ESV-M2-03 — Generation Identity, Integrity, and Commit-Document Foundation
-**Current checkpoint:** ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation
-**Status:** ESV-M2-03 complete; ESV-M2-04 active / authorized
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.7.0
+**Completed checkpoint:** ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation
+**Completed milestone:** M2 — Document / Storage Core
+**Current checkpoint:** ESV-M3-01 — Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation
+**Status:** M2 complete; ESV-M3-01 active / authorized
 
-## ESV-M2-03 closeout
+## ESV-M2-04 closeout
 
-Implementation commit: `ad3b646`.
+Implementation commit: `01b7ad3`.
 
 Evidence:
 - Unity compile/import: **green**;
-- focused `EchoDevGames.EchoSave.Tests.Editor`: **87 / 87 passed, 0 failed**;
-- canonical package-generated slot identity;
-- unique sortable generation identity;
-- package manifest/payload/head document shapes;
-- package transport inventory shape;
-- detached-byte SHA-256 calculation and verification;
-- manifest/payload/head agreement validation;
-- serializer compatibility for new package documents;
-- no physical generation/head mutation;
-- all prior 57 Chronicle regressions remain green.
+- focused `EchoDevGames.EchoSave.Tests.Editor`: **102 / 102 passed, 0 failed**;
+- provider-neutral publication capability seam;
+- local candidate-to-final same-root publication;
+- local small-current-object move/replace publication;
+- generation-first / head-last transaction;
+- previous head/generation preserved on injected pre-head failure;
+- orphaned verified generation remains non-current after failed head publication;
+- duplicate generation IDs are rejected;
+- committed generation files remain create-only;
+- local backend truthfully reports no universal power-loss atomicity guarantee;
+- all prior 87 Chronicle regressions remain green.
 
-## Active ESV-M2-04 boundary
+## Active ESV-M3-01 boundary
 
 Authorized:
-- provider-neutral publication capabilities/primitives;
-- local backend candidate-to-final publication;
-- local small-head publication/replacement with accurately advertised capability semantics;
-- package generation publication coordinator;
-- candidate path under `incomplete/<generation-id>`;
-- verified immutable final path under `generations/<generation-id>`;
-- payload + manifest write/verify before final publication;
-- head publication **last**;
-- old known-good head/generation preserved on pre-head failure;
-- failure/interruption tests in sandbox storage.
+- `SaveParticipantId`;
+- participant criticality and missing-payload policy;
+- validated `SaveParticipantDescriptor`;
+- `ISaveParticipant`;
+- structured participant registration results/status;
+- `SaveParticipantRegistration`;
+- `SaveParticipantRegistry`;
+- duplicate and alias-collision rejection;
+- deterministic canonical-ID ordering;
+- idempotent registration disposal/unregister;
+- bounded immutable registry snapshot;
+- focused registry/contract tests.
 
 Still absent:
-- slot catalog/cache and active-slot policy;
-- participant capture/apply;
-- gameplay payload ownership;
-- recovery selection/execution;
-- retention cleanup;
-- autosave;
+- participant capture orchestration;
+- participant apply orchestration;
+- `SaveAsync`;
 - prepared loads;
+- unknown-payload carry-forward;
 - migrations;
+- slot catalog/policy;
+- recovery/retention/autosave;
 - peer bridges;
 - Chronicle-owned/project-wide DDOL.
 
-M2-04 may physically publish the already-proven empty/transport payload generation. That is real save-publication infrastructure, but it is not yet the complete player-facing save pipeline.
+M3-01 establishes the participant registry as runtime session state only. Registration is not durable persistence and does not touch save files.

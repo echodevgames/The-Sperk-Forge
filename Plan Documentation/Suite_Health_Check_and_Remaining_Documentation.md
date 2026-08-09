@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M2-03 – Chronicle Generation Identity, Integrity, and Commit-Document Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M2-03 complete; ESV-M2-04 active / authorized
+**Completed package checkpoint:** ESV-M2-04 – Chronicle Immutable Generation Publication and Head-Last Commit Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete through ESV-M2-04; ESV-M3-01 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M2-03 complete at `ad3b646` with 87 / 87; ESV-M2-04 active / authorized** |
+| Chronicle implementation | **ESV-M2-04 complete at `01b7ad3` with 102 / 102; M2 complete; ESV-M3-01 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -77,7 +77,7 @@ Chronicle M1 is complete:
 4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
 5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
 
-`ESV-M2-03` is complete at `ad3b646`; the focused Chronicle Editor gate passed **87 / 87**. `ESV-M2-04` is active / authorized for the first physical immutable-generation publication and head-last commit foundation using the already-proven package-owned transport path. Slot catalogs, participants, recovery, retention, autosave, migrations, and prepared loads remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+`ESV-M2-04` is complete at `01b7ad3`; the focused Chronicle Editor gate passed **102 / 102**. Chronicle M2 is now complete for its bounded document/storage-core path. `ESV-M3-01` is active / authorized for participant stable IDs, descriptors, registration lifetime, and duplicate-safe deterministic registry behavior only. Capture/save orchestration, unknown-payload preservation, loading/apply, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -96,4 +96,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M2-03` is **complete** with **87 / 87** focused Chronicle Editor tests. `ESV-M2-04` is **active / authorized** for verified immutable-generation publication and head-last commit behavior. Slot catalog behavior, participants, migration/recovery, retention/autosave, prepared loads, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M2-04` is **complete** with **102 / 102** focused Chronicle Editor tests. Chronicle M2 is complete for its bounded implementation path. `ESV-M3-01` is **active / authorized** for participant contracts and duplicate-safe deterministic registry behavior. Capture/save orchestration, unknown-payload preservation, loading/apply, migration/recovery, retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

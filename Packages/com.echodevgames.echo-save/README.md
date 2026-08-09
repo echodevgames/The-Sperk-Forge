@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M2-03 — Generation Identity, Integrity, and Commit-Document Foundation** with a focused Chronicle Editor gate of **87 / 87**. The active checkpoint is **ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation**.
+Version `0.1.0` has completed **ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation** with a focused Chronicle Editor gate of **102 / 102**. Chronicle **M2 — Document / Storage Core** is complete for its bounded implementation path. The active checkpoint is **ESV-M3-01 — Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation**.
 
 ESV-M1-01 proved:
 
@@ -21,9 +21,9 @@ ESV-M1-01 proved:
 
 ## Current persistence boundary
 
-ESV-M2-01 provides path-safe local byte storage beneath the configured Chronicle root. ESV-M2-02 adds package-owned in-memory document/version contracts and the default Unity JSON serializer. ESV-M2-03 adds stable slot/generation technical IDs, manifest/payload/head commit-document contracts, and SHA-256 integrity primitives.
+ESV-M2-01 provides path-safe local byte storage beneath the configured Chronicle root. ESV-M2-02 adds package-owned in-memory document/version contracts and the default Unity JSON serializer. ESV-M2-03 adds stable slot/generation technical IDs, manifest/payload/head commit-document contracts, and SHA-256 integrity primitives. ESV-M2-04 adds verified immutable-generation publication and head-last selection while preserving the previous known-good head across failure.
 
-ESV-M2-04 may now add the first physical verified immutable-generation publication and head-last commit path for the already-proven empty/transport payload. It still does **not** authorize slot/catalog behavior, participant state capture/apply, project gameplay payload ownership, migration/recovery/retention/autosave, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+ESV-M3-01 may now define participant identity, descriptors, registration lifetime, and duplicate-safe deterministic registry behavior. It still does **not** authorize participant capture/save orchestration, participant apply/load orchestration, unknown-payload preservation, migrations, slot/catalog behavior, recovery/retention/autosave, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 Those capabilities remain governed by later Chronicle checkpoints.
 

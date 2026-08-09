@@ -98,3 +98,30 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **87 / 87**, with `0` failed.
 - M2-03 performs no physical generation publication and does not mutate `head.json`.
 - All prior Chronicle lifecycle, storage, path-safety, and serializer regressions remained green.
+
+### Added
+
+#### ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation
+
+- Optional provider-neutral storage publication capability seam.
+- Explicit publication capability description without universal atomicity claims.
+- Local same-root candidate-to-final directory publication.
+- Local small-current-object temp + move/replace publication.
+- Package generation storage-key construction.
+- Bounded package-owned empty/transport generation publication coordinator.
+- Generation-first / head-last transaction behavior.
+- Previous-known-good head preservation across injected pre-head failures.
+- Verified orphan-generation behavior when head publication fails.
+- Sandboxed publication and failure-injection tests.
+
+### Verified
+
+#### ESV-M2-04 Closeout
+
+- Implementation committed at `01b7ad3`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **102 / 102**, with `0` failed.
+- All prior **87 / 87** Chronicle regressions remained green.
+- Published generations remain create-only and duplicate generation publication is rejected.
+- A failed final head publication does not silently make an orphaned generation current.
+- The local backend explicitly does not claim universal power-loss atomicity.

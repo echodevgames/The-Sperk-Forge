@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M2-04
 **Milestone:** M2 — Document / Storage Core
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.6.0
 **Prior checkpoint:** ESV-M2-03 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -123,25 +123,37 @@ M2-04 tests must prove:
 - an incomplete candidate is never treated as current;
 - a duplicate generation ID is rejected without mutating the current head.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- provider capability advertisement is explicit and accurate;
-- local first-head publication succeeds in sandbox;
-- local second-generation publication updates head last;
-- second head records previous generation and increments sequence;
-- generated payload/manifest read back valid;
-- candidate-to-final publication produces immutable final files;
-- interruption/failure injection at each pre-head boundary preserves old head;
-- failed head update preserves old head;
-- newly published orphan generation is not current after failed head update;
-- duplicate final generation rejected;
-- no slot catalog/participant/recovery behavior is introduced;
-- all prior **87 / 87** Chronicle tests remain green.
+- provider capability advertisement is explicit and accurate — **Pass**;
+- local first-head publication succeeds in sandbox — **Pass**;
+- local second-generation publication updates head last — **Pass**;
+- second head records previous generation and increments sequence — **Pass**;
+- generated payload/manifest read back valid — **Pass**;
+- candidate-to-final publication produces immutable final files — **Pass**;
+- interruption/failure injection at each pre-head boundary preserves old head — **Pass**;
+- failed head update preserves old head — **Pass**;
+- newly published orphan generation is not current after failed head update — **Pass**;
+- duplicate final generation rejected — **Pass**;
+- no slot catalog/participant/recovery behavior was introduced — **Pass**;
+- all prior 87 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **102 / 102 passed, 0 failed**.
 
 ## 7. Stop point
 
-Stop when the default local Chronicle backend can prove one real package-owned transport-generation transaction with generation-first/head-last publication and previous-known-good preservation.
+**Reached.** The default local Chronicle backend now proves one real package-owned transport-generation transaction with generation-first/head-last publication and previous-known-good preservation.
 
-Do not continue into slot catalog/policy, participant persistence, recovery, retention, autosave, prepared loads, migration, or production save orchestration without the next bounded checkpoint.
+Implementation commit: `01b7ad3`.
+
+Final focused Chronicle Editor gate: **102 / 102 passed, 0 failed**.
+
+Milestone consequence:
+
+**M2 — Document / Storage Core is complete for the approved bounded implementation path.**
+
+Next bounded checkpoint:
+
+`ESV-M3-01 — Chronicle Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation`
+
+M3-01 begins the approved M3 participant/loading milestone. It establishes participant identity, descriptors, registration lifetime, deterministic ordering, and duplicate-safe registry behavior without yet wiring participant capture into `SaveAsync`, applying loaded state, preparing loads, migrations, or unknown-payload carry-forward.
