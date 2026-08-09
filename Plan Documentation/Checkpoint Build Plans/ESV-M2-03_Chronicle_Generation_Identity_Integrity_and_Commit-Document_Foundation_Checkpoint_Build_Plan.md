@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M2-03
 **Milestone:** M2 — Document / Storage Core
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.5.0
 **Prior checkpoint:** ESV-M2-02 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -122,40 +122,37 @@ Do not implement:
 7. An empty payload document may be used for proof without pretending participant capture exists.
 8. No M2-03 operation publishes a generation.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- `SaveSlotId` generation/validation/equality;
-- `SaveGenerationId` uniqueness and canonical/sortable behavior;
-- unsafe technical IDs rejected;
-- default SHA-256 provider returns a known test vector;
-- altered bytes fail verification;
-- invalid checksum text fails structurally;
-- manifest/payload same IDs pass agreement;
-- manifest/payload mismatched slot fails;
-- manifest/payload mismatched generation fails;
-- payload byte length/checksum mismatch fails;
-- head unsupported version fails;
-- head current-generation ID validation;
-- manifest/payload/head round trips through `UnityJsonSaveSerializer`;
-- empty transport payload document round trip;
-- integrity/document validation performs zero storage mutation;
-- all prior **57 / 57** Chronicle tests remain green.
+- `SaveSlotId` generation/validation/equality — **Pass**;
+- `SaveGenerationId` uniqueness and canonical/sortable behavior — **Pass**;
+- unsafe technical IDs rejected — **Pass**;
+- default SHA-256 provider known-vector proof — **Pass**;
+- altered bytes fail verification — **Pass**;
+- invalid checksum text fails structurally — **Pass**;
+- manifest/payload same identities pass agreement — **Pass**;
+- manifest/payload mismatched slot rejected — **Pass**;
+- manifest/payload mismatched generation rejected — **Pass**;
+- payload byte-length/checksum mismatch rejected — **Pass**;
+- unsupported head version rejected — **Pass**;
+- head current-generation identity validation — **Pass**;
+- manifest/payload/head round trips through `UnityJsonSaveSerializer` — **Pass**;
+- empty transport payload document round trip — **Pass**;
+- integrity/document validation performs zero storage mutation — **Pass**;
+- all prior 57 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **87 / 87 passed, 0 failed**.
 
 ## 7. Stop point
 
-Stop when Chronicle can create/validate package commit documents and prove their detached bytes with SHA-256 entirely in memory.
+**Reached.** Chronicle can create and validate package commit documents, generate stable slot/generation identities, and prove detached bytes with SHA-256 entirely in memory.
 
-The next bounded checkpoint may then implement:
+Implementation commit: `ad3b646`.
 
-```text
-candidate/uncommitted write
-→ flush/provider-complete
-→ checksum + document verification
-→ publish immutable generation
-→ update head LAST
-→ preserve previous known-good generation/head
-```
+Final focused Chronicle Editor gate: **87 / 87 passed, 0 failed**.
 
-Do not cross into that publication protocol during ESV-M2-03.
+Next bounded checkpoint:
+
+`ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation`
+
+M2-04 may finally cross into the physical publication protocol, but only for the already-proven package-owned empty/transport payload path. It must preserve the previous known-good generation/head on every failure before successful head publication.

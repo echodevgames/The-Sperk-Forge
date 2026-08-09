@@ -14,15 +14,17 @@
 - [[Developer/Test Reports/ESV-M2-01_Chronicle_Storage_Root_Path_Safety_and_Local_Backend_Foundation_Test_Report|ESV-M2-01 Test Report]]
 - [[Developer/Checkpoints/ESV-M2-02_Chronicle_Document_Contracts_and_Unity_JSON_Serializer_Foundation|ESV-M2-02 Closeout]]
 - [[Developer/Test Reports/ESV-M2-02_Chronicle_Document_Contracts_and_Unity_JSON_Serializer_Foundation_Test_Report|ESV-M2-02 Test Report]]
+- [[Developer/Checkpoints/ESV-M2-03_Chronicle_Generation_Identity_Integrity_and_Commit-Document_Foundation|ESV-M2-03 Closeout]]
+- [[Developer/Test Reports/ESV-M2-03_Chronicle_Generation_Identity_Integrity_and_Commit-Document_Foundation_Test_Report|ESV-M2-03 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation`
+`ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation`
 
-Package-owned in-memory documents and the default Unity JSON serializer are proven at **57 / 57** focused Chronicle Editor tests.
+Technical identities, package commit documents, and SHA-256 integrity are proven at **87 / 87** focused Chronicle Editor tests.
 
 ## Current checkpoint
 
-`ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation`
+`ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation`
 
-This checkpoint prepares stable technical IDs, manifest/payload/head document contracts, and SHA-256 integrity before any physical generation or head publication is allowed.
+This checkpoint may publish the first verified immutable transport generation and then publish/update the small head pointer last, while preserving the prior known-good generation/head on failure.

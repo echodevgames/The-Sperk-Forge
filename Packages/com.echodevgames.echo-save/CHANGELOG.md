@@ -75,3 +75,26 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **57 / 57**, with `0` failed.
 - Serializer/document work performs no filesystem I/O and does not publish generations or mutate heads.
 - All prior Chronicle lifecycle, path-safety, and local-backend regressions remained green.
+
+### Added
+
+#### ESV-M2-03 — Generation Identity, Integrity, and Commit-Document Foundation
+
+- Canonical package-generated `SaveSlotId`.
+- Unique sortable `SaveGenerationId`.
+- `SaveManifest`, `SavePayloadDocument`, `SavePayloadEntry`, `SavePayloadInventoryEntry`, and `SaveHeadPointer`.
+- Explicit package document kinds and independent document versions.
+- Structured commit-document agreement validation.
+- Replaceable `IIntegrityProvider`.
+- Default `Sha256IntegrityProvider`.
+- Focused technical-ID, integrity, and commit-document tests.
+
+### Verified
+
+#### ESV-M2-03 Closeout
+
+- Implementation committed at `ad3b646`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **87 / 87**, with `0` failed.
+- M2-03 performs no physical generation publication and does not mutate `head.json`.
+- All prior Chronicle lifecycle, storage, path-safety, and serializer regressions remained green.

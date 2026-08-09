@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.5.0
+**Specification version:** 1.6.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, ESV-M2-01, and ESV-M2-02 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M2-03` is the active generation-identity/integrity/commit-document checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, ESV-M2-01, ESV-M2-02, and ESV-M2-03 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M2-04` is the active immutable-generation-publication/head-last checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -37,6 +37,7 @@
 | 1.3.0 | 2026-08-09 | Approved | Reconciled completed PKG-LEARN-009 and ESV-M1-01 evidence; recorded commits `ecfa922` / `2c70b1d`; activated bounded ESV-M2-01 storage-root, path-safety, and local-backend work without changing ownership boundaries. | Jesse “Echo” Adams |
 | 1.4.0 | 2026-08-09 | Approved | Closed ESV-M2-01 at `e4ef76c` with focused Chronicle Editor evidence `40 / 40`; activated bounded ESV-M2-02 package-document and default Unity JSON serializer work while deferring physical generation publication, slots, participants, and recovery. | Jesse “Echo” Adams |
 | 1.5.0 | 2026-08-09 | Approved | Closed ESV-M2-02 at `6404037` with focused Chronicle Editor evidence `57 / 57`; activated bounded ESV-M2-03 generation/slot technical IDs, package commit-document contracts, and SHA-256 integrity prerequisites while keeping physical generation/head publication separate. | Jesse “Echo” Adams |
+| 1.6.0 | 2026-08-09 | Approved | Closed ESV-M2-03 at `ad3b646` with focused Chronicle Editor evidence `87 / 87`; activated bounded ESV-M2-04 physical immutable-generation publication and head-last commit behavior for the package-owned transport path while keeping slots, participants, recovery, retention, autosave, and prepared loads separate. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1962,22 +1963,44 @@ Outcome achieved:
 
 Stop point preserved: Chronicle understands and serializes its own package documents in memory, but no physical generation or head pointer is published.
 
-### 28.6 Active generation-integrity checkpoint
+### 28.6 Completed generation-integrity checkpoint
 
 **ESV-M2-03 - Generation identity, integrity, and commit-document foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- canonical package-generated `SaveSlotId`;
+- unique sortable `SaveGenerationId`;
+- package manifest/payload/head commit-document contracts and explicit versions;
+- replaceable `IIntegrityProvider` and default `Sha256IntegrityProvider`;
+- detached-byte SHA-256 calculation and verification;
+- manifest/payload/head identity/version/checksum/inventory agreement proof;
+- serializer compatibility for the new package documents;
+- implementation commit `ad3b646`;
+- focused Chronicle Editor gate **87 / 87**.
+
+Stop point preserved: Chronicle can describe and verify a generation entirely in memory, but M2-03 publishes no generation and mutates no head pointer.
+
+### 28.7 Active immutable-generation publication checkpoint
+
+**ESV-M2-04 - Immutable generation publication and head-last commit foundation**
 
 **Status:** Active / authorized.
 
 Outcome:
-- implement package-generated `SaveSlotId` and `SaveGenerationId` technical value types without activating slot-catalog behavior;
-- define `SaveManifest`, `SavePayloadDocument`, `SavePayloadEntry`, and `SaveHeadPointer` package document contracts and explicit versions;
-- implement replaceable `IIntegrityProvider` and the default `Sha256IntegrityProvider`;
-- calculate and verify checksums for detached bytes without filesystem ownership;
-- validate manifest/payload/head identity/version/checksum agreement in memory;
-- prove the new package documents serialize through the approved serializer;
-- preserve all 57 prior focused regressions.
+- add provider-neutral publication capabilities/primitives without embedding Chronicle generation semantics into the storage backend;
+- implement local backend candidate-to-final publication and small-head publication/replacement with capability-accurate semantics;
+- write complete package payload/manifest candidate bytes beneath the slot `incomplete` path;
+- verify detached bytes, package-document versions, identities, lengths, checksums, and inventory before final publication;
+- publish a verified immutable generation before touching the current head;
+- publish/update `head.json` last;
+- preserve the previously authoritative head/generation on every failure before successful head publication;
+- preserve failed candidates as non-current data for later recovery/quarantine policy;
+- prove interruption/failure boundaries in sandbox storage;
+- preserve all 87 prior focused regressions.
 
-Stop point: Chronicle has all package-owned technical identities, commit-document shapes, and integrity primitives required to attempt an immutable generation commit, but M2-03 still does not create/publish generation directories or mutate `head.json`.
+Stop point: Chronicle can physically publish the package-owned empty/transport generation safely and select it through a head-last commit, but slot catalog/policy, participants, recovery, retention, autosave, prepared loads, and migrations remain unimplemented.
 
 ## 29. New-Conversation Handoff
 
@@ -1990,22 +2013,22 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.5.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02
-Current milestone/checkpoint: ESV-M2-03 active / authorized
+Current specification version: 1.6.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03
+Current milestone/checkpoint: ESV-M2-04 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: storage + in-memory document/serializer foundations complete; generation identity/integrity/commit documents next
+Current implementation status: storage, serializer, technical identity, commit-document, and SHA-256 foundations complete; physical immutable-generation publication/head-last commit next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing M2-03 code:
-1. Rehydrate the exact repository/Unity baseline after the ESV-M2-02 closeout.
-2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, storage-provider independence, and the 57 / 57 regression floor.
-3. Implement only package technical slot/generation IDs, package commit-document contracts, and replaceable SHA-256 integrity primitives.
-4. Treat `SavePayloadEntry` as an opaque transport/document record only; do not activate participant capture/apply or gameplay schema ownership.
-5. Prove manifest/payload/head identity/version/checksum agreement in memory and serializer compatibility.
-6. Do not create/publish physical generation directories or mutate/replace `head.json` in M2-03.
-7. Do not activate slot catalog/policy, migration/recovery/retention/autosave, prepared loads, or peer bridges.
+Before writing M2-04 code:
+1. Rehydrate the exact repository/Unity baseline after the ESV-M2-03 closeout.
+2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, storage-provider independence, and the 87 / 87 regression floor.
+3. Add provider-neutral publication capabilities rather than teaching storage providers Chronicle generation semantics.
+4. Implement physical candidate → verified immutable generation → head-last publication only for the already-proven package-owned empty/transport payload path.
+5. Prove every pre-head failure leaves the previous known-good head/generation authoritative and unchanged.
+6. Do not claim atomic replacement on a platform/provider that does not advertise/support it.
+7. Do not activate slot catalog/policy, participants, recovery, retention, autosave, prepared loads, migrations, or peer bridges.
 8. Keep project-wide DDOL composition outside Chronicle.
 ```
 
@@ -2013,16 +2036,16 @@ Before writing M2-03 code:
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.5.0 |
-| Completed checkpoint | ESV-M2-02 - Document Contracts and Unity JSON Serializer Foundation |
-| Files/assets created | M1 lifecycle foundation, M2-01 storage/path/local-backend foundation, and M2-02 package document/serializer contracts with focused tests |
-| Tests passed | ESV-M2-02 focused Chronicle Editor gate `57 / 57`; Unity compile/import green |
-| Tests failed | Final ESV-M2-02 gate: `0` |
-| Known issues | None blocking M2-03 |
+| Package version | Runtime package `0.1.0`; Specification v1.6.0 |
+| Completed checkpoint | ESV-M2-03 - Generation Identity, Integrity, and Commit-Document Foundation |
+| Files/assets created | M1 lifecycle foundation; M2-01 storage/path/backend; M2-02 serializer/documents; M2-03 technical IDs, commit documents, SHA-256 integrity, and focused tests |
+| Tests passed | ESV-M2-03 focused Chronicle Editor gate `87 / 87`; Unity compile/import green |
+| Tests failed | Final ESV-M2-03 gate: `0` |
+| Known issues | None blocking M2-04 |
 | Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M2-03 active / authorized |
+| Implementation permission | ESV-M2-04 active / authorized |
 
 
 ## 30. Approval

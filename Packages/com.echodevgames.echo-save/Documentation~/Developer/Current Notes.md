@@ -3,51 +3,52 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.5.0
-**Completed checkpoint:** ESV-M2-02 — Document Contracts and Unity JSON Serializer Foundation
-**Current checkpoint:** ESV-M2-03 — Generation Identity, Integrity, and Commit-Document Foundation
-**Status:** ESV-M2-02 complete; ESV-M2-03 active / authorized
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.6.0
+**Completed checkpoint:** ESV-M2-03 — Generation Identity, Integrity, and Commit-Document Foundation
+**Current checkpoint:** ESV-M2-04 — Immutable Generation Publication and Head-Last Commit Foundation
+**Status:** ESV-M2-03 complete; ESV-M2-04 active / authorized
 
-## ESV-M2-02 closeout
+## ESV-M2-03 closeout
 
-Implementation commit: `6404037`.
+Implementation commit: `ad3b646`.
 
 Evidence:
 - Unity compile/import: **green**;
-- focused `EchoDevGames.EchoSave.Tests.Editor`: **57 / 57 passed, 0 failed**;
-- package-owned document identity/version contracts;
-- `SaveDocumentEnvelope`;
-- structured serializer status/result contracts;
-- `SaveSerializerRegistry`;
-- package-owned default `UnityJsonSaveSerializer`;
-- supported DTO/envelope round trips;
-- null/empty/malformed-input rejection;
-- unsupported package-document version/kind rejection;
-- serializer layer performs no filesystem I/O;
-- all M1/M2-01 storage/lifecycle regressions remain green.
+- focused `EchoDevGames.EchoSave.Tests.Editor`: **87 / 87 passed, 0 failed**;
+- canonical package-generated slot identity;
+- unique sortable generation identity;
+- package manifest/payload/head document shapes;
+- package transport inventory shape;
+- detached-byte SHA-256 calculation and verification;
+- manifest/payload/head agreement validation;
+- serializer compatibility for new package documents;
+- no physical generation/head mutation;
+- all prior 57 Chronicle regressions remain green.
 
-## Active ESV-M2-03 boundary
+## Active ESV-M2-04 boundary
 
 Authorized:
-- `SaveSlotId` and `SaveGenerationId` technical value types only;
-- `SaveManifest`, `SavePayloadDocument`, `SavePayloadEntry`, and `SaveHeadPointer` package DTO/version contracts;
-- `IIntegrityProvider`;
-- default `Sha256IntegrityProvider`;
-- detached checksum calculation/verification;
-- explicit integrity algorithm identity;
-- document-agreement checks in memory;
-- serializer compatibility for the new package documents;
-- focused tests preserving the 57-test regression floor.
+- provider-neutral publication capabilities/primitives;
+- local backend candidate-to-final publication;
+- local small-head publication/replacement with accurately advertised capability semantics;
+- package generation publication coordinator;
+- candidate path under `incomplete/<generation-id>`;
+- verified immutable final path under `generations/<generation-id>`;
+- payload + manifest write/verify before final publication;
+- head publication **last**;
+- old known-good head/generation preserved on pre-head failure;
+- failure/interruption tests in sandbox storage.
 
 Still absent:
-- physical generation directory creation/publication;
-- `head.json` replacement/mutation;
-- slot catalog/policy/active selection;
-- participant registry/capture/apply;
-- project gameplay payload ownership;
-- migration/recovery/retention/autosave;
+- slot catalog/cache and active-slot policy;
+- participant capture/apply;
+- gameplay payload ownership;
+- recovery selection/execution;
+- retention cleanup;
+- autosave;
 - prepared loads;
-- peer-package bridges;
-- Chronicle-owned/project-wide DDOL composition.
+- migrations;
+- peer bridges;
+- Chronicle-owned/project-wide DDOL.
 
-This split is deliberate: a generation cannot honestly become eligible until required documents can be described and checksummed. M2-03 establishes those prerequisites; the later publication checkpoint will prove candidate → verified generation → head-last commit behavior.
+M2-04 may physically publish the already-proven empty/transport payload generation. That is real save-publication infrastructure, but it is not yet the complete player-facing save pipeline.

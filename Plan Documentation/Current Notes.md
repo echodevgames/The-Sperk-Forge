@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation
-**Current checkpoint:** ESV-M2-03 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation
+**Current checkpoint:** ESV-M2-04 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,38 +78,47 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M2-02 Closeout
+## Chronicle ESV-M2-03 Closeout
 
-- Implementation commit: `6404037`.
+- Implementation commit: `ad3b646`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **57 / 57 passed, 0 failed**.
-- M2-02 added package-owned document identity/version contracts, `SaveDocumentEnvelope`, structured serializer results, `SaveSerializerRegistry`, and the package-owned `UnityJsonSaveSerializer`.
-- The serializer/document layer remains in-memory only and performs no filesystem I/O.
-- Malformed JSON, null/empty requests, duplicate/missing serializer providers, unsupported package-document versions, and unsupported document kinds fail through structured results.
-- All M1/M2-01 lifecycle, path, and local-backend regressions remain green.
-- No generation directory, head publication, slot catalog, participant capture/apply, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **87 / 87 passed, 0 failed**.
+- M2-03 added canonical `SaveSlotId` / sortable `SaveGenerationId`, manifest/payload/head commit-document contracts, transport inventory records, structured document validation, `IIntegrityProvider`, and the default `Sha256IntegrityProvider`.
+- Commit-document validation is side-effect free and proves identity, detached byte length, checksum, integrity-provider identity, and transport inventory agreement.
+- The package still performs no physical generation publication and does not mutate `head.json`.
+- No slot catalog/policy, participant capture/apply, migration/recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
 ## Active Chronicle M2 Slice
 
-`ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation` is active / authorized.
+`ESV-M2-04 — Chronicle Immutable Generation Publication and Head-Last Commit Foundation` is active / authorized.
 
 Authorized next:
-- package-generated `SaveSlotId` and `SaveGenerationId` technical value types without slot-catalog behavior;
-- package-owned `SaveManifest`, `SavePayloadDocument`, `SavePayloadEntry`, and `SaveHeadPointer` DTO/version contracts;
-- package-owned `IIntegrityProvider` and default `Sha256IntegrityProvider`;
-- detached-byte checksum calculation/verification and explicit integrity algorithm identity;
-- manifest/payload/head in-memory serialization and version/integrity validation;
-- an empty or transport-only payload document that does not require a participant registry;
-- focused tests proving stable IDs, checksum behavior, document agreement, serializer compatibility, and all prior 57 regressions.
+- provider-neutral publication capability seam without teaching the backend Chronicle generation semantics;
+- default local backend support for publishing a new candidate tree and replacing/publishing the small head pointer with capability-accurate semantics;
+- package-owned generation publication coordinator for the already-proven empty/transport payload path;
+- candidate keys beneath `slots/<slot-id>/incomplete/<generation-id>/`;
+- final immutable keys beneath `slots/<slot-id>/generations/<generation-id>/`;
+- write complete payload + final manifest bytes before publication;
+- verify detached payload bytes and package documents before generation publication;
+- publish the verified generation before any head mutation;
+- publish/update `head.json` last;
+- preserve the previously current head/generation on every failure before successful head publication;
+- preserve failed/uncommitted candidate data for later recovery/quarantine policy rather than treating it as current;
+- sandboxed interruption/failure tests across commit boundaries;
+- all prior **87 / 87** Chronicle regressions.
 
 Still deferred:
-- creating/publishing physical immutable generation directories;
-- mutating/replacing `head.json`;
-- slot catalog, slot policy, active-slot selection, rename/duplicate/delete operations;
-- participant registry/capture/apply and gameplay payload meaning;
-- migration chains, recovery selection, retention cleanup, autosave, prepared loads;
+- slot catalog/cache and active-slot policy;
+- participant registry/capture/apply and project gameplay payload meaning;
+- recovery candidate selection/execution;
+- retention cleanup;
+- autosave/coalescing;
+- prepared loads;
+- migrations;
 - peer persistence bridges;
 - project-wide DDOL composition.
+
+M2-04 must not claim universal atomicity. The local backend may advertise and use atomic replacement only where the runtime/platform primitive actually supports it; fallback behavior must be documented and tested without overstating guarantees.
 
 
 ## Suite Distribution Kit Standard
@@ -295,8 +304,9 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the live repository/Unity baseline at committed ESV-M2-02 closeout.
-2. Implement only `ESV-M2-03`: generation/slot technical IDs, package commit-document DTOs, SHA-256 integrity provider, detached checksum verification, and focused in-memory agreement tests.
-3. Keep M2-03 **pre-publication**: do not create generation directories, move candidates into `generations/`, or update/replace `head.json`.
-4. Do **not** activate slot catalog/policy, participants, migration/recovery, autosave, prepared loads, peer bridges, or project-wide DDOL composition.
-5. Preserve the complete `57 / 57` Chronicle regression floor while adding M2-03 proof.
+1. Rehydrate the exact repository/Unity baseline after the ESV-M2-03 closeout.
+2. Implement only `ESV-M2-04`: provider-neutral publication primitives, local candidate/generation publication, verified package-document writes, and head-last publication.
+3. Prove that failures before successful head publication leave the previous known-good generation/head authoritative and unchanged.
+4. Use the existing empty/transport payload path only; do **not** activate participants or project gameplay payload ownership.
+5. Do **not** add slot catalog/policy, recovery selection/execution, retention cleanup, autosave, prepared loads, migrations, peer bridges, or project-wide DDOL composition.
+6. Preserve the complete `87 / 87` Chronicle regression floor while adding interruption/publication proof.
