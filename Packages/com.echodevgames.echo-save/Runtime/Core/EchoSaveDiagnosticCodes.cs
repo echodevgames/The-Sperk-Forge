@@ -161,5 +161,29 @@ namespace EchoDevGames.EchoSave
 
         internal const string PublicationParticipantBatchInvalid =
             "ESV-PUBLISH-009";
+
+        internal const string CurrentReadInvalidRequest =
+            "ESV-READ-001";
+
+        internal const string CurrentReadHeadUnavailable =
+            "ESV-READ-002";
+
+        internal const string CurrentReadHeadInvalid =
+            "ESV-READ-003";
+
+        internal const string CurrentReadGenerationUnavailable =
+            "ESV-READ-004";
+
+        internal const string CurrentReadGenerationInvalid =
+            "ESV-READ-005";
+
+        internal const string UnknownPayloadInvalid =
+            "ESV-UNKNOWN-001";
+
+        internal const string UnknownPayloadDuplicate =
+            "ESV-UNKNOWN-002";
+
+        internal const string UnknownPayloadLimitExceeded =
+            "ESV-UNKNOWN-003";
     }
 }
