@@ -25,6 +25,17 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             Append(builder, "launchDestination", request.SelectedLaunchDestinationPath);
             Append(builder, "splashSequence", request.SelectedSplashSequencePath);
             Append(builder, "rootPrefab", request.SelectedRootPrefabPath);
+
+            if (request.SplashAuthoring != null)
+            {
+                Append(
+                    builder,
+                    "splashAuthoring",
+                    request
+                        .SplashAuthoring
+                        .FingerprintValue);
+            }
+
             return Hash(builder.ToString());
         }
 

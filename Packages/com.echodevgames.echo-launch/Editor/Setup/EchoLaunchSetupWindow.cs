@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +21,27 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         private string bootScenePath;
         private SceneAsset destinationScene;
         private bool createSplashSequence;
+
+        [SerializeField]
+        private SplashPresentationMode splashPresentationMode =
+            SplashPresentationMode.SplashOnly;
+
+        [SerializeField]
+        private Color splashBackgroundColor =
+            Color.black;
+
+        [SerializeField]
+        private bool allowSplashAdvancement =
+            true;
+
+        [SerializeField]
+        private bool showSplashAuthoring =
+            true;
+
+        [SerializeField]
+        private List<SplashEntryDraft> splashEntries =
+            new List<SplashEntryDraft>();
+
         private EchoLaunchBuildSettingsPolicy buildSettingsPolicy;
         private bool approvePlaceFirst;
         private EchoLaunchSetupPlan currentPlan;
@@ -65,6 +88,12 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             buildSettingsPolicy =
                 EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd;
 
+            if (splashEntries == null)
+            {
+                splashEntries =
+                    new List<SplashEntryDraft>();
+            }
+
             applyService = new EchoLaunchSetupApplyService();
             repairService = new EchoLaunchSetupRepairService();
             RefreshPlan();
@@ -99,6 +128,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             createSplashSequence = EditorGUILayout.Toggle(
                 "Create Splash Sequence",
                 createSplashSequence);
+
+            if (createSplashSequence)
+            {
+                DrawSplashAuthoring();
+            }
 
             buildSettingsPolicy =
                 (EchoLaunchBuildSettingsPolicy)EditorGUILayout.EnumPopup(
@@ -299,7 +333,11 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     bootScenePath,
                     destinationPath,
                     createSplashSequence,
-                    buildSettingsPolicy);
+                    buildSettingsPolicy,
+                    splashAuthoring:
+                        createSplashSequence
+                            ? BuildSplashAuthoringRequest()
+                            : null);
 
             RefreshPlanForTests(request);
         }
@@ -431,11 +469,399 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 "Place-first approval: " +
                 (placeFirstApproved ? "Approved" : "Not approved"));
 
+            if (plan.Request.SplashAuthoring != null)
+            {
+                builder.AppendLine();
+                builder.AppendLine(
+                    "Splash creation authoring: " +
+                    plan.Request.SplashAuthoring.Summary);
+                builder.AppendLine(
+                    "These values apply only if Setup creates a new SplashSequence; a reused sequence is never re-authored.");
+            }
+
             builder.AppendLine();
             builder.AppendLine(
                 "Existing project assets will not be overwritten, repaired, moved, renamed, or deleted.");
 
             return builder.ToString();
+        }
+
+        private void DrawSplashAuthoring()
+        {
+            EditorGUILayout.Space();
+
+            showSplashAuthoring =
+                EditorGUILayout.Foldout(
+                    showSplashAuthoring,
+                    "Splash Authoring",
+                    true);
+
+            if (!showSplashAuthoring)
+            {
+                return;
+            }
+
+            EditorGUI.indentLevel++;
+
+            EditorGUILayout.LabelField(
+                "Presentation",
+                EditorStyles.boldLabel);
+
+            int modeIndex =
+                splashPresentationMode ==
+                    SplashPresentationMode.SplashOnly
+                    ? 1
+                    : 0;
+
+            modeIndex =
+                EditorGUILayout.Popup(
+                    "Mode",
+                    modeIndex,
+                    new[]
+                    {
+                        "Splash + Status",
+                        "Splash Only",
+                    });
+
+            splashPresentationMode =
+                modeIndex == 1
+                    ? SplashPresentationMode.SplashOnly
+                    : SplashPresentationMode.SplashAndStatus;
+
+            splashBackgroundColor =
+                EditorGUILayout.ColorField(
+                    "Background",
+                    splashBackgroundColor);
+
+            allowSplashAdvancement =
+                EditorGUILayout.Toggle(
+                    "Allow Advancement",
+                    allowSplashAdvancement);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(
+                "Splashes",
+                EditorStyles.boldLabel);
+
+            for (int index = 0;
+                 index < splashEntries.Count;
+                 index++)
+            {
+                if (DrawSplashEntry(
+                        splashEntries[index],
+                        index))
+                {
+                    splashEntries.RemoveAt(index);
+                    break;
+                }
+            }
+
+            if (splashEntries.Count == 0)
+            {
+                EditorGUILayout.HelpBox(
+                    "No splash entries are authored yet. Setup may still create an empty sequence, or add one or more project-owned images below.",
+                    MessageType.Info);
+            }
+
+            if (GUILayout.Button("Add Splash"))
+            {
+                splashEntries.Add(
+                    new SplashEntryDraft());
+            }
+
+            EchoLaunchSetupSplashAuthoringRequest preview =
+                BuildSplashAuthoringRequest();
+
+            if (!preview.TryValidate(
+                    out string message))
+            {
+                EditorGUILayout.HelpBox(
+                    message,
+                    MessageType.Error);
+            }
+
+            EditorGUI.indentLevel--;
+        }
+
+        private bool DrawSplashEntry(
+            SplashEntryDraft entry,
+            int index)
+        {
+            EditorGUILayout.BeginVertical(
+                EditorStyles.helpBox);
+
+            string title =
+                string.IsNullOrWhiteSpace(
+                    entry.DisplayLabel)
+                    ? $"Splash {index + 1}"
+                    : entry.DisplayLabel.Trim();
+
+            entry.Expanded =
+                EditorGUILayout.Foldout(
+                    entry.Expanded,
+                    title,
+                    true);
+
+            bool remove = false;
+
+            if (entry.Expanded)
+            {
+                EditorGUI.indentLevel++;
+
+                entry.Image =
+                    (Sprite)EditorGUILayout.ObjectField(
+                        "Image",
+                        entry.Image,
+                        typeof(Sprite),
+                        false);
+
+                entry.AudioIntent =
+                    (AudioClip)EditorGUILayout.ObjectField(
+                        "Audio Intent",
+                        entry.AudioIntent,
+                        typeof(AudioClip),
+                        false);
+
+                entry.DisplayLabel =
+                    EditorGUILayout.TextField(
+                        "Display Label",
+                        entry.DisplayLabel);
+
+                entry.FadeInSeconds =
+                    Mathf.Max(
+                        0f,
+                        EditorGUILayout.FloatField(
+                            "Fade In",
+                            entry.FadeInSeconds));
+
+                entry.HoldSeconds =
+                    Mathf.Max(
+                        0f,
+                        EditorGUILayout.FloatField(
+                            "Hold",
+                            entry.HoldSeconds));
+
+                entry.FadeOutSeconds =
+                    Mathf.Max(
+                        0f,
+                        EditorGUILayout.FloatField(
+                            "Fade Out",
+                            entry.FadeOutSeconds));
+
+                entry.MinimumDisplaySeconds =
+                    Mathf.Max(
+                        0f,
+                        EditorGUILayout.FloatField(
+                            "Minimum",
+                            entry.MinimumDisplaySeconds));
+
+                entry.MotionStyle =
+                    (SplashMotionStyle)
+                    EditorGUILayout.EnumPopup(
+                        "Motion",
+                        entry.MotionStyle);
+
+                if (entry.MotionStyle ==
+                    SplashMotionStyle.Pulse)
+                {
+                    entry.PulseMaximumScale =
+                        Mathf.Max(
+                            1f,
+                            EditorGUILayout.FloatField(
+                                "Maximum Scale",
+                                entry.PulseMaximumScale));
+
+                    entry.PulseCycleSeconds =
+                        Mathf.Max(
+                            0.01f,
+                            EditorGUILayout.FloatField(
+                                "Cycle Seconds",
+                                entry.PulseCycleSeconds));
+                }
+
+                int advanceIndex =
+                    GetAdvanceIndex(
+                        entry.AdvancePolicy);
+
+                advanceIndex =
+                    EditorGUILayout.Popup(
+                        "Advance",
+                        advanceIndex,
+                        new[]
+                        {
+                            "Automatic",
+                            "Skippable After Minimum",
+                            "Wait For Input After Minimum",
+                        });
+
+                entry.AdvancePolicy =
+                    GetAdvancePolicy(
+                        advanceIndex);
+
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUI.BeginDisabledGroup(
+                    index <= 0);
+
+                if (GUILayout.Button("Move Up"))
+                {
+                    SplashEntryDraft moving =
+                        splashEntries[index];
+
+                    splashEntries.RemoveAt(index);
+                    splashEntries.Insert(
+                        index - 1,
+                        moving);
+                }
+
+                EditorGUI.EndDisabledGroup();
+
+                EditorGUI.BeginDisabledGroup(
+                    index >=
+                    splashEntries.Count - 1);
+
+                if (GUILayout.Button("Move Down"))
+                {
+                    SplashEntryDraft moving =
+                        splashEntries[index];
+
+                    splashEntries.RemoveAt(index);
+                    splashEntries.Insert(
+                        index + 1,
+                        moving);
+                }
+
+                EditorGUI.EndDisabledGroup();
+
+                if (GUILayout.Button("Remove"))
+                {
+                    remove = true;
+                }
+
+                EditorGUILayout.EndHorizontal();
+                EditorGUI.indentLevel--;
+            }
+
+            EditorGUILayout.EndVertical();
+            return remove;
+        }
+
+        private EchoLaunchSetupSplashAuthoringRequest
+            BuildSplashAuthoringRequest()
+        {
+            List<EchoLaunchSetupSplashEntryRequest>
+                entries =
+                    new List<
+                        EchoLaunchSetupSplashEntryRequest>();
+
+            for (int index = 0;
+                 index < splashEntries.Count;
+                 index++)
+            {
+                SplashEntryDraft entry =
+                    splashEntries[index];
+
+                entries.Add(
+                    new EchoLaunchSetupSplashEntryRequest(
+                        GetAssetPath(entry.Image),
+                        GetAssetPath(entry.AudioIntent),
+                        entry.DisplayLabel,
+                        entry.FadeInSeconds,
+                        entry.HoldSeconds,
+                        entry.FadeOutSeconds,
+                        entry.MinimumDisplaySeconds,
+                        entry.MotionStyle,
+                        entry.PulseMaximumScale,
+                        entry.PulseCycleSeconds,
+                        entry.AdvancePolicy));
+            }
+
+            return new
+                EchoLaunchSetupSplashAuthoringRequest(
+                    splashPresentationMode,
+                    splashBackgroundColor,
+                    allowSplashAdvancement,
+                    entries);
+        }
+
+        private static string GetAssetPath(
+            UnityEngine.Object asset)
+        {
+            return asset == null
+                ? string.Empty
+                : AssetDatabase.GetAssetPath(asset);
+        }
+
+        private static int GetAdvanceIndex(
+            SplashSkipPolicy policy)
+        {
+            switch (policy)
+            {
+                case SplashSkipPolicy.Disallowed:
+                    return 0;
+                case SplashSkipPolicy.AfterMinimumDisplay:
+                    return 1;
+                case SplashSkipPolicy.WaitForInputAfterMinimum:
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
+        private static SplashSkipPolicy GetAdvancePolicy(
+            int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    return SplashSkipPolicy.AfterMinimumDisplay;
+                case 2:
+                    return SplashSkipPolicy.WaitForInputAfterMinimum;
+                default:
+                    return SplashSkipPolicy.Disallowed;
+            }
+        }
+
+        [Serializable]
+        private sealed class SplashEntryDraft
+        {
+            [SerializeField]
+            internal bool Expanded = true;
+
+            [SerializeField]
+            internal Sprite Image;
+
+            [SerializeField]
+            internal AudioClip AudioIntent;
+
+            [SerializeField]
+            internal string DisplayLabel = string.Empty;
+
+            [SerializeField]
+            internal float FadeInSeconds = 0.25f;
+
+            [SerializeField]
+            internal float HoldSeconds = 1f;
+
+            [SerializeField]
+            internal float FadeOutSeconds = 0.25f;
+
+            [SerializeField]
+            internal float MinimumDisplaySeconds;
+
+            [SerializeField]
+            internal SplashMotionStyle MotionStyle =
+                SplashMotionStyle.None;
+
+            [SerializeField]
+            internal float PulseMaximumScale = 1.05f;
+
+            [SerializeField]
+            internal float PulseCycleSeconds = 1f;
+
+            [SerializeField]
+            internal SplashSkipPolicy AdvancePolicy =
+                SplashSkipPolicy.AfterMinimumDisplay;
         }
 
         private void DrawPlanSummary()

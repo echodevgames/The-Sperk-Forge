@@ -38,8 +38,12 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                         false,
                         EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd);
 
+                IEchoLaunchSetupSnapshotSource snapshotSource =
+                    new CandidateIsolatingSnapshotSource();
+
                 EchoLaunchProjectSnapshot snapshot =
-                    new EchoLaunchProjectSnapshotCollector().Collect(request);
+                    snapshotSource.Collect(
+                        request);
 
                 EchoLaunchSetupPlan plan =
                     new EchoLaunchSetupPlanner().CreatePlan(
@@ -56,7 +60,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
 
                 EchoLaunchSetupApplyService service =
                     new EchoLaunchSetupApplyService(
-                        new EchoLaunchProjectSnapshotCollector(),
+                        snapshotSource,
                         new EchoLaunchSetupPlanner(),
                         new EchoLaunchSetupAssetWriter(),
                         new EchoLaunchSetupPrefabWriter(),
@@ -124,11 +128,14 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                         false,
                         EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd);
 
+                IEchoLaunchSetupSnapshotSource snapshotSource =
+                    new CandidateIsolatingSnapshotSource();
+
                 EchoLaunchSetupPlan plan =
                     new EchoLaunchSetupPlanner().CreatePlan(
                         request,
-                        new EchoLaunchProjectSnapshotCollector()
-                            .Collect(request));
+                        snapshotSource.Collect(
+                            request));
 
                 EchoLaunchSetupFailureInjector injector =
                     new EchoLaunchSetupFailureInjector
@@ -140,7 +147,7 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
 
                 EchoLaunchSetupApplyService service =
                     new EchoLaunchSetupApplyService(
-                        new EchoLaunchProjectSnapshotCollector(),
+                        snapshotSource,
                         new EchoLaunchSetupPlanner(),
                         new EchoLaunchSetupAssetWriter(),
                         new EchoLaunchSetupPrefabWriter(),
@@ -181,6 +188,28 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 AssetDatabase.DeleteAsset(destinationFolder);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+            }
+        }
+
+        private sealed class CandidateIsolatingSnapshotSource :
+            IEchoLaunchSetupSnapshotSource
+        {
+            private readonly EchoLaunchProjectSnapshotCollector
+                collector =
+                    new EchoLaunchProjectSnapshotCollector();
+
+            public EchoLaunchProjectSnapshot Collect(
+                EchoLaunchSetupRequest request)
+            {
+                EchoLaunchProjectSnapshot collected =
+                    collector.Collect(
+                        request);
+
+                return new EchoLaunchProjectSnapshot(
+                    collected.AssetFacts,
+                    collected.BuildSettingsScenes,
+                    collected.PackageRootTemplateAvailable,
+                    collected.PackageRootTemplateGuid);
             }
         }
 

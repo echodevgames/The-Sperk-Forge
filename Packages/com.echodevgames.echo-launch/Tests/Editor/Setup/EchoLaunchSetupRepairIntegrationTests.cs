@@ -36,6 +36,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     destinationScenePath,
                     true,
                     EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd);
+
+            IEchoLaunchSetupSnapshotSource snapshotSource =
+                new CandidateIsolatingSnapshotSource();
+
             EditorBuildSettingsScene[] originalBuildSettings =
                 EchoLaunchSetupBuildSettingsWriter.Clone(
                     EditorBuildSettings.scenes);
@@ -44,13 +48,20 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             try
             {
                 CreateDestination(destinationFolder, destinationScenePath);
-                EchoLaunchSetupPlan createPlan = Refresh(request);
+
+                EchoLaunchSetupPlan createPlan =
+                    Refresh(
+                        request,
+                        snapshotSource);
+
                 EchoLaunchSetupApplyResult applyResult =
-                    new EchoLaunchSetupApplyService().Apply(
-                        new EchoLaunchSetupApplyRequest(
-                            createPlan,
-                            true,
-                            false));
+                    CreateApplyService(
+                            snapshotSource)
+                        .Apply(
+                            new EchoLaunchSetupApplyRequest(
+                                createPlan,
+                                true,
+                                false));
                 Assert.That(
                     applyResult.Status,
                     Is.EqualTo(EchoLaunchSetupApplyStatus.Succeeded));
@@ -77,7 +88,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
 
                 IntroduceApprovedDrift(paths);
 
-                EchoLaunchSetupPlan repairPlan = Refresh(request);
+                EchoLaunchSetupPlan repairPlan =
+                    Refresh(
+                        request,
+                        snapshotSource);
                 Assert.That(repairPlan.HasRepairs, Is.True);
                 Assert.That(
                     repairPlan.CountDisposition(
@@ -90,7 +104,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     Is.False);
 
                 EchoLaunchSetupRepairService service =
-                    new EchoLaunchSetupRepairService();
+                    CreateRepairService(
+                        snapshotSource,
+                        new EchoLaunchSetupNoFailureInjector());
                 EchoLaunchSetupRepairResult first =
                     service.Repair(
                         new EchoLaunchSetupRepairRequest(
@@ -132,13 +148,17 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 EchoLaunchSetupRepairResult second =
                     service.Repair(
                         new EchoLaunchSetupRepairRequest(
-                            Refresh(request),
+                            Refresh(
+                                request,
+                                snapshotSource),
                             true,
                             false));
                 EchoLaunchSetupRepairResult third =
                     service.Repair(
                         new EchoLaunchSetupRepairRequest(
-                            Refresh(request),
+                            Refresh(
+                                request,
+                                snapshotSource),
                             true,
                             false));
 
@@ -205,6 +225,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     destinationScenePath,
                     true,
                     EchoLaunchBuildSettingsPolicy.AddIfMissingAtEnd);
+
+            IEchoLaunchSetupSnapshotSource snapshotSource =
+                new CandidateIsolatingSnapshotSource();
+
             EditorBuildSettingsScene[] originalBuildSettings =
                 EchoLaunchSetupBuildSettingsWriter.Clone(
                     EditorBuildSettings.scenes);
@@ -212,12 +236,17 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
             try
             {
                 CreateDestination(destinationFolder, destinationScenePath);
+
                 EchoLaunchSetupApplyResult apply =
-                    new EchoLaunchSetupApplyService().Apply(
-                        new EchoLaunchSetupApplyRequest(
-                            Refresh(createRequest),
-                            true,
-                            false));
+                    CreateApplyService(
+                            snapshotSource)
+                        .Apply(
+                            new EchoLaunchSetupApplyRequest(
+                                Refresh(
+                                    createRequest,
+                                    snapshotSource),
+                                true,
+                                false));
                 Assert.That(
                     apply.Status,
                     Is.EqualTo(EchoLaunchSetupApplyStatus.Succeeded));
@@ -232,7 +261,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                 byte[] prefabMetaBytes = ReadProjectBytes(
                     paths.RootPrefabPath + ".meta");
 
-                EchoLaunchSetupPlan repairPlan = Refresh(repairRequest);
+                EchoLaunchSetupPlan repairPlan =
+                    Refresh(
+                        repairRequest,
+                        snapshotSource);
                 Assert.That(repairPlan.HasRepairs, Is.True);
                 Assert.That(repairPlan.HasCreates, Is.True);
                 Assert.That(
@@ -265,16 +297,9 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                                 .ResolveRootPrefabVariant
                     };
                 EchoLaunchSetupRepairService service =
-                    new EchoLaunchSetupRepairService(
-                        new EchoLaunchProjectSnapshotCollector(),
-                        new EchoLaunchSetupPlanner(),
-                        new EchoLaunchSetupAssetWriter(),
-                        new EchoLaunchSetupPrefabWriter(),
-                        new EchoLaunchSetupSceneWriter(),
-                        new EchoLaunchSetupBuildSettingsWriter(),
-                        new EchoLaunchSetupRepairBackupStore(),
-                        injector,
-                        delegate { return false; });
+                    CreateRepairService(
+                        snapshotSource,
+                        injector);
 
                 EchoLaunchSetupRepairResult result =
                     service.Repair(
@@ -325,11 +350,49 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
         }
 
         private static EchoLaunchSetupPlan Refresh(
-            EchoLaunchSetupRequest request)
+            EchoLaunchSetupRequest request,
+            IEchoLaunchSetupSnapshotSource snapshotSource)
         {
             EchoLaunchProjectSnapshot snapshot =
-                new EchoLaunchProjectSnapshotCollector().Collect(request);
-            return new EchoLaunchSetupPlanner().CreatePlan(request, snapshot);
+                snapshotSource.Collect(
+                    request);
+
+            return new EchoLaunchSetupPlanner()
+                .CreatePlan(
+                    request,
+                    snapshot);
+        }
+
+        private static EchoLaunchSetupApplyService
+            CreateApplyService(
+                IEchoLaunchSetupSnapshotSource snapshotSource)
+        {
+            return new EchoLaunchSetupApplyService(
+                snapshotSource,
+                new EchoLaunchSetupPlanner(),
+                new EchoLaunchSetupAssetWriter(),
+                new EchoLaunchSetupPrefabWriter(),
+                new EchoLaunchSetupSceneWriter(),
+                new EchoLaunchSetupBuildSettingsWriter(),
+                new EchoLaunchSetupNoFailureInjector(),
+                delegate { return false; });
+        }
+
+        private static EchoLaunchSetupRepairService
+            CreateRepairService(
+                IEchoLaunchSetupSnapshotSource snapshotSource,
+                IEchoLaunchSetupFailureInjector failureInjector)
+        {
+            return new EchoLaunchSetupRepairService(
+                snapshotSource,
+                new EchoLaunchSetupPlanner(),
+                new EchoLaunchSetupAssetWriter(),
+                new EchoLaunchSetupPrefabWriter(),
+                new EchoLaunchSetupSceneWriter(),
+                new EchoLaunchSetupBuildSettingsWriter(),
+                new EchoLaunchSetupRepairBackupStore(),
+                failureInjector,
+                delegate { return false; });
         }
 
         private static void IntroduceConfigurationAndPrefabDrift(
@@ -579,6 +642,28 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Setup
                     roots[index].GetComponentsInChildren<EchoLaunchRoot>(true));
             }
             return result;
+        }
+
+        private sealed class CandidateIsolatingSnapshotSource :
+            IEchoLaunchSetupSnapshotSource
+        {
+            private readonly EchoLaunchProjectSnapshotCollector
+                collector =
+                    new EchoLaunchProjectSnapshotCollector();
+
+            public EchoLaunchProjectSnapshot Collect(
+                EchoLaunchSetupRequest request)
+            {
+                EchoLaunchProjectSnapshot collected =
+                    collector.Collect(
+                        request);
+
+                return new EchoLaunchProjectSnapshot(
+                    collected.AssetFacts,
+                    collected.BuildSettingsScenes,
+                    collected.PackageRootTemplateAvailable,
+                    collected.PackageRootTemplateGuid);
+            }
         }
 
         private static void CreateDestination(

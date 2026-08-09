@@ -554,6 +554,14 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 delegate(string path)
                 {
                     assetWriter.CreateSplashSequence(path, journal, log);
+
+                    if (plan.Request.SplashAuthoring != null)
+                    {
+                        EchoLaunchSetupSplashAuthoringUtility
+                            .AuthorCreatedSequence(
+                                path,
+                                plan.Request.SplashAuthoring);
+                    }
                 });
 
             EchoLaunchSetupOperation configuration =

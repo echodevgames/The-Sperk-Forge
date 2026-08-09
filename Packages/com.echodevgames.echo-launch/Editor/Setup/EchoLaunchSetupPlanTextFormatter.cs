@@ -31,6 +31,13 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                     "Boot scene: " + plan.Paths.BootScenePath);
             }
 
+            if (plan.Request.SplashAuthoring != null)
+            {
+                builder.AppendLine(
+                    "Splash creation authoring: " +
+                    plan.Request.SplashAuthoring.Summary);
+            }
+
             builder.AppendLine();
             builder.AppendLine("Operations:");
 

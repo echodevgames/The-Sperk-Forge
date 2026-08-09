@@ -64,6 +64,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
 
             ValidateDestinationScene(request, snapshot, operations, diagnostics);
             ValidatePackageTemplate(snapshot, operations, diagnostics);
+            ValidateSplashAuthoring(
+                request,
+                operations,
+                diagnostics);
 
             if (pathsValid)
             {
@@ -204,6 +208,53 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 requestFingerprint,
                 evidenceFingerprint,
                 planFingerprint);
+        }
+
+        private static void ValidateSplashAuthoring(
+            EchoLaunchSetupRequest request,
+            List<EchoLaunchSetupOperation> operations,
+            List<EchoLaunchSetupDiagnostic> diagnostics)
+        {
+            if (request.SplashAuthoring == null)
+            {
+                return;
+            }
+
+            if (!request.CreateSplashSequence)
+            {
+                AddInvalidRequest(
+                    operations,
+                    diagnostics,
+                    "splash.authoring.requires-create",
+                    string.Empty,
+                    "Splash creation authoring requires Create Splash Sequence.");
+
+                return;
+            }
+
+            if (request
+                    .SplashAuthoring
+                    .TryValidate(
+                        out string message))
+            {
+                operations.Add(
+                    new EchoLaunchSetupOperation(
+                        "splash.authoring",
+                        ValidatePhase,
+                        EchoLaunchSetupOperationKind.ValidateRequest,
+                        EchoLaunchSetupOperationDisposition.NoChange,
+                        string.Empty,
+                        "Creation-time splash authoring is valid."));
+
+                return;
+            }
+
+            AddInvalidRequest(
+                operations,
+                diagnostics,
+                "splash.authoring",
+                string.Empty,
+                message);
         }
 
         private static void ValidateDestinationScene(

@@ -15,7 +15,8 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
             string selectedStartupSequencePath = null,
             string selectedLaunchDestinationPath = null,
             string selectedSplashSequencePath = null,
-            string selectedRootPrefabPath = null)
+            string selectedRootPrefabPath = null,
+            EchoLaunchSetupSplashAuthoringRequest splashAuthoring = null)
         {
             ProjectRootPath =
                 EchoLaunchSetupPathUtility.NormalizeSeparators(
@@ -34,6 +35,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 NormalizeOptional(selectedLaunchDestinationPath);
             SelectedSplashSequencePath = NormalizeOptional(selectedSplashSequencePath);
             SelectedRootPrefabPath = NormalizeOptional(selectedRootPrefabPath);
+            SplashAuthoring = splashAuthoring;
         }
 
         internal string ProjectRootPath { get; }
@@ -46,6 +48,7 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
         internal string SelectedLaunchDestinationPath { get; }
         internal string SelectedSplashSequencePath { get; }
         internal string SelectedRootPrefabPath { get; }
+        internal EchoLaunchSetupSplashAuthoringRequest SplashAuthoring { get; }
 
         internal static EchoLaunchSetupRequest CreateDefault()
         {
@@ -108,7 +111,10 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                    string.Equals(
                        SelectedRootPrefabPath,
                        other.SelectedRootPrefabPath,
-                       StringComparison.Ordinal);
+                       StringComparison.Ordinal) &&
+                   Equals(
+                       SplashAuthoring,
+                       other.SplashAuthoring);
         }
 
         public override bool Equals(object obj)
@@ -125,6 +131,14 @@ namespace EchoDevGames.EchoLaunch.Editor.Setup
                 hash = (hash * 397) ^ DestinationScenePath.GetHashCode();
                 hash = (hash * 397) ^ CreateSplashSequence.GetHashCode();
                 hash = (hash * 397) ^ BuildSettingsPolicy.GetHashCode();
+
+                if (SplashAuthoring != null)
+                {
+                    hash =
+                        (hash * 397) ^
+                        SplashAuthoring.GetHashCode();
+                }
+
                 return hash;
             }
         }
