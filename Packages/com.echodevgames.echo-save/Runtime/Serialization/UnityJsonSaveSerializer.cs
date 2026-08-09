@@ -11,9 +11,12 @@ namespace EchoDevGames.EchoSave
     /// provide arbitrary dictionary, interface, polymorphic object-graph, or
     /// durable Unity-object-reference serialization. Projects requiring other
     /// shapes should provide another ISaveSerializer.
+    ///
+    /// Runtime Type overloads accept Type authority only from trusted running
+    /// code. Chronicle never persists CLR type names in save documents.
     /// </summary>
     public sealed class UnityJsonSaveSerializer :
-        ISaveSerializer
+        IRuntimeTypeSaveSerializer
     {
         public const string StableId =
             "echodevgames.unity-json";
@@ -28,18 +31,61 @@ namespace EchoDevGames.EchoSave
 
         public SaveSerializerResult Serialize<T>(
             T value,
+            out string serialized) =>
+            Serialize(
+                value,
+                typeof(T),
+                out serialized);
+
+        public SaveSerializerResult Deserialize<T>(
+            string serialized,
+            out T value)
+        {
+            value =
+                default;
+
+            SaveSerializerResult result =
+                Deserialize(
+                    serialized,
+                    typeof(T),
+                    out object restored);
+
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            if (!(restored is T typed))
+            {
+                return new SaveSerializerResult(
+                    SaveSerializerStatus.Failed,
+                    EchoSaveDiagnosticCodes
+                        .SerializerFailure,
+                    "Unity JSON restored a Chronicle value that does not match the requested runtime type.");
+            }
+
+            value =
+                typed;
+
+            return result;
+        }
+
+        public SaveSerializerResult Serialize(
+            object value,
+            Type valueType,
             out string serialized)
         {
             serialized =
                 string.Empty;
 
-            if ((object)value == null)
+            SaveSerializerResult typeValidation =
+                ValidateRuntimeTypeAndValue(
+                    value,
+                    valueType);
+
+            if (!typeValidation.Succeeded)
             {
-                return new SaveSerializerResult(
-                    SaveSerializerStatus.InvalidRequest,
-                    EchoSaveDiagnosticCodes
-                        .SerializerInvalidRequest,
-                    "A value is required for Chronicle serialization.");
+                return typeValidation;
             }
 
             if (value is ISavePackageDocument document)
@@ -91,12 +137,22 @@ namespace EchoDevGames.EchoSave
             }
         }
 
-        public SaveSerializerResult Deserialize<T>(
+        public SaveSerializerResult Deserialize(
             string serialized,
-            out T value)
+            Type valueType,
+            out object value)
         {
             value =
-                default;
+                null;
+
+            SaveSerializerResult typeValidation =
+                ValidateRuntimeType(
+                    valueType);
+
+            if (!typeValidation.Succeeded)
+            {
+                return typeValidation;
+            }
 
             if (string.IsNullOrWhiteSpace(
                     serialized))
@@ -113,7 +169,8 @@ namespace EchoDevGames.EchoSave
 
             if (trimmed.Length < 2 ||
                 trimmed[0] != '{' ||
-                trimmed[trimmed.Length - 1] != '}')
+                trimmed[
+                    trimmed.Length - 1] != '}')
             {
                 return new SaveSerializerResult(
                     SaveSerializerStatus.MalformedData,
@@ -125,19 +182,22 @@ namespace EchoDevGames.EchoSave
             try
             {
                 value =
-                    JsonUtility.FromJson<T>(
-                        serialized);
+                    JsonUtility.FromJson(
+                        serialized,
+                        valueType);
 
-                if ((object)value == null)
+                if (value == null ||
+                    !valueType.IsInstanceOfType(
+                        value))
                 {
                     value =
-                        default;
+                        null;
 
                     return new SaveSerializerResult(
                         SaveSerializerStatus.MalformedData,
                         EchoSaveDiagnosticCodes
                             .SerializerMalformedData,
-                        "Unity JsonUtility did not produce a Chronicle DTO.");
+                        "Unity JsonUtility did not produce the requested Chronicle DTO type.");
                 }
 
                 if (value is ISavePackageDocument document)
@@ -150,7 +210,8 @@ namespace EchoDevGames.EchoSave
                     if (!documentValidation.Succeeded)
                     {
                         value =
-                            default;
+                            null;
+
                         return documentValidation;
                     }
                 }
@@ -163,7 +224,7 @@ namespace EchoDevGames.EchoSave
                     exception))
             {
                 value =
-                    default;
+                    null;
 
                 return new SaveSerializerResult(
                     SaveSerializerStatus.MalformedData,
@@ -171,6 +232,64 @@ namespace EchoDevGames.EchoSave
                         .SerializerMalformedData,
                     $"Chronicle deserialization failed. {exception.GetType().Name}: {exception.Message}");
             }
+        }
+
+        private static SaveSerializerResult
+            ValidateRuntimeTypeAndValue(
+                object value,
+                Type valueType)
+        {
+            SaveSerializerResult typeValidation =
+                ValidateRuntimeType(
+                    valueType);
+
+            if (!typeValidation.Succeeded)
+            {
+                return typeValidation;
+            }
+
+            if (value == null)
+            {
+                return new SaveSerializerResult(
+                    SaveSerializerStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .SerializerInvalidRequest,
+                    "A value is required for Chronicle serialization.");
+            }
+
+            if (!valueType.IsInstanceOfType(
+                    value))
+            {
+                return new SaveSerializerResult(
+                    SaveSerializerStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .SerializerInvalidRequest,
+                    "The Chronicle value does not match the trusted runtime DTO type.");
+            }
+
+            return SaveSerializerResult.Success(
+                "The Chronicle runtime DTO type is valid.");
+        }
+
+        private static SaveSerializerResult
+            ValidateRuntimeType(
+                Type valueType)
+        {
+            if (valueType == null ||
+                valueType == typeof(void) ||
+                valueType.IsPointer ||
+                valueType.IsByRef ||
+                valueType.ContainsGenericParameters)
+            {
+                return new SaveSerializerResult(
+                    SaveSerializerStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .SerializerInvalidRequest,
+                    "A concrete trusted runtime DTO type is required.");
+            }
+
+            return SaveSerializerResult.Success(
+                "The Chronicle runtime DTO type is valid.");
         }
 
         private static SaveSerializerResult Failure(

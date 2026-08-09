@@ -137,5 +137,26 @@ namespace EchoDevGames.EchoSave
 
         internal const string ParticipantNotFound =
             "ESV-PART-008";
+
+        internal const string ParticipantCaptureInvalidRequest =
+            "ESV-PART-009";
+
+        internal const string ParticipantCaptureTypeUnavailable =
+            "ESV-PART-010";
+
+        internal const string ParticipantCaptureTypeMismatch =
+            "ESV-PART-011";
+
+        internal const string ParticipantCaptureSerializerUnavailable =
+            "ESV-PART-012";
+
+        internal const string ParticipantCaptureSerializationFailed =
+            "ESV-PART-013";
+
+        internal const string ParticipantCaptureIntegrityFailed =
+            "ESV-PART-014";
+
+        internal const string ParticipantCaptureRegistryChanged =
+            "ESV-PART-015";
     }
 }
