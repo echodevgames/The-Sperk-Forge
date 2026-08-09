@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M2-01 — Chronicle Storage Root, Path Safety, and Local Backend Foundation
-**Current checkpoint:** ESV-M2-01 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation
+**Current checkpoint:** ESV-M2-02 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -68,23 +68,35 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Apply-time M1 guards passed: no `System.IO` implementation, no `Application.persistentDataPath` resolution, no Chronicle-owned `DontDestroyOnLoad`, and no peer Echo runtime reference.
 - ESV-M1-01 proved package-local authority, duplicate rejection before service construction/initialization, explicit initialize/shutdown, re-claim after shutdown, configuration blocking, stable provider IDs, and zero durable-storage side effects.
 
+## Chronicle ESV-M2-01 Closeout
+
+- Implementation commit: `e4ef76c`.
+- Unity compile/import: **Pass / green**.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **40 / 40 passed, 0 failed**.
+- First focused run was `29 / 40`; all 11 failures were isolated to EditMode `EchoSaveRoot` activation assumptions. The storage/path/backend tests were already green.
+- A narrow internal `EnsureAuthorityClaimedForTesting()` seam was added so direct EditMode component construction deterministically exercises the exact production `Awake()` authority path when Unity has not invoked it.
+- Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
+- No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
+
 ## Active Chronicle M2 Slice
 
-`ESV-M2-01 — Chronicle Storage Root, Path Safety, and Local Backend Foundation` is active / authorized.
+`ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation` is active / authorized.
 
 Authorized next:
-- first real Chronicle storage-provider I/O;
-- safe configured root resolution beneath `Application.persistentDataPath` for the default local provider;
-- strict safe relative-path/key handling;
-- a replaceable local filesystem backend behind the existing storage-provider seam;
-- injected sandbox roots for tests;
-- preservation of duplicate-before-storage-side-effect behavior.
+- package-owned document DTO contracts for the Chronicle envelope layer;
+- explicit document-format version constants;
+- default `UnityJsonSaveSerializer` using Unity `JsonUtility`;
+- serializer-provider registration/lookup needed by the document layer;
+- deterministic serializer identity and structured serialize/deserialize results;
+- round-trip tests for package-owned plain DTOs;
+- explicit rejection/reporting for malformed JSON and unsupported document versions at the serializer/document boundary;
+- preservation of storage-provider independence and all M1/M2-01 lifecycle/path regressions.
 
 Still deferred:
-- Chronicle envelope/serializer implementation;
-- slots/catalogs;
-- immutable generations and head publication;
-- participants;
+- physical immutable generation commit/publication;
+- head-pointer mutation/publication;
+- slot catalog and active-slot behavior;
+- participant capture/apply and unknown-payload preservation;
 - migrations/checksums/recovery/autosave/prepared loads;
 - peer persistence bridges;
 - project-wide DDOL composition.
@@ -273,8 +285,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the live repository/Unity baseline at the committed ESV-M1-01 closeout.
-2. Implement only `ESV-M2-01`: storage-root resolution, path safety, the default local backend foundation, injection/test seams, and sandboxed storage tests.
-3. Preserve duplicate rejection before any storage-root/backend side effect.
-4. Do **not** implement Chronicle save documents, serializers, slots, generations, head publication, participants, recovery/autosave, peer bridges, or project-wide DDOL composition in M2-01.
-5. Keep Accord, Resonance, and Looking Glass planned behind Chronicle in the Game Shell initiative, with each package retaining independent package authority.
+1. Rehydrate the live repository/Unity baseline at committed ESV-M2-01 closeout.
+2. Implement only `ESV-M2-02`: package-owned document DTO/version contracts, the default `UnityJsonSaveSerializer`, serializer registry/provider lookup, structured serializer results, and focused round-trip/malformed-input tests.
+3. Keep serializer output detached from physical save publication. M2-02 may turn package-owned DTOs into bytes/text and back, but it does not yet create or publish a Chronicle generation.
+4. Do **not** implement slot catalogs, immutable generation publication, head updates, participants, migrations, integrity/recovery, autosave, peer bridges, or project-wide DDOL composition in M2-02.
+5. Preserve all `40 / 40` M1 + M2-01 focused regressions while adding the new serializer/document tests.

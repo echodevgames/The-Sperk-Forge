@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.3.0
+**Specification version:** 1.4.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009 and ESV-M1-01 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M2-01` is the active storage-foundation checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, and ESV-M2-01 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M2-02` is the active document/serializer-foundation checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -35,6 +35,7 @@
 | 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID versus optional runtime/export save-configuration identity. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-09 | Approved | Reconciled SFGSS-ADR-006: durable save transport, participant runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local; cross-package persistence stays optional; PKG-LEARN-009 becomes the active implementation gate. | Jesse “Echo” Adams |
 | 1.3.0 | 2026-08-09 | Approved | Reconciled completed PKG-LEARN-009 and ESV-M1-01 evidence; recorded commits `ecfa922` / `2c70b1d`; activated bounded ESV-M2-01 storage-root, path-safety, and local-backend work without changing ownership boundaries. | Jesse “Echo” Adams |
+| 1.4.0 | 2026-08-09 | Approved | Closed ESV-M2-01 at `e4ef76c` with focused Chronicle Editor evidence `40 / 40`; activated bounded ESV-M2-02 package-document and default Unity JSON serializer work while deferring physical generation publication, slots, participants, and recovery. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1922,21 +1923,40 @@ Outcome achieved:
 
 Stop point preserved: M1 writes no real save file.
 
-### 28.4 Active implementation checkpoint
+### 28.4 Completed storage-foundation checkpoint
 
 **ESV-M2-01 - Storage root, path safety, and local backend foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- configured default local root beneath `Application.persistentDataPath`;
+- strict relative storage-key/path containment;
+- replaceable `LocalFileSaveStorageBackend`;
+- injected sandbox roots for automated tests;
+- exact-byte read/write and structured failure primitives;
+- duplicate rejection before storage-root/backend side effects;
+- implementation commit `e4ef76c`;
+- focused Chronicle Editor gate **40 / 40**.
+
+Stop point preserved: storage-provider I/O exists and is path-safe, while save documents, physical immutable generation publication, slots, participants, recovery, and peer bridges remain unimplemented.
+
+### 28.5 Active document/serializer checkpoint
+
+**ESV-M2-02 - Document contracts and Unity JSON serializer foundation**
 
 **Status:** Active / authorized.
 
 Outcome:
-- resolve the configured default local storage root beneath `Application.persistentDataPath`;
-- add strict safe relative-path/key handling;
-- implement the replaceable local filesystem backend behind `ISaveStorageBackend`;
-- use injected sandbox roots for automated tests;
-- prove backend byte primitives and path escape rejection;
-- preserve duplicate rejection before storage-root/backend side effects.
+- define package-owned Chronicle document DTO contracts and explicit format-version constants;
+- implement the approved default `UnityJsonSaveSerializer` with `JsonUtility`;
+- add serializer provider registration/lookup needed by package documents;
+- add structured serialize/deserialize results and diagnostics;
+- prove deterministic round trips for package-owned plain DTOs;
+- reject malformed JSON and unsupported document versions without touching storage state;
+- preserve storage-provider independence and all M1/M2-01 lifecycle/path regressions.
 
-Stop point: first real storage-provider I/O exists and is path-safe in a sandbox, but save documents, serializer implementation, slots, generations, participants, recovery, and peer bridges remain unimplemented.
+Stop point: package-owned Chronicle documents can be serialized/deserialized and validated in memory, but M2-02 does not yet publish immutable generations, update head pointers, manage slots, capture participants, or perform recovery/autosave.
 
 ## 29. New-Conversation Handoff
 
@@ -1949,39 +1969,39 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.3.0
-Completed checkpoint: ESV-M1-01
-Current milestone/checkpoint: ESV-M2-01 active / authorized
+Current specification version: 1.4.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01
+Current milestone/checkpoint: ESV-M2-02 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M1 skeleton complete; storage foundation next
+Current implementation status: storage foundation complete; package document/serializer foundation next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing M2-01 code:
-1. Rehydrate the exact repository/Unity baseline after the ESV-M1-01 closeout.
-2. Preserve EchoSave authority and SFGSS-ADR-006 lifetime separation.
-3. Keep project gameplay schemas and mutable runtime truth outside Chronicle.
-4. Keep global preferences, scene travel, UI, game-state rules, peer service composition, and cloud providers outside core.
-5. Keep peer persistence optional through bridges/participant adapters.
-6. Implement only storage-root resolution, path safety, the default local backend, necessary storage results/diagnostics, and sandbox tests.
-7. Preserve duplicate rejection before storage-root/backend side effects.
-8. Do not yet implement save documents, serializer payloads, slots, generations, participants, migration, recovery, autosave, or project-wide DDOL composition.
+Before writing M2-02 code:
+1. Rehydrate the exact repository/Unity baseline after the ESV-M2-01 closeout.
+2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, and storage-provider independence.
+3. Implement package-owned document DTO/version contracts only; gameplay payload schemas remain participant/project-owned.
+4. Implement the approved default `UnityJsonSaveSerializer` using `JsonUtility`, with explicit provider identity and structured results.
+5. Add only the serializer registry/provider lookup needed by the package document layer.
+6. Prove in-memory package-document round trips, malformed-input rejection, unsupported-version blocking, and all prior 40 / 40 regressions.
+7. Do not publish immutable generations or mutate head pointers in M2-02.
+8. Do not implement slot catalogs, participants, migration/integrity/recovery, autosave, peer bridges, or project-wide DDOL composition.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.3.0 |
-| Completed checkpoint | ESV-M1-01 - Installable Skeleton and Duplicate-Safe Authority Claim |
-| Files/assets created | `com.echodevgames.echo-save` package shell, configuration, lifecycle authority, provider identity seams, focused tests, package documentation |
-| Tests passed | Unity compile/import green; focused Chronicle Editor gate all green; exact numeric count not captured |
-| Tests failed | None reported at ESV-M1-01 closeout |
-| Known issues | None blocking M2-01 |
+| Package version | Runtime package `0.1.0`; Specification v1.4.0 |
+| Completed checkpoint | ESV-M2-01 - Storage Root, Path Safety, and Local Backend Foundation |
+| Files/assets created | M1 package/lifecycle foundation plus M2-01 storage-key/path contracts, production-root resolver, local backend, injected sandbox seam, and focused storage/lifecycle tests |
+| Tests passed | ESV-M2-01 focused Chronicle Editor gate `40 / 40`; Unity compile/import green |
+| Tests failed | Final ESV-M2-01 gate: `0`; initial development run had 11 EditMode lifecycle-test activation failures corrected before commit |
+| Known issues | None blocking M2-02 |
 | Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M2-01 active / authorized |
+| Implementation permission | ESV-M2-02 active / authorized |
 
 
 ## 30. Approval

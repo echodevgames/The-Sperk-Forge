@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim**. The active checkpoint is **ESV-M2-01 — Storage Root, Path Safety, and Local Backend Foundation**.
+Version `0.1.0` has completed **ESV-M2-01 — Storage Root, Path Safety, and Local Backend Foundation** with a focused Chronicle Editor gate of **40 / 40**. The active checkpoint is **ESV-M2-02 — Document Contracts and Unity JSON Serializer Foundation**.
 
 ESV-M1-01 proved:
 
@@ -19,9 +19,11 @@ ESV-M1-01 proved:
 - neutral storage/serializer/clock seams compile;
 - focused tests can prove the lifecycle without touching real durable storage.
 
-## Not implemented yet
+## Current persistence boundary
 
-ESV-M1-01 does **not** write or read save files. ESV-M2-01 may introduce storage-root resolution, path validation, and local-backend primitives, but it still does not authorize Chronicle save documents, slots, generations, participant payloads, migrations, recovery, autosaves, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+ESV-M2-01 now provides path-safe local byte storage beneath the configured Chronicle root. ESV-M2-02 may add package-owned document DTOs and the default Unity JSON serializer.
+
+The package still does **not** authorize physical immutable generation publication, slot/catalog operations, participant state capture/apply, migration/recovery/autosave, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 Those capabilities remain governed by later Chronicle checkpoints.
 

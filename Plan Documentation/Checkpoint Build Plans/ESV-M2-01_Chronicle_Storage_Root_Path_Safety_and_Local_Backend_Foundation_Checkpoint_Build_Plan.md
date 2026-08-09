@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M2-01
 **Milestone:** M2 — Document / Storage Core
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.3.0
 **Prior checkpoint:** ESV-M1-01 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -59,21 +59,29 @@ Introduce Chronicle's first real storage-provider I/O without yet implementing a
 7. Invalid input fails before mutation.
 8. Backend operations re-check containment.
 
-## Proposed focused proof
+## Executed proof
 
-- production-root resolution;
-- rooted/traversal/mixed-separator escape rejection;
-- safe nested key;
-- sandbox root creation;
-- duplicate creates no root;
-- exact-byte write/read round trip;
-- not-found result;
-- create-only conflict preserving existing bytes;
-- injected backend failure;
-- shutdown and M1 regressions.
+- production-root resolution — **Pass**;
+- rooted/traversal/mixed-separator escape rejection — **Pass**;
+- safe nested key — **Pass**;
+- sandbox root creation — **Pass**;
+- duplicate creates no root — **Pass**;
+- exact-byte write/read round trip — **Pass**;
+- not-found result — **Pass**;
+- create-only conflict preserving existing bytes — **Pass**;
+- injected backend failure — **Pass**;
+- shutdown and M1 regressions — **Pass**.
 
-The executed test count will be recorded from Unity, not pre-claimed.
+Unity focused gate: **40 / 40 passed, 0 failed**.
+
+Development note: the first focused run reached `29 / 40` because direct `AddComponent<EchoSaveRoot>()` EditMode tests could not rely on automatic `Awake()` dispatch. A narrow test-only activation seam was added that invokes the exact production authority path only when Unity has not already done so. The rerun passed `40 / 40`; storage semantics and production `Awake()` behavior were unchanged.
 
 ## Stop point
 
-Stop once safe sandboxed backend primitives and all M1 + M2-01 focused tests pass. Do not continue into save documents or generations without the next bounded checkpoint.
+**Reached.** Safe sandboxed backend primitives and all M1 + M2-01 focused tests pass.
+
+Implementation commit: `e4ef76c`.
+
+Next bounded checkpoint: `ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation`.
+
+Do not continue into immutable generation publication, slot catalogs, participants, recovery, or autosave from this closeout.

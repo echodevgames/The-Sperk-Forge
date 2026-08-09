@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M1-01 – Chronicle Installable Skeleton and Duplicate-Safe Authority Claim
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M1-01 complete; ESV-M2-01 active / authorized
+**Completed package checkpoint:** ESV-M2-01 – Chronicle Storage Root, Path Safety, and Local Backend Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M2-01 complete; ESV-M2-02 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M1-01 complete; ESV-M2-01 active / authorized** |
+| Chronicle implementation | **ESV-M2-01 complete at `e4ef76c` with 40 / 40; ESV-M2-02 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -77,7 +77,7 @@ Chronicle M1 is complete:
 4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
 5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
 
-`ESV-M2-01` is active / authorized. It may introduce the first real storage-provider I/O, safe local-root resolution, path validation, and sandbox backend tests. It must preserve SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop.
+`ESV-M2-01` is complete at `e4ef76c`; the focused Chronicle Editor gate passed **40 / 40**. `ESV-M2-02` is active / authorized for package-owned document contracts and the default Unity JSON serializer foundation. It must preserve SFGSS-ADR-006, storage-provider independence, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -96,4 +96,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M1-01` is **complete**. `ESV-M2-01` is **active / authorized** for storage-root resolution, path safety, and the default local backend foundation. Chronicle document serialization, slots/generations, participants, recovery/autosave, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M2-01` is **complete** with **40 / 40** focused Chronicle Editor tests. `ESV-M2-02` is **active / authorized** for Chronicle document DTO/version contracts and the default Unity JSON serializer foundation. Physical immutable generation publication, slots, participants, migration/integrity/recovery, autosave, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

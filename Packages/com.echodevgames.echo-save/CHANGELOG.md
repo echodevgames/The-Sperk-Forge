@@ -29,3 +29,27 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Implementation committed at `ecfa922`.
 - Embedded Package Manager resolution committed at `2c70b1d`.
 - No real durable save I/O was introduced by M1.
+
+### Added
+
+#### ESV-M2-01 — Storage Root, Path Safety, and Local Backend Foundation
+
+- Safe relative `SaveStorageKey` validation and separator normalization.
+- Root/path containment checks that reject traversal and physical root escapes.
+- Configured production root resolution beneath `Application.persistentDataPath`.
+- Injectable storage-backend factory seam for sandbox tests.
+- Replaceable `LocalFileSaveStorageBackend`.
+- Structured storage results and byte-read results.
+- Initialize, exists, exact-byte read, create-only write, delete, and shutdown primitives.
+- Duplicate-before-storage-side-effect lifecycle coverage.
+- Sandboxed path/backend/lifecycle Editor tests.
+
+### Verified
+
+#### ESV-M2-01 Closeout
+
+- Implementation committed at `e4ef76c`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **40 / 40**, with `0` failed.
+- Initial `29 / 40` run exposed an EditMode lifecycle-test activation assumption; the narrow test seam was corrected and the final rerun passed.
+- No save-document serializer, slot catalog, immutable generation publication, participant persistence, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was added.
