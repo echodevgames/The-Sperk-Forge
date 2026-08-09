@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-03 — Chronicle Participant-Backed Generation Publication and Head-Last Integration Foundation
-**Current checkpoint:** ESV-M3-03 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-04 — Chronicle Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation
+**Current checkpoint:** ESV-M3-04 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,75 +78,64 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-02 Closeout
+## Chronicle ESV-M3-03 Closeout
 
-- Implementation commit: `e34d6d7`.
+- Implementation commit: `6970127`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **171 / 171 passed, 0 failed**.
-- The complete prior **147 / 147** Chronicle regression floor remained green.
-- M3-02 added optional runtime-Type serializer capability and optional typed-participant capability without breaking the M3-01 base contracts.
-- Active live registration code remains the only authority for detached DTO runtime type.
-- Save data stores no CLR/assembly-qualified type name and cannot request arbitrary type activation.
-- Participant capture is deterministic by canonical participant ID.
-- Default/explicit serializer provider resolution is proven.
-- Successful captures become package-owned `SavePayloadEntry` plus matching `SavePayloadInventoryEntry` records entirely in memory.
-- Exact UTF-8 participant payload byte lengths and per-entry SHA-256 checksums are captured.
-- Capture/type/serializer/integrity failure aborts the entire batch rather than exposing a publishable partial batch.
-- Future/unanticipated participants flow through the same capture pipeline.
-- Capture orchestration performs no filesystem or generation/head mutation.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **197 / 197 passed, 0 failed**.
+- The complete prior **171 / 171** Chronicle regression floor remained green.
+- M3-03 added publication-boundary participant-batch validation before the first durable mutation.
+- Participant ID/order/schema/serializer/flags/inline-payload/inventory agreement is revalidated at the publication boundary.
+- Exact per-entry UTF-8 byte lengths and checksums are verified again before storage.
+- Participant-bearing payload and manifest documents flow through the established M2 candidate-write → candidate-read-back → immutable-generation → published-generation-reverify → `head.json` LAST transaction.
+- Invalid participant batches cause zero storage mutation.
+- Candidate/generation/final-verification failures preserve the previous known-good head.
+- Final head serialization/publication failures leave the newly published generation non-current/orphaned while the old generation remains authoritative.
+- Successful second participant publication advances head sequence and preserves the first immutable generation.
+- The M2 empty/transport publication path remains green.
+- One test-only accessibility correction was required before the final green gate; no Chronicle runtime behavior changed.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-03 — Chronicle Participant-Backed Generation Publication and Head-Last Integration Foundation` is active / authorized.
+`ESV-M3-04 — Chronicle Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation` is active / authorized.
 
 Authorized next:
-- preserve the existing empty/transport M2 publication path for regression/backward test use;
-- add a bounded participant-bearing generation publication entry point;
-- accept only a successful `SaveParticipantCaptureBatchResult`;
-- defensively copy/revalidate participant payload and inventory records at the publication boundary;
-- verify inline participant payload byte lengths/checksums before any candidate write;
-- reject null entries, mismatched payload/inventory counts, duplicate participant IDs, invalid technical participant IDs, invalid schema versions, empty serializer IDs, invalid flags, or unsupported byte-provider references before storage mutation;
-- construct `SavePayloadDocument.entries` from the captured participant batch;
-- construct `SaveManifest.payloadEntries` from the matching inventory batch;
-- serialize the whole payload document and calculate its existing generation-level payload byte length/checksum;
-- use the already-proven M2 candidate-write → candidate-verify → immutable-generation-publish → published-generation-reverify → `head.json` LAST sequence;
-- prove first participant-backed save and second participant-backed save with prior-generation preservation;
-- prove every pre-head failure leaves the previous head authoritative;
-- prove failed final head publication leaves the newly published participant generation orphaned/non-current;
-- preserve participant entry order and manifest inventory agreement through disk round trip;
-- preserve all prior **171 / 171** Chronicle regressions.
+- add a bounded read-only current-generation reader over the active storage/serializer/integrity seams;
+- resolve and validate `head.json` for one explicit technical `SaveSlotId`;
+- resolve the selected immutable generation from the current head;
+- read `manifest.json` and `payload.json`;
+- validate slot/generation identity, commit state, package document contracts, whole-payload byte length/checksum, participant payload/inventory agreement, and per-entry inline byte length/checksum;
+- refuse malformed, corrupt, unsupported, or internally inconsistent current generations without changing runtime participant state;
+- classify each validated payload entry against the active `SaveParticipantRegistry`;
+- use canonical IDs and registered aliases for known-participant recognition;
+- place payloads with no active participant into a package-owned in-memory `UnknownPayloadStore`;
+- preserve each unknown entry **byte-for-byte / field-for-field**: participant ID, participant schema version, serializer ID, required flag, serialized payload, byte-provider reference, byte length, checksum, and flags;
+- keep unknown entries opaque: no serializer resolution, type activation, deserialization, migration, or participant code execution;
+- expose immutable/defensive-copy unknown-payload snapshots;
+- enforce deterministic canonical ordering plus bounded duplicate/count/byte safeguards;
+- replace/reset the session unknown store only after one complete current-generation read/classification succeeds;
+- failed reads/classification leave the previously valid session store unchanged;
+- all prior **197 / 197** Chronicle regressions remain green.
 
 Still deferred:
-- production `SaveAsync`;
-- capture + publication operation admission/permission/coalescing/cancellation;
-- autosave;
-- unknown-payload preservation/carry-forward/prune;
+- merging unknown entries into a new save batch;
+- unknown-payload prune plans;
+- participant payload deserialization;
+- participant migration;
 - participant apply;
-- `PreparedSaveLoad` and convenience load;
-- participant/document migrations;
+- `PreparedSaveLoad` / convenience load;
+- production `SaveAsync` admission/permission/busy/coalescing/cancellation;
 - slot catalog/policy and active-slot service;
-- recovery/retention;
+- recovery/retention/autosave;
 - peer bridges and project-wide DDOL composition.
 
-### M3-03 reliability rule
+### Unknown-payload safety rule
 
-M3-03 is the first technical join between the M3 participant snapshot and the M2 durable transaction.
+Chronicle preserves unclaimed durable payloads **without requiring the original package to be installed**.
 
-It must not weaken either half:
+An unknown entry is inert data. M3-04 may validate its storage/integrity envelope and remember it, but it must not deserialize it, load its CLR type, invoke participant code, rewrite it, or silently drop it.
 
-```text
-participant registry
-  → detached capture
-  → fully verified in-memory batch
-  → publication boundary revalidation
-  → candidate generation
-  → candidate read-back verification
-  → immutable generation publication
-  → published-generation revalidation
-  → head LAST
-```
-
-A failed capture batch never enters publication. A failed publication never exposes a mixed or partial participant set as current.
+The session store changes only after a fully validated current generation has been classified successfully.
 
 
 ## Suite Distribution Kit Standard
@@ -332,10 +321,12 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the exact repository/Unity baseline after the ESV-M3-02 closeout.
-2. Implement only `ESV-M3-03`: participant-batch publication-boundary validation plus participant-bearing integration with the existing M2 immutable-generation/head-last transaction.
-3. Preserve `PublishEmptyTransportGeneration` or equivalent M2 proof behavior while adding the new participant-backed path.
-4. Revalidate participant entry/inventory agreement, IDs, schema versions, serializers, inline byte lengths, and checksums before any candidate write.
-5. Keep publication generation-first and `head.json` last; preserve the previous known-good head on every pre-head failure.
-6. Do **not** introduce production `SaveAsync`, request admission/coalescing/cancellation, autosave, unknown-payload carry-forward, load/apply, migrations, slot policy, recovery/retention, peer bridges, or project-wide DDOL.
-7. Preserve the complete `171 / 171` Chronicle regression floor.
+1. Rehydrate the exact repository/Unity baseline after the ESV-M3-03 closeout.
+2. Implement only `ESV-M3-04`: read/validate the current committed generation and classify unclaimed participant entries into an opaque in-memory unknown-payload session store.
+3. Preserve unknown entries byte-for-byte / field-for-field and never require the original participant package to be installed.
+4. Recognize currently registered participants through canonical IDs and approved aliases before classifying an entry as unknown.
+5. Keep the operation read-only: no candidate writes, no generation publication, and no head update.
+6. Do not deserialize, migrate, or apply unknown payloads.
+7. Failed reads/classification must not replace the previously valid session unknown store.
+8. Do **not** activate unknown-payload merge/publication, prune plans, prepared loads, participant apply, production save admission/coalescing/cancellation, slots, recovery/retention/autosave, peer bridges, or project-wide DDOL.
+9. Preserve the complete `197 / 197` Chronicle regression floor.

@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-03
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.9.0
 **Prior checkpoint:** ESV-M3-02 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -152,35 +152,50 @@ Because unknown-payload carry-forward is not yet implemented, M3-03 must remain 
 
 It must not be presented as the final production save API for arbitrary historical saves. The later production save operation must preserve unclaimed durable participant payloads according to Chronicle policy before it can safely replace a current generation in real consumer workflows.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- successful one-participant generation publication;
-- successful multi-participant generation publication;
-- deterministic participant order survives serialization/read-back;
-- manifest inventory matches participant payload entries;
-- exact inline participant byte-length/checksum revalidation before storage;
-- duplicate participant ID rejected before storage;
-- invalid participant entry rejected before storage;
-- mismatched inventory rejected before storage;
-- unsupported byte-provider reference rejected before storage;
-- first participant-backed head publication;
-- second participant-backed head advances sequence and preserves prior generation;
-- candidate payload write failure preserves head;
-- candidate manifest write failure preserves head;
-- candidate verification failure preserves head;
-- generation publication failure preserves head;
-- published-generation revalidation failure preserves head;
-- head serialization failure preserves head;
-- head publication failure leaves orphan non-current;
-- empty/transport M2 publication remains green;
-- all prior **171 / 171** Chronicle tests remain green.
+- successful one-participant generation publication — **Pass**;
+- successful multi-participant generation publication — **Pass**;
+- deterministic participant order survives serialization/read-back — **Pass**;
+- manifest inventory matches participant payload entries after read-back — **Pass**;
+- exact inline participant UTF-8 byte-length revalidation before storage — **Pass**;
+- exact inline participant checksum revalidation before storage — **Pass**;
+- duplicate participant ID rejected before storage — **Pass**;
+- invalid participant ID/schema/serializer rejected before storage — **Pass**;
+- unsupported flags rejected before storage — **Pass**;
+- unsupported byte-provider reference rejected before storage — **Pass**;
+- mismatched inventory rejected before storage — **Pass**;
+- invalid participant capture batch causes zero storage mutation — **Pass**;
+- first participant-backed head publication — **Pass**;
+- second participant-backed head advances sequence and preserves prior generation — **Pass**;
+- candidate payload write failure preserves previous head — **Pass**;
+- candidate manifest write failure preserves previous head — **Pass**;
+- candidate verification corruption preserves previous head — **Pass**;
+- immutable generation publication failure preserves previous head — **Pass**;
+- published-generation revalidation corruption preserves previous head — **Pass**;
+- head serialization failure leaves new generation non-current/orphaned — **Pass**;
+- head publication failure leaves new generation non-current/orphaned — **Pass**;
+- existing M2 empty/transport publication path remains green — **Pass**;
+- all prior 171 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **197 / 197 passed, 0 failed**.
+
+Implementation note: one test-only accessibility correction was required before the final gate (`FaultPoint` was made public for a public parameterized NUnit test). Chronicle runtime behavior was unchanged.
 
 ## 7. Stop point
 
-Stop when Chronicle can durably publish one fully captured participant snapshot through the existing immutable-generation/head-last transaction while preserving the previous known-good generation across injected failures.
+**Reached.** Chronicle can durably publish one fully captured participant snapshot through the existing immutable-generation/head-last transaction while preserving the previous known-good generation across injected failures.
 
-Do not expose the path as production `SaveAsync` during ESV-M3-03.
+Implementation commit: `6970127`.
 
-The next bounded work must address the remaining production-operation concerns, especially unknown-payload preservation and explicit save-operation admission semantics, before Chronicle can safely present a consumer-facing save operation.
+Final focused Chronicle Editor gate: **197 / 197 passed, 0 failed**.
+
+The participant-backed publication path remains a bounded technical seam rather than production `SaveAsync`.
+
+Next bounded checkpoint:
+
+`ESV-M3-04 — Chronicle Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation`
+
+M3-04 may safely read and fully validate the current committed generation, classify durable participant entries against the active participant registry, and preserve unclaimed entries byte-for-byte in an in-memory `UnknownPayloadStore`.
+
+M3-04 must stop before unknown-payload merge/publication, participant deserialization/apply, migrations, prepared-load handles, production save-operation admission, autosave, recovery, retention, slot catalog/policy, peer bridges, or project-wide DDOL.

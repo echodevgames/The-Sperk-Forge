@@ -183,3 +183,32 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Save data cannot request CLR type activation.
 - Capture/type/serializer/integrity failure never exposes a publishable partial participant batch.
 - Capture performs no storage or generation/head mutation.
+
+### Added
+
+#### ESV-M3-03 — Participant-Backed Generation Publication and Head-Last Integration Foundation
+
+- Publication-boundary participant-batch revalidation.
+- Duplicate/order/schema/serializer/flags validation.
+- Exact inline UTF-8 byte-length and checksum verification before storage.
+- Payload/inventory agreement revalidation.
+- Participant-backed generation publication entry point.
+- Shared M2/M3 generation-first/head-last transaction core.
+- Participant-bearing payload and manifest construction.
+- Stored participant-entry revalidation after candidate and final reads.
+- Participant-backed first/second generation publication tests.
+- Injected candidate/generation/final-verification/head failure proofs.
+- Zero-storage-mutation proof for invalid participant batches.
+
+### Verified
+
+#### ESV-M3-03 Closeout
+
+- Implementation committed at `6970127`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **197 / 197**, with `0` failed.
+- All prior **171 / 171** Chronicle regressions remained green.
+- Candidate/generation/reverification failures preserve the previous known-good head.
+- Head serialization/publication failures leave the new generation non-current/orphaned.
+- Existing M2 empty/transport publication remains green.
+- One Editor-test accessibility hotfix was required before the final gate; no runtime behavior changed.

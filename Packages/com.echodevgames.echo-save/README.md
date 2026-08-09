@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M3-02 — Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation** with a focused Chronicle Editor gate of **171 / 171**. The active checkpoint is **ESV-M3-03 — Participant-Backed Generation Publication and Head-Last Integration Foundation**.
+Version `0.1.0` has completed **ESV-M3-03 — Participant-Backed Generation Publication and Head-Last Integration Foundation** with a focused Chronicle Editor gate of **197 / 197**. The active checkpoint is **ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation**.
 
 ESV-M1-01 proved:
 
@@ -23,11 +23,11 @@ ESV-M1-01 proved:
 
 Chronicle M2 provides path-safe local storage, package serialization, technical slot/generation identity, commit documents, SHA-256 integrity, verified immutable generation publication, and head-last current selection.
 
-ESV-M3-01 adds an open-ended participant contract and duplicate-safe deterministic runtime registry. ESV-M3-02 adds trusted live-code runtime DTO type routing, deterministic detached capture, serializer selection, exact UTF-8 participant byte lengths, per-entry integrity checksums, and all-or-nothing in-memory participant transport batches.
+ESV-M3-01 adds an open-ended participant registry. ESV-M3-02 adds trusted detached capture and verified in-memory participant transport batches. ESV-M3-03 joins those batches to the established generation-first/head-last durable transaction and proves participant-bearing generations across injected failures.
 
-ESV-M3-03 may now join only a successful verified participant batch to the existing M2 generation-first/head-last transaction. The publication boundary must revalidate participant entry/inventory structure and inline payload integrity before any candidate write.
+ESV-M3-04 may now read and fully validate the current committed generation and preserve any unclaimed participant entries as opaque in-memory `UnknownPayloadStore` data. Unknown entries remain byte-for-byte / field-for-field durable records and cannot execute code.
 
-It still does **not** authorize production `SaveAsync`, request admission/coalescing/cancellation, autosave, participant apply/load orchestration, unknown-payload preservation, migrations, slot/catalog behavior, recovery/retention, prepared loads, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+It still does **not** authorize unknown-payload merge/carry-forward publication, prune plans, production `SaveAsync`, participant deserialization/apply, prepared loads, migrations, slot/catalog behavior, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 Those capabilities remain governed by later Chronicle checkpoints.
 
