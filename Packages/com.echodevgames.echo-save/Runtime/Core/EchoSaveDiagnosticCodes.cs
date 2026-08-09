@@ -35,5 +35,26 @@ namespace EchoDevGames.EchoSave
 
         internal const string StorageInvalidData =
             "ESV-STORAGE-007";
+
+        internal const string SerializerInvalidRequest =
+            "ESV-SERIAL-001";
+
+        internal const string SerializerMalformedData =
+            "ESV-SERIAL-002";
+
+        internal const string SerializerUnsupportedDocumentVersion =
+            "ESV-SERIAL-003";
+
+        internal const string SerializerDuplicateProvider =
+            "ESV-SERIAL-004";
+
+        internal const string SerializerProviderNotFound =
+            "ESV-SERIAL-005";
+
+        internal const string SerializerFailure =
+            "ESV-SERIAL-006";
+
+        internal const string SerializerInvalidDocument =
+            "ESV-SERIAL-007";
     }
 }
