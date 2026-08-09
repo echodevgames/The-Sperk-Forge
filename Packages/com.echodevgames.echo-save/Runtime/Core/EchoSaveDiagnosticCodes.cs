@@ -113,5 +113,29 @@ namespace EchoDevGames.EchoSave
 
         internal const string PublicationHeadFailed =
             "ESV-PUBLISH-008";
+
+        internal const string ParticipantInvalidId =
+            "ESV-PART-001";
+
+        internal const string ParticipantInvalidDescriptor =
+            "ESV-PART-002";
+
+        internal const string ParticipantDuplicateId =
+            "ESV-PART-003";
+
+        internal const string ParticipantRequiredMissing =
+            "ESV-PART-004";
+
+        internal const string ParticipantAliasCollision =
+            "ESV-PART-005";
+
+        internal const string ParticipantCaptureFailed =
+            "ESV-PART-006";
+
+        internal const string ParticipantApplyFailed =
+            "ESV-PART-007";
+
+        internal const string ParticipantNotFound =
+            "ESV-PART-008";
     }
 }
