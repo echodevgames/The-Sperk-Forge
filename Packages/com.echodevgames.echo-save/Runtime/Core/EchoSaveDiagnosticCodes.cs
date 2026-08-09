@@ -56,5 +56,32 @@ namespace EchoDevGames.EchoSave
 
         internal const string SerializerInvalidDocument =
             "ESV-SERIAL-007";
+
+        internal const string IntegrityInvalidRequest =
+            "ESV-INTEGRITY-001";
+
+        internal const string IntegrityMismatch =
+            "ESV-INTEGRITY-002";
+
+        internal const string IntegrityFailure =
+            "ESV-INTEGRITY-003";
+
+        internal const string DocumentInvalidIdentity =
+            "ESV-DOC-001";
+
+        internal const string DocumentIdentityMismatch =
+            "ESV-DOC-002";
+
+        internal const string DocumentPayloadLengthMismatch =
+            "ESV-DOC-003";
+
+        internal const string DocumentUnsupportedIntegrityProvider =
+            "ESV-DOC-004";
+
+        internal const string DocumentInventoryMismatch =
+            "ESV-DOC-005";
+
+        internal const string DocumentInvalidHead =
+            "ESV-DOC-006";
     }
 }
