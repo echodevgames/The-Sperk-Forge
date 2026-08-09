@@ -8,6 +8,12 @@
         "com.unity.ugui": "2.0.0"
       }
     },
+    "com.echodevgames.echo-save": {
+      "version": "file:com.echodevgames.echo-save",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.burst": {
       "version": "1.8.27",
       "depth": 2,
