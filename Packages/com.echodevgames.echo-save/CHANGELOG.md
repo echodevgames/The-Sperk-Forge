@@ -154,3 +154,32 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - All prior **102 / 102** Chronicle regressions remained green.
 - Registry operations perform no durable I/O and do not invoke participant capture/apply.
 - Chronicle core contains no predefined participant catalog.
+
+### Added
+
+#### ESV-M3-02 — Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation
+
+- Optional `IRuntimeTypeSaveSerializer` capability.
+- Optional `ISaveTypedParticipant` capability.
+- Trusted live-code runtime DTO type routing for Unity JSON.
+- Deterministic participant capture coordinator.
+- Explicit/default serializer-provider resolution.
+- Detached DTO null/type/live-Unity-object validation.
+- Exact UTF-8 participant payload byte-length calculation.
+- Per-entry integrity checksum calculation.
+- `SavePayloadEntry` and matching `SavePayloadInventoryEntry` construction.
+- All-or-nothing capture-batch failure semantics.
+- Defensive-copy capture-batch results.
+- Future-participant same-pipeline proof.
+
+### Verified
+
+#### ESV-M3-02 Closeout
+
+- Implementation committed at `e34d6d7`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **171 / 171**, with `0` failed.
+- All prior **147 / 147** Chronicle regressions remained green.
+- Save data cannot request CLR type activation.
+- Capture/type/serializer/integrity failure never exposes a publishable partial participant batch.
+- Capture performs no storage or generation/head mutation.

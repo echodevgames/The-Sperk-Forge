@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M3-01 – Chronicle Participant Contracts, Descriptor Validation, and Duplicate-Safe Registry Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 complete; ESV-M3-02 active / authorized
+**Completed package checkpoint:** ESV-M3-02 – Chronicle Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 and ESV-M3-02 complete; ESV-M3-03 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M3-01 complete at `b3b5f9f` with 147 / 147; ESV-M3-02 active / authorized** |
+| Chronicle implementation | **ESV-M3-02 complete at `e34d6d7` with 171 / 171; ESV-M3-03 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -77,7 +77,7 @@ Chronicle M1 is complete:
 4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
 5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
 
-`ESV-M3-01` is complete at `b3b5f9f`; the focused Chronicle Editor gate passed **147 / 147**. The participant registry is open-ended, deterministic, duplicate-safe, alias-safe, and memory-only. `ESV-M3-02` is active / authorized for deterministic detached participant capture, runtime-only DTO type routing, serializer resolution, and in-memory package payload-entry construction. Physical participant generation publication, loading/apply, unknown payloads, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+`ESV-M3-02` is complete at `e34d6d7`; the focused Chronicle Editor gate passed **171 / 171**. Chronicle can now convert the open-ended participant registry into one verified all-or-nothing in-memory participant transport batch without storage mutation. `ESV-M3-03` is active / authorized to join that batch to the already-proven immutable-generation/head-last transaction. Production `SaveAsync`, unknown-payload preservation, loading/apply, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -96,4 +96,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-01` is **complete** with **147 / 147** focused Chronicle Editor tests. `ESV-M3-02` is **active / authorized** for detached capture and in-memory payload-entry construction only. Physical generation integration, production save orchestration, loading/apply, unknown-payload preservation, migrations, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M3-02` is **complete** with **171 / 171** focused Chronicle Editor tests. `ESV-M3-03` is **active / authorized** for participant-bearing immutable-generation publication/head-last integration only. Production save orchestration, loading/apply, unknown-payload preservation, migrations, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

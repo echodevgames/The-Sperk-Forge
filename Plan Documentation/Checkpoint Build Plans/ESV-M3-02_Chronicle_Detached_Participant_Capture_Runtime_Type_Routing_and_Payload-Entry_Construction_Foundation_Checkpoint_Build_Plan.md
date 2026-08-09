@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-02
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.8.0
 **Prior checkpoint:** ESV-M3-01 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -153,33 +153,47 @@ M3-02 tests must prove:
 - registry registration remains open-ended;
 - no generation/head/storage mutation occurs.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- trusted participant runtime DTO type declaration;
-- runtime-type serializer round trip for Unity JSON DTO;
-- no durable CLR type-name field in package payload entries/documents;
-- deterministic two/three-participant capture ordering;
-- explicit/default serializer resolution;
-- exact payload byte-length proof;
-- exact SHA-256 checksum proof;
-- payload/inventory metadata agreement;
-- Required/Optional projection;
-- capture failure abort;
-- null capture abort;
-- wrong detached-state type abort;
-- missing serializer abort;
-- serializer failure abort;
-- integrity failure abort;
-- future/unanticipated participant capture through same pipeline;
-- zero storage/publication side effects;
-- all prior **147 / 147** Chronicle tests remain green.
+- trusted participant runtime DTO type declaration — **Pass**;
+- runtime-type Unity JSON DTO round trip — **Pass**;
+- save transport contains no CLR/assembly-qualified type metadata — **Pass**;
+- deterministic canonical participant capture order — **Pass**;
+- explicit serializer resolution — **Pass**;
+- default Unity JSON serializer resolution — **Pass**;
+- exact UTF-8 participant payload byte-length proof — **Pass**;
+- exact SHA-256 participant payload checksum proof — **Pass**;
+- payload/inventory metadata agreement — **Pass**;
+- Required/Optional transport projection — **Pass**;
+- participant capture failure aborts whole batch — **Pass**;
+- null successful capture aborts whole batch — **Pass**;
+- detached-state type mismatch aborts whole batch — **Pass**;
+- untyped participant aborts detached capture — **Pass**;
+- missing serializer provider aborts whole batch — **Pass**;
+- serializer without runtime-Type capability aborts whole batch — **Pass**;
+- serializer failure aborts whole batch — **Pass**;
+- integrity failure aborts whole batch — **Pass**;
+- future/unanticipated participant uses the same capture pipeline — **Pass**;
+- batch entry access is defensively copied — **Pass**;
+- capture coordinator performs no filesystem/publication mutation — **Pass**;
+- all prior 147 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **171 / 171 passed, 0 failed**.
 
 ## 7. Stop point
 
-Stop when Chronicle can transform the active participant registry into one fully validated in-memory participant transport batch.
+**Reached.** Chronicle can transform the active participant registry into one fully validated, all-or-nothing in-memory participant transport batch.
 
-Do not write that batch into a generation during ESV-M3-02.
+Implementation commit: `e34d6d7`.
 
-The next checkpoint may deliberately join the M3 capture batch to the already-proven M2 immutable-generation/head-last transaction.
+Final focused Chronicle Editor gate: **171 / 171 passed, 0 failed**.
+
+The capture batch still performs no storage mutation and no generation/head publication.
+
+Next bounded checkpoint:
+
+`ESV-M3-03 — Chronicle Participant-Backed Generation Publication and Head-Last Integration Foundation`
+
+M3-03 may feed a successful captured participant batch into the already-proven M2 immutable-generation transaction, publish the participant-bearing payload/manifest candidate, verify it, publish the generation, and update `head.json` last.
+
+M3-03 must remain a bounded technical integration seam. It does not yet authorize production `SaveAsync`, save admission/coalescing/cancellation policy, unknown-payload carry-forward, load/apply, migrations, slot catalog/policy, recovery, retention, or autosave.

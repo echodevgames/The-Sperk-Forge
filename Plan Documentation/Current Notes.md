@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-02 — Chronicle Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation
-**Current checkpoint:** ESV-M3-02 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-03 — Chronicle Participant-Backed Generation Publication and Head-Last Integration Foundation
+**Current checkpoint:** ESV-M3-03 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,60 +78,75 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-01 Closeout
+## Chronicle ESV-M3-02 Closeout
 
-- Implementation commit: `b3b5f9f`.
+- Implementation commit: `e34d6d7`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **147 / 147 passed, 0 failed**.
-- The complete prior **102 / 102** Chronicle regression floor remained green.
-- M3-01 added `SaveParticipantId`, criticality/missing-payload policy, validated descriptors with bounded aliases, `ISaveParticipant`, capture/apply-facing result contracts, structured registration results, disposable ownership leases, immutable registry snapshots, and the duplicate-safe deterministic registry.
-- Canonical/canonical, canonical/alias, alias/canonical, and alias/alias collisions reject before registry mutation.
-- Stale registration handles cannot evict later replacement registrations.
-- Registry snapshots are deterministic by canonical participant ID and aliases do not create duplicate participant entries.
-- Registration remains application-session runtime state and performs no durable I/O.
-- Registry operations never invoke participant `Capture()` or `Apply()`.
-- **Open-ended seat invariant proven:** Chronicle contains no predefined participant catalog. A future participant can register through the same public contract without editing Chronicle core.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **171 / 171 passed, 0 failed**.
+- The complete prior **147 / 147** Chronicle regression floor remained green.
+- M3-02 added optional runtime-Type serializer capability and optional typed-participant capability without breaking the M3-01 base contracts.
+- Active live registration code remains the only authority for detached DTO runtime type.
+- Save data stores no CLR/assembly-qualified type name and cannot request arbitrary type activation.
+- Participant capture is deterministic by canonical participant ID.
+- Default/explicit serializer provider resolution is proven.
+- Successful captures become package-owned `SavePayloadEntry` plus matching `SavePayloadInventoryEntry` records entirely in memory.
+- Exact UTF-8 participant payload byte lengths and per-entry SHA-256 checksums are captured.
+- Capture/type/serializer/integrity failure aborts the entire batch rather than exposing a publishable partial batch.
+- Future/unanticipated participants flow through the same capture pipeline.
+- Capture orchestration performs no filesystem or generation/head mutation.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-02 — Chronicle Detached Participant Capture, Runtime Type Routing, and Payload-Entry Construction Foundation` is active / authorized.
+`ESV-M3-03 — Chronicle Participant-Backed Generation Publication and Head-Last Integration Foundation` is active / authorized.
 
 Authorized next:
-- runtime-only detached DTO type declaration/routing owned by the active participant contract;
-- serializer-provider resolution by stable `SaveSerializerId`;
-- type-aware serializer entry points that operate on the participant-declared runtime DTO type without storing CLR type names in save files;
-- deterministic participant capture order from the registry snapshot;
-- participant `Capture()` invocation only during explicit capture orchestration;
-- validation that a successful capture returns non-null detached data compatible with the participant-declared DTO type;
-- conversion of each successful capture into package-owned `SavePayloadEntry`;
-- construction of matching `SavePayloadInventoryEntry` records;
-- UTF-8 byte-length calculation for serialized participant payload strings;
-- per-entry integrity checksum generation using the configured `IIntegrityProvider`;
-- required/optional metadata projection from the participant descriptor;
-- fail-whole-batch behavior for capture, serializer-resolution, serialization, type, or integrity failure;
-- structured capture-batch result/diagnostics;
-- all capture and entry construction remain **in memory only**;
-- all prior **147 / 147** Chronicle regressions remain green.
+- preserve the existing empty/transport M2 publication path for regression/backward test use;
+- add a bounded participant-bearing generation publication entry point;
+- accept only a successful `SaveParticipantCaptureBatchResult`;
+- defensively copy/revalidate participant payload and inventory records at the publication boundary;
+- verify inline participant payload byte lengths/checksums before any candidate write;
+- reject null entries, mismatched payload/inventory counts, duplicate participant IDs, invalid technical participant IDs, invalid schema versions, empty serializer IDs, invalid flags, or unsupported byte-provider references before storage mutation;
+- construct `SavePayloadDocument.entries` from the captured participant batch;
+- construct `SaveManifest.payloadEntries` from the matching inventory batch;
+- serialize the whole payload document and calculate its existing generation-level payload byte length/checksum;
+- use the already-proven M2 candidate-write → candidate-verify → immutable-generation-publish → published-generation-reverify → `head.json` LAST sequence;
+- prove first participant-backed save and second participant-backed save with prior-generation preservation;
+- prove every pre-head failure leaves the previous head authoritative;
+- prove failed final head publication leaves the newly published participant generation orphaned/non-current;
+- preserve participant entry order and manifest inventory agreement through disk round trip;
+- preserve all prior **171 / 171** Chronicle regressions.
 
 Still deferred:
-- writing participant entries into candidate/final generation files;
-- integrating participant capture with the M2 publication coordinator;
-- production `SaveAsync` operation admission/cancellation/coalescing;
+- production `SaveAsync`;
+- capture + publication operation admission/permission/coalescing/cancellation;
+- autosave;
+- unknown-payload preservation/carry-forward/prune;
 - participant apply;
-- `PreparedSaveLoad` / convenience load;
-- unknown-payload preservation/carry-forward;
+- `PreparedSaveLoad` and convenience load;
 - participant/document migrations;
-- slot catalog/policy;
-- recovery/retention/autosave;
+- slot catalog/policy and active-slot service;
+- recovery/retention;
 - peer bridges and project-wide DDOL composition.
 
-### Runtime type-routing rule
+### M3-03 reliability rule
 
-Chronicle must never persist or trust a CLR type name from save data.
+M3-03 is the first technical join between the M3 participant snapshot and the M2 durable transaction.
 
-A registered participant may declare the runtime detached DTO type it owns. Chronicle may use that **live registration authority** to route serialization/deserialization through the selected serializer provider. Save documents continue to store only stable participant IDs, participant schema versions, serializer IDs, payload bytes/text, checksums, and flags.
+It must not weaken either half:
 
-This keeps type authority on the running code side rather than allowing a save file to request arbitrary type activation.
+```text
+participant registry
+  → detached capture
+  → fully verified in-memory batch
+  → publication boundary revalidation
+  → candidate generation
+  → candidate read-back verification
+  → immutable generation publication
+  → published-generation revalidation
+  → head LAST
+```
+
+A failed capture batch never enters publication. A failed publication never exposes a mixed or partial participant set as current.
 
 
 ## Suite Distribution Kit Standard
@@ -317,11 +332,10 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the exact repository/Unity baseline after the ESV-M3-01 closeout.
-2. Implement only `ESV-M3-02`: runtime DTO type routing, deterministic detached capture, serializer resolution, in-memory `SavePayloadEntry` / inventory construction, and per-entry integrity proof.
-3. Preserve the open-ended participant rule. Do not add a central compile-time participant catalog.
-4. Never store or activate CLR type names from save files; runtime type authority comes from the currently registered participant.
-5. Abort the capture batch on any participant capture/type/serializer/integrity failure rather than constructing a silently partial save candidate.
-6. Do **not** write generation files or update `head.json` during this checkpoint.
-7. Do **not** activate load/apply, unknown-payload carry-forward, migration, slot policy, recovery, retention, autosave, peer bridges, or project-wide DDOL.
-8. Preserve the complete `147 / 147` Chronicle regression floor.
+1. Rehydrate the exact repository/Unity baseline after the ESV-M3-02 closeout.
+2. Implement only `ESV-M3-03`: participant-batch publication-boundary validation plus participant-bearing integration with the existing M2 immutable-generation/head-last transaction.
+3. Preserve `PublishEmptyTransportGeneration` or equivalent M2 proof behavior while adding the new participant-backed path.
+4. Revalidate participant entry/inventory agreement, IDs, schema versions, serializers, inline byte lengths, and checksums before any candidate write.
+5. Keep publication generation-first and `head.json` last; preserve the previous known-good head on every pre-head failure.
+6. Do **not** introduce production `SaveAsync`, request admission/coalescing/cancellation, autosave, unknown-payload carry-forward, load/apply, migrations, slot policy, recovery/retention, peer bridges, or project-wide DDOL.
+7. Preserve the complete `171 / 171` Chronicle regression floor.
