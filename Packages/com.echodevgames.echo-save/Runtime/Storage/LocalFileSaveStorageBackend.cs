@@ -11,7 +11,7 @@ namespace EchoDevGames.EchoSave
     /// knowledge of Chronicle documents, slots, generations, or participants.
     /// </summary>
     public sealed class LocalFileSaveStorageBackend :
-        ISaveStorageBackend
+        ISaveStoragePublicationBackend
     {
         private static readonly
             SaveStorageBackendId BackendId =
@@ -43,6 +43,15 @@ namespace EchoDevGames.EchoSave
             BackendId;
 
         public string RootPath { get; }
+
+        public SaveStoragePublicationCapabilities
+            PublicationCapabilities =>
+            new SaveStoragePublicationCapabilities(
+                supportsNewTreePublication: true,
+                supportsCurrentObjectPublication: true,
+                usesSameRootDirectoryMove: true,
+                usesNativeReplaceForExistingCurrent: true,
+                claimsPowerLossAtomicity: false);
 
         public SaveStorageResult Initialize()
         {
@@ -348,6 +357,234 @@ namespace EchoDevGames.EchoSave
             }
         }
 
+
+        public SaveStorageResult PublishNewTree(
+            SaveStorageKey sourceDirectoryKey,
+            SaveStorageKey destinationDirectoryKey)
+        {
+            SaveStorageResult ready =
+                EnsureReady();
+
+            if (!ready.Succeeded)
+            {
+                return ready;
+            }
+
+            SaveStorageResult sourceResolved =
+                Resolve(
+                    sourceDirectoryKey,
+                    out string sourcePath);
+
+            if (!sourceResolved.Succeeded)
+            {
+                return sourceResolved;
+            }
+
+            SaveStorageResult destinationResolved =
+                Resolve(
+                    destinationDirectoryKey,
+                    out string destinationPath);
+
+            if (!destinationResolved.Succeeded)
+            {
+                return destinationResolved;
+            }
+
+            if (string.Equals(
+                    sourcePath,
+                    destinationPath,
+                    Path.DirectorySeparatorChar == '\\'
+                        ? StringComparison.OrdinalIgnoreCase
+                        : StringComparison.Ordinal))
+            {
+                return new SaveStorageResult(
+                    SaveStorageStatus.InvalidPath,
+                    EchoSaveDiagnosticCodes
+                        .StorageInvalidPath,
+                    "Chronicle publication source and destination directories must differ.");
+            }
+
+            try
+            {
+                if (!Directory.Exists(
+                        sourcePath))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.NotFound,
+                        EchoSaveDiagnosticCodes
+                            .StorageNotFound,
+                        "The Chronicle publication source directory was not found.");
+                }
+
+                if (Directory.Exists(
+                        destinationPath) ||
+                    File.Exists(
+                        destinationPath))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.Conflict,
+                        EchoSaveDiagnosticCodes
+                            .StorageConflict,
+                        "The Chronicle publication destination already exists.");
+                }
+
+                string destinationParent =
+                    Path.GetDirectoryName(
+                        destinationPath);
+
+                if (string.IsNullOrEmpty(
+                        destinationParent))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.InvalidPath,
+                        EchoSaveDiagnosticCodes
+                            .StorageInvalidPath,
+                        "The Chronicle publication destination has no containing directory.");
+                }
+
+                Directory.CreateDirectory(
+                    destinationParent);
+
+                Directory.Move(
+                    sourcePath,
+                    destinationPath);
+
+                return SaveStorageResult.Success(
+                    "The Chronicle storage tree was published through a same-root directory move.");
+            }
+            catch (Exception exception)
+                when (IsExpectedIoException(
+                    exception))
+            {
+                return IoFailure(
+                    EchoSaveDiagnosticCodes
+                        .StoragePublicationFailed,
+                    "The Chronicle storage tree publication failed.",
+                    exception);
+            }
+        }
+
+        public SaveStorageResult PublishCurrentObject(
+            SaveStorageKey key,
+            byte[] data)
+        {
+            SaveStorageResult ready =
+                EnsureReady();
+
+            if (!ready.Succeeded)
+            {
+                return ready;
+            }
+
+            if (data == null)
+            {
+                return new SaveStorageResult(
+                    SaveStorageStatus.Failed,
+                    EchoSaveDiagnosticCodes
+                        .StorageInvalidData,
+                    "Chronicle current-object publication cannot write a null byte payload.");
+            }
+
+            SaveStorageResult resolved =
+                Resolve(
+                    key,
+                    out string fullPath);
+
+            if (!resolved.Succeeded)
+            {
+                return resolved;
+            }
+
+            string pendingPath =
+                string.Empty;
+
+            try
+            {
+                string directory =
+                    Path.GetDirectoryName(
+                        fullPath);
+
+                if (string.IsNullOrEmpty(
+                        directory))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.InvalidPath,
+                        EchoSaveDiagnosticCodes
+                            .StorageInvalidPath,
+                        "The Chronicle current object has no containing directory.");
+                }
+
+                Directory.CreateDirectory(
+                    directory);
+
+                pendingPath =
+                    fullPath +
+                    ".chronicle-pending-" +
+                    Guid.NewGuid()
+                        .ToString("N") +
+                    ".tmp";
+
+                using (FileStream stream =
+                    new FileStream(
+                        pendingPath,
+                        FileMode.CreateNew,
+                        FileAccess.Write,
+                        FileShare.None))
+                {
+                    stream.Write(
+                        data,
+                        0,
+                        data.Length);
+                    stream.Flush();
+                }
+
+                if (File.Exists(
+                        fullPath))
+                {
+                    File.Replace(
+                        pendingPath,
+                        fullPath,
+                        null);
+                }
+                else
+                {
+                    File.Move(
+                        pendingPath,
+                        fullPath);
+                }
+
+                pendingPath =
+                    string.Empty;
+
+                return SaveStorageResult.Success(
+                    "The Chronicle current object was published through the platform file move/replace primitive.");
+            }
+            catch (PlatformNotSupportedException exception)
+            {
+                TryRemovePendingPublication(
+                    pendingPath);
+
+                return IoFailure(
+                    EchoSaveDiagnosticCodes
+                        .StoragePublicationUnsupported,
+                    "The Chronicle platform does not support the requested current-object replacement primitive.",
+                    exception);
+            }
+            catch (Exception exception)
+                when (IsExpectedIoException(
+                    exception))
+            {
+                TryRemovePendingPublication(
+                    pendingPath);
+
+                return IoFailure(
+                    EchoSaveDiagnosticCodes
+                        .StoragePublicationFailed,
+                    "The Chronicle current-object publication failed.",
+                    exception);
+            }
+        }
+
         public SaveStorageResult Shutdown()
         {
             if (!initialized)
@@ -401,6 +638,32 @@ namespace EchoDevGames.EchoSave
             exception is ArgumentException ||
             exception is NotSupportedException ||
             exception is PathTooLongException;
+
+
+        private static void TryRemovePendingPublication(
+            string pendingPath)
+        {
+            if (string.IsNullOrEmpty(
+                    pendingPath))
+            {
+                return;
+            }
+
+            try
+            {
+                if (File.Exists(
+                        pendingPath))
+                {
+                    File.Delete(
+                        pendingPath);
+                }
+            }
+            catch
+            {
+                // Pending publication material is never current authority.
+                // Later recovery/quarantine work owns policy for leftovers.
+            }
+        }
 
         private static void TryRemoveFailedCreation(
             string fullPath,

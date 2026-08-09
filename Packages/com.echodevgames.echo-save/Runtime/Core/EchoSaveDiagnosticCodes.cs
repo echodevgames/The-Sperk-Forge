@@ -83,5 +83,35 @@ namespace EchoDevGames.EchoSave
 
         internal const string DocumentInvalidHead =
             "ESV-DOC-006";
+
+        internal const string StoragePublicationUnsupported =
+            "ESV-STORAGE-008";
+
+        internal const string StoragePublicationFailed =
+            "ESV-STORAGE-009";
+
+        internal const string PublicationInvalidRequest =
+            "ESV-PUBLISH-001";
+
+        internal const string PublicationBackendUnsupported =
+            "ESV-PUBLISH-002";
+
+        internal const string PublicationExistingHeadInvalid =
+            "ESV-PUBLISH-003";
+
+        internal const string PublicationSerializationFailed =
+            "ESV-PUBLISH-004";
+
+        internal const string PublicationCandidateWriteFailed =
+            "ESV-PUBLISH-005";
+
+        internal const string PublicationCandidateVerificationFailed =
+            "ESV-PUBLISH-006";
+
+        internal const string PublicationGenerationFailed =
+            "ESV-PUBLISH-007";
+
+        internal const string PublicationHeadFailed =
+            "ESV-PUBLISH-008";
     }
 }
