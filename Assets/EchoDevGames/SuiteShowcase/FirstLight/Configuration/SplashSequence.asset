@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.SplashSequence
   sequenceId: 22dfa9278bc84acc8715431ee710f775
   schemaVersion: 1
+  hasAuthoredPresentationSettings: 1
+  presentationSettings:
+    presentationMode: 1
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    allowUserAdvance: 1
   entries:
   - entryId: 74533cadf2c34866816f99b52b1f2392
     image: {fileID: 21300000, guid: 9d0f5cc735c0ee24495b44e86b7d7162, type: 3}
@@ -24,6 +29,9 @@ MonoBehaviour:
     fadeOutSeconds: 0.75
     minimumDisplaySeconds: 1.5
     skipPolicy: 1
+    motionStyle: 1
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
   - entryId: aead8cd4f3a34e1c8b7a7c0d7b503791
     image: {fileID: 21300000, guid: 3268917a7027c1748b6c98517914f5ab, type: 3}
     preferredAudioClip: {fileID: 0}
@@ -32,4 +40,7 @@ MonoBehaviour:
     holdSeconds: 3
     fadeOutSeconds: 0.75
     minimumDisplaySeconds: 1.5
-    skipPolicy: 1
+    skipPolicy: 0
+    motionStyle: 0
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
