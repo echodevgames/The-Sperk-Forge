@@ -158,5 +158,8 @@ namespace EchoDevGames.EchoSave
 
         internal const string ParticipantCaptureRegistryChanged =
             "ESV-PART-015";
+
+        internal const string PublicationParticipantBatchInvalid =
+            "ESV-PUBLISH-009";
     }
 }

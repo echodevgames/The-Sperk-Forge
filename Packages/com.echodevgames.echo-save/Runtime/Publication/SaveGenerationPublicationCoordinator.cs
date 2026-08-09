@@ -6,8 +6,12 @@ using System.Text;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// Bounded M2-04 coordinator for package-owned empty/transport generation
-    /// publication. This is not the production SaveAsync participant pipeline.
+    /// Bounded Chronicle generation publication coordinator.
+    ///
+    /// M2-04 established the empty/transport transaction. M3-03 adds a
+    /// participant-backed technical integration entry point that reuses the
+    /// same candidate-write, immutable-generation, verification, and head-last
+    /// transaction. This remains a bounded technical publication seam.
     /// </summary>
     internal sealed class SaveGenerationPublicationCoordinator
     {
@@ -55,13 +59,80 @@ namespace EchoDevGames.EchoSave
                 string projectId,
                 string projectVersion,
                 string buildId,
-                string displayName)
+                string displayName) =>
+            PublishTransportGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                Array.Empty<SavePayloadEntry>(),
+                Array.Empty<SavePayloadInventoryEntry>(),
+                false);
+
+        internal SaveGenerationPublicationResult
+            PublishParticipantTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SaveParticipantCaptureBatchResult captureBatch)
+        {
+            SaveDocumentValidationResult batchValidation =
+                SaveParticipantPublicationBatchValidator
+                    .ValidateCaptureBatch(
+                        captureBatch,
+                        integrityProvider,
+                        out SavePayloadEntry[] payloadEntries,
+                        out SavePayloadInventoryEntry[] inventoryEntries);
+
+            if (!batchValidation.Succeeded)
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.InvalidRequest,
+                    string.IsNullOrEmpty(
+                        batchValidation.DiagnosticCode)
+                        ? EchoSaveDiagnosticCodes
+                            .PublicationParticipantBatchInvalid
+                        : batchValidation.DiagnosticCode,
+                    batchValidation.Message,
+                    slotId,
+                    default,
+                    false);
+            }
+
+            return PublishTransportGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                payloadEntries,
+                inventoryEntries,
+                true);
+        }
+
+        private SaveGenerationPublicationResult
+            PublishTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SavePayloadEntry[] payloadEntries,
+                SavePayloadInventoryEntry[] inventoryEntries,
+                bool participantBacked)
         {
             if (storageBackend == null ||
                 serializer == null ||
                 integrityProvider == null ||
                 clock == null ||
                 generationFactory == null ||
+                payloadEntries == null ||
+                inventoryEntries == null ||
+                payloadEntries.Length !=
+                    inventoryEntries.Length ||
                 !SaveSlotId.TryParse(
                     slotId.Value,
                     out SaveSlotId validatedSlot))
@@ -70,7 +141,7 @@ namespace EchoDevGames.EchoSave
                     SaveGenerationPublicationStatus.InvalidRequest,
                     EchoSaveDiagnosticCodes
                         .PublicationInvalidRequest,
-                    "Chronicle generation publication requires valid providers and one valid slot ID.",
+                    "Chronicle generation publication requires valid providers, matching payload/inventory arrays, and one valid slot ID.",
                     slotId,
                     default,
                     false);
@@ -83,7 +154,7 @@ namespace EchoDevGames.EchoSave
                     SaveGenerationPublicationStatus.BackendUnsupported,
                     EchoSaveDiagnosticCodes
                         .PublicationBackendUnsupported,
-                    "The active Chronicle storage backend does not provide the M2-04 publication capability seam.",
+                    "The active Chronicle storage backend does not provide the required publication capability seam.",
                     validatedSlot,
                     default,
                     false);
@@ -99,7 +170,7 @@ namespace EchoDevGames.EchoSave
                     SaveGenerationPublicationStatus.BackendUnsupported,
                     EchoSaveDiagnosticCodes
                         .PublicationBackendUnsupported,
-                    "The active Chronicle storage backend does not advertise all publication primitives required by M2-04.",
+                    "The active Chronicle storage backend does not advertise all publication primitives required by Chronicle generation publication.",
                     validatedSlot,
                     default,
                     false);
@@ -158,8 +229,7 @@ namespace EchoDevGames.EchoSave
                     generationId =
                         generationId.Value,
                     entries =
-                        Array.Empty<
-                            SavePayloadEntry>()
+                        payloadEntries
                 };
 
             SaveSerializerResult serializedPayload =
@@ -218,7 +288,9 @@ namespace EchoDevGames.EchoSave
                     updatedUtc =
                         technicalTimestamp,
                     saveKind =
-                        "transport",
+                        participantBacked
+                            ? "participant"
+                            : "transport",
                     projectId =
                         projectId ?? string.Empty,
                     projectVersion =
@@ -234,8 +306,7 @@ namespace EchoDevGames.EchoSave
                     integrityAlgorithm =
                         integrityProvider.Id.Value,
                     payloadEntries =
-                        Array.Empty<
-                            SavePayloadInventoryEntry>(),
+                        inventoryEntries,
                     commitState =
                         SaveGenerationCommitState.Committed
                 };
@@ -430,7 +501,9 @@ namespace EchoDevGames.EchoSave
             return new SaveGenerationPublicationResult(
                 SaveGenerationPublicationStatus.Succeeded,
                 string.Empty,
-                "The Chronicle transport generation was verified, published, and selected by a head-last commit.",
+                participantBacked
+                    ? "The Chronicle participant generation was verified, published, and selected by a head-last commit."
+                    : "The Chronicle transport generation was verified, published, and selected by a head-last commit.",
                 validatedSlot,
                 generationId,
                 true,
@@ -631,6 +704,24 @@ namespace EchoDevGames.EchoSave
                     expectedGeneration,
                     generationPublished,
                     agreement.Message);
+            }
+
+            SaveDocumentValidationResult participantEntries =
+                SaveParticipantPublicationBatchValidator
+                    .ValidateStoredEntries(
+                        payload.entries ??
+                            Array.Empty<SavePayloadEntry>(),
+                        manifest.payloadEntries ??
+                            Array.Empty<SavePayloadInventoryEntry>(),
+                        integrityProvider);
+
+            if (!participantEntries.Succeeded)
+            {
+                return VerificationFailure(
+                    expectedSlot,
+                    expectedGeneration,
+                    generationPublished,
+                    participantEntries.Message);
             }
 
             return new SaveGenerationPublicationResult(
