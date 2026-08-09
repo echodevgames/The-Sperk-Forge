@@ -15,12 +15,14 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - Permanent project-owned examples: `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/First Light Example/**` and `UMBRA Example/**`
 - Final Setup-focused evidence: `224 / 224`
 - Retained FL-M5-07 full-suite evidence: `809 / 809` automated and `12 / 12` manual Laboratory
-- Qualification boundary: clean-project reproduction, fresh full-suite regression, distribution-route proof, player-build/release qualification, and private beta are not claimed by FL-M6-01.
+- Distribution snapshot: repository-owned `Distributions/First Light/0.1.0/` kit with tarball + complete handout + manifest + SHA-256/build record; external tarball route proof remains pending.
+- Qualification boundary: clean-project reproduction, fresh full-suite regression, distribution-route support, player-build/release qualification, and private beta are not claimed by FL-M6-01.
 
 ## User Documentation
 
 - [Installation](User/Installation.md)
 - [Quick Start](User/Quick%20Start.md)
+- [Complete User Handout](User/Complete%20User%20Handout.md)
 
 ## Developer Documentation
 

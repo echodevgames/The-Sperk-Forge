@@ -2,7 +2,7 @@
 
 **Document ID:** SFGSS-001
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 
 **Status:** Approved documentation standard
 
@@ -10,15 +10,17 @@
 
 **Project boundary:** Independent solo project; not an Isekai Studios product
 
-**Parent authority:** SFGSS-000 v0.24.0 — The Sperk’s Forge Game Systems Suite Bible
+**Parent authority:** SFGSS-000 v0.25.0 — The Sperk’s Forge Game Systems Suite Bible
 
 **Current development baseline:** Unity 6000.3.8f1
 
-**Last updated:** August 8, 2026
+**Last updated:** August 9, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
 > **v1.3.0 Reference Showcase reconciliation:** Every package specification now defines an in-house production-style Package Reference Showcase, or a justified non-scene equivalent, in addition to its Standalone Test Lab. The Reference Showcase is project-owned consumer proof and never replaces isolated Laboratory evidence.
+
+> **v1.4.0 Distribution Kit reconciliation:** Every independently distributed package specification must now define its versioned repository Distribution Kit, including the exact artifact, complete user handout, manifest, integrity/build records, and honest qualification state. Kit creation prepares evidence; it never converts an untested installation route into a supported claim.
 
 ---
 
@@ -45,6 +47,7 @@ This template is not a request to fill every heading with speculative features. 
 11. Capture active discoveries in the repository's linked `Current Notes.md` page.
 12. At each meaningful checkpoint, reconcile current notes into the specification, ADRs, issue/test records, guides, changelog, or checkpoint status that owns the durable information.
 13. Update the specification and record an ADR when implementation reveals a genuine architectural change.
+14. Define the package's versioned Distribution Kit and complete user handout before clean-project/release qualification.
 
 ### 1.2 Lifecycle labels
 
@@ -462,7 +465,26 @@ Setup, generation, migration, and repair tools must be non-destructive by defaul
 - Embedded package for package development.
 - The Workshop selection when available.
 
-Document which routes are supported for the current release.
+Every independently distributed package also defines a repository-owned versioned Distribution Kit. The kit is the handoff surface for the exact artifact being evaluated; it is not itself an installation-support claim.
+
+Document which routes are Supported, Planned, Unknown, or Not applicable for the current release.
+
+### 12.1.1 Distribution Kit
+
+Record:
+
+- Repository-relative kit root: `Distributions/<Public Title>/<Package Version>/` unless the package authority approves another deterministic path.
+- Exact artifact filename and format.
+- Complete user handout filename.
+- Distribution manifest filename.
+- SHA-256 checksum record.
+- Build record containing source baseline, package identity/version, artifact size, and artifact hash.
+- Whether the artifact has completed clean-project installation proof.
+- Which release/support claims remain pending.
+
+The kit must remain self-contained enough that a recipient can identify the artifact, verify integrity, understand installation/setup/capabilities/limitations, and report a useful issue without requiring the historical development conversation.
+
+For one retained package version, do not silently replace an already-published kit with a materially different artifact. Create a new package version or an explicitly recorded corrected artifact according to release authority.
 
 ### 12.2 Minimal scene setup
 
@@ -802,6 +824,7 @@ Public scripts, prefabs, templates, definitions, and samples must preserve commi
 
 - Package overview and boundaries.
 - Installation.
+- **Complete user handout** covering installation, setup, all implemented capabilities, workflows, diagnostics, troubleshooting, limitations, evidence/qualification status, removal/reinstall, reference examples, and support-reporting requirements.
 - Five-minute quick start.
 - Full setup guide.
 - Standalone Test Lab guide.
@@ -948,7 +971,9 @@ This scan order must be stated in the package's contributor/development guide.
 - [ ] Package manifest is valid.
 - [ ] Version and changelog are updated.
 - [ ] Stable `.meta` files are included.
-- [ ] Tarball/Git installation is tested in another clean project.
+- [ ] Versioned repository Distribution Kit exists with exact artifact, complete user handout, manifest, SHA-256 record, and build record.
+- [ ] Distribution Kit handout and manifest describe the current artifact/version and do not overstate untested support.
+- [ ] Tarball/Git installation is tested in another clean project before those routes are claimed Supported.
 - [ ] Repository tag/release is prepared.
 - [ ] Repository documentation and current status are committed and pushed.
 - [ ] Compatibility catalog is updated.
@@ -1092,7 +1117,8 @@ Each package specification must map its work onto the suite graduation loop:
 | Implementation / regression | `<AUTOMATED TEST GATES>` |
 | Standalone Test Lab | `<ISOLATED ENGINEERING PROOF>` |
 | Package Reference Showcase | `<IN-HOUSE CONSUMER HAPPY PATH>` |
-| Clean-project reproduction | `<OUTSIDE-REPOSITORY CONSUMER PROOF>` |
+| Versioned Distribution Kit | `<EXACT ARTIFACT + COMPLETE HANDOUT + MANIFEST + SHA256/BUILD RECORD>` |
+| Clean-project reproduction | `<OUTSIDE-REPOSITORY CONSUMER PROOF USING THE INTENDED ARTIFACT>` |
 | Release qualification | `<INSTALL ROUTES / PLAYER BUILDS / PERFORMANCE / VERSIONING AS APPLICABLE>` |
 | Private beta / external adoption | `<HANDOFF + FEEDBACK PLAN>` |
 

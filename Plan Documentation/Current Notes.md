@@ -3,9 +3,9 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 8, 2026
-**Current focus:** First Light FL-M6-01 documentation closeout
-**Current checkpoint:** FL-M6-01 — First Light Production Reference Showcase — **Complete**
+**Last reconciled:** August 9, 2026
+**Current focus:** Suite Distribution Kit standard + First Light 0.1.0 distribution handoff
+**Current checkpoint:** SUITE-DIST-001 — Package Distribution Kit Standard / First Light 0.1.0 Kit — **In progress**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -23,6 +23,46 @@
 - The permanent First Light Gallery is committed at `ccb1d59`; obsolete pre-gallery folder metadata is removed at `ad12b27`.
 - The final `EchoLaunchSetup` filtered EditMode gate passed **224 / 224**.
 - No post-A1 full-suite aggregate is claimed by this closeout. The retained FL-M5-07 full-suite baseline remains historical evidence and should be rerun at the next release-qualification gate.
+
+## Suite Distribution Kit Standard
+
+Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
+
+> Every independently distributed Sperk's Forge package gets a repository-owned, versioned Distribution Kit containing the exact package artifact plus a complete user handout, distribution manifest, SHA-256 integrity record, and build record.
+
+The preferred repository layout is:
+
+```text
+Distributions/
+├── README.md
+├── _Template/
+│   ├── COMPLETE_USER_HANDOUT_TEMPLATE.md
+│   └── DISTRIBUTION_MANIFEST_TEMPLATE.md
+└── <Public Title>/
+    └── <Package Version>/
+        ├── README.md
+        ├── <package-artifact>.tgz
+        ├── <COMPLETE_USER_HANDOUT>.md
+        ├── DISTRIBUTION_MANIFEST.md
+        ├── DISTRIBUTION_BUILD_RECORD.txt
+        └── SHA256SUMS.txt
+```
+
+Authority is promoted into SFGSS-000 v0.25.0, SFGSS-001 v1.4.0, and SFGSS-004 v1.4.0.
+
+**Honesty rule:** creating a tarball and kit does not prove the tarball route. The artifact is now available for distribution/evaluation, while external clean-project tarball installation, removal/reinstall, player builds, performance, tags/catalog, and release/private-beta qualification remain future evidence gates.
+
+First Light is the first package to receive the standard kit at:
+
+```text
+Distributions/First Light/0.1.0/
+```
+
+The complete First Light handout is also included in package documentation at:
+
+```text
+Packages/com.echodevgames.echo-launch/Documentation~/User/Complete User Handout.md
+```
 
 ## Permanent First Light Gallery
 
@@ -149,7 +189,8 @@ This closeout does **not** claim:
 - a post-A1 complete EditMode aggregate;
 - a post-A1 complete Runtime Play Mode aggregate;
 - clean-project reproduction;
-- Git URL, tag, tarball, registry, or public-package installation support;
+- Git URL, tag, registry, or public-package installation support;
+- clean-project **tarball installation support** (the versioned `0.1.0` tarball artifact is now prepared, but the route is not yet qualified);
 - player-build qualification;
 - performance qualification;
 - release tag/catalog readiness;
@@ -166,7 +207,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Commit this FL-M6-01 documentation closeout.
-2. Confirm the repository is clean and synchronized.
-3. Select the next package deliberately through the suite's just-in-time package learning/checkpoint workflow.
-4. Treat future First Light clean-project reproduction and release qualification as a separate explicitly activated return to the package.
+1. Build and retain the First Light `0.1.0` Distribution Kit from the exact package working tree.
+2. Verify tarball structure, package identity/version, SHA-256 record, and Git LFS handling.
+3. Commit the suite Distribution Kit standard and First Light kit together.
+4. Return the active suite workbench to deliberate next-package selection.
+5. Treat future First Light clean-project tarball reproduction and release qualification as a separate explicitly activated return to the package.

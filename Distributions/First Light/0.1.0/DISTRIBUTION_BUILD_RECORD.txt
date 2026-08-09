@@ -1,0 +1,12 @@
+First Light 0.1.0 Distribution Build Record
+==========================================
+Package ID: com.echodevgames.echo-launch
+Package version: 0.1.0
+Source baseline HEAD: 6bd268d
+Source baseline origin/main: 6bd268d
+Artifact: com.echodevgames.echo-launch-0.1.0.tgz
+Artifact size bytes: 493453
+Artifact SHA-256: 2e4d368ee773d83310c526384ad45d495b286780361e79045a3415e6e5df278b
+Artifact root: package/
+Build date: 2026-08-09
+Qualification state: artifact prepared; external clean-project tarball install/removal/reinstall NOT RUN

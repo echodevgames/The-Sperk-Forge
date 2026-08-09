@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M6-01 Production Reference Showcase complete; Setup/Repair/Validator/Direct Scene/Simulator/Laboratory plus A1 splash authoring and A1-E1 project-owned foundation resolution are implemented; in-repository First Light Gallery is complete and frozen for this pass
+- Development stage: FL-M6-01 Production Reference Showcase complete; Setup/Repair/Validator/Direct Scene/Simulator/Laboratory plus A1 splash authoring and A1-E1 project-owned foundation resolution are implemented; in-repository First Light Gallery is complete/frozen; versioned `0.1.0` Distribution Kit is prepared as the handoff artifact while external tarball qualification remains pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -879,9 +879,29 @@ First Light does not yet provide:
 - Persistent-root lifetime policy
 - Peer-package bridges
 
+## Official Distribution Kit
+
+The repository-owned First Light distribution snapshot lives at:
+
+```text
+Distributions/First Light/0.1.0/
+```
+
+It contains `com.echodevgames.echo-launch-0.1.0.tgz`, a complete user handout, distribution manifest, SHA-256 integrity record, and build record.
+
+The tarball is an official handoff/evaluation artifact. It is **not yet a release-qualified tarball route**; external clean-project install, removal/reinstall, player-build, performance, tag/catalog, and private-beta evidence remain future explicit work.
+
+The First Light Gallery remains project-owned repository content and is not included in the UPM tarball.
+
 ## Documentation
 
 Package documentation lives under `Documentation~`.
+
+Start with:
+
+- [Installation](Documentation~/User/Installation.md)
+- [Quick Start](Documentation~/User/Quick%20Start.md)
+- [Complete User Handout](Documentation~/User/Complete%20User%20Handout.md)
 
 The suite-wide architecture and approved First Light specification live in the repository's `Plan Documentation` vault.
 
@@ -903,7 +923,7 @@ Still `Not run` / not claimed by FL-M6-01:
 
 - Git URL installation
 - Git tag installation
-- Tarball/public registry installation
+- Clean-project tarball installation qualification / public registry installation (the versioned tarball artifact is prepared, but route proof is still Not run)
 - Separate clean-project reproduction of the final A1/A1-E1 happy path
 - Fresh complete post-A1 EditMode and Runtime Play Mode aggregate
 - Player-build qualification

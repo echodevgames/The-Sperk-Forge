@@ -7,6 +7,9 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+- Versioned repository Distribution Kit for First Light `0.1.0`, including `com.echodevgames.echo-launch-0.1.0.tgz`, complete user handout, distribution manifest, SHA-256 integrity record, and build record. Artifact availability does not yet claim external tarball-route qualification.
+- `Documentation~/User/Complete User Handout.md` as the detailed installation/setup/capability/troubleshooting/limitations/evidence reference distributed with the package kit.
+
 #### FL-M6-01 - Production Reference Showcase, Splash Authoring, and Project-Owned Foundation Resolution
 - Project-owned Production Reference Showcase graduated into a permanent First Light Gallery with canonical First Light and independent UMBRA examples
 - Optional project-owned `SplashEntry.PreferredAudioClip` intent metadata without EchoLaunch-owned playback

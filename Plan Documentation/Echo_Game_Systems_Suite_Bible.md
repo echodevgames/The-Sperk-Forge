@@ -1,14 +1,16 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000
-**Version:** 0.24.0
+**Version:** 0.25.0
 **Status:** Approved lead architecture baseline; implementation program activated under checkpoint control
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Project boundary:** Independent solo project; not an Isekai Studios product
 **Current development baseline:** Unity 6000.3.8f1
-**Last updated:** August 8, 2026
+**Last updated:** August 9, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
+
+> **v0.25.0 Distribution Kit standard:** Every independently distributed package now maintains a repository-owned, versioned Distribution Kit containing the exact package artifact, complete user handout, manifest, SHA-256 integrity record, and build record. Creating the kit does not by itself qualify an installation route; release/support claims remain governed by retained evidence under SFGSS-004 and final publishing/catalog authority under SFGSS-009.
 
 ---
 
@@ -433,8 +435,11 @@ isolated engineering proof
 Package Reference Showcase
 project-owned production-style consumer proof
         ↓
+Versioned Distribution Kit
+exact artifact + handout + manifest + checksum/build record
+        ↓
 Clean-project reproduction
-same happy path outside the development repository
+same happy path outside the development repository using the intended artifact
         ↓
 Release qualification
 installation routes, player/build proof, performance, packaging/versioning as applicable
@@ -444,7 +449,7 @@ Private beta / external adoption
 Feedback, maintenance, and later integration evidence
 ```
 
-A green Standalone Test Lab proves the machinery. A green Package Reference Showcase proves that the package is understandable and usable through its public consumer surfaces in-house. A green clean-project reproduction proves that the same happy path does not depend on hidden repository-local state. Release qualification then proves the distributable artifact and supported deployment routes.
+A green Standalone Test Lab proves the machinery. A green Package Reference Showcase proves that the package is understandable and usable through its public consumer surfaces in-house. The versioned Distribution Kit freezes the exact artifact and companion handout that will be evaluated next. A green clean-project reproduction proves that the same happy path works from the intended artifact without hidden repository-local state. Release qualification then proves the advertised deployment routes and remaining release claims. Merely creating a Distribution Kit never upgrades an untested route to Supported.
 
 The future Suite Showcase Hub may collect completed package displays and integration demonstrations, but it never changes, replaces, or short-circuits this graduation loop.
 
@@ -521,6 +526,7 @@ Before a package can be called release-ready, it should contain:
 - Automated tests for critical nonvisual behavior.
 - A clean-project installation test.
 - A tarball installation test.
+- A repository-owned versioned **Distribution Kit** containing the exact package artifact, complete user handout, distribution manifest, SHA-256 integrity record, and build record.
 - A project-specific integration test in at least one real game.
 - At least one isolated Standalone Test Lab scene whenever the package has scene-visible behavior.
 - A project-owned in-house Package Reference Showcase, or documented non-scene equivalent, before the package is presented as an external beta candidate.
@@ -2836,6 +2842,7 @@ The following decisions form the approved starting baseline for the suite:
 154. FL-M1-01 must verify the live Unity compile, working tree, package path, and exact baseline uGUI version before creating files; these empirical checks remain `Not run` at documentation-gate closeout.
 155. First Light may proceed because PKG-LEARN-001 is complete. Every later package remains locally locked until its own just-in-time learning review and readiness decision activate an approved Checkpoint Build Plan.
 156. Every package receives an in-house Package Reference Showcase after isolated proof and before external beta presentation. The Showcase is project-owned consumer-style evidence built only through documented public surfaces; it is separate from the Standalone Test Lab, does not become a runtime dependency, and may later be linked from the project-owned **Suite Showcase Hub**. SFGSS-ADR-005 records the decision.
+157. Every independently distributed package receives a repository-owned, versioned **Distribution Kit** after its in-house consumer proof. The kit contains the exact package tarball or approved equivalent artifact, a complete user handout, distribution manifest, SHA-256 integrity record, and build record. The kit is immutable for that package version once retained. Its existence prepares the artifact for clean-project/release proof but does not by itself claim that tarball, Git, registry, player, performance, beta, or stable-release gates have passed. SFGSS-004 remains the evidence authority and SFGSS-009 retains final publishing/tag/catalog authority.
 
 ---
 

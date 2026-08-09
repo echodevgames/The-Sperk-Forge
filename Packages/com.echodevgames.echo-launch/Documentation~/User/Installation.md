@@ -10,7 +10,37 @@ Package version:
 
 First Light currently contains implemented Runtime, Presentation.UGUI, Editor tooling, tests, documentation, prefabs, and one separately importable Standalone Test Laboratory sample.
 
-The current repository-development installation is an **embedded package**. This document does not claim public registry or clean-project distribution support yet.
+The verified repository-development installation is an **embedded package**. A versioned `0.1.0` tarball is now prepared in the repository Distribution Kit for handoff/evaluation, but external clean-project tarball qualification and public registry support are not claimed yet.
+
+## Official Repository Distribution Kit
+
+The versioned companion kit lives at:
+
+```text
+Distributions/First Light/0.1.0/
+```
+
+Artifact:
+
+```text
+com.echodevgames.echo-launch-0.1.0.tgz
+```
+
+Before using the artifact, compare its SHA-256 against `SHA256SUMS.txt`.
+
+For evaluation in Unity Package Manager:
+
+1. Open **Window > Package Management > Package Manager**.
+2. Use the **+** menu.
+3. Choose **Add package from tarball...**.
+4. Select `com.echodevgames.echo-launch-0.1.0.tgz`.
+5. Allow Unity to resolve dependencies and compile.
+6. Confirm package ID/version and uGUI dependency.
+7. Continue with `Tools > Sperk's Forge > First Light > Setup`.
+
+This is an artifact-availability instruction, not a release-support claim. SFGSS-004 still requires external clean-project install, quick-start/Lab proof, removal, and reinstall evidence before the tarball route becomes Supported.
+
+For the full setup/capability/troubleshooting reference, read [Complete User Handout](Complete%20User%20Handout.md).
 
 ## Verified Embedded Development Method
 
@@ -91,7 +121,7 @@ The following routes/qualification steps are not claimed by the FL-M6-01 closeou
 - Git URL installation
 - Git tag installation
 - Local package reference outside the development project
-- Tarball installation
+- Clean-project tarball installation support / removal-reinstall qualification (the `0.1.0` tarball artifact exists, but this route has not yet passed its external proof)
 - Scoped registry installation
 - Public Package Manager registry installation
 - Separate clean-project reproduction of the final A1/A1-E1 happy path

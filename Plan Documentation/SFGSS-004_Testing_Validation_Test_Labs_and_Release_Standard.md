@@ -1,19 +1,21 @@
 # The Sperk’s Forge – Testing, Validation, Test Labs, and Release Standard
 
 **Document ID:** SFGSS-004
-**Version:** 1.3.0
+**Version:** 1.4.0
 **Status:** Approved architecture and quality standard
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Project boundary:** Independent solo project; not an Isekai Studios product
-**Parent authority:** SFGSS-000 v0.24.0
+**Parent authority:** SFGSS-000 v0.25.0
 **Related authorities:** SFGSS-001, SFGSS-002, SFGSS-003, SFGSS-005, SFGSS-008, SFGSS-ADR-001, SFGSS-ADR-002, SFGSS-ADR-005
 **Current development baseline:** Unity 6000.3.8f1
 **Minimum planned public Unity floor:** Unity 6000.0
-**Last updated:** August 8, 2026
+**Last updated:** August 9, 2026
 
 > A blueprint may predict where the bridge should stand. Only evidence proves that it holds weight.
 
 > **v1.1.0 naming reconciliation:** EchoSave test examples now use the package-approved `ESV` prefix, and SFGSS-008 is registered as the canonical suite naming authority. No test behavior or release gate changed.
+
+> **v1.4.0 Distribution Kit reconciliation:** A versioned repository Distribution Kit is now the required artifact handoff between in-house consumer proof and clean-project/release qualification. The kit freezes the exact tarball/equivalent artifact plus complete handout, manifest, checksum, and build record. Artifact presence never upgrades an untested route to Supported.
 
 ---
 
@@ -141,6 +143,7 @@ This standard does not define:
 | **Integrated Showcase** | A combined presentation scene or project, including the Suite Showcase Hub, that demonstrates composition after the relevant standalone, Reference Showcase, and integration evidence exists. |
 | **Clean project** | A disposable Unity project created from a known template with no unrelated Sperk’s Forge package or project code. |
 | **Installation route** | Embedded, local path, Git URL, tarball, registry, or Workshop-driven installation path. |
+| **Distribution Kit** | Repository-owned, versioned handoff directory containing the exact package artifact plus complete user handout, manifest, SHA-256 integrity record, and build record used to identify what is being evaluated. |
 | **Compatibility claim** | A statement that a package works with a specific Unity version, platform, dependency version, provider, device family, or project context. |
 | **Release gate** | A mandatory evidence set that must pass before a package enters a named release stage. |
 | **Flaky test** | A test whose result varies without an approved input or environment change. |
@@ -795,7 +798,32 @@ A successful import must be followed by the package’s smallest documented func
 
 ### 16.5 Package artifact integrity
 
-The release report should record artifact size and checksum. SFGSS-009 owns final release publishing and catalog policy.
+Every independently distributed package prepares a versioned repository **Distribution Kit** before the clean-project artifact proof that is intended to qualify that distribution route.
+
+Minimum kit contents:
+
+```text
+Distributions/<Public Title>/<Package Version>/
+├── <package-artifact>.tgz          (or approved equivalent)
+├── <COMPLETE_USER_HANDOUT>.md
+├── DISTRIBUTION_MANIFEST.md
+├── DISTRIBUTION_BUILD_RECORD.txt
+└── SHA256SUMS.txt
+```
+
+The kit must:
+
+- identify package ID, public title, package version, and source baseline;
+- retain the exact artifact used for subsequent clean-project/release evidence;
+- record artifact size and SHA-256;
+- include a complete user handout covering installation, setup, implemented capabilities, workflows, diagnostics, troubleshooting, limitations, removal/reinstall, reference examples, qualification state, and support-reporting requirements;
+- distinguish package content from repository-only Showcase/project content;
+- state clearly which routes are still Planned/Unknown;
+- avoid implying beta, release-candidate, stable, player, performance, or registry support merely because an artifact exists.
+
+The Distribution Kit is an evidence handoff surface, not a release verdict. A tarball remains Planned/Unknown until the route's required clean-project proof passes. If the artifact changes materially after evidence begins, treat it as a new candidate and rerun affected evidence.
+
+The release report should record artifact size and checksum. SFGSS-009 owns final release publishing, tags, and catalog policy.
 
 ---
 
@@ -1282,7 +1310,7 @@ At minimum, retain:
 - Migration and recovery evidence for supported versions.
 - Compatibility matrices supporting public claims.
 - Blocker/critical failure and resolution records.
-- Package artifact checksum and clean-install report.
+- Package Distribution Kit manifest/handout/build record, artifact checksum, and clean-install report.
 - External real-project adoption evidence when claimed.
 
 SFGSS-009 defines final retention/tag/release policy.
@@ -1328,6 +1356,7 @@ A package may enter beta when:
 A release candidate additionally requires:
 
 - Version/changelog/release record prepared.
+- Versioned Distribution Kit is retained and its complete handout/manifest/checksum/build record match the candidate artifact.
 - Full required automated matrix passes from the release commit/artifact.
 - External clean-project tarball installation passes.
 - Claimed Integration Laboratories pass.
