@@ -2,7 +2,7 @@
 
 **Document ID:** SFGSS-001
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 
 **Status:** Approved documentation standard
 
@@ -10,7 +10,7 @@
 
 **Project boundary:** Independent solo project; not an Isekai Studios product
 
-**Parent authority:** SFGSS-000 v0.25.0 — The Sperk’s Forge Game Systems Suite Bible
+**Parent authority:** SFGSS-000 v0.26.0 — The Sperk’s Forge Game Systems Suite Bible
 
 **Current development baseline:** Unity 6000.3.8f1
 
@@ -21,6 +21,8 @@
 > **v1.3.0 Reference Showcase reconciliation:** Every package specification now defines an in-house production-style Package Reference Showcase, or a justified non-scene equivalent, in addition to its Standalone Test Lab. The Reference Showcase is project-owned consumer proof and never replaces isolated Laboratory evidence.
 
 > **v1.4.0 Distribution Kit reconciliation:** Every independently distributed package specification must now define its versioned repository Distribution Kit, including the exact artifact, complete user handout, manifest, integrity/build records, and honest qualification state. Kit creation prepares evidence; it never converts an untested installation route into a supported claim.
+>
+> **v1.5.0 Persistence/lifetime reconciliation:** Every package specification must distinguish durable persistence, mutable runtime truth, and Unity object lifetime. Persistence-capable package state must remain usable without a mandatory EchoSave dependency unless the package is itself a bridge/adapter, and any scene-surviving service composition must remain package-local or project-owned rather than becoming a universal service locator.
 
 ---
 
@@ -650,7 +652,26 @@ Use stable, searchable codes:
 
 | State | Scope | Owner | Saved? | Backend |
 |---|---|---|---:|---|
-| `<STATE>` | `<SESSION/GLOBAL/PROFILE/SLOT>` | `<OWNER>` | `<YES/NO>` | `<BACKEND>` |
+| `<STATE>` | `<SESSION/PREFERENCES/PROFILE/SLOT>` | `<OWNER>` | `<YES/NO>` | `<BACKEND>` |
+
+### 16.1.1 Three-lifetime analysis
+
+Every runtime package must answer all three independently:
+
+| Question | Required answer |
+|---|---|
+| Durable persistence | What data, if any, survives process termination? Who owns its meaning, transport, migration, and recovery? |
+| Runtime truth | What object/model is authoritative while the game is running? Does loading restore into that authority rather than replacing it? |
+| Unity object lifetime | Which roots/services survive scene transitions, how are duplicates rejected, and who composes them? |
+
+Required rules:
+
+- Do not use `DontDestroyOnLoad` as a synonym for persistence.
+- Do not make EchoSave the runtime owner of a peer package's state.
+- Do not add a hard EchoSave dependency merely because a package can be saved.
+- Cross-package persistence belongs in a bridge/participant adapter/project adapter that can be removed without breaking either core.
+- Project-owned long-lived composition may host package roots, but it must not become a hidden service locator or authority transfer.
+- If the package owns a scene-surviving root, define package-local duplicate safety and shutdown separately from project composition.
 
 ### 16.2 Standalone behavior
 

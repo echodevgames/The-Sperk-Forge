@@ -1,7 +1,7 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000
-**Version:** 0.25.0
+**Version:** 0.26.0
 **Status:** Approved lead architecture baseline; implementation program activated under checkpoint control
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Project boundary:** Independent solo project; not an Isekai Studios product
@@ -11,6 +11,8 @@
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
 > **v0.25.0 Distribution Kit standard:** Every independently distributed package now maintains a repository-owned, versioned Distribution Kit containing the exact package artifact, complete user handout, manifest, SHA-256 integrity record, and build record. Creating the kit does not by itself qualify an installation route; release/support claims remain governed by retained evidence under SFGSS-004 and final publishing/catalog authority under SFGSS-009.
+>
+> **v0.26.0 Persistence/lifetime separation:** Durable persistence, mutable runtime state, and Unity object lifetime are separate concerns. Package-owned state may expose persistence-capable snapshots without depending directly on The Chronicle. Cross-package persistence belongs in optional bridges/adapters, while long-lived Unity service composition remains project-owned and may not turn First Light, The Chronicle, or another package into a universal service locator.
 
 ---
 
@@ -458,6 +460,29 @@ The future Suite Showcase Hub may collect completed package displays and integra
 Every runtime authority must expose enough structured state for a developer to understand whether it initialized, what it currently owns, and why its last request succeeded or failed. The Observatory can collect and visualize that state when installed, but no package may require the Observatory merely to function.
 
 First Light always produces a structured launch report. The Observatory owns the richer ongoing runtime dashboard. The Workshop may select both by default for a new project, but the generated project must make the choice visible and removable.
+
+### 4.20 Persistence, runtime truth, and object lifetime are separate
+
+The suite treats three often-confused concerns as different authorities:
+
+| Concern | Meaning | Normal owner |
+|---|---|---|
+| Durable persistence | Data that must survive process termination and later be reconstructed | Chronicle for game-save transport; Accord for global preferences; participant/package owns payload meaning |
+| Mutable runtime state | The live truth used by the running game right now | The package or project authority whose domain owns that state |
+| Unity object lifetime | Whether a service/root survives scene transitions during one application session | Package-local lifecycle plus project-owned composition |
+
+Rules:
+
+- A package may expose detached, versioned persistence-capable snapshots or import/export contracts without adding a hard dependency on `EchoSave`.
+- Chronicle transports durable game-save payloads. It does not become the live runtime truth for Inventory, Objectives, Progression, Characters, World, or another participant after load.
+- Cross-package save integration belongs in a separate bridge, participant adapter, or project adapter that references both authorities.
+- A long-lived package root may use a duplicate-safe scene-surviving lifetime when its specification requires it, but that does not make the package the owner of project-wide service composition.
+- The consumer project may compose long-lived services beneath a project-owned runtime root, including a `DontDestroyOnLoad` object when appropriate. That root is composition, not a new authority domain.
+- First Light may initialize/discover long-lived services during startup and then hands off. It does not become their permanent landlord.
+- Chronicle may own its own package-local lifetime/authority claim. It must not become a global service locator, generic `GameManager`, or parent root for unrelated peer packages.
+- The suite will not create a mandatory persistent-root package merely to host unrelated authorities unless future executed evidence and an ADR justify one.
+
+SFGSS-ADR-006 records the reasoning and review triggers for this rule.
 
 ---
 
@@ -2160,6 +2185,19 @@ Integrity hashes detect corruption; they do not prove trust unless a separate se
 
 Removing package code does not imply deleting project-owned configuration, preferences, saves, generated records, migration backups, or unknown optional payloads. SFGSS-002 owns bridge/provider teardown direction; SFGSS-003 owns durable-data survival and reclamation.
 
+### 13.13 Persistence scopes do not collapse authority
+
+Persistence scopes describe durability and routing; they do not create a universal owner.
+
+| Scope | Typical examples | Default authority boundary |
+|---|---|---|
+| Preferences | audio, graphics, accessibility, controls, locale | Accord owns global preference meaning/persistence; consuming packages apply their own behavior |
+| Profile | durable player/profile identity or profile-level choices | Project/package authority owns meaning; Chronicle may transport only when a game-save contract selects it |
+| Save Slot | progression, inventory, objectives, characters, world state | Chronicle owns slot/generation transport; participant packages own payload schemas and live truth |
+| Session | current handles, roots, scene objects, active operations | Runtime only by default; never durable unless an explicit detached snapshot contract says otherwise |
+
+A package specification must state which scope each persistent-capable datum belongs to and what still works when Chronicle is absent.
+
 ---
 
 ## 14. UI, Input, and Accessibility Rules
@@ -2843,6 +2881,7 @@ The following decisions form the approved starting baseline for the suite:
 155. First Light may proceed because PKG-LEARN-001 is complete. Every later package remains locally locked until its own just-in-time learning review and readiness decision activate an approved Checkpoint Build Plan.
 156. Every package receives an in-house Package Reference Showcase after isolated proof and before external beta presentation. The Showcase is project-owned consumer-style evidence built only through documented public surfaces; it is separate from the Standalone Test Lab, does not become a runtime dependency, and may later be linked from the project-owned **Suite Showcase Hub**. SFGSS-ADR-005 records the decision.
 157. Every independently distributed package receives a repository-owned, versioned **Distribution Kit** after its in-house consumer proof. The kit contains the exact package tarball or approved equivalent artifact, a complete user handout, distribution manifest, SHA-256 integrity record, and build record. The kit is immutable for that package version once retained. Its existence prepares the artifact for clean-project/release proof but does not by itself claim that tarball, Git, registry, player, performance, beta, or stable-release gates have passed. SFGSS-004 remains the evidence authority and SFGSS-009 retains final publishing/tag/catalog authority.
+158. Durable persistence, mutable runtime state, and Unity object lifetime are separate concerns. Chronicle owns game-save transport rather than participant runtime truth; Accord owns global preferences; packages may expose persistence-capable snapshots without depending directly on Chronicle; cross-package persistence belongs in optional bridges/adapters; and long-lived service composition is project-owned rather than a universal First Light, Chronicle, or generic `GameManager` authority. SFGSS-ADR-006 records this separation.
 
 ---
 

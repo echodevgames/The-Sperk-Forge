@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 8, 2026
+**Updated:** August 9, 2026
 **Completed package checkpoint:** FL-M6-01 – First Light Production Reference Showcase
-**Current implementation state:** First Light in-repository implementation/gallery pass complete; no next package automatically active
+**Current implementation state:** First Light complete/frozen; The Chronicle learning review active; Chronicle implementation locked
 
 ## Current health
 
@@ -21,7 +21,10 @@
 | Permanent First Light Gallery | **Complete** — First Light Example + UMBRA Example |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Other package implementations | Not automatically activated by this closeout |
+| Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) active** |
+| Chronicle implementation | Locked pending teach-back and explicit ESV-M1-01 activation |
+| Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
+| Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
 ## First Light graduation state
@@ -63,15 +66,21 @@ The Gallery demonstrates both the canonical EchoDevGames happy path and an indep
 
 No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Full-suite regression must be collected again when release qualification is activated.
 
-## Remaining suite work
+## Active next-package work
 
-Before another package begins implementation:
+The next package has now been selected deliberately: **The Chronicle (`EchoSave`)**.
 
-1. identify the next package deliberately;
-2. complete or refresh that package's just-in-time learning review;
-3. activate an approved package-local Checkpoint Build Plan;
-4. rehydrate the repository and verify live Unity/Git starting conditions;
-5. preserve package independence and the Laboratory → Reference Showcase graduation loop.
+Before Chronicle implementation:
+
+1. complete PKG-LEARN-009 and Jesse's teach-back;
+2. preserve SFGSS-ADR-006 separation between durable persistence, runtime truth, and Unity object lifetime;
+3. keep peer-package persistence optional through bridges/adapters rather than core dependencies;
+4. keep long-lived service composition project-owned rather than turning Chronicle or First Light into a universal service root;
+5. explicitly activate ESV-M1-01 only after the learning gate passes;
+6. rehydrate Unity/Git at that implementation checkpoint;
+7. preserve the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop.
+
+The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
 ## First Light future return gates
 
@@ -88,4 +97,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-Commit the FL-M6-01 documentation closeout, confirm a clean synchronized repository, then deliberately activate the next package through the just-in-time workflow.
+Chronicle is in **learning only**. Production code, serializer/file-format implementation, storage writes, save-slot behavior, and ESV-M1-01 implementation remain locked until PKG-LEARN-009 completes and Jesse explicitly activates the checkpoint.

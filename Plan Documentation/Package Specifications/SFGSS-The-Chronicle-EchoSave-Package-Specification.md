@@ -1,26 +1,28 @@
 # The Chronicle – Save Infrastructure Package Specification
 
-**Working document ID:** SFGSS-PKG-ECHOSAVE-001  
-**Specification version:** 1.1.0
-**Status:** Approved  
-**Technical package name:** EchoSave  
+**Working document ID:** SFGSS-PKG-ECHOSAVE-001
+**Specification version:** 1.2.0
+**Status:** Approved
+**Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
-**Package ID:** `com.echodevgames.echo-save`  
-**Runtime namespace:** `EchoDevGames.EchoSave`  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
+**Package ID:** `com.echodevgames.echo-save`
+**Runtime namespace:** `EchoDevGames.EchoSave`
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
 **Planned repository:** `EchoDevGames/EchoSave`
-**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
-**Unity baseline:** Unity 6000.3.8f1  
-**Minimum supported Unity version:** Unity 6000.0  
-**Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`  
-**Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers  
-**Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 4, 2026
+**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
+**Unity baseline:** Unity 6000.3.8f1
+**Minimum supported Unity version:** Unity 6000.0
+**Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`
+**Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers
+**Parent authority:** SFGSS-000 and SFGSS-001
+**Last updated:** August 9, 2026
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. Runtime implementation remains intentionally deferred until all ten Foundation specifications and the cross-package consistency review are approved.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009 is now the active just-in-time learning gate. Runtime implementation remains locked until that review/teach-back passes and Jesse explicitly activates ESV-M1-01.
+>
+> **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
 ---
 
@@ -31,13 +33,14 @@
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification based on SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and eight approved Foundation specifications | Pending |
 | 1.0.0 | 2026-08-03 | Approved | Approved slot models, immutable save generations, participant payloads, two-phase load, metadata, serialization, migration, recovery, autosave, diagnostics, tooling, and the isolated Save Laboratory | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-04 | Approved | Clarified Unity asset GUID versus optional runtime/export save-configuration identity. Also normalized registry metadata and evidence interpretation. | Jesse “Echo” Adams |
+| 1.2.0 | 2026-08-09 | Approved | Reconciled SFGSS-ADR-006: durable save transport, participant runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local; cross-package persistence stays optional; PKG-LEARN-009 becomes the active implementation gate. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
-**Technical identifier:** EchoSave  
-**Flavor line:** Record the state that must endure, then prove the record can be trusted.  
+**Technical identifier:** EchoSave
+**Flavor line:** Record the state that must endure, then prove the record can be trusted.
 **Plain-language subtitle:** Reliable local game-save files, slots, metadata, participants, migrations, backups, recovery, and save-operation diagnostics.
 
 **One-sentence ownership contract:**
@@ -479,18 +482,22 @@ Load operation
     -> structured result/event
 ```
 
-### 8.3 Authoritative root
+### 8.3 Package-local long-lived authority
 
 | Question | Decision |
 |---|---|
-| Persistent root required? | Yes for normal runtime use |
+| Scene-surviving package root required? | Yes for normal runtime use |
 | Root type | `EchoSaveRoot` |
 | Lifetime | Application session by default |
+| Authority scope | EchoSave operations/catalog/prepared-load lifecycle only; never peer runtime truth or project-wide service location |
+| Project composition | A consumer project may parent/compose EchoSaveRoot beneath a project-owned long-lived runtime composition root; parentage does not transfer authority |
 | Duplicate behavior | Reject duplicate before path creation, callbacks, catalog scans, registration, or operations |
 | Initialization trigger | Explicit `InitializeAsync`; optional auto-initialize flag for prefab path |
 | Shutdown | Stop admission, finish or settle commit-critical work, dispose prepared handles, unsubscribe, clear authority |
 | Direct-scene behavior | Development initializer creates configured root only when absent |
 | Test seams | Backend, serializer, integrity provider, clock, participant registry, and path policy are injectable |
+
+`DontDestroyOnLoad` or equivalent scene-surviving lifetime is an object-lifetime decision, not durable persistence. EchoSave does not own a universal persistent root, generic `GameManager`, peer discovery registry, or service locator. First Light may initialize/discover EchoSave during startup but does not own the root after launch handoff.
 
 ### 8.4 Storage topology and generation commit model
 
@@ -1130,6 +1137,24 @@ Separate bridge publishes provider snapshots and bounded events. EchoSave core n
 - Repeated identical health warnings rate-limited.
 
 ## 16. Persistence and Save Integration
+
+### 16.0 Separation of transport, live truth, and object lifetime
+
+EchoSave owns **durable game-save transport**, not all persistent-looking concerns.
+
+| Concern | Chronicle authority |
+|---|---|
+| Save files, slots, generations, manifests, integrity, migration, backup/recovery, orchestration | Owns |
+| Global preferences such as graphics/audio/accessibility/control choices | Does not own; The Accord owns |
+| Inventory/objective/progression/character/world live state | Does not own; participant/project authority owns |
+| Participant payload schema and semantic meaning | Does not own; participant/project authority owns |
+| Scene-surviving lifetime of `EchoSaveRoot` | Owns only its package-local lifecycle/duplicate claim |
+| Project-wide `DontDestroyOnLoad` hierarchy/service composition | Does not own; consumer project composes |
+| First Light startup sequencing | Does not own; First Light may initialize/discover EchoSave, then hands off |
+
+A peer package can be persistence-capable without referencing EchoSave. The peer exposes a detached/versioned snapshot/import-export contract under its own authority; a separate bridge/participant adapter translates that contract to EchoSave when both are installed.
+
+After a successful load, EchoSave applies/restores detached data into the participant's runtime authority. EchoSave does not remain the authoritative source of that participant's live state.
 
 ### 16.1 Persistence classification
 
@@ -1838,6 +1863,7 @@ Project-specific migration tooling must:
 | ESV-D-018 | Checksums detect corruption but are not authentication | Approved | Honest security boundary | Anti-tamper remains provider/project concern |
 | ESV-D-019 | Cloud, encryption, compression, streaming, and merge are deferred providers | Approved | Protects neutral MVP | Later specs/adapters required |
 | ESV-D-020 | Foundation implementation remains locked after this approval | Approved | Documentation-first gate | Workshop and consistency review come first |
+| ESV-D-021 | Durable persistence, runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local and peer persistence uses optional adapters | Approved | SFGSS-ADR-006 prevents Chronicle/First Light/global-root coupling before implementation | ESV-M1-01 proves only package-local lifecycle; future peer persistence requires bridges/adapters |
 
 ### 27.2 Release-blocking questions
 
@@ -1880,6 +1906,8 @@ This approval completes the ninth of ten Foundation package specifications. No E
 
 ### 28.3 First recommended implementation checkpoint after the gate
 
+**Current state:** Scaffolded and **LOCKED**. PKG-LEARN-009 must complete before Jesse explicitly activates implementation.
+
 **ESV-M1-01 - Installable skeleton and duplicate-safe authority claim**
 
 Outcome:
@@ -1899,44 +1927,43 @@ Stop point: clean compile, one root claims, duplicate has zero side effects, shu
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.0.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.2.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.0.0
-Current milestone/checkpoint: Foundation documentation pass; implementation locked
+Current specification version: 1.2.0
+Current milestone/checkpoint: PKG-LEARN-009 active; ESV-M1-01 scaffolded and locked
 Current Unity version: 6000.3.8f1
 Current implementation status: Not started
 Known blockers: None
-Current Notes reviewed through: August 3, 2026
+Current Notes reviewed through: August 9, 2026
 
 Before writing code:
-1. Confirm all ten Foundation specifications and the cross-package consistency
-   review are approved. If not, do not implement.
+1. Complete PKG-LEARN-009 and Jesse's teach-back. If it is not complete, do not implement.
 2. Summarize EchoSave authority and independence constraints.
-3. Preserve project-owned schemas and mutable runtime state.
-4. Use immutable generations and publish only verified records.
-5. Keep global preferences, scene travel, UI, game-state rules, and cloud
-   providers outside core.
-6. Preserve unknown participant payloads by default.
-7. Continue using the Checkpoint Build Plan format.
+3. Explain durable persistence versus participant runtime truth versus Unity object lifetime.
+4. Preserve project-owned schemas and mutable runtime state.
+5. Keep global preferences, scene travel, UI, game-state rules, peer service composition, and cloud providers outside core.
+6. Keep peer persistence optional through bridges/participant adapters; no core package gains a hard EchoSave dependency merely to be save-capable.
+7. Preserve unknown participant payloads by default.
+8. Explicitly activate ESV-M1-01 before production code and continue using the Checkpoint Build Plan format.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Specification v1.0.0; runtime package not started |
+| Package version | Specification v1.2.0; runtime package not started |
 | Completed checkpoint | FW-DOC-09 - The Chronicle specification |
 | Files/assets created | Package specification and Foundation checkpoint documentation |
 | Tests passed | Specification structure/reconciliation audit only; implementation tests not run |
 | Tests failed | None |
 | Known issues | None blocking |
-| Decisions added | ESV-D-001 through ESV-D-020 |
+| Decisions added | ESV-D-001 through ESV-D-021 |
 | Planned implementation tests | 100 |
-| Next Foundation checkpoint | FW-DOC-10 - The Workshop (`EchoGameStarter`) |
-| Implementation permission | Locked |
+| Active learning checkpoint | PKG-LEARN-009 – The Chronicle (`EchoSave`) |
+| Implementation permission | Locked pending PKG-LEARN-009 completion and explicit ESV-M1-01 activation |
 
 ## 30. Approval
 
@@ -1960,9 +1987,9 @@ Before writing code:
 
 ### 30.2 Approval record
 
-**Decision:** Approved  
-**Approved by:** Jesse “Echo” Adams  
-**Date:** August 3, 2026  
+**Decision:** Approved
+**Approved by:** Jesse “Echo” Adams
+**Date:** August 3, 2026
 **Conditions:** This approval authorizes architecture and documentation only. Runtime implementation begins only after The Workshop specification and the Foundation cross-package consistency/readiness reviews are approved.
 
 ---
@@ -1982,7 +2009,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.0.0**. The next documentation checkpoint is **FW-DOC-10 - The Workshop (`EchoGameStarter`)**.
+The Chronicle specification is complete and **Approved v1.2.0**. PKG-LEARN-009 is the active just-in-time review; ESV-M1-01 remains scaffolded and locked.
 
 
 ---
@@ -1990,9 +2017,9 @@ The Chronicle specification is complete and **Approved v1.0.0**. The next docume
 
 ## SUITE-DOC-30 Consistency Addendum
 
-**Review status:** Passed  
-**Review date:** August 4, 2026  
-**Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
+**Review status:** Passed
+**Review date:** August 4, 2026
+**Current governing authorities:** SFGSS-000 v0.26.0; SFGSS-001 v1.5.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.4.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-006; SFGSS-INT-SUITE-001 v1.1.0; and the approved Foundation, Expansion, and Advanced integration matrices.
 
 The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.
 

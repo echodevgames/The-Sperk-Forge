@@ -3,17 +3,17 @@ tags:
   - sfgss/learning
   - sfgss/navigation
 status: active
-updated: 2026-08-04
+updated: 2026-08-09
 ---
 
 # Package Learning Reviews
 
-**Document role:** Learning-phase index and operating guide  
-**Authority:** Navigation and educational workflow only  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Current progress:** 1 of 28 complete  
+**Document role:** Learning-phase index and operating guide
+**Authority:** Navigation and educational workflow only
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Current progress:** 1 of 28 complete
 **Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`)
-**Active review:** None; PKG-LEARN-002 is paused until EchoDiagnostics implementation
+**Active review:** PKG-LEARN-009 – The Chronicle (`EchoSave`); PKG-LEARN-002 remains paused until EchoDiagnostics implementation
 
 ## Purpose
 
@@ -71,5 +71,7 @@ A review may use diagrams, examples, and tiny pseudocode for teaching. It must n
 ## Current gate mode
 
 - PKG-LEARN-001 is complete.
-- PKG-LEARN-002 is paused until EchoDiagnostics implementation approaches.
-- SUITE-DOC-33 may activate First Light only; other packages remain locally locked.
+- PKG-LEARN-002 remains paused until EchoDiagnostics implementation approaches.
+- PKG-LEARN-009 – The Chronicle (`EchoSave`) is the active just-in-time review.
+- `ESV-M1-01` is scaffolded but remains locked until PKG-LEARN-009 teach-back completes and Jesse explicitly activates it.
+- Accord, Resonance, and Looking Glass remain planned members of the Game Shell initiative; their implementation remains independently gated by their own reviews.

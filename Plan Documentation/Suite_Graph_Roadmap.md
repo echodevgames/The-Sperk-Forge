@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-08
+updated: 2026-08-09
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,7 +12,7 @@ updated: 2026-08-08
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** SFGSS-ADR-005 - Package Reference Showcases; First Light M6 authority next
+**Current work item:** PKG-LEARN-009 – The Chronicle (`EchoSave`); ESV-M1-01 scaffolded and locked
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -118,6 +118,26 @@ flowchart TB
     MP -. authority adapters .-> CHAR
 ```
 
+## Active Game Shell / Front Door initiative
+
+This is the current **development sequence**, not a new hard dependency chain:
+
+```mermaid
+flowchart LR
+    FL[First Light — complete] --> SAVE[Chronicle — learning active]
+    SAVE --> ACC[Accord — planned next]
+    ACC --> RES[Resonance — planned after Accord]
+    RES --> UI[Looking Glass — planned after Resonance]
+    UI --> SHOW[Combined Game Shell Showcase]
+    FL -. startup/audio intent .-> RES
+    FL -. startup presentation/handoff .-> UI
+    ACC -. audio preference snapshot .-> RES
+    ACC -. settings presentation .-> UI
+    SAVE -. optional durable game-save transport .-> SHOW
+```
+
+Each package remains independently installable and useful. Chronicle does not become a dependency merely because another package has persistence-capable data. Optional integrations live in bridges/adapters, and long-lived Unity service composition remains project-owned under SFGSS-ADR-006.
+
 ## Practical game loop view
 
 ```mermaid
@@ -179,6 +199,7 @@ flowchart LR
 - [[Architecture Decision Records/SFGSS-ADR-003_Graph_Roadmap_and_Pre-Implementation_Learning_Review|ADR-003 — Graph Roadmap and Package Learning Review]]
 - [[Architecture Decision Records/SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|ADR-004 — Just-in-Time Package Learning Gate]]
 - [[Architecture Decision Records/SFGSS-ADR-005_Package_Reference_Showcases_and_Suite_Showcase_Hub|ADR-005 — Package Reference Showcases and the Suite Showcase Hub]]
+- [[Architecture Decision Records/SFGSS-ADR-006_Persistence_Runtime_State_and_Object_Lifetime_Separation|ADR-006 — Persistence, Runtime State, and Object Lifetime Separation]]
 - [[Architecture Decision Records/SFGSS-ADR-LOG_Suite_Decision_Log|Suite ADR Decision Log]]
 - [[Architecture Decision Records/SFGSS-ADR-TEMPLATE|Reusable ADR Template]]
 
@@ -280,9 +301,10 @@ flowchart TB
 
 ## Active implementation route
 
-- [[Test Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report|SUITE-DOC-33 Initial Implementation Readiness Gate]]
-- [[Checkpoint Build Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan|FL-M1-01 First Light Package Skeleton Plan]]
-- [[Learning Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review|PKG-LEARN-001 First Light Learning Review]]
+- [[Learning Reviews/PKG-LEARN-009_EchoSave_Learning_Review|PKG-LEARN-009 Chronicle Learning Review — In progress]]
+- [[Checkpoint Build Plans/ESV-M1-01_Chronicle_Installable_Skeleton_and_Duplicate-Safe_Authority_Claim_Checkpoint_Build_Plan|ESV-M1-01 Chronicle Skeleton Plan — Scaffolded / Locked]]
+- [[Architecture Decision Records/SFGSS-ADR-006_Persistence_Runtime_State_and_Object_Lifetime_Separation|ADR-006 Persistence/Lifetime Separation]]
+- First Light remains complete/frozen at `c18eff6` distribution baseline; its release qualification is a separate future return gate.
 
 ## Learning review flow
 
@@ -290,13 +312,17 @@ flowchart TB
 flowchart LR
     H[Full Suite Handoff Guide] --> C[Package Learning Catalog]
     C --> R1[PKG-LEARN-001 First Light — Complete]
-    R1 --> G[SUITE-DOC-33 — Passed]
-    G --> I[FL-M1-01 First Light Skeleton — Active]
-    I --> R2[PKG-LEARN-002 Observatory when EchoDiagnostics is next]
-    R2 --> D[Repeat just-in-time through PKG-LEARN-028]
+    R1 --> FL[First Light implementation/gallery/distribution — Complete]
+    FL --> R9[PKG-LEARN-009 Chronicle — In progress]
+    R9 --> TB[Chronicle teach-back]
+    TB --> ESV[Explicit ESV-M1-01 activation]
+    ESV --> ACC[Later PKG-LEARN-003 Accord]
+    ACC --> RES[Later PKG-LEARN-006 Resonance]
+    RES --> UI[Later PKG-LEARN-008 Looking Glass]
 ```
 
 - Completed review: **PKG-LEARN-001 – First Light (`EchoLaunch`)**
 - Paused review: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
+- Active review: **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
 - Tracker: `Learning Reviews/PKG-LEARN-TRACKER.json`
-- Implementation is activated only for FL-M1-01; every later package remains locally locked.
+- Chronicle implementation remains locked until PKG-LEARN-009 passes and Jesse explicitly activates ESV-M1-01.

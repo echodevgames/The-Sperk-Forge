@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** Suite Distribution Kit standard + First Light 0.1.0 distribution handoff
-**Current checkpoint:** SUITE-DIST-001 — Package Distribution Kit Standard / First Light 0.1.0 Kit — **In progress**
+**Current focus:** PKG-LEARN-009 — The Chronicle (`EchoSave`) persistence/lifetime architecture review
+**Current checkpoint:** PKG-LEARN-009 — The Chronicle (`EchoSave`) — **Learning in progress; implementation locked**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -23,6 +23,39 @@
 - The permanent First Light Gallery is committed at `ccb1d59`; obsolete pre-gallery folder metadata is removed at `ad12b27`.
 - The final `EchoLaunchSetup` filtered EditMode gate passed **224 / 224**.
 - No post-A1 full-suite aggregate is claimed by this closeout. The retained FL-M5-07 full-suite baseline remains historical evidence and should be rerun at the next release-qualification gate.
+- SUITE-DIST-001 is complete at `c18eff6`; First Light `0.1.0` has a repository-owned Distribution Kit and Complete User Handout.
+- First Light remains frozen for this pass.
+- Jesse selected The Chronicle (`EchoSave`) as the next active package learning review.
+- The next multi-package initiative is the **Game Shell / Front Door**: Chronicle → Accord → Resonance → Looking Glass, composed later with First Light while preserving standalone package ownership.
+
+## Active Suite Architecture — Persistence and Lifetime Separation
+
+Jesse approved SFGSS-ADR-006 and the suite-wide rule:
+
+> Durable persistence, runtime state, and Unity object lifetime are separate concerns. Packages may expose persistence-capable state without depending directly on EchoSave. Cross-package persistence integration belongs in optional bridges/adapters. Long-lived Unity service composition is project-owned and must not turn First Light, The Chronicle, or another package into a universal service locator.
+
+Immediate consequences:
+
+- Chronicle owns durable **game-save transport**, slots/generations, migration/recovery, and save orchestration.
+- Accord remains the authority for global preferences; Chronicle does not absorb graphics/audio settings merely because those values persist.
+- Inventory, Progression, Objectives, Characters, World, and future peers retain their own live runtime truth and durable payload meaning.
+- A Chronicle load restores participant-owned live state; Chronicle does not become that state after load.
+- `DontDestroyOnLoad` / scene-surviving object lifetime is not durable persistence.
+- Consumer projects may compose long-lived package services beneath a project-owned runtime root. That root does not become a new authority domain or service locator.
+- First Light may initialize/discover long-lived services, then hands off.
+- Chronicle may have a duplicate-safe package-local root, but never becomes the parent/locator for unrelated services.
+
+SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, and Chronicle specification v1.2.0 carry this rule.
+
+## Chronicle Learning Gate
+
+- Review: `PKG-LEARN-009_EchoSave_Learning_Review.md`
+- Status: **In progress**
+- Implementation authorization: **None**
+- First implementation checkpoint scaffold: `ESV-M1-01 — Installable Skeleton and Duplicate-Safe Authority Claim`
+- ESV-M1-01 remains locked until the review/teach-back is complete and Jesse explicitly activates it.
+- Serializer/file-format implementation choices are intentionally not the next task. The review first establishes authority, lifetime, payload, standalone, bridge, and failure mental models.
+
 
 ## Suite Distribution Kit Standard
 
@@ -207,8 +240,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Build and retain the First Light `0.1.0` Distribution Kit from the exact package working tree.
-2. Verify tarball structure, package identity/version, SHA-256 record, and Git LFS handling.
-3. Commit the suite Distribution Kit standard and First Light kit together.
-4. Return the active suite workbench to deliberate next-package selection.
-5. Treat future First Light clean-project tarball reproduction and release qualification as a separate explicitly activated return to the package.
+1. Work through PKG-LEARN-009 for The Chronicle in plain language before writing production code.
+2. Complete Jesse's Chronicle teach-back on durable persistence vs runtime truth vs Unity object lifetime, participant ownership, standalone behavior, and project-owned long-lived composition.
+3. Resolve only learning questions that materially affect the approved Chronicle boundary; keep serializer/file-format implementation research deferred until the learning gate actually reaches it.
+4. After the review passes, explicitly activate `ESV-M1-01` and rehydrate the live repository/Unity baseline before implementation.
+5. Keep Accord, Resonance, and Looking Glass planned behind Chronicle in the Game Shell initiative, with each package independently gated by its own just-in-time review.

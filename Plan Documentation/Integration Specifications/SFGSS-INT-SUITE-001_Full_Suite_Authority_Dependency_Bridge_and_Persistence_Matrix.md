@@ -5,17 +5,17 @@ tags:
   - sfgss/persistence
   - sfgss/bridge
 status: approved
-updated: 2026-08-04
+updated: 2026-08-09
 ---
 
 # The Sperk’s Forge – Full Suite Authority, Dependency, Bridge, and Persistence Matrix
 
-**Document ID:** SFGSS-INT-SUITE-001  
-**Version:** 1.0.0  
-**Status:** Approved full-suite integration baseline  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Date:** August 4, 2026  
-**Parent authorities:** SFGSS-000 v0.21.0; SFGSS-001 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the twenty-eight current package specifications/foundations  
+**Document ID:** SFGSS-INT-SUITE-001
+**Version:** 1.1.0
+**Status:** Approved full-suite integration baseline
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Date:** August 9, 2026
+**Parent authorities:** SFGSS-000 v0.26.0; SFGSS-001 v1.5.0; SFGSS-002 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-006; and the twenty-eight current package specifications/foundations
 **Reconciles:** Foundation, Expansion, Advanced, and Standards/Package consistency matrices
 
 > This is the suite wiring diagram. It summarizes the approved contracts; it does not replace the package specifications that define each component in full.
@@ -135,7 +135,20 @@ A bridge may translate, coordinate, validate, observe, retry, or present. It may
 | Actor-local authority | Vessel; Instinct agent hosts | One validated host/motor or agent host per actor; no global controller/brain singleton |
 | Editor-only authority | Workshop; Foundry | No Player/runtime root; one mutating Editor transaction at a time |
 
-### 5.1 Recommended composition order
+### 5.1 Lifetime-separation rule
+
+The phrase **application-session root/authority** in this matrix describes Unity object/service lifetime only. It does not assign durable persistence ownership.
+
+- Chronicle may survive scene changes, but that does not make it the runtime owner of another package's state.
+- Accord may survive scene changes and owns global preference truth/persistence independently of Chronicle.
+- Inventory, Objectives, Progression, Characters, World, and other participants own their live state and payload meaning even when Chronicle transports snapshots.
+- The consumer project may compose multiple long-lived roots beneath a project-owned `DontDestroyOnLoad` composition object. That hierarchy does not transfer authority and is not a service locator.
+- First Light initializes/discovers selected authorities during startup and then hands off; it does not become the permanent parent of those services.
+- Peer persistence remains a bridge/participant-adapter concern unless an artifact is explicitly classified as such.
+
+See SFGSS-ADR-006.
+
+### 5.2 Recommended composition order
 
 This is an initialization plan, not a hard dependency graph. Omitted packages are simply skipped.
 
@@ -425,13 +438,14 @@ None of these open questions blocks the documentation handoff audit. They block 
 - [x] Optional bridges/providers are visible and removable.
 - [x] Multi-package operations identify commit owners.
 - [x] Global settings, save transport, package payloads, session state, and Editor records are separated.
+- [x] Durable persistence, mutable runtime truth, and Unity object lifetime are independently assigned; no universal persistent root/service locator is approved.
 - [x] Unknown durable data survives optional peer removal where required.
 - [x] Standalone and Integration Laboratory responsibilities are explicit.
 - [x] Diagnostics and identity namespaces remain qualified and collision-free.
 - [x] No empirical result was promoted without evidence.
 - [x] Package implementation remains locked.
 
-**Decision:** Approved. Proceed to SUITE-DOC-32 – Full Suite Documentation and Learning Handoff Audit.
+**Decision:** Approved. v1.1.0 reconciles SFGSS-ADR-006 and the Chronicle learning activation without changing the package dependency graph. Empirical implementation evidence remains gated.
 
 ## Graph Navigation
 
