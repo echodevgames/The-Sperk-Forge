@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 namespace EchoDevGames.EchoSave
@@ -213,8 +214,45 @@ namespace EchoDevGames.EchoSave
                 probe);
         }
 
+        internal void SetStorageBackendFactoryForTesting(
+            IEchoSaveStorageBackendFactory factory)
+        {
+            if (service == null)
+            {
+                throw new System.InvalidOperationException(
+                    "Only an accepted Chronicle authority has a storage lifecycle.");
+            }
+
+            service.SetStorageBackendFactory(
+                factory);
+        }
+
+        internal ISaveStorageBackend
+            StorageBackendForTesting =>
+                service != null
+                    ? service.StorageBackendForTesting
+                    : null;
+
         internal bool HasConstructedServiceForTesting =>
             service != null;
+
+        /// <summary>
+        /// EditMode tests do not have a reliable MonoBehaviour Awake dispatch
+        /// contract when components are created directly with AddComponent.
+        /// This seam deterministically exercises the exact production Awake
+        /// authority path only when Unity has not already done so.
+        /// </summary>
+        internal void EnsureAuthorityClaimedForTesting()
+        {
+            if (service != null ||
+                WasRejectedAsDuplicate ||
+                IsAuthoritative)
+            {
+                return;
+            }
+
+            Awake();
+        }
 
         private EchoSaveLifecycleResult
             CreateAuthorityRejectedResult()

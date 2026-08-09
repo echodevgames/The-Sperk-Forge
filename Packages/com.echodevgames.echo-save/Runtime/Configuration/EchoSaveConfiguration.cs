@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Project-owned Chronicle configuration definition.
     ///
-    /// ESV-M1-01 validates this definition in memory only. Resolving or creating
-    /// a durable storage path belongs to a later checkpoint.
+    /// ESV-M2-01 uses the configured storage-root directory name to resolve the
+    /// default local Chronicle root beneath Application.persistentDataPath.
+    /// The value remains a single safe relative directory segment.
     /// </summary>
     [CreateAssetMenu(
         fileName = "EchoSaveConfiguration",

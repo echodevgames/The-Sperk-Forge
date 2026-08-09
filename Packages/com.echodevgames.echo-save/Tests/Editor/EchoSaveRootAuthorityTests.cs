@@ -1,3 +1,4 @@
+
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -178,8 +179,14 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             LifecycleProbe probe =
                 new LifecycleProbe();
 
+            CountingBackendFactory factory =
+                new CountingBackendFactory();
+
             root.SetLifecycleProbeForTesting(
                 probe);
+
+            root.SetStorageBackendFactoryForTesting(
+                factory);
 
             EchoSaveLifecycleResult result =
                 root.InitializeSynchronouslyForTesting();
@@ -202,6 +209,10 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             Assert.That(
                 probe.InitializeAcceptedCount,
                 Is.Zero);
+
+            Assert.That(
+                factory.CreateCount,
+                Is.Zero);
         }
 
         [Test]
@@ -213,14 +224,23 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 "../Unsafe");
 
             EchoSaveRoot root =
-                CreateConfiguredRoot(
+                CreateRoot(
                     ref firstObject);
+
+            root.SetConfigurationForTesting(
+                configuration);
 
             LifecycleProbe probe =
                 new LifecycleProbe();
 
+            CountingBackendFactory factory =
+                new CountingBackendFactory();
+
             root.SetLifecycleProbeForTesting(
                 probe);
+
+            root.SetStorageBackendFactoryForTesting(
+                factory);
 
             EchoSaveLifecycleResult result =
                 root.InitializeSynchronouslyForTesting();
@@ -237,6 +257,10 @@ namespace EchoDevGames.EchoSave.Tests.Editor
 
             Assert.That(
                 probe.InitializeAcceptedCount,
+                Is.Zero);
+
+            Assert.That(
+                factory.CreateCount,
                 Is.Zero);
         }
 
@@ -324,17 +348,20 @@ namespace EchoDevGames.EchoSave.Tests.Editor
         }
 
         [Test]
-        public void M1LifecyclePerformsZeroDurableStorageOperations()
+        public void AuthorityTestsUseInjectedNoIoBackend()
         {
+            CountingBackendFactory factory =
+                new CountingBackendFactory();
+
             EchoSaveRoot root =
-                CreateConfiguredRoot(
+                CreateRoot(
                     ref firstObject);
 
-            LifecycleProbe probe =
-                new LifecycleProbe();
+            root.SetConfigurationForTesting(
+                configuration);
 
-            root.SetLifecycleProbeForTesting(
-                probe);
+            root.SetStorageBackendFactoryForTesting(
+                factory);
 
             EchoSaveLifecycleResult initialized =
                 root.InitializeSynchronouslyForTesting();
@@ -351,15 +378,19 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 Is.True);
 
             Assert.That(
-                probe.InitializeAcceptedCount,
+                factory.CreateCount,
                 Is.EqualTo(1));
 
             Assert.That(
-                probe.ShutdownCount,
+                factory.Backend.InitializeCount,
                 Is.EqualTo(1));
 
             Assert.That(
-                probe.StorageOperationCount,
+                factory.Backend.ShutdownCount,
+                Is.EqualTo(1));
+
+            Assert.That(
+                factory.Backend.PhysicalIoCount,
                 Is.Zero);
         }
 
@@ -373,6 +404,9 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             root.SetConfigurationForTesting(
                 configuration);
 
+            root.SetStorageBackendFactoryForTesting(
+                new CountingBackendFactory());
+
             return root;
         }
 
@@ -383,8 +417,13 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 new GameObject(
                     "EchoSaveRoot Test");
 
-            return owner.AddComponent<
-                EchoSaveRoot>();
+            EchoSaveRoot root =
+                owner.AddComponent<
+                    EchoSaveRoot>();
+
+            root.EnsureAuthorityClaimedForTesting();
+
+            return root;
         }
 
         private sealed class LifecycleProbe :
@@ -402,9 +441,6 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 private set;
             }
 
-            internal int StorageOperationCount =>
-                0;
-
             public void OnInitializeAccepted(
                 EchoSaveConfiguration config)
             {
@@ -414,6 +450,109 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             public void OnShutdown()
             {
                 ShutdownCount++;
+            }
+        }
+
+        private sealed class CountingBackendFactory :
+            IEchoSaveStorageBackendFactory
+        {
+            internal CountingBackend Backend
+            {
+                get;
+            } = new CountingBackend();
+
+            internal int CreateCount
+            {
+                get;
+                private set;
+            }
+
+            public SaveStorageResult TryCreate(
+                EchoSaveConfiguration config,
+                out ISaveStorageBackend backend)
+            {
+                CreateCount++;
+                backend =
+                    Backend;
+
+                return SaveStorageResult.Success(
+                    "Test backend created.");
+            }
+        }
+
+        private sealed class CountingBackend :
+            ISaveStorageBackend
+        {
+            public SaveStorageBackendId Id =>
+                new SaveStorageBackendId(
+                    "echodevgames.tests.no-io");
+
+            public string RootPath =>
+                "memory://chronicle-tests";
+
+            internal int InitializeCount
+            {
+                get;
+                private set;
+            }
+
+            internal int ShutdownCount
+            {
+                get;
+                private set;
+            }
+
+            internal int PhysicalIoCount =>
+                0;
+
+            public SaveStorageResult Initialize()
+            {
+                InitializeCount++;
+
+                return SaveStorageResult.Success(
+                    "Test backend initialized.");
+            }
+
+            public SaveStorageResult Exists(
+                SaveStorageKey key,
+                out bool exists)
+            {
+                exists = false;
+
+                return SaveStorageResult.Success(
+                    "Test backend existence check.");
+            }
+
+            public SaveStorageReadResult Read(
+                SaveStorageKey key) =>
+                new SaveStorageReadResult(
+                    new SaveStorageResult(
+                        SaveStorageStatus.NotFound,
+                        EchoSaveDiagnosticCodes
+                            .StorageNotFound,
+                        "Test backend has no data."),
+                    null);
+
+            public SaveStorageResult WriteNew(
+                SaveStorageKey key,
+                byte[] data) =>
+                SaveStorageResult.Success(
+                    "Test backend write accepted.");
+
+            public SaveStorageResult Delete(
+                SaveStorageKey key) =>
+                new SaveStorageResult(
+                    SaveStorageStatus.NotFound,
+                    EchoSaveDiagnosticCodes
+                        .StorageNotFound,
+                    "Test backend has no data.");
+
+            public SaveStorageResult Shutdown()
+            {
+                ShutdownCount++;
+
+                return SaveStorageResult.Success(
+                    "Test backend shut down.");
             }
         }
     }

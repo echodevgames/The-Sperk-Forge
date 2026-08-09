@@ -1,18 +1,22 @@
+
 using UnityEngine;
 
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// M1 Chronicle lifecycle service.
+    /// Chronicle lifecycle service.
     ///
-    /// No durable storage, serializer, slot, participant, or generation
-    /// behavior exists in this checkpoint.
+    /// ESV-M2-01 adds storage-root/backend initialization only. Save documents,
+    /// serializers, slots, generations, participants, and recovery remain
+    /// intentionally absent.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
     {
         private EchoSaveConfiguration configuration;
         private IEchoSaveLifecycleProbe lifecycleProbe;
+        private IEchoSaveStorageBackendFactory storageBackendFactory;
+        private ISaveStorageBackend storageBackend;
         private EchoSaveServiceState state;
 
         internal EchoSaveService(
@@ -21,6 +25,8 @@ namespace EchoDevGames.EchoSave
             this.configuration = configuration;
             lifecycleProbe =
                 NullEchoSaveLifecycleProbe.Instance;
+            storageBackendFactory =
+                DefaultEchoSaveStorageBackendFactory.Instance;
             state =
                 EchoSaveServiceState.AuthorityClaimed;
         }
@@ -48,14 +54,8 @@ namespace EchoDevGames.EchoSave
         internal void SetConfiguration(
             EchoSaveConfiguration value)
         {
-            if (state !=
-                EchoSaveServiceState.AuthorityClaimed &&
-                state !=
-                EchoSaveServiceState.Blocked)
-            {
-                throw new System.InvalidOperationException(
-                    "Chronicle configuration may only be replaced before successful initialization.");
-            }
+            EnsurePreInitializationMutationAllowed(
+                "Chronicle configuration");
 
             configuration = value;
 
@@ -75,16 +75,26 @@ namespace EchoDevGames.EchoSave
                     nameof(probe));
             }
 
-            if (state !=
-                EchoSaveServiceState.AuthorityClaimed &&
-                state !=
-                EchoSaveServiceState.Blocked)
-            {
-                throw new System.InvalidOperationException(
-                    "The Chronicle lifecycle probe may only be replaced before successful initialization.");
-            }
+            EnsurePreInitializationMutationAllowed(
+                "The Chronicle lifecycle probe");
 
             lifecycleProbe = probe;
+        }
+
+        internal void SetStorageBackendFactory(
+            IEchoSaveStorageBackendFactory factory)
+        {
+            if (factory == null)
+            {
+                throw new System.ArgumentNullException(
+                    nameof(factory));
+            }
+
+            EnsurePreInitializationMutationAllowed(
+                "The Chronicle storage backend factory");
+
+            storageBackendFactory = factory;
+            storageBackend = null;
         }
 
         internal EchoSaveLifecycleResult InitializeCore()
@@ -115,12 +125,7 @@ namespace EchoDevGames.EchoSave
 
             if (configuration == null)
             {
-                state =
-                    EchoSaveServiceState.Blocked;
-
-                return new EchoSaveLifecycleResult(
-                    EchoSaveLifecycleStatus.Blocked,
-                    state,
+                return BlockInitialization(
                     EchoSaveDiagnosticCodes
                         .MissingOrInvalidConfiguration,
                     "The Chronicle configuration is missing.");
@@ -129,15 +134,47 @@ namespace EchoDevGames.EchoSave
             if (!configuration.TryValidate(
                     out string validationMessage))
             {
-                state =
-                    EchoSaveServiceState.Blocked;
-
-                return new EchoSaveLifecycleResult(
-                    EchoSaveLifecycleStatus.Blocked,
-                    state,
+                return BlockInitialization(
                     EchoSaveDiagnosticCodes
                         .MissingOrInvalidConfiguration,
                     validationMessage);
+            }
+
+            SaveStorageResult creation =
+                storageBackendFactory.TryCreate(
+                    configuration,
+                    out storageBackend);
+
+            if (!creation.Succeeded ||
+                storageBackend == null)
+            {
+                storageBackend = null;
+
+                return BlockInitialization(
+                    creation.DiagnosticCode.Length == 0
+                        ? EchoSaveDiagnosticCodes
+                            .StorageInitializationFailed
+                        : creation.DiagnosticCode,
+                    creation.Message.Length == 0
+                        ? "The Chronicle storage backend could not be created."
+                        : creation.Message);
+            }
+
+            SaveStorageResult storageInitialization =
+                storageBackend.Initialize();
+
+            if (!storageInitialization.Succeeded)
+            {
+                storageBackend = null;
+
+                return BlockInitialization(
+                    storageInitialization.DiagnosticCode.Length == 0
+                        ? EchoSaveDiagnosticCodes
+                            .StorageInitializationFailed
+                        : storageInitialization.DiagnosticCode,
+                    storageInitialization.Message.Length == 0
+                        ? "The Chronicle storage backend could not initialize."
+                        : storageInitialization.Message);
             }
 
             lifecycleProbe.OnInitializeAccepted(
@@ -150,7 +187,7 @@ namespace EchoDevGames.EchoSave
                 EchoSaveLifecycleStatus.Succeeded,
                 state,
                 string.Empty,
-                "The Chronicle initialized without durable storage side effects.");
+                "The Chronicle initialized its storage backend successfully.");
         }
 
         internal EchoSaveLifecycleResult ShutdownCore()
@@ -167,10 +204,25 @@ namespace EchoDevGames.EchoSave
             state =
                 EchoSaveServiceState.ShuttingDown;
 
-            lifecycleProbe.OnShutdown();
+            SaveStorageResult storageShutdown =
+                storageBackend != null
+                    ? storageBackend.Shutdown()
+                    : SaveStorageResult.NoChange(
+                        "No Chronicle storage backend was active.");
 
+            lifecycleProbe.OnShutdown();
+            storageBackend = null;
             state =
                 EchoSaveServiceState.Shutdown;
+
+            if (!storageShutdown.Succeeded)
+            {
+                return new EchoSaveLifecycleResult(
+                    EchoSaveLifecycleStatus.Rejected,
+                    state,
+                    storageShutdown.DiagnosticCode,
+                    storageShutdown.Message);
+            }
 
             return new EchoSaveLifecycleResult(
                 EchoSaveLifecycleStatus.Succeeded,
@@ -190,10 +242,46 @@ namespace EchoDevGames.EchoSave
             state =
                 EchoSaveServiceState.ShuttingDown;
 
-            lifecycleProbe.OnShutdown();
+            if (storageBackend != null)
+            {
+                storageBackend.Shutdown();
+            }
 
+            lifecycleProbe.OnShutdown();
+            storageBackend = null;
             state =
                 EchoSaveServiceState.Shutdown;
+        }
+
+        internal ISaveStorageBackend
+            StorageBackendForTesting =>
+                storageBackend;
+
+        private EchoSaveLifecycleResult BlockInitialization(
+            string diagnosticCode,
+            string message)
+        {
+            state =
+                EchoSaveServiceState.Blocked;
+
+            return new EchoSaveLifecycleResult(
+                EchoSaveLifecycleStatus.Blocked,
+                state,
+                diagnosticCode,
+                message);
+        }
+
+        private void EnsurePreInitializationMutationAllowed(
+            string subject)
+        {
+            if (state !=
+                    EchoSaveServiceState.AuthorityClaimed &&
+                state !=
+                    EchoSaveServiceState.Blocked)
+            {
+                throw new System.InvalidOperationException(
+                    $"{subject} may only be replaced before successful initialization.");
+            }
         }
     }
 }
