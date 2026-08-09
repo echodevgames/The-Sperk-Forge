@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M2-02
 **Milestone:** M2 — Document / Storage Core
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.4.0
 **Prior checkpoint:** ESV-M2-01 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -101,23 +101,29 @@ Do not implement in ESV-M2-02:
 - peer-package bridges;
 - Chronicle-owned DDOL.
 
-## Proposed focused proof
+## Executed focused proof
 
-- serializer registry accepts unique provider identity;
-- duplicate serializer identity rejected deterministically;
-- default Unity JSON serializer can be resolved;
-- supported package DTO round trip preserves all authored fields;
-- empty/null serialize request returns structured failure;
-- empty/null/malformed deserialize request returns structured failure;
-- unsupported document version blocks without storage mutation;
-- serializer operation performs zero filesystem I/O;
-- storage backend remains independently replaceable;
-- all prior 40 focused tests remain green.
+- serializer registry accepts unique provider identity — **Pass**;
+- duplicate serializer identity rejected deterministically — **Pass**;
+- default Unity JSON serializer resolves — **Pass**;
+- supported package DTO round trip preserves authored fields — **Pass**;
+- empty/null serialize requests fail structurally — **Pass**;
+- empty/null/malformed deserialize requests fail structurally — **Pass**;
+- unsupported package-document versions block without storage mutation — **Pass**;
+- serializer/document layer performs zero filesystem I/O — **Pass**;
+- storage backend remains independently replaceable — **Pass**;
+- all M1/M2-01 regressions remain green — **Pass**.
 
-Executed counts are recorded only from Unity.
+Final focused Unity gate: **57 / 57 passed, 0 failed**.
 
 ## Stop point
 
-Stop when Chronicle package documents can be deterministically serialized/deserialized and version-validated in memory.
+**Reached.** Chronicle package documents serialize/deserialize deterministically in memory, validate explicit package-document versions, and preserve the prior storage/lifecycle regression floor.
 
-Do not continue into immutable generation commit/publication, head mutation, slots, participants, integrity/recovery, or autosave without the next bounded checkpoint.
+Implementation commit: `6404037`.
+
+Next bounded checkpoint:
+
+`ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation`
+
+M2-03 prepares the exact package-owned IDs, commit documents, and integrity primitive required before any physical immutable generation may be published. It still does not create generation directories or mutate `head.json`.

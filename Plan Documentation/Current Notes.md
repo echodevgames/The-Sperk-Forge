@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation
-**Current checkpoint:** ESV-M2-02 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation
+**Current checkpoint:** ESV-M2-03 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,26 +78,36 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
+## Chronicle ESV-M2-02 Closeout
+
+- Implementation commit: `6404037`.
+- Unity compile/import: **Pass / green**.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **57 / 57 passed, 0 failed**.
+- M2-02 added package-owned document identity/version contracts, `SaveDocumentEnvelope`, structured serializer results, `SaveSerializerRegistry`, and the package-owned `UnityJsonSaveSerializer`.
+- The serializer/document layer remains in-memory only and performs no filesystem I/O.
+- Malformed JSON, null/empty requests, duplicate/missing serializer providers, unsupported package-document versions, and unsupported document kinds fail through structured results.
+- All M1/M2-01 lifecycle, path, and local-backend regressions remain green.
+- No generation directory, head publication, slot catalog, participant capture/apply, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
+
 ## Active Chronicle M2 Slice
 
-`ESV-M2-02 — Chronicle Document Contracts and Unity JSON Serializer Foundation` is active / authorized.
+`ESV-M2-03 — Chronicle Generation Identity, Integrity, and Commit-Document Foundation` is active / authorized.
 
 Authorized next:
-- package-owned document DTO contracts for the Chronicle envelope layer;
-- explicit document-format version constants;
-- default `UnityJsonSaveSerializer` using Unity `JsonUtility`;
-- serializer-provider registration/lookup needed by the document layer;
-- deterministic serializer identity and structured serialize/deserialize results;
-- round-trip tests for package-owned plain DTOs;
-- explicit rejection/reporting for malformed JSON and unsupported document versions at the serializer/document boundary;
-- preservation of storage-provider independence and all M1/M2-01 lifecycle/path regressions.
+- package-generated `SaveSlotId` and `SaveGenerationId` technical value types without slot-catalog behavior;
+- package-owned `SaveManifest`, `SavePayloadDocument`, `SavePayloadEntry`, and `SaveHeadPointer` DTO/version contracts;
+- package-owned `IIntegrityProvider` and default `Sha256IntegrityProvider`;
+- detached-byte checksum calculation/verification and explicit integrity algorithm identity;
+- manifest/payload/head in-memory serialization and version/integrity validation;
+- an empty or transport-only payload document that does not require a participant registry;
+- focused tests proving stable IDs, checksum behavior, document agreement, serializer compatibility, and all prior 57 regressions.
 
 Still deferred:
-- physical immutable generation commit/publication;
-- head-pointer mutation/publication;
-- slot catalog and active-slot behavior;
-- participant capture/apply and unknown-payload preservation;
-- migrations/checksums/recovery/autosave/prepared loads;
+- creating/publishing physical immutable generation directories;
+- mutating/replacing `head.json`;
+- slot catalog, slot policy, active-slot selection, rename/duplicate/delete operations;
+- participant registry/capture/apply and gameplay payload meaning;
+- migration chains, recovery selection, retention cleanup, autosave, prepared loads;
 - peer persistence bridges;
 - project-wide DDOL composition.
 
@@ -285,8 +295,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the live repository/Unity baseline at committed ESV-M2-01 closeout.
-2. Implement only `ESV-M2-02`: package-owned document DTO/version contracts, the default `UnityJsonSaveSerializer`, serializer registry/provider lookup, structured serializer results, and focused round-trip/malformed-input tests.
-3. Keep serializer output detached from physical save publication. M2-02 may turn package-owned DTOs into bytes/text and back, but it does not yet create or publish a Chronicle generation.
-4. Do **not** implement slot catalogs, immutable generation publication, head updates, participants, migrations, integrity/recovery, autosave, peer bridges, or project-wide DDOL composition in M2-02.
-5. Preserve all `40 / 40` M1 + M2-01 focused regressions while adding the new serializer/document tests.
+1. Rehydrate the live repository/Unity baseline at committed ESV-M2-02 closeout.
+2. Implement only `ESV-M2-03`: generation/slot technical IDs, package commit-document DTOs, SHA-256 integrity provider, detached checksum verification, and focused in-memory agreement tests.
+3. Keep M2-03 **pre-publication**: do not create generation directories, move candidates into `generations/`, or update/replace `head.json`.
+4. Do **not** activate slot catalog/policy, participants, migration/recovery, autosave, prepared loads, peer bridges, or project-wide DDOL composition.
+5. Preserve the complete `57 / 57` Chronicle regression floor while adding M2-03 proof.

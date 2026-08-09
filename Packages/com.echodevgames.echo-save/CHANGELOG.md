@@ -53,3 +53,25 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **40 / 40**, with `0` failed.
 - Initial `29 / 40` run exposed an EditMode lifecycle-test activation assumption; the narrow test seam was corrected and the final rerun passed.
 - No save-document serializer, slot catalog, immutable generation publication, participant persistence, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was added.
+
+### Added
+
+#### ESV-M2-02 — Document Contracts and Unity JSON Serializer Foundation
+
+- Package-owned document identity/version contracts.
+- `SaveDocumentEnvelope`.
+- Structured serializer result/status contracts and diagnostics.
+- Replaceable in-memory `ISaveSerializer` operations.
+- Package-local `SaveSerializerRegistry`.
+- Default package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility`.
+- Focused registry, DTO/envelope round-trip, malformed-input, and unsupported-version tests.
+
+### Verified
+
+#### ESV-M2-02 Closeout
+
+- Implementation committed at `6404037`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **57 / 57**, with `0` failed.
+- Serializer/document work performs no filesystem I/O and does not publish generations or mutate heads.
+- All prior Chronicle lifecycle, path-safety, and local-backend regressions remained green.
