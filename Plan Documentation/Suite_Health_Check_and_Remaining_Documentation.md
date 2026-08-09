@@ -1,68 +1,91 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 4, 2026  
-**Completed checkpoint:** SUITE-DOC-33 – Initial Implementation Readiness Gate  
-**Active checkpoint:** FL-M1-01 – First Light Package Skeleton  
-**Implementation:** First Light authorized; not started
+**Updated:** August 8, 2026
+**Completed package checkpoint:** FL-M6-01 – First Light Production Reference Showcase
+**Current implementation state:** First Light in-repository implementation/gallery pass complete; no next package automatically active
 
 ## Current health
 
 | Area | Status |
 |---|---|
-| Suite Bible | Approved v0.23.0 |
-| Standards | SFGSS-001 through SFGSS-010 complete; SFGSS-005 v1.4.0 |
+| Suite Bible | Approved; no FL-M6-01 closeout authority change required |
+| Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
-| Cross-package matrices | Foundation, Expansion, Advanced, Consistency, and Full Suite passed |
-| Documentation handoff | Passed |
-| Initial implementation gate | Passed with advisory |
-| Learning workflow | Just-in-time package-local gate |
-| Package learning reviews | 1 complete, 1 paused, 26 not started |
-| First Light local learning gate | Passed |
-| FL-M1-01 | Active and authorized |
-| First Light implementation | Not started |
-| Other package implementations | Locked |
-| Empirical evidence | `Not run` unless a retained evidence record states otherwise |
-| Release-blocking architecture conflicts | None recorded |
+| Learning workflow | Just-in-time package-local gate remains authoritative |
+| First Light learning gate | Passed |
+| First Light package version | `0.1.0` |
+| First Light specification | SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 |
+| First Light Standalone Test Lab | Complete; retained `809 / 809` automated and `12 / 12` manual evidence |
+| First Light Package Reference Showcase | **Complete** |
+| Latest First Light Setup-focused gate | **224 / 224** |
+| Permanent First Light Gallery | **Complete** — First Light Example + UMBRA Example |
+| Clean-project reproduction | Not run in FL-M6-01 closeout |
+| Release qualification/private beta | Not run |
+| Other package implementations | Not automatically activated by this closeout |
+| Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
-## Required checks before the first skeleton file
+## First Light graduation state
 
-1. Open the Unity 6000.3.8f1 project and confirm a clean Console.
-2. Review Git status and preserve unrelated work.
-3. Confirm `Packages/com.echodevgames.echo-launch/` is absent or safely reviewed.
-4. Inspect the exact baseline `com.unity.ugui` version.
-5. Stop if any current authority contradicts FL-M1-01.
+```text
+Learning / authority                 PASS
+Implementation                       PASS for current approved scope
+Standalone Test Lab                  PASS
+Package Reference Showcase           PASS
+Clean-project reproduction           NOT RUN
+Release qualification                NOT RUN
+Private beta / external adoption     NOT RUN
+```
 
-These are implementation-start conditions, not documentation blockers.
+First Light is therefore **complete for its current in-repository implementation and Reference Showcase pass**, but this document does not call the package release-qualified.
 
-## Authorized First Light work
+## Permanent consumer proof
 
-FL-M1-01 may create:
+The project now retains:
 
-- The UPM package manifest.
-- Four assembly definitions.
-- Root package documentation.
-- The minimal `Documentation~` shell.
-- Stable Unity `.meta` files.
-- Skeleton validation and retained evidence.
+```text
+Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
+├── First Light Example/
+└── UMBRA Example/
+```
 
-It may not create C#, scenes, prefabs, ScriptableObjects, samples, setup tools, bridges, or launch behavior.
+The Gallery demonstrates both the canonical EchoDevGames happy path and an independently-authored UMBRA consumer foundation. Additional future Gallery examples may be project-owned content exercises; they do not automatically authorize package changes.
 
-## Later package rule
+## Evidence carried forward
 
-Before any other package begins implementation, complete or refresh its own `PKG-LEARN-###` review and activate an approved package-local checkpoint. Observatory remains paused until EchoDiagnostics reaches the front of the implementation queue.
+- FL-M5-07 retained full automated baseline: `809 / 809`.
+- FL-M5-07 manual Laboratory matrix: `12 / 12`.
+- FL-M6-01-H1 focused identity gate: `5 / 5`.
+- FL-M6-01-H2 focused destination-Build-Settings gate: `35 / 35`.
+- Final FL-M6-01 `EchoLaunchSetup` filtered EditMode gate: `224 / 224`.
+- UMBRA fresh-root Create Project-Owned Setup proof created the requested foundation and serialized three authored splashes.
+- UMBRA runtime Boot presentation succeeded.
+- Identical second Apply returned `NoChanges`, created no paths, and preserved Build Settings.
 
-## Honest evidence boundary
+No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Full-suite regression must be collected again when release qualification is activated.
 
-The documentation proves approved design, static consistency, navigation, learning status, handoff readiness, and checkpoint authorization. It does not prove compilation, package import, runtime behavior, performance, platform compatibility, provider compatibility, migration, multiplayer prototypes, packaging, or release readiness.
+## Remaining suite work
+
+Before another package begins implementation:
+
+1. identify the next package deliberately;
+2. complete or refresh that package's just-in-time learning review;
+3. activate an approved package-local Checkpoint Build Plan;
+4. rehydrate the repository and verify live Unity/Git starting conditions;
+5. preserve package independence and the Laboratory → Reference Showcase graduation loop.
+
+## First Light future return gates
+
+If First Light returns to active development, the next release-oriented work remains separate from FL-M6-01:
+
+- clean-project reproduction of the proven happy path;
+- full current regression totals;
+- supported installation-route evidence;
+- player-build qualification where required;
+- release checklist/version/tag/catalog decisions;
+- private beta/external adoption.
+
+No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-Begin FL-M1-01 at its starting-condition checks. Stop before the first `.cs` file and before FL-M2-01.
-
-## Navigation
-
-- [SUITE-DOC-33 Readiness Report](Test%20Reports/SUITE-DOC-33_Initial_Implementation_Readiness_Gate_Report.md)
-- [FL-M1-01 Checkpoint Build Plan](Checkpoint%20Build%20Plans/First_Light_M1_Package_Skeleton_Checkpoint_Build_Plan.md)
-- [First Light Learning Review](Learning%20Reviews/PKG-LEARN-001_EchoLaunch_Learning_Review.md)
-- [Current Notes](Current%20Notes.md)
-- [Suite Graph Roadmap](Suite_Graph_Roadmap.md)
+Commit the FL-M6-01 documentation closeout, confirm a clean synchronized repository, then deliberately activate the next package through the just-in-time workflow.

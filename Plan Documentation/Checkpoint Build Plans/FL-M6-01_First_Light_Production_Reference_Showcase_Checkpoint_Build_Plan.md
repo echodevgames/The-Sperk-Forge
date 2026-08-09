@@ -3,8 +3,8 @@
 **Document role:** SFGSS-005 Checkpoint Build Plan
 **Package:** First Light — Startup and Launch (`EchoLaunch`)
 **Checkpoint:** `FL-M6-01`
-**Status:** Approved and in progress; H1/H2 proven in the real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion in implementation; A1-E1 project-owned foundation resolution authorized from the Slice E consumer proof
-**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.15.0
+**Status:** **Complete** — Production Reference Showcase, A1 presentation/authoring, A1-E1 project-owned foundation resolution, permanent First Light Gallery, and documentation closeout evidence reconciled
+**Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.16.0
 **Suite showcase authority:** SFGSS-ADR-005
 **Unity baseline:** `6000.3.8f1`
 **Repository baseline:** exact clean `8c3f3b3` before this authority commit
@@ -38,25 +38,29 @@ destination validation + load
 FirstLight_Showcase_MainMenu
 ```
 
-## 3. Project-Owned Root
+## 3. Project-Owned Reference Gallery
+
+The final project-owned showcase is retained as a gallery with two examples:
 
 ```text
-Assets/EchoDevGames/SuiteShowcase/FirstLight/
-├── README.md
-├── Art/
-│   ├── EchoDevGames_StudioSplash.png
-│   └── FirstLight_ShowcaseSplash.png
-├── Configuration/
-│   ├── EchoLaunchConfiguration.asset
-│   ├── StartupSequence.asset
-│   ├── LaunchDestination.asset
-│   └── SplashSequence.asset
-├── Prefabs/
-│   └── EchoLaunchRoot.prefab
-└── Scenes/
-    ├── FirstLight_Showcase_Boot.unity
-    └── FirstLight_Showcase_MainMenu.unity
+Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
+├── First Light Example/
+│   └── First Light Splashs/
+│       ├── Art/
+│       ├── Audio/
+│       ├── Configuration/
+│       ├── Prefabs/
+│       └── Scenes/
+└── UMBRA Example/
+    └── UMBRA Splashs/
+        ├── Art/
+        ├── Audio/
+        ├── Configuration/
+        ├── Prefabs/
+        └── Scenes/
 ```
+
+`First Light Example` is the canonical EchoDevGames happy path. `UMBRA Example` is the promoted Slice E independent-consumer proof. Both are project-owned examples outside `Packages/**` and `Samples~/**`.
 
 ## 4. Consumer-Workflow Rule
 
@@ -426,35 +430,49 @@ Run retained focused tests, complete EditMode, complete Runtime Play Mode, inspe
 
 | ID | Action | Expected result |
 |---|---|---|
-| SHOW-001 | Inspect starting repository/showcase path | Clean synchronized baseline; no accidental prior display case |
-| SHOW-002 | Preview/apply public Setup request | Ready plan; only approved project-owned foundation created/reused |
-| SHOW-003 | Repeat identical Setup | `NoChanges`; no duplicates or Build Settings drift |
+| SHOW-001 | Inspect starting repository/showcase path | **PASS** — clean synchronized baseline established |
+| SHOW-002 | Preview/apply public Setup request | **PASS** — public Setup created/reused only approved project-owned foundation content |
+| SHOW-003 | Repeat identical Setup | **PASS** — `NoChanges`; no duplicate foundation or Build Settings drift |
 | SHOW-H1 | Author valid splash identities through public Inspector | **PASS** — blank identities generated automatically; focused Editor tests `5 / 5`; no YAML edit |
-| SHOW-H2 | Setup ensures configured destination is build-loadable | Boot and destination enabled exactly once; identical rerun is `NoChanges`; no manual Build Settings edit |
-| SHOW-004 | Play showcase Boot | Studio splash then First Light splash, visibly ordered |
-| SHOW-005 | Continue launch | Startup settles; destination validates/loads; handoff completes |
-| SHOW-006 | Inspect destination | Clean main-menu-style display; no Laboratory diagnostic wall |
-| SHOW-007 | Inspect Git ownership | Showcase under project `Assets/**`; package Runtime/Editor unchanged |
-| SHOW-008 | Run retained regression | Existing First Light automated baseline stays green; additive focused tests may raise totals |
-| SHOW-009 | Assign/inspect preferred audio intent | Optional project-owned `AudioClip` reference is retained per splash entry; no playback occurs without a later bridge/provider |
-| SHOW-A1-E1 | Preview fresh root with `Create Project-Owned Setup` | Configuration, destination asset, startup sequence, optional splash sequence, root prefab, and Boot resolve to requested project-owned targets; explicit destination scene may be reused |
-| SHOW-A1-E2 | Apply the same request and inspect generated SplashSequence | Authored presentation settings, all authored entries, images/audio intent/timing/motion/advance values, and generated stable entry IDs are retained in the newly-created target sequence |
-| SHOW-A1-E3 | Refresh and repeat identical request | `NoChanges`; no duplicate foundation assets, no off-root substitution, no Build Settings drift |
+| SHOW-H2 | Setup ensures configured destination is build-loadable | **PASS** — focused gate `35 / 35`; Boot and destination enabled exactly once; repeat `NoChanges`; no manual Build Settings edit |
+| SHOW-004 | Play showcase Boot | **PASS** — project-owned Studio/First Light splash presentation visibly ordered |
+| SHOW-005 | Continue launch | **PASS** — startup settles; destination validates/loads; completed handoff observed |
+| SHOW-006 | Inspect destination | **PASS** — clean project-owned MainMenu-style destination reached |
+| SHOW-007 | Inspect Git ownership | **PASS** — permanent Gallery under project `Assets/**`; package/project ownership separated |
+| SHOW-008 | Run retained regression | **PASS within touched Setup scope** — final `EchoLaunchSetup` filter `224 / 224`; retained FL-M5-07 full-suite baseline remains `809 / 809`; no post-A1 full-suite aggregate claimed |
+| SHOW-009 | Assign/inspect preferred audio intent | **PASS** — project-owned `AudioClip` intent serialized in Gallery examples; EchoLaunch performs no audio playback |
+| SHOW-A1-E1 | Preview fresh root with `Create Project-Owned Setup` | **PASS** — requested foundation targets planned as Create while explicit existing destination remained Reuse |
+| SHOW-A1-E2 | Apply the same request and inspect generated SplashSequence | **PASS** — three authored UMBRA entries, stable IDs, images/audio intent/timing/motion/advance values serialized in the new target sequence |
+| SHOW-A1-E3 | Refresh and repeat identical request | **PASS** — identical second Apply `NoChanges`, Created paths None, requested local targets reused, Build Settings unchanged |
 
-## 12. Automated Baseline
+## 12. Automated and Manual Evidence at Closeout
 
-At minimum retain:
+Retained pre-A1 full-suite evidence from FL-M5-07 remains:
 
 ```text
-Focused Standalone Laboratory package tests: 6 / 6
-Focused Standalone Laboratory asset tests:   8 / 8
-
 Complete EditMode:     306 / 306
 Runtime Play Mode:     503 / 503
 Total automated:       809 / 809
+Manual Laboratory:      12 / 12
 ```
 
-Additive project-owned showcase tests may increase totals. Existing tests may not regress.
+FL-M6-01 additive evidence includes:
+
+```text
+H1 focused identity gate:              5 / 5
+H2 focused destination gate:          35 / 35
+Final EchoLaunchSetup filtered gate: 224 / 224
+```
+
+Focused A1 data/player/uGUI/Inspector/Setup slices were run green during implementation. This closeout does **not** invent a new complete EditMode or Runtime Play Mode aggregate after the A1 additions. A fresh complete regression is deferred to the next release-qualification gate.
+
+Manual Reference Gallery evidence:
+
+- canonical First Light Boot → splashes → MainMenu path succeeded;
+- UMBRA independent project-owned foundation was created through public Setup;
+- generated UMBRA SplashSequence retained three stable-ID entries and authored presentation settings;
+- UMBRA Boot presentation played successfully;
+- identical second Apply returned `NoChanges`, created no paths, and preserved Build Settings.
 
 ## 13. Explicitly Out of Scope
 
@@ -488,22 +506,30 @@ Stop if:
 
 ## 15. Closeout
 
-On success:
+FL-M6-01 is complete.
 
-- update root and package Current Notes;
-- update package Documentation Index;
-- add package checkpoint/test-showcase records;
-- add Plan Documentation completion record;
-- update README/Quick Start only from the proven real workflow;
-- record any consumer ergonomics issue separately;
-- commit/push implementation and docs in bounded adjacent commits.
+Closeout result:
+
+- root and package Current Notes reconciled;
+- package Documentation Index reconciled;
+- package Quick Start and Installation corrected from early skeleton-era text to the proven current workflow;
+- package Changelog and README reconciled;
+- package and Plan Documentation checkpoint/test records added;
+- permanent First Light Gallery retained with canonical First Light and UMBRA examples;
+- A1/A1-E1 consumer ergonomics issues resolved without widening audio/input/persistence/menu/normal-scene-flow authority;
+- final Setup-focused gate `224 / 224`;
+- UMBRA fresh Create → runtime presentation → repeat `NoChanges` proof completed;
+- package version remains `0.1.0`;
+- specification remains v1.16.0.
+
+The project-owned Gallery is a long-term reference/example surface and may accumulate additional consumer examples later. New Gallery content does not automatically authorize package feature changes.
 
 ## 16. Explicit Stop Point
 
-When `SHOW-001` through `SHOW-009` pass and the Reference Showcase is committed:
+**STOP — FL-M6-01 is closed.**
 
-**STOP.**
+First Light implementation and in-repository Gallery work are frozen for this pass.
 
-Do not begin FL-M6-02 automatically.
+Do not begin FL-M6-02 automatically. Clean-project reproduction, complete current regression, supported distribution-route proof, player-build evidence, release version/tag/catalog, and private beta remain future release-qualification work requiring explicit activation.
 
-FL-M6-02 reproduces this exact happy path in a genuinely clean consumer project.
+The next suite package must be selected deliberately through its own just-in-time learning review and approved Checkpoint Build Plan.

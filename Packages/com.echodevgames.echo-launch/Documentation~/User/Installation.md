@@ -2,99 +2,99 @@
 
 ## Current Development Status
 
-First Light is currently an embedded development package.
-
 Package version:
 
-    0.1.0
+```text
+0.1.0
+```
 
-Runtime startup behavior is not implemented in this version.
+First Light currently contains implemented Runtime, Presentation.UGUI, Editor tooling, tests, documentation, prefabs, and one separately importable Standalone Test Laboratory sample.
 
-## Tested Installation Method
+The current repository-development installation is an **embedded package**. This document does not claim public registry or clean-project distribution support yet.
 
-The verified installation method is embedding the package directly inside the Unity project at:
+## Verified Embedded Development Method
 
-    Packages/com.echodevgames.echo-launch
+The package is embedded at:
 
-Unity recognizes the folder as a package because it contains:
+```text
+Packages/com.echodevgames.echo-launch
+```
 
-    package.json
+Unity recognizes the folder through `package.json`, and the repository records the embedded package in `Packages/packages-lock.json`.
 
-The package is recorded in:
+In Unity Package Manager confirm:
 
-    Packages/packages-lock.json
-
-with the source:
-
-    embedded
-
-## Current Unity Requirements
-
-- Minimum declared Unity version: `6000.0`
-- Primary development baseline: `6000.3.8f1`
-- Required uGUI package version: `2.0.0`
-
-The declared minimum version is an architectural compatibility target.
-
-Only the primary development baseline has been used during the package-skeleton checkpoint.
-
-## Verifying the Embedded Package
-
-Open Unity Package Manager and confirm that the package appears as:
-
-    First Light - Startup and Launch
-
-The package should report:
-
+- Display name: First Light - Startup and Launch
 - Package ID: `com.echodevgames.echo-launch`
 - Version: `0.1.0`
 - Source: Custom or Embedded
 - uGUI dependency: `2.0.0`
 
-The Unity Console should contain zero package-related errors.
+## Unity Requirements
 
-## Current Package Structure
+- Minimum declared Unity version: `6000.0`
+- Primary development baseline: `6000.3.8f1`
+- Required uGUI package version: `2.0.0`
 
-The package currently contains:
+The declared minimum is a package compatibility target. The retained development evidence in this repository is from Unity `6000.3.8f1`.
 
-    package.json
-    README.md
-    CHANGELOG.md
-    LICENSE.md
-    Third Party Notices.md
-    Runtime/
-    Editor/
-    Tests/
-    Documentation~/
+## Package Structure
 
-The Runtime, Editor, and test folders contain assembly definitions only.
+The package currently includes:
 
-## Removal and Reinstallation Evidence
+```text
+package.json
+README.md
+CHANGELOG.md
+LICENSE.md
+Third Party Notices.md
+Runtime/
+Presentation.UGUI/
+Editor/
+Tests/
+Samples~/
+Documentation~/
+```
 
-The embedded package was temporarily moved outside the Unity project and then restored from the same folder.
+## After Installation
 
-The project compiled with zero red Console errors while First Light was absent.
+Use:
 
-After restoration:
+```text
+Tools > Sperk's Forge > First Light > Setup
+```
 
-- First Light returned in Package Manager as version `0.1.0`.
-- uGUI remained resolved as `2.0.0`.
-- The project compiled with zero red Console errors.
-- Runtime asmdef GUID remained `6370d00c0cfa8144795d367cb689f221`.
-- Editor asmdef GUID remained `994a9bf984e48cc4a9c5139c901e11f6`.
+Setup can preview/create a project-owned First Light foundation, reuse compatible project assets, or explicitly create an independent project-owned foundation. See [Quick Start](Quick%20Start.md).
 
-Because version `0.1.0` contains no runtime configuration, scene objects, prefabs, save data, or generated project content, removal affected only the package skeleton.
+The package itself does not require the repository's `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/**` content. That Gallery is project-owned reference material in The Sperk's Forge development repository.
 
-## Not Yet Verified
+## Standalone Test Laboratory
 
-The following installation methods have not been tested:
+Unity Package Manager exposes one sample:
+
+```text
+First Light Standalone Test Lab
+```
+
+Importing the sample does not automatically run Setup, Repair, Validator, Simulator, Play Mode, or modify Build Settings. Standard imported `Assets/Samples/**` content is excluded from automatic Setup candidate discovery unless explicitly selected.
+
+## Removal Evidence
+
+The embedded package has previously been removed from and restored to the development project while preserving its package identity and assembly-definition GUIDs.
+
+Project-owned content created by Setup lives under the consumer project's `Assets/**`. Removing the package does not mean that user-authored project assets should be silently deleted.
+
+## Not Yet Claimed as Supported
+
+The following routes/qualification steps are not claimed by the FL-M6-01 closeout:
 
 - Git URL installation
 - Git tag installation
-- Local package reference outside the project
+- Local package reference outside the development project
 - Tarball installation
 - Scoped registry installation
-- Package Manager installation from a public registry
-- Installation into a separate clean Unity project
+- Public Package Manager registry installation
+- Separate clean-project reproduction of the final A1/A1-E1 happy path
+- Player-build qualification
 
-These methods must not be described as supported until their evidence is recorded.
+Do not describe these as supported until their evidence is recorded in a later release-qualification checkpoint.

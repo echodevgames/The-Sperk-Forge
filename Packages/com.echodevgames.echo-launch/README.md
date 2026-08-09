@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: Setup planning, create-only Apply, explicit current-schema Repair, the read-only project Validator, the release-gated Direct Scene Development Initializer, the Editor-only Launch Simulator, and the importable Standalone Test Laboratory are implemented and accepted
+- Development stage: FL-M6-01 Production Reference Showcase complete; Setup/Repair/Validator/Direct Scene/Simulator/Laboratory plus A1 splash authoring and A1-E1 project-owned foundation resolution are implemented; in-repository First Light Gallery is complete and frozen for this pass
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -37,6 +37,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-05` Direct Scene Development Initializer
   - `FL-M5-06` Launch Simulator and Deterministic Failure Injection
   - `FL-M5-07` Standalone Test Laboratory and Importable UPM Sample
+  - `FL-M6-01` Production Reference Showcase, Splash Presentation/Authoring, and Project-Owned Foundation Resolution
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -563,6 +564,28 @@ Moving Boot first requires explicit approval.
 Apply does not repair, migrate, overwrite, move, rename, or delete existing
 project-authored content.
 
+### FL-M6-01 Setup Presentation and Foundation Authoring
+
+Setup additionally supports creation-time authoring for a **new** SplashSequence:
+
+- Splash Only / Splash + Status;
+- project-owned background;
+- Allow Advancement;
+- per-entry image, optional audio intent, label, timing, advancement, and None/Pulse motion.
+
+Setup never re-authors a reused SplashSequence.
+
+Foundation resolution is explicit:
+
+```text
+Reuse Compatible Assets
+Create Project-Owned Setup
+```
+
+`Reuse Compatible Assets` preserves the backward-compatible candidate-reuse behavior. `Create Project-Owned Setup` creates missing canonical Configuration, LaunchDestination, StartupSequence, optional SplashSequence, and RootPrefab targets beneath the requested Project Root instead of substituting compatible off-root candidates. Existing compatible requested targets remain authoritative; incompatible targets still block; the explicitly selected destination scene may be reused. The selected mode participates in request/plan fingerprints and stale-plan protection.
+
+The permanent suite repository examples live under `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/**`. They are project-owned examples, not package dependencies or defaults.
+
 ## First Light Setup Repair
 
 `Repair Plan...` is a separate explicit transaction. It is available only when
@@ -783,122 +806,32 @@ Active states may also enter:
 
 ## Verified Behavior
 
-The full EditMode suite reports:
+Retained FL-M5-07 complete regression evidence:
 
-- Passed: `306`
-- Failed: `0`
-- Ignored: `0`
+```text
+Complete EditMode:     306 / 306
+Runtime Play Mode:     503 / 503
+Total automated:       809 / 809
+Manual Laboratory:      12 / 12
+```
 
-Editor setup, apply, and repair tests:
+FL-M6-01 additive evidence:
 
-- Passed: `211`
-- Failed: `0`
-- Ignored: `0`
+```text
+H1 focused identity gate:              5 / 5
+H2 focused destination gate:          35 / 35
+Final EchoLaunchSetup filtered gate: 224 / 224
+```
 
-Read-only Validator tests:
+Focused A1 data/player/uGUI/Inspector/Setup slices were green during implementation. This closeout does **not** claim a new complete post-A1 EditMode or Runtime Play Mode aggregate. A fresh complete regression belongs to future release qualification.
 
-- Passed: `25`
-- Failed: `0`
-- Ignored: `0`
+Reference Gallery acceptance additionally proved:
 
-Direct Scene Validator tests:
-
-- Passed: `5`
-- Failed: `0`
-- Ignored: `0`
-
-Launch Simulator tests:
-
-- Passed: `24`
-- Failed: `0`
-- Ignored: `0`
-
-Standalone Laboratory package/distribution tests:
-
-- Passed: `6`
-- Failed: `0`
-- Ignored: `0`
-
-Standalone Laboratory authored-asset tests:
-
-- Passed: `8`
-- Failed: `0`
-- Ignored: `0`
-
-Retained prefab asset tests:
-
-- Passed: `27`
-- Failed: `0`
-- Ignored: `0`
-
-The Runtime Play Mode suite reports:
-
-- Passed: `503`
-- Failed: `0`
-- Ignored: `0`
-
-Breakdown:
-
-- Editor setup, apply, and repair tests: `211` EditMode
-- Validator tests: `25` EditMode
-- Direct Scene Validator tests: `5` EditMode
-- Launch Simulator tests: `24` EditMode
-- Standalone Laboratory package/distribution tests: `6` EditMode
-- Standalone Laboratory authored-asset tests: `8` EditMode
-- Prefab asset tests: `27` EditMode
-- Direct Scene runtime tests: `24` Runtime Play Mode
-- Root splash integration tests: `28` Runtime Play Mode
-- Additional schema-history test: `1`
-- Splash playback tests: `26`
-- Splash presentation tests: `10`
-- Plain uGUI presentation tests: `18`
-- Automatic-start and presenter tests: `16`
-- Authority tests: `7`
-- Root-owned startup lifecycle tests: `23`
-- Clock, timing, and progress-gate tests: `14`
-- Configuration and destination binding tests: `22`
-- Launch-state vocabulary tests: `39`
-- Launch session and progress tests: `14`
-- Lifecycle transition tests: `22`
-- Lifecycle notification tests: `20`
-- Destination and completed-handoff tests: `37`
-- Launch report and terminal-event tests: `25`
-- Startup sequence definition tests: `24`
-- Startup step policy and executor-contract tests: `28`
-- Startup step execution tests: `12`
-- Immediate startup sequence runner tests: `18`
-- Policy-application tests: `16`
-- Runner policy and exception tests: `16`
-- Timeout runner and cancellation tests: `18`
-- Multi-frame async runner tests: `2`
-- Preflight and re-entry tests: `23`
-
-Compilation:
-
-- Errors: `0`
-- Warnings: `0`
-
-Expected yellow diagnostic evidence:
-
-- `ELAUNCH-ROOT-001` from duplicate-root tests
-- `ELAUNCH-EVENT-001` from broken-listener containment tests
-
-Timeout and cancellation evidence:
-
-- Zero timeout remains disabled.
-- Completion observable at the deadline wins.
-- First observed deadline crossing creates `ELAUNCH-STEP-003`.
-- Timeout details preserve configured timeout, elapsed time, and cancellation request.
-- Supporting steps receive one timeout cancellation request.
-- Unsupported steps are allowed to settle naturally.
-- Timed-out executors settle before later factories are created.
-- Late success, failure, and progress cannot replace the timeout boundary.
-- Continue-with-warning and block-launch policies apply after settlement.
-- Caller cancellation remains distinct and returns `ELAUNCH-STEP-005` only after active work settles.
-- A same-tick executor cancellation exception is contained when the caller token is already requested.
-- Multi-frame execution preserves progress, positive timing, and authored order.
-- Backward clocks become blocking timing-contract results.
-- Definitions, entries, policies, sequences, and configurations remain unchanged.
+- canonical First Light Boot → ordered splashes → MainMenu handoff;
+- independent UMBRA foundation creation through Create Project-Owned Setup;
+- three generated stable-ID splash entries with project-owned art/audio intent/timing/motion/advancement;
+- successful UMBRA runtime presentation;
+- identical second Apply `NoChanges`, no created paths, and unchanged Build Settings.
 
 Manual FL-M5-03 acceptance created the project-owned First Light foundation,
 introduced only authorized current-schema drift, repaired five approved
@@ -954,40 +887,28 @@ The suite-wide architecture and approved First Light specification live in the r
 
 ## Evidence Status
 
-Available evidence:
+Available evidence includes:
 
-- Embedded package recognition
-- Clean Unity compilation
-- Unity restart
-- Embedded-package removal and reinstallation
-- Stable assembly-definition GUIDs
-- Five hundred three passing Runtime Play Mode tests
-- Three hundred six passing EditMode tests
-- Two hundred eleven Editor setup, apply, and repair tests
-- Twenty-five focused read-only Validator tests
-- Five focused Direct Scene Validator tests
-- Twenty-four focused Direct Scene runtime tests
-- Twenty-four focused Launch Simulator tests
-- Six focused Standalone Laboratory package/distribution tests
-- Eight focused Standalone Laboratory authored-asset tests
-- Fourteen focused project-snapshot collector tests with imported-sample isolation coverage
-- Eight hundred nine total passing automated tests
-- Twenty-seven retained prefab asset tests
-- Stable neutral package root and status-view prefabs
-- Create-only repeat-safe Setup Apply, separate explicit Setup Repair, a dedicated read-only Validator, release-gated Direct Scene development entry, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample
-- Deterministic dry-run plans, apply/repair freshness fingerprints, create compensation, byte/meta repair backup and rollback evidence, deterministic validation and simulation fingerprints/reports, and stable setup/validation/simulation diagnostics
-- Safe policy authoring verification
-- Fresh executor factory contract
-- Policy-aware timed startup execution with automatic root entry, schema-4 optional splash playback, startup-step execution, validated destination loading, immutable terminal reporting, exactly-once events, neutral accepted-state presentation, and a removable plain uGUI view
+- embedded package recognition and clean Unity compilation;
+- Unity restart and embedded-package removal/restoration evidence;
+- stable assembly-definition GUIDs;
+- retained FL-M5-07 `809 / 809` automated and `12 / 12` manual Laboratory evidence;
+- FL-M6-01 H1 `5 / 5`, H2 `35 / 35`, and final `EchoLaunchSetup` `224 / 224` focused evidence;
+- public Setup creation/reuse/no-op behavior and explicit project-owned foundation resolution;
+- read-only Validator, Direct Scene, Launch Simulator, and Standalone Laboratory evidence;
+- permanent First Light Gallery with canonical First Light and independent UMBRA examples;
+- UMBRA fresh Create → serialized three-entry sequence → runtime presentation → repeated `NoChanges` proof.
 
-Still `Not run`:
+Still `Not run` / not claimed by FL-M6-01:
 
 - Git URL installation
-- Tarball installation
-- Separate clean-project installation
-- Player builds
-- Automatic production startup
+- Git tag installation
+- Tarball/public registry installation
+- Separate clean-project reproduction of the final A1/A1-E1 happy path
+- Fresh complete post-A1 EditMode and Runtime Play Mode aggregate
+- Player-build qualification
 - Performance measurements
+- Release tag/catalog/private-beta qualification
 
 ## License
 

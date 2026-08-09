@@ -4,263 +4,169 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 8, 2026
-**Current focus:** First Light FL-M6-01 Production Reference Showcase authority
-**Current checkpoint:** FL-M6-01 — First Light Production Reference Showcase
+**Current focus:** First Light FL-M6-01 documentation closeout
+**Current checkpoint:** FL-M6-01 — First Light Production Reference Showcase — **Complete**
 
-> Capture quickly here. Promote deliberately at checkpoint closeout. Git history preserves the compacted record.
+> Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
 ## Current State
 
-- Suite Package Reference Showcase graduation authority is committed at `8c3f3b3`.
-- First Light FL-M5-07 is complete and closed at `710aec3`.
-- FL-M5-07 final automated evidence: `809 / 809`.
-- FL-M5-07 manual Laboratory evidence: `12 / 12`.
 - First Light package version remains `0.1.0`.
-- First Light package specification advances to v1.14.0 in this authority checkpoint.
-- FL-M6-01 authority is committed at `889bd64`; the deferred splash-audio intent seam is committed at `833484a`; the public Setup-built Showcase foundation is committed at `076a623`.
-- `SHOW-002` and `SHOW-003` passed: public Setup created the intended project-owned foundation and an identical rerun returned `NoChanges`.
-- FL-M6-01-H1 is implemented and manually proven: focused Editor tests passed `5 / 5`, two existing blank Showcase SplashEntry identities were generated through the normal Inspector, and `ELAUNCH-SPLASH-001` no longer blocks.
-- Slice D is now paused on FL-M6-01-H2: Setup reported `Succeeded` while adding only the Boot scene to Build Settings; the configured `FirstLight_Showcase_MainMenu.unity` destination remained absent and runtime correctly blocked with `ELAUNCH-DEST-001`.
+- First Light package specification remains **SFGSS-PKG-ECHOLAUNCH-001 v1.16.0**.
+- FL-M5-07 Standalone Test Laboratory is complete at `710aec3` with retained automated evidence `809 / 809` and manual Laboratory evidence `12 / 12`.
+- FL-M6-01 Production Reference Showcase implementation and in-repository consumer proof are complete.
+- A1 splash presentation/authoring is committed across `1b7ab84`, `d36b5cc`, `90e038c`, `9b24121`, and `4bdc264`.
+- Slice E Setup creation-time splash authoring is committed at `9e6df00`.
+- A1-E1 project-owned foundation resolution is authorized at `a70e478` and implemented at `e66b9fd`.
+- The permanent First Light Gallery is committed at `ccb1d59`; obsolete pre-gallery folder metadata is removed at `ad12b27`.
+- The final `EchoLaunchSetup` filtered EditMode gate passed **224 / 224**.
+- No post-A1 full-suite aggregate is claimed by this closeout. The retained FL-M5-07 full-suite baseline remains historical evidence and should be rerun at the next release-qualification gate.
 
-## First Light Display-Case Goal
+## Permanent First Light Gallery
+
+```text
+Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
+├── First Light Example/
+│   └── First Light Splashs/
+│       ├── Art/
+│       ├── Audio/
+│       ├── Configuration/
+│       ├── Prefabs/
+│       └── Scenes/
+└── UMBRA Example/
+    └── UMBRA Splashs/
+        ├── Art/
+        ├── Audio/
+        ├── Configuration/
+        ├── Prefabs/
+        └── Scenes/
+```
+
+The Gallery is project-owned consumer/showcase content. It is not package content, a UPM sample, a required dependency, or evidence that The Sperk’s Forge is an Isekai Studios product.
+
+### First Light Example
+
+The canonical in-house example demonstrates the normal First Light happy path:
 
 ```text
 FirstLight_Showcase_Boot
-→ EchoDevGames / studio image splash
-→ First Light — Startup and Launch image splash
-→ valid startup sequence settles
-→ destination validation + load
+→ EchoDevGames splash
+→ First Light splash
+→ startup settles
+→ destination validates and loads
 → FirstLight_Showcase_MainMenu
 ```
 
-The display case should be simple to watch because the complexity now lives underneath it.
+It uses normal public Setup, project-owned configuration, normal Inspector authoring, stable splash identities, optional stored audio intent, and the public uGUI presentation path.
 
-## Reference Showcase Boundary
+### UMBRA Example
 
-Canonical project-owned root:
+The second Gallery example is the former Slice E proof promoted into a permanent consumer example. It proves the package is not secretly tied to the canonical First Light branding or foundation.
 
-```text
-Assets/EchoDevGames/SuiteShowcase/FirstLight/
-```
+Observed proof:
 
-The Showcase:
+- `Foundation > Asset Resolution = Create Project-Owned Setup`;
+- fresh requested Configuration, LaunchDestination, SplashSequence, StartupSequence, RootPrefab, and Boot scene planned as `Create`;
+- explicitly selected existing destination scene remained `Reuse`;
+- first Apply created the requested project-owned foundation;
+- generated SplashSequence retained **3** authored entries: `The Sperk`, `Isekai Studios`, and `UMBRA`;
+- each generated entry received a non-empty stable ID;
+- project-owned images, optional `PreferredAudioClip` intent, timings, motion, and advancement settings serialized correctly;
+- presentation used Splash Only, black background, and advancement enabled;
+- the Isekai entry retained Pulse (`1.05` maximum scale, `2.5` second cycle);
+- the generated Boot experience played successfully and looked correct;
+- identical second Preview reused the requested local targets;
+- identical second Apply returned **`NoChanges`** with **Created paths: None** and unchanged Build Settings evidence.
 
-- is project-owned and remains outside `Packages/**` and `Samples~/**`;
-- uses documented First Light Setup and public configuration/presentation surfaces;
-- uses two project-owned image splashes;
-- uses an empty valid startup sequence for the smallest real consumer happy path;
-- uses a project-owned main-menu-style destination without transferring menu authority to First Light;
-- keeps diagnostics secondary;
-- uses no sample-only helper, test assembly, hidden API, reflection, or peer package;
-- contains no First Light-owned audio playback. Each splash entry may carry an optional project-owned `PreferredAudioClip` as stored presentation intent for a future Jukebot bridge.
+Audio remains intent metadata only. First Light does not own audio playback.
 
-## Splash Audio Intent
+## FL-M6-01 Defects Resolved by the Real Consumer Workflow
 
-`[DECISION]` A `SplashEntry` may remember which project-owned `AudioClip` the designer intends to accompany that splash even before Jukebot exists.
+### H1 — Splash Entry Authoring Identity
 
-```text
-SplashEntry
-├── Image
-├── Timing / fade / skip policy
-└── PreferredAudioClip   ← optional content intent only
-```
+Normal Inspector authoring originally left hidden blank `SplashEntry.entryId` values and runtime correctly blocked with `ELAUNCH-SPLASH-001`.
 
-First Light owns the **choice/reference**, not playback.
+Resolved result:
 
-A future First Light ↔ Jukebot bridge can read the entry stable ID and preferred clip, create/resolve the appropriate Jukebot cue, then ask Jukebot to play it. Mixer routing, volume, variations, concurrency, fades, voice management, and actual `AudioSource` work remain Jukebot authority.
+- Editor-only blank-ID generation;
+- existing non-empty IDs preserved;
+- no Runtime rewrite;
+- no schema bump;
+- focused gate **5 / 5**;
+- public Inspector workflow advanced beyond `ELAUNCH-SPLASH-001`.
 
-The field is optional backward-compatible metadata. Null means “no audio selected yet” and changes no current launch behavior.
+### H2 — Destination Build Settings Conformance
 
-## FL-M6-01-H1 — Splash Entry Authoring Identity
+Setup originally reported success while the configured destination was absent from Build Settings and runtime correctly blocked with `ELAUNCH-DEST-001`.
 
-`[DEFECT]` The public Inspector path currently allows a designer to fill every visible `SplashEntry` field while the hidden stable identity remains blank.
+Resolved result:
 
-Evidence:
+- Setup ensures Boot and configured destination are enabled exactly once;
+- unrelated Build Settings order remains preserved;
+- repeat Apply settles `NoChanges`;
+- focused H2 gate **35 / 35**;
+- public Boot → splashes → destination path succeeded without manual Build Settings editing.
 
-```text
-18:  - entryId:
-19:    image: {fileID: 21300000, ...}
-21:    displayLabel: EchoDevGames Studio
+### A1 / A1-E1 — Presentation and Independent Setup Authoring
 
-27:  - entryId:
-28:    image: {fileID: 21300000, ...}
-30:    displayLabel: First Light - Startup and Launch
-```
+The Showcase then justified and proved:
 
-Runtime correctly blocks the invalid definition with:
+- Splash Only / Splash + Status;
+- project-owned background color;
+- Allow Advancement;
+- None / Pulse motion;
+- Automatic / Skippable After Minimum / Wait For Input After Minimum;
+- normal Inspector authoring;
+- Setup creation-time authoring for newly-created sequences;
+- backward-compatible `Reuse Compatible Assets`;
+- explicit `Create Project-Owned Setup` for an independent requested foundation;
+- request/plan freshness participation and repeat-safe convergence.
 
-```text
-[ELAUNCH-SPLASH-001] Splash entry 0 is invalid.
-```
-
-The approved package specification already says stable IDs are generated by Editor tooling. FL-M6-01-H1 therefore restores an existing contract rather than inventing a new one.
-
-Authorized correction:
-
-```text
-normal SplashSequence Inspector authoring
-→ blank hidden entryId
-→ Editor assigns canonical Guid "N" identity
-→ existing non-empty identities preserved
-→ runtime remains read-only
-```
-
-Non-empty malformed or duplicate IDs remain explicit validation failures; this hotfix does not silently rewrite them.
-
-Current project-owned WIP must remain preserved:
-
-```text
-Assets/EchoDevGames/SuiteShowcase/FirstLight/Configuration/SplashSequence.asset
-Assets/EchoDevGames/SuiteShowcase/FirstLight/Art/**
-```
-
-## FL-M6-01-H2 — Destination Build Settings Conformance
-
-`[DEFECT]` The public Setup workflow currently permits this contradictory state:
-
-```text
-Setup Apply: Succeeded
-Boot scene: enabled in Build Settings
-Configured destination: FirstLight_Showcase_MainMenu.unity
-Configured destination in Build Settings: absent
-Boot Play: [ELAUNCH-DEST-001]
-```
-
-Observed Build Settings evidence:
-
-```text
-0:On:Assets/OutdoorsScene.unity
-1:On:Assets/EchoDevGames/SuiteShowcase/FirstLight/Scenes/FirstLight_Showcase_Boot.unity
-```
-
-Runtime is correct to reject this state. H2 changes Setup conformance only.
-
-Authorized correction:
-
-```text
-selected destination
-+ selected Boot scene
-        ↓
-Setup preview/apply
-        ↓
-both enabled exactly once in Build Settings
-        ↓
-repeat identical Apply = NoChanges
-```
-
-Under `Add If Missing At End`, unrelated existing scene order is preserved; when both required scenes are missing, Boot is appended before destination.
-
-No Runtime change, schema change, manual Build Settings workaround, arbitrary scene cleanup, or unrelated reordering is authorized.
-
-## FL-M6-01-A1 — Splash Presentation & Authoring Expansion
-
-H1/H2 are now proven in the real Showcase, including the `35 / 35` H2 focused gate and successful Boot → two splashes → MainMenu run. The authored Showcase state is committed at `55a3204`.
-
-Approved Setup target:
-
-```text
-FIRST LIGHT SETUP
-
-Launch
-  Destination .......... MainMenu
-
-Splash Sequence
-  ☑ Create Splash Sequence
-
-Presentation
-  Mode ................ Splash Only
-  Background .......... Black
-  Allow Advancement ... Yes
-
-Splashes
-  ┌ Studio Logo
-  │ Image ............. EchoDevGamesBanner3
-  │ Audio Intent ...... StudioStinger
-  │ Motion ............ Pulse
-  │ Advance ........... Skippable After Minimum
-  │ Minimum ........... 1.5 sec
-  │
-  └ First Light
-    Image ............. FirstLightLogo
-    Audio Intent ...... FirstLightChime
-    Motion ............ None
-    Advance ........... Automatic
-```
-
-A1 keeps SplashSequence schema 1 / configuration schema 4, preserves legacy sequences, limits motion to None/Pulse, adds one wait-for-input advancement value, hides routine status on SplashOnly success while retaining failure visibility, and lets Setup author only newly-created sequences. Existing/reused sequences are not overwritten.
-
-Audio remains metadata only. Input binding, EventSystem choice, save/persistence, video, and generalized effects remain outside First Light authority.
-
-## FL-M6-01-A1-E1 — Project-Owned Setup Foundation Resolution
-
-`[TEST]` Slice E focused creation-time splash authoring passed, and the full `EchoLaunchSetup` EditMode filter passed `214 / 214` after retained repair/rollback fixtures were given the same candidate-isolating snapshot discipline already used by Apply integration tests.
-
-`[DISCOVERY]` The real fresh-root Setup preview then accepted three authored splash entries but planned to reuse the committed SuiteShowcase Configuration, LaunchDestination, SplashSequence, StartupSequence, and RootPrefab. Only the fresh Boot scene would have been created. No Apply was performed.
-
-`[PROBLEM]` A1 creation-time splash authoring is intentionally applied only to a newly-created SplashSequence. A `Ready` plan that accepts authored entries while resolving SplashSequence to a compatible off-root candidate would therefore silently discard the user's creation payload.
-
-`[DECISION]` Add an explicit Editor-only Setup foundation-resolution choice:
-
-```text
-Foundation
-  Asset Resolution .... Reuse Compatible Assets
-                         Create Project-Owned Setup
-```
-
-- Reuse Compatible Assets remains the compatibility default.
-- Create Project-Owned Setup creates missing canonical foundation targets beneath the requested Project Root rather than substituting off-root compatible candidates.
-- Existing compatible target assets remain authoritative; incompatible target paths block.
-- Explicit destination scenes remain reusable.
-- Create Splash Sequence + Create Project-Owned Setup guarantees the missing target sequence is created and receives the authored payload.
-- Identical rerun must be `NoChanges`.
-- Request/plan fingerprints and freshness checks include the resolution choice.
-- Runtime and serialized schemas do not change.
-- Project-owned Isekai/UMBRA art/audio used for this proof remains showcase/consumer content only.
-
-## Starter Splash Convenience Question
-
-A one-click starter splash template/preset is **not** pre-authorized.
-
-We first use the real consumer path:
-
-```text
-Setup
-→ project-owned SplashSequence
-→ assign project-owned images/timing
-→ project-owned root/presentation
-→ Play
-```
-
-If our own display case cannot be built comfortably through that workflow, stop and capture the usability evidence before authorizing a convenience improvement.
+Schemas remain unchanged: SplashSequence schema `1`, EchoLaunchConfiguration schema `4`.
 
 ## Acceptance
 
-`SHOW-001` through `SHOW-009` prove the display case, public Setup/no-op rerun, ordered splashes, clean destination handoff, stored optional splash-audio intent, project ownership, and retained automated regression.
-
-## Official Graduation Loop
+FL-M6-01 acceptance is complete for the in-repository Package Reference Showcase stage.
 
 ```text
 Learning / authority
 → implementation
-→ Standalone Test Lab
-→ Package Reference Showcase   ← First Light is here
-→ clean-project reproduction
-→ release qualification
-→ private beta / external adoption
+→ Standalone Test Lab                PASS
+→ Package Reference Showcase         PASS
+→ clean-project reproduction         NOT RUN in this closeout
+→ release qualification              NOT RUN
+→ private beta / external adoption   NOT RUN
 ```
 
-FL-M6-02 will reproduce the same happy path in a genuinely clean consumer project.
+The permanent Gallery now supplies two consumer examples that can be extended later without widening First Light package authority.
 
-## Suite Cosmology Note
+## Evidence Boundary
 
-The future suite showcase/navigation identity remains intentionally unnamed. Emerging visual language is a constellation forming a humanoid-ish computational/cosmic entity, with completed systems mapping to functions of that body. This is creative direction only, not FL-M6-01 implementation authority.
+This closeout does **not** claim:
+
+- a post-A1 complete EditMode aggregate;
+- a post-A1 complete Runtime Play Mode aggregate;
+- clean-project reproduction;
+- Git URL, tag, tarball, registry, or public-package installation support;
+- player-build qualification;
+- performance qualification;
+- release tag/catalog readiness;
+- private beta or external adoption;
+- First Light-owned audio playback.
+
+Those remain future release-qualification work if/when First Light returns to the release queue.
+
+## Stop Point
+
+**First Light implementation and in-repository Gallery work are frozen for this pass.**
+
+Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
 
-1. Commit/push FL-M6-01-A1-E1 authority while preserving the current uncommitted Slice E implementation, project-owned UMBRA/Isekai proof media, and unrelated documentation WIP.
-2. Implement only the Editor Setup foundation-resolution choice, request/fingerprint/plan evidence, planner behavior, window control, and focused tests.
-3. Re-run the full `EchoLaunchSetup` retained EditMode filter.
-4. Repeat the fresh-root UMBRA proof with `Create Project-Owned Setup`; require `Create` for the requested foundation targets and inspect the generated SplashSequence.
-5. Repeat the identical request and require `NoChanges` before Slice E is committed.
+1. Commit this FL-M6-01 documentation closeout.
+2. Confirm the repository is clean and synchronized.
+3. Select the next package deliberately through the suite's just-in-time package learning/checkpoint workflow.
+4. Treat future First Light clean-project reproduction and release qualification as a separate explicitly activated return to the package.

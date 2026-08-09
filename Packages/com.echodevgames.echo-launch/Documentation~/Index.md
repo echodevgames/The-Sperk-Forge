@@ -5,39 +5,17 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M6-01 Production Reference Showcase in progress; H1/H2 proven; FL-M6-01-A1 in implementation; A1-E1 explicit project-owned Setup foundation resolution authorized from the Slice E consumer proof
-- Completed checkpoints:
-  - `FL-M2-01`
-  - `FL-M2-02`
-  - `FL-M2-03`
-  - `FL-M2-04`
-  - `FL-M2-05`
-  - `FL-M2-06`
-  - `FL-M2-07`
-  - `FL-M2-08`
-  - `FL-M3-01`
-  - `FL-M3-02`
-  - `FL-M3-03`
-  - `FL-M3-04`
-  - `FL-M3-05`
-  - `FL-M3-06`
-  - `FL-M3-07`
-  - `FL-M3-08`
-  - `FL-M4-01`
-  - `FL-M4-02`
-  - `FL-M4-03`
-  - `FL-M4-04`
-  - `FL-M4-05`
-  - `FL-M5-01`
-  - `FL-M5-02`
-  - `FL-M5-03`
-  - `FL-M5-04`
-  - `FL-M5-05`
-  - `FL-M5-06`
-  - `FL-M5-07`
-- Active authority checkpoint: `FL-M6-01` — First Light Production Reference Showcase
-- Current implemented boundary: runtime launch authority through completed destination handoff, removable plain uGUI and image-splash presentation, read-only setup planning, create-only repeat-safe Apply, explicit current-schema Repair, deterministic read-only project-health validation, release-gated Direct Scene development entry without scene reload, an Editor-only deterministic Launch Simulator, and one fully-authored removable Standalone Test Laboratory UPM sample. Specification v1.16.0 authorizes the project-owned Production Reference Showcase, A1 splash presentation/authoring, and A1-E1 explicit Setup foundation resolution. H1 remains the bounded blank-identity Inspector correction; A1-E1 is Editor-only and preserves Runtime/schema compatibility.
+- Development stage: **FL-M6-01 Production Reference Showcase complete; First Light implementation/Reference Gallery frozen for this pass**
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.16.0
 - Unity baseline: `6000.3.8f1`
+- Latest completed checkpoint: `FL-M6-01` — First Light Production Reference Showcase
+- Completed checkpoints:
+  - `FL-M2-01` through `FL-M5-07`
+  - `FL-M6-01` including H1, H2, A1, Slice E creation-time authoring, and A1-E1 project-owned foundation resolution
+- Permanent project-owned examples: `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/First Light Example/**` and `UMBRA Example/**`
+- Final Setup-focused evidence: `224 / 224`
+- Retained FL-M5-07 full-suite evidence: `809 / 809` automated and `12 / 12` manual Laboratory
+- Qualification boundary: clean-project reproduction, fresh full-suite regression, distribution-route proof, player-build/release qualification, and private beta are not claimed by FL-M6-01.
 
 ## User Documentation
 
@@ -107,6 +85,8 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 - [FL-M5-06 Launch Simulator Test Report](Developer/Test%20Reports/FL-M5-06_Launch_Simulator_and_Deterministic_Failure_Injection_Test_Report.md)
 - [FL-M5-07 Standalone Test Laboratory and Importable UPM Sample](Developer/Checkpoints/FL-M5-07_Standalone_Test_Laboratory_and_Importable_UPM_Sample.md)
 - [FL-M5-07 Standalone Test Laboratory Test Report](Developer/Test%20Reports/FL-M5-07_Standalone_Test_Laboratory_and_Importable_UPM_Sample_Test_Report.md)
+- [FL-M6-01 Production Reference Showcase](Developer/Checkpoints/FL-M6-01_First_Light_Production_Reference_Showcase.md)
+- [FL-M6-01 Production Reference Showcase Test Report](Developer/Test%20Reports/FL-M6-01_First_Light_Production_Reference_Showcase_Test_Report.md)
 
 ## Completed FL-M5-03 Boundary
 
@@ -185,60 +165,34 @@ reopening the generated Boot asset path. The available evidence followed the
 persisted path/GUID even after scene-content substitution and does not attribute
 the observation to First Light runtime or Laboratory scene contents.
 
-## Active FL-M6-01 Authority
+## Completed FL-M6-01 Boundary
 
-FL-M6-01 creates First Light's first in-house Production Reference Showcase under
-`Assets/EchoDevGames/SuiteShowcase/FirstLight/`.
+FL-M6-01 completes First Light's in-repository Package Reference Showcase stage.
 
-It exercises the public consumer path:
+The final project-owned Gallery lives at:
 
 ```text
-First Light Setup
-→ project-owned configuration / splash sequence / root / Boot scene
-→ two project-owned image splashes
-→ valid startup sequence
-→ project-owned main-menu-style destination
+Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
+├── First Light Example/
+│   └── First Light Splashs/
+└── UMBRA Example/
+    └── UMBRA Splashs/
 ```
 
-The Reference Showcase is separate from the distributed Standalone Test
-Laboratory and may not depend on Laboratory helpers, test-only APIs, hidden
-package internals, peer packages, or repository-only shortcuts.
+The canonical First Light Example proves the normal public Setup/Inspector/runtime Boot → splash → startup → destination path. The UMBRA Example proves independent creation through `Create Project-Owned Setup`, three-entry creation-time splash authoring, stable generated identities, stored audio intent, Pulse presentation, runtime playback, and identical second Apply `NoChanges` convergence.
 
-FL-M6-01 additionally permits one narrow backward-compatible Runtime data addition: `SplashEntry.PreferredAudioClip`. The field stores optional project-owned audio content intent only; EchoLaunch still performs no playback. A future Jukebot bridge owns translation of that intent into real cue playback.
+FL-M6-01 resolved two real consumer defects through bounded conformance corrections:
 
-During real Showcase authoring, the default Inspector produced blank hidden SplashEntry identities and runtime blocked with `ELAUNCH-SPLASH-001`. FL-M6-01-H1 therefore permits only the Editor-side generation of missing blank identities plus focused tests. Existing non-empty IDs remain untouched and Runtime stays read-only.
+- H1: Editor-only generation of blank SplashEntry identities (`5 / 5` focused);
+- H2: Setup destination Build Settings conformance (`35 / 35` focused).
 
-FL-M6-01-H1 is manually proven: focused Editor tests passed `5 / 5`, the two existing blank Showcase identities were generated through the normal Inspector, and launch advanced beyond `ELAUNCH-SPLASH-001`.
+A1 added Splash Only / Splash + Status, background, advancement, None/Pulse, wait-for-input advancement, Inspector authoring, and Setup creation-time authoring. A1-E1 added backward-compatible `Reuse Compatible Assets` plus explicit `Create Project-Owned Setup`.
 
-The next consumer run exposed FL-M6-01-H2: Setup had reported success while the configured MainMenu destination was absent from Build Settings, so runtime correctly blocked with `ELAUNCH-DEST-001`. H2 permits only Setup-side Build Settings conformance so Boot and the selected destination are enabled exactly once, with repeat-safe `NoChanges` behavior and no Runtime/schema change.
+Final touched-surface Setup regression passed `224 / 224`. The retained FL-M5-07 full-suite baseline remains `809 / 809`; no post-A1 full-suite aggregate is claimed by this closeout.
 
-No starter splash generator/preset, clean-project qualification, player build,
-performance claim, distribution-route proof, package versioning, or private beta
-is authorized by FL-M6-01.
+Schemas remain SplashSequence `1`, EchoLaunchConfiguration `4`, and LaunchReport `2`. Audio playback, project input binding, save/persistence, EventSystem ownership, menus, normal scene flow, and generalized effects remain outside EchoLaunch.
 
-## Active FL-M6-01-A1 Authority
-
-Specification v1.15.0 authorizes the bounded Splash Presentation & Authoring Expansion after the real Reference Showcase proved Boot → two image splashes → MainMenu.
-
-A1 adds only:
-
-- Splash Only / Splash + Status;
-- project-owned background;
-- neutral advancement gate;
-- None / Pulse motion;
-- Wait For Input After Minimum;
-- create-time Setup authoring for new sequences;
-- matching normal SplashSequence Inspector authoring.
-
-Schemas remain unchanged. Legacy sequences remain valid. Audio playback, project input binding, persistence, video, and generalized effects remain outside First Light.
-
-## Active FL-M6-01-A1-E1 Authority
-
-The real fresh-root Setup preview accepted three creation-time splash entries but resolved the entire compatible First Light foundation to the existing SuiteShowcase assets. Because reused SplashSequence assets are intentionally never re-authored, the accepted payload would not have reached a new sequence.
-
-A1-E1 adds `Foundation > Asset Resolution` with backward-compatible `Reuse Compatible Assets` and explicit `Create Project-Owned Setup`. The latter creates missing canonical foundation targets under the requested root, leaves explicit destination scenes reusable, blocks incompatible targets, participates in request/plan freshness evidence, and must settle `NoChanges` on an identical rerun.
-
-No Runtime or schema changes are authorized.
+Clean-project reproduction and release qualification remain future explicit gates, not active work.
 
 ## Package Root Documents
 
@@ -398,7 +352,7 @@ First Light currently proves:
 - Exact asset and `.meta` backup, rollback, and retained-backup reporting
 - Narrow configuration, destination, root-prefab, Boot-scene, and Build Settings reconciliation
 - Successful first Repair plus two `NoChanges` Repair reruns
-- Two hundred eleven Editor setup, apply, and repair tests
+- Two hundred twenty-four passing `EchoLaunchSetup` filtered EditMode tests at FL-M6-01 closeout
 - Twenty-five focused Validator tests
 - Five focused Direct Scene Validator tests
 - Twenty-four focused Direct Scene runtime tests
@@ -413,4 +367,4 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M5-07 is implemented, automated-tested, manually accepted, cleaned, and ready for documentation closeout commit. No next checkpoint is active until deliberately selected. Schema migration, receipts, uninstall, crash-persistent recovery, automatic Direct Scene installation, build hooks, persistent-root policy, normal scene travel, player-build evidence, external adoption, and performance evidence remain outside the implemented boundary.
+FL-M6-01 is complete and the in-repository First Light Gallery is committed. First Light is frozen for this pass. Clean-project reproduction, fresh complete regression, distribution-route proof, player-build evidence, external adoption, release tagging/catalog work, and performance evidence remain outside this closeout and require explicit future activation.

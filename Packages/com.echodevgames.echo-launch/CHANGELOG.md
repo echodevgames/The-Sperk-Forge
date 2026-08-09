@@ -7,6 +7,25 @@ The package follows Semantic Versioning once public compatibility commitments be
 ## [Unreleased]
 
 ### Added
+#### FL-M6-01 - Production Reference Showcase, Splash Authoring, and Project-Owned Foundation Resolution
+- Project-owned Production Reference Showcase graduated into a permanent First Light Gallery with canonical First Light and independent UMBRA examples
+- Optional project-owned `SplashEntry.PreferredAudioClip` intent metadata without EchoLaunch-owned playback
+- Editor-only blank SplashEntry identity generation for normal Inspector authoring while preserving existing non-empty identities
+- Setup destination Build Settings conformance so Boot and configured destination are enabled exactly once before success/no-op settlement
+- Splash presentation modes: Splash Only and Splash + Status
+- Project-owned presentation background and Allow Advancement setting
+- Per-entry None / Pulse motion with authored pulse maximum scale and cycle seconds
+- Advancement policies presented as Automatic, Skippable After Minimum, and Wait For Input After Minimum
+- Default uGUI SplashOnly presentation with failure/interruption readability and reduced-motion Pulse suppression
+- Matching SplashSequence Inspector presentation authoring
+- Setup creation-time splash authoring for newly-created SplashSequence assets
+- Explicit `Foundation > Asset Resolution` with backward-compatible `Reuse Compatible Assets` and `Create Project-Owned Setup`
+- Request/plan fingerprint participation for creation authoring and foundation-resolution policy
+- Independent UMBRA consumer proof: requested foundation creation, three stable-ID authored splashes, runtime presentation, and identical second Apply `NoChanges`
+- Final `EchoLaunchSetup` filtered EditMode gate `224 / 224`
+- H1 focused identity gate `5 / 5` and H2 focused destination-Build-Settings gate `35 / 35`
+- SplashSequence schema remains `1`; EchoLaunchConfiguration schema remains `4`; no audio/input/save/menu/normal-scene-flow ownership added
+
 #### FL-M5-07 - Standalone Test Laboratory and Importable UPM Sample
 * Exactly one package sample named **First Light Standalone Test Lab**
 * Fully authored UPM sample scenes, configurations, sequences, step definitions, root prefab, Direct Scene configuration, splash art, and sample-only runtime helpers
