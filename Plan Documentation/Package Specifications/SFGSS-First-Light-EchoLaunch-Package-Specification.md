@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.15.0
+**Specification version:** 1.16.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -18,7 +18,7 @@
 > “Awaken the systems this project needs.”
 
 > **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 is complete at documentation closeout commit `710aec3`. Suite authority commit `8c3f3b3` adds the required Package Reference Showcase graduation stage through SFGSS-ADR-005. FL-M6-01 is authorized to create First Light's first project-owned Production Reference Showcase using the package's existing documented public consumer surfaces.
-FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata seam and the bounded H1/H2 consumer-conformance corrections. FL-M6-01-A1 now authorizes the Splash Presentation & Authoring Expansion proven useful by the real Reference Showcase: sequence-level Splash Only / Splash + Status presentation, project-owned background color, a neutral user-advance gate, per-entry None/Pulse motion, one wait-for-input advancement mode, default uGUI rendering support, and guided creation-time authoring in First Light Setup plus the normal SplashSequence Inspector. Existing schema-1 splash sequences remain valid without migration and preserve legacy-compatible defaults. EchoLaunch still owns no audio playback, save/persistence behavior, project input binding, EventSystem/input-module choice, general effects framework, menus, or normal scene flow.
+FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata seam and the bounded H1/H2 consumer-conformance corrections. FL-M6-01-A1 now authorizes the Splash Presentation & Authoring Expansion proven useful by the real Reference Showcase: sequence-level Splash Only / Splash + Status presentation, project-owned background color, a neutral user-advance gate, per-entry None/Pulse motion, one wait-for-input advancement mode, default uGUI rendering support, and guided creation-time authoring in First Light Setup plus the normal SplashSequence Inspector. FL-M6-01-A1-E1 additionally authorizes an explicit Setup foundation-resolution choice so creation-time authoring can intentionally create an independent project-owned First Light foundation instead of silently reusing a compatible foundation elsewhere in the project. Existing schema-1 splash sequences remain valid without migration and preserve legacy-compatible defaults. EchoLaunch still owns no audio playback, save/persistence behavior, project input binding, EventSystem/input-module choice, general effects framework, menus, or normal scene flow.
 
 ---
 
@@ -43,6 +43,7 @@ FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata
 | 1.13.0 | 2026-08-07 | Approved | Authorized FL-M5-07 to implement the already-approved Standalone Test Laboratory as exactly one fully-authored importable UPM sample; prohibited a shipped sample generator and import-time side effects; required serialized reference integrity, sample-only assembly isolation, removal proof, and evidence-gated Setup candidate isolation only if imported sample content is shown to affect automatic discovery | Jesse “Echo” Adams |
 | 1.14.0 | 2026-08-08 | Approved | Adopted SFGSS-ADR-005 for First Light, defined the project-owned Production Reference Showcase and package graduation path, authorized FL-M6-01 to prove the normal Boot → project-owned image splashes → startup → destination experience through existing public consumer surfaces, and deferred clean-project reproduction and any convenience-generator changes to later authority | Jesse “Echo” Adams |
 | 1.15.0 | 2026-08-08 | Approved | Authorized FL-M6-01-A1 Splash Presentation & Authoring Expansion: Splash Only / Splash + Status, project-owned background color, neutral advancement policy, None/Pulse motion, wait-for-input advancement, Setup creation-time splash authoring, and matching Inspector semantics while preserving schema-1 compatibility and external audio/input/persistence ownership | Jesse “Echo” Adams |
+| 1.16.0 | 2026-08-08 | Approved | Authorized FL-M6-01-A1-E1 explicit Setup foundation resolution: preserve existing compatible-asset reuse as the default, add Create Project-Owned Setup for independent target-root creation, include the choice in request/plan freshness evidence, and guarantee that creation-time splash authoring is not silently discarded by off-root candidate reuse | Jesse “Echo” Adams |
 
 ---
 
@@ -590,6 +591,37 @@ Pulse may expose maximum image scale and cycle duration. The deterministic playe
 Input ownership does not change. EchoLaunch owns only the neutral advance request and whether the authored splash permits it. Keyboard/controller bindings remain project-owned. A1 adds no EchoInput dependency, no required Unity Input System dependency, and no package-owned EventSystem/input module. Pointer/tap convenience may be wired through a compatible project-owned UI/EventSystem surface, but First Light does not choose the project's input backend.
 
 First Light Setup may expose `Presentation` and `Splashes` controls when creating a **new** project-owned SplashSequence. Setup remains create-only and must never overwrite or re-author a reused existing sequence. Reused sequences are edited through the normal SplashSequence Inspector, which exposes the same semantic controls and retains H1 stable-ID authoring.
+
+#### 9.4.3.1 FL-M6-01-A1-E1 Setup foundation resolution
+
+Creation-time authoring is meaningful only when the requested Setup owns the sequence being created. A real A1 consumer preview proved that the existing automatic compatible-candidate rule can otherwise produce a `Ready` plan that accepts authored splash entries while resolving the SplashSequence and the rest of the First Light foundation to an unrelated compatible project-owned foundation elsewhere under `Assets/**`.
+
+First Light Setup therefore exposes one explicit Editor-only foundation-resolution choice:
+
+```text
+Foundation
+  Asset Resolution .... Reuse Compatible Assets
+                         Create Project-Owned Setup
+```
+
+Approved semantics:
+
+- `Reuse Compatible Assets` is the backward-compatible default and preserves the existing automatic compatible-candidate behavior.
+- `Create Project-Owned Setup` means that when a requested canonical foundation target is missing, Setup creates that target under the requested Project Root rather than substituting a compatible off-root candidate.
+- The controlled foundation targets are `EchoLaunchConfiguration`, `LaunchDestination`, `StartupSequence`, optional `SplashSequence`, and the project-owned `EchoLaunchRoot` prefab variant.
+- An explicitly selected existing destination scene is still reused; this choice does not copy or clone the consumer's destination scene.
+- The requested Boot scene and Build Settings policies retain their existing behavior.
+- If a requested target path already contains the expected compatible asset, that target remains authoritative and settles without replacement.
+- If a requested target path contains an incompatible asset, Setup blocks exactly as before. Create Project-Owned Setup never overwrites it.
+- Create Project-Owned Setup does not mutate, clone, relink, or repair compatible off-root candidates.
+- If `Create Splash Sequence` is enabled and the requested SplashSequence target is missing, Create Project-Owned Setup guarantees a `Create` operation at the requested target so the creation-time Presentation/Splashes payload is actually authored.
+- Identical reruns settle `NoChanges`; the mode is not a duplicate-generator.
+- The foundation-resolution choice participates in request fingerprinting, plan text, preview/apply freshness comparison, and focused tests.
+- Existing programmatic Setup requests that do not specify the new choice retain `Reuse Compatible Assets`.
+- Repair remains separate and proof-gated; this setting governs missing-target resolution during Setup planning and does not widen Repair authority.
+- This is Editor/setup authority only. No Runtime type, runtime dependency, serialized Runtime schema, report schema, or player behavior changes.
+
+The real proof media may use project-owned Isekai/UMBRA presentation content, but that content remains consumer/showcase data only and does not change The Sperk's Forge organizational or runtime dependency boundary.
 
 Approved user-facing target:
 

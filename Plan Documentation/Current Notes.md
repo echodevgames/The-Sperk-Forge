@@ -193,6 +193,32 @@ A1 keeps SplashSequence schema 1 / configuration schema 4, preserves legacy sequ
 
 Audio remains metadata only. Input binding, EventSystem choice, save/persistence, video, and generalized effects remain outside First Light authority.
 
+## FL-M6-01-A1-E1 — Project-Owned Setup Foundation Resolution
+
+`[TEST]` Slice E focused creation-time splash authoring passed, and the full `EchoLaunchSetup` EditMode filter passed `214 / 214` after retained repair/rollback fixtures were given the same candidate-isolating snapshot discipline already used by Apply integration tests.
+
+`[DISCOVERY]` The real fresh-root Setup preview then accepted three authored splash entries but planned to reuse the committed SuiteShowcase Configuration, LaunchDestination, SplashSequence, StartupSequence, and RootPrefab. Only the fresh Boot scene would have been created. No Apply was performed.
+
+`[PROBLEM]` A1 creation-time splash authoring is intentionally applied only to a newly-created SplashSequence. A `Ready` plan that accepts authored entries while resolving SplashSequence to a compatible off-root candidate would therefore silently discard the user's creation payload.
+
+`[DECISION]` Add an explicit Editor-only Setup foundation-resolution choice:
+
+```text
+Foundation
+  Asset Resolution .... Reuse Compatible Assets
+                         Create Project-Owned Setup
+```
+
+- Reuse Compatible Assets remains the compatibility default.
+- Create Project-Owned Setup creates missing canonical foundation targets beneath the requested Project Root rather than substituting off-root compatible candidates.
+- Existing compatible target assets remain authoritative; incompatible target paths block.
+- Explicit destination scenes remain reusable.
+- Create Splash Sequence + Create Project-Owned Setup guarantees the missing target sequence is created and receives the authored payload.
+- Identical rerun must be `NoChanges`.
+- Request/plan fingerprints and freshness checks include the resolution choice.
+- Runtime and serialized schemas do not change.
+- Project-owned Isekai/UMBRA art/audio used for this proof remains showcase/consumer content only.
+
 ## Starter Splash Convenience Question
 
 A one-click starter splash template/preset is **not** pre-authorized.
@@ -233,13 +259,8 @@ The future suite showcase/navigation identity remains intentionally unnamed. Eme
 
 ## Next Action
 
-1. Commit/push FL-M6-01-A1 authority from exact clean `55a3204`.
-2. Implement A1 in bounded slices: data compatibility → deterministic player behavior → uGUI presentation → Inspector → Setup creation-time authoring.
-3. Preserve/re-author the Showcase only through public authoring surfaces.
-4. Run focused A1 proof and complete retained regression before FL-M6-01 closeout.
-
-
-1. Commit/push the FL-M6-01-H2 bounded authority amendment while preserving the unstaged project-owned Showcase WIP.
-2. Implement only Setup destination Build Settings conformance plus focused Editor tests.
-3. Re-run the same Showcase Setup request and prove MainMenu destination addition is explicit, Apply succeeds, and identical rerun is `NoChanges`.
-4. Resume `SHOW-004` through `SHOW-009` only after `ELAUNCH-DEST-001` is cleared without manual Build Settings editing.
+1. Commit/push FL-M6-01-A1-E1 authority while preserving the current uncommitted Slice E implementation, project-owned UMBRA/Isekai proof media, and unrelated documentation WIP.
+2. Implement only the Editor Setup foundation-resolution choice, request/fingerprint/plan evidence, planner behavior, window control, and focused tests.
+3. Re-run the full `EchoLaunchSetup` retained EditMode filter.
+4. Repeat the fresh-root UMBRA proof with `Create Project-Owned Setup`; require `Create` for the requested foundation targets and inspect the generated SplashSequence.
+5. Repeat the identical request and require `NoChanges` before Slice E is committed.

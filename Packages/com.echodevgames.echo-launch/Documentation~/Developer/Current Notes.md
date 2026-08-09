@@ -5,11 +5,11 @@
 - Checkpoint: `FL-M6-01`
 - Title: First Light Production Reference Showcase
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.15.0
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.16.0
 - Unity baseline: `6000.3.8f1`
 - Suite showcase authority: SFGSS-ADR-005 / `8c3f3b3`
 - Previous checkpoint: FL-M5-07 complete at `710aec3`
-- Status: FL-M6-01 in progress; H1/H2 proven in real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion authorized before final front-facing acceptance
+- Status: FL-M6-01 in progress; H1/H2 proven; FL-M6-01-A1 in implementation; A1-E1 project-owned Setup foundation resolution authorized from Slice E consumer proof
 
 ## Retained Baseline
 
@@ -104,10 +104,29 @@ Compatibility: SplashSequence schema 1, EchoLaunchConfiguration schema 4, legacy
 
 Audio playback, project input binding, save/persistence, video, EventSystem ownership, and a general effects framework remain out of scope.
 
+## FL-M6-01-A1-E1 Project-Owned Setup Foundation Resolution
+
+Slice E creation-time authoring is focused-green, and the full `EchoLaunchSetup` filtered EditMode gate passed `214 / 214`.
+
+The fresh-root consumer preview then found a product-facing ambiguity: authored creation-time splashes were accepted while the planner reused the committed SuiteShowcase foundation, including its existing SplashSequence. Because Setup correctly refuses to overwrite reused sequences, the new authored entries would not have been applied. No Apply was performed.
+
+Authorized Editor-only correction:
+
+- add `Foundation > Asset Resolution`;
+- default `Reuse Compatible Assets` preserves prior behavior;
+- `Create Project-Owned Setup` creates missing Configuration, LaunchDestination, StartupSequence, optional SplashSequence, and RootPrefab targets beneath the requested Project Root instead of substituting compatible off-root candidates;
+- explicit destination scene reuse remains valid;
+- existing compatible target assets remain authoritative and incompatible targets still block;
+- fingerprints/freshness/plan text include the selected mode;
+- identical rerun settles `NoChanges`;
+- no Runtime/schema change.
+
+Isekai/UMBRA proof media remains project-owned consumer/showcase content, not package content or a suite dependency.
+
 ## Acceptance
 
 `SHOW-002`, `SHOW-003`, and `SHOW-H1` are passed. Prove FL-M6-01-H2 next, then resume `SHOW-004` through `SHOW-009`. Preserve every retained test; additive audio-intent, authoring, and Setup-conformance tests may increase totals above `809`.
 
 ## Next Action
 
-Commit/push FL-M6-01-H2 authority while preserving unstaged Showcase WIP, then implement only Setup destination Build Settings conformance and focused tests.
+Commit/push A1-E1 authority without touching current Slice E implementation, UMBRA/Isekai proof media, or unrelated repository-document WIP. Then implement the bounded Editor Setup foundation-resolution control and prove fresh-root Create → authored sequence inspection → identical `NoChanges`.

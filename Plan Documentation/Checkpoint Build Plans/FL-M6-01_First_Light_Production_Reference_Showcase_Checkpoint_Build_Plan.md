@@ -3,7 +3,7 @@
 **Document role:** SFGSS-005 Checkpoint Build Plan
 **Package:** First Light — Startup and Launch (`EchoLaunch`)
 **Checkpoint:** `FL-M6-01`
-**Status:** Approved and in progress; H1/H2 proven in the real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion authorized before final front-facing acceptance
+**Status:** Approved and in progress; H1/H2 proven in the real Showcase; FL-M6-01-A1 Splash Presentation & Authoring Expansion in implementation; A1-E1 project-owned foundation resolution authorized from the Slice E consumer proof
 **Package specification:** SFGSS-PKG-ECHOLAUNCH-001 v1.15.0
 **Suite showcase authority:** SFGSS-ADR-005
 **Unity baseline:** `6000.3.8f1`
@@ -385,6 +385,40 @@ Create the two project-owned images and configure them through the public Splash
 ### Slice E — Front-facing acceptance
 Play the Boot scene and prove ordered splashes, completed handoff, and clean destination presentation.
 
+#### Slice E1 — Setup foundation-resolution consumer proof
+
+The A1 creation-time authoring proof uses a fresh target root while the existing committed First Light Showcase remains present. The first preview exposed this plan shape:
+
+```text
+requested root:
+Assets/EchoDevGames/SliceEProof/FirstLight
+
+authored splash payload:
+Mode=Splash Only
+Background=#000000FF
+Allow Advancement=Yes
+Entries=3
+
+actual resolution:
+Reuse EchoLaunchConfiguration from SuiteShowcase
+Reuse LaunchDestination from SuiteShowcase
+Reuse SplashSequence from SuiteShowcase
+Reuse StartupSequence from SuiteShowcase
+Reuse EchoLaunchRoot from SuiteShowcase
+Create only the fresh Boot scene / Build Settings entry
+```
+
+No Apply was performed.
+
+That behavior is valid under the older compatible-candidate rule, but it makes A1 creation-time splash authoring misleading because the accepted entry payload would not be written to the reused sequence. A1-E1 therefore adds the explicit `Foundation > Asset Resolution` choice:
+
+- `Reuse Compatible Assets` — current/default behavior;
+- `Create Project-Owned Setup` — missing canonical foundation targets are created under the requested Project Root instead of being replaced by compatible off-root candidates.
+
+The selected existing destination scene remains reusable. Existing requested target assets remain authoritative. Incompatible target paths still block. Identical reruns must settle `NoChanges`.
+
+The new choice must be included in request fingerprinting, preview text, Apply freshness, and focused tests. No Runtime/schema change is authorized.
+
 ### Slice F — Regression + cleanup
 Run retained focused tests, complete EditMode, complete Runtime Play Mode, inspect Git ownership, remove temporary acceptance residue, and preserve the actual Reference Showcase.
 
@@ -403,6 +437,9 @@ Run retained focused tests, complete EditMode, complete Runtime Play Mode, inspe
 | SHOW-007 | Inspect Git ownership | Showcase under project `Assets/**`; package Runtime/Editor unchanged |
 | SHOW-008 | Run retained regression | Existing First Light automated baseline stays green; additive focused tests may raise totals |
 | SHOW-009 | Assign/inspect preferred audio intent | Optional project-owned `AudioClip` reference is retained per splash entry; no playback occurs without a later bridge/provider |
+| SHOW-A1-E1 | Preview fresh root with `Create Project-Owned Setup` | Configuration, destination asset, startup sequence, optional splash sequence, root prefab, and Boot resolve to requested project-owned targets; explicit destination scene may be reused |
+| SHOW-A1-E2 | Apply the same request and inspect generated SplashSequence | Authored presentation settings, all authored entries, images/audio intent/timing/motion/advance values, and generated stable entry IDs are retained in the newly-created target sequence |
+| SHOW-A1-E3 | Refresh and repeat identical request | `NoChanges`; no duplicate foundation assets, no off-root substitution, no Build Settings drift |
 
 ## 12. Automated Baseline
 
