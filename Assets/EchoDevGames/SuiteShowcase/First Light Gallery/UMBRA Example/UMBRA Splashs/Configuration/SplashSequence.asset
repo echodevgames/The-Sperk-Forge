@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41b90a7f179c9049abe5c954940cb96, type: 3}
+  m_Name: SplashSequence
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.SplashSequence
+  sequenceId: 0b81a39a4974400bb7f09958f97bbb2f
+  schemaVersion: 1
+  hasAuthoredPresentationSettings: 1
+  presentationSettings:
+    presentationMode: 1
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    allowUserAdvance: 1
+  entries:
+  - entryId: 6d8278677eaf4a5a8eaf209d2f1d2c33
+    image: {fileID: 21300000, guid: e979c251217a905498241ef94143f717, type: 3}
+    preferredAudioClip: {fileID: 8300000, guid: c7ae57ab5d05e7b49894277665dd3d8b, type: 3}
+    displayLabel: The Sperk
+    fadeInSeconds: 0.25
+    holdSeconds: 5
+    fadeOutSeconds: 0.25
+    minimumDisplaySeconds: 5
+    skipPolicy: 1
+    motionStyle: 0
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
+  - entryId: 7a4462bfe6a94a539e480e13a5b65f9e
+    image: {fileID: 21300000, guid: 8ca39e3f402a3304f81e0e69fe9de47d, type: 3}
+    preferredAudioClip: {fileID: 8300000, guid: f0e3cc277b0938743aec12ac165d9dab, type: 3}
+    displayLabel: Isekai Studios
+    fadeInSeconds: 0.25
+    holdSeconds: 3.2
+    fadeOutSeconds: 0.25
+    minimumDisplaySeconds: 2.5
+    skipPolicy: 1
+    motionStyle: 1
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 2.5
+  - entryId: 1dcf4ebd72a54de0877fe67b78bd3d3f
+    image: {fileID: 21300000, guid: b68e8bfd2ce15324c9c0d0e5f52c0778, type: 3}
+    preferredAudioClip: {fileID: 8300000, guid: 8d32d4e7975af2145bf01515931b4c23, type: 3}
+    displayLabel: UMBRA
+    fadeInSeconds: 0.25
+    holdSeconds: 10
+    fadeOutSeconds: 0.25
+    minimumDisplaySeconds: 5
+    skipPolicy: 1
+    motionStyle: 0
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
