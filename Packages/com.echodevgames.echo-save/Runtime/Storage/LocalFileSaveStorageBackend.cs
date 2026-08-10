@@ -11,7 +11,8 @@ namespace EchoDevGames.EchoSave
     /// knowledge of Chronicle documents, slots, generations, or participants.
     /// </summary>
     public sealed class LocalFileSaveStorageBackend :
-        ISaveStoragePublicationBackend
+        ISaveStoragePublicationBackend,
+        ISaveStorageDiscoveryBackend
     {
         private static readonly
             SaveStorageBackendId BackendId =
@@ -582,6 +583,103 @@ namespace EchoDevGames.EchoSave
                         .StoragePublicationFailed,
                     "The Chronicle current-object publication failed.",
                     exception);
+            }
+        }
+
+        public SaveStorageDiscoveryResult DiscoverChildDirectories(
+            SaveStorageKey parentKey,
+            int maxChildren)
+        {
+            SaveStorageResult ready =
+                EnsureReady();
+
+            if (!ready.Succeeded)
+            {
+                return new SaveStorageDiscoveryResult(
+                    SaveStorageDiscoveryStatus.Failed,
+                    EchoSaveDiagnosticCodes.StorageDiscoveryFailed,
+                    "The Chronicle storage backend is not ready for child discovery.",
+                    Array.Empty<string>());
+            }
+
+            if (maxChildren <= 0)
+            {
+                return new SaveStorageDiscoveryResult(
+                    SaveStorageDiscoveryStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes.StorageDiscoveryInvalidRequest,
+                    "Chronicle child discovery requires a positive result bound.",
+                    Array.Empty<string>());
+            }
+
+            SaveStorageResult resolved =
+                Resolve(
+                    parentKey,
+                    out string parentPath);
+
+            if (!resolved.Succeeded)
+            {
+                return new SaveStorageDiscoveryResult(
+                    SaveStorageDiscoveryStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes.StorageDiscoveryInvalidRequest,
+                    "The Chronicle child-discovery key is invalid.",
+                    Array.Empty<string>());
+            }
+
+            try
+            {
+                if (!Directory.Exists(
+                        parentPath))
+                {
+                    return SaveStorageDiscoveryResult.ParentNotFound(
+                        "The Chronicle discovery parent does not exist.");
+                }
+
+                System.Collections.Generic.List<string> children =
+                    new System.Collections.Generic.List<string>();
+
+                foreach (string directory in
+                    Directory.EnumerateDirectories(
+                        parentPath,
+                        "*",
+                        SearchOption.TopDirectoryOnly))
+                {
+                    string name =
+                        Path.GetFileName(
+                            directory);
+
+                    if (string.IsNullOrEmpty(
+                            name))
+                    {
+                        continue;
+                    }
+
+                    children.Add(
+                        name);
+
+                    if (children.Count >
+                        maxChildren)
+                    {
+                        return new SaveStorageDiscoveryResult(
+                            SaveStorageDiscoveryStatus.LimitExceeded,
+                            EchoSaveDiagnosticCodes.StorageDiscoveryLimitExceeded,
+                            "The Chronicle child-discovery result exceeded its configured bound.",
+                            Array.Empty<string>());
+                    }
+                }
+
+                return SaveStorageDiscoveryResult.Success(
+                    children.ToArray(),
+                    "The Chronicle immediate child directories were discovered.");
+            }
+            catch (Exception exception)
+                when (IsExpectedIoException(
+                    exception))
+            {
+                return new SaveStorageDiscoveryResult(
+                    SaveStorageDiscoveryStatus.Failed,
+                    EchoSaveDiagnosticCodes.StorageDiscoveryFailed,
+                    $"Chronicle child discovery failed with {exception.GetType().Name}.",
+                    Array.Empty<string>());
             }
         }
 

@@ -314,5 +314,50 @@ namespace EchoDevGames.EchoSave
 
         internal const string PreparedApplyParticipantException =
             "ESV-APPLY-010";
+
+        internal const string StorageDiscoveryInvalidRequest =
+            "ESV-STORAGE-010";
+
+        internal const string StorageDiscoveryFailed =
+            "ESV-STORAGE-011";
+
+        internal const string StorageDiscoveryLimitExceeded =
+            "ESV-STORAGE-012";
+
+        internal const string CatalogDiscoveryUnavailable =
+            "ESV-CATALOG-001";
+
+        internal const string CatalogDiscoveryFailed =
+            "ESV-CATALOG-002";
+
+        internal const string CatalogScanLimitExceeded =
+            "ESV-CATALOG-003";
+
+        internal const string CatalogHeadMissing =
+            "ESV-CATALOG-004";
+
+        internal const string CatalogHeadInvalid =
+            "ESV-CATALOG-005";
+
+        internal const string CatalogHeadUnsupported =
+            "ESV-CATALOG-006";
+
+        internal const string CatalogManifestMissing =
+            "ESV-CATALOG-007";
+
+        internal const string CatalogManifestInvalid =
+            "ESV-CATALOG-008";
+
+        internal const string CatalogManifestUnsupported =
+            "ESV-CATALOG-009";
+
+        internal const string CatalogIdentityMismatch =
+            "ESV-CATALOG-010";
+
+        internal const string CatalogBackendReadFailed =
+            "ESV-CATALOG-011";
+
+        internal const string CatalogActiveSlotRejected =
+            "ESV-CATALOG-012";
     }
 }
