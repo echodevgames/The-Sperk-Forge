@@ -266,5 +266,23 @@ namespace EchoDevGames.EchoSave
 
         internal const string ParticipantMigrationInvalidOutput =
             "ESV-MIGRATE-009";
+
+        internal const string PreparedLoadInvalidRequest =
+            "ESV-PLOAD-001";
+
+        internal const string PreparedLoadSourceMismatch =
+            "ESV-PLOAD-002";
+
+        internal const string PreparedLoadUnknownProvenanceMismatch =
+            "ESV-PLOAD-003";
+
+        internal const string PreparedLoadCountLimitExceeded =
+            "ESV-PLOAD-004";
+
+        internal const string PreparedLoadByteLimitExceeded =
+            "ESV-PLOAD-005";
+
+        internal const string PreparedLoadOwnerUnavailable =
+            "ESV-PLOAD-006";
     }
 }
