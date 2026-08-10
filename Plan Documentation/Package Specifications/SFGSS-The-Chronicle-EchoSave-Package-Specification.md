@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.24.0
+**Specification version:** 1.25.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, ESV-M4-01, ESV-M4-02, ESV-M4-03, ESV-M4-04, and ESV-M4-05 are complete. `ESV-M4-05` is committed at `9917f1b` with final focused Chronicle Editor evidence `473 / 473`. It adds explicit caller-triggered autosave submission, one latest-wins pending autosave slot, deterministic coalescing/supersession, reuse of the M4-04 root-local admission authority and M4-03/M4-04 durable save path, and shutdown-safe pending settlement. No follow-on M4 checkpoint is currently activated.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-05 are complete. `ESV-M4-06` is now the active bounded checkpoint at clean baseline `3cdad0f`. It authorizes bounded generation-retention policy, provider-neutral committed-generation discovery, additive tree-deletion capability, post-publication cleanup that protects the current and immediate recovery generation, and truthful retention-maintenance results while explicitly deferring recovery execution, rename/duplicate/delete/trash, persistent catalog cache, generic operation queues, automatic autosave timers, and full configuration/tooling expansion.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -56,6 +56,7 @@
 | 1.22.0 | 2026-08-10 | Approved | Closed ESV-M4-04: public active-slot `SaveAsync`, public request/result truth, one root-local mutating-operation admission authority, immediate Busy rejection with no queue, safe pre-publication cancellation, Too-Late truth after durable publication begins, and shutdown admission closure. Implementation committed at `2732aaa`; pre-Ready lifecycle-status hotfix committed at `09ae8f1`; final focused Chronicle Editor gate `456 / 456`, preserving the prior `439 / 439` floor. No follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
 | 1.23.0 | 2026-08-10 | Approved | Activated ESV-M4-05 bounded autosave request/coalescing foundation at clean baseline `9a2ad29`: explicit caller-triggered `RequestAutosave`, at-most-one pending latest request, deterministic coalesced/superseded/rejected submission truth, reuse of M4-04 root-local admission and M4-03 durable save transaction, and shutdown-safe pending-request settlement; generic queued multi-operation scheduling, retention, recovery, rename/duplicate/delete, persistent catalog cache, and full slot-policy/configuration expansion remain deferred. | Jesse “Echo” Adams |
 | 1.24.0 | 2026-08-10 | Approved | Closed ESV-M4-05 at implementation commit `9917f1b` with focused Chronicle Editor evidence `473 / 473`; recorded explicit caller-triggered `RequestAutosave`, at-most-one latest-wins pending request, deterministic coalescing/supersession, reuse of the M4-04 root-local admission authority and M4-03/M4-04 durable active-slot save path, manual-save Busy preservation, pending drain after admission release, and shutdown-safe pending settlement as complete. Updated the stale M4-04 public-surface regression assertion to the newly authorized autosave API. Retention, generic queued multi-operation scheduling, recovery, rename/duplicate/delete, persistent catalog cache, and full slot-policy/configuration expansion remain deferred; no follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
+| 1.25.0 | 2026-08-10 | Approved | Activated ESV-M4-06 bounded generation-retention and post-publication cleanup foundation at clean baseline `3cdad0f`: project-owned `SaveRetentionPolicy`, bounded provider-neutral generation discovery, additive optional tree-deletion capability without changing base `ISaveStorageBackend`, deterministic safe cleanup of excess verified committed generations only after a new head is authoritative, protection of current and immediate recovery generations, and truthful cleanup-failure diagnostics that never fabricate save rollback; recovery execution, destructive slot operations/trash, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1895,6 +1896,7 @@ Project-specific migration tooling must:
 | ESV-D-025 | The first manual-save checkpoint composes existing proven primitives internally before exposing production `SaveAsync` or generic operation admission | Approved | Keeps M4-03 bounded and proves durable save semantics without forcing lifecycle/service wiring, queue policy, cancellation, autosave, and cross-operation concurrency into one checkpoint | M4-03 targets the explicitly selected healthy slot, refreshes source provenance, captures fresh known participants, preserves valid unknown payloads, publishes only against the expected current generation, reconciles the catalog, and reports partial durable/catalog truth; M4-04 or later owns public admission/Busy/cancellation |
 | ESV-D-026 | Public manual save enters through one root-local mutating-operation admission authority; an overlapping manual save returns Busy immediately rather than queueing, cancellation is honored only before durable publication begins, and shutdown closes new admission without abandoning a publication already crossing the commit boundary | Approved | Establishes the production-facing manual-save seam without prematurely implementing autosave coalescing or every later mutating operation | M4-04 expands `IEchoSaveService` with active-slot `SaveAsync`, maps public results to M4-03 durable truth, proves Busy/cancel/Too-Late/shutdown behavior, and leaves generic multi-operation queue policy plus autosave for later checkpoints |
 | ESV-D-027 | Autosave is an explicit caller-triggered request source, not a Chronicle-owned gameplay timer; Chronicle coalesces autosaves into at most one pending latest request and reuses the same root-local mutating admission/durable save path as manual save | Approved | Preserves project ownership of when autosave should occur, keeps request spam bounded, and avoids inventing a generic queue before other operation types exist | M4-05 adds `RequestAutosave` submission/coalescing truth and one latest-wins pending autosave slot; manual save remains Busy while occupied, pending autosave never becomes an unbounded queue, and retention remains a later bounded checkpoint |
+| ESV-D-028 | Generation retention is post-publication maintenance over verified committed non-current generations; it never participates in head commit, never deletes the current head generation or its immediate recovery predecessor, and retention failure never fabricates rollback of an already committed save | Approved | Preserves durable-truth semantics while bounding disk growth and protecting one immediate recovery generation | M4-06 introduces bounded retention policy/discovery/tree-deletion seams and post-publication cleanup; corrupt/unsupported/unrecognized material remains for later recovery/quarantine authority rather than being silently deleted |
 
 ### 27.2 Release-blocking questions
 
@@ -2431,46 +2433,95 @@ ESV-D-027 remains the durable M4-05 authority.
 
 No follow-on M4 checkpoint is activated by this closeout.
 
+### 28.22 ESV-M4-06 generation-retention activation
+
+**Status:** Active / authorized.
+
+**Exact implementation baseline:** `3cdad0f`.
+
+**Carried focused regression floor:** **473 / 473**.
+
+ESV-M4-06 authorizes the first bounded generation-retention and post-publication cleanup path.
+
+### ESV-D-028 — retention is post-commit maintenance, never commit authority
+
+> Generation retention may remove only verified committed non-current generations after the new generation and `head.json` are already authoritative. It must protect the current generation and the head's immediate recovery predecessor. Failure to complete retention is maintenance failure, not fictional rollback of a committed save.
+
+M4-06 owns:
+
+- a project-owned `SaveRetentionPolicy` definition with a positive bounded total-generation limit;
+- a minimum safe total retention of **2** once a slot has history, preserving current + immediate predecessor;
+- provider-neutral bounded discovery of generation-directory children;
+- an additive optional storage capability for deleting one complete generation tree;
+- no change to the base `ISaveStorageBackend` contract;
+- deterministic classification of generation directories using canonical `SaveGenerationId`, readable manifest identity, committed state, and slot/generation agreement;
+- fail-closed planning: if bounded discovery, head read/validation, or required candidate classification is untrustworthy, delete nothing;
+- current-generation protection;
+- immediate predecessor protection when `head.previousGenerationId` is populated and valid;
+- deletion only of excess verified committed generations beyond the configured total bound;
+- deterministic oldest-first deletion based on validated manifest timestamps with generation ID as tie-break;
+- retention cleanup only after successful generation + head publication;
+- retention failure reported separately from durable publication truth;
+- manual save and autosave using the same retention path because both reuse the same durable save transaction;
+- focused tests proving no cleanup occurs before commit, no protected generation is deleted, malformed/unknown material is preserved, cleanup is bounded, and save truth remains committed if cleanup maintenance fails.
+
+M4-06 does **not** own:
+
+- recovery-plan generation or execution;
+- selecting a fallback generation after corruption;
+- quarantine movement of corrupt/unsupported material;
+- slot rename / duplicate / delete;
+- trash retention or trash recovery;
+- persistent `catalog.cache.json`;
+- generic queued multi-operation scheduling/capacity/overflow;
+- automatic timer/checkpoint autosave triggers;
+- permission-provider production facade wiring;
+- full `EchoSaveConfiguration`/Setup authoring expansion;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+The first retention checkpoint intentionally bounds **total committed generation history**. Autosave-specific history sub-bounds and trash-history bounds remain later policy extensions; M4-06 must not widen persisted manifest semantics merely to distinguish manual versus autosave history.
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.24.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.25.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.24.0
+Current specification version: 1.25.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05
-Current milestone/checkpoint: M4 remains active; no follow-on bounded checkpoint is currently activated
+Current milestone/checkpoint: ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation — active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01 through M4-05 are complete; ESV-M4-05 implementation is committed at 9917f1b with 473 / 473 focused Chronicle Editor evidence
+Current implementation status: M2 and M3 are complete; M4-01 through M4-05 are complete; ESV-M4-06 planning is activated at clean baseline 3cdad0f with the 473 / 473 focused regression floor
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing further M4 code:
-1. Rehydrate exact `9917f1b`.
-2. Preserve the **473 / 473** focused Chronicle regression floor.
-3. Treat ESV-M4-05 explicit autosave submission, latest-wins pending coalescing, drain, and shutdown settlement as complete.
-4. Do not begin further runtime implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
-5. Keep generation retention, generic queued multi-operation scheduling/capacity/overflow, permission-provider facade wiring, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, automatic autosave timers, scene travel, peer bridges, service-locator behavior, and Chronicle-owned/project-wide DDOL locked until separately authorized.
+Before writing ESV-M4-06 code:
+1. Rehydrate exact `3cdad0f`.
+2. Read the active ESV-M4-06 Checkpoint Build Plan completely.
+3. Preserve the **473 / 473** focused Chronicle regression floor.
+4. Implement retention only as post-publication maintenance over verified committed non-current generations.
+5. Keep the current generation and immediate recovery predecessor protected; fail closed on untrustworthy discovery/classification.
+6. Keep recovery execution, quarantine, rename/duplicate/delete/trash, persistent catalog cache, generic operation queues, automatic autosave timers, permission-provider facade wiring, full configuration/tooling expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.24.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.25.0 |
 | Completed checkpoint | ESV-M4-05 - Autosave Request Coalescing and Latest-Wins Pending Admission Foundation |
 | Implementation commit | `9917f1b` |
 | Tests passed | ESV-M4-05 focused Chronicle Editor gate `473 / 473`; prior `456 / 456` regression floor preserved; Unity compile/import green |
 | Tests failed | Final ESV-M4-05 gate: `0` |
 | Known issues | None blocking bounded next-checkpoint planning |
-| Decisions added | ESV-D-001 through ESV-D-027; ESV-D-027 defines explicit caller-triggered latest-wins autosave coalescing |
+| Decisions added | ESV-D-001 through ESV-D-028; ESV-D-028 defines retention as post-publication maintenance that protects current/immediate recovery generations and never fabricates rollback |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No follow-on M4 checkpoint is activated; further runtime implementation requires a new bounded Checkpoint Build Plan |
+| Implementation permission | ESV-M4-06 active / authorized at `3cdad0f`; implementation is bounded by its Checkpoint Build Plan and ESV-D-028 |
 
 ## 30. Approval
 
@@ -2516,7 +2567,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.24.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, ESV-M4-02, ESV-M4-03, ESV-M4-04, and ESV-M4-05 are complete. M4 remains active, but no follow-on bounded checkpoint is currently activated.
+The Chronicle specification is complete and **Approved v1.25.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-05 are complete. M4 remains active, with ESV-M4-06 authorized as the bounded generation-retention and post-publication cleanup checkpoint.
 
 
 ---

@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.24.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.25.0
 **Completed checkpoint:** ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — ESV-M4-05 complete
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; M4 remains active
+**Current checkpoint:** ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.24.0 records ESV-M4-05 complete at implementation commit `9917f1b` with final focused Chronicle Editor evidence `473 / 473`; no follow-on M4 checkpoint is activated.
+**Authority reconciliation:** Specification v1.25.0 records ESV-M4-05 complete and activates bounded ESV-M4-06 at clean baseline `3cdad0f` under ESV-D-028.
 
 ## ESV-M4-02 closeout
 
@@ -187,3 +187,38 @@ Still deferred:
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **473 / 473** focused regression floor.
+
+## ESV-M4-06 active boundary
+
+**Exact planning baseline:** `3cdad0f`.
+
+**Carried focused regression floor:** **473 / 473**.
+
+M4-06 owns:
+- project-owned `SaveRetentionPolicy` for bounded total committed-generation history;
+- minimum policy bound that preserves current + immediate recovery predecessor once history exists;
+- bounded provider-neutral generation-directory discovery;
+- additive optional storage tree-deletion capability without changing base `ISaveStorageBackend`;
+- deterministic classification of canonical, readable, committed generation candidates;
+- fail-closed no-delete behavior when discovery/head/candidate truth is not trustworthy;
+- protection of the current head generation;
+- protection of `head.previousGenerationId` when present and valid;
+- oldest-first deletion of only excess verified committed generations;
+- post-publication retention only;
+- truthful retention-maintenance failure that never claims rollback of a committed save;
+- the same cleanup path after manual and autosave because both share the same durable save engine.
+
+M4-06 does **not** own:
+- recovery-plan generation or execution;
+- corruption fallback selection;
+- quarantine movement;
+- rename/duplicate/delete/trash;
+- trash-history retention;
+- persistent `catalog.cache.json`;
+- generic queue policy/capacity/overflow;
+- automatic timer/checkpoint autosave triggers;
+- permission-provider production facade wiring;
+- full `EchoSaveConfiguration` / Setup authoring expansion;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+This checkpoint intentionally bounds total committed generation history first. Autosave-specific and trash-history sub-bounds remain later policy extensions rather than forcing a persisted manifest semantic change into M4-06.
