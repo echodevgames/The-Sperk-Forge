@@ -522,3 +522,39 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Cancellation after durable publication begins reports Too Late without pretending rollback.
 - Shutdown closes new admission and preserves settlement of an already-committing operation.
 - No autosave/coalescing, generic queued scheduler, retention/recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene/bridge/DDOL scope was introduced.
+
+
+### Added
+
+#### ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation
+
+- Public caller-triggered `AutosaveRequest`.
+- Additive `IEchoSaveService.RequestAutosave(...)`.
+- Bounded autosave submission/result/ticket truth.
+- Exactly zero-or-one pending latest autosave request.
+- Latest-wins coalescing/supersession instead of an unbounded queue.
+- Reuse of the M4-04 root-local mutating-operation admission authority.
+- Reuse of the M4-03/M4-04 durable active-slot save path.
+- Preservation of manual-save Busy behavior.
+- At-most-once pending drain after admission release.
+- Shutdown rejection/discard semantics that prevent pending work from starting after admission closure.
+- Focused autosave submission, coalescing, drain, shutdown, and durable-result tests.
+- No automatic autosave timer, generic operation queue, retention/recovery, rename/duplicate/delete, persistent catalog cache, scene, bridge, or DDOL ownership.
+
+### Verified
+
+#### ESV-M4-05 Closeout
+
+- Planning/activation committed at `8504ed4`.
+- Implementation committed at `9917f1b`.
+- Final effective runtime baseline is `9917f1b`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **473 / 473**, with `0` failed.
+- All prior **456 / 456** Chronicle regressions remained green after one authorized regression-test maintenance update.
+- M4-05 adds **17** net focused tests over the prior floor.
+- Final committed implementation/test scope is **22 files**, including the updated M4-04 public-service surface test.
+- The stale M4-04 assertion that `RequestAutosave` must be absent was replaced with a bounded signature/return-type assertion because M4-05 explicitly authorizes that API.
+- Autosave remains caller-triggered; Chronicle does not own gameplay timing rules.
+- At most one pending latest autosave is retained.
+- Manual save remains Busy rather than queued.
+- Retention, generic queued operation scheduling, recovery, destructive slot operations, persistent catalog cache, and broader slot-policy work remain deferred.

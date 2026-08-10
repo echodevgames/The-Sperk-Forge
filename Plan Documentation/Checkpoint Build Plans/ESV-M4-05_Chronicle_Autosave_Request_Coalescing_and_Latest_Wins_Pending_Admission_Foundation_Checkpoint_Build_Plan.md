@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-05 — Chronicle Autosave Request Coalescing and Latest-Wins Pending Admission Foundation
@@ -11,7 +11,7 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-05
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.23.0
 **Prior checkpoint:** ESV-M4-04 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -240,3 +240,51 @@ Stop when project code can explicitly request autosave and Chronicle:
 Do **not** implement retention yet.
 
 Do **not** add a generic operation queue or automatic gameplay autosave trigger.
+
+
+## 8. Completion Evidence
+
+**Planning baseline:** `9a2ad29`
+
+**Planning/activation commit:** `8504ed4`
+
+**Implementation commit:** `9917f1b`
+
+**Final effective runtime baseline:** `9917f1b`
+
+**Unity compile/import:** Green
+
+**Focused Chronicle Editor gate:** **473 / 473 passed, 0 failed**
+
+**Prior focused regression floor:** **456 / 456**
+
+**Net new focused tests:** **17**
+
+**Committed implementation/test scope:** **22 files**
+
+Observed completion:
+- public explicit caller-triggered `RequestAutosave(...)` is available;
+- autosave retains at most one latest pending request;
+- newer pending requests supersede older pending metadata instead of growing a queue;
+- autosave reuses the M4-04 root-local admission authority;
+- autosave reuses the M4-03/M4-04 durable active-slot save transaction;
+- manual-save Busy semantics remain unchanged;
+- pending autosave drains at most once after admission becomes available;
+- shutdown rejects new autosave submission and prevents pending work from starting after closure;
+- no automatic gameplay timer, generic operation queue, retention, recovery, rename/duplicate/delete, persistent cache, scene, bridge, or DDOL scope entered runtime.
+
+### Regression maintenance
+
+The first M4-05 focused run exposed one stale M4-04 public-surface regression assertion. M4-04 correctly required `RequestAutosave` to be absent while autosave was deferred. ESV-M4-05 explicitly authorizes that public API, so the test was updated to prove both bounded manual `SaveAsync` and bounded `RequestAutosave(AutosaveRequest) -> AutosaveSubmissionResult`.
+
+Final rerun: **473 / 473 passed, 0 failed**.
+
+### Helper hardening
+
+The implementation apply workflow exposed two helper defects before the final green run:
+- missing creation of a new nested destination directory;
+- counting `git status --porcelain` rows instead of actual files.
+
+The final helper uses parent-directory creation, actual tracked/untracked file counting, and verified rollback state. These are workflow/tooling corrections, not Chronicle runtime architecture changes.
+
+No follow-on M4 checkpoint is activated by this closeout.

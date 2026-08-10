@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.23.0
-**Completed checkpoint:** ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.24.0
+**Completed checkpoint:** ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 active; M4 remains active
+**Current checkpoint:** None activated — ESV-M4-05 complete
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; M4 remains active
 
-**Authority reconciliation:** Specification v1.23.0 records ESV-M4-04 complete and activates bounded ESV-M4-05 at clean baseline `9a2ad29` under ESV-D-027.
+**Authority reconciliation:** Specification v1.24.0 records ESV-M4-05 complete at implementation commit `9917f1b` with final focused Chronicle Editor evidence `473 / 473`; no follow-on M4 checkpoint is activated.
 
 ## ESV-M4-02 closeout
 
@@ -133,23 +133,49 @@ Still deferred:
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **456 / 456** focused regression floor.
 
-## ESV-M4-05 active boundary
+## ESV-M4-05 closeout
 
-**Exact planning baseline:** `9a2ad29`.
+**Planning baseline:** `9a2ad29`.
 
-**Carried focused regression floor:** **456 / 456**.
+**Planning/activation commit:** `8504ed4`.
 
-M4-05 owns:
-- public caller-triggered autosave request/submission DTOs;
-- additive `RequestAutosave(...)` on the public service;
-- one latest-wins pending autosave slot, not a general queue;
-- accepted/coalesced/superseded/rejected/discarded submission truth;
+**Implementation commit:** `9917f1b`.
+
+**Final effective runtime baseline:** `9917f1b`.
+
+**Focused Chronicle Editor gate:** **473 / 473 passed, 0 failed**.
+
+**Prior regression floor:** **456 / 456**.
+
+**Net new focused tests:** **17**.
+
+**Committed implementation/test scope:** **22 files**.
+
+Completed behavior:
+- public caller-triggered `AutosaveRequest`;
+- additive `IEchoSaveService.RequestAutosave(...)`;
+- bounded autosave submission/result/ticket truth;
+- exactly one pending latest autosave slot;
+- latest-wins coalescing and explicit supersession;
 - reuse of the M4-04 root-local mutating admission authority;
-- reuse of the M4-03/M4-04 active-slot durable save transaction;
-- execution of at most the current pending autosave after admission becomes available;
-- deterministic shutdown clearing/rejection so pending autosave cannot start after admission closure.
+- reuse of the M4-03/M4-04 durable active-slot save transaction;
+- manual save remains Busy rather than queued;
+- pending autosave drains at most once after admission becomes available;
+- shutdown rejects new submission and discards/prevents pending execution after closure;
+- Chronicle owns no automatic gameplay autosave timer.
 
-M4-05 does **not** own:
+Regression maintenance:
+- M4-04 had intentionally asserted `RequestAutosave` was absent while autosave remained deferred;
+- M4-05 authorizes that surface, so the stale absence assertion was updated to assert the bounded `RequestAutosave(AutosaveRequest) -> AutosaveSubmissionResult` API instead;
+- no runtime/API architecture change was made by that test maintenance.
+
+Implementation-helper history:
+- v1 failed safely on missing destination-directory creation;
+- v2 applied all implementation files but counted status rows rather than files;
+- v3 counted actual tracked/new files and verifies rollback state;
+- final Unity evidence is **473 / 473**.
+
+Still deferred:
 - automatic timer/checkpoint autosave triggers;
 - generation retention cleanup or `SaveRetentionPolicy`;
 - generic multi-operation queueing, configured queue capacity, or overflow policy;
@@ -160,4 +186,4 @@ M4-05 does **not** own:
 - full slot-policy/configuration expansion;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-Manual save Busy semantics from M4-04 remain unchanged. Executed test totals are recorded from Unity rather than predicted.
+No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **473 / 473** focused regression floor.
