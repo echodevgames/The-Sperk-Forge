@@ -71,6 +71,24 @@ namespace EchoDevGames.EchoSave
                 false);
 
         internal SaveGenerationPublicationResult
+            PublishInitialEmptyTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName) =>
+            PublishTransportGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                Array.Empty<SavePayloadEntry>(),
+                Array.Empty<SavePayloadInventoryEntry>(),
+                false,
+                requireMissingCurrentHead: true);
+
+        internal SaveGenerationPublicationResult
             PublishParticipantTransportGeneration(
                 SaveSlotId slotId,
                 string projectId,
@@ -190,7 +208,8 @@ namespace EchoDevGames.EchoSave
                 SavePayloadInventoryEntry[] inventoryEntries,
                 bool participantBacked,
                 SaveGenerationId expectedCurrentGeneration = default,
-                bool requireExpectedCurrentGeneration = false)
+                bool requireExpectedCurrentGeneration = false,
+                bool requireMissingCurrentHead = false)
         {
             if (storageBackend == null ||
                 serializer == null ||
@@ -287,6 +306,19 @@ namespace EchoDevGames.EchoSave
             if (!existingHeadResult.Succeeded)
             {
                 return existingHeadResult;
+            }
+
+            if (requireMissingCurrentHead &&
+                previousHead != null)
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.ExistingHeadInvalid,
+                    EchoSaveDiagnosticCodes
+                        .SlotCreateExistingHead,
+                    "Chronicle initial slot publication requires the requested technical slot to have no existing current head.",
+                    validatedSlot,
+                    generationId,
+                    false);
             }
 
             if (requireExpectedCurrentGeneration)

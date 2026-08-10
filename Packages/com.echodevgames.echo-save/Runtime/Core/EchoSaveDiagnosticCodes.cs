@@ -359,5 +359,29 @@ namespace EchoDevGames.EchoSave
 
         internal const string CatalogActiveSlotRejected =
             "ESV-CATALOG-012";
+
+        internal const string SlotCreateInvalidRequest =
+            "ESV-SLOT-001";
+
+        internal const string SlotCreateCatalogUnavailable =
+            "ESV-SLOT-002";
+
+        internal const string SlotCreateCapacityReached =
+            "ESV-SLOT-003";
+
+        internal const string SlotCreateIdGenerationFailed =
+            "ESV-SLOT-004";
+
+        internal const string SlotCreateCollisionLimitExceeded =
+            "ESV-SLOT-005";
+
+        internal const string SlotCreatePublicationFailed =
+            "ESV-SLOT-006";
+
+        internal const string SlotCreateCatalogReconciliationFailed =
+            "ESV-SLOT-007";
+
+        internal const string SlotCreateExistingHead =
+            "ESV-SLOT-008";
     }
 }
