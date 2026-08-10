@@ -4,27 +4,55 @@ using System.Collections.Generic;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// M3-06 side-effect-free participant payload preparation coordinator.
+    /// Side-effect-free participant payload preparation coordinator.
     ///
-    /// Durable payload entries are accepted only from one fully validated
-    /// current-generation snapshot. Unknown entries are skipped before any
-    /// serializer lookup. Known current-schema entries are deserialized using
-    /// runtime DTO Type authority supplied by live participant registration.
+    /// M3-06 prepares validated current-version known participant payloads.
+    /// M3-07 optionally migrates explicitly supported older known participant
+    /// payloads through a complete contiguous in-memory chain before the same
+    /// trusted current DTO deserialization path runs.
+    ///
+    /// Unknown payloads are skipped before migration or serializer lookup.
+    /// No participant Capture/Apply call or storage mutation occurs here.
     /// </summary>
     internal sealed class SaveParticipantPayloadPreparer
     {
+        internal const int DefaultMaxMigrationSteps =
+            32;
+
         private readonly SaveParticipantRegistry participantRegistry;
         private readonly SaveSerializerRegistry serializerRegistry;
+        private readonly SaveParticipantMigrationRegistry migrationRegistry;
+        private readonly int maxMigrationSteps;
 
         internal SaveParticipantPayloadPreparer(
             SaveParticipantRegistry participantRegistry,
             SaveSerializerRegistry serializerRegistry)
+            : this(
+                participantRegistry,
+                serializerRegistry,
+                null,
+                DefaultMaxMigrationSteps)
+        {
+        }
+
+        internal SaveParticipantPayloadPreparer(
+            SaveParticipantRegistry participantRegistry,
+            SaveSerializerRegistry serializerRegistry,
+            SaveParticipantMigrationRegistry migrationRegistry,
+            int maxMigrationSteps =
+                DefaultMaxMigrationSteps)
         {
             this.participantRegistry =
                 participantRegistry;
 
             this.serializerRegistry =
                 serializerRegistry;
+
+            this.migrationRegistry =
+                migrationRegistry;
+
+            this.maxMigrationSteps =
+                maxMigrationSteps;
         }
 
         internal SaveParticipantPreparationResult Prepare(
@@ -33,6 +61,7 @@ namespace EchoDevGames.EchoSave
             if (snapshot == null ||
                 participantRegistry == null ||
                 serializerRegistry == null ||
+                maxMigrationSteps <= 0 ||
                 !SaveSlotId.TryParse(
                     snapshot.SourceSlotId.Value,
                     out SaveSlotId sourceSlot) ||
@@ -46,7 +75,7 @@ namespace EchoDevGames.EchoSave
                     default,
                     EchoSaveDiagnosticCodes
                         .ParticipantPreparationInvalidRequest,
-                    "Chronicle participant preparation requires a fully validated source snapshot and active participant/serializer registries.");
+                    "Chronicle participant preparation requires a fully validated source snapshot, active participant/serializer registries, and a positive migration-step bound.");
             }
 
             IReadOnlyList<SavePayloadEntry>
@@ -86,8 +115,8 @@ namespace EchoDevGames.EchoSave
                         persistedId,
                         out ISaveParticipant participant))
                 {
-                    // Unknown payloads stay opaque. Do not inspect serializer ID
-                    // or serialized payload contents for unowned entries.
+                    // Unknown payloads stay opaque. Do not inspect migration
+                    // registry, serializer ID, or payload content.
                     continue;
                 }
 
@@ -147,19 +176,10 @@ namespace EchoDevGames.EchoSave
                         "The current Chronicle participant owner declared an unusable detached DTO Type.");
                 }
 
-                if (payloadEntry.participantSchemaVersion <
-                    descriptor.CurrentSchemaVersion)
-                {
-                    return Failure(
-                        SaveParticipantPreparationStatus.MigrationRequired,
-                        persistedId,
-                        canonicalId,
-                        EchoSaveDiagnosticCodes
-                            .ParticipantPreparationMigrationRequired,
-                        "The persisted Chronicle participant payload is older than the current participant schema and requires an explicit migration chain.");
-                }
+                int storedSchemaVersion =
+                    payloadEntry.participantSchemaVersion;
 
-                if (payloadEntry.participantSchemaVersion >
+                if (storedSchemaVersion >
                     descriptor.CurrentSchemaVersion)
                 {
                     return Failure(
@@ -171,13 +191,111 @@ namespace EchoDevGames.EchoSave
                         "The persisted Chronicle participant payload uses a newer schema than the current participant supports.");
                 }
 
+                string serializedPayload =
+                    payloadEntry.serializedPayload;
+
+                string serializerIdText =
+                    payloadEntry.serializerId;
+
+                SaveParticipantMigrationProvenanceEntry[]
+                    migrationProvenance =
+                        Array.Empty<
+                            SaveParticipantMigrationProvenanceEntry>();
+
+                if (storedSchemaVersion <
+                    descriptor.CurrentSchemaVersion)
+                {
+                    if (migrationRegistry == null)
+                    {
+                        return Failure(
+                            SaveParticipantPreparationStatus.MigrationRequired,
+                            persistedId,
+                            canonicalId,
+                            EchoSaveDiagnosticCodes
+                                .ParticipantPreparationMigrationRequired,
+                            "The persisted Chronicle participant payload is older than the current participant schema and requires an explicit migration chain.");
+                    }
+
+                    SaveParticipantMigrationPlanResult
+                        planResult =
+                            migrationRegistry.TryBuildPlan(
+                                canonicalId,
+                                storedSchemaVersion,
+                                descriptor.CurrentSchemaVersion,
+                                maxMigrationSteps,
+                                out SaveParticipantMigrationPlan plan);
+
+                    if (!planResult.Succeeded)
+                    {
+                        return Failure(
+                            SaveParticipantPreparationStatus.MigrationChainUnavailable,
+                            persistedId,
+                            canonicalId,
+                            planResult.DiagnosticCode,
+                            planResult.Message);
+                    }
+
+                    SaveSerializerId initialSerializerId;
+
+                    try
+                    {
+                        initialSerializerId =
+                            new SaveSerializerId(
+                                serializerIdText);
+                    }
+                    catch (ArgumentException)
+                    {
+                        return Failure(
+                            SaveParticipantPreparationStatus.MigrationFailed,
+                            persistedId,
+                            canonicalId,
+                            EchoSaveDiagnosticCodes
+                                .ParticipantMigrationInvalidOutput,
+                            "The persisted Chronicle participant serializer provider ID is invalid before migration.");
+                    }
+
+                    SaveParticipantMigrationExecutionResult
+                        migration =
+                            SaveParticipantMigrationExecutor
+                                .Execute(
+                                    migrationRegistry,
+                                    plan,
+                                    new SaveParticipantMigrationInput(
+                                        persistedId,
+                                        canonicalId,
+                                        storedSchemaVersion,
+                                        initialSerializerId,
+                                        serializedPayload,
+                                        payloadEntry.required,
+                                        payloadEntry.flags));
+
+                    if (!migration.Succeeded)
+                    {
+                        return Failure(
+                            SaveParticipantPreparationStatus.MigrationFailed,
+                            persistedId,
+                            canonicalId,
+                            migration.DiagnosticCode,
+                            migration.Message);
+                    }
+
+                    serializedPayload =
+                        migration.SerializedPayload;
+
+                    serializerIdText =
+                        migration.SerializerId.Value;
+
+                    migrationProvenance =
+                        migration.Provenance;
+                }
+
                 SaveSerializerId serializerId;
 
                 try
                 {
                     serializerId =
                         new SaveSerializerId(
-                            payloadEntry.serializerId);
+                            serializerIdText);
                 }
                 catch (ArgumentException)
                 {
@@ -187,7 +305,7 @@ namespace EchoDevGames.EchoSave
                         canonicalId,
                         EchoSaveDiagnosticCodes
                             .ParticipantPreparationSerializerUnavailable,
-                        "The persisted Chronicle participant serializer provider ID is invalid.");
+                        "The prepared Chronicle participant serializer provider ID is invalid.");
                 }
 
                 SaveSerializerResult resolve =
@@ -208,7 +326,7 @@ namespace EchoDevGames.EchoSave
                             .ParticipantPreparationSerializerUnavailable,
                         !resolve.Succeeded
                             ? resolve.Message
-                            : "The persisted Chronicle serializer provider does not support trusted runtime-Type deserialization.");
+                            : "The prepared Chronicle serializer provider does not support trusted runtime-Type deserialization.");
                 }
 
                 SaveSerializerResult deserialize;
@@ -219,7 +337,7 @@ namespace EchoDevGames.EchoSave
                 {
                     deserialize =
                         runtimeSerializer.Deserialize(
-                            payloadEntry.serializedPayload,
+                            serializedPayload,
                             detachedType,
                             out detachedState);
                 }
@@ -269,10 +387,12 @@ namespace EchoDevGames.EchoSave
                     new SavePreparedParticipantEntry(
                         persistedId,
                         canonicalId,
+                        storedSchemaVersion,
                         descriptor.CurrentSchemaVersion,
                         serializerId,
                         detachedType,
-                        detachedState));
+                        detachedState,
+                        migrationProvenance));
             }
 
             prepared.Sort(

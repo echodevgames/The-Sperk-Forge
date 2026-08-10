@@ -11,6 +11,8 @@ namespace EchoDevGames.EchoSave
         SerializerUnavailable = 6,
         DeserializationFailed = 7,
         DetachedStateInvalid = 8,
-        DuplicateCanonicalOwner = 9
+        DuplicateCanonicalOwner = 9,
+        MigrationChainUnavailable = 10,
+        MigrationFailed = 11
     }
 }
