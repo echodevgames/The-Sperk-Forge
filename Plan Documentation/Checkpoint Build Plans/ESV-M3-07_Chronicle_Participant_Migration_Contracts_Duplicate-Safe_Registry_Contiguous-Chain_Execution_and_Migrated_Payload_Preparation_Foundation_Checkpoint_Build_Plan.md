@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-07
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.13.0
 **Prior checkpoint:** ESV-M3-06 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -261,14 +261,63 @@ M3-07 tests must prove:
 
 Executed totals are recorded from Unity, not predicted.
 
-## 6. Stop point
+## 6. Executed focused proof
 
-Stop when Chronicle can take a fully validated **older supported known participant payload**, resolve an explicit complete contiguous migration chain to the current registered schema, execute that chain deterministically in memory, and feed the resulting current-version serialized payload into the already-proven M3-06 trusted DTO preparation path.
+- stable participant migration ID validation/equality — **Pass**;
+- valid contiguous migration-step registration — **Pass**;
+- non-contiguous step rejection — **Pass**;
+- duplicate stable migration ID rejection — **Pass**;
+- duplicate canonical participant/from-version edge rejection — **Pass**;
+- stale registration lease cannot remove a replacement — **Pass**;
+- deterministic registry snapshot/order — **Pass**;
+- current-version payload plans zero migration steps — **Pass**;
+- one-step plan resolves the exact registered edge — **Pass**;
+- multi-step plan remains strictly ascending — **Pass**;
+- missing middle edge fails before any migration step executes — **Pass**;
+- bounded chain depth rejects before edge lookup/execution — **Pass**;
+- two-step chain executes in order — **Pass**;
+- throwing step returns structured failure — **Pass**;
+- explicit step failure returns structured failure — **Pass**;
+- wrong target version fails closed — **Pass**;
+- invalid serializer ID fails closed — **Pass**;
+- null migrated payload fails closed — **Pass**;
+- registry ownership change after planning aborts before stale-step execution — **Pass**;
+- older payload migrates then uses the current trusted DTO deserializer — **Pass**;
+- persisted alias routes through the current canonical migration owner — **Pass**;
+- missing migration edge exposes no prepared batch — **Pass**;
+- migration-step failure exposes no prepared batch — **Pass**;
+- unknown payload performs zero migration-registry lookup/execution — **Pass**;
+- mixed current/migrated preparation remains all-or-nothing — **Pass**;
+- ordered migration provenance is retained without payload contents — **Pass**;
+- participant `Capture` invocation count remains zero — **Pass**;
+- participant `Apply` invocation count remains zero — **Pass**;
+- source generation remains immutable — **Pass**;
+- all prior **261 / 261** Chronicle regressions remain green — **Pass**.
 
-Do not produce a public `PreparedSaveLoad` handle yet.
+Final focused Unity gate: **294 / 294 passed, 0 failed**.
 
-Do not apply participant state yet.
+Implementation commit: `d96936f`.
 
-Do not add document migrations yet.
+M3-07 added **33** focused passing tests:
+- `SaveParticipantMigratedPreparationTests` — 7;
+- `SaveParticipantMigrationExecutorTests` — 7;
+- `SaveParticipantMigrationIdTests` — 8;
+- `SaveParticipantMigrationRegistryTests` — 11.
 
-The next bounded checkpoint should establish the disposable prepared-load handle/session-lifetime contract around one fully validated, migrated, prepared in-memory load before coordinated participant apply is activated.
+## 7. Stop point
+
+**Reached.** Chronicle can take a fully validated older supported known participant payload, prove one complete explicit contiguous migration chain, execute it deterministically in memory, validate every migration landing, and feed the resulting current-version serialized payload into the already-proven M3-06 trusted DTO preparation path.
+
+No source generation is rewritten.
+
+No participant gameplay state is applied.
+
+Unknown payloads remain opaque.
+
+Next bounded checkpoint:
+
+`ESV-M3-08 — Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation`
+
+M3-08 may establish the public disposable `PreparedSaveLoad` handle, source-provenance binding, package/session ownership, expiry/disposal/invalidation rules, bounded live-handle admission, and opaque encapsulation of one fully validated/migrated prepared in-memory load.
+
+Participant `Apply`, missing-payload default execution, rollback orchestration, document migration, production operation admission, slots, recovery, retention, autosave, peer bridges, and Chronicle-owned/project-wide DDOL remain later bounded work.

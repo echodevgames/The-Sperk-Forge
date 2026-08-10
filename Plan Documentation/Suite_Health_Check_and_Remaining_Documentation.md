@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M3-06 – Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-06 complete; ESV-M3-07 active / authorized
+**Completed package checkpoint:** ESV-M3-07 – Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-07 complete; ESV-M3-08 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M3-06 complete at `050bfa0` with 261 / 261; ESV-M3-07 active / authorized** |
+| Chronicle implementation | **ESV-M3-07 complete at `d96936f` with 294 / 294; ESV-M3-08 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -70,13 +70,13 @@ No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Fu
 
 The next package is **The Chronicle (`EchoSave`)**.
 
-Chronicle M1 and M2 are complete. M3-01 through M3-06 are now complete.
+Chronicle M1 and M2 are complete. M3-01 through M3-07 are now complete.
 
-`ESV-M3-06` is complete at `050bfa0`; the focused Chronicle Editor gate passed **261 / 261**. Chronicle can now expose a fully validated current-generation participant snapshot and prepare current-schema known participant payloads into deterministic detached DTO batches using only live participant type authority and already-registered serializers.
+`ESV-M3-07` is complete at `d96936f`; the focused Chronicle Editor gate passed **294 / 294**. Chronicle can now migrate explicitly supported older known participant payloads through complete contiguous in-memory chains, preserve stable migration provenance, and rejoin current-version DTO preparation without rewriting source generations or invoking participant gameplay state.
 
-`ESV-M3-07` is active / authorized for explicit participant migration-step contracts, duplicate-safe migration registration, deterministic contiguous chain planning/execution, and integration of supported older known participant payloads into the existing current-version preparation path.
+`ESV-M3-08` is active / authorized for the bounded public disposable `PreparedSaveLoad` handle, exact source-provenance binding, package/session ownership, expiry/disposal/invalidation, opaque unknown snapshot binding, and live-handle count/source-byte admission limits.
 
-Document migration, `PreparedSaveLoad`, participant apply, production operation admission, slot catalogs, recovery, retention, autosave, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+Participant apply, document migration, production operation admission, scene travel, slot catalogs, recovery, retention, autosave, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -95,8 +95,8 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-06` is **complete** with **261 / 261** focused Chronicle Editor tests.
+`ESV-M3-07` is **complete** with **294 / 294** focused Chronicle Editor tests.
 
-`ESV-M3-07` is **active / authorized** for participant migration contracts, duplicate-safe registration, contiguous in-memory migration chain execution, and migrated-payload preparation only.
+`ESV-M3-08` is **active / authorized** for prepared-load handle lifecycle/session ownership only.
 
-Document migrations, `PreparedSaveLoad`, participant apply, production operation admission, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+Participant apply/default/rollback, document migration, production operation admission, scene travel, slot catalog behavior, recovery/retention/autosave, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

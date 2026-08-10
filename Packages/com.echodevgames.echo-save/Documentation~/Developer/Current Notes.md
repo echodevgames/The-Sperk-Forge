@@ -3,54 +3,55 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.13.0
-**Completed checkpoint:** ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
-**Current checkpoint:** ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
-**Status:** ESV-M3-06 complete; ESV-M3-07 active / authorized
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.14.0
+**Completed checkpoint:** ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
+**Current checkpoint:** ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation
+**Status:** ESV-M3-07 complete; ESV-M3-08 active / authorized
 
-## ESV-M3-06 closeout
+## ESV-M3-07 closeout
 
-Implementation commit: `050bfa0`.
+Implementation commit: `d96936f`.
 
 Evidence:
 - Unity compile/import: **green**;
-- focused `EchoDevGames.EchoSave.Tests.Editor`: **261 / 261 passed, 0 failed**;
-- prior **243 / 243** Chronicle regression floor remains green;
-- 18 new focused preparation tests passed;
-- validated participant snapshots retain source provenance and defensive-copy semantics;
-- known canonical/alias ownership resolves through the live registry;
-- trusted detached DTO `Type` comes only from live registration;
-- current-schema payloads deserialize through already-registered runtime-Type serializers;
-- older schemas fail migration-required;
-- newer schemas fail unsupported-newer;
-- unknown payloads bypass serializer lookup;
-- preparation invokes neither `Capture` nor `Apply`;
-- preparation exposes no partial batch on failure.
+- focused `EchoDevGames.EchoSave.Tests.Editor`: **294 / 294 passed, 0 failed**;
+- prior **261 / 261** Chronicle regression floor remains green;
+- 33 new focused migration tests passed;
+- migration steps own exact contiguous canonical participant/version edges;
+- complete chains are proven before execution;
+- migration is bounded and in memory only;
+- every step validates exact next schema, serializer ID, and payload output;
+- persisted aliases route through the current canonical owner;
+- migration provenance records stable IDs/version edges without payload contents;
+- successful old-schema payloads rejoin the M3-06 trusted DTO preparation path;
+- unknown payloads never enter migration planning;
+- participant `Capture` and `Apply` remain unused;
+- source immutable generations remain untouched.
 
-## Active ESV-M3-07 boundary
+## Active ESV-M3-08 boundary
 
 Authorized:
-- stable participant migration-step IDs;
-- explicit participant migration-step contracts;
-- current-canonical-participant + from-version migration edge authority;
-- duplicate-safe migration registration/leases;
-- deterministic registry snapshots;
-- exact contiguous one-version-at-a-time chain planning;
-- bounded in-memory migration execution;
-- migration output serializer-ID/payload validation;
-- ordered stable migration provenance without payload contents;
-- older supported known participant payload integration into M3-06 preparation;
-- final current-version deserialization through live trusted DTO `Type`;
-- no source-generation rewrite;
-- no participant `Capture`;
-- no participant `Apply`;
-- unknown payloads remain opaque.
+- public disposable `PreparedSaveLoad` handle;
+- exact source slot/generation binding;
+- package/session owner token or epoch;
+- owner-isolated package-internal prepared-state access;
+- opaque unknown-payload snapshot binding;
+- idempotent disposal;
+- deterministic expiry through an injected time seam;
+- session/owner invalidate-all behavior;
+- bounded live-handle count;
+- bounded aggregate source transport-byte estimate;
+- capacity release on dispose/expiry/invalidation;
+- public safe metadata only;
+- no public detached DTO/raw unknown payload exposure.
 
 Still absent:
-- document migrations;
-- `PreparedSaveLoad` lifecycle;
-- participant apply/default/rollback orchestration;
-- production operation admission;
+- participant `Apply`;
+- missing-payload default execution;
+- apply rollback orchestration;
+- document migration;
+- production `PrepareLoadAsync` admission/cancellation;
+- scene travel/Passage integration;
 - slots/recovery/retention/autosave;
 - peer bridges;
 - Chronicle-owned/project-wide DDOL.

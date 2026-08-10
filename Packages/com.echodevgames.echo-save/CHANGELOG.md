@@ -287,3 +287,35 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **261 / 261**, with `0` failed.
 - All prior **243 / 243** Chronicle regressions remained green.
 - 18 new focused M3-06 preparation tests passed.
+
+### Added
+
+#### ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
+
+- Stable `SaveParticipantMigrationId`.
+- Public explicit participant migration-step contract.
+- Structured migration input/output contracts.
+- Duplicate-safe runtime migration registration and ownership leases.
+- Canonical participant/from-version edge authority.
+- Deterministic migration registry snapshot/order.
+- Exact contiguous one-version chain planning.
+- Positive migration-depth bound.
+- Missing-edge failure before migration execution.
+- In-memory migration executor with registry ownership recheck.
+- Exact target-version, serializer-ID, and migrated-payload validation.
+- Ordered stable migration provenance without payload contents.
+- Persisted alias → current canonical migration routing.
+- Older-known-payload integration into M3-06 trusted DTO preparation.
+- All-or-nothing mixed current/migrated participant preparation.
+
+### Verified
+
+#### ESV-M3-07 Closeout
+
+- Implementation committed at `d96936f`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **294 / 294**, with `0` failed.
+- All prior **261 / 261** Chronicle regressions remained green.
+- 33 new focused M3-07 migration tests passed.
+- Migration invokes neither participant `Capture` nor participant `Apply`.
+- Source immutable generations remain untouched.

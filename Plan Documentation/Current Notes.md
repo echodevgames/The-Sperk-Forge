@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-07 — Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
-**Current checkpoint:** ESV-M3-07 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-08 — Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation
+**Current checkpoint:** ESV-M3-08 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,48 +78,56 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-06 Closeout
+## Chronicle ESV-M3-07 Closeout
 
-- Implementation commit: `050bfa0`.
+- Implementation commit: `d96936f`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **261 / 261 passed, 0 failed**.
-- The complete prior **243 / 243** Chronicle regression floor remained green.
-- M3-06 added 18 focused preparation tests.
-- Successful current-generation reads expose one defensive-copy fully validated participant snapshot with source slot/generation provenance.
-- Known canonical and persisted-alias IDs resolve through the live participant registry.
-- Persisted ID provenance and current canonical owner remain separate.
-- Trusted detached DTO `Type` authority comes only from live `ISaveTypedParticipant` registration.
-- Current-schema known payloads deserialize through already-registered runtime-Type serializers.
-- Older known schemas return migration-required; newer schemas return unsupported-newer.
-- Unknown payloads bypass serializer resolution.
-- Any preparation failure exposes no partial prepared batch.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **294 / 294 passed, 0 failed**.
+- The complete prior **261 / 261** Chronicle regression floor remained green.
+- M3-07 added 33 focused migration tests.
+- Stable migration IDs and explicit participant migration-step contracts are implemented.
+- Migration registration is duplicate-safe by stable step ID and canonical participant/from-version edge.
+- One step covers exactly one contiguous schema edge.
+- Complete chains are proven before execution.
+- Chain depth is explicitly bounded.
+- Migration executes in memory only.
+- Every step validates exact next schema, serializer provider ID, and serialized payload.
+- Registry ownership is rechecked during execution.
+- Persisted aliases route through the current canonical participant owner.
+- Ordered migration provenance records stable step IDs/version edges without payload contents.
+- Successful older payloads rejoin M3-06 trusted current-version DTO preparation.
+- Unknown payloads never enter migration planning.
 - Participant `Capture` and `Apply` invocation counts remain zero.
+- Source immutable generations remain untouched.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-07 — Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation` is active / authorized.
+`ESV-M3-08 — Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation` is active / authorized.
 
 Authorized next:
-- add stable participant migration-step IDs;
-- add explicit one-version-at-a-time participant migration-step contracts;
-- key migration authority by current canonical participant ID + source schema version;
-- add duplicate-safe migration registration/leases and deterministic registry snapshots;
-- plan exact contiguous migration chains from stored older schema to current schema;
-- bound migration depth explicitly;
-- execute every step in memory only;
-- validate each step's next version, serializer ID, and serialized payload output;
-- retain ordered stable migration provenance without payload contents;
-- integrate migrated current-version serialized payloads into the proven M3-06 trusted DTO preparation path;
-- persisted aliases first resolve current canonical ownership;
-- unknown payloads never enter migration planning;
-- no source rewrite, no participant `Capture`, and no participant `Apply`;
-- preserve all prior **261 / 261** Chronicle regressions.
+- add public disposable `PreparedSaveLoad`;
+- bind handles to exact source slot/generation provenance;
+- bind one defensive opaque unknown-payload source snapshot;
+- retain prepared participant state package-internally only;
+- expose safe immutable public metadata, not detached DTOs or raw payloads;
+- add package/session owner token or epoch;
+- reject cross-owner/stale-handle access;
+- add idempotent disposal;
+- add deterministic injected-time expiry;
+- add owner/session invalidate-all;
+- release prepared references on dispose/expiry/invalidation;
+- bound live prepared-handle count;
+- bound aggregate source transport-byte estimate;
+- release capacity deterministically;
+- preserve zero `Capture`, zero `Apply`, zero storage mutation, and zero scene/DDOL authority;
+- preserve all prior **294 / 294** Chronicle regressions.
 
 Still deferred:
-- document migration;
-- `PreparedSaveLoad`;
 - participant apply/default/rollback orchestration;
-- production operation admission/coalescing/cancellation;
+- document migration;
+- production `PrepareLoadAsync` operation admission/cancellation;
+- scene travel/Passage integration;
+- convenience load;
 - slots/recovery/retention/autosave;
 - peer bridges/project-wide DDOL.
 
@@ -306,15 +314,17 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `050bfa0` after ESV-M3-06 closeout.
-2. Implement only ESV-M3-07 participant migration contracts/registry/contiguous execution.
-3. Keep migration registration open-ended; Chronicle contains no hardcoded participant migration catalog.
-4. Require one exact contiguous schema edge per step.
-5. Resolve persisted aliases to the current canonical participant owner before migration lookup.
-6. Missing steps fail before migration execution.
-7. Execute migration only in memory and never rewrite the source generation.
-8. Validate every step's target version, serializer ID, and serialized payload before continuing.
-9. After reaching current schema, reuse the M3-06 live trusted DTO `Type` + registered runtime-Type serializer preparation path.
-10. Unknown payloads never enter migration planning.
-11. Invoke neither participant `Capture` nor `Apply`.
-12. Keep document migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.
+1. Rehydrate exact `d96936f` after ESV-M3-07 closeout.
+2. Implement only ESV-M3-08 prepared-load handle lifecycle/session ownership.
+3. Create a public disposable `PreparedSaveLoad` that exposes safe immutable metadata only.
+4. Keep detached prepared participant DTOs and opaque unknown payload bodies package-internal.
+5. Require exact slot/generation provenance agreement across prepared artifacts.
+6. Bind each handle to one package/session owner token or epoch.
+7. Reject cross-owner and stale-token access.
+8. Implement idempotent disposal, deterministic expiry, and owner/session invalidate-all.
+9. Clear package references to prepared state on every terminal invalidation path.
+10. Bound live-handle count and aggregate source transport-byte estimate.
+11. Release capacity on dispose/expiry/invalidation without storage mutation.
+12. Invoke neither participant `Capture` nor participant `Apply`.
+13. Add no scene travel, DDOL, service locator, document migration, production operation admission, slots, recovery/retention/autosave, or peer bridges.
+14. Preserve the **294 / 294** Chronicle regression floor.

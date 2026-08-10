@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation** with a focused Chronicle Editor gate of **261 / 261**. The active checkpoint is **ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation**.
+Version `0.1.0` has completed **ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation** with a focused Chronicle Editor gate of **294 / 294**. The active checkpoint is **ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation**.
 
 ESV-M1-01 proved:
 
@@ -25,13 +25,13 @@ Chronicle M2 provides path-safe local storage, package serialization, technical 
 
 M3-01 through M3-05 provide open-ended participant registration, detached capture, participant generation publication, opaque unknown preservation, and source-fresh collision-safe unknown carry-forward.
 
-ESV-M3-06 adds fully validated current-generation participant snapshots and deterministic current-schema known-participant DTO preparation without applying gameplay state.
+M3-06 prepares fully validated current-schema known participant payloads into detached DTO batches.
 
-ESV-M3-07 may now add explicit contiguous participant migration chains so supported older known participant payloads can reach the current schema in memory before the M3-06 trusted DTO deserialization path.
+M3-07 adds explicit duplicate-safe participant migration steps, complete contiguous in-memory migration-chain execution, migration provenance, and older-known-payload integration back into current-version preparation.
 
-It still does **not** authorize document migrations, `PreparedSaveLoad`, participant apply, production operation admission, slots, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+ESV-M3-08 may now encapsulate one exact-source validated/migrated prepared load in a bounded public disposable `PreparedSaveLoad` handle with package/session ownership, expiry, disposal, invalidate-all behavior, and opaque unknown-payload snapshot binding.
 
-Unknown payloads remain opaque and never enter participant migration planning.
+It still does **not** authorize participant apply, missing-payload default execution, document migration, production operation admission, scene travel, slot catalog behavior, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 ## Minimal use
 

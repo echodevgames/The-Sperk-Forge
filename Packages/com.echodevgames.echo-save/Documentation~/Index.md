@@ -31,15 +31,17 @@
 - [[Developer/Test Reports/ESV-M3-05_Chronicle_Opaque_Unknown-Payload_Carry-Forward_Merge_Source-Freshness_and_Collision-Safe_Publication_Foundation_Test_Report|ESV-M3-05 Test Report]]
 - [[Developer/Checkpoints/ESV-M3-06_Chronicle_Current-Version_Participant_Payload_Preparation_Trusted_Runtime-Type_Deserialization_and_Prepared-Participant_Batch_Foundation|ESV-M3-06 Closeout]]
 - [[Developer/Test Reports/ESV-M3-06_Chronicle_Current-Version_Participant_Payload_Preparation_Trusted_Runtime-Type_Deserialization_and_Prepared-Participant_Batch_Foundation_Test_Report|ESV-M3-06 Test Report]]
+- [[Developer/Checkpoints/ESV-M3-07_Chronicle_Participant_Migration_Contracts_Duplicate-Safe_Registry_Contiguous-Chain_Execution_and_Migrated_Payload_Preparation_Foundation|ESV-M3-07 Closeout]]
+- [[Developer/Test Reports/ESV-M3-07_Chronicle_Participant_Migration_Contracts_Duplicate-Safe_Registry_Contiguous-Chain_Execution_and_Migrated_Payload_Preparation_Foundation_Test_Report|ESV-M3-07 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation`
+`ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation`
 
-Chronicle prepares validated current-schema known participant payloads into deterministic detached DTO batches at **261 / 261** focused Chronicle Editor tests.
+Chronicle now migrates explicitly supported older known participant payloads through complete contiguous in-memory chains and rejoins current-version preparation at **294 / 294** focused Chronicle Editor tests.
 
 ## Current checkpoint
 
-`ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation`
+`ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation`
 
-This checkpoint adds explicit supported old-schema participant migration chains before current-version DTO deserialization. It still stops before `PreparedSaveLoad` and participant `Apply`.
+This checkpoint wraps one exact-source validated/migrated prepared load in the bounded public disposable handle required for two-phase loading. It still stops before participant `Apply`.
