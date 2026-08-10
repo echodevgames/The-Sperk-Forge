@@ -6,6 +6,7 @@ namespace EchoDevGames.EchoSave
         Live = 0,
         Disposed = 1,
         Expired = 2,
-        OwnerInvalidated = 3
+        OwnerInvalidated = 3,
+        Consumed = 4
     }
 }

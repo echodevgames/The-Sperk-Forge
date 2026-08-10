@@ -232,6 +232,43 @@ namespace EchoDevGames.EchoSave
             return true;
         }
 
+        internal bool TryResolveOwned(
+            SaveParticipantId identity,
+            out ISaveParticipant participant,
+            out SaveParticipantDescriptor descriptor,
+            out long ownershipToken)
+        {
+            participant =
+                null;
+
+            descriptor =
+                default;
+
+            ownershipToken =
+                0L;
+
+            if (!SaveParticipantId.TryParse(
+                    identity.Value,
+                    out SaveParticipantId validated) ||
+                !identityClaims.TryGetValue(
+                    validated.Value,
+                    out Entry entry))
+            {
+                return false;
+            }
+
+            participant =
+                entry.Participant;
+
+            descriptor =
+                entry.Descriptor;
+
+            ownershipToken =
+                entry.OwnershipToken;
+
+            return true;
+        }
+
         internal bool TryResolveDescriptor(
             SaveParticipantId identity,
             out SaveParticipantDescriptor descriptor)

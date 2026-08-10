@@ -284,5 +284,35 @@ namespace EchoDevGames.EchoSave
 
         internal const string PreparedLoadOwnerUnavailable =
             "ESV-PLOAD-006";
+
+        internal const string PreparedApplyInvalidRequest =
+            "ESV-APPLY-001";
+
+        internal const string PreparedApplyHandleUnavailable =
+            "ESV-APPLY-002";
+
+        internal const string PreparedApplyParticipantUnavailable =
+            "ESV-APPLY-003";
+
+        internal const string PreparedApplyStateIncompatible =
+            "ESV-APPLY-004";
+
+        internal const string PreparedApplyDuplicateParticipant =
+            "ESV-APPLY-005";
+
+        internal const string PreparedApplyMissingPayloadBlocked =
+            "ESV-APPLY-006";
+
+        internal const string PreparedApplyDefaultCapabilityMissing =
+            "ESV-APPLY-007";
+
+        internal const string PreparedApplyRegistryChanged =
+            "ESV-APPLY-008";
+
+        internal const string PreparedApplyParticipantFailed =
+            "ESV-APPLY-009";
+
+        internal const string PreparedApplyParticipantException =
+            "ESV-APPLY-010";
     }
 }
