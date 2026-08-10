@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.16.0
+**Specification version:** 1.17.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and Chronicle M3 through ESV-M3-09 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M4-01` is the active slot catalog/metadata rebuild/session-selection checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and Chronicle M3 through ESV-M3-09 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M4-01` is complete at `62e8a54` with `403 / 403`, and `ESV-M4-02` is the active technical slot-creation/capacity/initial-generation/catalog-reconciliation checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -48,6 +48,7 @@
 | 1.14.0 | 2026-08-09 | Approved | Closed ESV-M3-07 at `d96936f` with focused Chronicle Editor evidence `294 / 294`; activated ESV-M3-08 bounded public disposable prepared-load handle lifecycle, exact source-provenance binding, package/session ownership, expiry/disposal/invalidation, opaque unknown snapshot binding, and live-handle resource admission while keeping participant apply, document migration, production operation admission, scene travel, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.15.0 | 2026-08-10 | Approved | Closed ESV-M3-08 at `798d38d` with focused Chronicle Editor evidence `332 / 332`; activated ESV-M3-09 deterministic participant apply/missing-payload policy and approved additive optional `ISaveDefaultableParticipant.InitializeDefault()` while keeping base `ISaveParticipant` unchanged, rejecting `Apply(null)` default semantics, and deferring rollback/compensation, production operation admission, scene travel, document migration, slots, recovery, retention, and autosave. | Jesse “Echo” Adams |
 | 1.16.0 | 2026-08-10 | Approved | Closed ESV-M3-09 at `568fa3a` with focused Chronicle Editor evidence `366 / 366`, completing M3 Participants and Loading; activated ESV-M4-01 provider-neutral slot discovery, payload-free head/current-manifest metadata rebuild, deterministic catalog snapshots, and session-only active-slot selection; added ESV-D-023 keeping base `ISaveStorageBackend` unchanged while catalog discovery uses an additive optional provider capability. | Jesse “Echo” Adams |
+| 1.17.0 | 2026-08-10 | Approved | Closed ESV-M4-01 at `62e8a54` with focused Chronicle Editor evidence `403 / 403`; activated ESV-M4-02 bounded technical slot creation, capacity enforcement, initial empty immutable-generation/head-last bootstrap, and post-publication catalog reconciliation; added ESV-D-024 defining successful slot creation as a committed generation rather than directory existence and counting degraded canonical slots toward capacity. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1883,6 +1884,7 @@ Project-specific migration tooling must:
 | ESV-D-021 | Durable persistence, runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local and peer persistence uses optional adapters | Approved | SFGSS-ADR-006 prevents Chronicle/First Light/global-root coupling before implementation | ESV-M1-01 proves only package-local lifecycle; future peer persistence requires bridges/adapters |
 | ESV-D-022 | Missing-payload default initialization is an additive optional `ISaveDefaultableParticipant.InitializeDefault()` capability; base `ISaveParticipant` remains unchanged and `Apply(null)` is not a default protocol signal | Approved | Keeps existing participant implementations source-compatible and makes default initialization explicit rather than encoding hidden null semantics | `InitializeDefault` policy requires the optional capability during apply preflight; missing capability fails before mutation |
 | ESV-D-023 | Slot-catalog discovery is provider-neutral through an additive optional storage enumeration capability; base `ISaveStorageBackend` remains unchanged and catalog core does not reach through local `RootPath`/`System.IO` | Approved | Preserves storage-provider neutrality and source compatibility while enabling authoritative slot discovery | Local backend implements bounded immediate-child discovery; providers lacking the capability report catalog refresh unavailable/unsupported |
+| ESV-D-024 | Successful slot creation means one verified immutable generation plus `head.json` last; directory existence alone is not success; all discovered canonical technical slots including degraded entries count toward capacity; creation does not auto-select | Approved | Prevents fake/half-created slots, capacity bypass through degraded entries, display-name/path coupling, and hidden selection side effects | M4-02 adds bounded technical create/capacity/catalog reconciliation while rename/duplicate/delete and production operation admission remain later work |
 
 ### 27.2 Release-blocking questions
 
@@ -2231,31 +2233,52 @@ Outcome achieved:
 
 **M3 — Participants and Loading is complete.**
 
-### 28.17 Active slot catalog and session-selection checkpoint
+### 28.17 Completed slot catalog and session-selection checkpoint
 
 **ESV-M4-01 - Slot catalog, metadata rebuild, and active-session selection foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- additive provider-neutral `ISaveStorageDiscoveryBackend`;
+- unchanged base `ISaveStorageBackend`;
+- default local bounded immediate-child discovery;
+- canonical technical `SaveSlotId` filtering and deterministic ordering;
+- absent `slots` root as successful empty catalog;
+- payload-free `head.json` + current `manifest.json` reconstruction;
+- healthy/degraded non-selectable slot health;
+- immutable deterministic catalog snapshots;
+- prior-snapshot preservation on untrustworthy overall refresh failure;
+- session-only explicit active-slot select/no-change/reject/clear;
+- stale active-selection reconciliation;
+- no automatic selection;
+- zero durable active-selection writes;
+- zero participant callbacks;
+- implementation commit `62e8a54`;
+- focused Chronicle Editor gate **403 / 403**.
+
+### 28.18 Active technical slot-creation checkpoint
+
+**ESV-M4-02 - Technical slot creation, capacity enforcement, initial empty generation, and catalog reconciliation foundation**
 
 **Status:** Active / authorized.
 
 Architecture:
-- slot catalog is derived runtime state, never gameplay truth or sole durable authority;
-- technical slot identity remains `SaveSlotId`, independent from display names;
-- catalog reconstruction uses authoritative slot `head.json` and current `manifest.json` only;
-- normal catalog refresh does not read participant `payload.json`;
-- base `ISaveStorageBackend` remains unchanged;
-- provider-neutral slot discovery uses additive optional storage enumeration capability (ESV-D-023);
-- default local backend implements bounded immediate-child discovery without exposing physical paths to catalog models;
-- valid technical but unhealthy slots remain discoverable as degraded/non-selectable metadata;
-- a trustworthy complete refresh atomically replaces the immutable in-memory snapshot;
-- untrustworthy overall refresh failure preserves the prior snapshot;
-- active slot selection is session-only, starts unset, never auto-selects, and clears when a successful refresh removes/invalidates the selected slot;
-- active selection performs no durable write;
-- persistent `catalog.cache.json` optimization remains deferred until authoritative rebuild behavior is proven;
-- physical slot create/rename/duplicate/delete remain deferred;
-- production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL remain deferred;
-- preserve all **366 / 366** prior focused regressions.
+- a created slot is a durable committed record, not merely a directory;
+- successful creation publishes one verified empty immutable generation and `head.json` last;
+- technical identity remains package-generated canonical `SaveSlotId`;
+- display name/project/build fields remain manifest metadata only;
+- every discovered canonical technical slot, including degraded entries, counts toward the bounded creation capacity;
+- generated-ID collision retry is positive and bounded;
+- create semantics reject an existing current head rather than silently becoming an update/save;
+- successful durable publication is followed by M4-01 catalog reconciliation;
+- creation never auto-selects the new slot;
+- publication success followed by catalog-refresh failure reports partial truth and does not fictionalize rollback;
+- participant callbacks remain absent;
+- persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL remain deferred;
+- preserve all **403 / 403** prior focused regressions.
 
-Stop point: Chronicle can deterministically discover technical slots through provider-neutral storage capability, reconstruct payload-free lightweight metadata from authoritative head/current-manifest documents, represent healthy/degraded catalog state without losing valid technical slots, preserve the last complete snapshot across untrustworthy refresh failure, and maintain safe session-only active-slot selection.
+Stop point: Chronicle can create one bounded technical slot as one real initial committed empty generation, enforce capacity without ignoring degraded technical slots, reject technical collisions, reconcile the catalog after publication, and report durable-publication/catalog-refresh outcomes accurately without auto-selecting.
 
 ## 29. New-Conversation Handoff
 
@@ -2268,45 +2291,43 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.16.0
+Current specification version: 1.17.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09
-Current milestone/checkpoint: ESV-M4-01 active / authorized
+Current milestone/checkpoint: ESV-M4-02 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 durable transaction and M3 participant/loading stack through deterministic participant apply are complete at 366 / 366; M4-01 slot catalog/metadata rebuild/session selection next
+Current implementation status: M2 and M3 are complete; M4-01 slot catalog/session foundation is complete at 403 / 403; M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation next
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing M4-01 code:
-1. Rehydrate exact `568fa3a` after ESV-M3-09 closeout.
-2. Preserve the 366 / 366 regression floor and all M3 participant/loading invariants.
-3. Add provider-neutral technical slot discovery as an additive optional storage capability; do not change base `ISaveStorageBackend`.
-4. Keep catalog core free of direct local-filesystem slot enumeration and physical path exposure.
-5. Treat a missing `slots` root as a successful empty catalog.
-6. Accept only canonical technical `SaveSlotId` child names as slot candidates.
-7. Read only `head.json` and the current generation's `manifest.json` for normal catalog reconstruction; do not read participant payloads.
-8. Represent valid technical but unhealthy slots as degraded/non-selectable metadata rather than silently erasing them.
-9. Sort catalog entries deterministically by canonical technical slot ID.
-10. Replace the live immutable snapshot only after a trustworthy complete scan; preserve the prior snapshot on untrustworthy overall refresh failure.
-11. Keep active slot selection session-only, unset by default, explicit, and non-durable.
-12. Reject unknown/unhealthy selection without changing the prior selection; clear stale selection after successful catalog replacement.
-13. Do not auto-select after refresh.
-14. Add no persistent catalog cache, physical slot create/rename/duplicate/delete, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
+Before writing M4-02 code:
+1. Rehydrate exact `62e8a54` after ESV-M4-01 closeout.
+2. Preserve the 403 / 403 regression floor and all M4-01 catalog/session invariants.
+3. Add one bounded technical slot-creation request/result coordinator.
+4. Count every discovered canonical technical slot, including degraded entries, against capacity.
+5. Generate package technical IDs independently from display metadata with bounded collision retry.
+6. Publish one initial empty immutable generation using the existing generation-first/head-last transaction.
+7. Add an initial-create publication invariant that rejects an existing current head.
+8. Refresh the M4-01 catalog after durable success; never auto-select the new slot.
+9. If publication succeeds but catalog refresh fails, report that partial truth and keep the committed slot.
+10. Invoke no participant callbacks.
+11. Add no persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
+12. Preserve all prior 403 / 403 Chronicle regressions.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.16.0 |
-| Completed checkpoint | ESV-M3-09 - Deterministic Participant Apply and Missing-Payload Policy Foundation |
+| Package version | Runtime package `0.1.0`; Specification v1.17.0 |
+| Completed checkpoint | ESV-M4-01 - Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation |
 | Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed publication; M3-04 read-only current-generation/opaque unknown preservation; focused tests |
-| Tests passed | ESV-M3-09 focused Chronicle Editor gate `366 / 366`; Unity compile/import green |
-| Tests failed | Final ESV-M3-09 gate: `0` |
-| Known issues | None blocking M4-01 |
-| Decisions added | ESV-D-001 through ESV-D-023; ESV-D-023 preserves provider-neutral catalog discovery through an additive storage capability |
+| Tests passed | ESV-M4-01 focused Chronicle Editor gate `403 / 403`; Unity compile/import green |
+| Tests failed | Final ESV-M4-01 gate: `0` |
+| Known issues | None blocking M4-02 |
+| Decisions added | ESV-D-001 through ESV-D-024; ESV-D-024 defines committed-generation slot creation and degraded-slot capacity accounting |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-01 active / authorized |
+| Implementation permission | ESV-M4-02 active / authorized |
 
 
 ## 30. Approval

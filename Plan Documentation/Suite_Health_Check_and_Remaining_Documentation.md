@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 10, 2026
-**Completed package checkpoint:** ESV-M3-09 – Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete through ESV-M3-09; ESV-M4-01 active / authorized
+**Completed package checkpoint:** ESV-M4-01 – Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete; Chronicle M4-01 complete at `62e8a54`; ESV-M4-02 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M3 complete; ESV-M3-09 complete at `568fa3a` with 366 / 366; ESV-M4-01 active / authorized** |
+| Chronicle implementation | **M3 complete; ESV-M4-01 complete at `62e8a54` with 403 / 403; ESV-M4-02 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -72,11 +72,11 @@ The next package is **The Chronicle (`EchoSave`)**.
 
 Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
-`ESV-M3-09` is complete at `568fa3a`; the focused Chronicle Editor gate passed **366 / 366**. Chronicle can now deterministically apply one live prepared load to compatible current participants with explicit missing-payload semantics, ownership revalidation, partial truth reporting, and replay prevention once mutation begins.
+`ESV-M4-01` is complete at `62e8a54`; the focused Chronicle Editor gate passed **403 / 403**. Chronicle can now discover existing technical slots through an additive provider-neutral capability, rebuild payload-free lightweight metadata from authoritative heads/current manifests, preserve degraded technical slots honestly, and maintain explicit session-only active-slot selection.
 
-`ESV-M4-01` is active / authorized and begins **M4 — Slots / Autosave / Recovery** with provider-neutral technical slot discovery, payload-free lightweight metadata rebuild from authoritative heads/current manifests, deterministic immutable catalog snapshots, and session-only active-slot selection.
+`ESV-M4-02` is active / authorized for bounded technical slot creation, capacity enforcement, initial empty immutable-generation/head-last publication, and post-publication catalog reconciliation. A directory alone is not successful slot creation, degraded canonical slots count against capacity, and creation does not auto-select.
 
-Persistent catalog-cache optimization, physical slot mutations, production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+Persistent catalog-cache optimization, rename/duplicate/delete, full slot-policy configuration assets, production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -95,10 +95,10 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-09` is **complete** at `568fa3a` with **366 / 366** focused Chronicle Editor tests.
+`ESV-M4-01` is **complete** at `62e8a54` with **403 / 403** focused Chronicle Editor tests.
 
-**M3 — Participants and Loading is complete.**
+**M3 — Participants and Loading is complete. M4 — Slots / Autosave / Recovery is active.**
 
-`ESV-M4-01` is **active / authorized** for provider-neutral slot catalog discovery, payload-free head/current-manifest metadata rebuild, deterministic immutable catalog snapshots, and session-only active-slot selection.
+`ESV-M4-02` is **active / authorized** for bounded technical slot creation, capacity enforcement, initial empty immutable-generation/head-last publication, and catalog reconciliation without auto-selection.
 
-Persistent catalog cache, physical slot mutation, production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+Persistent catalog cache, rename/duplicate/delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

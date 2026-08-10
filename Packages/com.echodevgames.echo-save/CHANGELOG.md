@@ -405,3 +405,34 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Healthy/degraded slot classification.
 - Session-only active-slot selection and stale-selection reconciliation.
 - Persistent `catalog.cache.json`, physical slot mutation, autosave, retention, and recovery remain deferred.
+
+
+### Verified
+
+#### ESV-M4-01 Closeout
+
+- Implementation committed at `62e8a54`.
+- Unity compile/import green after one test-only NUnit constraint compile hotfix.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **403 / 403**, with `0` failed.
+- All prior **366 / 366** Chronicle regressions remained green.
+- 37 new focused M4-01 catalog/discovery/session tests passed.
+- Base `ISaveStorageBackend` remained unchanged.
+- Catalog refresh reconstructs metadata from provider-neutral discovery plus `head.json` and current `manifest.json`.
+- Normal catalog refresh reads zero `payload.json` files.
+- Valid technical but unhealthy slots remain degraded/non-selectable instead of disappearing.
+- Untrustworthy overall refresh failure preserves the prior complete immutable snapshot.
+- Active slot selection is session-only, explicit, non-durable, and never auto-selects.
+- No participant callbacks, persistent catalog cache, physical slot mutation, autosave, retention, recovery, scene authority, or DDOL ownership were introduced.
+
+### Activated
+
+#### ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
+
+- Add a bounded technical slot-creation coordinator on top of the proven M4-01 catalog.
+- Count every discovered canonical technical slot, including degraded entries, against the creation capacity bound.
+- Generate a fresh canonical `SaveSlotId` with bounded collision retry.
+- Publish a real initial empty immutable generation and `head.json` last rather than treating a directory alone as a created slot.
+- Keep display names and project/build metadata as manifest metadata only; never use display names as paths.
+- Refresh the catalog after successful publication without auto-selecting the new slot.
+- Report truthful publication-versus-refresh outcomes if publication succeeds but catalog reconciliation fails.
+- Persistent cache, rename, duplicate, delete, full slot-policy asset expansion, production operation admission, autosave, retention, and recovery remain deferred.

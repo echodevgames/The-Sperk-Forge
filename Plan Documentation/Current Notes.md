@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** ESV-M4-01 — Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation
-**Current checkpoint:** ESV-M4-01 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M4-02 — Chronicle Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
+**Current checkpoint:** ESV-M4-02 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -114,37 +114,47 @@ Completed M3 capabilities now include:
 - bounded prepared-load handle lifetime/session ownership;
 - deterministic ownership-revalidated participant apply and missing-payload policy.
 
-## Active Chronicle M4 Slice
+## Chronicle M4 Progress
 
-`ESV-M4-01 — Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation` is active / authorized.
+`ESV-M4-01 — Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation` is **complete** at `62e8a54`.
 
-M4-01 records ESV-D-023:
-- core catalog discovery remains provider-neutral;
-- base `ISaveStorageBackend` stays unchanged;
-- slot enumeration is an additive optional storage capability;
-- the default local backend implements it;
-- catalog core must not reach through local `RootPath` or use direct `System.IO` for slot discovery.
+Evidence:
+- Unity compile/import green;
+- focused Chronicle Editor gate **403 / 403**, `0` failed;
+- prior **366 / 366** regression floor preserved;
+- 37 net new M4-01 tests passed;
+- additive provider-neutral storage discovery with unchanged base `ISaveStorageBackend`;
+- payload-free head/current-manifest catalog rebuild;
+- healthy/degraded immutable snapshots;
+- prior-snapshot preservation on untrustworthy refresh failure;
+- explicit session-only active selection with no automatic selection.
+
+`ESV-M4-02 — Chronicle Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation` is **active / authorized**.
+
+M4-02 records ESV-D-024:
+- successful slot creation means one verified immutable generation plus `head.json` last, never merely a directory;
+- every discovered canonical technical slot, healthy or degraded, counts against capacity;
+- display names remain metadata only;
+- newly-created slots are not auto-selected;
+- publication success followed by catalog-refresh failure reports partial truth instead of fictional rollback.
 
 Authorized next:
-- discover immediate technical slot children beneath `slots` through the optional provider capability;
-- treat missing `slots` root as a successful empty catalog;
-- reject invalid child names as slots;
-- read only `head.json` + the current generation's `manifest.json` for normal catalog rebuild;
-- never read `payload.json` merely to list slots;
-- construct lightweight healthy/degraded slot metadata;
-- preserve corrupt/unhealthy valid technical slots as non-selectable metadata rather than silently erasing them;
-- replace the immutable in-memory catalog snapshot only after a trustworthy complete scan;
-- preserve the previous snapshot on untrustworthy refresh failure;
-- maintain session-only active-slot select/no-change/reject/clear behavior;
-- clear stale active selection if a successful refresh removes or invalidates it;
-- keep active selection non-durable;
-- preserve all prior **366 / 366** Chronicle regressions.
+- bounded technical create request/result;
+- positive capacity primitive;
+- fresh package-generated canonical `SaveSlotId`;
+- bounded generated-ID collision retry;
+- initial empty generation publication through the existing generation-first/head-last transaction;
+- in-transaction create semantics that reject an existing current head;
+- post-publication M4-01 catalog reconciliation;
+- zero participant callbacks;
+- preserve all prior **403 / 403** Chronicle regressions.
 
 Still deferred:
-- persistent `catalog.cache.json` optimization;
-- physical slot create/rename/duplicate/delete;
-- full slot-policy/configuration expansion;
-- production save/load operation admission/coalescing/cancellation;
+- persistent `catalog.cache.json`;
+- rename / duplicate / delete;
+- full slot-policy/configuration asset expansion;
+- production operation admission/coalescing/cancellation;
+- concurrent public mutation ownership;
 - autosave;
 - retention;
 - recovery;
@@ -335,16 +345,14 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `568fa3a` after ESV-M3-09 closeout.
-2. Implement only ESV-M4-01 slot catalog/metadata rebuild/session selection.
-3. Add provider-neutral slot discovery as an additive optional storage capability; do not change base `ISaveStorageBackend`.
-4. Keep catalog core free of direct local-filesystem discovery logic.
-5. Discover only valid technical `SaveSlotId` children beneath `slots`.
-6. Rebuild metadata from authoritative `head.json` + current `manifest.json` only.
-7. Prove normal catalog refresh reads zero participant payload files.
-8. Preserve valid technical but unhealthy slots as degraded/non-selectable catalog entries.
-9. Replace live catalog snapshot only after a trustworthy complete scan; preserve prior snapshot on untrustworthy failure.
-10. Add session-only active-slot selection/clear/reconciliation with zero durable writes.
-11. Do not auto-select after refresh.
-12. Add no persistent catalog cache, physical slot mutation, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
-13. Preserve the **366 / 366** Chronicle regression floor.
+1. Rehydrate exact `62e8a54` after ESV-M4-01 closeout.
+2. Implement only ESV-M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation.
+3. Preserve the M4-01 provider-neutral catalog and zero-payload-read invariants.
+4. Count all discovered canonical technical slots, including degraded entries, against capacity.
+5. Generate technical slot IDs independently from display metadata and retry collisions only within a positive bound.
+6. Treat successful creation as a verified empty immutable generation plus `head.json` last, never directory existence alone.
+7. Reject an existing current head inside the create-publication transaction.
+8. Refresh the catalog after durable success without auto-selecting.
+9. Report published-but-refresh-failed truth without deleting a committed slot.
+10. Add no rename, duplicate, delete, persistent cache, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
+11. Preserve the **403 / 403** Chronicle regression floor.

@@ -38,11 +38,14 @@
 - [[Developer/Checkpoints/ESV-M3-09_Chronicle_Deterministic_Participant_Apply_and_Missing-Payload_Policy_Foundation|ESV-M3-09 Closeout]]
 - [[Developer/Test Reports/ESV-M3-09_Chronicle_Deterministic_Participant_Apply_and_Missing-Payload_Policy_Foundation_Test_Report|ESV-M3-09 Test Report]]
 
+- [[Developer/Checkpoints/ESV-M4-01_Chronicle_Slot_Catalog_Metadata_Rebuild_and_Active-Session_Selection_Foundation|ESV-M4-01 Closeout]]
+- [[Developer/Test Reports/ESV-M4-01_Chronicle_Slot_Catalog_Metadata_Rebuild_and_Active-Session_Selection_Foundation_Test_Report|ESV-M4-01 Test Report]]
+
 ## Completed checkpoint
 
-`ESV-M3-09 — Deterministic Participant Apply and Missing-Payload Policy Foundation`
+`ESV-M4-01 — Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation`
 
-Chronicle now completes M3 with deterministic ownership-revalidated participant application at **366 / 366** focused Chronicle Editor tests.
+Chronicle begins M4 with provider-neutral payload-free catalog reconstruction and session-only active-slot selection at **403 / 403** focused Chronicle Editor tests.
 
 ## Completed milestone
 
@@ -50,6 +53,6 @@ Chronicle now completes M3 with deterministic ownership-revalidated participant 
 
 ## Current checkpoint
 
-`ESV-M4-01 — Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation`
+`ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation`
 
-This checkpoint begins M4 by rebuilding lightweight payload-free slot metadata from provider-neutral discovery plus authoritative head/current-manifest documents, then maintaining session-only active-slot selection.
+This checkpoint adds bounded technical slot creation on top of the proven catalog: a new slot becomes real only after one verified empty immutable generation is published and selected through `head.json` last.

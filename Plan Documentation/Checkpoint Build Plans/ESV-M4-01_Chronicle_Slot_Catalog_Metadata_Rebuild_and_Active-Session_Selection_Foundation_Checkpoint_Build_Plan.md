@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-10
 ---
 
@@ -12,12 +12,14 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-01
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.16.0
 **Prior checkpoint:** ESV-M3-09 — **Complete**
 **Prior milestone:** M3 — **Complete**
 **Unity baseline:** 6000.3.8f1
 **Regression baseline:** focused Chronicle Editor **366 / 366**
+**Final focused gate:** **403 / 403**, 0 failed
+**Implementation commit:** `62e8a54`
 
 ## 1. Intent
 
@@ -271,3 +273,27 @@ Do not add autosave, retention, or recovery yet.
 Do not write a persistent catalog cache yet.
 
 The next bounded M4 checkpoint should build physical slot creation and slot-policy/capacity behavior on top of this proven catalog/session foundation, or activate production operation admission if repository evidence shows that service orchestration must precede slot mutation.
+
+
+## 8. Closeout evidence
+
+ESV-M4-01 closed successfully.
+
+- implementation commit: `62e8a54`;
+- final focused Chronicle Editor gate: **403 / 403**;
+- failures: **0**;
+- prior **366 / 366** regression floor preserved;
+- 37 net new focused tests passed;
+- base `ISaveStorageBackend` remained unchanged;
+- normal catalog reconstruction reads no `payload.json`;
+- active selection remains session-only/non-durable and never auto-selects;
+- persistent cache and physical slot mutation remain absent.
+
+Repair trail:
+- initial distribution patch rejected before repository mutation;
+- corrected v2 applied against the exact baseline;
+- one test-only NUnit compile hotfix;
+- one three-fixture test-only correction;
+- no runtime architecture change from either hotfix.
+
+**Next authorized checkpoint:** ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation.
