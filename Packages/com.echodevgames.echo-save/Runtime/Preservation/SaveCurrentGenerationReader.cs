@@ -284,6 +284,13 @@ namespace EchoDevGames.EchoSave
                     entryValidation.Message);
             }
 
+            SaveValidatedParticipantSnapshot
+                validatedParticipants =
+                    new SaveValidatedParticipantSnapshot(
+                        validatedSlot,
+                        currentGeneration,
+                        payloadEntries);
+
             List<SavePayloadEntry> unknownEntries =
                 new List<SavePayloadEntry>();
 
@@ -339,7 +346,8 @@ namespace EchoDevGames.EchoSave
                 validatedSlot,
                 currentGeneration,
                 knownCount,
-                unknownEntries.Count);
+                unknownEntries.Count,
+                validatedParticipants);
         }
 
         private static SaveCurrentGenerationReadResult

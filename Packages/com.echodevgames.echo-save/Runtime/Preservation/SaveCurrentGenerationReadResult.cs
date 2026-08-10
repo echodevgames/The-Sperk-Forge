@@ -11,6 +11,27 @@ namespace EchoDevGames.EchoSave
             SaveGenerationId generationId,
             int knownParticipantCount,
             int unknownParticipantCount)
+            : this(
+                status,
+                diagnosticCode,
+                message,
+                slotId,
+                generationId,
+                knownParticipantCount,
+                unknownParticipantCount,
+                null)
+        {
+        }
+
+        internal SaveCurrentGenerationReadResult(
+            SaveCurrentGenerationReadStatus status,
+            string diagnosticCode,
+            string message,
+            SaveSlotId slotId,
+            SaveGenerationId generationId,
+            int knownParticipantCount,
+            int unknownParticipantCount,
+            SaveValidatedParticipantSnapshot validatedParticipants)
         {
             Status =
                 status;
@@ -32,6 +53,9 @@ namespace EchoDevGames.EchoSave
 
             UnknownParticipantCount =
                 unknownParticipantCount;
+
+            ValidatedParticipants =
+                validatedParticipants;
         }
 
         internal SaveCurrentGenerationReadStatus Status
@@ -53,6 +77,12 @@ namespace EchoDevGames.EchoSave
         internal int KnownParticipantCount { get; }
 
         internal int UnknownParticipantCount { get; }
+
+        internal SaveValidatedParticipantSnapshot
+            ValidatedParticipants
+        {
+            get;
+        }
 
         internal bool Succeeded =>
             Status ==

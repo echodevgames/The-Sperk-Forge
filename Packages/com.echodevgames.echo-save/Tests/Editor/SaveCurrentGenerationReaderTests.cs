@@ -145,6 +145,44 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 Is.Zero);
 
             Assert.That(
+                result.ValidatedParticipants,
+                Is.Not.Null);
+
+            Assert.That(
+                result.ValidatedParticipants.Count,
+                Is.EqualTo(1));
+
+            Assert.That(
+                result.ValidatedParticipants.SourceSlotId,
+                Is.EqualTo(
+                    slotId));
+
+            Assert.That(
+                result.ValidatedParticipants.SourceGenerationId,
+                Is.EqualTo(
+                    generationId));
+
+            IReadOnlyList<SavePayloadEntry>
+                validatedEntries =
+                    result.ValidatedParticipants
+                        .Entries;
+
+            Assert.That(
+                validatedEntries[0].participantId,
+                Is.EqualTo(
+                    "com.example.inventory"));
+
+            validatedEntries[0].participantId =
+                "com.example.mutated";
+
+            Assert.That(
+                result.ValidatedParticipants
+                    .Entries[0]
+                    .participantId,
+                Is.EqualTo(
+                    "com.example.inventory"));
+
+            Assert.That(
                 unknownStore.Count,
                 Is.Zero);
 
