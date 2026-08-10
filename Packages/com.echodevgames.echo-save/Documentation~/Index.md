@@ -40,12 +40,14 @@
 
 - [[Developer/Checkpoints/ESV-M4-01_Chronicle_Slot_Catalog_Metadata_Rebuild_and_Active-Session_Selection_Foundation|ESV-M4-01 Closeout]]
 - [[Developer/Test Reports/ESV-M4-01_Chronicle_Slot_Catalog_Metadata_Rebuild_and_Active-Session_Selection_Foundation_Test_Report|ESV-M4-01 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-02_Chronicle_Technical_Slot_Creation_Capacity_and_Initial_Generation_Foundation|ESV-M4-02 Closeout]]
+- [[Developer/Test Reports/ESV-M4-02_Chronicle_Technical_Slot_Creation_Capacity_and_Initial_Generation_Foundation_Test_Report|ESV-M4-02 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-01 — Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation`
+`ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation`
 
-Chronicle begins M4 with provider-neutral payload-free catalog reconstruction and session-only active-slot selection at **403 / 403** focused Chronicle Editor tests.
+Chronicle can now create a bounded technical slot as one real verified empty immutable generation, publish `head.json` last, enforce capacity across healthy and degraded canonical slots, and reconcile the catalog truthfully at **425 / 425** focused Chronicle Editor tests.
 
 ## Completed milestone
 
@@ -53,6 +55,6 @@ Chronicle begins M4 with provider-neutral payload-free catalog reconstruction an
 
 ## Current checkpoint
 
-`ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation`
+No follow-on M4 checkpoint is activated by the ESV-M4-02 closeout.
 
-This checkpoint adds bounded technical slot creation on top of the proven catalog: a new slot becomes real only after one verified empty immutable generation is published and selected through `head.json` last.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **425 / 425** regression floor.

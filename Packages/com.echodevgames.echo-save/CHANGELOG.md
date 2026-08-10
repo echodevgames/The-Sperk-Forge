@@ -436,3 +436,20 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Refresh the catalog after successful publication without auto-selecting the new slot.
 - Report truthful publication-versus-refresh outcomes if publication succeeds but catalog reconciliation fails.
 - Persistent cache, rename, duplicate, delete, full slot-policy asset expansion, production operation admission, autosave, retention, and recovery remain deferred.
+
+### Verified
+#### ESV-M4-02 Closeout
+
+- Implementation committed at `d8d5c18`.
+- Unity compile/import green after narrow test-only NUnit accessibility/discovery repairs.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **425 / 425**, with `0` failed.
+- All prior **403 / 403** Chronicle regressions remained green; M4-02 added **22** net focused tests.
+- Technical creation requires a trustworthy fresh catalog before durable mutation.
+- Every discovered canonical technical slot, healthy or degraded, counts against the positive capacity bound; invalid non-slot children remain excluded.
+- The normal path generates canonical `SaveSlotId` values independently from display/project/build metadata and retries collisions only within a positive bound.
+- Initial creation publishes a real empty immutable generation through candidate verification, immutable publication, final verification, and `head.json` last.
+- Create-specific publication rejects an existing current head inside the publication transaction rather than silently becoming an update/save path.
+- Post-publication catalog reconciliation returns healthy created metadata on success and truthfully reports published-but-reconciliation-failed state without deleting a committed slot.
+- Successful creation does not auto-select the new slot.
+- No participant callbacks, persistent catalog cache, rename/duplicate/delete, full slot-policy asset expansion, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridge, or Chronicle-owned DDOL authority was introduced.
+- The final-verification failure test explicitly preserves `generationPublished = true` once immutable generation publication has already succeeded; `head.json` remains unpublished in that failure case.

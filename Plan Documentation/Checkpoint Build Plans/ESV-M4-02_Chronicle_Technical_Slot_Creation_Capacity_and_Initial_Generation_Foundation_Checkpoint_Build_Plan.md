@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-10
 ---
 
@@ -12,12 +12,14 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-02
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.17.0
 **Prior checkpoint:** ESV-M4-01 — **Complete**
 **Unity baseline:** 6000.3.8f1
 **Regression baseline:** focused Chronicle Editor **403 / 403**
 **Exact implementation baseline:** `62e8a54`
+**Implementation commit:** `d8d5c18`
+**Final focused gate:** **425 / 425 passed, 0 failed**
 
 ## 1. Intent
 
@@ -224,3 +226,21 @@ Do not add full slot-mode configuration assets yet.
 Do not add production operation admission or concurrent mutation ownership yet.
 
 Do not add autosave, retention, recovery, or persistent catalog cache yet.
+
+## 8. Completion evidence
+
+ESV-M4-02 closed on 2026-08-10 with:
+- implementation commit `d8d5c18`;
+- Unity 6000.3.8f1 compile/import green;
+- focused `EchoDevGames.EchoSave.Tests.Editor` **425 / 425 passed, 0 failed**;
+- prior **403 / 403** regression floor preserved;
+- 22 net new focused tests;
+- exact repository implementation scope of 17 files, 1831 insertions, and 1 deletion;
+- package-generated technical identity, bounded capacity, collision retry, initial empty immutable generation, existing-head rejection, head-last publication, and catalog reconciliation all proven;
+- post-publication catalog-refresh failure preserving truthful durable state;
+- no automatic active-slot selection;
+- no participant callbacks or deferred M4 scope introduced.
+
+The final gate supersedes intermediate test-only accessibility/discovery and expected-value repairs.
+
+No follow-on M4 checkpoint is activated by this completion record. A new bounded Checkpoint Build Plan is required before further Chronicle implementation.

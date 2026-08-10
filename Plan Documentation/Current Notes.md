@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** ESV-M4-02 — Chronicle Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
-**Current checkpoint:** ESV-M4-02 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** Chronicle M4 — ESV-M4-02 complete; next bounded checkpoint planning
+**Current checkpoint:** None activated — ESV-M4-02 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -129,38 +129,32 @@ Evidence:
 - prior-snapshot preservation on untrustworthy refresh failure;
 - explicit session-only active selection with no automatic selection.
 
-`ESV-M4-02 — Chronicle Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation` is **active / authorized**.
+`ESV-M4-02 — Chronicle Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation` is **complete** at `d8d5c18`.
 
-M4-02 records ESV-D-024:
-- successful slot creation means one verified immutable generation plus `head.json` last, never merely a directory;
-- every discovered canonical technical slot, healthy or degraded, counts against capacity;
-- display names remain metadata only;
-- newly-created slots are not auto-selected;
-- publication success followed by catalog-refresh failure reports partial truth instead of fictional rollback.
-
-Authorized next:
-- bounded technical create request/result;
-- positive capacity primitive;
-- fresh package-generated canonical `SaveSlotId`;
-- bounded generated-ID collision retry;
-- initial empty generation publication through the existing generation-first/head-last transaction;
-- in-transaction create semantics that reject an existing current head;
-- post-publication M4-01 catalog reconciliation;
+Evidence:
+- Unity compile/import green;
+- focused Chronicle Editor gate **425 / 425**, `0` failed;
+- prior **403 / 403** regression floor preserved;
+- 22 net new M4-02 tests passed;
+- bounded technical create request/result/status and coordinator;
+- trustworthy catalog preflight before durable mutation;
+- healthy and degraded canonical slots both count against positive capacity;
+- package-generated canonical `SaveSlotId` with bounded collision retry;
+- display/project/build metadata remains path-independent;
+- real empty immutable generation publication with candidate verification, immutable publish, final verification, then `head.json` last;
+- existing current head rejected inside the create-publication transaction;
+- successful post-publication catalog reconciliation without auto-select;
+- published-but-reconciliation-failed truth preserved without deleting committed durable state;
 - zero participant callbacks;
-- preserve all prior **403 / 403** Chronicle regressions.
+- deferred persistent cache / rename / duplicate / delete / autosave / retention / recovery / scene / bridge / DDOL scope remains absent.
 
-Still deferred:
-- persistent `catalog.cache.json`;
-- rename / duplicate / delete;
-- full slot-policy/configuration asset expansion;
-- production operation admission/coalescing/cancellation;
-- concurrent public mutation ownership;
-- autosave;
-- retention;
-- recovery;
-- document migration;
-- scene travel/Passage integration;
-- peer bridges/project-wide DDOL.
+Implementation-history note:
+- helper validation was narrowed after deferred-scope words inside architecture comments produced a false positive;
+- NUnit parameterized-test accessibility/discovery was repaired test-only through public primitive parameters and internal enum casts;
+- one final-verification expected value was corrected to preserve `generationPublished = true` after immutable publication;
+- final **425 / 425** evidence supersedes all intermediate runs.
+
+No follow-on M4 checkpoint is activated by this closeout.
 
 ## Suite Distribution Kit Standard
 
@@ -345,14 +339,8 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `62e8a54` after ESV-M4-01 closeout.
-2. Implement only ESV-M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation.
-3. Preserve the M4-01 provider-neutral catalog and zero-payload-read invariants.
-4. Count all discovered canonical technical slots, including degraded entries, against capacity.
-5. Generate technical slot IDs independently from display metadata and retry collisions only within a positive bound.
-6. Treat successful creation as a verified empty immutable generation plus `head.json` last, never directory existence alone.
-7. Reject an existing current head inside the create-publication transaction.
-8. Refresh the catalog after durable success without auto-selecting.
-9. Report published-but-refresh-failed truth without deleting a committed slot.
-10. Add no rename, duplicate, delete, persistent cache, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
-11. Preserve the **403 / 403** Chronicle regression floor.
+1. Rehydrate exact `d8d5c18` after the ESV-M4-02 closeout documentation commit.
+2. Do not begin another Chronicle implementation checkpoint until its bounded Checkpoint Build Plan is written and activated.
+3. Carry forward the focused **425 / 425** Chronicle regression floor.
+4. Preserve M4-01 payload-free catalog reconstruction and M4-02 committed-generation slot-creation truth.
+5. Keep persistent catalog cache, rename/duplicate/delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
