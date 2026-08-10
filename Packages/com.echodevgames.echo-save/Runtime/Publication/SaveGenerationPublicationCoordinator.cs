@@ -113,6 +113,72 @@ namespace EchoDevGames.EchoSave
                 true);
         }
 
+        internal SaveGenerationPublicationResult
+            PublishMergedParticipantTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SaveMergedParticipantTransportBatch mergedBatch,
+                SaveGenerationId expectedCurrentGeneration)
+        {
+            if (mergedBatch == null ||
+                !SaveGenerationId.TryParse(
+                    expectedCurrentGeneration.Value,
+                    out SaveGenerationId validatedExpectedGeneration))
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .CarryForwardInvalidRequest,
+                    "Chronicle merged carry-forward publication requires one valid merged batch and expected source generation.",
+                    slotId,
+                    default,
+                    false);
+            }
+
+            SavePayloadEntry[] payloadEntries =
+                mergedBatch.CopyPayloadEntries();
+
+            SavePayloadInventoryEntry[] inventoryEntries =
+                mergedBatch.CopyInventoryEntries();
+
+            SaveDocumentValidationResult validation =
+                SaveParticipantPublicationBatchValidator
+                    .ValidateStoredEntries(
+                        payloadEntries,
+                        inventoryEntries,
+                        integrityProvider);
+
+            if (!validation.Succeeded)
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.InvalidRequest,
+                    string.IsNullOrEmpty(
+                        validation.DiagnosticCode)
+                        ? EchoSaveDiagnosticCodes
+                            .CarryForwardMergeInvalid
+                        : validation.DiagnosticCode,
+                    validation.Message,
+                    slotId,
+                    default,
+                    false);
+            }
+
+            return PublishTransportGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                payloadEntries,
+                inventoryEntries,
+                true,
+                validatedExpectedGeneration,
+                true);
+        }
+
         private SaveGenerationPublicationResult
             PublishTransportGeneration(
                 SaveSlotId slotId,
@@ -122,7 +188,9 @@ namespace EchoDevGames.EchoSave
                 string displayName,
                 SavePayloadEntry[] payloadEntries,
                 SavePayloadInventoryEntry[] inventoryEntries,
-                bool participantBacked)
+                bool participantBacked,
+                SaveGenerationId expectedCurrentGeneration = default,
+                bool requireExpectedCurrentGeneration = false)
         {
             if (storageBackend == null ||
                 serializer == null ||
@@ -219,6 +287,28 @@ namespace EchoDevGames.EchoSave
             if (!existingHeadResult.Succeeded)
             {
                 return existingHeadResult;
+            }
+
+            if (requireExpectedCurrentGeneration)
+            {
+                if (!SaveGenerationId.TryParse(
+                        expectedCurrentGeneration.Value,
+                        out SaveGenerationId validatedExpectedGeneration) ||
+                    previousHead == null ||
+                    !string.Equals(
+                        previousHead.currentGenerationId,
+                        validatedExpectedGeneration.Value,
+                        StringComparison.Ordinal))
+                {
+                    return Failure(
+                        SaveGenerationPublicationStatus.ExistingHeadInvalid,
+                        EchoSaveDiagnosticCodes
+                            .CarryForwardSourceStale,
+                        "Chronicle carry-forward source generation is no longer the current head. Refresh current-generation preservation before retrying.",
+                        validatedSlot,
+                        generationId,
+                        false);
+                }
             }
 
             SavePayloadDocument payload =

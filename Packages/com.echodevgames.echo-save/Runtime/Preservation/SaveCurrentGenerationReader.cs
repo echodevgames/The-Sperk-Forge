@@ -318,7 +318,9 @@ namespace EchoDevGames.EchoSave
 
             SaveUnknownPayloadStoreResult storeResult =
                 unknownPayloadStore.TryReplace(
-                    unknownEntries);
+                    unknownEntries,
+                    validatedSlot,
+                    currentGeneration);
 
             if (!storeResult.Succeeded)
             {

@@ -9,6 +9,9 @@ namespace EchoDevGames.EchoSave
     ///
     /// SavePayloadEntry is a mutable transport record, so every access returns
     /// defensive clones rather than the store's authoritative records.
+    ///
+    /// M3-05 also binds a successfully classified snapshot to the exact source
+    /// slot and generation from which the opaque entries were read.
     /// </summary>
     internal sealed class SaveUnknownPayloadSnapshot
     {
@@ -17,6 +20,21 @@ namespace EchoDevGames.EchoSave
         internal SaveUnknownPayloadSnapshot(
             SavePayloadEntry[] entries,
             long totalPayloadBytes)
+            : this(
+                entries,
+                totalPayloadBytes,
+                default,
+                default,
+                false)
+        {
+        }
+
+        internal SaveUnknownPayloadSnapshot(
+            SavePayloadEntry[] entries,
+            long totalPayloadBytes,
+            SaveSlotId sourceSlotId,
+            SaveGenerationId sourceGenerationId,
+            bool hasSourceProvenance)
         {
             this.entries =
                 CloneEntries(
@@ -24,12 +42,27 @@ namespace EchoDevGames.EchoSave
 
             TotalPayloadBytes =
                 totalPayloadBytes;
+
+            SourceSlotId =
+                sourceSlotId;
+
+            SourceGenerationId =
+                sourceGenerationId;
+
+            HasSourceProvenance =
+                hasSourceProvenance;
         }
 
         internal int Count =>
             entries.Length;
 
         internal long TotalPayloadBytes { get; }
+
+        internal bool HasSourceProvenance { get; }
+
+        internal SaveSlotId SourceSlotId { get; }
+
+        internal SaveGenerationId SourceGenerationId { get; }
 
         internal IReadOnlyList<SavePayloadEntry>
             Entries =>

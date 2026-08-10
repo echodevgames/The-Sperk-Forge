@@ -148,6 +148,23 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 unknownStore.Count,
                 Is.Zero);
 
+            SaveUnknownPayloadSnapshot emptySnapshot =
+                unknownStore.GetSnapshot();
+
+            Assert.That(
+                emptySnapshot.HasSourceProvenance,
+                Is.True);
+
+            Assert.That(
+                emptySnapshot.SourceSlotId,
+                Is.EqualTo(
+                    slotId));
+
+            Assert.That(
+                emptySnapshot.SourceGenerationId,
+                Is.EqualTo(
+                    generationId));
+
             Assert.That(
                 participant.CaptureCalls,
                 Is.Zero);
@@ -186,9 +203,25 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 result.UnknownParticipantCount,
                 Is.EqualTo(1));
 
+            SaveUnknownPayloadSnapshot snapshot =
+                unknownStore.GetSnapshot();
+
+            Assert.That(
+                snapshot.HasSourceProvenance,
+                Is.True);
+
+            Assert.That(
+                snapshot.SourceSlotId,
+                Is.EqualTo(
+                    slotId));
+
+            Assert.That(
+                snapshot.SourceGenerationId,
+                Is.EqualTo(
+                    generationId));
+
             SavePayloadEntry preserved =
-                unknownStore.GetSnapshot()
-                    .Entries[0];
+                snapshot.Entries[0];
 
             Assert.That(
                 preserved.participantId,

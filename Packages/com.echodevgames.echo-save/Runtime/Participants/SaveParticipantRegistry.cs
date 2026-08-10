@@ -232,6 +232,29 @@ namespace EchoDevGames.EchoSave
             return true;
         }
 
+        internal bool TryResolveDescriptor(
+            SaveParticipantId identity,
+            out SaveParticipantDescriptor descriptor)
+        {
+            descriptor =
+                default;
+
+            if (!SaveParticipantId.TryParse(
+                    identity.Value,
+                    out SaveParticipantId validated) ||
+                !identityClaims.TryGetValue(
+                    validated.Value,
+                    out Entry entry))
+            {
+                return false;
+            }
+
+            descriptor =
+                entry.Descriptor;
+
+            return true;
+        }
+
         internal SaveParticipantRegistrySnapshot
             GetSnapshot()
         {

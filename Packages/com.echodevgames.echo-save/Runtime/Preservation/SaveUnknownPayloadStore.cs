@@ -10,6 +10,9 @@ namespace EchoDevGames.EchoSave
     ///
     /// Records remain package transport data. This store does not interpret
     /// serialized payload contents.
+    ///
+    /// M3-05 binds successful read/classification state to its exact source
+    /// slot/generation so carry-forward cannot reuse a stale opaque snapshot.
     /// </summary>
     internal sealed class SaveUnknownPayloadStore
     {
@@ -26,6 +29,9 @@ namespace EchoDevGames.EchoSave
             Array.Empty<SavePayloadEntry>();
 
         private long totalPayloadBytes;
+        private bool hasSourceProvenance;
+        private SaveSlotId sourceSlotId;
+        private SaveGenerationId sourceGenerationId;
 
         internal SaveUnknownPayloadStore()
             : this(
@@ -63,15 +69,88 @@ namespace EchoDevGames.EchoSave
         internal long TotalPayloadBytes =>
             totalPayloadBytes;
 
+        internal bool HasSourceProvenance =>
+            hasSourceProvenance;
+
+        internal SaveSlotId SourceSlotId =>
+            sourceSlotId;
+
+        internal SaveGenerationId SourceGenerationId =>
+            sourceGenerationId;
+
         internal SaveUnknownPayloadSnapshot
             GetSnapshot() =>
             new SaveUnknownPayloadSnapshot(
                 entries,
-                totalPayloadBytes);
+                totalPayloadBytes,
+                sourceSlotId,
+                sourceGenerationId,
+                hasSourceProvenance);
+
+        /// <summary>
+        /// Compatibility/session seeding seam with no durable provenance.
+        /// Carry-forward publication must reject snapshots produced this way.
+        /// </summary>
+        internal SaveUnknownPayloadStoreResult
+            TryReplace(
+                IReadOnlyList<SavePayloadEntry> source) =>
+            TryReplaceCore(
+                source,
+                default,
+                default,
+                false);
 
         internal SaveUnknownPayloadStoreResult
             TryReplace(
-                IReadOnlyList<SavePayloadEntry> source)
+                IReadOnlyList<SavePayloadEntry> source,
+                SaveSlotId sourceSlotId,
+                SaveGenerationId sourceGenerationId)
+        {
+            if (!SaveSlotId.TryParse(
+                    sourceSlotId.Value,
+                    out SaveSlotId validatedSlot) ||
+                !SaveGenerationId.TryParse(
+                    sourceGenerationId.Value,
+                    out SaveGenerationId validatedGeneration))
+            {
+                return Failure(
+                    SaveUnknownPayloadStoreStatus.InvalidEntry,
+                    EchoSaveDiagnosticCodes
+                        .CarryForwardProvenanceMissing,
+                    "Chronicle unknown-payload provenance requires one valid source slot and generation.");
+            }
+
+            return TryReplaceCore(
+                source,
+                validatedSlot,
+                validatedGeneration,
+                true);
+        }
+
+        internal void Clear()
+        {
+            entries =
+                Array.Empty<SavePayloadEntry>();
+
+            totalPayloadBytes =
+                0L;
+
+            hasSourceProvenance =
+                false;
+
+            sourceSlotId =
+                default;
+
+            sourceGenerationId =
+                default;
+        }
+
+        private SaveUnknownPayloadStoreResult
+            TryReplaceCore(
+                IReadOnlyList<SavePayloadEntry> source,
+                SaveSlotId candidateSourceSlotId,
+                SaveGenerationId candidateSourceGenerationId,
+                bool candidateHasSourceProvenance)
         {
             if (source == null)
             {
@@ -160,23 +239,31 @@ namespace EchoDevGames.EchoSave
             candidate.Sort(
                 CompareEntries);
 
+            // Atomic authoritative-state replacement occurs only after all
+            // entry, bounds, and provenance validation succeeds.
             entries =
                 candidate.ToArray();
 
             totalPayloadBytes =
                 candidateBytes;
 
+            hasSourceProvenance =
+                candidateHasSourceProvenance;
+
+            sourceSlotId =
+                candidateHasSourceProvenance
+                    ? candidateSourceSlotId
+                    : default;
+
+            sourceGenerationId =
+                candidateHasSourceProvenance
+                    ? candidateSourceGenerationId
+                    : default;
+
             return SaveUnknownPayloadStoreResult.Success(
-                "The Chronicle unknown-payload session store was replaced atomically.");
-        }
-
-        internal void Clear()
-        {
-            entries =
-                Array.Empty<SavePayloadEntry>();
-
-            totalPayloadBytes =
-                0L;
+                candidateHasSourceProvenance
+                    ? "The Chronicle unknown-payload session store and source provenance were replaced atomically."
+                    : "The Chronicle unknown-payload session store was replaced atomically without durable source provenance.");
         }
 
         private static SaveUnknownPayloadStoreResult

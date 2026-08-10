@@ -185,5 +185,32 @@ namespace EchoDevGames.EchoSave
 
         internal const string UnknownPayloadLimitExceeded =
             "ESV-UNKNOWN-003";
+
+        internal const string CarryForwardInvalidRequest =
+            "ESV-CARRY-001";
+
+        internal const string CarryForwardProvenanceMissing =
+            "ESV-CARRY-002";
+
+        internal const string CarryForwardSlotMismatch =
+            "ESV-CARRY-003";
+
+        internal const string CarryForwardSourceUnavailable =
+            "ESV-CARRY-004";
+
+        internal const string CarryForwardSourceInvalid =
+            "ESV-CARRY-005";
+
+        internal const string CarryForwardSourceStale =
+            "ESV-CARRY-006";
+
+        internal const string CarryForwardOwnershipCollision =
+            "ESV-CARRY-007";
+
+        internal const string CarryForwardMergeInvalid =
+            "ESV-CARRY-008";
+
+        internal const string CarryForwardPublicationFailed =
+            "ESV-CARRY-009";
     }
 }
