@@ -29,15 +29,17 @@
 - [[Developer/Test Reports/ESV-M3-04_Chronicle_Current-Generation_Read_Opaque_Unknown-Payload_Preservation_and_Session_Store_Foundation_Test_Report|ESV-M3-04 Test Report]]
 - [[Developer/Checkpoints/ESV-M3-05_Chronicle_Opaque_Unknown-Payload_Carry-Forward_Merge_Source-Freshness_and_Collision-Safe_Publication_Foundation|ESV-M3-05 Closeout]]
 - [[Developer/Test Reports/ESV-M3-05_Chronicle_Opaque_Unknown-Payload_Carry-Forward_Merge_Source-Freshness_and_Collision-Safe_Publication_Foundation_Test_Report|ESV-M3-05 Test Report]]
+- [[Developer/Checkpoints/ESV-M3-06_Chronicle_Current-Version_Participant_Payload_Preparation_Trusted_Runtime-Type_Deserialization_and_Prepared-Participant_Batch_Foundation|ESV-M3-06 Closeout]]
+- [[Developer/Test Reports/ESV-M3-06_Chronicle_Current-Version_Participant_Payload_Preparation_Trusted_Runtime-Type_Deserialization_and_Prepared-Participant_Batch_Foundation_Test_Report|ESV-M3-06 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation`
+`ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation`
 
-Chronicle carries source-fresh opaque unknown participant payloads beside fresh known captures into the next immutable generation at **243 / 243** focused Chronicle Editor tests.
+Chronicle prepares validated current-schema known participant payloads into deterministic detached DTO batches at **261 / 261** focused Chronicle Editor tests.
 
 ## Current checkpoint
 
-`ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation`
+`ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation`
 
-This checkpoint prepares validated current-schema known participant payloads into detached runtime DTOs without applying participant state or performing migrations.
+This checkpoint adds explicit supported old-schema participant migration chains before current-version DTO deserialization. It still stops before `PreparedSaveLoad` and participant `Apply`.

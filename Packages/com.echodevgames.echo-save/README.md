@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation** with a focused Chronicle Editor gate of **243 / 243**. The active checkpoint is **ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation**.
+Version `0.1.0` has completed **ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation** with a focused Chronicle Editor gate of **261 / 261**. The active checkpoint is **ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation**.
 
 ESV-M1-01 proved:
 
@@ -23,13 +23,15 @@ ESV-M1-01 proved:
 
 Chronicle M2 provides path-safe local storage, package serialization, technical slot/generation identity, commit documents, integrity, immutable generation publication, and head-last current selection.
 
-M3-01 through M3-05 now provide open-ended participant registration, detached capture, participant generation publication, opaque unknown preservation, and source-fresh collision-safe unknown carry-forward.
+M3-01 through M3-05 provide open-ended participant registration, detached capture, participant generation publication, opaque unknown preservation, and source-fresh collision-safe unknown carry-forward.
 
-ESV-M3-06 may prepare **current-version known participant payloads** into detached runtime DTOs using trusted live registration type authority and already-registered serializer providers.
+ESV-M3-06 adds fully validated current-generation participant snapshots and deterministic current-schema known-participant DTO preparation without applying gameplay state.
 
-It still does **not** authorize participant migrations, participant apply, `PreparedSaveLoad`, production operation admission, slots, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+ESV-M3-07 may now add explicit contiguous participant migration chains so supported older known participant payloads can reach the current schema in memory before the M3-06 trusted DTO deserialization path.
 
-Unknown payloads remain opaque and are never deserialized by the preparation path.
+It still does **not** authorize document migrations, `PreparedSaveLoad`, participant apply, production operation admission, slots, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+
+Unknown payloads remain opaque and never enter participant migration planning.
 
 ## Minimal use
 

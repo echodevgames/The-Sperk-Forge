@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-06
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.12.0
 **Prior checkpoint:** ESV-M3-05 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -209,12 +209,50 @@ M3-06 tests must prove:
 
 Executed totals are recorded from Unity, not predicted.
 
-## 6. Stop point
+## 6. Executed focused proof
 
-Stop when Chronicle can transform a fully validated **current-version** known participant payload set into one deterministic all-or-nothing prepared detached-state batch using only live participant identity/type authority, already-registered serializer providers, and validated durable participant payload text.
+- fully validated current-generation participant snapshot exposure — **Pass**;
+- source slot/generation provenance retained — **Pass**;
+- defensive-copy snapshot entry behavior — **Pass**;
+- current canonical participant preparation — **Pass**;
+- deterministic canonical prepared-entry ordering — **Pass**;
+- persisted alias resolves current canonical owner while preserving persisted-ID provenance — **Pass**;
+- trusted detached DTO `Type` comes only from live `ISaveTypedParticipant` registration — **Pass**;
+- default Unity JSON runtime-Type deserialization — **Pass**;
+- alternate already-registered runtime-Type serializer resolution — **Pass**;
+- unknown payload bypasses serializer resolution — **Pass**;
+- participant missing trusted runtime-Type capability fails closed — **Pass**;
+- null/unusable trusted runtime DTO type fails closed — **Pass**;
+- older participant schema returns migration-required — **Pass**;
+- newer participant schema returns unsupported-newer — **Pass**;
+- missing serializer provider fails closed — **Pass**;
+- serializer lacking runtime-Type capability fails closed — **Pass**;
+- malformed serialized payload exposes no prepared batch — **Pass**;
+- invalid/null detached state exposes no prepared batch — **Pass**;
+- duplicate canonical owner fails closed — **Pass**;
+- later participant failure exposes no partial prepared batch — **Pass**;
+- participant `Capture` invocation count remains zero — **Pass**;
+- participant `Apply` invocation count remains zero — **Pass**;
+- all prior **243 / 243** Chronicle regressions remain green — **Pass**.
 
-Do not apply the batch to runtime gameplay state.
+Final focused Unity gate: **261 / 261 passed, 0 failed**.
 
-Do not migrate older participant payloads yet.
+Implementation commit: `050bfa0`.
 
-The next bounded checkpoint should add explicit participant migration registration/contiguous-chain execution before `PreparedSaveLoad` and coordinated participant apply are activated.
+## 7. Stop point
+
+**Reached.** Chronicle can transform a fully validated **current-version** known participant payload set into one deterministic all-or-nothing prepared detached-state batch using only live participant identity/type authority, already-registered serializer providers, and validated durable participant payload text.
+
+No participant gameplay state is applied.
+
+No storage is rewritten.
+
+Older participant schemas still stop at an explicit migration-required result.
+
+Next bounded checkpoint:
+
+`ESV-M3-07 — Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation`
+
+M3-07 may add explicit participant migration-step contracts, duplicate-safe registration, deterministic contiguous chain planning/execution, bounded in-memory migration provenance, and integration with participant preparation so older supported participant schemas can reach the current schema **before** current DTO deserialization.
+
+`PreparedSaveLoad`, participant `Apply`, document migrations, production operation admission, slots, recovery, retention, and autosave remain later bounded work.

@@ -3,42 +3,53 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.12.0
-**Completed checkpoint:** ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation
-**Current checkpoint:** ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
-**Status:** ESV-M3-05 complete; ESV-M3-06 active / authorized
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.13.0
+**Completed checkpoint:** ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
+**Current checkpoint:** ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
+**Status:** ESV-M3-06 complete; ESV-M3-07 active / authorized
 
-## ESV-M3-05 closeout
+## ESV-M3-06 closeout
 
-Implementation commit: `af28c96`.
+Implementation commit: `050bfa0`.
 
 Evidence:
 - Unity compile/import: **green**;
-- focused `EchoDevGames.EchoSave.Tests.Editor`: **243 / 243 passed, 0 failed**;
-- all prior **218 / 218** Chronicle regressions remain green;
-- source provenance, stale-source rejection, canonical/alias collision fail-closed behavior, exact opaque carry-forward, deterministic merge, and head-last publication are proven;
-- unknown payloads remain opaque and invoke no serializer or participant code.
+- focused `EchoDevGames.EchoSave.Tests.Editor`: **261 / 261 passed, 0 failed**;
+- prior **243 / 243** Chronicle regression floor remains green;
+- 18 new focused preparation tests passed;
+- validated participant snapshots retain source provenance and defensive-copy semantics;
+- known canonical/alias ownership resolves through the live registry;
+- trusted detached DTO `Type` comes only from live registration;
+- current-schema payloads deserialize through already-registered runtime-Type serializers;
+- older schemas fail migration-required;
+- newer schemas fail unsupported-newer;
+- unknown payloads bypass serializer lookup;
+- preparation invokes neither `Capture` nor `Apply`;
+- preparation exposes no partial batch on failure.
 
-## Active ESV-M3-06 boundary
+## Active ESV-M3-07 boundary
 
 Authorized:
-- fully validated current-generation participant snapshot for preparation;
-- live canonical/alias owner resolution;
-- trusted `ISaveTypedParticipant.DetachedStateType`;
-- current-schema-only preparation;
-- older schema → migration-required;
-- newer schema → unsupported-newer;
-- already-registered runtime-Type serializer resolution;
-- deterministic all-or-nothing prepared participant batch;
+- stable participant migration-step IDs;
+- explicit participant migration-step contracts;
+- current-canonical-participant + from-version migration edge authority;
+- duplicate-safe migration registration/leases;
+- deterministic registry snapshots;
+- exact contiguous one-version-at-a-time chain planning;
+- bounded in-memory migration execution;
+- migration output serializer-ID/payload validation;
+- ordered stable migration provenance without payload contents;
+- older supported known participant payload integration into M3-06 preparation;
+- final current-version deserialization through live trusted DTO `Type`;
+- no source-generation rewrite;
 - no participant `Capture`;
 - no participant `Apply`;
-- zero storage mutation;
 - unknown payloads remain opaque.
 
 Still absent:
-- participant migration chains;
+- document migrations;
 - `PreparedSaveLoad` lifecycle;
-- participant apply and missing-payload default execution;
+- participant apply/default/rollback orchestration;
 - production operation admission;
 - slots/recovery/retention/autosave;
 - peer bridges;

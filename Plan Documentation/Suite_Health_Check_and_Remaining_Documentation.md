@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M3-05 – Chronicle Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-05 complete; ESV-M3-06 active / authorized
+**Completed package checkpoint:** ESV-M3-06 – Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-06 complete; ESV-M3-07 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M3-05 complete at `af28c96` with 243 / 243; ESV-M3-06 active / authorized** |
+| Chronicle implementation | **ESV-M3-06 complete at `050bfa0` with 261 / 261; ESV-M3-07 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -70,14 +70,13 @@ No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Fu
 
 The next package is **The Chronicle (`EchoSave`)**.
 
-Chronicle M1 is complete:
-1. PKG-LEARN-009 and Jesse's teach-back are complete.
-2. ESV-M1-01 implementation is committed at `ecfa922`.
-3. Embedded Package Manager resolution is committed at `2c70b1d`.
-4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
-5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
+Chronicle M1 and M2 are complete. M3-01 through M3-06 are now complete.
 
-`ESV-M3-05` is complete at `af28c96`; the focused Chronicle Editor gate passed **243 / 243**. Chronicle can now read/validate the current committed generation and preserve unclaimed participant entries as inert opaque session data without storage mutation or participant interpretation. `ESV-M3-05` is active / authorized for source-fresh unknown-payload carry-forward merge plus collision-safe immutable-generation/head-last publication. Production `SaveAsync`, participant deserialization/apply, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+`ESV-M3-06` is complete at `050bfa0`; the focused Chronicle Editor gate passed **261 / 261**. Chronicle can now expose a fully validated current-generation participant snapshot and prepare current-schema known participant payloads into deterministic detached DTO batches using only live participant type authority and already-registered serializers.
+
+`ESV-M3-07` is active / authorized for explicit participant migration-step contracts, duplicate-safe migration registration, deterministic contiguous chain planning/execution, and integration of supported older known participant payloads into the existing current-version preparation path.
+
+Document migration, `PreparedSaveLoad`, participant apply, production operation admission, slot catalogs, recovery, retention, autosave, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -96,4 +95,8 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-05` is **complete** with **243 / 243** focused Chronicle Editor tests. `ESV-M3-05` is **active / authorized** for source-fresh, collision-safe opaque unknown-payload carry-forward publication only. Production save orchestration, participant loading/apply, migrations, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M3-06` is **complete** with **261 / 261** focused Chronicle Editor tests.
+
+`ESV-M3-07` is **active / authorized** for participant migration contracts, duplicate-safe registration, contiguous in-memory migration chain execution, and migrated-payload preparation only.
+
+Document migrations, `PreparedSaveLoad`, participant apply, production operation admission, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

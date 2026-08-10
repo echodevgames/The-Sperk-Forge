@@ -261,3 +261,29 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Unity compile/import green.
 - Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **243 / 243**, with `0` failed.
 - All prior **218 / 218** Chronicle regressions remained green.
+
+### Added
+
+#### ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
+
+- Fully validated current-generation participant snapshot exposure.
+- Defensive-copy participant transport entries with source slot/generation provenance.
+- Canonical/alias live participant owner resolution.
+- Persisted-ID plus current canonical-owner provenance.
+- Trusted live detached DTO `Type` authority.
+- Current-schema-only participant preparation.
+- Structured migration-required result for older schemas.
+- Structured unsupported-newer result for newer schemas.
+- Already-registered runtime-Type serializer resolution.
+- Unknown-payload skip before serializer lookup.
+- Deterministic all-or-nothing prepared participant batches.
+
+### Verified
+
+#### ESV-M3-06 Closeout
+
+- Implementation committed at `050bfa0`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **261 / 261**, with `0` failed.
+- All prior **243 / 243** Chronicle regressions remained green.
+- 18 new focused M3-06 preparation tests passed.

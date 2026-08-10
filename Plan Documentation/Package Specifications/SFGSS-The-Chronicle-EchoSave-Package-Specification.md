@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.12.0
+**Specification version:** 1.13.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 through ESV-M3-05 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-06` is the active current-version participant payload preparation/trusted runtime-Type deserialization checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 through ESV-M3-06 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-07` is the active participant migration contracts/registry/contiguous-chain execution checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -44,6 +44,7 @@
 | 1.10.0 | 2026-08-09 | Approved | Closed ESV-M3-03 at `6970127` with focused Chronicle Editor evidence `197 / 197`; activated ESV-M3-04 read-only current-generation validation and opaque unknown-payload session preservation while keeping carry-forward publication, prepared loads/apply, production SaveAsync admission, migrations, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.11.0 | 2026-08-09 | Approved | Closed ESV-M3-04 at `aa78e07` with focused Chronicle Editor evidence `218 / 218`; activated ESV-M3-05 source-provenance/freshness, collision-safe fresh+unknown merge, and opaque unknown-payload carry-forward through immutable generation/head-last publication while keeping prune policy, participant apply, production save admission, migrations, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.12.0 | 2026-08-09 | Approved | Closed ESV-M3-05 at `af28c96` with focused Chronicle Editor evidence `243 / 243`; activated ESV-M3-06 current-version known participant payload preparation, trusted live runtime-Type deserialization, and all-or-nothing prepared participant batching while keeping migrations, prepared-load lifecycle, participant apply, production operation admission, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
+| 1.13.0 | 2026-08-09 | Approved | Closed ESV-M3-06 at `050bfa0` with focused Chronicle Editor evidence `261 / 261`; activated ESV-M3-07 explicit participant migration-step contracts, duplicate-safe migration registration, deterministic contiguous in-memory chain execution, migration provenance, and older-known-payload integration into current-version preparation while keeping document migration, prepared-load lifecycle, participant apply, production operation admission, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -2124,29 +2125,53 @@ Outcome achieved:
 - implementation commit `af28c96`;
 - focused Chronicle Editor gate **243 / 243**.
 
-### 28.13 Active current-version participant payload preparation checkpoint
+### 28.13 Completed current-version participant payload preparation checkpoint
 
 **ESV-M3-06 - Current-version participant payload preparation, trusted runtime-Type deserialization, and prepared-participant batch foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- fully validated current-generation participant snapshot;
+- defensive-copy entries with source slot/generation provenance;
+- live canonical/alias ownership resolution;
+- persisted-ID/current-canonical-owner provenance separation;
+- trusted live `DetachedStateType` authority;
+- current-schema-only preparation;
+- older-schema migration-required result;
+- newer-schema unsupported-newer result;
+- already-registered runtime-Type serializer resolution;
+- unknown-payload serializer bypass;
+- deterministic all-or-nothing prepared participant batching;
+- zero participant `Capture`/`Apply`;
+- implementation commit `050bfa0`;
+- focused Chronicle Editor gate **261 / 261**.
+
+### 28.14 Active participant migration checkpoint
+
+**ESV-M3-07 - Participant migration contracts, duplicate-safe registry, contiguous-chain execution, and migrated payload preparation foundation**
 
 **Status:** Active / authorized.
 
 Outcome:
-- expose only fully validated current-generation participant entries to preparation;
-- resolve known persisted IDs through current canonical/alias ownership;
-- retain persisted identity provenance plus current canonical owner;
-- use live `ISaveTypedParticipant.DetachedStateType` as the only runtime DTO type authority;
-- prepare only exact current participant schema;
-- older schema fails migration-required;
-- newer schema fails unsupported-newer;
-- resolve only already-registered serializer providers by stable ID;
-- require runtime-Type deserialization capability;
-- build one deterministic all-or-nothing prepared participant batch;
-- unknown payloads remain opaque and outside serializer resolution;
-- invoke neither participant `Capture` nor participant `Apply`;
-- perform zero storage mutation;
-- preserve all 243 prior focused regressions.
+- stable participant migration-step IDs;
+- explicit current-canonical-participant/version-edge migration-step contracts;
+- one exact `vN -> vN+1` edge per step;
+- duplicate-safe runtime-memory migration registry;
+- deterministic registration leases/snapshots;
+- exact contiguous old-schema-to-current chain planning;
+- bounded in-memory chain execution;
+- missing-edge failure before execution;
+- per-step output version/serializer/payload validation;
+- ordered migration provenance without payload contents;
+- persisted aliases resolve current canonical ownership before migration lookup;
+- supported older known payloads migrate to current schema, then reuse the M3-06 trusted current DTO deserialization path;
+- unknown payloads never enter migration planning;
+- source immutable generations remain untouched;
+- no participant `Capture` or `Apply`;
+- preserve all 261 prior focused regressions.
 
-Stop point: Chronicle can transform a fully validated current-version known participant payload set into detached apply-ready DTOs without touching gameplay state. Participant migration chains, `PreparedSaveLoad`, participant apply, operation admission, slots, recovery, retention, and autosave remain later bounded work.
+Stop point: Chronicle can transform an explicitly supported older known participant payload through a complete contiguous in-memory migration chain into the current schema and then prepare the current detached DTO. `PreparedSaveLoad`, participant apply, document migrations, operation admission, slots, recovery, retention, and autosave remain later bounded work.
 
 ## 29. New-Conversation Handoff
 
@@ -2159,41 +2184,45 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.12.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05
-Current milestone/checkpoint: ESV-M3-06 active / authorized
+Current specification version: 1.13.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06
+Current milestone/checkpoint: ESV-M3-07 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 durable transaction plus M3-01 registry, M3-02 detached capture, M3-03 participant-backed publication, M3-04 opaque unknown preservation, and M3-05 source-fresh collision-safe carry-forward are complete; current-version participant payload preparation/deserialization next
+Current implementation status: M2 durable transaction plus M3-01 registry, M3-02 detached capture, M3-03 participant-backed publication, M3-04 opaque unknown preservation, M3-05 source-fresh collision-safe carry-forward, and M3-06 current-version participant preparation are complete; participant migration registry/contiguous execution next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing M3-06 code:
-1. Rehydrate exact `af28c96` after ESV-M3-05 closeout.
-2. Preserve the 243 / 243 regression floor and all authority/lifetime/participant invariants.
-3. Expose only fully validated current-generation participant payload entries.
-4. Resolve known persisted IDs through live canonical/alias ownership.
-5. Use only live `ISaveTypedParticipant.DetachedStateType` for DTO `Type` authority.
-6. Prepare exact current-schema entries only; older fails migration-required and newer fails unsupported-newer.
-7. Resolve only already-registered serializers and require runtime-Type deserialization.
-8. Unknown payloads remain opaque and never reach serializer resolution.
-9. Produce no partial prepared batch; invoke neither `Capture` nor `Apply`; perform zero storage mutation.
-10. Keep migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.
+Before writing M3-07 code:
+1. Rehydrate exact `050bfa0` after ESV-M3-06 closeout.
+2. Preserve the 261 / 261 regression floor and all authority/lifetime/participant invariants.
+3. Add migration-step authority by current canonical participant ID + source schema version, not by CLR type name.
+4. Require every registered step to cover exactly one contiguous schema edge.
+5. Keep migration registration open-ended and duplicate-safe; Chronicle has no hardcoded migration catalog.
+6. Resolve persisted aliases to current canonical ownership before migration planning.
+7. Missing chain edges fail before any migration step executes.
+8. Execute supported participant migration chains only in memory; source generations remain immutable.
+9. Validate every step's exact target version, serializer provider ID, and serialized payload result before continuing.
+10. Record stable migration-step/version provenance without payload contents.
+11. After current schema is reached, reuse the M3-06 trusted live DTO `Type` + registered runtime-Type serializer path.
+12. Unknown payloads never enter migration planning.
+13. Invoke neither participant `Capture` nor participant `Apply`.
+14. Keep document migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.12.0 |
-| Completed checkpoint | ESV-M3-05 - Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation |
+| Package version | Runtime package `0.1.0`; Specification v1.13.0 |
+| Completed checkpoint | ESV-M3-06 - Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation |
 | Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed publication; M3-04 read-only current-generation/opaque unknown preservation; focused tests |
-| Tests passed | ESV-M3-05 focused Chronicle Editor gate `243 / 243`; Unity compile/import green |
-| Tests failed | Final ESV-M3-05 gate: `0` |
-| Known issues | None blocking M3-06 |
+| Tests passed | ESV-M3-06 focused Chronicle Editor gate `261 / 261`; Unity compile/import green |
+| Tests failed | Final ESV-M3-06 gate: `0` |
+| Known issues | None blocking M3-07 |
 | Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M3-06 active / authorized |
+| Implementation permission | ESV-M3-07 active / authorized |
 
 
 ## 30. Approval

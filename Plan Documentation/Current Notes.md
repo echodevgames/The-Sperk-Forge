@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-06 — Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
-**Current checkpoint:** ESV-M3-06 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-07 — Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
+**Current checkpoint:** ESV-M3-07 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,44 +78,47 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-05 Closeout
+## Chronicle ESV-M3-06 Closeout
 
-- Implementation commit: `af28c96`.
+- Implementation commit: `050bfa0`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **243 / 243 passed, 0 failed**.
-- The complete prior **218 / 218** Chronicle regression floor remained green.
-- Unknown snapshots now carry exact source slot/generation provenance.
-- Stale source and target-slot mismatch fail before mutation.
-- Canonical/alias ownership changes fail closed.
-- Unknown participant payload bytes and transport metadata carry forward unchanged.
-- Fresh-known + preserved-unknown transport merges deterministically.
-- Unknown payloads remain opaque and invoke no serializer or participant code.
-- Merged publication retains candidate verification, immutable generation publication, published-generation revalidation, and `head.json` LAST.
-- Successful head advance intentionally leaves the old unknown snapshot stale until re-read.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **261 / 261 passed, 0 failed**.
+- The complete prior **243 / 243** Chronicle regression floor remained green.
+- M3-06 added 18 focused preparation tests.
+- Successful current-generation reads expose one defensive-copy fully validated participant snapshot with source slot/generation provenance.
+- Known canonical and persisted-alias IDs resolve through the live participant registry.
+- Persisted ID provenance and current canonical owner remain separate.
+- Trusted detached DTO `Type` authority comes only from live `ISaveTypedParticipant` registration.
+- Current-schema known payloads deserialize through already-registered runtime-Type serializers.
+- Older known schemas return migration-required; newer schemas return unsupported-newer.
+- Unknown payloads bypass serializer resolution.
+- Any preparation failure exposes no partial prepared batch.
+- Participant `Capture` and `Apply` invocation counts remain zero.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-06 — Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation` is active / authorized.
+`ESV-M3-07 — Chronicle Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation` is active / authorized.
 
 Authorized next:
-- expose fully validated current-generation participant entries for preparation;
-- resolve known persisted IDs through current canonical/alias ownership;
-- retain persisted ID and current canonical owner separately;
-- source detached DTO `Type` only from live `ISaveTypedParticipant`;
-- prepare current-schema entries only;
-- older schema → migration-required;
-- newer schema → unsupported-newer;
-- resolve only already-registered serializer providers;
-- require runtime-Type deserialization;
-- build one deterministic all-or-nothing prepared participant batch;
-- unknown payloads remain opaque;
-- no participant `Capture`, no participant `Apply`, zero storage mutation;
-- preserve all prior **243 / 243** Chronicle regressions.
+- add stable participant migration-step IDs;
+- add explicit one-version-at-a-time participant migration-step contracts;
+- key migration authority by current canonical participant ID + source schema version;
+- add duplicate-safe migration registration/leases and deterministic registry snapshots;
+- plan exact contiguous migration chains from stored older schema to current schema;
+- bound migration depth explicitly;
+- execute every step in memory only;
+- validate each step's next version, serializer ID, and serialized payload output;
+- retain ordered stable migration provenance without payload contents;
+- integrate migrated current-version serialized payloads into the proven M3-06 trusted DTO preparation path;
+- persisted aliases first resolve current canonical ownership;
+- unknown payloads never enter migration planning;
+- no source rewrite, no participant `Capture`, and no participant `Apply`;
+- preserve all prior **261 / 261** Chronicle regressions.
 
 Still deferred:
-- participant migration registration/execution;
-- `PreparedSaveLoad` lifecycle;
-- participant apply/missing-payload default execution;
+- document migration;
+- `PreparedSaveLoad`;
+- participant apply/default/rollback orchestration;
 - production operation admission/coalescing/cancellation;
 - slots/recovery/retention/autosave;
 - peer bridges/project-wide DDOL.
@@ -303,13 +306,15 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `af28c96` after ESV-M3-05 closeout.
-2. Implement only ESV-M3-06 current-version known participant payload preparation.
-3. Use only live registration for runtime DTO `Type` authority.
-4. Resolve only already-registered serializers and require runtime-Type capability.
-5. Older participant schema fails migration-required; newer fails unsupported-newer.
-6. Unknown payloads never reach serializer resolution.
-7. Build no partial prepared batch.
-8. Invoke neither participant `Capture` nor `Apply`.
-9. Perform zero storage mutation.
-10. Keep migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.
+1. Rehydrate exact `050bfa0` after ESV-M3-06 closeout.
+2. Implement only ESV-M3-07 participant migration contracts/registry/contiguous execution.
+3. Keep migration registration open-ended; Chronicle contains no hardcoded participant migration catalog.
+4. Require one exact contiguous schema edge per step.
+5. Resolve persisted aliases to the current canonical participant owner before migration lookup.
+6. Missing steps fail before migration execution.
+7. Execute migration only in memory and never rewrite the source generation.
+8. Validate every step's target version, serializer ID, and serialized payload before continuing.
+9. After reaching current schema, reuse the M3-06 live trusted DTO `Type` + registered runtime-Type serializer preparation path.
+10. Unknown payloads never enter migration planning.
+11. Invoke neither participant `Capture` nor `Apply`.
+12. Keep document migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.
