@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M3-08 – Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-08 complete; ESV-M3-09 active / authorized
+**Updated:** August 10, 2026
+**Completed package checkpoint:** ESV-M3-09 – Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete through ESV-M3-09; ESV-M4-01 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M3-08 complete at `798d38d` with 332 / 332; ESV-M3-09 active / authorized** |
+| Chronicle implementation | **M3 complete; ESV-M3-09 complete at `568fa3a` with 366 / 366; ESV-M4-01 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -70,13 +70,13 @@ No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Fu
 
 The next package is **The Chronicle (`EchoSave`)**.
 
-Chronicle M1 and M2 are complete. M3-01 through M3-08 are now complete.
+Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
-`ESV-M3-08` is complete at `798d38d`; the focused Chronicle Editor gate passed **332 / 332**. Chronicle can now retain one exact-source validated/migrated prepared load behind a bounded opaque disposable handle with package/session ownership, deterministic expiry/disposal/invalidation, defensive unknown snapshot retention, and live-handle resource bounds.
+`ESV-M3-09` is complete at `568fa3a`; the focused Chronicle Editor gate passed **366 / 366**. Chronicle can now deterministically apply one live prepared load to compatible current participants with explicit missing-payload semantics, ownership revalidation, partial truth reporting, and replay prevention once mutation begins.
 
-`ESV-M3-09` is active / authorized for deterministic participant apply preflight/execution and missing-payload policy. Jesse approved an additive optional `ISaveDefaultableParticipant.InitializeDefault()` capability; the base `ISaveParticipant` contract remains unchanged and `Apply(null)` is not default protocol.
+`ESV-M4-01` is active / authorized and begins **M4 — Slots / Autosave / Recovery** with provider-neutral technical slot discovery, payload-free lightweight metadata rebuild from authoritative heads/current manifests, deterministic immutable catalog snapshots, and session-only active-slot selection.
 
-Rollback/compensation, production async operation admission, convenience loading, scene travel, document migration, slot catalogs, recovery, retention, autosave, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+Persistent catalog-cache optimization, physical slot mutations, production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -95,10 +95,10 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-08` is **complete** with **332 / 332** focused Chronicle Editor tests.
+`ESV-M3-09` is **complete** at `568fa3a` with **366 / 366** focused Chronicle Editor tests.
 
-`ESV-M3-09` is **active / authorized** for deterministic participant apply/missing-payload policy only.
+**M3 — Participants and Loading is complete.**
 
-The approved default-init seam is additive `ISaveDefaultableParticipant.InitializeDefault()`. The base participant contract remains unchanged.
+`ESV-M4-01` is **active / authorized** for provider-neutral slot catalog discovery, payload-free head/current-manifest metadata rebuild, deterministic immutable catalog snapshots, and session-only active-slot selection.
 
-Rollback/compensation, production async operation admission, convenience loading, scene travel, document migration, slot catalog behavior, recovery/retention/autosave, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+Persistent catalog cache, physical slot mutation, production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

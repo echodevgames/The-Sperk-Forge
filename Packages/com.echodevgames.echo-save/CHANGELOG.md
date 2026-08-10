@@ -360,3 +360,48 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - `Ignore` skips/reports.
 - `Fail` blocks during preflight.
 - `Apply(null)` is not a hidden default-initialization protocol.
+
+### Added
+
+#### ESV-M3-09 — Deterministic Participant Apply and Missing-Payload Policy Foundation
+
+- Optional public `ISaveDefaultableParticipant.InitializeDefault()` capability.
+- Unchanged base `ISaveParticipant` contract.
+- Explicit prepared-state/default/ignore apply action kinds.
+- Complete zero-callback deterministic apply preflight.
+- Current registration owner/token resolution and revalidation.
+- Prepared schema/runtime-type compatibility validation.
+- Explicit `InitializeDefault` / `Ignore` / `Fail` missing-payload behavior.
+- Prepared `Apply(detachedState)` and explicit `InitializeDefault()` execution.
+- Payload-free ordered apply reports.
+- Structured participant failure/exception conversion.
+- Accurate not-attempted tail reporting after terminal failure.
+- Live-handle retry after pure preflight rejection.
+- Terminal `Consumed` prepared-load state once execution begins.
+- Replay rejection after consumption.
+
+### Verified
+
+#### ESV-M3-09 Closeout
+
+- Implementation committed at `568fa3a`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **366 / 366**, with `0` failed.
+- All prior **332 / 332** Chronicle regressions remained green.
+- 34 new focused M3-09 tests passed.
+- Default initialization never routes through `Apply(null)`.
+- Source save files remain unchanged by apply.
+- Scene/DDOL authority remains absent.
+- **M3 — Participants and Loading is complete.**
+
+### Activated
+
+#### ESV-M4-01 — Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation
+
+- Provider-neutral technical slot discovery through an additive optional storage capability.
+- Base `ISaveStorageBackend` remains unchanged.
+- Payload-free metadata reconstruction from authoritative `head.json` + current `manifest.json`.
+- Deterministic immutable in-memory catalog snapshots.
+- Healthy/degraded slot classification.
+- Session-only active-slot selection and stale-selection reconciliation.
+- Persistent `catalog.cache.json`, physical slot mutation, autosave, retention, and recovery remain deferred.

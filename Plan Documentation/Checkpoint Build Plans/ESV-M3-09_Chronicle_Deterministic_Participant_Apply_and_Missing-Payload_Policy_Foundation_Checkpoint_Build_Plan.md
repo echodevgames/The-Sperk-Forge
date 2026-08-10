@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-10
 ---
 
@@ -12,8 +12,8 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-09
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.15.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.16.0
 **Prior checkpoint:** ESV-M3-08 — **Complete**
 **Unity baseline:** 6000.3.8f1
 **Regression baseline:** focused Chronicle Editor **332 / 332**
@@ -251,44 +251,62 @@ M3-09 tests must prove:
 - no scene/DDOL API is required;
 - all prior **332 / 332** Chronicle tests remain green.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- optional default capability public contract;
-- base `ISaveParticipant` remains unchanged;
-- apply plan determinism;
-- zero-callback preflight;
-- prepared participant owner missing;
-- stale registration owner;
-- prepared type mismatch;
-- duplicate prepared canonical ID;
-- missing policy `Fail`;
-- missing policy `Ignore`;
-- missing policy `InitializeDefault` with/without capability;
-- proof that defaulting never routes through `Apply(null)`;
-- deterministic prepared-state apply;
-- apply result failure;
-- default result failure;
-- apply/default exception conversion;
-- partial report ordering;
-- not-attempted tail reporting;
-- preflight retry leaves handle live;
-- execution consumes handle;
-- replay rejection;
-- unknown payload non-use;
-- zero storage mutation;
-- zero scene/DDOL authority;
-- prior **332 / 332** regression floor remains green.
+- optional public `ISaveDefaultableParticipant` exists as a separate additive capability — **Pass**;
+- base `ISaveParticipant` remains unchanged — **Pass**;
+- optional capability exposes only `InitializeDefault()` returning `SaveParticipantApplyResult` — **Pass**;
+- complete planning invokes zero participant/default callbacks — **Pass**;
+- deterministic canonical current-registration ordering — **Pass**;
+- prepared participant owner missing rejects before mutation — **Pass**;
+- prepared runtime detached-state type mismatch rejects — **Pass**;
+- prepared schema mismatch rejects — **Pass**;
+- duplicate prepared canonical participant rejects — **Pass**;
+- missing payload + `Fail` blocks the whole plan before mutation — **Pass**;
+- missing payload + `InitializeDefault` without optional capability rejects before mutation — **Pass**;
+- missing payload + `Ignore` produces an explicit ignore action — **Pass**;
+- missing payload + supported `InitializeDefault` produces an explicit default action — **Pass**;
+- prepared payload produces an explicit `ApplyPreparedState` action — **Pass**;
+- expired/unavailable prepared handles reject preflight — **Pass**;
+- prepared detached state applies exactly once — **Pass**;
+- default initialization calls `InitializeDefault()` exactly once and never `Apply(null)` — **Pass**;
+- ignore action invokes no participant callback — **Pass**;
+- participant-returned apply failure stops later mutating actions — **Pass**;
+- participant-returned default failure stops later mutating actions — **Pass**;
+- thrown apply/default exceptions become bounded structured failures — **Pass**;
+- registration replacement before execution rejects with zero mutation and leaves handle live — **Pass**;
+- registration loss after earlier mutation stops execution and consumes the handle — **Pass**;
+- successful reports preserve deterministic participant order — **Pass**;
+- pure preflight failure leaves the handle live — **Pass**;
+- successful execution consumes the handle and replay rejects — **Pass**;
+- unknown-only prepared load invokes no participant callback and consumes cleanly — **Pass**;
+- mixed ignore + prepared-state application reports both without hidden default semantics — **Pass**;
+- callback failure preserves source slot/generation identity in the public report — **Pass**;
+- owned participant resolution returns current participant/descriptor/ownership token — **Pass**;
+- replacement registration receives a different ownership token — **Pass**;
+- source generation/head/payload remain unmodified by apply — **Pass**;
+- scene/DDOL authority remains absent — **Pass**;
+- all prior **332 / 332** Chronicle regressions remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **366 / 366 passed, 0 failed**.
+
+Implementation commit: `568fa3a`.
+
+M3-09 added **34** focused passing tests:
+- `ISaveDefaultableParticipantTests` — 3;
+- `SaveParticipantApplyExecutorTests` — 10;
+- `SaveParticipantApplyPlannerTests` — 12;
+- `SaveParticipantRegistryOwnedResolutionTests` — 2;
+- `SavePreparedLoadApplyCoordinatorTests` — 7.
+
+Delivery note: the first implementation archive stopped before mutation because its generated Git patch was malformed. The corrected archive applied all 42 implementation files. Its post-copy CMD validator then stopped on batch-parser syntax surrounding the literal `Apply(null)` text; the applied implementation remained intact. Neither delivery-helper defect was a Chronicle runtime defect, and the final Unity gate passed **366 / 366**.
 
 ## 7. Stop point
 
-Stop when Chronicle can take one live prepared handle, prove a complete deterministic current-registration apply plan, honor all three missing-payload policies without hidden null semantics, invoke prepared/default participant mutation in deterministic order, and return an accurate partial report while consuming the handle whenever mutation execution begins.
+**Reached.** Chronicle can deterministically apply one live prepared handle to the current compatible participant set, honor `InitializeDefault` / `Ignore` / `Fail` without hidden null semantics, revalidate registration ownership, report partial truth accurately, and prevent unsafe replay after mutation execution begins.
 
-Do not add production async operation admission yet.
+**M3 — Participants and Loading is complete.**
 
-Do not add convenience loading or scene travel.
+Production async operation admission, convenience load-and-apply, scene travel, rollback/compensation, document migration, slot operations, retention, autosave, and recovery remain later bounded work.
 
-Do not add rollback fiction.
-
-The next bounded checkpoint should wrap the proven prepare/apply foundations in production operation admission/main-thread orchestration and public service behavior while preserving project-owned scene flow and package-local lifetime authority.
+The next selected bounded checkpoint begins **M4 — Slots / Autosave / Recovery** with provider-neutral slot discovery, payload-free lightweight metadata reconstruction, deterministic catalog snapshots, and session-only active-slot selection. Production save/load operation admission remains separate and may be introduced by a later bounded M4 checkpoint.

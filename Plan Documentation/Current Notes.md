@@ -3,9 +3,9 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-09 — Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation
-**Current checkpoint:** ESV-M3-09 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Last reconciled:** August 10, 2026
+**Current focus:** ESV-M4-01 — Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation
+**Current checkpoint:** ESV-M4-01 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,70 +78,78 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-08 Closeout
+## Chronicle ESV-M3-09 Closeout
 
-- Implementation commit: `798d38d`.
+- Implementation commit: `568fa3a`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **332 / 332 passed, 0 failed**.
-- The complete prior **294 / 294** Chronicle regression floor remained green.
-- M3-08 added 38 focused prepared-load tests.
-- `PreparedSaveLoad` is public, opaque, sealed, and disposable.
-- Exact source slot/generation provenance is required across validated read, prepared batch, and unknown snapshot.
-- Prepared DTO objects remain package-internal.
-- Opaque unknown payloads remain package-internal and defensively isolated.
-- Owner token/session epoch rejects cross-owner and stale-token access.
-- Disposal is idempotent.
-- Expiry is deterministic through an injected UTC clock seam.
-- Session/owner invalidate-all releases owned state.
-- Positive live-handle count and aggregate source transport-byte bounds are enforced.
-- Capacity releases on dispose/expiry/invalidation.
-- Participant `Capture` and `Apply` invocation counts remain zero.
-- Storage/publication mutation and scene/DDOL authority remain absent.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **366 / 366 passed, 0 failed**.
+- The complete prior **332 / 332** Chronicle regression floor remained green.
+- M3-09 added 34 focused participant-apply tests.
+- Optional `ISaveDefaultableParticipant.InitializeDefault()` is additive; base `ISaveParticipant` remains unchanged.
+- Complete apply planning invokes zero participant/default callbacks.
+- Prepared owner/schema/runtime-type and duplicate prepared identity checks fail before mutation.
+- Missing-payload `Fail` blocks before mutation.
+- Missing-payload `Ignore` invokes no callback.
+- Missing-payload `InitializeDefault` requires the optional capability.
+- Default initialization never uses `Apply(null)`.
+- Prepared state invokes exactly `Apply(detachedState)`.
+- Registration ownership tokens are revalidated before callbacks.
+- Pure preflight failure leaves the handle live for repair/retry.
+- Once execution begins, terminal success/failure consumes the handle and replay rejects.
+- Participant-returned failure/exception produces bounded structured partial reporting.
+- Chronicle does not pretend arbitrary participant mutation is transactionally rollback-capable.
+- Source save generation/head/payload remain unchanged.
+- Scene/DDOL authority remains absent.
 
-## Approved M3-09 Architecture Decision
+## Chronicle M3 Milestone Closeout
 
-Jesse approved additive optional default initialization:
+**M3 — Participants and Loading is complete.**
 
-`ISaveDefaultableParticipant.InitializeDefault()`
+Completed M3 capabilities now include:
+- open-ended participant contracts and duplicate-safe registry;
+- detached capture and participant-backed immutable publication;
+- opaque unknown-payload preservation and source-fresh carry-forward;
+- trusted current-version payload preparation;
+- contiguous participant migration;
+- bounded prepared-load handle lifetime/session ownership;
+- deterministic ownership-revalidated participant apply and missing-payload policy.
 
-Authority:
-- do not modify the base `ISaveParticipant` contract;
-- do not encode default initialization as `Apply(null)`;
-- `InitializeDefault` missing-payload policy requires the optional capability;
-- `Ignore` skips/reports;
-- `Fail` rejects during complete preflight before participant mutation.
+## Active Chronicle M4 Slice
 
-## Active Chronicle M3 Slice
+`ESV-M4-01 — Chronicle Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation` is active / authorized.
 
-`ESV-M3-09 — Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation` is active / authorized.
+M4-01 records ESV-D-023:
+- core catalog discovery remains provider-neutral;
+- base `ISaveStorageBackend` stays unchanged;
+- slot enumeration is an additive optional storage capability;
+- the default local backend implements it;
+- catalog core must not reach through local `RootPath` or use direct `System.IO` for slot discovery.
 
 Authorized next:
-- add optional public `ISaveDefaultableParticipant`;
-- complete apply preflight before any participant mutation;
-- plan deterministic current-registration apply actions;
-- require current owner for every prepared participant entry;
-- validate prepared detached-state compatibility against current owner;
-- classify every current participant missing a prepared payload by `InitializeDefault` / `Ignore` / `Fail`;
-- block `Fail` before mutation;
-- require optional default capability before mutation;
-- invoke `Apply(detachedState)` only for prepared state;
-- invoke `InitializeDefault()` only for explicit default actions;
-- never call `Apply(null)` as default protocol;
-- revalidate registration ownership before callbacks;
-- produce detailed ordered apply/ignore/default/failure/not-attempted reporting;
-- leave handle live on zero-callback preflight rejection;
-- consume handle once participant/default execution begins;
-- stop at first terminal callback failure without pretending arbitrary rollback occurred;
-- preserve source save immutability and unknown payload opacity;
-- preserve all prior **332 / 332** Chronicle regressions.
+- discover immediate technical slot children beneath `slots` through the optional provider capability;
+- treat missing `slots` root as a successful empty catalog;
+- reject invalid child names as slots;
+- read only `head.json` + the current generation's `manifest.json` for normal catalog rebuild;
+- never read `payload.json` merely to list slots;
+- construct lightweight healthy/degraded slot metadata;
+- preserve corrupt/unhealthy valid technical slots as non-selectable metadata rather than silently erasing them;
+- replace the immutable in-memory catalog snapshot only after a trustworthy complete scan;
+- preserve the previous snapshot on untrustworthy refresh failure;
+- maintain session-only active-slot select/no-change/reject/clear behavior;
+- clear stale active selection if a successful refresh removes or invalidates it;
+- keep active selection non-durable;
+- preserve all prior **366 / 366** Chronicle regressions.
 
 Still deferred:
-- participant rollback/compensation contract;
-- production async prepare/apply admission/cancellation;
-- convenience load-and-apply;
-- scene travel/Passage integration;
+- persistent `catalog.cache.json` optimization;
+- physical slot create/rename/duplicate/delete;
+- full slot-policy/configuration expansion;
+- production save/load operation admission/coalescing/cancellation;
+- autosave;
+- retention;
+- recovery;
 - document migration;
-- slots/recovery/retention/autosave;
+- scene travel/Passage integration;
 - peer bridges/project-wide DDOL.
 
 ## Suite Distribution Kit Standard
@@ -327,18 +335,16 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `798d38d` after ESV-M3-08 closeout.
-2. Implement only ESV-M3-09 deterministic participant apply/missing-payload policy.
-3. Add optional `ISaveDefaultableParticipant.InitializeDefault()` without changing `ISaveParticipant`.
-4. Build complete deterministic apply preflight before the first callback.
-5. Require every prepared participant to have a compatible current registration.
-6. Classify every missing current payload as `InitializeDefault`, `Ignore`, or `Fail`.
-7. Reject `Fail` and missing default capability before mutation.
-8. Never use `Apply(null)` as default initialization.
-9. Revalidate participant registration ownership before mutation callbacks.
-10. Invoke prepared `Apply(detachedState)` and explicit `InitializeDefault()` only in deterministic plan order.
-11. Return ordered structured partial apply reporting without raw payload/DTO exposure.
-12. Leave handle live after zero-callback preflight rejection.
-13. Consume handle once callback execution begins, including partial failure.
-14. Add no rollback fiction, storage mutation, scene travel, document migration, production operation admission, slots, recovery/retention/autosave, peer bridges, service locator, or DDOL.
-15. Preserve the **332 / 332** Chronicle regression floor.
+1. Rehydrate exact `568fa3a` after ESV-M3-09 closeout.
+2. Implement only ESV-M4-01 slot catalog/metadata rebuild/session selection.
+3. Add provider-neutral slot discovery as an additive optional storage capability; do not change base `ISaveStorageBackend`.
+4. Keep catalog core free of direct local-filesystem discovery logic.
+5. Discover only valid technical `SaveSlotId` children beneath `slots`.
+6. Rebuild metadata from authoritative `head.json` + current `manifest.json` only.
+7. Prove normal catalog refresh reads zero participant payload files.
+8. Preserve valid technical but unhealthy slots as degraded/non-selectable catalog entries.
+9. Replace live catalog snapshot only after a trustworthy complete scan; preserve prior snapshot on untrustworthy failure.
+10. Add session-only active-slot selection/clear/reconciliation with zero durable writes.
+11. Do not auto-select after refresh.
+12. Add no persistent catalog cache, physical slot mutation, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
+13. Preserve the **366 / 366** Chronicle regression floor.

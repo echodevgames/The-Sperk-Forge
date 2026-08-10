@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.15.0
+**Specification version:** 1.16.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -16,11 +16,11 @@
 **Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`
 **Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 9, 2026
+**Last updated:** August 10, 2026
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 through ESV-M3-08 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-09` is the active deterministic participant apply/missing-payload policy checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and Chronicle M3 through ESV-M3-09 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M4-01` is the active slot catalog/metadata rebuild/session-selection checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -47,6 +47,7 @@
 | 1.13.0 | 2026-08-09 | Approved | Closed ESV-M3-06 at `050bfa0` with focused Chronicle Editor evidence `261 / 261`; activated ESV-M3-07 explicit participant migration-step contracts, duplicate-safe migration registration, deterministic contiguous in-memory chain execution, migration provenance, and older-known-payload integration into current-version preparation while keeping document migration, prepared-load lifecycle, participant apply, production operation admission, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.14.0 | 2026-08-09 | Approved | Closed ESV-M3-07 at `d96936f` with focused Chronicle Editor evidence `294 / 294`; activated ESV-M3-08 bounded public disposable prepared-load handle lifecycle, exact source-provenance binding, package/session ownership, expiry/disposal/invalidation, opaque unknown snapshot binding, and live-handle resource admission while keeping participant apply, document migration, production operation admission, scene travel, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.15.0 | 2026-08-10 | Approved | Closed ESV-M3-08 at `798d38d` with focused Chronicle Editor evidence `332 / 332`; activated ESV-M3-09 deterministic participant apply/missing-payload policy and approved additive optional `ISaveDefaultableParticipant.InitializeDefault()` while keeping base `ISaveParticipant` unchanged, rejecting `Apply(null)` default semantics, and deferring rollback/compensation, production operation admission, scene travel, document migration, slots, recovery, retention, and autosave. | Jesse “Echo” Adams |
+| 1.16.0 | 2026-08-10 | Approved | Closed ESV-M3-09 at `568fa3a` with focused Chronicle Editor evidence `366 / 366`, completing M3 Participants and Loading; activated ESV-M4-01 provider-neutral slot discovery, payload-free head/current-manifest metadata rebuild, deterministic catalog snapshots, and session-only active-slot selection; added ESV-D-023 keeping base `ISaveStorageBackend` unchanged while catalog discovery uses an additive optional provider capability. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1881,6 +1882,7 @@ Project-specific migration tooling must:
 | ESV-D-020 | Foundation implementation remains locked after this approval | Approved | Documentation-first gate | Workshop and consistency review come first |
 | ESV-D-021 | Durable persistence, runtime truth, and Unity object lifetime remain separate; Chronicle root authority is package-local and peer persistence uses optional adapters | Approved | SFGSS-ADR-006 prevents Chronicle/First Light/global-root coupling before implementation | ESV-M1-01 proves only package-local lifecycle; future peer persistence requires bridges/adapters |
 | ESV-D-022 | Missing-payload default initialization is an additive optional `ISaveDefaultableParticipant.InitializeDefault()` capability; base `ISaveParticipant` remains unchanged and `Apply(null)` is not a default protocol signal | Approved | Keeps existing participant implementations source-compatible and makes default initialization explicit rather than encoding hidden null semantics | `InitializeDefault` policy requires the optional capability during apply preflight; missing capability fails before mutation |
+| ESV-D-023 | Slot-catalog discovery is provider-neutral through an additive optional storage enumeration capability; base `ISaveStorageBackend` remains unchanged and catalog core does not reach through local `RootPath`/`System.IO` | Approved | Preserves storage-provider neutrality and source compatibility while enabling authoritative slot discovery | Local backend implements bounded immediate-child discovery; providers lacking the capability report catalog refresh unavailable/unsupported |
 
 ### 27.2 Release-blocking questions
 
@@ -2201,39 +2203,59 @@ Outcome achieved:
 - implementation commit `798d38d`;
 - focused Chronicle Editor gate **332 / 332**.
 
-### 28.16 Active deterministic participant apply checkpoint
+### 28.16 Completed deterministic participant apply checkpoint
 
 **ESV-M3-09 - Deterministic participant apply and missing-payload policy foundation**
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
-Approved participant-contract decision:
-- add optional public `ISaveDefaultableParticipant`;
-- it exposes `SaveParticipantApplyResult InitializeDefault()`;
-- do not modify base `ISaveParticipant`;
-- do not use `Apply(null)` as default-initialization protocol.
-
-Outcome:
-- complete apply preflight before participant mutation;
-- deterministic apply plan from the current participant registry;
-- prepared participant entries require compatible current owners;
-- missing payload `Fail` rejects before mutation;
-- missing payload `Ignore` skips/reports with no callback;
-- missing payload `InitializeDefault` requires `ISaveDefaultableParticipant` before mutation;
-- prepared payload calls `Apply(detachedState)`;
-- default path calls `InitializeDefault()`;
-- participant registration ownership is revalidated before callbacks;
-- unknown opaque payloads never become apply actions;
-- ordered structured apply/default/ignore/failure/not-attempted reporting;
-- pure zero-callback preflight failure leaves the handle live for retry;
-- once callback execution begins the handle is consumed at terminal result;
-- participant-returned failures/exceptions stop later mutating actions;
-- no promise of transactional rollback for arbitrary participant logic;
+Outcome achieved:
+- additive optional public `ISaveDefaultableParticipant.InitializeDefault()`;
+- unchanged base `ISaveParticipant` contract;
+- complete zero-callback apply preflight;
+- deterministic current-registration apply plan;
+- prepared owner/schema/runtime-type compatibility checks;
+- current registration ownership-token capture and revalidation;
+- explicit `InitializeDefault` / `Ignore` / `Fail` missing-payload behavior;
+- no `Apply(null)` default protocol;
+- prepared `Apply(detachedState)` execution;
+- explicit `InitializeDefault()` execution;
+- payload-free ordered partial reporting;
+- structured participant-returned failure/exception handling;
+- pure preflight rejection leaves handle live;
+- execution consumes handle and replay rejects;
 - source immutable generation remains unchanged;
 - no scene/DDOL authority;
-- preserve all **332 / 332** prior focused regressions.
+- implementation commit `568fa3a`;
+- focused Chronicle Editor gate **366 / 366**.
 
-Stop point: Chronicle can deterministically apply one live prepared load to the current compatible participant set, honor every missing-payload policy through explicit contracts, report partial truth accurately, and prevent unsafe replay after mutation begins. Production async operation admission, convenience loading, scene travel, rollback/compensation, document migration, slots, recovery, retention, and autosave remain later bounded work.
+**M3 — Participants and Loading is complete.**
+
+### 28.17 Active slot catalog and session-selection checkpoint
+
+**ESV-M4-01 - Slot catalog, metadata rebuild, and active-session selection foundation**
+
+**Status:** Active / authorized.
+
+Architecture:
+- slot catalog is derived runtime state, never gameplay truth or sole durable authority;
+- technical slot identity remains `SaveSlotId`, independent from display names;
+- catalog reconstruction uses authoritative slot `head.json` and current `manifest.json` only;
+- normal catalog refresh does not read participant `payload.json`;
+- base `ISaveStorageBackend` remains unchanged;
+- provider-neutral slot discovery uses additive optional storage enumeration capability (ESV-D-023);
+- default local backend implements bounded immediate-child discovery without exposing physical paths to catalog models;
+- valid technical but unhealthy slots remain discoverable as degraded/non-selectable metadata;
+- a trustworthy complete refresh atomically replaces the immutable in-memory snapshot;
+- untrustworthy overall refresh failure preserves the prior snapshot;
+- active slot selection is session-only, starts unset, never auto-selects, and clears when a successful refresh removes/invalidates the selected slot;
+- active selection performs no durable write;
+- persistent `catalog.cache.json` optimization remains deferred until authoritative rebuild behavior is proven;
+- physical slot create/rename/duplicate/delete remain deferred;
+- production save/load operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL remain deferred;
+- preserve all **366 / 366** prior focused regressions.
+
+Stop point: Chronicle can deterministically discover technical slots through provider-neutral storage capability, reconstruct payload-free lightweight metadata from authoritative head/current-manifest documents, represent healthy/degraded catalog state without losing valid technical slots, preserve the last complete snapshot across untrustworthy refresh failure, and maintain safe session-only active-slot selection.
 
 ## 29. New-Conversation Handoff
 
@@ -2246,47 +2268,45 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.15.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08
-Current milestone/checkpoint: ESV-M3-09 active / authorized
+Current specification version: 1.16.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09
+Current milestone/checkpoint: ESV-M4-01 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 durable transaction plus M3-01 registry, M3-02 detached capture, M3-03 participant-backed publication, M3-04 opaque unknown preservation, M3-05 source-fresh collision-safe carry-forward, M3-06 current-version participant preparation, M3-07 contiguous participant migration, and M3-08 prepared-load lifecycle/session ownership are complete; deterministic participant apply/missing-payload policy next
+Current implementation status: M2 durable transaction and M3 participant/loading stack through deterministic participant apply are complete at 366 / 366; M4-01 slot catalog/metadata rebuild/session selection next
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing M3-09 code:
-1. Rehydrate exact `798d38d` after ESV-M3-08 closeout.
-2. Preserve the 332 / 332 regression floor and all prepared-handle ownership/lifetime invariants.
-3. Add optional `ISaveDefaultableParticipant.InitializeDefault()` without modifying `ISaveParticipant`.
-4. Never encode default initialization as `Apply(null)`.
-5. Complete the entire current-registration apply preflight before the first callback.
-6. Require a compatible current registration for every prepared participant entry.
-7. Classify missing current payloads by `InitializeDefault`, `Ignore`, or `Fail`.
-8. Reject `Fail` and missing default capability before mutation.
-9. Revalidate registration ownership before participant/default callbacks.
-10. Invoke `Apply(detachedState)` only for prepared payload actions.
-11. Invoke `InitializeDefault()` only for explicit default actions.
-12. Keep opaque unknown payloads entirely outside apply planning/execution.
-13. Return ordered structured participant apply reporting without exposing DTO/payload bodies.
-14. Leave the handle live on zero-callback preflight rejection.
-15. Consume the handle once callback execution begins; do not promise automatic rollback of arbitrary participant mutations.
-16. Add no storage mutation, scene travel, document migration, production operation admission, slots, recovery/retention/autosave, peer bridges, service locator, or DDOL.
+Before writing M4-01 code:
+1. Rehydrate exact `568fa3a` after ESV-M3-09 closeout.
+2. Preserve the 366 / 366 regression floor and all M3 participant/loading invariants.
+3. Add provider-neutral technical slot discovery as an additive optional storage capability; do not change base `ISaveStorageBackend`.
+4. Keep catalog core free of direct local-filesystem slot enumeration and physical path exposure.
+5. Treat a missing `slots` root as a successful empty catalog.
+6. Accept only canonical technical `SaveSlotId` child names as slot candidates.
+7. Read only `head.json` and the current generation's `manifest.json` for normal catalog reconstruction; do not read participant payloads.
+8. Represent valid technical but unhealthy slots as degraded/non-selectable metadata rather than silently erasing them.
+9. Sort catalog entries deterministically by canonical technical slot ID.
+10. Replace the live immutable snapshot only after a trustworthy complete scan; preserve the prior snapshot on untrustworthy overall refresh failure.
+11. Keep active slot selection session-only, unset by default, explicit, and non-durable.
+12. Reject unknown/unhealthy selection without changing the prior selection; clear stale selection after successful catalog replacement.
+13. Do not auto-select after refresh.
+14. Add no persistent catalog cache, physical slot create/rename/duplicate/delete, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.15.0 |
-| Completed checkpoint | ESV-M3-08 - Prepared-Load Handle Lifecycle and Session Ownership Foundation |
+| Package version | Runtime package `0.1.0`; Specification v1.16.0 |
+| Completed checkpoint | ESV-M3-09 - Deterministic Participant Apply and Missing-Payload Policy Foundation |
 | Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed publication; M3-04 read-only current-generation/opaque unknown preservation; focused tests |
-| Tests passed | ESV-M3-08 focused Chronicle Editor gate `332 / 332`; Unity compile/import green |
-| Tests failed | Final ESV-M3-08 gate: `0` |
-| Known issues | None blocking M3-09 |
-| Decisions added | ESV-D-001 through ESV-D-022; ESV-D-022 approves optional explicit participant default initialization |
+| Tests passed | ESV-M3-09 focused Chronicle Editor gate `366 / 366`; Unity compile/import green |
+| Tests failed | Final ESV-M3-09 gate: `0` |
+| Known issues | None blocking M4-01 |
+| Decisions added | ESV-D-001 through ESV-D-023; ESV-D-023 preserves provider-neutral catalog discovery through an additive storage capability |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M3-09 active / authorized |
+| Implementation permission | ESV-M4-01 active / authorized |
 
 
 ## 30. Approval
