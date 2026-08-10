@@ -5,8 +5,8 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Primary package-local Chronicle service surface.
     ///
-    /// M4-04 adds the first public active-slot manual-save operation while
-    /// autosave and the remaining mutating operations stay deferred.
+    /// M4-05 adds explicit caller-triggered autosave submission with one
+    /// latest-wins pending request while reusing M4-04 admission and save truth.
     /// </summary>
     public interface IEchoSaveService
     {
@@ -18,6 +18,9 @@ namespace EchoDevGames.EchoSave
 
         Awaitable<SaveOperationResult> SaveAsync(
             SaveRequest request);
+
+        AutosaveSubmissionResult RequestAutosave(
+            AutosaveRequest request);
 
         Awaitable<EchoSaveLifecycleResult> ShutdownAsync();
     }

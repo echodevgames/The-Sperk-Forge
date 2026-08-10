@@ -4,12 +4,11 @@ using UnityEngine;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// Chronicle lifecycle and bounded public manual-save service.
+    /// Chronicle lifecycle, public manual-save, and bounded autosave service.
     ///
-    /// M4-04 adds the first public active-slot SaveAsync facade plus one
-    /// root-local mutating-operation admission authority. Autosave, generic
-    /// queue policy, retention, recovery, and later slot operations remain
-    /// intentionally deferred.
+    /// M4-05 adds explicit caller-triggered autosave submission with one
+    /// latest-wins pending request. Manual save and autosave reuse the same
+    /// root-local admission authority and the same durable save transaction.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
@@ -33,6 +32,10 @@ namespace EchoDevGames.EchoSave
         private ISaveManualTransactionExecutor
             manualSaveTransactionExecutor;
 
+        private PendingAutosaveRequest pendingAutosave;
+        private long nextAutosaveTicketId;
+        private bool drainingPendingAutosave;
+
         internal EchoSaveService(
             EchoSaveConfiguration configuration)
         {
@@ -43,6 +46,9 @@ namespace EchoDevGames.EchoSave
                 DefaultEchoSaveStorageBackendFactory.Instance;
             state =
                 EchoSaveServiceState.AuthorityClaimed;
+
+            saveOperationAdmission.AvailabilityBecameAvailable +=
+                OnOperationAdmissionAvailable;
         }
 
         public EchoSaveServiceState State =>
@@ -66,6 +72,11 @@ namespace EchoDevGames.EchoSave
             return SaveCore(
                 request);
         }
+
+        public AutosaveSubmissionResult RequestAutosave(
+            AutosaveRequest request) =>
+            RequestAutosaveCore(
+                request);
 
         public async Awaitable<EchoSaveLifecycleResult>
             ShutdownAsync()
@@ -120,6 +131,9 @@ namespace EchoDevGames.EchoSave
             storageBackend = null;
 
             saveOperationAdmission.Close();
+            DiscardPendingAutosave(
+                EchoSaveDiagnosticCodes.AutosaveDiscarded,
+                "The Chronicle autosave runtime was reset before initialization.");
             ResetManualSaveRuntime();
         }
 
@@ -147,6 +161,9 @@ namespace EchoDevGames.EchoSave
             }
 
             saveOperationAdmission.Close();
+            DiscardPendingAutosave(
+                EchoSaveDiagnosticCodes.AutosaveDiscarded,
+                "The Chronicle cleared pending autosave state before initialization.");
             ResetManualSaveRuntime();
 
             state =
@@ -254,6 +271,9 @@ namespace EchoDevGames.EchoSave
                 EchoSaveServiceState.ShuttingDown;
 
             saveOperationAdmission.Close();
+            DiscardPendingAutosave(
+                EchoSaveDiagnosticCodes.AutosaveDiscarded,
+                "The Chronicle discarded the pending autosave because shutdown closed new admission.");
 
             if (saveOperationAdmission.IsOccupied)
             {
@@ -307,6 +327,9 @@ namespace EchoDevGames.EchoSave
                 EchoSaveServiceState.ShuttingDown;
 
             saveOperationAdmission.Close();
+            DiscardPendingAutosave(
+                EchoSaveDiagnosticCodes.AutosaveDiscarded,
+                "The Chronicle discarded the pending autosave during immediate shutdown.");
 
             if (storageBackend != null)
             {
@@ -327,6 +350,20 @@ namespace EchoDevGames.EchoSave
                 SaveRequest request) =>
             SaveCore(
                 request);
+
+        internal AutosaveSubmissionResult
+            RequestAutosaveSynchronouslyForTesting(
+                AutosaveRequest request) =>
+            RequestAutosaveCore(
+                request);
+
+        internal int PendingAutosaveCountForTesting =>
+            pendingAutosave == null
+                ? 0
+                : 1;
+
+        internal AutosaveTicket PendingAutosaveTicketForTesting =>
+            pendingAutosave?.Ticket;
 
         internal void SetManualSaveTransactionExecutorForTesting(
             ISaveManualTransactionExecutor executor)
@@ -438,45 +475,439 @@ namespace EchoDevGames.EchoSave
 
             using (lease)
             {
-                if (request.CancellationToken
-                    .IsCancellationRequested)
-                {
-                    return Failure(
-                        SaveOperationStatus.Canceled,
-                        EchoSaveDiagnosticCodes
-                            .ManualSaveCanceled,
-                        "The Chronicle manual-save request was canceled before transaction execution.",
-                        SaveCancellationDisposition.Canceled);
-                }
-
-                if (manualSaveTransactionExecutor == null)
-                {
-                    return Failure(
-                        SaveOperationStatus.ServiceNotReady,
-                        EchoSaveDiagnosticCodes
-                            .PublicSaveServiceNotReady,
-                        "The Chronicle manual-save transaction runtime is unavailable.");
-                }
-
-                SaveManualTransactionControl control =
-                    new SaveManualTransactionControl(
-                        request.CancellationToken);
-
-                SaveManualTransactionResult transaction =
-                    manualSaveTransactionExecutor.Save(
-                        new SaveManualTransactionRequest(
-                            request.ProjectId,
-                            request.ProjectVersion,
-                            request.BuildId),
-                        control);
-
-                return MapManualSaveResult(
-                    transaction,
-                    control,
-                    request.CancellationToken
-                        .IsCancellationRequested);
+                return ExecuteSaveUnderAdmission(
+                    request);
             }
         }
+
+        private SaveOperationResult ExecuteSaveUnderAdmission(
+            SaveRequest request)
+        {
+            if (request.CancellationToken
+                .IsCancellationRequested)
+            {
+                return Failure(
+                    SaveOperationStatus.Canceled,
+                    EchoSaveDiagnosticCodes
+                        .ManualSaveCanceled,
+                    "The Chronicle save request was canceled before transaction execution.",
+                    SaveCancellationDisposition.Canceled);
+            }
+
+            if (manualSaveTransactionExecutor == null)
+            {
+                return Failure(
+                    SaveOperationStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes
+                        .PublicSaveServiceNotReady,
+                    "The Chronicle save transaction runtime is unavailable.");
+            }
+
+            SaveManualTransactionControl control =
+                new SaveManualTransactionControl(
+                    request.CancellationToken);
+
+            SaveManualTransactionResult transaction =
+                manualSaveTransactionExecutor.Save(
+                    new SaveManualTransactionRequest(
+                        request.ProjectId,
+                        request.ProjectVersion,
+                        request.BuildId),
+                    control);
+
+            return MapManualSaveResult(
+                transaction,
+                control,
+                request.CancellationToken
+                    .IsCancellationRequested);
+        }
+
+        private AutosaveSubmissionResult RequestAutosaveCore(
+            AutosaveRequest request)
+        {
+            if (!TryValidateAutosaveSubmission(
+                    request,
+                    out AutosaveSubmissionStatus rejectionStatus,
+                    out string diagnosticCode,
+                    out string message))
+            {
+                return AutosaveRejected(
+                    rejectionStatus,
+                    diagnosticCode,
+                    message);
+            }
+
+            AutosaveTicket ticket =
+                CreateAutosaveTicket();
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Closed)
+            {
+                ticket.MarkDiscarded(
+                    EchoSaveDiagnosticCodes
+                        .AutosaveAdmissionClosed,
+                    "The Chronicle autosave request was rejected because mutating admission is closed.",
+                    false);
+
+                return AutosaveRejected(
+                    AutosaveSubmissionStatus
+                        .RejectedAdmissionClosed,
+                    EchoSaveDiagnosticCodes
+                        .AutosaveAdmissionClosed,
+                    ticket.Message);
+            }
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Admitted)
+            {
+                SaveOperationResult result;
+
+                using (lease)
+                {
+                    ticket.MarkExecuting();
+
+                    result =
+                        ExecuteAutosaveUnderAdmission(
+                            request);
+
+                    ticket.Complete(
+                        result);
+                }
+
+                return new AutosaveSubmissionResult(
+                    AutosaveSubmissionStatus.Executed,
+                    EchoSaveDiagnosticCodes
+                        .AutosaveExecuted,
+                    "The Chronicle admitted and executed this autosave request.",
+                    ticket,
+                    null,
+                    true,
+                    result);
+            }
+
+            AutosaveTicket superseded =
+                pendingAutosave?.Ticket;
+
+            if (superseded != null)
+            {
+                superseded.MarkSuperseded();
+            }
+
+            ticket.MarkPending(
+                superseded == null
+                    ? EchoSaveDiagnosticCodes
+                        .AutosavePending
+                    : EchoSaveDiagnosticCodes
+                        .AutosaveCoalesced,
+                superseded == null
+                    ? "The Chronicle retained this autosave as the one pending latest request."
+                    : "The Chronicle replaced the prior pending autosave with this newer latest request.");
+
+            pendingAutosave =
+                new PendingAutosaveRequest(
+                    request,
+                    ticket);
+
+            return new AutosaveSubmissionResult(
+                superseded == null
+                    ? AutosaveSubmissionStatus.Pending
+                    : AutosaveSubmissionStatus.Coalesced,
+                superseded == null
+                    ? EchoSaveDiagnosticCodes
+                        .AutosavePending
+                    : EchoSaveDiagnosticCodes
+                        .AutosaveCoalesced,
+                ticket.Message,
+                ticket,
+                superseded,
+                false,
+                default);
+        }
+
+        private SaveOperationResult ExecuteAutosaveUnderAdmission(
+            AutosaveRequest request) =>
+            ExecuteSaveUnderAdmission(
+                new SaveRequest(
+                    request.ProjectId,
+                    request.ProjectVersion,
+                    request.BuildId,
+                    request.CancellationToken));
+
+        private void OnOperationAdmissionAvailable()
+        {
+            if (drainingPendingAutosave ||
+                pendingAutosave == null)
+            {
+                return;
+            }
+
+            DrainPendingAutosave();
+        }
+
+        private void DrainPendingAutosave()
+        {
+            if (drainingPendingAutosave)
+            {
+                return;
+            }
+
+            drainingPendingAutosave =
+                true;
+
+            try
+            {
+                PendingAutosaveRequest pending =
+                    pendingAutosave;
+
+                if (pending == null)
+                {
+                    return;
+                }
+
+                pendingAutosave =
+                    null;
+
+                if (!TryValidateAutosaveSubmission(
+                        pending.Request,
+                        out AutosaveSubmissionStatus rejectionStatus,
+                        out string diagnosticCode,
+                        out string message))
+                {
+                    pending.Ticket.MarkDiscarded(
+                        diagnosticCode,
+                        message,
+                        rejectionStatus ==
+                            AutosaveSubmissionStatus
+                                .RejectedCanceled);
+
+                    return;
+                }
+
+                SaveOperationAdmissionStatus admission =
+                    saveOperationAdmission.TryAcquire(
+                        out SaveOperationAdmissionLease lease);
+
+                if (admission ==
+                    SaveOperationAdmissionStatus.Closed)
+                {
+                    pending.Ticket.MarkDiscarded(
+                        EchoSaveDiagnosticCodes
+                            .AutosaveAdmissionClosed,
+                        "The Chronicle discarded the pending autosave because admission closed before execution.",
+                        false);
+
+                    return;
+                }
+
+                if (admission ==
+                    SaveOperationAdmissionStatus.Busy)
+                {
+                    pendingAutosave =
+                        pending;
+
+                    return;
+                }
+
+                using (lease)
+                {
+                    pending.Ticket.MarkExecuting();
+
+                    SaveOperationResult result =
+                        ExecuteAutosaveUnderAdmission(
+                            pending.Request);
+
+                    pending.Ticket.Complete(
+                        result);
+                }
+            }
+            finally
+            {
+                drainingPendingAutosave =
+                    false;
+            }
+
+            if (pendingAutosave != null &&
+                state ==
+                    EchoSaveServiceState.Ready &&
+                !saveOperationAdmission.IsClosed &&
+                !saveOperationAdmission.IsOccupied)
+            {
+                DrainPendingAutosave();
+            }
+        }
+
+        private bool TryValidateAutosaveSubmission(
+            AutosaveRequest request,
+            out AutosaveSubmissionStatus rejectionStatus,
+            out string diagnosticCode,
+            out string message)
+        {
+            rejectionStatus =
+                default;
+
+            diagnosticCode =
+                string.Empty;
+
+            message =
+                string.Empty;
+
+            if (state !=
+                EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state ==
+                        EchoSaveServiceState.ShuttingDown ||
+                    state ==
+                        EchoSaveServiceState.Shutdown;
+
+                rejectionStatus =
+                    admissionClosed
+                        ? AutosaveSubmissionStatus
+                            .RejectedAdmissionClosed
+                        : AutosaveSubmissionStatus
+                            .RejectedServiceNotReady;
+
+                diagnosticCode =
+                    admissionClosed
+                        ? EchoSaveDiagnosticCodes
+                            .AutosaveAdmissionClosed
+                        : EchoSaveDiagnosticCodes
+                            .AutosaveServiceNotReady;
+
+                message =
+                    admissionClosed
+                        ? "The Chronicle is not accepting autosave requests after shutdown admission closes."
+                        : "The Chronicle must be Ready before autosave can be requested.";
+
+                return false;
+            }
+
+            if (!Bounded(
+                    request.ProjectId) ||
+                !Bounded(
+                    request.ProjectVersion) ||
+                !Bounded(
+                    request.BuildId))
+            {
+                rejectionStatus =
+                    AutosaveSubmissionStatus
+                        .RejectedInvalidRequest;
+
+                diagnosticCode =
+                    EchoSaveDiagnosticCodes
+                        .AutosaveInvalidRequest;
+
+                message =
+                    "Chronicle autosave metadata must be non-null and no longer than 256 characters per field.";
+
+                return false;
+            }
+
+            if (request.CancellationToken
+                .IsCancellationRequested)
+            {
+                rejectionStatus =
+                    AutosaveSubmissionStatus
+                        .RejectedCanceled;
+
+                diagnosticCode =
+                    EchoSaveDiagnosticCodes
+                        .AutosaveCanceled;
+
+                message =
+                    "The Chronicle autosave request was already canceled.";
+
+                return false;
+            }
+
+            if (!HasSelectableActiveSlot())
+            {
+                rejectionStatus =
+                    AutosaveSubmissionStatus
+                        .RejectedNoActiveSlot;
+
+                diagnosticCode =
+                    EchoSaveDiagnosticCodes
+                        .AutosaveNoActiveSlot;
+
+                message =
+                    "Chronicle autosave requires one explicitly selected healthy active slot.";
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool HasSelectableActiveSlot()
+        {
+            if (slotCatalog == null ||
+                !slotCatalog.HasActiveSlot)
+            {
+                return false;
+            }
+
+            return slotCatalog.Snapshot.TryGetEntry(
+                       slotCatalog.ActiveSlotId,
+                       out SaveSlotCatalogEntry entry) &&
+                   entry != null &&
+                   entry.IsSelectable;
+        }
+
+        private AutosaveTicket CreateAutosaveTicket()
+        {
+            if (nextAutosaveTicketId ==
+                long.MaxValue)
+            {
+                nextAutosaveTicketId =
+                    0L;
+            }
+
+            long id =
+                ++nextAutosaveTicketId;
+
+            if (id == 0L)
+            {
+                id =
+                    ++nextAutosaveTicketId;
+            }
+
+            return new AutosaveTicket(
+                id);
+        }
+
+        private void DiscardPendingAutosave(
+            string diagnosticCode,
+            string message)
+        {
+            PendingAutosaveRequest pending =
+                pendingAutosave;
+
+            pendingAutosave =
+                null;
+
+            pending?.Ticket.MarkDiscarded(
+                diagnosticCode,
+                message,
+                false);
+        }
+
+        private static AutosaveSubmissionResult AutosaveRejected(
+            AutosaveSubmissionStatus status,
+            string diagnosticCode,
+            string message) =>
+            new AutosaveSubmissionResult(
+                status,
+                diagnosticCode,
+                message,
+                null,
+                null,
+                false,
+                default);
 
         private void BuildManualSaveRuntime()
         {
@@ -559,6 +990,9 @@ namespace EchoDevGames.EchoSave
             string message)
         {
             saveOperationAdmission.Close();
+            DiscardPendingAutosave(
+                EchoSaveDiagnosticCodes.AutosaveDiscarded,
+                "The Chronicle discarded pending autosave state because initialization blocked.");
             ResetManualSaveRuntime();
 
             state =

@@ -437,5 +437,35 @@ namespace EchoDevGames.EchoSave
 
         internal const string PublicSaveShutdownPending =
             "ESV-SAVE-018";
+
+        internal const string AutosaveInvalidRequest =
+            "ESV-AUTO-001";
+
+        internal const string AutosaveServiceNotReady =
+            "ESV-AUTO-002";
+
+        internal const string AutosaveAdmissionClosed =
+            "ESV-AUTO-003";
+
+        internal const string AutosaveNoActiveSlot =
+            "ESV-AUTO-004";
+
+        internal const string AutosaveCanceled =
+            "ESV-AUTO-005";
+
+        internal const string AutosavePending =
+            "ESV-AUTO-006";
+
+        internal const string AutosaveCoalesced =
+            "ESV-AUTO-007";
+
+        internal const string AutosaveSuperseded =
+            "ESV-AUTO-008";
+
+        internal const string AutosaveDiscarded =
+            "ESV-AUTO-009";
+
+        internal const string AutosaveExecuted =
+            "ESV-AUTO-010";
     }
 }

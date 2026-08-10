@@ -9,7 +9,7 @@ namespace EchoDevGames.EchoSave.Tests.Editor
     public sealed class SavePublicManualSaveServiceTests
     {
         [Test]
-        public void PublicServiceExposesOnlyBoundedManualSaveOperation()
+        public void PublicServiceExposesBoundedManualSaveAndAutosaveOperations()
         {
             MethodInfo saveMethod =
                 typeof(IEchoSaveService).GetMethod(
@@ -29,11 +29,22 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                     typeof(Awaitable<
                         SaveOperationResult>)));
 
+            MethodInfo autosaveMethod =
+                typeof(IEchoSaveService).GetMethod(
+                    "RequestAutosave",
+                    new[]
+                    {
+                        typeof(AutosaveRequest)
+                    });
+
             Assert.That(
-                typeof(IEchoSaveService)
-                    .GetMethod(
-                        "RequestAutosave"),
-                Is.Null);
+                autosaveMethod,
+                Is.Not.Null);
+
+            Assert.That(
+                autosaveMethod.ReturnType,
+                Is.EqualTo(
+                    typeof(AutosaveSubmissionResult)));
         }
 
         [Test]

@@ -12,9 +12,9 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Root-local M4-04 admission authority for mutating Chronicle operations.
     ///
-    /// There is deliberately no static/global lease and no queue. Future
-    /// mutating checkpoints may reuse this authority without changing the
-    /// manual-save Busy contract.
+    /// There is deliberately no static/global lease and no queue. M4-05 adds
+    /// only a narrow availability notification so one pending latest autosave
+    /// can drain without changing the manual-save Busy contract.
     /// </summary>
     internal sealed class SaveOperationAdmissionCoordinator
     {
@@ -24,6 +24,8 @@ namespace EchoDevGames.EchoSave
         private bool closed = true;
         private long nextToken;
         private long activeToken;
+
+        internal event Action AvailabilityBecameAvailable;
 
         internal bool IsClosed
         {
@@ -113,6 +115,9 @@ namespace EchoDevGames.EchoSave
         internal void Release(
             long token)
         {
+            Action available =
+                null;
+
             lock (gate)
             {
                 if (token != 0L &&
@@ -121,8 +126,16 @@ namespace EchoDevGames.EchoSave
                 {
                     activeToken =
                         0L;
+
+                    if (!closed)
+                    {
+                        available =
+                            AvailabilityBecameAvailable;
+                    }
                 }
             }
+
+            available?.Invoke();
         }
     }
 
