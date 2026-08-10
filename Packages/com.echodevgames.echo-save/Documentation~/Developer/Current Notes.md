@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.20.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.21.0
 **Completed checkpoint:** ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — ESV-M4-03 complete
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; M4 remains active
+**Current checkpoint:** ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.20.0 records ESV-M4-03 complete at implementation commit `c8ea742` with focused Chronicle Editor evidence `439 / 439`; no follow-on M4 checkpoint is activated.
+**Authority reconciliation:** Specification v1.21.0 records ESV-M4-03 complete and activates bounded ESV-M4-04 at clean baseline `3a84187` under ESV-D-026.
 
 ## ESV-M4-02 closeout
 
@@ -87,8 +87,29 @@ Still deferred:
 - document migration;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-## Next bounded planning boundary
+## ESV-M4-04 active boundary
 
-No follow-on M4 checkpoint is activated by this closeout.
+**Exact planning baseline:** `3a84187`.
 
-Further Chronicle runtime implementation requires a new bounded Checkpoint Build Plan and must preserve the focused **439 / 439** regression floor.
+M4-04 owns:
+- public active-slot `SaveRequest` / `SaveOperationResult` surface;
+- additive `IEchoSaveService.SaveAsync(...)`;
+- one root-local mutating-operation admission authority intended for later reuse;
+- immediate Busy result for overlapping manual saves;
+- cancellation before admission and at safe pre-publication checkpoints;
+- Too-Late cancellation truth after durable publication begins;
+- shutdown closure of new manual-save admission without abandoning an active commit boundary;
+- mapping M4-03 durable generation/head/catalog truth into the public result;
+- main-thread public completion.
+
+M4-04 does **not** own:
+- autosave request/coalescing;
+- generic queued multi-operation scheduling, queue capacity, or overflow policy;
+- permission-provider production facade wiring;
+- retention/recovery;
+- rename/duplicate/delete/trash;
+- persistent `catalog.cache.json`;
+- full slot-policy/configuration expansion;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+The carried focused regression floor is **439 / 439**. Executed totals are recorded from Unity rather than predicted.

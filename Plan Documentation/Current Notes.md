@@ -176,6 +176,19 @@ Evidence:
 
 No follow-on M4 checkpoint is activated by this closeout.
 
+`ESV-M4-04 — Chronicle Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation` is **active / authorized** at clean planning baseline `3a84187`.
+
+Authorized boundary:
+- expose public active-slot `SaveAsync` through `IEchoSaveService`;
+- map public request/result truth onto the complete M4-03 manual-save transaction;
+- establish one root-local mutating-operation admission authority for later reuse;
+- overlapping manual saves return Busy immediately and do not queue;
+- cancellation is honored before admission and at safe pre-publication boundaries;
+- cancellation becomes Too Late once durable publication begins;
+- shutdown closes new admission and does not abandon an in-progress commit boundary;
+- public completion returns on the main thread;
+- autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, bridges, and DDOL remain outside M4-04.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -358,8 +371,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `c8ea742`.
-2. Preserve the focused **439 / 439** Chronicle regression floor.
-3. Treat ESV-M4-03 as complete.
-4. Before further Chronicle runtime work, define and activate the next bounded M4 Checkpoint Build Plan from approved package authority.
-5. Keep public `SaveAsync`, generic production operation admission/Busy/cancellation, autosave, retention, recovery, persistent cache, rename/duplicate/delete, full slot-policy assets, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `3a84187`.
+2. Read `ESV-M4-04_Chronicle_Public_Manual_Save_Admission_Busy_Cancellation_and_Lifecycle_Foundation_Checkpoint_Build_Plan.md`.
+3. Preserve the focused **439 / 439** Chronicle regression floor.
+4. Implement only the public active-slot manual-save facade, root-local mutating admission, Busy rejection, bounded cancellation/Too-Late behavior, and shutdown admission closure authorized by ESV-D-026.
+5. Keep autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
