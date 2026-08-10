@@ -485,3 +485,40 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Stale source, ownership collision, provenance mismatch, participant-capture failure, and pre-head publication failures do not fabricate current-head success.
 - Durable head success followed by catalog-refresh failure remains reported as committed durable truth rather than fictional rollback.
 - Participant Apply/default callbacks remain absent.
+
+
+### Added
+
+#### ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation
+
+- Public active-slot `SaveRequest` / `SaveOperationResult`.
+- Additive `IEchoSaveService.SaveAsync(...)`.
+- One root-local mutating-operation admission authority.
+- Immediate Busy rejection for overlapping manual saves with no hidden queue.
+- Safe pre-publication cancellation checks.
+- Too-Late cancellation truth once durable publication begins.
+- Shutdown closure of new manual-save admission before backend shutdown.
+- Faithful public mapping of M4-03 generation/head/catalog truth.
+- Main-thread public completion.
+- Focused public-save, admission, cancellation, shutdown, and result-mapping tests.
+- Autosave/coalescing, generic queued multi-operation scheduling, retention/recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, peer bridges, and DDOL remain deferred.
+
+### Verified
+
+#### ESV-M4-04 Closeout
+
+- Planning/activation committed at `91dcb62`.
+- Implementation committed at `2732aaa`.
+- Bounded pre-Ready lifecycle-status hotfix committed at `09ae8f1`.
+- Final effective runtime baseline is `09ae8f1`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **456 / 456**, with `0` failed.
+- All prior **439 / 439** Chronicle regressions remained green.
+- M4-04 adds **17** net focused tests over the prior floor.
+- The initial focused run had one failure: pre-Ready save returned `AdmissionClosed` rather than `ServiceNotReady`.
+- Two patch helpers refused safely and changed nothing; the final v3 hotfix changed only `EchoSaveService.cs`.
+- Overlapping manual saves return Busy immediately and do not queue.
+- Safe pre-publication cancellation cannot advance the head.
+- Cancellation after durable publication begins reports Too Late without pretending rollback.
+- Shutdown closes new admission and preserves settlement of an already-committing operation.
+- No autosave/coalescing, generic queued scheduler, retention/recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene/bridge/DDOL scope was introduced.

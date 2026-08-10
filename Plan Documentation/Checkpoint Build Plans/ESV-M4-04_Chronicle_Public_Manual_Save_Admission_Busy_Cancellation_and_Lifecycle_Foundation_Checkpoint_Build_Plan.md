@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-04 — Chronicle Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation
@@ -11,7 +11,7 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-04
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.21.0
 **Prior checkpoint:** ESV-M4-03 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -264,3 +264,43 @@ Stop when one ready EchoSave root exposes a public active-slot `SaveAsync` that:
 Do **not** implement autosave yet.
 
 Do **not** implement generic queued multi-operation scheduling, permission-provider facade wiring, retention, recovery, persistent cache, or other slot operations yet.
+
+
+## 8. Completion Evidence
+
+**Planning/activation commit:** `91dcb62`
+
+**Implementation commit:** `2732aaa`
+
+**Lifecycle-status hotfix:** `09ae8f1`
+
+**Final effective runtime baseline:** `09ae8f1`
+
+**Unity compile/import:** Green
+
+**Focused Chronicle Editor gate:** **456 / 456 passed, 0 failed**
+
+**Prior regression floor:** **439 / 439**
+
+**Net new focused tests:** **17**
+
+Observed completion:
+- public active-slot `SaveAsync` is available through `IEchoSaveService`;
+- one root-local mutating-operation admission authority rejects overlapping manual save as Busy without queueing;
+- cancellation before durable publication remains safe;
+- cancellation after durable publication begins reports Too Late without fictional rollback;
+- shutdown closes new admission before backend shutdown while allowing an already-committing operation to settle;
+- public results preserve M4-03 durable generation/head/catalog truth;
+- pre-Ready lifecycle rejection is `ServiceNotReady`;
+- shutdown/closed-admission rejection is `AdmissionClosed`;
+- autosave/coalescing, generic queued multi-operation scheduling, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy configuration, scene/bridge/DDOL scope remain absent.
+
+### Implementation history
+
+The first focused M4-04 run discovered **456** tests with **455 passed / 1 failed**. The lone failure was `SaveBeforeReadyRejectsWithoutTransactionExecution`: expected `ServiceNotReady`, observed `AdmissionClosed`.
+
+The defect was lifecycle ordering, not test intent. `SaveOperationAdmissionCoordinator` intentionally begins closed before initialization, and the public service preflight incorrectly allowed that internal admission state to override the public pre-Ready lifecycle result.
+
+Two patch helpers refused safely without changing the repository. The final bounded v3 hotfix replaced only `EchoSaveService.cs` after exact committed-file identity validation. The final rerun passed **456 / 456**.
+
+No follow-on M4 checkpoint is activated by this closeout.

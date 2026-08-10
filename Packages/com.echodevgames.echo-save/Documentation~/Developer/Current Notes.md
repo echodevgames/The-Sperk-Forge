@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.21.0
-**Completed checkpoint:** ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.22.0
+**Completed checkpoint:** ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 active; M4 remains active
+**Current checkpoint:** None activated — ESV-M4-04 complete
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; M4 remains active
 
-**Authority reconciliation:** Specification v1.21.0 records ESV-M4-03 complete and activates bounded ESV-M4-04 at clean baseline `3a84187` under ESV-D-026.
+**Authority reconciliation:** Specification v1.22.0 records ESV-M4-04 complete at implementation commit `2732aaa`, lifecycle-status hotfix `09ae8f1`, and final focused Chronicle Editor evidence `456 / 456`; no follow-on M4 checkpoint is activated.
 
 ## ESV-M4-02 closeout
 
@@ -87,23 +87,42 @@ Still deferred:
 - document migration;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-## ESV-M4-04 active boundary
+## ESV-M4-04 closeout
 
-**Exact planning baseline:** `3a84187`.
+**Planning/activation commit:** `91dcb62`.
 
-M4-04 owns:
-- public active-slot `SaveRequest` / `SaveOperationResult` surface;
+**Implementation commit:** `2732aaa`.
+
+**Lifecycle-status hotfix:** `09ae8f1`.
+
+**Final effective runtime baseline:** `09ae8f1`.
+
+**Focused Chronicle Editor gate:** **456 / 456 passed, 0 failed**.
+
+**Prior regression floor:** **439 / 439**.
+
+**Net new focused tests:** **17**.
+
+Completed behavior:
+- public active-slot `SaveRequest` / `SaveOperationResult`;
 - additive `IEchoSaveService.SaveAsync(...)`;
-- one root-local mutating-operation admission authority intended for later reuse;
-- immediate Busy result for overlapping manual saves;
-- cancellation before admission and at safe pre-publication checkpoints;
+- one root-local mutating-operation admission authority;
+- immediate Busy rejection with no hidden manual-save queue;
+- safe pre-publication cancellation;
 - Too-Late cancellation truth after durable publication begins;
-- shutdown closure of new manual-save admission without abandoning an active commit boundary;
-- mapping M4-03 durable generation/head/catalog truth into the public result;
-- main-thread public completion.
+- shutdown admission closure before backend shutdown;
+- faithful M4-03 generation/head/catalog result mapping;
+- main-thread public completion;
+- pre-Ready lifecycle state reports `ServiceNotReady`; shutdown/closed admission reports `AdmissionClosed`.
 
-M4-04 does **not** own:
-- autosave request/coalescing;
+Implementation-history note:
+- one initial public-save lifecycle test failed because the admission coordinator begins closed before initialization;
+- v1/v2 patch helpers refused without changing the repository;
+- v3 applied the bounded one-file runtime correction;
+- final **456 / 456** evidence supersedes the intermediate run.
+
+Still deferred:
+- autosave/coalescing;
 - generic queued multi-operation scheduling, queue capacity, or overflow policy;
 - permission-provider production facade wiring;
 - retention/recovery;
@@ -112,4 +131,4 @@ M4-04 does **not** own:
 - full slot-policy/configuration expansion;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-The carried focused regression floor is **439 / 439**. Executed totals are recorded from Unity rather than predicted.
+No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **456 / 456** focused regression floor.

@@ -44,12 +44,14 @@
 - [[Developer/Test Reports/ESV-M4-02_Chronicle_Technical_Slot_Creation_Capacity_and_Initial_Generation_Foundation_Test_Report|ESV-M4-02 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation|ESV-M4-03 Closeout]]
 - [[Developer/Test Reports/ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-03 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-04_Chronicle_Public_Manual_Save_Admission_Busy_Cancellation_and_Lifecycle_Foundation|ESV-M4-04 Closeout]]
+- [[Developer/Test Reports/ESV-M4-04_Chronicle_Public_Manual_Save_Admission_Busy_Cancellation_and_Lifecycle_Foundation_Test_Report|ESV-M4-04 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation`
+`ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation`
 
-Chronicle can now perform one bounded internal manual-save transaction against the explicitly selected healthy slot, preserve valid opaque unknown payloads, reject stale source before head replacement, publish `head.json` last, preserve ordinary display metadata, and reconcile the catalog truthfully at **439 / 439** focused Chronicle Editor tests.
+Chronicle now exposes public active-slot `SaveAsync` over the proven M4-03 transaction, admits one root-local mutating operation at a time, rejects overlapping manual saves as Busy without queueing, preserves safe cancellation/Too-Late truth, and closes new admission during shutdown. The final effective runtime baseline is `09ae8f1`; the focused Chronicle Editor gate is **456 / 456**.
 
 ## Completed milestone
 
@@ -57,6 +59,6 @@ Chronicle can now perform one bounded internal manual-save transaction against t
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-03 closeout.
+No follow-on M4 checkpoint is activated by the ESV-M4-04 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **439 / 439** regression floor.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **456 / 456** regression floor.

@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-03 complete; next bounded checkpoint planning
-**Current checkpoint:** None activated — ESV-M4-03 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-04 complete; next bounded checkpoint planning
+**Current checkpoint:** None activated — ESV-M4-04 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -189,6 +189,38 @@ Authorized boundary:
 - public completion returns on the main thread;
 - autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, bridges, and DDOL remain outside M4-04.
 
+
+## Chronicle ESV-M4-04 Closeout
+
+`ESV-M4-04 — Chronicle Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation` is **complete**.
+
+Evidence:
+- planning/activation commit: `91dcb62`;
+- implementation commit: `2732aaa`;
+- bounded lifecycle-status hotfix: `09ae8f1`;
+- final effective runtime baseline: `09ae8f1`;
+- Unity compile/import: **green**;
+- final focused `EchoDevGames.EchoSave.Tests.Editor`: **456 / 456 passed, 0 failed**;
+- prior **439 / 439** Chronicle regression floor preserved;
+- **17** net new focused M4-04 tests are present over the prior floor;
+- public active-slot `SaveRequest` / `SaveOperationResult` and additive `IEchoSaveService.SaveAsync(...)` are present;
+- one root-local mutating-operation admission authority admits one mutation at a time;
+- overlapping manual save rejects Busy immediately and does not queue;
+- pre-publication cancellation remains bounded and cannot advance the head;
+- cancellation after durable publication begins reports Too Late without pretending rollback;
+- shutdown closes new admission before backend shutdown and does not abandon a commit already crossing the durable boundary;
+- M4-03 remains the durable capture/unknown-carry-forward/publication/catalog transaction engine;
+- the pre-Ready lifecycle hotfix preserves `ServiceNotReady` before Ready and reserves `AdmissionClosed` for shutdown/actual closed admission;
+- autosave/coalescing, generic queued multi-operation policy, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, peer bridges, and project-wide DDOL remain deferred.
+
+Implementation-history note:
+- the first focused M4-04 run exposed one lifecycle-ordering failure: pre-Ready save returned `AdmissionClosed` instead of `ServiceNotReady`;
+- the first two hotfix patch helpers refused safely and changed nothing;
+- v3 used exact committed-file identity and a full corrected-file replacement;
+- final **456 / 456** evidence supersedes the intermediate failing run.
+
+No follow-on M4 checkpoint is activated by this closeout.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -371,8 +403,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `3a84187`.
-2. Read `ESV-M4-04_Chronicle_Public_Manual_Save_Admission_Busy_Cancellation_and_Lifecycle_Foundation_Checkpoint_Build_Plan.md`.
-3. Preserve the focused **439 / 439** Chronicle regression floor.
-4. Implement only the public active-slot manual-save facade, root-local mutating admission, Busy rejection, bounded cancellation/Too-Late behavior, and shutdown admission closure authorized by ESV-D-026.
+1. Rehydrate exact `09ae8f1`.
+2. Preserve the focused **456 / 456** Chronicle regression floor.
+3. Treat ESV-M4-04 public manual-save admission, Busy, cancellation, and lifecycle behavior as complete.
+4. Define and activate the next bounded M4 Checkpoint Build Plan before writing further runtime code.
 5. Keep autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.

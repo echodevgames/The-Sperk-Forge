@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.21.0
+**Specification version:** 1.22.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, ESV-M4-01, ESV-M4-02, and ESV-M4-03 are complete. `ESV-M4-04` is now the active bounded checkpoint at clean baseline `3a84187`. It authorizes the first public manual-save facade over the proven M4-03 transaction, one root-local mutating-operation admission authority, immediate Busy rejection for overlapping manual saves, bounded manual-save cancellation semantics, and shutdown admission closure while explicitly deferring autosave/coalescing, generic multi-operation queue policy, retention, recovery, rename/duplicate/delete, persistent catalog cache, and broader slot-policy work.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, ESV-M4-01, ESV-M4-02, ESV-M4-03, and ESV-M4-04 are complete. `ESV-M4-04` implemented the first public active-slot manual-save facade at `2732aaa`; the bounded pre-Ready lifecycle-status correction is committed at `09ae8f1`; final focused Chronicle Editor evidence is `456 / 456`. No follow-on M4 checkpoint is currently activated.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -53,6 +53,7 @@
 | 1.19.0 | 2026-08-10 | Approved | Activated ESV-M4-03 bounded manual-save transaction composition at clean baseline `a3eba25`: active-slot target resolution, healthy catalog preflight, current-generation/unknown-payload provenance refresh, fresh participant capture, collision-safe known+unknown merge, expected-current-generation head-last publication, and truthful catalog reconciliation; public `SaveAsync`, production operation admission/Busy semantics, autosave, retention, recovery, and unrelated slot operations remain deferred. | Jesse “Echo” Adams |
 | 1.20.0 | 2026-08-10 | Approved | Closed ESV-M4-03 at implementation commit `c8ea742` with focused Chronicle Editor evidence `439 / 439`; recorded active-slot manual-save transaction composition, exact source provenance, fresh known capture, opaque unknown carry-forward, stale-source rejection, head-last publication, display-name preservation, catalog reconciliation, and truthful partial durable/head/catalog outcomes as complete; left public `SaveAsync`, operation admission/Busy/cancellation, autosave, retention, recovery, and the next M4 checkpoint deferred. | Jesse “Echo” Adams |
 | 1.21.0 | 2026-08-10 | Approved | Activated ESV-M4-04 public manual-save admission foundation at clean baseline `3a84187`: public active-slot `SaveAsync`, public request/result truth, one root-local mutating-operation admission authority, immediate Busy rejection for overlapping manual saves, bounded pre-publication cancellation/Too-Late semantics, and shutdown admission closure; autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, and full slot-policy expansion remain deferred. | Jesse “Echo” Adams |
+| 1.22.0 | 2026-08-10 | Approved | Closed ESV-M4-04: public active-slot `SaveAsync`, public request/result truth, one root-local mutating-operation admission authority, immediate Busy rejection with no queue, safe pre-publication cancellation, Too-Late truth after durable publication begins, and shutdown admission closure. Implementation committed at `2732aaa`; pre-Ready lifecycle-status hotfix committed at `09ae8f1`; final focused Chronicle Editor gate `456 / 456`, preserving the prior `439 / 439` floor. No follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -2327,45 +2328,55 @@ Consequences:
 **Explicitly still deferred:** persistent `catalog.cache.json`; rename/duplicate/delete and trash/quarantine; full slot-policy/configuration assets; public `SaveAsync`; generic production operation admission and concurrent mutation ownership; permission-provider facade wiring; queue/coalescing/cancellation policy; autosave; retention; recovery; document migration; scene travel; peer bridges; service-locator behavior; Chronicle-owned/project-wide DDOL.
 
 The final ESV-M4-03 focused Chronicle Editor gate is **439 / 439**, with the prior **425 / 425** regression floor preserved. No follow-on M4 checkpoint is activated by this closeout.
-### 28.20 ESV-M4-04 public manual-save admission activation
+### 28.20 ESV-M4-04 public manual-save admission closeout
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
-**Exact implementation baseline:** `3a84187`.
+**Planning baseline:** `3a84187`.
 
-ESV-M4-04 authorizes the first production-facing manual-save seam over the proven M4-03 transaction:
+**Planning/activation commit:** `91dcb62`.
 
-- add one public active-slot manual-save request/result surface;
-- expand `IEchoSaveService` with a fresh `Awaitable<SaveOperationResult> SaveAsync(SaveRequest)`;
-- keep the first public save target bound to the already-selected active slot;
-- reuse M4-03 as the durable transaction authority rather than duplicating capture/merge/publication/catalog logic;
-- add one root-local mutating-operation admission authority designed for later reuse by duplicate/delete/recovery/autosave work;
-- admit at most one mutating operation at a time for the current root;
-- reject an overlapping manual save immediately as Busy rather than adding an unbounded queue;
-- honor cancellation before admission and at safe pre-publication boundaries;
-- once durable publication begins, cancellation becomes Too Late and the transaction must settle to truthful committed/failed state;
-- close new save admission when shutdown begins;
-- do not abandon a publication already crossing the durable commit boundary;
-- return public save results on the main thread and preserve M4-03 generation/head/catalog truth.
+**Implementation commit:** `2732aaa`.
+
+**Lifecycle-status hotfix commit:** `09ae8f1`.
+
+**Final effective runtime baseline:** `09ae8f1`.
+
+**Focused Chronicle Editor evidence:** **456 / 456**, `0` failed.
+
+**Prior focused regression floor:** **439 / 439**.
+
+**Net new focused tests:** **17**.
+
+ESV-M4-04 completed the first production-facing active-slot manual-save seam over the proven M4-03 transaction:
+
+- public `SaveRequest` / `SaveOperationResult`;
+- additive `IEchoSaveService.SaveAsync(...)`;
+- one root-local mutating-operation admission authority;
+- immediate Busy rejection for overlapping manual saves with no hidden queue;
+- bounded pre-publication cancellation;
+- Too-Late cancellation truth after durable publication begins;
+- shutdown closure of new admission without abandoning a commit already crossing the durable boundary;
+- faithful M4-03 generation/head/catalog result mapping;
+- no caller-controlled save path or display-name mutation.
+
+The first focused M4-04 run exposed one lifecycle-ordering defect: a service that had not reached Ready could report `AdmissionClosed` because the root-local admission coordinator intentionally starts closed before initialization. The bounded runtime hotfix at `09ae8f1` restored the intended distinction:
+
+- AuthorityClaimed / Initializing / Blocked → `ServiceNotReady`;
+- ShuttingDown / Shutdown → `AdmissionClosed`;
+- Ready → consult actual operation admission for Closed / Busy semantics.
+
+The final rerun passed **456 / 456**.
 
 ### ESV-D-026 — public manual save uses one bounded root-local admission authority
 
 > Public manual save enters through one root-local mutating-operation admission authority. A second manual save received while that authority is occupied returns Busy immediately rather than queueing. Cancellation is honored only before the durable publication boundary. Shutdown closes new admission and allows an already-committing save to settle.
 
-Consequences:
+ESV-D-026 remains the durable M4-04 authority.
 
-- the novice `CreateSlotAsync` → `SelectSlot` → `SaveAsync` direction gets its first real public save surface without inventing autosave policy;
-- M4-03 remains the single durable manual-save transaction engine;
-- one admission primitive can later be shared by duplicate/delete/recovery/autosave instead of each operation inventing its own lock;
-- Busy is a terminal manual-save result, not a hidden queue;
-- cancellation before publication cannot advance the head;
-- cancellation after the commit boundary cannot fictionalize rollback;
-- shutdown cannot admit a new manual save once closure starts;
-- generic queue capacity, overflow policy, autosave coalescing, permission-provider facade wiring, operation events/progress, and cross-operation scheduling remain separate bounded work.
+**Explicitly still deferred:** autosave/coalescing; generic queued multi-operation policy and configured queue capacity/overflow; permission-provider facade wiring; operation progress/events beyond the bounded public result plumbing already required by M4-04; retention; recovery; rename/duplicate/delete and trash/quarantine; persistent `catalog.cache.json`; full slot-policy/configuration expansion; document migration; scene travel; peer bridges; service-locator behavior; Chronicle-owned/project-wide DDOL.
 
-**Explicitly still deferred:** autosave/coalescing; generic queued multi-operation policy and configured queue capacity/overflow; permission-provider facade wiring; operation progress/events beyond any minimal result plumbing required by M4-04; retention; recovery; rename/duplicate/delete and trash/quarantine; persistent `catalog.cache.json`; full slot-policy/configuration expansion; document migration; scene travel; peer bridges; service-locator behavior; Chronicle-owned/project-wide DDOL.
-
-The focused Chronicle regression floor carried into ESV-M4-04 is **439 / 439**.
+No follow-on M4 checkpoint is activated by this closeout.
 
 ## 29. New-Conversation Handoff
 
@@ -2373,41 +2384,40 @@ The focused Chronicle regression floor carried into ESV-M4-04 is **439 / 439**.
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.21.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.22.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.21.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03
-Current milestone/checkpoint: ESV-M4-04 — Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation — active / authorized
+Current specification version: 1.22.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04
+Current milestone/checkpoint: M4 remains active; no follow-on bounded checkpoint is currently activated
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01, M4-02, and M4-03 are complete; ESV-M4-04 planning is activated at clean baseline 3a84187 with the 439 / 439 focused regression floor
+Current implementation status: M2 and M3 are complete; M4-01 through M4-04 are complete; M4-04 final effective runtime baseline is 09ae8f1 with 456 / 456 focused Chronicle Editor evidence
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing ESV-M4-04 code:
-1. Rehydrate exact `3a84187`.
-2. Read the active ESV-M4-04 Checkpoint Build Plan completely.
-3. Preserve the **439 / 439** focused Chronicle regression floor.
-4. Reuse the complete M4-03 manual-save transaction as the durable save engine.
-5. Implement only public active-slot `SaveAsync`, root-local mutating admission, Busy rejection, bounded manual-save cancellation/Too-Late behavior, and shutdown admission closure.
-6. Keep autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene travel, peer bridges, service-locator behavior, and Chronicle-owned/project-wide DDOL locked until separately authorized.
+Before writing further M4 code:
+1. Rehydrate exact `09ae8f1`.
+2. Preserve the **456 / 456** focused Chronicle regression floor.
+3. Treat ESV-M4-04 public manual-save admission, Busy, cancellation, and lifecycle behavior as complete.
+4. Do not begin further runtime implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
+5. Keep autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene travel, peer bridges, service-locator behavior, and Chronicle-owned/project-wide DDOL locked until separately authorized.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.21.0 |
-| Completed checkpoint | ESV-M4-03 - Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation |
-| Implementation commit | `c8ea742` |
-| Tests passed | ESV-M4-03 focused Chronicle Editor gate `439 / 439`; prior `425 / 425` regression floor preserved; Unity compile/import green |
-| Tests failed | Final ESV-M4-03 gate: `0` |
+| Package version | Runtime package `0.1.0`; Specification v1.22.0 |
+| Completed checkpoint | ESV-M4-04 - Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation |
+| Implementation commit | `2732aaa`; lifecycle-status hotfix `09ae8f1` |
+| Tests passed | ESV-M4-04 focused Chronicle Editor gate `456 / 456`; prior `439 / 439` regression floor preserved; Unity compile/import green |
+| Tests failed | Final ESV-M4-04 gate: `0` |
 | Known issues | None blocking bounded next-checkpoint planning |
 | Decisions added | ESV-D-001 through ESV-D-026; ESV-D-026 defines public manual-save admission, Busy, cancellation, and shutdown boundaries |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-04 active / authorized at `3a84187`; implementation is bounded by its Checkpoint Build Plan and ESV-D-026 |
+| Implementation permission | No follow-on M4 checkpoint is activated; further runtime implementation requires a new bounded Checkpoint Build Plan |
 
 ## 30. Approval
 
@@ -2453,7 +2463,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.21.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, ESV-M4-02, and ESV-M4-03 are complete. M4 remains active, with ESV-M4-04 authorized as the bounded public manual-save admission checkpoint.
+The Chronicle specification is complete and **Approved v1.22.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, ESV-M4-02, ESV-M4-03, and ESV-M4-04 are complete. M4 remains active, but no follow-on bounded checkpoint is currently activated.
 
 
 ---
