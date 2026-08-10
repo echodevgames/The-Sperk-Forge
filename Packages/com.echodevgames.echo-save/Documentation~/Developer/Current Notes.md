@@ -3,11 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.17.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.18.0
 **Completed checkpoint:** ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
 **Current checkpoint:** None activated — next bounded M4 checkpoint requires a Checkpoint Build Plan
 **Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; M4 remains active
+
+**Authority reconciliation:** Specification v1.18.0 records the completed M4-02 state and intentionally leaves the next bounded M4 checkpoint unactivated.
 
 ## ESV-M4-02 closeout
 

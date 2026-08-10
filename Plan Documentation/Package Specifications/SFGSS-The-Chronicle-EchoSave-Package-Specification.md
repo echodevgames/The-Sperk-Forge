@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.17.0
+**Specification version:** 1.18.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and Chronicle M3 through ESV-M3-09 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M4-01` is complete at `62e8a54` with `403 / 403`, and `ESV-M4-02` is the active technical slot-creation/capacity/initial-generation/catalog-reconciliation checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, ESV-M4-01, and ESV-M4-02 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M4-02` completed at implementation commit `d8d5c18` with focused Chronicle Editor evidence `425 / 425`, and no follow-on M4 checkpoint is currently activated.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -49,6 +49,7 @@
 | 1.15.0 | 2026-08-10 | Approved | Closed ESV-M3-08 at `798d38d` with focused Chronicle Editor evidence `332 / 332`; activated ESV-M3-09 deterministic participant apply/missing-payload policy and approved additive optional `ISaveDefaultableParticipant.InitializeDefault()` while keeping base `ISaveParticipant` unchanged, rejecting `Apply(null)` default semantics, and deferring rollback/compensation, production operation admission, scene travel, document migration, slots, recovery, retention, and autosave. | Jesse “Echo” Adams |
 | 1.16.0 | 2026-08-10 | Approved | Closed ESV-M3-09 at `568fa3a` with focused Chronicle Editor evidence `366 / 366`, completing M3 Participants and Loading; activated ESV-M4-01 provider-neutral slot discovery, payload-free head/current-manifest metadata rebuild, deterministic catalog snapshots, and session-only active-slot selection; added ESV-D-023 keeping base `ISaveStorageBackend` unchanged while catalog discovery uses an additive optional provider capability. | Jesse “Echo” Adams |
 | 1.17.0 | 2026-08-10 | Approved | Closed ESV-M4-01 at `62e8a54` with focused Chronicle Editor evidence `403 / 403`; activated ESV-M4-02 bounded technical slot creation, capacity enforcement, initial empty immutable-generation/head-last bootstrap, and post-publication catalog reconciliation; added ESV-D-024 defining successful slot creation as a committed generation rather than directory existence and counting degraded canonical slots toward capacity. | Jesse “Echo” Adams |
+| 1.18.0 | 2026-08-10 | Approved | Closed ESV-M4-02 at implementation commit `d8d5c18` with focused Chronicle Editor evidence `425 / 425`; recorded bounded technical slot creation, capacity enforcement, initial empty committed generation, head-last publication, and truthful catalog reconciliation as complete; left the next M4 checkpoint intentionally unactivated pending a bounded Checkpoint Build Plan. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -2257,13 +2258,13 @@ Outcome achieved:
 - implementation commit `62e8a54`;
 - focused Chronicle Editor gate **403 / 403**.
 
-### 28.18 Active technical slot-creation checkpoint
+### 28.18 Completed technical slot-creation checkpoint
 
 **ESV-M4-02 - Technical slot creation, capacity enforcement, initial empty generation, and catalog reconciliation foundation**
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
-Architecture:
+Outcome achieved:
 - a created slot is a durable committed record, not merely a directory;
 - successful creation publishes one verified empty immutable generation and `head.json` last;
 - technical identity remains package-generated canonical `SaveSlotId`;
@@ -2275,10 +2276,16 @@ Architecture:
 - creation never auto-selects the new slot;
 - publication success followed by catalog-refresh failure reports partial truth and does not fictionalize rollback;
 - participant callbacks remain absent;
-- persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, and project-wide DDOL remain deferred;
-- preserve all **403 / 403** prior focused regressions.
+- implementation commit `d8d5c18`;
+- focused Chronicle Editor gate **425 / 425**, preserving the prior **403 / 403** regression floor.
 
 Stop point: Chronicle can create one bounded technical slot as one real initial committed empty generation, enforce capacity without ignoring degraded technical slots, reject technical collisions, reconcile the catalog after publication, and report durable-publication/catalog-refresh outcomes accurately without auto-selecting.
+
+### 28.19 M4 continuation planning state
+
+**Status:** No follow-on checkpoint activated.
+
+The next Chronicle implementation must begin with a bounded authorized Checkpoint Build Plan and preserve the **425 / 425** focused regression floor. Persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service-locator behavior, and Chronicle-owned/project-wide DDOL remain deferred until separately authorized.
 
 ## 29. New-Conversation Handoff
 
@@ -2286,49 +2293,41 @@ Stop point: Chronicle can create one bounded technical slot as one real initial 
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.3.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.18.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.17.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09
-Current milestone/checkpoint: ESV-M4-02 active / authorized
+Current specification version: 1.18.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02
+Current milestone/checkpoint: M4 remains active; no bounded follow-on checkpoint is activated
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01 slot catalog/session foundation is complete at 403 / 403; M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation next
+Current implementation status: M2 and M3 are complete; M4-01 catalog/session foundation is complete at 403 / 403; M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation is complete at implementation commit d8d5c18 with 425 / 425
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing M4-02 code:
-1. Rehydrate exact `62e8a54` after ESV-M4-01 closeout.
-2. Preserve the 403 / 403 regression floor and all M4-01 catalog/session invariants.
-3. Add one bounded technical slot-creation request/result coordinator.
-4. Count every discovered canonical technical slot, including degraded entries, against capacity.
-5. Generate package technical IDs independently from display metadata with bounded collision retry.
-6. Publish one initial empty immutable generation using the existing generation-first/head-last transaction.
-7. Add an initial-create publication invariant that rejects an existing current head.
-8. Refresh the M4-01 catalog after durable success; never auto-select the new slot.
-9. If publication succeeds but catalog refresh fails, report that partial truth and keep the committed slot.
-10. Invoke no participant callbacks.
-11. Add no persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, or DDOL.
-12. Preserve all prior 403 / 403 Chronicle regressions.
+Before writing further M4 code:
+1. Rehydrate exact `05c11c7` after the ESV-M4-02 implementation and documentation closeout.
+2. Preserve the **425 / 425** focused Chronicle regression floor.
+3. Preserve M4-01 payload-free authoritative catalog reconstruction and session-only explicit active selection.
+4. Preserve M4-02 committed-generation slot creation, degraded-slot capacity accounting, package-generated path-independent identity, head-last publication, and truthful post-publication catalog reconciliation.
+5. Do not begin implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
+6. Do not silently absorb persistent catalog cache, rename/duplicate/delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL into an unrelated checkpoint.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.17.0 |
-| Completed checkpoint | ESV-M4-01 - Slot Catalog, Metadata Rebuild, and Active-Session Selection Foundation |
-| Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed publication; M3-04 read-only current-generation/opaque unknown preservation; focused tests |
-| Tests passed | ESV-M4-01 focused Chronicle Editor gate `403 / 403`; Unity compile/import green |
-| Tests failed | Final ESV-M4-01 gate: `0` |
-| Known issues | None blocking M4-02 |
+| Package version | Runtime package `0.1.0`; Specification v1.18.0 |
+| Completed checkpoint | ESV-M4-02 - Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation |
+| Implementation commit | `d8d5c18` |
+| Tests passed | ESV-M4-02 focused Chronicle Editor gate `425 / 425`; prior `403 / 403` regression floor preserved; Unity compile/import green |
+| Tests failed | Final ESV-M4-02 gate: `0` |
+| Known issues | None blocking bounded next-checkpoint planning |
 | Decisions added | ESV-D-001 through ESV-D-024; ESV-D-024 defines committed-generation slot creation and degraded-slot capacity accounting |
-| Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-02 active / authorized |
-
+| Implementation permission | No follow-on M4 checkpoint activated; next implementation requires a bounded Checkpoint Build Plan |
 
 ## 30. Approval
 
@@ -2374,7 +2373,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.3.0**. PKG-LEARN-009 and ESV-M1-01 are complete; ESV-M2-01 is the active bounded implementation checkpoint.
+The Chronicle specification is complete and **Approved v1.18.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, and ESV-M4-02 are complete. M4 remains active as the current milestone, but no follow-on implementation checkpoint is activated until a bounded Checkpoint Build Plan is written and approved.
 
 
 ---
