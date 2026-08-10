@@ -27,15 +27,17 @@
 
 - [[Developer/Checkpoints/ESV-M3-04_Chronicle_Current-Generation_Read_Opaque_Unknown-Payload_Preservation_and_Session_Store_Foundation|ESV-M3-04 Closeout]]
 - [[Developer/Test Reports/ESV-M3-04_Chronicle_Current-Generation_Read_Opaque_Unknown-Payload_Preservation_and_Session_Store_Foundation_Test_Report|ESV-M3-04 Test Report]]
+- [[Developer/Checkpoints/ESV-M3-05_Chronicle_Opaque_Unknown-Payload_Carry-Forward_Merge_Source-Freshness_and_Collision-Safe_Publication_Foundation|ESV-M3-05 Closeout]]
+- [[Developer/Test Reports/ESV-M3-05_Chronicle_Opaque_Unknown-Payload_Carry-Forward_Merge_Source-Freshness_and_Collision-Safe_Publication_Foundation_Test_Report|ESV-M3-05 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation`
+`ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation`
 
-Chronicle can read/validate the current committed generation and preserve unclaimed participant entries as inert opaque session data at **218 / 218** focused Chronicle Editor tests.
+Chronicle carries source-fresh opaque unknown participant payloads beside fresh known captures into the next immutable generation at **243 / 243** focused Chronicle Editor tests.
 
 ## Current checkpoint
 
-`ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation`
+`ESV-M3-06 — Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation`
 
-This checkpoint may merge source-fresh opaque unknown payloads with fresh known captures and carry them into the next immutable generation without interpreting or silently dropping unknown data.
+This checkpoint prepares validated current-schema known participant payloads into detached runtime DTOs without applying participant state or performing migrations.

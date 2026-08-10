@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-05
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.11.0
 **Prior checkpoint:** ESV-M3-04 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -234,16 +234,51 @@ Do not implement:
 - peer-package bridges;
 - Chronicle-owned/project-wide DDOL.
 
-## 12. Stop point
+## 12. Executed focused proof
 
-Stop when Chronicle can prove one fresh known participant capture plus one or more opaque unknown payloads can become the next immutable generation with:
+- source slot/generation provenance stored with unknown snapshots — **Pass**;
+- successful current-generation read atomically refreshes unknown entries plus provenance — **Pass**;
+- failed read preserves prior unknown entries plus provenance — **Pass**;
+- manual clear resets entries plus provenance — **Pass**;
+- empty unknown snapshot still retains source provenance — **Pass**;
+- stale-source generation rejected before publication mutation — **Pass**;
+- target-slot/source-slot mismatch rejected before publication mutation — **Pass**;
+- current canonical ownership collision rejected — **Pass**;
+- current alias ownership collision rejected — **Pass**;
+- fresh-known/unknown identity collision rejected — **Pass**;
+- malformed preserved unknown entry rejected — **Pass**;
+- preserved unknown byte-length/checksum mismatch rejected — **Pass**;
+- merge duplicates rejected without partial batch exposure — **Pass**;
+- unknown serialized payload UTF-8 bytes preserved exactly — **Pass**;
+- unknown transport metadata preserved exactly — **Pass**;
+- deterministic fresh-known + preserved-unknown ordering — **Pass**;
+- unknown payloads resolve no serializer and invoke no participant code — **Pass**;
+- candidate/generation/final-verification/head failure behavior preserves the previous known-good head — **Pass**;
+- successful merged publication advances `head.json` last — **Pass**;
+- old unknown snapshot becomes stale after successful head advance — **Pass**;
+- M2 empty and M3-03 fresh-participant-only publication paths remain green — **Pass**;
+- all prior **218 / 218** Chronicle regressions remain green — **Pass**.
+
+Final focused Unity gate: **243 / 243 passed, 0 failed**.
+
+Implementation commit: `af28c96`.
+
+## 13. Stop point
+
+**Reached.** Chronicle can carry one source-fresh opaque unknown snapshot beside fresh known captures into the next immutable generation with:
 - source freshness proven before mutation;
-- no ambiguous identity ownership;
+- no ambiguous canonical/alias ownership;
 - unknown participant payload bytes/metadata preserved exactly;
 - candidate/final verification retained;
 - `head.json` published last;
 - the previous known-good generation preserved on failure.
 
-Do not expose this as production `SaveAsync`.
+The carry-forward path remains a bounded technical seam and is not production `SaveAsync`.
 
-The next bounded checkpoint should move toward participant payload preparation/deserialization and coordinated apply, or toward the production operation-admission seam, only after this no-data-loss carry-forward path is green.
+Next bounded checkpoint:
+
+`ESV-M3-06 — Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation`
+
+M3-06 may prepare **current-schema** known participant payloads into detached runtime DTOs using live registration type authority and already-registered serializer providers. It must remain side-effect-free with respect to participant runtime state and storage.
+
+Participant migrations, `PreparedSaveLoad` handle lifecycle, participant apply, production operation admission, slots, recovery, retention, and autosave remain later bounded work.

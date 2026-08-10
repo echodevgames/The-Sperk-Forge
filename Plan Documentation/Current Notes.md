@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-05 — Chronicle Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation
-**Current checkpoint:** ESV-M3-05 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-06 — Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation
+**Current checkpoint:** ESV-M3-06 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,63 +78,47 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-04 Closeout
+## Chronicle ESV-M3-05 Closeout
 
-- Implementation commit: `aa78e07`.
+- Implementation commit: `af28c96`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **218 / 218 passed, 0 failed**.
-- The complete prior **197 / 197** Chronicle regression floor remained green.
-- M3-04 added a read-only current-generation reader that resolves `head.json`, reads the selected immutable manifest/payload, and validates document identity/integrity before classification.
-- Whole payload integrity and per-entry inline UTF-8 byte length/checksum validation remain mandatory.
-- Canonical participant IDs and approved aliases are recognized against the live participant registry.
-- Unclaimed entries are preserved as inert opaque session data in package-owned `SaveUnknownPayloadStore`.
-- Unknown entry fields and serialized payload text are preserved without serializer resolution, CLR type activation, migration, capture, or apply.
-- Unknown-store snapshots are defensive copies and deterministic.
-- Unknown entry count and aggregate-byte safeguards are enforced.
-- Failed reads/classification preserve the prior valid unknown store atomically.
-- Current-generation inspection performs zero storage mutation.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **243 / 243 passed, 0 failed**.
+- The complete prior **218 / 218** Chronicle regression floor remained green.
+- Unknown snapshots now carry exact source slot/generation provenance.
+- Stale source and target-slot mismatch fail before mutation.
+- Canonical/alias ownership changes fail closed.
+- Unknown participant payload bytes and transport metadata carry forward unchanged.
+- Fresh-known + preserved-unknown transport merges deterministically.
+- Unknown payloads remain opaque and invoke no serializer or participant code.
+- Merged publication retains candidate verification, immutable generation publication, published-generation revalidation, and `head.json` LAST.
+- Successful head advance intentionally leaves the old unknown snapshot stale until re-read.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-05 — Chronicle Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation` is active / authorized.
+`ESV-M3-06 — Chronicle Current-Version Participant Payload Preparation, Trusted Runtime-Type Deserialization, and Prepared-Participant Batch Foundation` is active / authorized.
 
 Authorized next:
-- bind unknown-payload snapshots to the exact source slot/generation that produced them;
-- atomically preserve/clear source provenance with the unknown store;
-- require the target slot's current head to still equal the snapshot source generation before any carry-forward mutation;
-- fail closed on stale source snapshots;
-- accept one successful fresh known participant capture batch plus one opaque unknown snapshot;
-- re-resolve preserved unknown IDs against the current participant registry at merge time;
-- treat canonical or alias ownership acquired since the read as a stale ownership collision;
-- use **no implicit winner** for fresh-known versus preserved-unknown identity collisions;
-- preserve unknown participant serialized payload UTF-8 bytes and transport metadata exactly;
-- keep unknown payloads opaque: no serializer resolution, deserialization, CLR activation, migration, or participant invocation;
-- reconstruct matching unknown inventory metadata only from preserved transport fields;
-- produce one deterministic merged transport batch ordered by persisted participant ID;
-- publish the complete merged batch through the established candidate/read-back/immutable-generation/published-reverify/`head.json` LAST transaction;
-- preserve M3-03 failure semantics and the existing M2/M3 publication paths;
-- leave the old unknown snapshot intentionally stale after a successful head advance until a fresh M3-04 read/classification occurs;
-- preserve all prior **218 / 218** Chronicle regressions.
+- expose fully validated current-generation participant entries for preparation;
+- resolve known persisted IDs through current canonical/alias ownership;
+- retain persisted ID and current canonical owner separately;
+- source detached DTO `Type` only from live `ISaveTypedParticipant`;
+- prepare current-schema entries only;
+- older schema → migration-required;
+- newer schema → unsupported-newer;
+- resolve only already-registered serializer providers;
+- require runtime-Type deserialization;
+- build one deterministic all-or-nothing prepared participant batch;
+- unknown payloads remain opaque;
+- no participant `Capture`, no participant `Apply`, zero storage mutation;
+- preserve all prior **243 / 243** Chronicle regressions.
 
 Still deferred:
-- silent drop/prune policy;
-- automatic fresh-wins or old-wins ownership resolution;
-- participant deserialization/migration/apply;
-- prepared/convenience loads;
-- production `SaveAsync` admission/permission/busy/coalescing/cancellation;
-- concurrent save-operation ownership;
-- slot catalog/policy and active-slot service;
-- recovery/retention/autosave;
-- peer bridges and project-wide DDOL composition.
-
-### Carry-forward safety rule
-
-Chronicle must never delete opaque durable data merely because the original package is absent, and it must never guess when ownership becomes ambiguous.
-
-If the preserved source generation is stale or an unknown identity is now claimed by a live participant/alias, carry-forward aborts before publication mutation and reports the conflict.
-
-A successful carry-forward preserves the unknown participant payload body's UTF-8 bytes and transport metadata exactly; the surrounding generation document is new and therefore receives a new generation identity and whole-document checksum.
-
+- participant migration registration/execution;
+- `PreparedSaveLoad` lifecycle;
+- participant apply/missing-payload default execution;
+- production operation admission/coalescing/cancellation;
+- slots/recovery/retention/autosave;
+- peer bridges/project-wide DDOL.
 
 ## Suite Distribution Kit Standard
 
@@ -319,14 +303,13 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate the exact repository/Unity baseline after the ESV-M3-04 closeout.
-2. Implement only `ESV-M3-05`: source-provenance/freshness, collision-safe fresh+unknown merge, and opaque unknown carry-forward through the existing immutable-generation/head-last transaction.
-3. Extend the unknown store/snapshot so successful M3-04 classification records the exact source `SaveSlotId` and `SaveGenerationId`; failed replacement preserves entries and provenance together.
-4. Before any publication mutation, require the target current head to still equal the unknown snapshot's source generation.
-5. Re-resolve preserved unknown IDs against the live registry; canonical/alias ownership changes fail closed rather than silently overwriting/dropping data.
-6. Preserve unknown `serializedPayload` UTF-8 bytes and all entry metadata exactly.
-7. Keep unknown payloads opaque: no serializer resolution, deserialization, CLR type activation, migration, capture, or apply.
-8. Publish only a completely validated deterministic merged batch; preserve candidate/final verification and `head.json` LAST.
-9. After successful head advance, treat the old unknown snapshot as stale until a new current-generation read/classification refreshes it.
-10. Do **not** activate prune policy, prepared loads, participant apply, production save admission/coalescing/cancellation, concurrent save ownership, slots, recovery/retention/autosave, peer bridges, or project-wide DDOL.
-11. Preserve the complete `218 / 218` Chronicle regression floor.
+1. Rehydrate exact `af28c96` after ESV-M3-05 closeout.
+2. Implement only ESV-M3-06 current-version known participant payload preparation.
+3. Use only live registration for runtime DTO `Type` authority.
+4. Resolve only already-registered serializers and require runtime-Type capability.
+5. Older participant schema fails migration-required; newer fails unsupported-newer.
+6. Unknown payloads never reach serializer resolution.
+7. Build no partial prepared batch.
+8. Invoke neither participant `Capture` nor `Apply`.
+9. Perform zero storage mutation.
+10. Keep migrations, `PreparedSaveLoad`, apply, production operation admission, slots, recovery/retention/autosave, peer bridges, and DDOL locked.

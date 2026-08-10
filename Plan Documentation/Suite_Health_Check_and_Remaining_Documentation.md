@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 9, 2026
-**Completed package checkpoint:** ESV-M3-04 – Chronicle Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-04 complete; ESV-M3-05 active / authorized
+**Completed package checkpoint:** ESV-M3-05 – Chronicle Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; ESV-M3-01 through ESV-M3-05 complete; ESV-M3-06 active / authorized
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M3-04 complete at `aa78e07` with 218 / 218; ESV-M3-05 active / authorized** |
+| Chronicle implementation | **ESV-M3-05 complete at `af28c96` with 243 / 243; ESV-M3-06 active / authorized** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -77,7 +77,7 @@ Chronicle M1 is complete:
 4. Unity compile/import and the focused Chronicle Editor gate were reported all green.
 5. Duplicate-safe package-local authority and zero-storage M1 boundaries are preserved.
 
-`ESV-M3-04` is complete at `aa78e07`; the focused Chronicle Editor gate passed **218 / 218**. Chronicle can now read/validate the current committed generation and preserve unclaimed participant entries as inert opaque session data without storage mutation or participant interpretation. `ESV-M3-05` is active / authorized for source-fresh unknown-payload carry-forward merge plus collision-safe immutable-generation/head-last publication. Production `SaveAsync`, participant deserialization/apply, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+`ESV-M3-05` is complete at `af28c96`; the focused Chronicle Editor gate passed **243 / 243**. Chronicle can now read/validate the current committed generation and preserve unclaimed participant entries as inert opaque session data without storage mutation or participant interpretation. `ESV-M3-05` is active / authorized for source-fresh unknown-payload carry-forward merge plus collision-safe immutable-generation/head-last publication. Production `SaveAsync`, participant deserialization/apply, migrations, slot catalogs, recovery, retention, and autosave remain later bounded work. SFGSS-ADR-006, optional peer integration, project-owned long-lived service composition, and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -96,4 +96,4 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M3-04` is **complete** with **218 / 218** focused Chronicle Editor tests. `ESV-M3-05` is **active / authorized** for source-fresh, collision-safe opaque unknown-payload carry-forward publication only. Production save orchestration, participant loading/apply, migrations, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+`ESV-M3-05` is **complete** with **243 / 243** focused Chronicle Editor tests. `ESV-M3-05` is **active / authorized** for source-fresh, collision-safe opaque unknown-payload carry-forward publication only. Production save orchestration, participant loading/apply, migrations, recovery/retention/autosave, slot catalog behavior, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

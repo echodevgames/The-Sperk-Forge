@@ -239,3 +239,25 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Unknown payload classification resolves no serializer and invokes no participant capture/apply.
 - Current-generation inspection performs zero storage mutation.
 - Failed reads/classification preserve the previous valid unknown store.
+
+### Added
+
+#### ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation
+
+- Unknown snapshot source slot/generation provenance.
+- Atomic provenance refresh/preservation/reset behavior.
+- Stale-source preflight before publication mutation.
+- Canonical/alias ownership collision fail-closed checks.
+- Deterministic fresh-known + opaque-unknown merge.
+- Exact unknown payload-body and transport-metadata carry-forward.
+- In-transaction source freshness recheck.
+- Merged immutable generation publication through candidate/verify/publish/reverify/head-last.
+
+### Verified
+
+#### ESV-M3-05 Closeout
+
+- Implementation committed at `af28c96`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **243 / 243**, with `0` failed.
+- All prior **218 / 218** Chronicle regressions remained green.
