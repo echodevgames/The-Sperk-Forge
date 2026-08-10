@@ -3,55 +3,67 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.14.0
-**Completed checkpoint:** ESV-M3-07 — Participant Migration Contracts, Duplicate-Safe Registry, Contiguous-Chain Execution, and Migrated Payload Preparation Foundation
-**Current checkpoint:** ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation
-**Status:** ESV-M3-07 complete; ESV-M3-08 active / authorized
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.15.0
+**Completed checkpoint:** ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation
+**Current checkpoint:** ESV-M3-09 — Deterministic Participant Apply and Missing-Payload Policy Foundation
+**Status:** ESV-M3-08 complete; ESV-M3-09 active / authorized
 
-## ESV-M3-07 closeout
+## ESV-M3-08 closeout
 
-Implementation commit: `d96936f`.
+Implementation commit: `798d38d`.
 
 Evidence:
 - Unity compile/import: **green**;
-- focused `EchoDevGames.EchoSave.Tests.Editor`: **294 / 294 passed, 0 failed**;
-- prior **261 / 261** Chronicle regression floor remains green;
-- 33 new focused migration tests passed;
-- migration steps own exact contiguous canonical participant/version edges;
-- complete chains are proven before execution;
-- migration is bounded and in memory only;
-- every step validates exact next schema, serializer ID, and payload output;
-- persisted aliases route through the current canonical owner;
-- migration provenance records stable IDs/version edges without payload contents;
-- successful old-schema payloads rejoin the M3-06 trusted DTO preparation path;
-- unknown payloads never enter migration planning;
+- focused `EchoDevGames.EchoSave.Tests.Editor`: **332 / 332 passed, 0 failed**;
+- prior **294 / 294** Chronicle regression floor remains green;
+- 38 new prepared-load tests passed;
+- `PreparedSaveLoad` is public, opaque, sealed, and disposable;
+- exact source slot/generation provenance is bound before admission;
+- prepared DTOs remain package-internal;
+- opaque unknown payloads remain package-internal and defensively isolated;
+- owner token/session epoch prevents cross-owner and stale-token access;
+- expiry/disposal/session invalidation deterministically release capacity;
+- count and aggregate source-byte limits are bounded;
 - participant `Capture` and `Apply` remain unused;
-- source immutable generations remain untouched.
+- storage/publication and scene/DDOL authority remain absent.
 
-## Active ESV-M3-08 boundary
+## Approved M3-09 contract decision
+
+Add optional:
+
+`ISaveDefaultableParticipant.InitializeDefault()`
+
+The base `ISaveParticipant` contract remains unchanged.
+
+Missing-payload behavior:
+- `InitializeDefault` requires the optional capability;
+- `Ignore` skips and reports;
+- `Fail` blocks during complete preflight;
+- `Apply(null)` is never used as a hidden default-initialization signal.
+
+## Active ESV-M3-09 boundary
 
 Authorized:
-- public disposable `PreparedSaveLoad` handle;
-- exact source slot/generation binding;
-- package/session owner token or epoch;
-- owner-isolated package-internal prepared-state access;
-- opaque unknown-payload snapshot binding;
-- idempotent disposal;
-- deterministic expiry through an injected time seam;
-- session/owner invalidate-all behavior;
-- bounded live-handle count;
-- bounded aggregate source transport-byte estimate;
-- capacity release on dispose/expiry/invalidation;
-- public safe metadata only;
-- no public detached DTO/raw unknown payload exposure.
+- complete apply preflight before mutation;
+- deterministic current-registration apply planning;
+- prepared-state `Apply(detachedState)`;
+- optional explicit `InitializeDefault()`;
+- missing-payload `Ignore` / `Fail` semantics;
+- current registration ownership revalidation;
+- structured ordered apply report;
+- partial failure truth without rollback fiction;
+- preflight failure leaves handle live;
+- execution consumes handle;
+- zero source-save mutation;
+- unknown opaque payload non-use.
 
 Still absent:
-- participant `Apply`;
-- missing-payload default execution;
-- apply rollback orchestration;
-- document migration;
-- production `PrepareLoadAsync` admission/cancellation;
+- rollback/compensation contract;
+- production `ApplyPreparedLoadAsync` admission/cancellation;
+- production `PrepareLoadAsync`;
+- convenience `LoadAndApplyAsync`;
 - scene travel/Passage integration;
+- document migration;
 - slots/recovery/retention/autosave;
 - peer bridges;
 - Chronicle-owned/project-wide DDOL.

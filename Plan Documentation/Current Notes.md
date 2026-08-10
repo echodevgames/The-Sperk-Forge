@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 9, 2026
-**Current focus:** ESV-M3-08 — Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation
-**Current checkpoint:** ESV-M3-08 — The Chronicle (`EchoSave`) — **Active / authorized**
+**Current focus:** ESV-M3-09 — Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation
+**Current checkpoint:** ESV-M3-09 — The Chronicle (`EchoSave`) — **Active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -78,56 +78,69 @@ SFGSS-000 v0.26.0, SFGSS-001 v1.5.0, SFGSS-ADR-006, SFGSS-INT-SUITE-001 v1.1.0, 
 - Final gate proves safe storage keys, traversal/root rejection, sandbox root resolution, default local backend initialization, exact-byte round trips, create-only conflict preservation, structured not-found/failure behavior, duplicate-before-storage behavior, and retained M1 lifecycle rules.
 - No save document, serializer payload, slot, immutable generation publication, participant, recovery/autosave, peer bridge, or Chronicle-owned DDOL behavior was introduced.
 
-## Chronicle ESV-M3-07 Closeout
+## Chronicle ESV-M3-08 Closeout
 
-- Implementation commit: `d96936f`.
+- Implementation commit: `798d38d`.
 - Unity compile/import: **Pass / green**.
-- Focused `EchoDevGames.EchoSave.Tests.Editor`: **294 / 294 passed, 0 failed**.
-- The complete prior **261 / 261** Chronicle regression floor remained green.
-- M3-07 added 33 focused migration tests.
-- Stable migration IDs and explicit participant migration-step contracts are implemented.
-- Migration registration is duplicate-safe by stable step ID and canonical participant/from-version edge.
-- One step covers exactly one contiguous schema edge.
-- Complete chains are proven before execution.
-- Chain depth is explicitly bounded.
-- Migration executes in memory only.
-- Every step validates exact next schema, serializer provider ID, and serialized payload.
-- Registry ownership is rechecked during execution.
-- Persisted aliases route through the current canonical participant owner.
-- Ordered migration provenance records stable step IDs/version edges without payload contents.
-- Successful older payloads rejoin M3-06 trusted current-version DTO preparation.
-- Unknown payloads never enter migration planning.
+- Focused `EchoDevGames.EchoSave.Tests.Editor`: **332 / 332 passed, 0 failed**.
+- The complete prior **294 / 294** Chronicle regression floor remained green.
+- M3-08 added 38 focused prepared-load tests.
+- `PreparedSaveLoad` is public, opaque, sealed, and disposable.
+- Exact source slot/generation provenance is required across validated read, prepared batch, and unknown snapshot.
+- Prepared DTO objects remain package-internal.
+- Opaque unknown payloads remain package-internal and defensively isolated.
+- Owner token/session epoch rejects cross-owner and stale-token access.
+- Disposal is idempotent.
+- Expiry is deterministic through an injected UTC clock seam.
+- Session/owner invalidate-all releases owned state.
+- Positive live-handle count and aggregate source transport-byte bounds are enforced.
+- Capacity releases on dispose/expiry/invalidation.
 - Participant `Capture` and `Apply` invocation counts remain zero.
-- Source immutable generations remain untouched.
+- Storage/publication mutation and scene/DDOL authority remain absent.
+
+## Approved M3-09 Architecture Decision
+
+Jesse approved additive optional default initialization:
+
+`ISaveDefaultableParticipant.InitializeDefault()`
+
+Authority:
+- do not modify the base `ISaveParticipant` contract;
+- do not encode default initialization as `Apply(null)`;
+- `InitializeDefault` missing-payload policy requires the optional capability;
+- `Ignore` skips/reports;
+- `Fail` rejects during complete preflight before participant mutation.
 
 ## Active Chronicle M3 Slice
 
-`ESV-M3-08 — Chronicle Prepared-Load Handle Lifecycle and Session Ownership Foundation` is active / authorized.
+`ESV-M3-09 — Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation` is active / authorized.
 
 Authorized next:
-- add public disposable `PreparedSaveLoad`;
-- bind handles to exact source slot/generation provenance;
-- bind one defensive opaque unknown-payload source snapshot;
-- retain prepared participant state package-internally only;
-- expose safe immutable public metadata, not detached DTOs or raw payloads;
-- add package/session owner token or epoch;
-- reject cross-owner/stale-handle access;
-- add idempotent disposal;
-- add deterministic injected-time expiry;
-- add owner/session invalidate-all;
-- release prepared references on dispose/expiry/invalidation;
-- bound live prepared-handle count;
-- bound aggregate source transport-byte estimate;
-- release capacity deterministically;
-- preserve zero `Capture`, zero `Apply`, zero storage mutation, and zero scene/DDOL authority;
-- preserve all prior **294 / 294** Chronicle regressions.
+- add optional public `ISaveDefaultableParticipant`;
+- complete apply preflight before any participant mutation;
+- plan deterministic current-registration apply actions;
+- require current owner for every prepared participant entry;
+- validate prepared detached-state compatibility against current owner;
+- classify every current participant missing a prepared payload by `InitializeDefault` / `Ignore` / `Fail`;
+- block `Fail` before mutation;
+- require optional default capability before mutation;
+- invoke `Apply(detachedState)` only for prepared state;
+- invoke `InitializeDefault()` only for explicit default actions;
+- never call `Apply(null)` as default protocol;
+- revalidate registration ownership before callbacks;
+- produce detailed ordered apply/ignore/default/failure/not-attempted reporting;
+- leave handle live on zero-callback preflight rejection;
+- consume handle once participant/default execution begins;
+- stop at first terminal callback failure without pretending arbitrary rollback occurred;
+- preserve source save immutability and unknown payload opacity;
+- preserve all prior **332 / 332** Chronicle regressions.
 
 Still deferred:
-- participant apply/default/rollback orchestration;
-- document migration;
-- production `PrepareLoadAsync` operation admission/cancellation;
+- participant rollback/compensation contract;
+- production async prepare/apply admission/cancellation;
+- convenience load-and-apply;
 - scene travel/Passage integration;
-- convenience load;
+- document migration;
 - slots/recovery/retention/autosave;
 - peer bridges/project-wide DDOL.
 
@@ -314,17 +327,18 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Rehydrate exact `d96936f` after ESV-M3-07 closeout.
-2. Implement only ESV-M3-08 prepared-load handle lifecycle/session ownership.
-3. Create a public disposable `PreparedSaveLoad` that exposes safe immutable metadata only.
-4. Keep detached prepared participant DTOs and opaque unknown payload bodies package-internal.
-5. Require exact slot/generation provenance agreement across prepared artifacts.
-6. Bind each handle to one package/session owner token or epoch.
-7. Reject cross-owner and stale-token access.
-8. Implement idempotent disposal, deterministic expiry, and owner/session invalidate-all.
-9. Clear package references to prepared state on every terminal invalidation path.
-10. Bound live-handle count and aggregate source transport-byte estimate.
-11. Release capacity on dispose/expiry/invalidation without storage mutation.
-12. Invoke neither participant `Capture` nor participant `Apply`.
-13. Add no scene travel, DDOL, service locator, document migration, production operation admission, slots, recovery/retention/autosave, or peer bridges.
-14. Preserve the **294 / 294** Chronicle regression floor.
+1. Rehydrate exact `798d38d` after ESV-M3-08 closeout.
+2. Implement only ESV-M3-09 deterministic participant apply/missing-payload policy.
+3. Add optional `ISaveDefaultableParticipant.InitializeDefault()` without changing `ISaveParticipant`.
+4. Build complete deterministic apply preflight before the first callback.
+5. Require every prepared participant to have a compatible current registration.
+6. Classify every missing current payload as `InitializeDefault`, `Ignore`, or `Fail`.
+7. Reject `Fail` and missing default capability before mutation.
+8. Never use `Apply(null)` as default initialization.
+9. Revalidate participant registration ownership before mutation callbacks.
+10. Invoke prepared `Apply(detachedState)` and explicit `InitializeDefault()` only in deterministic plan order.
+11. Return ordered structured partial apply reporting without raw payload/DTO exposure.
+12. Leave handle live after zero-callback preflight rejection.
+13. Consume handle once callback execution begins, including partial failure.
+14. Add no rollback fiction, storage mutation, scene travel, document migration, production operation admission, slots, recovery/retention/autosave, peer bridges, service locator, or DDOL.
+15. Preserve the **332 / 332** Chronicle regression floor.

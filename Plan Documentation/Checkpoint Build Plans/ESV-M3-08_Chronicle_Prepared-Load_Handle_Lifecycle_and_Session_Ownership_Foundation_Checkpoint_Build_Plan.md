@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-08
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.14.0
 **Prior checkpoint:** ESV-M3-07 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -244,14 +244,71 @@ M3-08 tests must prove:
 
 Executed totals are recorded from Unity, not predicted.
 
-## 6. Stop point
+## 6. Executed focused proof
 
-Stop when Chronicle can encapsulate one exact-source, fully validated, migrated, prepared in-memory load in a bounded public disposable handle that remains valid until apply/dispose/expiry/session invalidation and can safely survive caller-controlled time between prepare and a future apply.
+- public `PreparedSaveLoad` is sealed/disposable and has no public constructor — **Pass**;
+- public handle/result surfaces expose no prepared DTO batch, prepared entry, opaque unknown snapshot, or raw payload entry — **Pass**;
+- exact matching read/preparation/unknown artifacts create one live handle — **Pass**;
+- source slot mismatch rejects — **Pass**;
+- source generation mismatch rejects — **Pass**;
+- unknown-payload source mismatch rejects — **Pass**;
+- unknown entries without source provenance reject — **Pass**;
+- zero-unknown loads may use a null incoming unknown snapshot — **Pass**;
+- participant classification mismatch rejects — **Pass**;
+- failed read/preparation exposes no partial handle/capacity leak — **Pass**;
+- disposed owner rejects new admission — **Pass**;
+- `Dispose()` is idempotent and releases owned prepared state/capacity — **Pass**;
+- lazy validity access expires the handle deterministically — **Pass**;
+- explicit expiry sweep expires all due handles — **Pass**;
+- owner/session invalidation invalidates all live handles — **Pass**;
+- invalidated handles cannot resurrect after a new session epoch — **Pass**;
+- cross-owner prepared-state access rejects — **Pass**;
+- stale ownership token cannot release a replacement handle — **Pass**;
+- store disposal invalidates live handles — **Pass**;
+- prepared participant batch is package-internal and accessible only while live — **Pass**;
+- unknown snapshot access returns defensive copies — **Pass**;
+- live-handle count cap rejects without evicting valid handles — **Pass**;
+- disposal releases count capacity — **Pass**;
+- source-byte cap rejects without evicting valid handles — **Pass**;
+- expiry releases byte capacity before later admission — **Pass**;
+- failed admission leaks no capacity — **Pass**;
+- session invalidation releases all capacity — **Pass**;
+- invalid count/byte bounds reject at configuration time — **Pass**;
+- prepared-load store owns no storage backend — **Pass**;
+- prepared-load store owns no participant/migration registry — **Pass**;
+- prepared-load store owns no serializer — **Pass**;
+- prepared handle/store are not Unity objects — **Pass**;
+- participant `Capture` invocation count remains zero — **Pass**;
+- participant `Apply` invocation count remains zero — **Pass**;
+- storage/publication mutation authority remains absent — **Pass**;
+- scene/DDOL/Unity object lifetime authority remains absent — **Pass**;
+- all prior **294 / 294** Chronicle regressions remain green — **Pass**.
 
-Do not apply participant state yet.
+Final focused Unity gate: **332 / 332 passed, 0 failed**.
 
-Do not add scene travel.
+Implementation commit: `798d38d`.
 
-Do not add document migration.
+M3-08 added **38** focused passing tests:
+- `PreparedSaveLoadPublicSurfaceTests` — 4;
+- `SavePreparedLoadStoreBoundaryTests` — 4;
+- `SavePreparedLoadStoreBoundsTests` — 10;
+- `SavePreparedLoadStoreCreationTests` — 10;
+- `SavePreparedLoadStoreLifecycleTests` — 10.
 
-The next bounded checkpoint should activate deterministic prepared-participant apply validation and execution, including missing-payload policy and structured apply reporting, while preserving the prepared-handle ownership boundary.
+## 7. Stop point
+
+**Reached.** Chronicle can retain one exact-source, fully validated/migrated prepared in-memory load inside a bounded opaque disposable `PreparedSaveLoad` across caller-controlled time. Ownership, expiry, disposal, invalidate-all, count limits, source-byte limits, and defensive unknown-payload snapshot retention are deterministic and package-local.
+
+No participant gameplay state is applied.
+
+No disk state is mutated.
+
+No scene or DDOL authority is acquired.
+
+Next bounded checkpoint:
+
+`ESV-M3-09 — Chronicle Deterministic Participant Apply and Missing-Payload Policy Foundation`
+
+M3-09 may establish complete apply preflight, deterministic current-registration planning, explicit `InitializeDefault` / `Ignore` / `Fail` missing-payload behavior, the approved additive optional `ISaveDefaultableParticipant` capability, participant callback execution, handle-consumption rules, and detailed partial apply reporting.
+
+Production async operation admission, convenience loading, document migration, scene travel, rollback/compensation, slots, recovery, retention, autosave, peer bridges, and Chronicle-owned/project-wide DDOL remain later bounded work.

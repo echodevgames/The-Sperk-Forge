@@ -319,3 +319,44 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - 33 new focused M3-07 migration tests passed.
 - Migration invokes neither participant `Capture` nor participant `Apply`.
 - Source immutable generations remain untouched.
+
+### Added
+
+#### ESV-M3-08 — Prepared-Load Handle Lifecycle and Session Ownership Foundation
+
+- Public opaque sealed/disposable `PreparedSaveLoad`.
+- Safe immutable source/lifetime/count metadata.
+- Structured prepared-load creation/admission status/result.
+- Injected UTC clock seam.
+- Runtime-memory-only prepared-load owner/store.
+- Exact read/preparation/unknown source-provenance agreement.
+- Defensive opaque unknown snapshot ownership.
+- Package-internal prepared DTO access only while live.
+- Owner token + session epoch isolation.
+- Idempotent disposal and deterministic expiry.
+- Owner/session invalidate-all.
+- Positive live-handle count and aggregate source-byte limits.
+- Deterministic capacity release.
+
+### Verified
+
+#### ESV-M3-08 Closeout
+
+- Implementation committed at `798d38d`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **332 / 332**, with `0` failed.
+- All prior **294 / 294** Chronicle regressions remained green.
+- 38 new focused M3-08 tests passed.
+- Participant `Capture` and `Apply` remain unused.
+- Storage/publication mutation and scene/DDOL authority remain absent.
+
+### Approved
+
+#### ESV-M3-09 default initialization capability
+
+- Add optional `ISaveDefaultableParticipant.InitializeDefault()`.
+- Keep the base `ISaveParticipant` contract unchanged.
+- `SaveMissingPayloadPolicy.InitializeDefault` requires the optional capability.
+- `Ignore` skips/reports.
+- `Fail` blocks during preflight.
+- `Apply(null)` is not a hidden default-initialization protocol.
