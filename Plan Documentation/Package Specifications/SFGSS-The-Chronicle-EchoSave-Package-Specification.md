@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.18.0
+**Specification version:** 1.19.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -50,6 +50,7 @@
 | 1.16.0 | 2026-08-10 | Approved | Closed ESV-M3-09 at `568fa3a` with focused Chronicle Editor evidence `366 / 366`, completing M3 Participants and Loading; activated ESV-M4-01 provider-neutral slot discovery, payload-free head/current-manifest metadata rebuild, deterministic catalog snapshots, and session-only active-slot selection; added ESV-D-023 keeping base `ISaveStorageBackend` unchanged while catalog discovery uses an additive optional provider capability. | Jesse “Echo” Adams |
 | 1.17.0 | 2026-08-10 | Approved | Closed ESV-M4-01 at `62e8a54` with focused Chronicle Editor evidence `403 / 403`; activated ESV-M4-02 bounded technical slot creation, capacity enforcement, initial empty immutable-generation/head-last bootstrap, and post-publication catalog reconciliation; added ESV-D-024 defining successful slot creation as a committed generation rather than directory existence and counting degraded canonical slots toward capacity. | Jesse “Echo” Adams |
 | 1.18.0 | 2026-08-10 | Approved | Closed ESV-M4-02 at implementation commit `d8d5c18` with focused Chronicle Editor evidence `425 / 425`; recorded bounded technical slot creation, capacity enforcement, initial empty committed generation, head-last publication, and truthful catalog reconciliation as complete; left the next M4 checkpoint intentionally unactivated pending a bounded Checkpoint Build Plan. | Jesse “Echo” Adams |
+| 1.19.0 | 2026-08-10 | Approved | Activated ESV-M4-03 bounded manual-save transaction composition at clean baseline `a3eba25`: active-slot target resolution, healthy catalog preflight, current-generation/unknown-payload provenance refresh, fresh participant capture, collision-safe known+unknown merge, expected-current-generation head-last publication, and truthful catalog reconciliation; public `SaveAsync`, production operation admission/Busy semantics, autosave, retention, recovery, and unrelated slot operations remain deferred. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1886,6 +1887,7 @@ Project-specific migration tooling must:
 | ESV-D-022 | Missing-payload default initialization is an additive optional `ISaveDefaultableParticipant.InitializeDefault()` capability; base `ISaveParticipant` remains unchanged and `Apply(null)` is not a default protocol signal | Approved | Keeps existing participant implementations source-compatible and makes default initialization explicit rather than encoding hidden null semantics | `InitializeDefault` policy requires the optional capability during apply preflight; missing capability fails before mutation |
 | ESV-D-023 | Slot-catalog discovery is provider-neutral through an additive optional storage enumeration capability; base `ISaveStorageBackend` remains unchanged and catalog core does not reach through local `RootPath`/`System.IO` | Approved | Preserves storage-provider neutrality and source compatibility while enabling authoritative slot discovery | Local backend implements bounded immediate-child discovery; providers lacking the capability report catalog refresh unavailable/unsupported |
 | ESV-D-024 | Successful slot creation means one verified immutable generation plus `head.json` last; directory existence alone is not success; all discovered canonical technical slots including degraded entries count toward capacity; creation does not auto-select | Approved | Prevents fake/half-created slots, capacity bypass through degraded entries, display-name/path coupling, and hidden selection side effects | M4-02 adds bounded technical create/capacity/catalog reconciliation while rename/duplicate/delete and production operation admission remain later work |
+| ESV-D-025 | The first manual-save checkpoint composes existing proven primitives internally before exposing production `SaveAsync` or generic operation admission | Approved | Keeps M4-03 bounded and proves durable save semantics without forcing lifecycle/service wiring, queue policy, cancellation, autosave, and cross-operation concurrency into one checkpoint | M4-03 targets the explicitly selected healthy slot, refreshes source provenance, captures fresh known participants, preserves valid unknown payloads, publishes only against the expected current generation, reconciles the catalog, and reports partial durable/catalog truth; M4-04 or later owns public admission/Busy/cancellation |
 
 ### 27.2 Release-blocking questions
 
@@ -2281,45 +2283,75 @@ Outcome achieved:
 
 Stop point: Chronicle can create one bounded technical slot as one real initial committed empty generation, enforce capacity without ignoring degraded technical slots, reject technical collisions, reconcile the catalog after publication, and report durable-publication/catalog-refresh outcomes accurately without auto-selecting.
 
-### 28.19 M4 continuation planning state
+### 28.19 ESV-M4-03 manual-save transaction composition activation
 
-**Status:** No follow-on checkpoint activated.
+**Status:** Active / authorized.
 
-The next Chronicle implementation must begin with a bounded authorized Checkpoint Build Plan and preserve the **425 / 425** focused regression floor. Persistent catalog cache, rename, duplicate, delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service-locator behavior, and Chronicle-owned/project-wide DDOL remain deferred until separately authorized.
+**Exact implementation baseline:** `a3eba25`.
 
+ESV-M4-03 authorizes the next bounded M4 slice:
+
+- resolve one explicitly selected active slot from the M4-01 session/catalog authority;
+- require that slot to be present and healthy in the current trusted catalog snapshot before capture begins;
+- read and fully validate the current generation for that exact slot;
+- refresh the session unknown-payload snapshot with exact source slot/generation provenance;
+- capture all currently registered known participants through the existing deterministic M3-02 capture coordinator;
+- merge fresh known entries with preserved opaque unknown entries through the existing ownership/collision rules;
+- publish one new participant-backed immutable generation only if the previously validated source generation is still the current head;
+- preserve `head.json`-last commit semantics and stale-source rejection already proven by M3-05;
+- refresh the slot catalog after successful head publication;
+- return truthful terminal state when durable publication succeeds but catalog reconciliation fails;
+- preserve the slot display name from current catalog metadata so ordinary save does not secretly become rename.
+
+### ESV-D-025 — compose manual-save truth before public operation admission
+
+> The first manual-save checkpoint is an internal deterministic transaction composition checkpoint. It proves the complete active-slot save transaction using already-proven Chronicle primitives, but it does not yet expose production `SaveAsync`, generic operation admission, queueing, Busy policy, autosave coalescing, or cancellation.
+
+Consequences:
+
+- M4-03 can prove save correctness without simultaneously turning the lifecycle-only `IEchoSaveService` into the final production facade;
+- a failed capture/merge/pre-publication step cannot advance the head;
+- expected-current-generation publication rejects a source that changed after provenance was read;
+- unknown payloads remain opaque and source-bound;
+- a normal save preserves current display-name metadata rather than mutating slot identity/presentation;
+- M4-04 or another separately authorized checkpoint can add public async admission/Busy/cancellation on top of a proven manual-save transaction.
+
+**Explicitly still deferred:** persistent `catalog.cache.json`; rename/duplicate/delete and trash/quarantine; full slot-policy/configuration assets; public `SaveAsync`; generic production operation admission and concurrent mutation ownership; permission-provider facade wiring; queue/coalescing/cancellation policy; autosave; retention; recovery; document migration; scene travel; peer bridges; service-locator behavior; Chronicle-owned/project-wide DDOL.
+
+The focused Chronicle regression floor carried into ESV-M4-03 is **425 / 425**.
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.18.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.19.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.18.0
+Current specification version: 1.19.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02
-Current milestone/checkpoint: M4 remains active; no bounded follow-on checkpoint is activated
+Current milestone/checkpoint: ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation — active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01 catalog/session foundation is complete at 403 / 403; M4-02 technical slot creation/capacity/initial-generation/catalog reconciliation is complete at implementation commit d8d5c18 with 425 / 425
+Current implementation status: M2 and M3 are complete; M4-01 and M4-02 are complete; ESV-M4-03 planning is activated at clean baseline a3eba25 with the 425 / 425 regression floor
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing further M4 code:
-1. Rehydrate exact `05c11c7` after the ESV-M4-02 implementation and documentation closeout.
-2. Preserve the **425 / 425** focused Chronicle regression floor.
-3. Preserve M4-01 payload-free authoritative catalog reconstruction and session-only explicit active selection.
-4. Preserve M4-02 committed-generation slot creation, degraded-slot capacity accounting, package-generated path-independent identity, head-last publication, and truthful post-publication catalog reconciliation.
-5. Do not begin implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
-6. Do not silently absorb persistent catalog cache, rename/duplicate/delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL into an unrelated checkpoint.
+Before writing ESV-M4-03 code:
+1. Rehydrate exact `a3eba25`.
+2. Read the active ESV-M4-03 Checkpoint Build Plan completely.
+3. Preserve the **425 / 425** focused Chronicle regression floor.
+4. Compose only the proven active-slot → current-generation provenance → participant capture → unknown carry-forward → expected-current-generation publication → catalog reconciliation transaction.
+5. Preserve current display-name metadata during ordinary save; rename remains separate.
+6. Do not expose public `SaveAsync` or absorb production admission/Busy/cancellation, autosave, retention, recovery, rename/duplicate/delete, full slot-policy assets, persistent catalog cache, scene travel, peer bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.18.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.19.0 |
 | Completed checkpoint | ESV-M4-02 - Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation |
 | Implementation commit | `d8d5c18` |
 | Tests passed | ESV-M4-02 focused Chronicle Editor gate `425 / 425`; prior `403 / 403` regression floor preserved; Unity compile/import green |
@@ -2327,7 +2359,7 @@ Before writing further M4 code:
 | Known issues | None blocking bounded next-checkpoint planning |
 | Decisions added | ESV-D-001 through ESV-D-024; ESV-D-024 defines committed-generation slot creation and degraded-slot capacity accounting |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No follow-on M4 checkpoint activated; next implementation requires a bounded Checkpoint Build Plan |
+| Implementation permission | ESV-M4-03 active / authorized at `a3eba25`; implementation is bounded by its Checkpoint Build Plan and ESV-D-025 |
 
 ## 30. Approval
 
@@ -2373,7 +2405,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.18.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, and ESV-M4-02 are complete. M4 remains active as the current milestone, but no follow-on implementation checkpoint is activated until a bounded Checkpoint Build Plan is written and approved.
+The Chronicle specification is complete and **Approved v1.19.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01, and ESV-M4-02 are complete. M4 remains active, with ESV-M4-03 authorized as the bounded manual-save transaction-composition checkpoint.
 
 
 ---

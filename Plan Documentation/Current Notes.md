@@ -156,6 +156,21 @@ Implementation-history note:
 
 No follow-on M4 checkpoint is activated by this closeout.
 
+`ESV-M4-03 — Chronicle Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation` is **active / authorized** at clean planning baseline `a3eba25`.
+
+Authorized boundary:
+- active slot must already be explicitly selected and healthy;
+- current generation is read/validated for exact source provenance before participant capture;
+- fresh known participant capture reuses the proven M3-02 coordinator;
+- opaque unknown payloads are preserved through the proven M3-05 ownership/collision-safe merger;
+- publication requires the validated source generation to remain current;
+- immutable generation publication and `head.json` last remain unchanged;
+- current display name is preserved during ordinary save;
+- successful durable publication is followed by catalog reconciliation;
+- post-publication catalog-refresh failure reports durable truth rather than fictional rollback;
+- public `SaveAsync`, production admission/Busy/cancellation, autosave, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, bridges, and DDOL remain outside M4-03.
+
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -338,9 +353,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-
-1. Rehydrate exact `d8d5c18` after the ESV-M4-02 closeout documentation commit.
-2. Do not begin another Chronicle implementation checkpoint until its bounded Checkpoint Build Plan is written and activated.
-3. Carry forward the focused **425 / 425** Chronicle regression floor.
-4. Preserve M4-01 payload-free catalog reconstruction and M4-02 committed-generation slot-creation truth.
-5. Keep persistent catalog cache, rename/duplicate/delete, full slot-policy assets, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `a3eba25`.
+2. Read `ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation_Checkpoint_Build_Plan.md`.
+3. Preserve the focused **425 / 425** Chronicle regression floor.
+4. Implement only the active-slot manual-save transaction composition authorized by ESV-D-025.
+5. Keep public `SaveAsync`, generic production operation admission/Busy/cancellation, autosave, retention, recovery, persistent cache, rename/duplicate/delete, full slot-policy assets, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.

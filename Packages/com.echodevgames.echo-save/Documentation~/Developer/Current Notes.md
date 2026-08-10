@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.18.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.19.0
 **Completed checkpoint:** ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — next bounded M4 checkpoint requires a Checkpoint Build Plan
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; M4 remains active
+**Current checkpoint:** ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.18.0 records the completed M4-02 state and intentionally leaves the next bounded M4 checkpoint unactivated.
+**Authority reconciliation:** Specification v1.19.0 activates bounded ESV-M4-03 at clean baseline `a3eba25` and records ESV-D-025: prove internal manual-save transaction composition before public production `SaveAsync`/operation admission.
 
 ## ESV-M4-02 closeout
 
@@ -52,24 +52,31 @@ Chronicle now has:
 - real empty immutable first-generation publication with `head.json` last;
 - truthful post-publication catalog reconciliation.
 
-## Next bounded planning boundary
+## ESV-M4-03 active boundary
 
-No M4-03 or other follow-on checkpoint is activated by this closeout.
+**Exact planning baseline:** `a3eba25`.
 
-Still absent:
+M4-03 owns:
+- explicit active-slot target resolution from the M4-01 catalog/session authority;
+- healthy current-catalog preflight;
+- current-generation validation and exact source-provenance refresh;
+- fresh deterministic capture of registered known participants;
+- opaque unknown-payload carry-forward through the existing collision-safe merger;
+- expected-current-generation publication using the existing immutable generation/head-last transaction;
+- current display-name preservation during ordinary save;
+- post-publication catalog reconciliation;
+- truthful partial result when durable publication succeeds but catalog refresh fails.
+
+M4-03 does **not** own:
+- public `SaveAsync` or `IEchoSaveService` production save facade;
+- generic operation admission, Busy queue semantics, cancellation, or shutdown settlement;
+- permission-provider facade wiring;
+- autosave/coalescing;
+- retention/recovery;
+- rename/duplicate/delete/trash;
 - persistent `catalog.cache.json`;
-- rename / duplicate / delete;
-- trash/quarantine policy;
-- full single/fixed/configurable/unlimited-profile configuration asset expansion;
-- production async operation admission/coalescing/cancellation;
-- concurrent public mutation ownership;
-- `SaveAsync`;
-- autosave;
-- retention;
-- recovery;
+- full slot-policy/configuration expansion;
 - document migration;
-- scene travel;
-- peer bridges;
-- Chronicle-owned/project-wide DDOL or service locator.
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-The next Chronicle implementation must begin with a bounded authorized Checkpoint Build Plan and preserve the **425 / 425** focused regression floor.
+The carried focused regression floor is **425 / 425**. Executed totals are recorded from Unity rather than predicted.
