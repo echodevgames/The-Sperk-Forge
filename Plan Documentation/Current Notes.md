@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-04 complete; next bounded checkpoint planning
-**Current checkpoint:** None activated — ESV-M4-04 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-05 autosave request/coalescing
+**Current checkpoint:** ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -175,6 +175,26 @@ Evidence:
 - public `SaveAsync`, production admission/Busy/cancellation, autosave, retention, recovery, persistent catalog cache, rename/duplicate/delete, full slot-policy assets, scene travel, bridges, and DDOL remain deferred.
 
 No follow-on M4 checkpoint is activated by this closeout.
+
+## Chronicle ESV-M4-05 Activation
+
+`ESV-M4-05 — Chronicle Autosave Request Coalescing and Latest-Wins Pending Admission Foundation` is **active / authorized** at clean baseline `9a2ad29`.
+
+Authorized boundary:
+- public caller-triggered `RequestAutosave(...)` submission surface;
+- Chronicle does not own timers or gameplay decisions about when autosave should happen;
+- reuse the M4-04 root-local mutating-operation admission authority;
+- reuse the M4-03/M4-04 durable active-slot save path;
+- at most one pending autosave request while another mutating operation owns admission;
+- newer pending autosave supersedes/coalesces older pending autosave metadata;
+- manual save continues to return Busy rather than queue;
+- pending autosave executes at most once after admission becomes available and lifecycle/selection remain valid;
+- shutdown rejects new autosave requests and prevents pending autosave from starting after closure;
+- accepted/coalesced/rejected/discarded submission truth is explicit;
+- retention, generic operation queues, recovery, rename/duplicate/delete, persistent cache, full slot-policy assets, automatic timers, scene travel, bridges, and DDOL remain outside M4-05.
+
+Carried regression floor: **456 / 456**.
+
 
 `ESV-M4-04 — Chronicle Public Manual Save Admission, Busy, Cancellation, and Lifecycle Foundation` is **active / authorized** at clean planning baseline `3a84187`.
 
@@ -403,8 +423,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `09ae8f1`.
-2. Preserve the focused **456 / 456** Chronicle regression floor.
-3. Treat ESV-M4-04 public manual-save admission, Busy, cancellation, and lifecycle behavior as complete.
-4. Define and activate the next bounded M4 Checkpoint Build Plan before writing further runtime code.
-5. Keep autosave/coalescing, generic queued multi-operation policy, permission-provider facade wiring, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `9a2ad29`.
+2. Read `ESV-M4-05_Chronicle_Autosave_Request_Coalescing_and_Latest_Wins_Pending_Admission_Foundation_Checkpoint_Build_Plan.md`.
+3. Preserve the focused **456 / 456** Chronicle regression floor.
+4. Implement only explicit caller-triggered autosave submission, at-most-one pending latest autosave, coalescing/supersession, admitted execution, and shutdown settlement under ESV-D-027.
+5. Keep generation retention, generic queued multi-operation scheduling/capacity/overflow, permission-provider facade wiring, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy expansion, automatic autosave timers, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
