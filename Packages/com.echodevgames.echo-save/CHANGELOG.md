@@ -212,3 +212,30 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Head serialization/publication failures leave the new generation non-current/orphaned.
 - Existing M2 empty/transport publication remains green.
 - One Editor-test accessibility hotfix was required before the final gate; no runtime behavior changed.
+
+### Added
+
+#### ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation
+
+- Read-only current head/generation resolution.
+- Current immutable payload/manifest read and complete structural/integrity validation.
+- Canonical and alias participant recognition.
+- Package-owned opaque `SaveUnknownPayloadStore`.
+- Field-for-field unknown transport preservation.
+- Exact serialized payload text preservation.
+- Defensive-copy deterministic unknown snapshots.
+- Bounded unknown count and aggregate-byte safeguards.
+- Atomic successful store replacement.
+- Prior valid store preservation across failed read/classification.
+
+### Verified
+
+#### ESV-M3-04 Closeout
+
+- Implementation committed at `aa78e07`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **218 / 218**, with `0` failed.
+- All prior **197 / 197** Chronicle regressions remained green.
+- Unknown payload classification resolves no serializer and invokes no participant capture/apply.
+- Current-generation inspection performs zero storage mutation.
+- Failed reads/classification preserve the previous valid unknown store.

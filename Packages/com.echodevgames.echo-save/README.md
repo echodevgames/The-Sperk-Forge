@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M3-03 — Participant-Backed Generation Publication and Head-Last Integration Foundation** with a focused Chronicle Editor gate of **197 / 197**. The active checkpoint is **ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation**.
+Version `0.1.0` has completed **ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation** with a focused Chronicle Editor gate of **218 / 218**. The active checkpoint is **ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation**.
 
 ESV-M1-01 proved:
 
@@ -23,11 +23,11 @@ ESV-M1-01 proved:
 
 Chronicle M2 provides path-safe local storage, package serialization, technical slot/generation identity, commit documents, SHA-256 integrity, verified immutable generation publication, and head-last current selection.
 
-ESV-M3-01 adds an open-ended participant registry. ESV-M3-02 adds trusted detached capture and verified in-memory participant transport batches. ESV-M3-03 joins those batches to the established generation-first/head-last durable transaction and proves participant-bearing generations across injected failures.
+ESV-M3-01 adds an open-ended participant registry. ESV-M3-02 adds trusted detached capture and verified in-memory participant transport batches. ESV-M3-03 joins those batches to the established generation-first/head-last durable transaction. ESV-M3-04 adds read-only current-generation validation plus opaque session preservation for unclaimed participant payloads.
 
-ESV-M3-04 may now read and fully validate the current committed generation and preserve any unclaimed participant entries as opaque in-memory `UnknownPayloadStore` data. Unknown entries remain byte-for-byte / field-for-field durable records and cannot execute code.
+ESV-M3-05 may now bind unknown snapshots to their source slot/generation, prove that source is still current, merge fresh known captures with still-unclaimed unknown payloads, fail closed on canonical/alias ownership collisions, and carry preserved unknown participant payload bytes/metadata into the next immutable generation.
 
-It still does **not** authorize unknown-payload merge/carry-forward publication, prune plans, production `SaveAsync`, participant deserialization/apply, prepared loads, migrations, slot/catalog behavior, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+It still does **not** authorize silent unknown pruning, automatic collision winners, participant deserialization/apply, prepared loads, migrations, production `SaveAsync` admission/coalescing/cancellation, concurrent save ownership, slot/catalog behavior, recovery/retention/autosave, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 Those capabilities remain governed by later Chronicle checkpoints.
 

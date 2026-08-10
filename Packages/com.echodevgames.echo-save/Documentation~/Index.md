@@ -25,14 +25,17 @@
 - [[Developer/Checkpoints/ESV-M3-03_Chronicle_Participant-Backed_Generation_Publication_and_Head-Last_Integration_Foundation|ESV-M3-03 Closeout]]
 - [[Developer/Test Reports/ESV-M3-03_Chronicle_Participant-Backed_Generation_Publication_and_Head-Last_Integration_Foundation_Test_Report|ESV-M3-03 Test Report]]
 
+- [[Developer/Checkpoints/ESV-M3-04_Chronicle_Current-Generation_Read_Opaque_Unknown-Payload_Preservation_and_Session_Store_Foundation|ESV-M3-04 Closeout]]
+- [[Developer/Test Reports/ESV-M3-04_Chronicle_Current-Generation_Read_Opaque_Unknown-Payload_Preservation_and_Session_Store_Foundation_Test_Report|ESV-M3-04 Test Report]]
+
 ## Completed checkpoint
-
-`ESV-M3-03 — Participant-Backed Generation Publication and Head-Last Integration Foundation`
-
-Chronicle can durably publish verified participant-backed generations while preserving the previous known-good head across injected failures at **197 / 197** focused Chronicle Editor tests.
-
-## Current checkpoint
 
 `ESV-M3-04 — Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation`
 
-This checkpoint may read/validate the current generation and preserve unclaimed participant entries as inert opaque session data. It does not yet merge those entries into the next save.
+Chronicle can read/validate the current committed generation and preserve unclaimed participant entries as inert opaque session data at **218 / 218** focused Chronicle Editor tests.
+
+## Current checkpoint
+
+`ESV-M3-05 — Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation`
+
+This checkpoint may merge source-fresh opaque unknown payloads with fresh known captures and carry them into the next immutable generation without interpreting or silently dropping unknown data.

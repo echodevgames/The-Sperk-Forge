@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.10.0
+**Specification version:** 1.11.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 through ESV-M3-03 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-04` is the active current-generation-read/unknown-payload-preservation checkpoint.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, and ESV-M3-01 through ESV-M3-04 are complete. Runtime implementation continues only through explicit bounded checkpoint plans; `ESV-M3-05` is the active source-fresh unknown-payload carry-forward/collision-safe publication checkpoint.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -42,6 +42,7 @@
 | 1.8.0 | 2026-08-09 | Approved | Closed ESV-M3-01 at `b3b5f9f` with focused Chronicle Editor evidence `147 / 147`; locked the open-ended no-central-participant-catalog invariant and activated ESV-M3-02 deterministic detached capture, live-registration DTO type routing, serializer resolution, and in-memory payload-entry construction without physical generation publication. | Jesse “Echo” Adams |
 | 1.9.0 | 2026-08-09 | Approved | Closed ESV-M3-02 at `e34d6d7` with focused Chronicle Editor evidence `171 / 171`; activated ESV-M3-03 publication-boundary revalidation and participant-bearing immutable-generation/head-last integration while keeping production SaveAsync, unknown-payload preservation, loading/apply, migration, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 | 1.10.0 | 2026-08-09 | Approved | Closed ESV-M3-03 at `6970127` with focused Chronicle Editor evidence `197 / 197`; activated ESV-M3-04 read-only current-generation validation and opaque unknown-payload session preservation while keeping carry-forward publication, prepared loads/apply, production SaveAsync admission, migrations, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
+| 1.11.0 | 2026-08-09 | Approved | Closed ESV-M3-04 at `aa78e07` with focused Chronicle Editor evidence `218 / 218`; activated ESV-M3-05 source-provenance/freshness, collision-safe fresh+unknown merge, and opaque unknown-payload carry-forward through immutable generation/head-last publication while keeping prune policy, participant apply, production save admission, migrations, slots, recovery, retention, and autosave separate. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -2080,28 +2081,51 @@ Outcome achieved:
 - implementation commit `6970127`;
 - focused Chronicle Editor gate **197 / 197**.
 
-### 28.11 Active current-generation read / unknown-payload checkpoint
+### 28.11 Completed current-generation read / unknown-payload checkpoint
 
 **ESV-M3-04 - Current-generation read, opaque unknown-payload preservation, and session store foundation**
+
+**Status:** Complete.
+
+Outcome achieved:
+- read-only current head/generation resolution;
+- complete current immutable payload/manifest validation;
+- whole-document and per-entry integrity validation;
+- canonical/alias participant recognition;
+- package-owned opaque unknown-payload session store;
+- exact unknown serialized payload text and transport metadata preservation;
+- defensive-copy deterministic snapshots;
+- bounded unknown count/aggregate bytes;
+- atomic successful store replacement;
+- prior-store preservation across failed reads/classification;
+- zero storage mutation;
+- implementation commit `aa78e07`;
+- focused Chronicle Editor gate **218 / 218**.
+
+### 28.12 Active source-fresh unknown carry-forward checkpoint
+
+**ESV-M3-05 - Opaque unknown-payload carry-forward merge, source-freshness, and collision-safe publication foundation**
 
 **Status:** Active / authorized.
 
 Outcome:
-- add one bounded read-only current-generation reader for an explicit technical `SaveSlotId`;
-- resolve and validate the current `head.json`;
-- read the current immutable `manifest.json` and `payload.json`;
-- validate package document contracts, slot/generation identity, commit state, whole-payload integrity, participant inventory agreement, and each inline participant entry's own byte length/checksum;
-- classify validated entries against the active participant registry using canonical IDs and approved aliases;
-- introduce package-owned in-memory `UnknownPayloadStore`;
-- preserve unclaimed participant entries byte-for-byte / field-for-field;
-- keep unknown payloads opaque and inert: no deserialization, serializer activation, migration, participant invocation, or CLR type activation;
-- provide deterministic immutable/defensive-copy unknown-payload snapshots;
-- enforce bounded unknown-entry count/aggregate-byte limits;
-- replace/reset session unknown-payload state only after a complete successful current-generation read/classification;
-- failed read/classification leaves the previous valid unknown store unchanged;
-- preserve all 197 prior focused regressions.
+- bind preserved unknown snapshots to the source `SaveSlotId` and `SaveGenerationId` that produced them;
+- preserve source provenance atomically with the unknown store;
+- require target current head to still select the preserved source generation before any publication mutation;
+- fail stale-source carry-forward with zero storage mutation;
+- accept one successful fresh known participant capture batch plus one source-fresh opaque unknown snapshot;
+- re-resolve preserved unknown participant IDs against current canonical/alias registry ownership;
+- fail closed when an unknown identity is now claimed or collides with a fresh capture;
+- use no silent fresh-wins/old-wins rule;
+- preserve unknown participant serialized payload UTF-8 bytes and all transport metadata exactly;
+- keep preserved unknown payloads opaque and inert;
+- build one deterministic merged payload/inventory batch;
+- publish the merged batch through candidate verification, immutable-generation publication, published-generation revalidation, and `head.json` last;
+- preserve existing M2/M3 publication paths and previous-known-good failure behavior;
+- intentionally treat the old unknown snapshot as stale after successful head advance until a new current-generation read refreshes it;
+- preserve all 218 prior focused regressions.
 
-Stop point: Chronicle can safely inspect the current committed generation and remember unclaimed participant payloads without modifying storage or runtime participant state. Unknown-payload merge/carry-forward publication, prune plans, participant deserialization/migration/apply, prepared loads, production save admission, slots, recovery, retention, and autosave remain later bounded work.
+Stop point: Chronicle can carry source-fresh opaque unknown participant payloads into the next immutable generation beside fresh known captures without data loss, identity guessing, payload interpretation, or weakening the head-last transaction. Silent prune policy, participant deserialization/migration/apply, prepared loads, production save admission, slots, recovery, retention, and autosave remain later bounded work.
 
 ## 29. New-Conversation Handoff
 
@@ -2114,40 +2138,41 @@ for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.10.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03
-Current milestone/checkpoint: ESV-M3-04 active / authorized
+Current specification version: 1.11.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04
+Current milestone/checkpoint: ESV-M3-05 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 durable transaction plus M3-01 registry, M3-02 detached capture, and M3-03 participant-backed generation publication are complete; read-only current-generation inspection and opaque unknown-payload preservation next
+Current implementation status: M2 durable transaction plus M3-01 registry, M3-02 detached capture, M3-03 participant-backed publication, and M3-04 read-only unknown preservation are complete; source-fresh collision-safe unknown carry-forward publication next
 Known blockers: None
 Current Notes reviewed through: August 9, 2026
 
-Before writing M3-04 code:
-1. Rehydrate the exact repository/Unity baseline after the ESV-M3-03 closeout.
-2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, the open-ended participant invariant, and the 197 / 197 regression floor.
-3. Build a read-only current-generation reader over the existing storage/serializer/integrity seams; perform no publication mutation.
-4. Fully validate head, manifest, payload, whole-document integrity, and per-entry integrity before classification.
-5. Classify entries against current participant canonical IDs and aliases.
-6. Preserve unclaimed entries byte-for-byte / field-for-field in a package-owned opaque `UnknownPayloadStore`.
-7. Unknown entries must not deserialize, migrate, execute participant code, activate serializers by payload request, or activate CLR types.
-8. Replace session unknown-payload state only after a complete successful read/classification; failure preserves the prior valid store.
-9. Do not activate unknown-payload carry-forward publication, prune plans, participant apply, prepared loads, production SaveAsync admission/coalescing/cancellation, slots, recovery/retention/autosave, peer bridges, or project-wide DDOL.
+Before writing M3-05 code:
+1. Rehydrate the exact repository/Unity baseline after the ESV-M3-04 closeout.
+2. Preserve EchoSave authority, SFGSS-ADR-006 lifetime separation, the open-ended participant invariant, and the 218 / 218 regression floor.
+3. Add exact source slot/generation provenance to the unknown store/snapshot and preserve entries+provenance atomically.
+4. Before publication mutation, require the target current head to still select the preserved source generation.
+5. Merge only one successful fresh capture batch with one source-fresh unknown snapshot.
+6. Re-resolve unknown IDs against current canonical/alias ownership; changed ownership or fresh/unknown collisions fail closed with zero mutation.
+7. Preserve unknown `serializedPayload` UTF-8 bytes and all transport metadata exactly; do not deserialize, migrate, activate serializers/types, or invoke participant code for unknowns.
+8. Publish only the fully validated deterministic merged batch through the existing immutable-generation/head-last transaction.
+9. After successful head advance, treat the old unknown snapshot as stale until a fresh current-generation read/classification.
+10. Do not activate silent prune policy, participant apply/prepared loads, production save admission/coalescing/cancellation, concurrent save ownership, slots, recovery/retention/autosave, peer bridges, or project-wide DDOL.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.10.0 |
-| Completed checkpoint | ESV-M3-03 - Participant-Backed Generation Publication and Head-Last Integration Foundation |
-| Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed immutable-generation/head-last publication; focused tests |
-| Tests passed | ESV-M3-03 focused Chronicle Editor gate `197 / 197`; Unity compile/import green |
-| Tests failed | Final ESV-M3-03 gate: `0` |
-| Known issues | None blocking M3-04 |
+| Package version | Runtime package `0.1.0`; Specification v1.11.0 |
+| Completed checkpoint | ESV-M3-04 - Current-Generation Read, Opaque Unknown-Payload Preservation, and Session Store Foundation |
+| Files/assets created | M1 lifecycle; bounded M2 durable transport; M3-01 registry; M3-02 detached capture; M3-03 participant-backed publication; M3-04 read-only current-generation/opaque unknown preservation; focused tests |
+| Tests passed | ESV-M3-04 focused Chronicle Editor gate `218 / 218`; Unity compile/import green |
+| Tests failed | Final ESV-M3-04 gate: `0` |
+| Known issues | None blocking M3-05 |
 | Decisions added | ESV-D-001 through ESV-D-021; no new ownership decision required by M1 closeout |
 | Planned implementation tests | 100 registry remains planning scope; executed counts are recorded only from actual runs |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M3-04 active / authorized |
+| Implementation permission | ESV-M3-05 active / authorized |
 
 
 ## 30. Approval

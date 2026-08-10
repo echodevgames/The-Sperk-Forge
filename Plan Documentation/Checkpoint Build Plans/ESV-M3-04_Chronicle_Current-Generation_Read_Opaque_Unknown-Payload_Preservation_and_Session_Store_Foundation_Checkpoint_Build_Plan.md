@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active-authorized
+status: complete
 updated: 2026-08-09
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-09
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M3-04
 **Milestone:** M3 — Participants and Loading
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.10.0
 **Prior checkpoint:** ESV-M3-03 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -176,33 +176,48 @@ M3-04 tests must prove:
 - classification resolves no serializer for unknown payloads;
 - storage mutation calls remain zero.
 
-## 6. Proposed focused proof
+## 6. Executed focused proof
 
-- successful current head/generation read;
-- known participant classification;
-- unknown participant classification;
-- alias-based known recognition;
-- multiple unknowns deterministic order;
-- exact unknown payload field preservation;
-- exact serialized payload text preservation;
-- defensive-copy snapshot behavior;
-- clear/reset behavior;
-- failed read preserves previous store;
-- corrupt whole payload preservation failure;
-- corrupt per-entry preservation failure;
-- duplicate ID rejection;
-- bounds rejection;
-- no serializer activation for unknowns;
-- no participant invocation;
-- zero storage mutation;
-- all prior **197 / 197** Chronicle tests remain green.
+- successful current head/generation read — **Pass**;
+- known participant classification — **Pass**;
+- unknown participant classification — **Pass**;
+- alias-based known recognition — **Pass**;
+- multiple unknowns remain deterministic — **Pass**;
+- exact unknown payload field preservation — **Pass**;
+- exact serialized payload text preservation — **Pass**;
+- defensive-copy snapshot behavior — **Pass**;
+- unknown-store clear/reset behavior — **Pass**;
+- failed current-generation read preserves the previous valid unknown store — **Pass**;
+- malformed/missing current head fails without store replacement — **Pass**;
+- missing current generation file fails without store replacement — **Pass**;
+- corrupt whole payload fails without store replacement — **Pass**;
+- corrupt per-entry payload fails without store replacement — **Pass**;
+- payload/inventory mismatch fails without store replacement — **Pass**;
+- duplicate participant ID rejection — **Pass**;
+- unknown count/aggregate-byte bounds rejection — **Pass**;
+- unknown payload classification resolves no serializer provider — **Pass**;
+- unknown payload classification invokes no participant capture/apply — **Pass**;
+- current-generation inspection performs zero storage mutation — **Pass**;
+- all prior 197 Chronicle tests remain green — **Pass**.
 
-Executed totals are recorded from Unity, not predicted.
+Final focused Unity gate: **218 / 218 passed, 0 failed**.
 
 ## 7. Stop point
 
-Stop when Chronicle can safely read the current committed generation and remember every unclaimed participant entry as opaque session data without modifying storage or participant runtime state.
+**Reached.** Chronicle can safely read the current committed generation and remember every unclaimed participant entry as opaque session data without modifying storage or participant runtime state.
 
-Do not merge unknown entries into a new generation during ESV-M3-04.
+Implementation commit: `aa78e07`.
 
-The next bounded checkpoint may join preserved unknown entries with newly captured known participant entries, resolving ID collisions deterministically and proving byte-for-byte unknown carry-forward into the next immutable generation.
+Final focused Chronicle Editor gate: **218 / 218 passed, 0 failed**.
+
+Unknown entries are still not merged into a new generation by ESV-M3-04.
+
+Next bounded checkpoint:
+
+`ESV-M3-05 — Chronicle Opaque Unknown-Payload Carry-Forward Merge, Source-Freshness, and Collision-Safe Publication Foundation`
+
+M3-05 may join freshly captured known participant entries with an opaque unknown-payload snapshot and prove safe carry-forward into the next immutable generation.
+
+Because the M3-04 store currently holds only entries/bytes and not source-generation provenance, M3-05 must first bind the preserved snapshot to the exact slot/generation from which it was classified. Carry-forward must fail closed if that source is stale, if current registry ownership has changed, or if a preserved identity collides with a fresh known capture.
+
+M3-05 must not silently overwrite, drop, canonicalize, deserialize, migrate, or reinterpret an unknown entry. Production save/load admission, prune policy, participant apply, prepared loads, migrations, recovery/retention/autosave, slot catalog/policy, peer bridges, and project-wide DDOL remain later bounded work.
