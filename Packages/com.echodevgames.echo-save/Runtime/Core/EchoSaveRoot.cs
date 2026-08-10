@@ -137,8 +137,12 @@ namespace EchoDevGames.EchoSave
             EchoSaveLifecycleResult result =
                 service.ShutdownCore();
 
-            EchoSaveAuthorityClaim.Release(
-                this);
+            if (service.State ==
+                EchoSaveServiceState.Shutdown)
+            {
+                EchoSaveAuthorityClaim.Release(
+                    this);
+            }
 
             return result;
         }
@@ -183,8 +187,12 @@ namespace EchoDevGames.EchoSave
             EchoSaveLifecycleResult result =
                 service.ShutdownCore();
 
-            EchoSaveAuthorityClaim.Release(
-                this);
+            if (service.State ==
+                EchoSaveServiceState.Shutdown)
+            {
+                EchoSaveAuthorityClaim.Release(
+                    this);
+            }
 
             return result;
         }

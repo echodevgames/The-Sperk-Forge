@@ -10,7 +10,8 @@ namespace EchoDevGames.EchoSave
     /// autosave, retention, recovery, rename/duplicate/delete, persistent
     /// catalog cache, scene lifetime, bridges, or DDOL.
     /// </summary>
-    internal sealed class SaveManualTransactionCoordinator
+    internal sealed class SaveManualTransactionCoordinator :
+        ISaveManualTransactionExecutor
     {
         internal const int MaximumMetadataTextLength =
             256;
@@ -67,7 +68,14 @@ namespace EchoDevGames.EchoSave
         }
 
         internal SaveManualTransactionResult Save(
-            SaveManualTransactionRequest request)
+            SaveManualTransactionRequest request) =>
+            Save(
+                request,
+                null);
+
+        internal SaveManualTransactionResult Save(
+            SaveManualTransactionRequest request,
+            SaveManualTransactionControl control)
         {
             if (!ValidateRequest(
                     request,
@@ -78,6 +86,13 @@ namespace EchoDevGames.EchoSave
                     EchoSaveDiagnosticCodes
                         .ManualSaveInvalidRequest,
                     requestMessage);
+            }
+
+            if (control != null &&
+                control.IsCancellationRequested)
+            {
+                return Canceled(
+                    "Chronicle manual save was canceled before active-slot processing began.");
             }
 
             if (!catalog.HasActiveSlot)
@@ -172,6 +187,15 @@ namespace EchoDevGames.EchoSave
                     sourceRead.GenerationId);
             }
 
+            if (control != null &&
+                control.IsCancellationRequested)
+            {
+                return Canceled(
+                    "Chronicle manual save was canceled before participant capture began.",
+                    targetSlot,
+                    sourceRead.GenerationId);
+            }
+
             SaveParticipantCaptureBatchResult freshCapture =
                 captureCoordinator.Capture(
                     participantRegistry);
@@ -200,6 +224,20 @@ namespace EchoDevGames.EchoSave
                     null);
             }
 
+            if (control != null &&
+                control.IsCancellationRequested)
+            {
+                return Canceled(
+                    "Chronicle manual save was canceled after participant capture and before publication.",
+                    targetSlot,
+                    sourceRead.GenerationId);
+            }
+
+            Func<bool> tryBeginPublication =
+                control == null
+                    ? null
+                    : control.TryBeginPublication;
+
             SaveCarryForwardPublicationResult publication =
                 carryForwardCoordinator.PublishNextGeneration(
                     targetSlot,
@@ -208,7 +246,8 @@ namespace EchoDevGames.EchoSave
                     request.BuildId,
                     targetEntry.DisplayName,
                     freshCapture,
-                    unknownSnapshot);
+                    unknownSnapshot,
+                    tryBeginPublication);
 
             if (!publication.Succeeded)
             {
@@ -263,6 +302,36 @@ namespace EchoDevGames.EchoSave
                 true,
                 reconciledEntry);
         }
+
+        SaveManualTransactionResult
+            ISaveManualTransactionExecutor.Save(
+                SaveManualTransactionRequest request,
+                SaveManualTransactionControl control) =>
+            Save(
+                request,
+                control);
+
+        private static SaveManualTransactionResult Canceled(
+            string message,
+            SaveSlotId slotId = default,
+            SaveGenerationId sourceGenerationId = default) =>
+            new SaveManualTransactionResult(
+                SaveManualTransactionStatus.Canceled,
+                EchoSaveDiagnosticCodes
+                    .ManualSaveCanceled,
+                message,
+                slotId,
+                sourceGenerationId,
+                default,
+                default,
+                default,
+                0,
+                0,
+                0L,
+                false,
+                false,
+                false,
+                null);
 
         private static bool ValidateRequest(
             SaveManualTransactionRequest request,
@@ -324,6 +393,14 @@ namespace EchoDevGames.EchoSave
                     fallbackDiagnostic =
                         EchoSaveDiagnosticCodes
                             .ManualSavePublicationFailed;
+                    break;
+
+                case SaveCarryForwardPublicationStatus.Canceled:
+                    status =
+                        SaveManualTransactionStatus.Canceled;
+                    fallbackDiagnostic =
+                        EchoSaveDiagnosticCodes
+                            .ManualSaveCanceled;
                     break;
 
                 default:

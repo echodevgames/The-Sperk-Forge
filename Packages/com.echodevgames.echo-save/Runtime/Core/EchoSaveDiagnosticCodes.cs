@@ -416,5 +416,26 @@ namespace EchoDevGames.EchoSave
 
         internal const string ManualSaveCatalogReconciliationFailed =
             "ESV-SAVE-011";
+
+        internal const string ManualSaveCanceled =
+            "ESV-SAVE-012";
+
+        internal const string PublicSaveInvalidRequest =
+            "ESV-SAVE-013";
+
+        internal const string PublicSaveServiceNotReady =
+            "ESV-SAVE-014";
+
+        internal const string PublicSaveAdmissionClosed =
+            "ESV-SAVE-015";
+
+        internal const string PublicSaveBusy =
+            "ESV-SAVE-016";
+
+        internal const string PublicSaveCancellationTooLate =
+            "ESV-SAVE-017";
+
+        internal const string PublicSaveShutdownPending =
+            "ESV-SAVE-018";
     }
 }

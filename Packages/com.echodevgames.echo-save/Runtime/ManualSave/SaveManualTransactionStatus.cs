@@ -13,6 +13,7 @@ namespace EchoDevGames.EchoSave
         CarryForwardFailed = 8,
         StaleSource = 9,
         PublicationFailed = 10,
-        PublishedCatalogReconciliationFailed = 11
+        PublishedCatalogReconciliationFailed = 11,
+        Canceled = 12
     }
 }

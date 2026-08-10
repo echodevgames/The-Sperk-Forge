@@ -1,4 +1,3 @@
-
 namespace EchoDevGames.EchoSave
 {
     internal enum SaveCarryForwardPublicationStatus
@@ -12,6 +11,7 @@ namespace EchoDevGames.EchoSave
         StaleSource = 6,
         OwnershipCollision = 7,
         MergeInvalid = 8,
-        PublicationFailed = 9
+        PublicationFailed = 9,
+        Canceled = 10
     }
 }

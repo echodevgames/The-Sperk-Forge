@@ -1,4 +1,3 @@
-
 using System;
 using System.Text;
 
@@ -53,7 +52,27 @@ namespace EchoDevGames.EchoSave
                 string buildId,
                 string displayName,
                 SaveParticipantCaptureBatchResult freshCapture,
-                SaveUnknownPayloadSnapshot unknownSnapshot)
+                SaveUnknownPayloadSnapshot unknownSnapshot) =>
+            PublishNextGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                freshCapture,
+                unknownSnapshot,
+                null);
+
+        internal SaveCarryForwardPublicationResult
+            PublishNextGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SaveParticipantCaptureBatchResult freshCapture,
+                SaveUnknownPayloadSnapshot unknownSnapshot,
+                Func<bool> tryBeginPublication)
         {
             if (storageBackend == null ||
                 serializer == null ||
@@ -146,6 +165,26 @@ namespace EchoDevGames.EchoSave
 
             SaveMergedParticipantTransportBatch batch =
                 merge.Batch;
+
+            if (tryBeginPublication != null &&
+                !tryBeginPublication())
+            {
+                return new SaveCarryForwardPublicationResult(
+                    SaveCarryForwardPublicationStatus.Canceled,
+                    EchoSaveDiagnosticCodes
+                        .ManualSaveCanceled,
+                    "Chronicle manual save was canceled before durable publication began.",
+                    validatedSlot,
+                    sourceGeneration,
+                    default,
+                    default,
+                    default,
+                    batch.FreshParticipantCount,
+                    batch.PreservedUnknownCount,
+                    batch.TotalPayloadBytes,
+                    false,
+                    false);
+            }
 
             SaveGenerationPublicationResult publication =
                 publicationCoordinator
