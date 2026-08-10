@@ -370,23 +370,22 @@ namespace EchoDevGames.EchoSave
             if (state !=
                 EchoSaveServiceState.Ready)
             {
-                bool admissionClosed =
-                    saveOperationAdmission.IsClosed ||
+                bool lifecycleAdmissionClosed =
                     state ==
                         EchoSaveServiceState.ShuttingDown ||
                     state ==
                         EchoSaveServiceState.Shutdown;
 
                 return Failure(
-                    admissionClosed
+                    lifecycleAdmissionClosed
                         ? SaveOperationStatus.AdmissionClosed
                         : SaveOperationStatus.ServiceNotReady,
-                    admissionClosed
+                    lifecycleAdmissionClosed
                         ? EchoSaveDiagnosticCodes
                             .PublicSaveAdmissionClosed
                         : EchoSaveDiagnosticCodes
                             .PublicSaveServiceNotReady,
-                    admissionClosed
+                    lifecycleAdmissionClosed
                         ? "The Chronicle is not accepting new manual-save operations."
                         : "The Chronicle must be Ready before public manual save can begin.");
             }
