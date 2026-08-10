@@ -453,3 +453,35 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Successful creation does not auto-select the new slot.
 - No participant callbacks, persistent catalog cache, rename/duplicate/delete, full slot-policy asset expansion, production operation admission, autosave, retention, recovery, document migration, scene travel, peer bridge, or Chronicle-owned DDOL authority was introduced.
 - The final-verification failure test explicitly preserves `generationPublished = true` once immutable generation publication has already succeeded; `head.json` remains unpublished in that failure case.
+
+### Added
+
+#### ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation
+
+- Internal bounded manual-save transaction request/status/result/coordinator.
+- Explicit selected-active-slot and healthy-catalog preflight.
+- Current-generation validation with exact source slot/generation provenance refresh.
+- Fresh deterministic known participant capture.
+- Opaque unknown-payload carry-forward through existing collision-safe ownership rules.
+- Expected-current-generation stale-source rejection.
+- Participant-backed immutable generation publication with `head.json` last.
+- Ordinary-save display-name preservation.
+- Post-publication catalog reconciliation.
+- Truthful generation/head/catalog partial-result reporting.
+- Focused M4-03 transaction tests.
+- Public `SaveAsync`, production operation admission/Busy/cancellation, autosave, retention, recovery, persistent catalog cache, rename/duplicate/delete, full slot-policy assets, scene travel, bridges, and DDOL remain deferred.
+
+### Verified
+
+#### ESV-M4-03 Closeout
+
+- Planning/activation committed at `2c325e9`.
+- Implementation committed at `c8ea742`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **439 / 439**, with `0` failed.
+- All prior **425 / 425** Chronicle regressions remained green.
+- M4-03 added **14** net focused tests.
+- Successful manual save preserves valid opaque unknown payloads and current display name while advancing one verified participant-backed generation.
+- Stale source, ownership collision, provenance mismatch, participant-capture failure, and pre-head publication failures do not fabricate current-head success.
+- Durable head success followed by catalog-refresh failure remains reported as committed durable truth rather than fictional rollback.
+- Participant Apply/default callbacks remain absent.

@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation** at implementation commit `d8d5c18` with a focused Chronicle Editor gate of **425 / 425**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation** at implementation commit `c8ea742` with a focused Chronicle Editor gate of **439 / 439**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
 
 ## Current persistence boundary
 
@@ -18,7 +18,9 @@ M4-01 adds provider-neutral bounded technical slot discovery, payload-free `head
 
 M4-02 adds bounded technical slot creation and capacity enforcement. A successful new slot owns one real verified empty immutable generation selected through `head.json` last. Every discovered canonical technical slot, including degraded entries, counts against capacity. Package-generated `SaveSlotId` identity remains independent from display/project/build metadata. Creation does not auto-select. If publication succeeds but catalog reconciliation fails, Chronicle reports the durable publication truth instead of deleting the committed slot or pretending rollback.
 
-It still does **not** include persistent catalog-cache optimization, rename/duplicate/delete, full slot-policy configuration expansion, production operation admission/coalescing/cancellation, concurrent public mutation ownership, autosave, retention, recovery, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+M4-03 composes the first complete internal manual-save transaction for an explicitly selected healthy slot. It validates the exact current source generation, captures fresh known participants, carries valid opaque unknown payloads forward, rejects stale source/ownership collisions, publishes one participant-backed immutable generation with `head.json` last, preserves ordinary display-name metadata, and reconciles the slot catalog truthfully.
+
+It still does **not** include persistent catalog-cache optimization, rename/duplicate/delete, full slot-policy configuration expansion, public `SaveAsync`, production operation admission/coalescing/cancellation, concurrent public mutation ownership, autosave, retention, recovery, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 ## Minimal use
 

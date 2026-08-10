@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-03 — Chronicle Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation
@@ -11,12 +11,16 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-03
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.19.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.20.0
 **Prior checkpoint:** ESV-M4-02 — **Complete**
 **Unity baseline:** 6000.3.8f1
 **Regression baseline:** focused Chronicle Editor **425 / 425**
 **Exact implementation baseline:** `a3eba25`
+**Planning/activation commit:** `2c325e9`
+**Implementation commit:** `c8ea742`
+**Final focused Chronicle Editor evidence:** **439 / 439**, `0` failed
+**Net new focused tests:** **14**
 
 ## 1. Intent
 
@@ -290,3 +294,25 @@ Stop when Chronicle can take one already-selected healthy slot and perform one d
 Do **not** expose production `SaveAsync` yet.
 
 Do **not** add generic operation admission, Busy/cancellation, autosave, retention, recovery, persistent cache, or other slot operations yet.
+
+## 8. Completion evidence
+
+ESV-M4-03 is complete.
+
+Observed evidence:
+- Unity compile/import green;
+- focused `EchoDevGames.EchoSave.Tests.Editor` gate **439 / 439**, `0` failed;
+- prior **425 / 425** regression floor preserved;
+- **14** net new focused M4-03 tests;
+- implementation committed at `c8ea742`;
+- active-slot/healthy-catalog preflight occurs before participant capture;
+- exact current-generation provenance is refreshed before fresh capture;
+- fresh known entries and valid opaque unknown entries merge through existing ownership rules;
+- stale expected-current-generation publication is rejected;
+- participant-backed immutable publication still commits `head.json` last;
+- current display-name metadata is preserved during ordinary save;
+- catalog reconciliation follows successful durable head publication;
+- catalog-refresh failure after durable success preserves truthful committed state;
+- public `SaveAsync`, generic operation admission/Busy/cancellation, autosave, retention, recovery, persistent cache, rename/duplicate/delete, full slot-policy assets, scene travel, bridges, and DDOL remain outside the checkpoint.
+
+No follow-on M4 checkpoint is activated by this closeout.

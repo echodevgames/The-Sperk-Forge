@@ -42,12 +42,14 @@
 - [[Developer/Test Reports/ESV-M4-01_Chronicle_Slot_Catalog_Metadata_Rebuild_and_Active-Session_Selection_Foundation_Test_Report|ESV-M4-01 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-02_Chronicle_Technical_Slot_Creation_Capacity_and_Initial_Generation_Foundation|ESV-M4-02 Closeout]]
 - [[Developer/Test Reports/ESV-M4-02_Chronicle_Technical_Slot_Creation_Capacity_and_Initial_Generation_Foundation_Test_Report|ESV-M4-02 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation|ESV-M4-03 Closeout]]
+- [[Developer/Test Reports/ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-03 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-02 — Technical Slot Creation, Capacity Enforcement, Initial Empty Generation, and Catalog Reconciliation Foundation`
+`ESV-M4-03 — Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation`
 
-Chronicle can now create a bounded technical slot as one real verified empty immutable generation, publish `head.json` last, enforce capacity across healthy and degraded canonical slots, and reconcile the catalog truthfully at **425 / 425** focused Chronicle Editor tests.
+Chronicle can now perform one bounded internal manual-save transaction against the explicitly selected healthy slot, preserve valid opaque unknown payloads, reject stale source before head replacement, publish `head.json` last, preserve ordinary display metadata, and reconcile the catalog truthfully at **439 / 439** focused Chronicle Editor tests.
 
 ## Completed milestone
 
@@ -55,6 +57,6 @@ Chronicle can now create a bounded technical slot as one real verified empty imm
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-02 closeout.
+No follow-on M4 checkpoint is activated by the ESV-M4-03 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **425 / 425** regression floor.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **439 / 439** regression floor.

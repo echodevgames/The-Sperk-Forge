@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-02 complete; next bounded checkpoint planning
-**Current checkpoint:** None activated — ESV-M4-02 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-03 complete; next bounded checkpoint planning
+**Current checkpoint:** None activated — ESV-M4-03 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -154,22 +154,27 @@ Implementation-history note:
 - one final-verification expected value was corrected to preserve `generationPublished = true` after immutable publication;
 - final **425 / 425** evidence supersedes all intermediate runs.
 
-No follow-on M4 checkpoint is activated by this closeout.
+`ESV-M4-03 — Chronicle Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation` is **complete** at implementation commit `c8ea742`.
 
-`ESV-M4-03 — Chronicle Manual Save Transaction Composition, Unknown Carry-Forward, and Catalog Reconciliation Foundation` is **active / authorized** at clean planning baseline `a3eba25`.
-
-Authorized boundary:
-- active slot must already be explicitly selected and healthy;
-- current generation is read/validated for exact source provenance before participant capture;
-- fresh known participant capture reuses the proven M3-02 coordinator;
-- opaque unknown payloads are preserved through the proven M3-05 ownership/collision-safe merger;
-- publication requires the validated source generation to remain current;
+Evidence:
+- Unity compile/import green;
+- focused Chronicle Editor gate **439 / 439**, `0` failed;
+- prior **425 / 425** regression floor preserved;
+- **14** net new focused M4-03 tests passed;
+- manual save targets only the explicitly selected healthy active slot;
+- current-generation validation refreshes exact source provenance before participant capture;
+- fresh known participant capture reuses the proven deterministic capture authority;
+- valid opaque unknown payloads carry forward through the collision-safe merger;
+- ownership collisions and provenance mismatch fail before publication;
+- expected-current-generation publication rejects stale source;
 - immutable generation publication and `head.json` last remain unchanged;
-- current display name is preserved during ordinary save;
-- successful durable publication is followed by catalog reconciliation;
-- post-publication catalog-refresh failure reports durable truth rather than fictional rollback;
-- public `SaveAsync`, production admission/Busy/cancellation, autosave, retention, recovery, rename/duplicate/delete, persistent catalog cache, full slot-policy assets, scene travel, bridges, and DDOL remain outside M4-03.
+- ordinary save preserves current display-name metadata;
+- successful head publication is followed by catalog reconciliation;
+- catalog reconciliation failure after durable head success reports partial durable truth without deleting committed state;
+- participant Apply/default callbacks remain absent;
+- public `SaveAsync`, production admission/Busy/cancellation, autosave, retention, recovery, persistent catalog cache, rename/duplicate/delete, full slot-policy assets, scene travel, bridges, and DDOL remain deferred.
 
+No follow-on M4 checkpoint is activated by this closeout.
 
 ## Suite Distribution Kit Standard
 
@@ -353,8 +358,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `a3eba25`.
-2. Read `ESV-M4-03_Chronicle_Manual_Save_Transaction_Composition_Unknown_Carry_Forward_and_Catalog_Reconciliation_Foundation_Checkpoint_Build_Plan.md`.
-3. Preserve the focused **425 / 425** Chronicle regression floor.
-4. Implement only the active-slot manual-save transaction composition authorized by ESV-D-025.
+1. Rehydrate exact `c8ea742`.
+2. Preserve the focused **439 / 439** Chronicle regression floor.
+3. Treat ESV-M4-03 as complete.
+4. Before further Chronicle runtime work, define and activate the next bounded M4 Checkpoint Build Plan from approved package authority.
 5. Keep public `SaveAsync`, generic production operation admission/Busy/cancellation, autosave, retention, recovery, persistent cache, rename/duplicate/delete, full slot-policy assets, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
