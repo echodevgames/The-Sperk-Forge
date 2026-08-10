@@ -383,5 +383,38 @@ namespace EchoDevGames.EchoSave
 
         internal const string SlotCreateExistingHead =
             "ESV-SLOT-008";
+
+        internal const string ManualSaveInvalidRequest =
+            "ESV-SAVE-001";
+
+        internal const string ManualSaveCatalogUnavailable =
+            "ESV-SAVE-002";
+
+        internal const string ManualSaveNoActiveSlot =
+            "ESV-SAVE-003";
+
+        internal const string ManualSaveActiveSlotUnavailable =
+            "ESV-SAVE-004";
+
+        internal const string ManualSaveSourceReadFailed =
+            "ESV-SAVE-005";
+
+        internal const string ManualSaveSourceChanged =
+            "ESV-SAVE-006";
+
+        internal const string ManualSaveCaptureFailed =
+            "ESV-SAVE-007";
+
+        internal const string ManualSaveCarryForwardFailed =
+            "ESV-SAVE-008";
+
+        internal const string ManualSaveStaleSource =
+            "ESV-SAVE-009";
+
+        internal const string ManualSavePublicationFailed =
+            "ESV-SAVE-010";
+
+        internal const string ManualSaveCatalogReconciliationFailed =
+            "ESV-SAVE-011";
     }
 }
