@@ -7,9 +7,9 @@ namespace EchoDevGames.EchoSave
     /// Chronicle lifecycle, public save/autosave, recovery, and bounded slot
     /// mutation service.
     ///
-    /// M4-09 reuses root-local mutating admission for non-destructive rename
-    /// and full-state duplication without adding queues, participant callbacks,
-    /// destructive delete/trash, scene authority, or lifetime ownership.
+    /// M4-10 adds read-only deletion planning and admitted confirmed
+    /// recoverable trash without adding destructive one-step delete, queues,
+    /// participant callbacks, scene authority, or lifetime ownership.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
@@ -28,6 +28,19 @@ namespace EchoDevGames.EchoSave
 
         internal const int DefaultSlotIdentityAttempts =
             8;
+
+        internal const int DefaultTrashDiscoveryLimit =
+            128;
+
+        internal const int DefaultTrashRetentionRecords =
+            8;
+
+        internal const int DefaultTrashIdentityAttempts =
+            4;
+
+        internal static readonly TimeSpan
+            DefaultDeletionPlanLifetime =
+                TimeSpan.FromMinutes(5);
 
         private EchoSaveConfiguration configuration;
         private IEchoSaveLifecycleProbe lifecycleProbe;
@@ -51,6 +64,9 @@ namespace EchoDevGames.EchoSave
 
         private SaveSlotMutationCoordinator
             slotMutationCoordinator;
+
+        private SaveSlotDeletionCoordinator
+            slotDeletionCoordinator;
 
         private PendingAutosaveRequest pendingAutosave;
         private long nextAutosaveTicketId;
@@ -138,6 +154,26 @@ namespace EchoDevGames.EchoSave
 
             return DuplicateSlotCore(
                 request);
+        }
+
+        public async Awaitable<SaveDeletionPlan>
+            PrepareDeleteSlotAsync(
+                SaveSlotId slotId)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return PrepareDeleteSlotCore(
+                slotId);
+        }
+
+        public async Awaitable<SaveSlotDeleteResult>
+            ConfirmDeleteSlotAsync(
+                SaveDeletionPlan plan)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return ConfirmDeleteSlotCore(
+                plan);
         }
 
         public async Awaitable<EchoSaveLifecycleResult>
@@ -445,6 +481,18 @@ namespace EchoDevGames.EchoSave
             DuplicateSlotCore(
                 request);
 
+        internal SaveDeletionPlan
+            PrepareDeleteSlotSynchronouslyForTesting(
+                SaveSlotId slotId) =>
+            PrepareDeleteSlotCore(
+                slotId);
+
+        internal SaveSlotDeleteResult
+            ConfirmDeleteSlotSynchronouslyForTesting(
+                SaveDeletionPlan plan) =>
+            ConfirmDeleteSlotCore(
+                plan);
+
         internal int PendingAutosaveCountForTesting =>
             pendingAutosave == null
                 ? 0
@@ -744,6 +792,104 @@ namespace EchoDevGames.EchoSave
             {
                 return slotMutationCoordinator.Duplicate(
                     request);
+            }
+        }
+
+
+        private SaveDeletionPlan PrepareDeleteSlotCore(
+            SaveSlotId slotId)
+        {
+            if (state != EchoSaveServiceState.Ready ||
+                slotDeletionCoordinator == null)
+            {
+                return SaveDeletionPlan.Failure(
+                    SaveDeletionPlanStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.DeletePlanServiceNotReady,
+                    "The Chronicle must be Ready before a deletion plan can be prepared.",
+                    slotId);
+            }
+
+            return slotDeletionCoordinator.Prepare(
+                slotId);
+        }
+
+        private SaveSlotDeleteResult ConfirmDeleteSlotCore(
+            SaveDeletionPlan plan)
+        {
+            if (state != EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state == EchoSaveServiceState.ShuttingDown ||
+                    state == EchoSaveServiceState.Shutdown;
+
+                return SaveSlotDeleteResult.Failure(
+                    admissionClosed
+                        ? SaveSlotDeleteStatus.AdmissionClosed
+                        : SaveSlotDeleteStatus.ServiceNotReady,
+                    admissionClosed
+                        ? EchoSaveDiagnosticCodes.DeleteConfirmAdmissionClosed
+                        : EchoSaveDiagnosticCodes.DeleteConfirmServiceNotReady,
+                    admissionClosed
+                        ? "The Chronicle is not accepting confirmed delete mutations after admission closed."
+                        : "The Chronicle must be Ready before confirmed deletion can begin.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.CurrentGenerationId);
+            }
+
+            if (slotDeletionCoordinator == null)
+            {
+                return SaveSlotDeleteResult.Failure(
+                    SaveSlotDeleteStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.DeleteConfirmServiceNotReady,
+                    "The Chronicle slot-deletion runtime is unavailable.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.CurrentGenerationId);
+            }
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission == SaveOperationAdmissionStatus.Closed)
+            {
+                return SaveSlotDeleteResult.Failure(
+                    SaveSlotDeleteStatus.AdmissionClosed,
+                    EchoSaveDiagnosticCodes.DeleteConfirmAdmissionClosed,
+                    "The Chronicle is not accepting new mutating operations.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.CurrentGenerationId);
+            }
+
+            if (admission == SaveOperationAdmissionStatus.Busy)
+            {
+                return SaveSlotDeleteResult.Failure(
+                    SaveSlotDeleteStatus.Busy,
+                    EchoSaveDiagnosticCodes.DeleteConfirmBusy,
+                    "Another Chronicle mutating operation already owns the root-local admission lease. Confirmed deletion was rejected as Busy and was not queued.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.CurrentGenerationId);
+            }
+
+            using (lease)
+            {
+                return slotDeletionCoordinator.Confirm(
+                    plan);
             }
         }
 
@@ -1345,6 +1491,20 @@ namespace EchoDevGames.EchoSave
                     DefaultSlotIdentityAttempts,
                     SaveSlotId.NewId);
 
+            slotDeletionCoordinator =
+                new SaveSlotDeletionCoordinator(
+                    slotCatalog,
+                    storageBackend,
+                    serializer,
+                    integrity,
+                    Guid.NewGuid().ToString("N"),
+                    () => DateTimeOffset.UtcNow,
+                    DefaultDeletionPlanLifetime,
+                    DefaultCatalogScanLimit,
+                    DefaultTrashDiscoveryLimit,
+                    DefaultTrashRetentionRecords,
+                    DefaultTrashIdentityAttempts);
+
             manualSaveTransactionExecutor =
                 new SaveManualTransactionCoordinator(
                     slotCatalog,
@@ -1369,6 +1529,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             slotMutationCoordinator =
+                null;
+
+            slotDeletionCoordinator =
                 null;
 
             slotCatalog =

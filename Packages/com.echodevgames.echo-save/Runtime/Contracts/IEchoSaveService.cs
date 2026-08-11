@@ -5,9 +5,9 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Primary package-local Chronicle service surface.
     ///
-    /// M4-09 adds bounded non-destructive slot rename and full-state
-    /// duplication while preserving stable slot identity, immutable generation
-    /// publication, and truthful post-publication catalog semantics.
+    /// M4-10 adds two-step destructive slot deletion planning and confirmed
+    /// recoverable trash while preserving root-local admission, source
+    /// freshness, and truthful post-commit catalog/maintenance semantics.
     /// </summary>
     public interface IEchoSaveService
     {
@@ -35,6 +35,12 @@ namespace EchoDevGames.EchoSave
 
         Awaitable<SaveSlotDuplicateResult> DuplicateSlotAsync(
             SaveSlotDuplicateRequest request);
+
+        Awaitable<SaveDeletionPlan> PrepareDeleteSlotAsync(
+            SaveSlotId slotId);
+
+        Awaitable<SaveSlotDeleteResult> ConfirmDeleteSlotAsync(
+            SaveDeletionPlan plan);
 
         Awaitable<EchoSaveLifecycleResult> ShutdownAsync();
     }

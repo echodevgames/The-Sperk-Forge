@@ -440,6 +440,57 @@ namespace EchoDevGames.EchoSave
         internal const string SlotDuplicateSucceeded =
             "ESV-SLOT-053";
 
+        internal const string DeletePlanInvalidRequest =
+            "ESV-DEL-001";
+        internal const string DeletePlanServiceNotReady =
+            "ESV-DEL-002";
+        internal const string DeletePlanCatalogUnavailable =
+            "ESV-DEL-003";
+        internal const string DeletePlanSlotNotFound =
+            "ESV-DEL-004";
+        internal const string DeletePlanSourceInvalid =
+            "ESV-DEL-005";
+        internal const string DeletePlanPrepared =
+            "ESV-DEL-006";
+
+        internal const string DeleteConfirmInvalidPlan =
+            "ESV-DEL-020";
+        internal const string DeleteConfirmServiceNotReady =
+            "ESV-DEL-021";
+        internal const string DeleteConfirmAdmissionClosed =
+            "ESV-DEL-022";
+        internal const string DeleteConfirmBusy =
+            "ESV-DEL-023";
+        internal const string DeleteConfirmForeignSession =
+            "ESV-DEL-024";
+        internal const string DeleteConfirmExpired =
+            "ESV-DEL-025";
+        internal const string DeleteConfirmConsumed =
+            "ESV-DEL-026";
+        internal const string DeleteConfirmSourceStale =
+            "ESV-DEL-027";
+        internal const string DeleteConfirmSourceInvalid =
+            "ESV-DEL-028";
+        internal const string DeleteConfirmBackendUnsupported =
+            "ESV-DEL-029";
+        internal const string DeleteConfirmTrashPublicationFailed =
+            "ESV-DEL-030";
+        internal const string DeleteConfirmCatalogReconciliationFailed =
+            "ESV-DEL-031";
+        internal const string DeleteConfirmTrashRetentionFailed =
+            "ESV-DEL-032";
+        internal const string DeleteConfirmSucceeded =
+            "ESV-DEL-033";
+
+        internal const string TrashRetentionInvalidPolicy =
+            "ESV-TRASH-001";
+        internal const string TrashRetentionUnsupportedStorage =
+            "ESV-TRASH-002";
+        internal const string TrashRetentionUntrustworthy =
+            "ESV-TRASH-003";
+        internal const string TrashRetentionDeleteFailed =
+            "ESV-TRASH-004";
+
         internal const string ManualSaveInvalidRequest =
             "ESV-SAVE-001";
 
