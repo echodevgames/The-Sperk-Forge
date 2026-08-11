@@ -594,3 +594,39 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - One test-only setup correction registered a normal participant in all three integration cases; runtime implementation, API, architecture, authority, and discovery count did not change.
 - Final rerun passed **497 / 497**.
 - Recovery execution/quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
+
+
+### Added
+
+#### ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation
+
+- Public read-only `BuildRecoveryPlanAsync(SaveSlotId)`.
+- Immutable payload-free `SaveRecoveryPlan` and recovery-candidate summaries.
+- Explicit healthy/missing/unreadable/invalid/current-missing/current-invalid source-state truth.
+- Bounded provider-neutral generation discovery.
+- Full manifest/payload/package-version/slot-generation/integrity/committed-state candidate verification.
+- Preservation and exclusion of unsupported, malformed, incomplete, mismatched, uncommitted, corrupt, and noncanonical evidence.
+- Deterministic newest-valid candidate ordering with generation-ID tie-break.
+- Preferred fallback candidate only when recovery is actually required.
+- Technical source-provenance fingerprint for later stale-plan execution rejection.
+- Zero durable mutation during planning.
+- Focused recovery-planning, public-service, failure, provenance, preservation, and boundary tests.
+
+### Verified
+
+#### ESV-M4-07 Closeout
+
+- Planning/activation committed at `7b00503`.
+- Implementation committed at `9f68555`.
+- Final effective runtime baseline is `9f68555`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **524 / 524**, with `0` failed.
+- All prior **497 / 497** Chronicle regressions remained green.
+- M4-07 adds **27** net focused tests over the prior floor.
+- Final committed implementation/test scope is **22 files**, `2912` insertions and `6` deletions.
+- One compile-only test fixture correction changed `SaveDocumentVersions.HeadMajor` to the authoritative `HeadPointerMajor` constant.
+- The first focused run passed **522 / 524**; two unsupported-document fixture tests failed before the recovery planner ran because Chronicle's production serializer correctly rejected intentionally unsupported package-document versions.
+- The fixture was corrected so supported documents continue through Chronicle's production serializer while intentionally future-version JSON is authored directly with Unity `JsonUtility` for runtime preserve/exclude testing.
+- Runtime implementation, public API, architecture, ESV-D-029 authority, recovery behavior, test intent, and discovery count remained unchanged by both fixture corrections.
+- Final rerun passed **524 / 524**.
+- Recovery execution/head rewrite/catalog reconciliation, automatic fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.

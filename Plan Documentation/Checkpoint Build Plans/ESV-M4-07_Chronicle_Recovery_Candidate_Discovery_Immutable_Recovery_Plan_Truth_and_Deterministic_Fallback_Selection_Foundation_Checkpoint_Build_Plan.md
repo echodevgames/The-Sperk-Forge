@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-07 — Chronicle Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation
@@ -11,7 +11,7 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-07
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.27.0
 **Decision:** ESV-D-029
 **Prior checkpoint:** ESV-M4-06 — **Complete**
@@ -316,3 +316,46 @@ Stop when Chronicle can produce one trustworthy immutable read-only recovery pla
 Do **not** execute recovery yet.
 
 Do **not** rewrite `head.json`, reconcile catalog state, quarantine evidence, or add destructive slot operations.
+
+
+## 8. Completion Evidence
+
+**Planning baseline:** `9695450`
+
+**Planning/activation commit:** `7b00503`
+
+**Implementation commit:** `9f68555`
+
+**Final effective runtime baseline:** `9f68555`
+
+**Unity compile/import:** Green
+
+**Focused Chronicle Editor gate:** **524 / 524 passed, 0 failed**
+
+**Prior focused regression floor:** **497 / 497**
+
+**Net new focused tests:** **27**
+
+**Committed implementation/test scope:** **22 files**, `2912` insertions, `6` deletions
+
+Observed completion:
+- public read-only `BuildRecoveryPlanAsync(SaveSlotId)`;
+- explicit healthy/missing/invalid/current-missing/current-invalid diagnosis;
+- bounded provider-neutral generation discovery;
+- full candidate verification using Chronicle document and integrity rules;
+- preservation/exclusion of invalid, unsupported, uncommitted, corrupt, and noncanonical evidence;
+- deterministic newest-valid candidate ordering;
+- immutable payload-free recovery plan and candidate summaries;
+- exact technical source-provenance fingerprint for later stale-plan rejection;
+- no durable storage mutation;
+- no participant callbacks or migration side effects;
+- no recovery execution/head rewrite/catalog reconciliation.
+
+### Test-fixture corrections
+
+1. New test support initially referenced nonexistent `SaveDocumentVersions.HeadMajor`; it was corrected to Chronicle's authoritative `HeadPointerMajor` constant. Runtime/API/architecture/test intent were unchanged.
+2. The first focused run discovered **524** tests with **522 passed / 2 failed** because two intentionally unsupported-version fixtures used Chronicle's guarded production serializer, which correctly rejected those documents before serialization. Only the fixture was corrected: supported fixtures still use Chronicle's serializer, while intentionally unsupported future-version JSON is authored directly with Unity `JsonUtility` so the recovery planner can inspect and preserve/exclude it.
+
+Final rerun: **524 / 524 passed, 0 failed**.
+
+No follow-on M4 checkpoint is activated by this closeout.

@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.27.0
-**Completed checkpoint:** ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.28.0
+**Completed checkpoint:** ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 active; M4 remains active
+**Current checkpoint:** None activated — ESV-M4-07 complete
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; M4 remains active
 
-**Authority reconciliation:** Specification v1.27.0 records ESV-M4-06 complete and activates bounded ESV-M4-07 at clean baseline `9695450` under ESV-D-029.
+**Authority reconciliation:** Specification v1.28.0 records ESV-M4-07 complete at implementation commit `9f68555` with final focused Chronicle Editor evidence `524 / 524`; no follow-on M4 checkpoint is activated.
 
 ## ESV-M4-02 closeout
 
@@ -240,40 +240,59 @@ Still deferred:
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **497 / 497** focused regression floor.
 
-## ESV-M4-07 active boundary
+## ESV-M4-07 closeout
 
-**Exact planning baseline:** `9695450`.
+**Planning baseline:** `9695450`.
 
-**Carried focused regression floor:** **497 / 497**.
+**Planning/activation commit:** `7b00503`.
 
-M4-07 owns:
-- additive public read-only `BuildRecoveryPlanAsync(SaveSlotId)`;
+**Implementation commit:** `9f68555`.
+
+**Final effective runtime baseline:** `9f68555`.
+
+**Focused Chronicle Editor gate:** **524 / 524 passed, 0 failed**.
+
+**Prior regression floor:** **497 / 497**.
+
+**Net new focused tests:** **27**.
+
+**Committed implementation/test scope:** **22 files**, `2912` insertions, `6` deletions.
+
+Completed behavior:
+- public read-only `BuildRecoveryPlanAsync(SaveSlotId)`;
+- explicit source head/current diagnosis;
 - bounded provider-neutral generation discovery;
-- explicit healthy/missing/invalid/corrupt-current recovery diagnosis;
-- full manifest + payload + integrity verification for candidate eligibility;
-- committed matching slot/generation identity requirements;
-- preservation/exclusion of noncanonical, malformed, incomplete, corrupt, mismatched, and unsupported material;
-- deterministic newest-valid ordering by validated technical timestamp and canonical generation-ID tie-break;
+- full candidate manifest/payload/integrity/identity/commit-state verification;
+- preservation/exclusion of unsupported, corrupt, incomplete, mismatched, uncommitted, and noncanonical evidence;
+- deterministic newest-valid fallback ordering;
 - preferred candidate only when recovery is required;
-- immutable recovery-plan/result truth;
-- exact technical source-provenance fingerprint for later stale-plan rejection;
-- zero storage mutation, catalog mutation, selection mutation, participant callback, or migration side effect.
+- immutable payload-free recovery plan/candidate summaries;
+- deterministic technical source-provenance fingerprint;
+- zero durable mutation during planning;
+- no participant callbacks or migration side effects;
+- no mutating-operation admission lease for read-only planning.
 
-M4-07 does **not** own:
-- recovery execution or head publication;
+Test-fixture corrections:
+- one compile-only test-support constant was corrected from `HeadMajor` to `HeadPointerMajor`;
+- initial focused run was **522 / 524** because two future-version fixtures tried to serialize through Chronicle's production serializer, which correctly rejected unsupported package documents;
+- those intentionally unsupported fixtures now use Unity `JsonUtility` directly while ordinary supported fixtures remain on Chronicle's serializer;
+- runtime/API/architecture/authority/recovery behavior/test intent/test count remained unchanged;
+- final rerun passed **524 / 524**.
+
+Still deferred:
+- recovery execution/head publication;
 - catalog reconciliation after recovery;
 - automatic/configured fallback execution;
 - recovery mutation admission/Busy/cancellation;
-- quarantine;
+- stale-plan execution rejection beyond captured provenance;
+- quarantine and incomplete-generation cleanup;
 - rename/duplicate/delete/trash;
 - persistent `catalog.cache.json`;
 - generic queues/capacity/overflow;
 - automatic autosave timers;
 - permission-provider production facade wiring;
-- full `SaveRecoveryPolicy`, `EchoSaveConfiguration`, or Setup authoring expansion;
+- full recovery/configuration/Setup expansion;
 - document migration;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-ESV-T-074 through ESV-T-077 are the intended bounded recovery proofs for this checkpoint. ESV-T-078 recovery execution and ESV-T-079 stale-plan execution rejection remain deferred.
-
-The next implementation must preserve the **497 / 497** focused regression floor.
+No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **524 / 524** focused regression floor.

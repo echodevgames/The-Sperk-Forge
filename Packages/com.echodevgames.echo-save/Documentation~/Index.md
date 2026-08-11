@@ -50,12 +50,14 @@
 - [[Developer/Test Reports/ESV-M4-05_Chronicle_Autosave_Request_Coalescing_and_Latest_Wins_Pending_Admission_Foundation_Test_Report|ESV-M4-05 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation|ESV-M4-06 Closeout]]
 - [[Developer/Test Reports/ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation_Test_Report|ESV-M4-06 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-07_Chronicle_Recovery_Candidate_Discovery_Immutable_Recovery_Plan_Truth_and_Deterministic_Fallback_Selection_Foundation|ESV-M4-07 Closeout]]
+- [[Developer/Test Reports/ESV-M4-07_Chronicle_Recovery_Candidate_Discovery_Immutable_Recovery_Plan_Truth_and_Deterministic_Fallback_Selection_Foundation_Test_Report|ESV-M4-07 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation`
+`ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation`
 
-Chronicle now bounds ordinary committed-generation history after successful publication, preserves the current generation and immediate recovery predecessor, deletes only excess verified committed history through provider-neutral capability, and reports cleanup maintenance separately from committed save truth. The implementation is committed at `e714a90`; the focused Chronicle Editor gate is **497 / 497**.
+Chronicle can now build one trustworthy immutable read-only recovery plan without changing durable data. It diagnoses source state, discovers retained history through bounded provider-neutral reads, admits only fully verified committed generations, orders candidates deterministically newest-valid first, chooses a preferred candidate only when recovery is required, and carries technical source provenance for later stale-plan execution rejection. The implementation is committed at `9f68555`; the focused Chronicle Editor gate is **524 / 524**.
 
 ## Completed milestone
 
@@ -63,6 +65,6 @@ Chronicle now bounds ordinary committed-generation history after successful publ
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-06 closeout.
+No follow-on M4 checkpoint is activated by the ESV-M4-07 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **497 / 497** regression floor.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **524 / 524** regression floor.
