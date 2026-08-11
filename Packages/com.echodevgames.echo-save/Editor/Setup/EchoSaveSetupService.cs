@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,11 @@ namespace EchoDevGames.EchoSave.Editor
         private const string OccupiedTargetCode = "ESV-SETUP-002";
         private const string MissingFolderCode = "ESV-SETUP-003";
         private const string InvalidStorageRootCode = "ESV-SETUP-004";
-        private const string InvalidSlotPolicyCode = "ESV-SETUP-005";
+        private const string InvalidPolicyCode = "ESV-SETUP-005";
+        private const string InvalidExistingAssetCode = "ESV-SETUP-006";
+        private const string StalePreviewCode = "ESV-SETUP-007";
+        private const string InvalidRootRepairCode = "ESV-SETUP-008";
+        private const string DuplicateRootRepairCode = "ESV-SETUP-009";
 
         public EchoSaveSetupPlan Preview(
             EchoSaveSetupRequest request)
@@ -25,63 +30,68 @@ namespace EchoDevGames.EchoSave.Editor
 
             var messages =
                 new List<EchoSaveSetupMessage>();
+
             var assetsToCreate =
                 new List<string>();
 
-            string normalizedAssetPath =
-                NormalizeAssetPath(
-                    request.TargetAssetPath);
-
-            bool safeTarget =
-                IsSafeAssetPath(
-                    normalizedAssetPath,
-                    out string pathMessage);
-
-            if (!safeTarget)
-            {
-                messages.Add(
-                    Blocker(
-                        InvalidTargetCode,
-                        pathMessage));
-            }
-
-            bool destinationAvailable = false;
-
-            if (safeTarget)
-            {
-                string parentPath =
-                    GetParentAssetPath(
-                        normalizedAssetPath);
-
-                if (!AssetDatabase.IsValidFolder(
-                        parentPath))
-                {
-                    messages.Add(
-                        Blocker(
-                            MissingFolderCode,
-                            $"The target folder '{parentPath}' does not exist. M5-01 Setup does not create project folders."));
-                }
-                else if (
-                    AssetDatabase.LoadMainAssetAtPath(
-                        normalizedAssetPath) != null ||
-                    File.Exists(
-                        ToProjectAbsolutePath(
-                            normalizedAssetPath)))
-                {
-                    messages.Add(
-                        Blocker(
-                            OccupiedTargetCode,
-                            $"The target '{normalizedAssetPath}' is already occupied. M5-01 Setup never overwrites or edits an existing asset."));
-                }
-                else
-                {
-                    destinationAvailable = true;
-                }
-            }
+            var changes =
+                new List<EchoSaveSetupChange>();
 
             string normalizedStorageRoot =
                 (request.StorageRootDirectoryName ??
                  string.Empty).Trim();
+
+            string normalizedAssetPath;
+            bool destinationAvailable;
+            int sourceSchemaVersion;
+            string targetStateFingerprint;
+
+            if (request.IsEdit)
+            {
+                EchoSaveConfiguration existing =
+                    request.ExistingConfiguration;
+
+                normalizedAssetPath =
+                    AssetDatabase.GetAssetPath(
+                        existing);
+
+                sourceSchemaVersion =
+                    existing != null
+                        ? existing.SchemaVersion
+                        : 0;
+
+                targetStateFingerprint =
+                    ComputeConfigurationStateFingerprint(
+                        existing);
+
+                destinationAvailable =
+                    ValidateExistingConfigurationTarget(
+                        existing,
+                        normalizedAssetPath,
+                        messages);
+            }
+            else
+            {
+                normalizedAssetPath =
+                    NormalizeAssetPath(
+                        request.TargetAssetPath);
+
+                sourceSchemaVersion = 0;
+                targetStateFingerprint =
+                    ComputeCreateTargetStateFingerprint(
+                        normalizedAssetPath);
+
+                destinationAvailable =
+                    ValidateCreateTarget(
+                        normalizedAssetPath,
+                        messages);
+
+                if (destinationAvailable)
+                {
+                    assetsToCreate.Add(
+                        normalizedAssetPath);
+                }
+            }
 
             if (!IsSafeStorageRoot(
                     normalizedStorageRoot))
@@ -93,41 +103,74 @@ namespace EchoDevGames.EchoSave.Editor
             }
 
             int effectiveCapacity = 0;
-            if (!TryResolveEffectiveCapacity(
+
+            if (!TryResolveRequestRuntimePolicy(
                     normalizedStorageRoot,
                     request,
-                    out effectiveCapacity,
-                    out string slotPolicyMessage))
+                    out EchoSaveRuntimePolicy resolvedPolicy,
+                    out string policyMessage))
             {
                 messages.Add(
                     Blocker(
-                        InvalidSlotPolicyCode,
-                        slotPolicyMessage));
+                        InvalidPolicyCode,
+                        policyMessage));
+            }
+            else
+            {
+                effectiveCapacity =
+                    resolvedPolicy
+                        .SlotPolicy
+                        .EffectiveCapacity;
             }
 
-            EchoSaveSetupDisposition disposition =
-                HasBlocker(messages)
-                    ? EchoSaveSetupDisposition.Rejected
-                    : EchoSaveSetupDisposition.Create;
-
-            if (disposition ==
-                EchoSaveSetupDisposition.Create)
+            if (request.IsEdit &&
+                request.ExistingConfiguration != null &&
+                !HasBlocker(messages))
             {
-                assetsToCreate.Add(
-                    normalizedAssetPath);
+                BuildConfigurationChanges(
+                    request.ExistingConfiguration,
+                    request,
+                    normalizedStorageRoot,
+                    changes);
+            }
+
+            EchoSaveSetupDisposition disposition;
+
+            if (HasBlocker(messages))
+            {
+                disposition =
+                    EchoSaveSetupDisposition.Rejected;
+            }
+            else if (!request.IsEdit)
+            {
+                disposition =
+                    EchoSaveSetupDisposition.Create;
+            }
+            else if (changes.Count == 0)
+            {
+                disposition =
+                    EchoSaveSetupDisposition.NoChanges;
+            }
+            else
+            {
+                disposition =
+                    EchoSaveSetupDisposition.Update;
             }
 
             return new EchoSaveSetupPlan(
                 request,
                 ComputeRequestFingerprint(request),
+                targetStateFingerprint,
                 normalizedAssetPath,
                 normalizedStorageRoot,
+                sourceSchemaVersion,
                 EchoSaveConfiguration.CurrentSchemaVersion,
                 request.SlotPolicyMode,
                 effectiveCapacity,
                 destinationAvailable,
                 disposition,
                 assetsToCreate.ToArray(),
+                changes.ToArray(),
                 messages.ToArray());
         }
 
@@ -141,7 +184,8 @@ namespace EchoDevGames.EchoSave.Editor
             }
 
             EchoSaveSetupPlan current =
-                Preview(plan.Request);
+                Preview(
+                    plan.Request);
 
             if (!EquivalentForApply(
                     plan,
@@ -150,8 +194,18 @@ namespace EchoDevGames.EchoSave.Editor
                 return new EchoSaveSetupResult(
                     EchoSaveSetupResultStatus.Rejected,
                     plan.NormalizedAssetPath,
-                    null,
-                    "The Chronicle Setup preview is stale or no longer applicable. Preview again before Apply.");
+                    plan.Request.ExistingConfiguration,
+                    $"[{StalePreviewCode}] The Chronicle Setup preview is stale or no longer applicable. Preview again before Apply.");
+            }
+
+            if (current.Disposition ==
+                EchoSaveSetupDisposition.NoChanges)
+            {
+                return new EchoSaveSetupResult(
+                    EchoSaveSetupResultStatus.NoChanges,
+                    current.NormalizedAssetPath,
+                    current.Request.ExistingConfiguration,
+                    "The Chronicle configuration already matches the previewed schema-3 authoring state.");
             }
 
             if (!current.CanApply)
@@ -159,10 +213,292 @@ namespace EchoDevGames.EchoSave.Editor
                 return new EchoSaveSetupResult(
                     EchoSaveSetupResultStatus.Rejected,
                     current.NormalizedAssetPath,
-                    null,
+                    current.Request.ExistingConfiguration,
                     FirstMessageOrFallback(current));
             }
 
+            return current.Request.IsEdit
+                ? ApplyExistingConfiguration(current)
+                : ApplyNewConfiguration(current);
+        }
+
+        public EchoSaveRootRepairPlan PreviewRootRepair(
+            EchoSaveRoot root,
+            EchoSaveConfiguration targetConfiguration)
+        {
+            var messages =
+                new List<EchoSaveSetupMessage>();
+
+            var changes =
+                new List<EchoSaveSetupChange>();
+
+            if (root == null ||
+                root.gameObject == null)
+            {
+                messages.Add(
+                    Blocker(
+                        InvalidRootRepairCode,
+                        "Select one project-owned EchoSaveRoot before previewing a reference repair."));
+            }
+
+            if (targetConfiguration == null)
+            {
+                messages.Add(
+                    Blocker(
+                        InvalidRootRepairCode,
+                        "Select one project-owned EchoSaveConfiguration before previewing a root reference repair."));
+            }
+
+            if (root != null &&
+                root.gameObject != null &&
+                CountLoadedSceneRoots() > 1)
+            {
+                messages.Add(
+                    Blocker(
+                        DuplicateRootRepairCode,
+                        "Multiple loaded-scene EchoSaveRoot components exist. M5-02 will not choose one authority automatically."));
+            }
+
+            if (targetConfiguration != null)
+            {
+                string configPath =
+                    AssetDatabase.GetAssetPath(
+                        targetConfiguration);
+
+                if (string.IsNullOrEmpty(configPath) ||
+                    !configPath.StartsWith(
+                        "Assets/",
+                        StringComparison.Ordinal))
+                {
+                    messages.Add(
+                        Blocker(
+                            InvalidRootRepairCode,
+                            "The target configuration must be one project-owned asset under Assets/."));
+                }
+            }
+
+            EchoSaveConfiguration serializedRootConfiguration =
+                GetSerializedRootConfiguration(root);
+
+            if (!HasBlocker(messages) &&
+                serializedRootConfiguration !=
+                targetConfiguration)
+            {
+                changes.Add(
+                    new EchoSaveSetupChange(
+                        "EchoSaveRoot.configuration",
+                        ObjectContext(serializedRootConfiguration),
+                        ObjectContext(targetConfiguration)));
+            }
+
+            EchoSaveSetupDisposition disposition;
+
+            if (HasBlocker(messages))
+            {
+                disposition =
+                    EchoSaveSetupDisposition.Rejected;
+            }
+            else if (changes.Count == 0)
+            {
+                disposition =
+                    EchoSaveSetupDisposition.NoChanges;
+            }
+            else
+            {
+                disposition =
+                    EchoSaveSetupDisposition.Update;
+            }
+
+            return new EchoSaveRootRepairPlan(
+                root,
+                targetConfiguration,
+                ComputeRootRepairStateFingerprint(
+                    root,
+                    targetConfiguration),
+                disposition,
+                changes.ToArray(),
+                messages.ToArray());
+        }
+
+        public EchoSaveRootRepairResult ApplyRootRepair(
+            EchoSaveRootRepairPlan plan)
+        {
+            if (plan == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(plan));
+            }
+
+            EchoSaveRootRepairPlan current =
+                PreviewRootRepair(
+                    plan.Root,
+                    plan.TargetConfiguration);
+
+            if (!string.Equals(
+                    plan.StateFingerprint,
+                    current.StateFingerprint,
+                    StringComparison.Ordinal) ||
+                plan.Disposition !=
+                current.Disposition)
+            {
+                return new EchoSaveRootRepairResult(
+                    EchoSaveSetupResultStatus.Rejected,
+                    plan.Root,
+                    $"[{StalePreviewCode}] The selected Chronicle root/reference state changed after Preview.");
+            }
+
+            if (current.Disposition ==
+                EchoSaveSetupDisposition.NoChanges)
+            {
+                return new EchoSaveRootRepairResult(
+                    EchoSaveSetupResultStatus.NoChanges,
+                    current.Root,
+                    "The selected Chronicle root already references the previewed configuration.");
+            }
+
+            if (!current.CanApply)
+            {
+                return new EchoSaveRootRepairResult(
+                    EchoSaveSetupResultStatus.Rejected,
+                    current.Root,
+                    current.Messages.Count > 0
+                        ? current.Messages[0].Message
+                        : "The Chronicle root reference repair is blocked.");
+            }
+
+            int undoGroup =
+                Undo.GetCurrentGroup();
+
+            Undo.SetCurrentGroupName(
+                "Chronicle Root Configuration Repair");
+
+            try
+            {
+                Undo.RecordObject(
+                    current.Root,
+                    "Chronicle Root Configuration Repair");
+
+                var serialized =
+                    new SerializedObject(
+                        current.Root);
+
+                SerializedProperty configuration =
+                    serialized.FindProperty(
+                        "configuration");
+
+                if (configuration == null)
+                {
+                    throw new InvalidOperationException(
+                        "EchoSaveRoot configuration property could not be located.");
+                }
+
+                configuration.objectReferenceValue =
+                    current.TargetConfiguration;
+
+                serialized.ApplyModifiedProperties();
+
+                if (PrefabUtility.IsPartOfPrefabInstance(
+                        current.Root))
+                {
+                    PrefabUtility
+                        .RecordPrefabInstancePropertyModifications(
+                            current.Root);
+                }
+
+                EditorUtility.SetDirty(
+                    current.Root);
+
+                UnityEngine.SceneManagement.Scene rootScene =
+                    current.Root.gameObject.scene;
+
+                if (rootScene.IsValid() &&
+                    rootScene.isLoaded)
+                {
+                    UnityEditor.SceneManagement
+                        .EditorSceneManager
+                        .MarkSceneDirty(rootScene);
+                }
+
+                return new EchoSaveRootRepairResult(
+                    EchoSaveSetupResultStatus.Updated,
+                    current.Root,
+                    "Updated the selected Chronicle root configuration reference through one Undo-recorded repair.");
+            }
+            catch (Exception exception)
+            {
+                Undo.RevertAllDownToGroup(
+                    undoGroup);
+
+                return new EchoSaveRootRepairResult(
+                    EchoSaveSetupResultStatus.Failed,
+                    current.Root,
+                    $"Chronicle root reference repair failed and was reverted: {exception.GetType().Name}.");
+            }
+        }
+
+        public static string ComputeRequestFingerprint(
+            EchoSaveSetupRequest request)
+        {
+            if (request == null)
+            {
+                return string.Empty;
+            }
+
+            string templateIds =
+                string.Join(
+                    "\n",
+                    request
+                        .FixedSlotTemplates
+                        .Select(
+                            template =>
+                                template != null
+                                    ? template.GetInstanceID().ToString()
+                                    : "null"));
+
+            return string.Concat(
+                request.ExistingConfiguration != null
+                    ? request.ExistingConfiguration
+                        .GetInstanceID()
+                        .ToString()
+                    : "create",
+                "\n",
+                NormalizeAssetPath(
+                    request.TargetAssetPath),
+                "\n",
+                (request.StorageRootDirectoryName ??
+                 string.Empty).Trim(),
+                "\n",
+                ((int)request.SlotPolicyMode).ToString(),
+                "\n",
+                request.FixedSlotCount.ToString(),
+                "\n",
+                request.ConfiguredSlotLimit.ToString(),
+                "\n",
+                request.ProfileSafetyLimit.ToString(),
+                "\n",
+                request.MaxTotalGenerations.ToString(),
+                "\n",
+                (request.SerializerProviderId ??
+                 string.Empty).Trim(),
+                "\n",
+                (request.StorageProviderId ??
+                 string.Empty).Trim(),
+                "\n",
+                request.CatalogScanLimit.ToString(),
+                "\n",
+                request.RetentionDiscoveryLimit.ToString(),
+                "\n",
+                request.RecoveryDiscoveryLimit.ToString(),
+                "\n",
+                ((int)request.RecoveryPolicyMode).ToString(),
+                "\n",
+                templateIds);
+        }
+
+        private static EchoSaveSetupResult
+            ApplyNewConfiguration(
+                EchoSaveSetupPlan plan)
+        {
             EchoSaveConfiguration configuration =
                 ScriptableObject.CreateInstance<
                     EchoSaveConfiguration>();
@@ -171,26 +507,31 @@ namespace EchoDevGames.EchoSave.Editor
             {
                 AuthorConfiguration(
                     configuration,
-                    current);
+                    plan.Request,
+                    plan.NormalizedStorageRoot,
+                    false);
 
                 AssetDatabase.CreateAsset(
                     configuration,
-                    current.NormalizedAssetPath);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.ImportAsset(
-                    current.NormalizedAssetPath,
-                    ImportAssetOptions.ForceSynchronousImport);
+                    plan.NormalizedAssetPath);
 
-                UnityEngine.Object created =
+                AssetDatabase.SaveAssets();
+
+                AssetDatabase.ImportAsset(
+                    plan.NormalizedAssetPath,
+                    ImportAssetOptions
+                        .ForceSynchronousImport);
+
+                EchoSaveConfiguration created =
                     AssetDatabase.LoadAssetAtPath<
                         EchoSaveConfiguration>(
-                        current.NormalizedAssetPath);
+                        plan.NormalizedAssetPath);
 
                 return new EchoSaveSetupResult(
                     EchoSaveSetupResultStatus.Created,
-                    current.NormalizedAssetPath,
-                    created as EchoSaveConfiguration,
-                    $"Created Chronicle configuration at '{current.NormalizedAssetPath}'.");
+                    plan.NormalizedAssetPath,
+                    created,
+                    $"Created Chronicle schema-{EchoSaveConfiguration.CurrentSchemaVersion} configuration at '{plan.NormalizedAssetPath}'.");
             }
             catch (Exception exception)
             {
@@ -208,44 +549,67 @@ namespace EchoDevGames.EchoSave.Editor
                     }
                     else
                     {
-                        UnityEngine.Object.DestroyImmediate(
-                            configuration);
+                        UnityEngine.Object
+                            .DestroyImmediate(
+                                configuration);
                     }
                 }
 
                 return new EchoSaveSetupResult(
                     EchoSaveSetupResultStatus.Failed,
-                    current.NormalizedAssetPath,
+                    plan.NormalizedAssetPath,
                     null,
                     $"Chronicle Setup failed without overwriting an existing asset: {exception.GetType().Name}.");
             }
         }
 
-        public static string ComputeRequestFingerprint(
-            EchoSaveSetupRequest request)
+        private static EchoSaveSetupResult
+            ApplyExistingConfiguration(
+                EchoSaveSetupPlan plan)
         {
-            if (request == null)
+            EchoSaveConfiguration configuration =
+                plan.Request.ExistingConfiguration;
+
+            int undoGroup =
+                Undo.GetCurrentGroup();
+
+            Undo.SetCurrentGroupName(
+                "Chronicle Configuration Update");
+
+            try
             {
-                return string.Empty;
+                Undo.RecordObject(
+                    configuration,
+                    "Chronicle Configuration Update");
+
+                AuthorConfiguration(
+                    configuration,
+                    plan.Request,
+                    plan.NormalizedStorageRoot,
+                    true);
+
+                EditorUtility.SetDirty(
+                    configuration);
+
+                AssetDatabase.SaveAssets();
+
+                return new EchoSaveSetupResult(
+                    EchoSaveSetupResultStatus.Updated,
+                    plan.NormalizedAssetPath,
+                    configuration,
+                    $"Updated '{plan.NormalizedAssetPath}' explicitly to Chronicle schema {EchoSaveConfiguration.CurrentSchemaVersion}.");
             }
+            catch (Exception exception)
+            {
+                Undo.RevertAllDownToGroup(
+                    undoGroup);
 
-            string serialized =
-                string.Concat(
-                    NormalizeAssetPath(
-                        request.TargetAssetPath),
-                    "\n",
-                    (request.StorageRootDirectoryName ??
-                     string.Empty).Trim(),
-                    "\n",
-                    ((int)request.SlotPolicyMode).ToString(),
-                    "\n",
-                    request.FixedSlotCount.ToString(),
-                    "\n",
-                    request.ConfiguredSlotLimit.ToString(),
-                    "\n",
-                    request.ProfileSafetyLimit.ToString());
-
-            return serialized;
+                return new EchoSaveSetupResult(
+                    EchoSaveSetupResultStatus.Failed,
+                    plan.NormalizedAssetPath,
+                    configuration,
+                    $"Chronicle configuration update failed and was reverted: {exception.GetType().Name}.");
+            }
         }
 
         private static bool EquivalentForApply(
@@ -253,11 +617,18 @@ namespace EchoDevGames.EchoSave.Editor
             EchoSaveSetupPlan current)
         {
             return current != null &&
-                   current.CanApply &&
+                   original != null &&
                    original.CanApply &&
+                   current.CanApply &&
+                   original.Disposition ==
+                   current.Disposition &&
                    string.Equals(
                        original.RequestFingerprint,
                        current.RequestFingerprint,
+                       StringComparison.Ordinal) &&
+                   string.Equals(
+                       original.TargetStateFingerprint,
+                       current.TargetStateFingerprint,
                        StringComparison.Ordinal) &&
                    string.Equals(
                        original.NormalizedAssetPath,
@@ -269,62 +640,291 @@ namespace EchoDevGames.EchoSave.Editor
                        StringComparison.Ordinal) &&
                    original.SchemaVersion ==
                    current.SchemaVersion &&
-                   original.SlotPolicyMode ==
-                   current.SlotPolicyMode &&
                    original.EffectiveCapacity ==
-                   current.EffectiveCapacity &&
-                   original.DestinationAvailable ==
-                   current.DestinationAvailable;
+                   current.EffectiveCapacity;
         }
 
-        private static void AuthorConfiguration(
-            EchoSaveConfiguration configuration,
-            EchoSaveSetupPlan plan)
+        private static bool ValidateCreateTarget(
+            string normalizedAssetPath,
+            List<EchoSaveSetupMessage> messages)
         {
-            var serializedObject =
-                new SerializedObject(configuration);
+            if (!IsSafeAssetPath(
+                    normalizedAssetPath,
+                    out string pathMessage))
+            {
+                messages.Add(
+                    Blocker(
+                        InvalidTargetCode,
+                        pathMessage));
+                return false;
+            }
 
-            serializedObject
-                .FindProperty("schemaVersion")
-                .intValue =
-                EchoSaveConfiguration.CurrentSchemaVersion;
+            string parentPath =
+                GetParentAssetPath(
+                    normalizedAssetPath);
 
-            serializedObject
-                .FindProperty(
-                    "storageRootDirectoryName")
-                .stringValue =
-                plan.NormalizedStorageRoot;
+            if (!AssetDatabase.IsValidFolder(
+                    parentPath))
+            {
+                messages.Add(
+                    Blocker(
+                        MissingFolderCode,
+                        $"The target folder '{parentPath}' does not exist. Chronicle Setup does not create project folders implicitly."));
+                return false;
+            }
 
-            serializedObject
-                .FindProperty("slotPolicyMode")
-                .enumValueIndex =
-                (int)plan.Request.SlotPolicyMode;
+            if (AssetDatabase.LoadMainAssetAtPath(
+                    normalizedAssetPath) != null ||
+                File.Exists(
+                    ToProjectAbsolutePath(
+                        normalizedAssetPath)))
+            {
+                messages.Add(
+                    Blocker(
+                        OccupiedTargetCode,
+                        $"The target '{normalizedAssetPath}' is already occupied. Create mode never overwrites an existing asset; select it in Edit mode instead."));
+                return false;
+            }
 
-            serializedObject
-                .FindProperty("fixedSlotCount")
-                .intValue =
-                plan.Request.FixedSlotCount;
-
-            serializedObject
-                .FindProperty("configuredSlotLimit")
-                .intValue =
-                plan.Request.ConfiguredSlotLimit;
-
-            serializedObject
-                .FindProperty("profileSafetyLimit")
-                .intValue =
-                plan.Request.ProfileSafetyLimit;
-
-            serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            return true;
         }
 
-        private static bool TryResolveEffectiveCapacity(
+        private static bool
+            ValidateExistingConfigurationTarget(
+                EchoSaveConfiguration configuration,
+                string path,
+                List<EchoSaveSetupMessage> messages)
+        {
+            if (configuration == null ||
+                string.IsNullOrEmpty(path) ||
+                !path.StartsWith(
+                    "Assets/",
+                    StringComparison.Ordinal) ||
+                AssetDatabase.LoadAssetAtPath<
+                    EchoSaveConfiguration>(
+                        path) !=
+                configuration)
+            {
+                messages.Add(
+                    Blocker(
+                        InvalidExistingAssetCode,
+                        "Edit mode requires one selected project-owned EchoSaveConfiguration asset under Assets/."));
+                return false;
+            }
+
+            return true;
+        }
+
+        private static void BuildConfigurationChanges(
+            EchoSaveConfiguration existing,
+            EchoSaveSetupRequest request,
+            string normalizedStorageRoot,
+            List<EchoSaveSetupChange> changes)
+        {
+            AddChange(
+                changes,
+                "Schema Version",
+                existing.SchemaVersion,
+                EchoSaveConfiguration
+                    .CurrentSchemaVersion);
+
+            AddChange(
+                changes,
+                "Storage Root",
+                existing.StorageRootDirectoryName,
+                normalizedStorageRoot);
+
+            AddChange(
+                changes,
+                "Slot Policy",
+                existing.SlotPolicyMode,
+                request.SlotPolicyMode);
+
+            AddChange(
+                changes,
+                "Fixed Slot Count",
+                existing.FixedSlotCount,
+                request.FixedSlotCount);
+
+            AddChange(
+                changes,
+                "Configured Slot Limit",
+                existing.ConfiguredSlotLimit,
+                request.ConfiguredSlotLimit);
+
+            AddChange(
+                changes,
+                "Profile Safety Limit",
+                existing.ProfileSafetyLimit,
+                request.ProfileSafetyLimit);
+
+            if (existing.SchemaVersion ==
+                EchoSaveConfiguration
+                    .CurrentSchemaVersion)
+            {
+                AddChange(
+                    changes,
+                    "Max Total Generations",
+                    existing.MaxTotalGenerations,
+                    request.MaxTotalGenerations);
+
+                AddChange(
+                    changes,
+                    "Serializer Provider",
+                    existing.SerializerProviderId,
+                    (request.SerializerProviderId ??
+                     string.Empty).Trim());
+
+                AddChange(
+                    changes,
+                    "Storage Provider",
+                    existing.StorageProviderId,
+                    (request.StorageProviderId ??
+                     string.Empty).Trim());
+
+                AddChange(
+                    changes,
+                    "Catalog Scan Limit",
+                    existing.CatalogScanLimit,
+                    request.CatalogScanLimit);
+
+                AddChange(
+                    changes,
+                    "Retention Discovery Limit",
+                    existing.RetentionDiscoveryLimit,
+                    request.RetentionDiscoveryLimit);
+
+                AddChange(
+                    changes,
+                    "Recovery Discovery Limit",
+                    existing.RecoveryDiscoveryLimit,
+                    request.RecoveryDiscoveryLimit);
+
+                AddChange(
+                    changes,
+                    "Recovery Policy",
+                    existing.RecoveryPolicyMode,
+                    request.RecoveryPolicyMode);
+
+                string beforeTemplates =
+                    DescribeTemplates(
+                        existing.FixedSlotTemplates);
+
+                string afterTemplates =
+                    DescribeTemplates(
+                        request.FixedSlotTemplates);
+
+                if (!string.Equals(
+                        beforeTemplates,
+                        afterTemplates,
+                        StringComparison.Ordinal))
+                {
+                    changes.Add(
+                        new EchoSaveSetupChange(
+                            "Fixed Slot Templates",
+                            beforeTemplates,
+                            afterTemplates));
+                }
+            }
+            else
+            {
+                AddChange(
+                    changes,
+                    "Max Total Generations",
+                    SaveRetentionPolicy
+                        .DefaultTotalGenerations,
+                    request.MaxTotalGenerations);
+
+                AddChange(
+                    changes,
+                    "Serializer Provider",
+                    EchoSaveConfiguration
+                        .DefaultSerializerProviderId,
+                    (request.SerializerProviderId ??
+                     string.Empty).Trim());
+
+                AddChange(
+                    changes,
+                    "Storage Provider",
+                    EchoSaveConfiguration
+                        .DefaultStorageProviderId,
+                    (request.StorageProviderId ??
+                     string.Empty).Trim());
+
+                AddChange(
+                    changes,
+                    "Catalog Scan Limit",
+                    SaveLimitPolicy
+                        .DefaultCatalogScanLimit,
+                    request.CatalogScanLimit);
+
+                AddChange(
+                    changes,
+                    "Retention Discovery Limit",
+                    SaveLimitPolicy
+                        .DefaultRetentionDiscoveryLimit,
+                    request.RetentionDiscoveryLimit);
+
+                AddChange(
+                    changes,
+                    "Recovery Discovery Limit",
+                    SaveLimitPolicy
+                        .DefaultRecoveryDiscoveryLimit,
+                    request.RecoveryDiscoveryLimit);
+
+                AddChange(
+                    changes,
+                    "Recovery Policy",
+                    EchoSaveRecoveryPolicyMode
+                        .ManualOnly,
+                    request.RecoveryPolicyMode);
+
+                if (request.FixedSlotTemplates.Count >
+                    0)
+                {
+                    changes.Add(
+                        new EchoSaveSetupChange(
+                            "Fixed Slot Templates",
+                            "(compatibility default: none)",
+                            DescribeTemplates(
+                                request.FixedSlotTemplates)));
+                }
+            }
+        }
+
+        private static void AddChange<T>(
+            List<EchoSaveSetupChange> changes,
+            string name,
+            T before,
+            T after)
+        {
+            if (EqualityComparer<T>
+                .Default
+                .Equals(
+                    before,
+                    after))
+            {
+                return;
+            }
+
+            changes.Add(
+                new EchoSaveSetupChange(
+                    name,
+                    ReferenceEquals(before, null)
+                        ? string.Empty
+                        : before.ToString(),
+                    ReferenceEquals(after, null)
+                        ? string.Empty
+                        : after.ToString()));
+        }
+
+        private static bool TryResolveRequestRuntimePolicy(
             string normalizedStorageRoot,
             EchoSaveSetupRequest request,
-            out int effectiveCapacity,
+            out EchoSaveRuntimePolicy policy,
             out string message)
         {
-            effectiveCapacity = 0;
+            policy = null;
 
             if (!Enum.IsDefined(
                     typeof(SaveSlotPolicyMode),
@@ -341,58 +941,304 @@ namespace EchoDevGames.EchoSave.Editor
 
             try
             {
-                var serializedObject =
-                    new SerializedObject(configuration);
+                AuthorConfiguration(
+                    configuration,
+                    request,
+                    normalizedStorageRoot,
+                    false);
 
-                serializedObject
-                    .FindProperty("schemaVersion")
-                    .intValue =
-                    EchoSaveConfiguration.CurrentSchemaVersion;
-
-                serializedObject
-                    .FindProperty(
-                        "storageRootDirectoryName")
-                    .stringValue =
-                    normalizedStorageRoot;
-
-                serializedObject
-                    .FindProperty("slotPolicyMode")
-                    .enumValueIndex =
-                    (int)request.SlotPolicyMode;
-
-                serializedObject
-                    .FindProperty("fixedSlotCount")
-                    .intValue =
-                    request.FixedSlotCount;
-
-                serializedObject
-                    .FindProperty("configuredSlotLimit")
-                    .intValue =
-                    request.ConfiguredSlotLimit;
-
-                serializedObject
-                    .FindProperty("profileSafetyLimit")
-                    .intValue =
-                    request.ProfileSafetyLimit;
-
-                serializedObject.ApplyModifiedPropertiesWithoutUndo();
-
-                if (!configuration.TryResolveSlotPolicy(
-                        out SaveSlotPolicy policy,
+                if (!configuration
+                    .TryValidateFixedSlotTemplates(
                         out message))
                 {
                     return false;
                 }
 
-                effectiveCapacity =
-                    policy.EffectiveCapacity;
-                return true;
+                return configuration
+                    .TryResolveRuntimePolicy(
+                        out policy,
+                        out message);
             }
             finally
             {
-                UnityEngine.Object.DestroyImmediate(
-                    configuration);
+                UnityEngine.Object
+                    .DestroyImmediate(
+                        configuration);
             }
+        }
+
+        private static void AuthorConfiguration(
+            EchoSaveConfiguration configuration,
+            EchoSaveSetupRequest request,
+            string normalizedStorageRoot,
+            bool withUndo)
+        {
+            var serialized =
+                new SerializedObject(
+                    configuration);
+
+            serialized
+                .FindProperty("schemaVersion")
+                .intValue =
+                EchoSaveConfiguration
+                    .CurrentSchemaVersion;
+
+            serialized
+                .FindProperty(
+                    "storageRootDirectoryName")
+                .stringValue =
+                normalizedStorageRoot;
+
+            serialized
+                .FindProperty("slotPolicyMode")
+                .enumValueIndex =
+                (int)request.SlotPolicyMode;
+
+            serialized
+                .FindProperty("fixedSlotCount")
+                .intValue =
+                request.FixedSlotCount;
+
+            serialized
+                .FindProperty(
+                    "configuredSlotLimit")
+                .intValue =
+                request.ConfiguredSlotLimit;
+
+            serialized
+                .FindProperty(
+                    "profileSafetyLimit")
+                .intValue =
+                request.ProfileSafetyLimit;
+
+            serialized
+                .FindProperty(
+                    "maxTotalGenerations")
+                .intValue =
+                request.MaxTotalGenerations;
+
+            serialized
+                .FindProperty(
+                    "serializerProviderId")
+                .stringValue =
+                (request.SerializerProviderId ??
+                 string.Empty).Trim();
+
+            serialized
+                .FindProperty(
+                    "storageProviderId")
+                .stringValue =
+                (request.StorageProviderId ??
+                 string.Empty).Trim();
+
+            serialized
+                .FindProperty(
+                    "catalogScanLimit")
+                .intValue =
+                request.CatalogScanLimit;
+
+            serialized
+                .FindProperty(
+                    "retentionDiscoveryLimit")
+                .intValue =
+                request.RetentionDiscoveryLimit;
+
+            serialized
+                .FindProperty(
+                    "recoveryDiscoveryLimit")
+                .intValue =
+                request.RecoveryDiscoveryLimit;
+
+            serialized
+                .FindProperty(
+                    "recoveryPolicyMode")
+                .enumValueIndex =
+                (int)request.RecoveryPolicyMode;
+
+            SerializedProperty templates =
+                serialized.FindProperty(
+                    "fixedSlotTemplates");
+
+            templates.arraySize =
+                request.FixedSlotTemplates.Count;
+
+            for (int i = 0;
+                 i < request.FixedSlotTemplates.Count;
+                 i++)
+            {
+                templates
+                    .GetArrayElementAtIndex(i)
+                    .objectReferenceValue =
+                    request.FixedSlotTemplates[i];
+            }
+
+            if (withUndo)
+            {
+                serialized.ApplyModifiedProperties();
+            }
+            else
+            {
+                serialized
+                    .ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+
+        private static string
+            ComputeConfigurationStateFingerprint(
+                EchoSaveConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Concat(
+                AssetDatabase.GetAssetPath(
+                    configuration),
+                "\n",
+                EditorJsonUtility.ToJson(
+                    configuration),
+                "\n",
+                configuration.GetInstanceID()
+                    .ToString());
+        }
+
+        private static string
+            ComputeCreateTargetStateFingerprint(
+                string path)
+        {
+            UnityEngine.Object asset =
+                AssetDatabase.LoadMainAssetAtPath(
+                    path);
+
+            return string.Concat(
+                path,
+                "\n",
+                asset != null
+                    ? asset.GetInstanceID()
+                        .ToString()
+                    : "empty",
+                "\n",
+                File.Exists(
+                    ToProjectAbsolutePath(path))
+                    ? "file"
+                    : "no-file");
+        }
+
+        private static string
+            ComputeRootRepairStateFingerprint(
+                EchoSaveRoot root,
+                EchoSaveConfiguration target)
+        {
+            return string.Concat(
+                root != null
+                    ? root.GetInstanceID()
+                        .ToString()
+                    : "null",
+                "\n",
+                GetSerializedRootConfiguration(root) != null
+                    ? GetSerializedRootConfiguration(root)
+                        .GetInstanceID()
+                        .ToString()
+                    : "none",
+                "\n",
+                target != null
+                    ? target.GetInstanceID()
+                        .ToString()
+                    : "null",
+                "\n",
+                CountLoadedSceneRoots()
+                    .ToString());
+        }
+
+        private static EchoSaveConfiguration
+            GetSerializedRootConfiguration(
+                EchoSaveRoot root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            var serialized =
+                new SerializedObject(root);
+            SerializedProperty configuration =
+                serialized.FindProperty(
+                    "configuration");
+
+            return configuration != null
+                ? configuration.objectReferenceValue as
+                    EchoSaveConfiguration
+                : null;
+        }
+
+        private static int CountLoadedSceneRoots()
+        {
+            EchoSaveRoot[] roots =
+                Resources.FindObjectsOfTypeAll<
+                    EchoSaveRoot>();
+
+            int count = 0;
+
+            for (int i = 0;
+                 i < roots.Length;
+                 i++)
+            {
+                EchoSaveRoot root =
+                    roots[i];
+
+                if (root == null ||
+                    root.gameObject == null)
+                {
+                    continue;
+                }
+
+                UnityEngine.SceneManagement.Scene scene =
+                    root.gameObject.scene;
+
+                if (scene.IsValid() &&
+                    scene.isLoaded)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private static string DescribeTemplates(
+            IReadOnlyList<SaveSlotTemplate> templates)
+        {
+            if (templates == null ||
+                templates.Count == 0)
+            {
+                return "(none)";
+            }
+
+            return string.Join(
+                ", ",
+                templates.Select(
+                    template =>
+                        template != null
+                            ? template.TemplateId
+                            : "(missing)"));
+        }
+
+        private static string ObjectContext(
+            UnityEngine.Object value)
+        {
+            if (value == null)
+            {
+                return "(none)";
+            }
+
+            string path =
+                AssetDatabase.GetAssetPath(
+                    value);
+
+            return !string.IsNullOrEmpty(path)
+                ? path
+                : value.name;
         }
 
         private static string NormalizeAssetPath(
@@ -407,6 +1253,27 @@ namespace EchoDevGames.EchoSave.Editor
             {
                 value =
                     value.Replace("//", "/");
+            }
+
+            while (value.StartsWith(
+                       "Assets/Assets/",
+                       StringComparison.Ordinal))
+            {
+                value =
+                    value.Substring(
+                        "Assets/".Length);
+            }
+
+            if (value.Length > 0 &&
+                !value.StartsWith(
+                    "Assets/",
+                    StringComparison.Ordinal) &&
+                !value.StartsWith(
+                    "Packages/",
+                    StringComparison.Ordinal))
+            {
+                value =
+                    "Assets/" + value;
             }
 
             return value;
@@ -444,7 +1311,9 @@ namespace EchoDevGames.EchoSave.Editor
             string[] segments =
                 path.Split('/');
 
-            for (int i = 0; i < segments.Length; i++)
+            for (int i = 0;
+                 i < segments.Length;
+                 i++)
             {
                 if (segments[i].Length == 0 ||
                     segments[i] == "." ||
@@ -455,7 +1324,8 @@ namespace EchoDevGames.EchoSave.Editor
                     return false;
                 }
 
-                if (segments[i].IndexOf(':') >= 0)
+                if (segments[i]
+                    .IndexOf(':') >= 0)
                 {
                     message =
                         "The target asset path contains an unsafe ':' character.";
@@ -493,7 +1363,9 @@ namespace EchoDevGames.EchoSave.Editor
                 return false;
             }
 
-            for (int i = 0; i < value.Length; i++)
+            for (int i = 0;
+                 i < value.Length;
+                 i++)
             {
                 if (char.IsControl(value[i]))
                 {
@@ -507,10 +1379,13 @@ namespace EchoDevGames.EchoSave.Editor
         private static bool HasBlocker(
             List<EchoSaveSetupMessage> messages)
         {
-            for (int i = 0; i < messages.Count; i++)
+            for (int i = 0;
+                 i < messages.Count;
+                 i++)
             {
                 if (messages[i].Severity ==
-                    EchoSaveSetupMessageSeverity.Blocker)
+                    EchoSaveSetupMessageSeverity
+                        .Blocker)
                 {
                     return true;
                 }
@@ -546,7 +1421,8 @@ namespace EchoDevGames.EchoSave.Editor
 
             return Path.GetFullPath(
                 Path.Combine(
-                    projectRoot ?? string.Empty,
+                    projectRoot ??
+                    string.Empty,
                     assetPath));
         }
     }

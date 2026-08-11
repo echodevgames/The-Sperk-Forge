@@ -56,7 +56,6 @@ namespace EchoDevGames.EchoSave.Tests.Editor
         }
 
         [TestCase("")]
-        [TestCase("EchoSaveConfiguration.asset")]
         [TestCase("Packages/com.foo/Test.asset")]
         [TestCase("Assets/../Test.asset")]
         [TestCase("Assets/Test.txt")]
@@ -279,7 +278,8 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             Assert.That(created, Is.Not.Null);
             Assert.That(
                 created.SchemaVersion,
-                Is.EqualTo(2));
+                Is.EqualTo(
+                    EchoSaveConfiguration.CurrentSchemaVersion));
             Assert.That(
                 created.StorageRootDirectoryName,
                 Is.EqualTo("ChronicleData"));

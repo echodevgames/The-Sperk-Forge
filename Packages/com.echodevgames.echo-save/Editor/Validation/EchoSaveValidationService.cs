@@ -13,10 +13,18 @@ namespace EchoDevGames.EchoSave.Editor
             "ESV-VAL-002";
         public const string DuplicateRootsCheckId =
             "ESV-VAL-003";
+        public const string DuplicateFixedSlotIdsCheckId =
+            "ESV-VAL-004";
+        public const string InvalidRetentionCheckId =
+            "ESV-VAL-005";
+        public const string MissingProviderCheckId =
+            "ESV-VAL-006";
         public const string RuntimeEditorReferenceCheckId =
             "ESV-VAL-009";
         public const string InvalidSlotPolicyCheckId =
             "ESV-VAL-015";
+        public const string InvalidLimitPolicyCheckId =
+            "ESV-VAL-016";
 
         private const string RuntimeAsmdefPath =
             "Packages/com.echodevgames.echo-save/Runtime/EchoDevGames.EchoSave.Runtime.asmdef";
@@ -87,6 +95,99 @@ namespace EchoDevGames.EchoSave.Editor
                         EchoSaveValidationSeverity.Error,
                         policyMessage,
                         GetObjectContext(configuration),
+                        true,
+                        false));
+            }
+
+            if (configuration.SchemaVersion ==
+                EchoSaveConfiguration.CurrentSchemaVersion)
+            {
+                ValidateCurrentSchemaConfiguration(
+                    configuration,
+                    issues);
+            }
+        }
+
+        private static void ValidateCurrentSchemaConfiguration(
+            EchoSaveConfiguration configuration,
+            List<EchoSaveValidationIssue> issues)
+        {
+            string context =
+                GetObjectContext(configuration);
+
+            SaveRetentionPolicy retention =
+                new SaveRetentionPolicy(
+                    configuration.MaxTotalGenerations);
+
+            if (!retention.IsValid)
+            {
+                issues.Add(
+                    new EchoSaveValidationIssue(
+                        InvalidRetentionCheckId,
+                        EchoSaveValidationSeverity.Error,
+                        $"Chronicle retention must keep between {SaveRetentionPolicy.MinimumTotalGenerations} and {SaveRetentionPolicy.MaximumTotalGenerations} committed generations.",
+                        context,
+                        true,
+                        false));
+            }
+
+            if (!string.Equals(
+                    configuration.SerializerProviderId.Trim(),
+                    EchoSaveConfiguration.DefaultSerializerProviderId,
+                    StringComparison.Ordinal))
+            {
+                issues.Add(
+                    new EchoSaveValidationIssue(
+                        MissingProviderCheckId,
+                        EchoSaveValidationSeverity.Error,
+                        $"Configured serializer provider '{configuration.SerializerProviderId.Trim()}' is unavailable. M5-02 currently resolves '{EchoSaveConfiguration.DefaultSerializerProviderId}'.",
+                        $"{context} / serializerProviderId",
+                        true,
+                        false));
+            }
+
+            if (!string.Equals(
+                    configuration.StorageProviderId.Trim(),
+                    EchoSaveConfiguration.DefaultStorageProviderId,
+                    StringComparison.Ordinal))
+            {
+                issues.Add(
+                    new EchoSaveValidationIssue(
+                        MissingProviderCheckId,
+                        EchoSaveValidationSeverity.Error,
+                        $"Configured storage provider '{configuration.StorageProviderId.Trim()}' is unavailable. M5-02 currently resolves '{EchoSaveConfiguration.DefaultStorageProviderId}'.",
+                        $"{context} / storageProviderId",
+                        true,
+                        false));
+            }
+
+            if (!configuration.TryValidateFixedSlotTemplates(
+                    out string templateMessage))
+            {
+                issues.Add(
+                    new EchoSaveValidationIssue(
+                        DuplicateFixedSlotIdsCheckId,
+                        EchoSaveValidationSeverity.Error,
+                        templateMessage,
+                        context,
+                        true,
+                        false));
+            }
+
+            SaveLimitPolicy limits =
+                new SaveLimitPolicy(
+                    configuration.CatalogScanLimit,
+                    configuration.RetentionDiscoveryLimit,
+                    configuration.RecoveryDiscoveryLimit);
+
+            if (!limits.IsValid)
+            {
+                issues.Add(
+                    new EchoSaveValidationIssue(
+                        InvalidLimitPolicyCheckId,
+                        EchoSaveValidationSeverity.Error,
+                        $"Chronicle discovery limits must each be between {SaveLimitPolicy.MinimumDiscoveryLimit} and {SaveLimitPolicy.MaximumDiscoveryLimit}.",
+                        context,
                         true,
                         false));
             }

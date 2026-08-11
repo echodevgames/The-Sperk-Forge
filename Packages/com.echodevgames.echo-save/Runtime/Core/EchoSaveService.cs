@@ -15,13 +15,13 @@ namespace EchoDevGames.EchoSave
         IEchoSaveService
     {
         internal const int DefaultCatalogScanLimit =
-            256;
+            SaveLimitPolicy.DefaultCatalogScanLimit;
 
         internal const int DefaultRetentionDiscoveryLimit =
-            512;
+            SaveLimitPolicy.DefaultRetentionDiscoveryLimit;
 
         internal const int DefaultRecoveryDiscoveryLimit =
-            512;
+            SaveLimitPolicy.DefaultRecoveryDiscoveryLimit;
 
         // Compatibility symbol retained for existing Chronicle tests/tooling.
         // Runtime slot authority is resolved from SaveSlotPolicy per session.
@@ -45,6 +45,7 @@ namespace EchoDevGames.EchoSave
                 TimeSpan.FromMinutes(5);
 
         private EchoSaveConfiguration configuration;
+        private EchoSaveRuntimePolicy runtimePolicy;
         private SaveSlotPolicy slotPolicy;
         private IEchoSaveLifecycleProbe lifecycleProbe;
         private IEchoSaveStorageBackendFactory storageBackendFactory;
@@ -347,7 +348,8 @@ namespace EchoDevGames.EchoSave
                     "The Chronicle configuration is missing.");
             }
 
-            if (!configuration.TryValidate(
+            if (!configuration.TryResolveRuntimePolicy(
+                    out EchoSaveRuntimePolicy resolvedRuntimePolicy,
                     out string validationMessage))
             {
                 return BlockInitialization(
@@ -355,18 +357,11 @@ namespace EchoDevGames.EchoSave
                         .MissingOrInvalidConfiguration,
                     validationMessage);
             }
-            if (!configuration.TryResolveSlotPolicy(
-                    out SaveSlotPolicy resolvedSlotPolicy,
-                    out string policyMessage))
-            {
-                return BlockInitialization(
-                    EchoSaveDiagnosticCodes
-                        .MissingOrInvalidConfiguration,
-                    policyMessage);
-            }
 
+            runtimePolicy =
+                resolvedRuntimePolicy;
             slotPolicy =
-                resolvedSlotPolicy;
+                resolvedRuntimePolicy.SlotPolicy;
 
             SaveStorageResult creation =
                 storageBackendFactory.TryCreate(
@@ -641,6 +636,9 @@ namespace EchoDevGames.EchoSave
 
         internal SaveSlotPolicy SlotPolicyForTesting =>
             slotPolicy;
+
+        internal EchoSaveRuntimePolicy RuntimePolicyForTesting =>
+            runtimePolicy;
 
         internal ISaveStorageBackend
             StorageBackendForTesting =>
@@ -2409,11 +2407,23 @@ namespace EchoDevGames.EchoSave
 
         private void BuildManualSaveRuntime()
         {
+            if (runtimePolicy == null)
+            {
+                throw new InvalidOperationException(
+                    "Chronicle runtime policy must be resolved before manual-save composition.");
+            }
+
             ISaveSerializer serializer =
                 new UnityJsonSaveSerializer();
 
             IIntegrityProvider integrity =
                 new Sha256IntegrityProvider();
+
+            SaveLimitPolicy limits =
+                runtimePolicy.Limits;
+
+            SaveRetentionPolicy retentionPolicy =
+                runtimePolicy.RetentionPolicy;
 
             serializerRegistry =
                 new SaveSerializerRegistry();
@@ -2431,7 +2441,7 @@ namespace EchoDevGames.EchoSave
                 new SaveSlotCatalog(
                     storageBackend,
                     serializer,
-                    DefaultCatalogScanLimit);
+                    limits.CatalogScanLimit);
 
             currentGenerationReader =
                 new SaveCurrentGenerationReader(
@@ -2488,14 +2498,14 @@ namespace EchoDevGames.EchoSave
                     new SaveGenerationRetentionCoordinator(
                         storageBackend,
                         serializer,
-                        DefaultRetentionDiscoveryLimit);
+                        limits.RetentionDiscoveryLimit);
 
             recoveryPlanBuilder =
                 new SaveRecoveryPlanBuilder(
                     storageBackend,
                     serializer,
                     integrity,
-                    DefaultRecoveryDiscoveryLimit);
+                    limits.RecoveryDiscoveryLimit);
 
             recoveryExecutor =
                 new SaveRecoveryExecutionCoordinator(
@@ -2517,7 +2527,7 @@ namespace EchoDevGames.EchoSave
                     slotMutationSourceReader,
                     publicationCoordinator,
                     retentionCoordinator,
-                    SaveRetentionPolicy.Default,
+                    retentionPolicy,
                     slotPolicy.EffectiveCapacity,
                     DefaultSlotIdentityAttempts,
                     SaveSlotId.NewId);
@@ -2531,7 +2541,7 @@ namespace EchoDevGames.EchoSave
                     Guid.NewGuid().ToString("N"),
                     () => DateTimeOffset.UtcNow,
                     DefaultDeletionPlanLifetime,
-                    DefaultCatalogScanLimit,
+                    limits.CatalogScanLimit,
                     DefaultTrashDiscoveryLimit,
                     DefaultTrashRetentionRecords,
                     DefaultTrashIdentityAttempts);
@@ -2545,8 +2555,9 @@ namespace EchoDevGames.EchoSave
                     unknownPayloadStore,
                     carryForwardCoordinator,
                     retentionCoordinator,
-                    SaveRetentionPolicy.Default);
+                    retentionPolicy);
         }
+
 
         private void ResetManualSaveRuntime()
         {
@@ -2598,6 +2609,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             participantRegistry =
+                null;
+
+            runtimePolicy =
                 null;
 
             slotPolicy =

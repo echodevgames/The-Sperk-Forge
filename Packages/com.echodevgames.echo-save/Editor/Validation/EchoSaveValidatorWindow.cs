@@ -26,7 +26,7 @@ namespace EchoDevGames.EchoSave.Editor
                 EditorStyles.boldLabel);
 
             EditorGUILayout.HelpBox(
-                "Validation is read-only. M5-01 reports configuration, loaded-scene root, Runtime assembly isolation, and slot-policy truth without changing project assets.",
+                "Validation is read-only. M5-02 adds schema-3 retention, provider, discovery-limit, and fixed-slot-template checks while retaining the M5-01 root, storage, assembly, and slot-policy rules.",
                 MessageType.Info);
 
             configuration =
@@ -62,7 +62,7 @@ namespace EchoDevGames.EchoSave.Editor
             if (report.Issues.Count == 0)
             {
                 EditorGUILayout.HelpBox(
-                    "No M5-01 Chronicle validation issues were found.",
+                    "No M5-02 Chronicle validation issues were found.",
                     MessageType.Info);
                 return;
             }

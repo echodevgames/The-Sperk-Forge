@@ -106,7 +106,7 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                 Assert.That(
                     policy.SourceConfigurationSchema,
                     Is.EqualTo(
-                        EchoSaveConfiguration.CurrentSchemaVersion));
+                        EchoSaveConfiguration.SlotPolicySchemaVersion));
                 Assert.That(policy.CompatibilityMapped, Is.False);
             }
             finally
@@ -410,6 +410,57 @@ namespace EchoDevGames.EchoSave.Tests.Editor
         }
 
         [Test]
+        public void InitializedRuntimePolicySnapshotDoesNotFollowLaterConfigurationMutation()
+        {
+            using (AutosaveServiceTestEnvironment env =
+                   new AutosaveServiceTestEnvironment())
+            {
+                env.Configuration.SetRuntimePolicyForTesting(
+                    7,
+                    EchoSaveConfiguration.DefaultSerializerProviderId,
+                    EchoSaveConfiguration.DefaultStorageProviderId,
+                    111,
+                    222,
+                    333,
+                    EchoSaveRecoveryPolicyMode.ManualOnly);
+
+                Assert.That(env.Initialize(false).Succeeded, Is.True);
+
+                EchoSaveRuntimePolicy sessionPolicy =
+                    env.Service.RuntimePolicyForTesting;
+
+                Assert.That(sessionPolicy, Is.Not.Null);
+                Assert.That(
+                    sessionPolicy.RetentionPolicy.MaxTotalGenerations,
+                    Is.EqualTo(7));
+                Assert.That(
+                    sessionPolicy.Limits.CatalogScanLimit,
+                    Is.EqualTo(111));
+
+                env.Configuration.SetRuntimePolicyForTesting(
+                    12,
+                    EchoSaveConfiguration.DefaultSerializerProviderId,
+                    EchoSaveConfiguration.DefaultStorageProviderId,
+                    444,
+                    555,
+                    666,
+                    EchoSaveRecoveryPolicyMode.ManualOnly);
+
+                Assert.That(
+                    env.Service.RuntimePolicyForTesting,
+                    Is.SameAs(sessionPolicy));
+                Assert.That(
+                    env.Service.RuntimePolicyForTesting
+                        .RetentionPolicy.MaxTotalGenerations,
+                    Is.EqualTo(7));
+                Assert.That(
+                    env.Service.RuntimePolicyForTesting
+                        .Limits.CatalogScanLimit,
+                    Is.EqualTo(111));
+            }
+        }
+
+        [Test]
         public void TrashDoesNotCountAndConfirmedDeleteFreesCapacity()
         {
             using (SaveSlotDeletionTestEnvironment env =
@@ -469,7 +520,7 @@ namespace EchoDevGames.EchoSave.Tests.Editor
             EchoSaveConfiguration configuration =
                 ScriptableObject.CreateInstance<EchoSaveConfiguration>();
             configuration.SetDefinitionForTesting(
-                EchoSaveConfiguration.CurrentSchemaVersion,
+                EchoSaveConfiguration.SlotPolicySchemaVersion,
                 "EchoSave");
             configuration.SetSlotPolicyForTesting(
                 mode,
