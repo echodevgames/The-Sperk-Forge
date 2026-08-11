@@ -327,6 +327,46 @@ namespace EchoDevGames.EchoSave
                 "The Chronicle committed-generation inspection completed without mutating durable state.");
         }
 
+        /// <summary>
+        /// Builds Chronicle's existing immutable recovery plan over this
+        /// read-only production inspection session.
+        ///
+        /// This method never executes recovery and never rewrites a head.
+        /// </summary>
+        public SaveRecoveryPlan BuildRecoveryPlan(
+            SaveSlotId slotId)
+        {
+            if (disposed)
+            {
+                return SaveRecoveryPlan.Failure(
+                    SaveRecoveryPlanStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.RecoveryInvalidRequest,
+                    "The Chronicle read-only inspection session is closed.",
+                    slotId);
+            }
+
+            if (!RootPresent ||
+                storageBackend == null)
+            {
+                return SaveRecoveryPlan.Failure(
+                    SaveRecoveryPlanStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.RecoveryInvalidRequest,
+                    "The Chronicle production save root does not exist; there is no durable recovery evidence to plan.",
+                    slotId);
+            }
+
+            SaveRecoveryPlanBuilder builder =
+                new SaveRecoveryPlanBuilder(
+                    storageBackend,
+                    new UnityJsonSaveSerializer(),
+                    new Sha256IntegrityProvider(),
+                    packageDocumentReader,
+                    RuntimePolicy.Limits.RecoveryDiscoveryLimit);
+
+            return builder.Build(
+                slotId);
+        }
+
         public void Dispose()
         {
             if (disposed)

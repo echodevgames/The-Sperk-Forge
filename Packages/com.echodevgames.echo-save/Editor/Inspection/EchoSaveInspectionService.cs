@@ -50,6 +50,18 @@ namespace EchoDevGames.EchoSave.Editor
                 slotId);
         }
 
+        public SaveRecoveryPlan BuildRecoveryPlan(
+            SaveSlotId slotId)
+        {
+            if (session == null)
+            {
+                return null;
+            }
+
+            return session.BuildRecoveryPlan(
+                slotId);
+        }
+
         public void Dispose()
         {
             DisposeSession();
