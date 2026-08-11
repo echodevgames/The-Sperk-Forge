@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-01
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `e63d83f` — `Close out ESV-M4-R4 and Chronicle M4`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.44.0 / ESV-D-037
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 / ESV-D-037
 **Incoming focused Chronicle regression floor:** **660 / 660 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 **Owner:** Jesse “Echo” Adams / EchoDevGames
@@ -313,3 +313,69 @@ M5-01 completion does not complete M5.
 ## 13. Next-gate rule
 
 No M5-02 implementation is activated by M5-01 activation or implementation success. The next slice requires a separate bounded authority/activation commit after M5-01 closeout.
+
+
+## 14. Closeout record
+
+**Activation commit:** `affe3ae`
+**Implementation commit:** `69721af`
+**Final focused Chronicle Editor:** **697 / 697 passed, 0 failed**
+**Incoming regression floor:** **660 / 660**
+**Net-new focused tests:** **37**
+**Committed implementation/test scope:** **21 files**, `2404` insertions, `1` deletion
+**Runtime C# changes:** **0**
+
+The final implementation reused the baseline-owned Editor assembly and added the bounded Setup/Validator/test surface without widening Runtime. The corrected committed scope is one modified Editor test asmdef plus 20 new Setup/Validator/focused-test/meta files.
+
+### Automated evidence
+
+The focused `EchoDevGames.EchoSave.Tests.Editor` assembly passed **697 / 697** with zero failures. This is **37** tests above the incoming `660 / 660` M4 closeout floor.
+
+The gate covers:
+- Editor assembly isolation;
+- Setup zero-write preview;
+- safe target normalization/rejection;
+- occupied-target no-clobber;
+- all four approved slot-policy modes and Runtime-consistent effective capacity;
+- current schema-2 create-only Apply;
+- stale-preview rejection;
+- read-only Validator coverage for `ESV-VAL-001`, `002`, `003`, `009`, and `015`;
+- deterministic Validator ordering and zero-write behavior;
+- full prior Chronicle regression.
+
+### Manual Unity evidence
+
+Manual sanity proof was completed after automated green:
+
+1. A valid Setup preview showed:
+   - disposition `Create`;
+   - target `Assets/EchoSaveConfiguration.asset`;
+   - destination available;
+   - schema `2`;
+   - storage root `EchoSave`;
+   - slot policy `ConfigurableMultiSlot`;
+   - effective capacity `64`;
+   - the exact asset Apply would create.
+2. Explicit Apply created exactly one project-owned configuration asset.
+3. Re-preview of the same occupied path returned `ESV-SETUP-002`, reported the destination unavailable, disabled Apply, and did not overwrite the existing asset.
+4. Validator ran against the created configuration and reported **Issues: 0** / no M5-01 validation issues.
+5. The temporary asset was deleted after proof; final `git status --short` and `git diff --check` were clean.
+6. No production save data was created or touched.
+
+An initial manual path entry exposed a minor UX clarity issue by producing `Assets/Assets/...`; Setup safely rejected the missing folder with zero mutation. This is retained as later polish, not a checkpoint blocker.
+
+### Closeout disposition
+
+All M5-01 closeout requirements are satisfied.
+
+- implementation committed;
+- Unity compilation green;
+- focused Chronicle Editor gate green above the required floor;
+- manual Setup/Validator proof recorded;
+- package README, CHANGELOG, Documentation Index, both Current Notes, Suite Health, checkpoint, and package specification reconciled;
+- no later-M5 capability was introduced;
+- the R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-01 is Complete.**
+
+Per the next-gate rule, **M5 remains open and no M5-02 implementation is activated by this closeout**. The next slice requires a separate bounded authority/activation commit.

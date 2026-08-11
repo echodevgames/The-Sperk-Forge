@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-01 Editor tooling assembly, Setup preview, and Validator foundation active
-**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M5 — M5-01 complete; next bounded M5 slice not yet activated
+**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — **COMPLETE**; no M5-02 checkpoint active
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -911,3 +911,28 @@ M5-01 establishes the Editor-only tooling boundary before broader authoring/insp
 It does not authorize runtime save-semantic changes, configuration schema expansion, provider/retention/recovery authoring, Browser/Inspector/Simulator tooling, sandbox/Laboratory content, persistent cache, cleanup/destructive expansion, scene travel, peer bridges, or DDOL.
 
 The prior **61 Complete / 39 Deferred / 0 Blocked** registry map remains authoritative. Deferred rows stay Deferred until their exact later gate produces direct evidence.
+
+
+## ESV-M5-01 closeout
+
+**Activation commit:** `affe3ae`
+**Implementation commit:** `69721af`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 / ESV-D-037
+**Focused Chronicle Editor:** **697 / 697 passed, 0 failed**
+**Incoming floor:** **660 / 660**
+**Net-new focused tests:** **37**
+**Implementation/test scope:** **21 files**, `2404` insertions, `1` deletion
+**Runtime C# changes:** **0**
+
+M5-01 establishes the bounded Chronicle Editor tooling foundation:
+- Setup preview-before-mutation;
+- create-only current schema-2 configuration authoring;
+- safe no-clobber occupied-target rejection;
+- Runtime-consistent slot-policy capacity preview;
+- read-only deterministic Validator coverage for `ESV-VAL-001`, `002`, `003`, `009`, and `015`.
+
+Manual proof confirmed successful Preview, explicit Apply, `ESV-SETUP-002` no-overwrite behavior on the occupied target, Validator **Issues: 0**, and cleanup back to a clean repository.
+
+A small Setup path-field clarity advisory was observed during the manual pass when an entry produced `Assets/Assets/...`; the tool rejected safely with zero mutation. It is not an M5-01 blocker.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. **M5-01 is Complete. M5 remains open. No M5-02 slice is active until a separate authority/activation checkpoint is committed.**

@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.41.0
-**Completed checkpoint:** ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation
-**Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 active from clean baseline e63d83f; incoming Chronicle floor 660 / 660; M5-01 is Editor-only Setup/Validator foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.45.0
+**Completed checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation
+**Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
+**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — COMPLETE; no M5-02 checkpoint active
+**Status:** M4 complete; ESV-M5-01 complete at implementation commit `69721af`; focused Chronicle Editor `697 / 697`; M5 remains open; no M5-02 slice active
 
-**Authority reconciliation:** Specification v1.41.0 activates `ESV-M4-R4` from clean post-R3-closeout baseline `e3d7a2e`, carrying the green `660 / 660` Chronicle Editor floor. R4 is documentation/evidence-only: it reconciles ESV-T-001 through ESV-T-100 row by row, marks Complete only where retained direct evidence exists, leaves later M5/release/adoption work explicitly not complete, synchronizes stale package/suite documentation, and reruns the focused suite at the actual closing total. Runtime/test-code changes are not authorized inside R4; any M4-applicable evidence gap requires a separate bounded repair checkpoint. M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
+**Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 closes ESV-M5-01 under ESV-D-037. The checkpoint preserves the completed M4 runtime unchanged, adds only the bounded Editor Setup/Validator foundation, records `697 / 697` focused Chronicle Editor evidence plus manual Setup/Validator sanity proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-02 implementation activated.
 
 ## ESV-M4-02 closeout
 
@@ -757,3 +757,27 @@ Authorized now: Editor-only assembly boundary, Chronicle Setup preview, create-o
 Not authorized now: runtime semantic/API changes, schema/provider/retention/recovery expansion, fixed slot templates, root-prefab mutation, Browser/Inspector/Migration Graph, simulation/recovery/support tools, persistent cache, Save Laboratory/direct-scene/sample content, scene travel, bridges, service locator, or DDOL.
 
 The M4 registry stays **61 Complete / 39 Deferred / 0 Blocked** until later M5/M6/M7 gates produce new direct evidence.
+
+
+## ESV-M5-01 closeout
+
+**Planning baseline:** `e63d83f`
+**Activation commit:** `affe3ae`
+**Implementation commit:** `69721af`
+**Closeout authority:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 / ESV-D-037
+**Focused Chronicle Editor:** **697 / 697 passed, 0 failed**
+**Incoming floor:** **660 / 660**
+**Net-new focused tests:** **37**
+**Committed implementation/test scope:** **21 files**, `2404` insertions, `1` deletion
+**Runtime C# changes:** **0**
+
+Manual Unity proof completed:
+- Preview reported the exact create target, schema 2, `EchoSave`, `ConfigurableMultiSlot`, and effective capacity 64 before mutation.
+- Apply created one `Assets/EchoSaveConfiguration.asset`.
+- Re-preview of that occupied target returned `ESV-SETUP-002`, disabled Apply, and preserved the existing asset.
+- Validator reported **Issues: 0** for the created configuration.
+- The temporary asset was removed and the repository returned clean with `git diff --check` clean.
+
+An initial manual path entry produced an `Assets/Assets/...` target and missing-folder rejection. The rejection was safe and zero-mutation; the path-field clarity is retained as a non-blocking UX polish note.
+
+**M5-01 is Complete. M5 is not complete. No M5-02 checkpoint is active.**

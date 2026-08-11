@@ -10,7 +10,7 @@ Version `0.1.0` has completed Chronicle M4, including ESV-M4-R1 through R4. R4 â
 
 The R4 evidence pass has reconciled every ESV-T-001 through ESV-T-100 row individually: **61 Complete**, **39 Deferred**, **0 Blocked**. Complete means retained direct evidence exists. Deferred means the exact scenario remains owned by later M5 Laboratory/Setup, clean-project/distribution, performance/stress, integration/adoption, or release qualification. No M4-applicable evidence gap was found.
 
-The fresh final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. The row map remains **61 Complete / 39 Deferred / 0 Blocked**. Chronicle M4 is complete. **ESV-M5-01 is now active** as the bounded Editor tooling, Setup preview, and Validator foundation.
+The fresh final M4 focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. Chronicle M4 remains complete. **ESV-M5-01 is now complete**: the Editor-only Setup/Validator foundation is implemented at `69721af`, and the closing focused Chronicle Editor gate passed **697 / 697**, with **0 failed**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 ## Current persistence boundary
 
@@ -43,7 +43,7 @@ R2 adds project-owned slot-policy configuration schema 2. `SingleSlot`, `FixedMu
 
 R3 adds Chronicle-owned package-document migration as deterministic read-time, in-memory contiguous version chains ahead of strict current-version validation. Missing/ambiguous/failed/invalid/newer paths fail closed, source generations are never rewritten merely because migration was required, participant migration remains separate, and production package-document versions remain `1.0.0`.
 
-It still does **not** include automatic/configured recovery fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, automatic autosave timers, generic queued multi-operation scheduling, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or the later M5 Browser/Simulator/Laboratory slices and later clean-project/release qualification. M5-01 authorizes only the Editor assembly, Setup preview/create-only current-schema configuration authoring, and initial non-destructive Validator foundation.
+M5-01 now provides the package Editor-only Setup and Validator foundation. Setup previews before mutation, creates only a new current schema-2 `EchoSaveConfiguration` after explicit Apply, and refuses occupied targets rather than overwriting. Validator is read-only and covers the initial `ESV-VAL-001`, `002`, `003`, `009`, and `015` checks. It still does **not** include broader provider/retention/recovery authoring, Browser/Inspector/Simulator tooling, Laboratory content, automatic/configured recovery fallback, persistent catalog-cache optimization, permanent erase, public restore-from-trash, generic queued multi-operation scheduling, scene travel, peer bridges, or clean-project/release qualification.
 
 ## Minimal use
 

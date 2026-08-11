@@ -825,3 +825,31 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - No M4-applicable evidence gap remained.
 - Chronicle M4 is **Complete**.
 - M5 is **eligible for separate activation** and remains inactive until that authority step occurs.
+
+### Added
+#### ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation
+- Package Editor tooling remains isolated behind the existing Editor-only `EchoDevGames.EchoSave.Editor` assembly.
+- `Tools > Sperk’s Forge > The Chronicle > Setup`.
+- Deterministic preview-before-mutation Setup planning.
+- Create-only schema-2 `EchoSaveConfiguration` authoring after explicit Apply.
+- Existing storage-root and all four approved slot-policy modes with effective-capacity truth resolved from Runtime policy.
+- Stale-preview, unsafe-target, missing-folder, and occupied-target rejection without overwrite.
+- `Tools > Sperk’s Forge > The Chronicle > Validator`.
+- Read-only deterministic validation for `ESV-VAL-001`, `ESV-VAL-002`, `ESV-VAL-003`, `ESV-VAL-009`, and `ESV-VAL-015`.
+- Focused Editor assembly-boundary, Setup, and Validator tests.
+
+### Verified
+#### ESV-M5-01 Closeout
+- Activation commit: `affe3ae`.
+- Implementation commit: `69721af`.
+- Final committed implementation/test scope: **21 files**, `2404` insertions, `1` deletion.
+- Corrected implementation scope is **1 modified existing test asmdef + 20 new Editor/test/meta files**, with **0 Runtime C# changes**.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **697 / 697**, with **0 failed**, preserving the incoming **660 / 660** floor and adding **37** net-new Chronicle tests.
+- Manual Setup preview showed schema 2, `EchoSave`, `ConfigurableMultiSlot`, effective capacity `64`, and the exact asset that Apply would create before mutation.
+- Explicit Apply created one `Assets/EchoSaveConfiguration.asset`.
+- Re-preview of the occupied target returned `ESV-SETUP-002`, reported destination unavailable, disabled Apply, and did not overwrite the asset.
+- Validator ran against the created configuration and reported **Issues: 0** / no M5-01 validation issues.
+- The temporary manual-proof asset was removed; final `git status --short` and `git diff --check` were clean.
+- An initial manual path entry exposed a minor path-field clarity advisory (`Assets/Assets/...`); Setup correctly rejected the missing target folder without mutation. This is UX polish, not an M5-01 blocker.
+- The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+- M5-01 completion does **not** complete M5 and does **not** activate M5-02.

@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.44.0
+**Specification version:** 1.45.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 is complete at closeout commit `e63d83f` with final focused Chronicle Editor evidence **660 / 660 passed, 0 failed** and a reconciled registry of **61 Complete / 39 Deferred / 0 Blocked**. ESV-M5-01 is now **ACTIVE / AUTHORIZED** as the first bounded M5 checkpoint. M5-01 may add only the Editor assembly/tooling foundation, non-destructive Setup preview/create-only current-schema configuration authoring, and the initial Validator foundation described by ESV-D-037. It may not change Chronicle runtime save semantics, public runtime APIs, package-document formats, slot/generation durability, participant contracts, or activate Browser/Simulator/Laboratory work. The **660 / 660** focused Chronicle regression floor must be preserved.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete at `e63d83f`. ESV-M5-01 is **Complete** with activation commit `affe3ae`, implementation commit `69721af`, and focused Chronicle Editor evidence **697 / 697 passed, 0 failed**, preserving the incoming **660 / 660** floor and adding **37** net-new focused tests. M5-01 introduced only the bounded Editor Setup/Validator foundation under ESV-D-037 and changed no Runtime C# files. Manual proof confirmed preview-before-mutation, explicit schema-2 Apply, occupied-target no-overwrite, Validator zero-issue behavior, and clean cleanup. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open; no M5-02 implementation is active until separately authorized.
 
 ---
 
@@ -76,6 +76,7 @@
 | 1.42.0 | 2026-08-11 | Approved | Reconciled the R4 100-case registry and documentation evidence map from activation commit `81c53dd`: 61 rows are Complete from retained direct evidence, 39 are explicitly Deferred to later M5/Laboratory, clean-project/distribution, performance/stress, integration/adoption, or release gates, and 0 M4-applicable rows are Blocked. Added the dedicated R4 evidence matrix and synchronized README, CHANGELOG, documentation index, Current Notes, Suite Health, milestone audit, checkpoint, and specification current-state truth. No runtime/test-code change is introduced. Fresh final Chronicle Editor evidence is still pending; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.43.0 | 2026-08-11 | Approved | Closed ESV-M4-R4 and Chronicle M4 after the fresh final focused Chronicle Editor rerun passed `660 / 660` with `0` failed. Retained the final registry disposition at `61 Complete / 39 Deferred / 0 Blocked`, confirmed zero M4-applicable evidence blockers, and recorded that R4 required no runtime or test-code repair. M5 is now eligible for separate activation but is not automatically active; all 39 Deferred rows remain later-gate obligations. | Jesse “Echo” Adams |
 | 1.44.0 | 2026-08-11 | Approved | Activated `ESV-M5-01` from clean M4 closeout baseline `e63d83f` with incoming focused Chronicle floor `660 / 660`. Added ESV-D-037: M5 begins with an Editor-only tooling foundation rather than broad runtime expansion. M5-01 owns the `EchoDevGames.EchoSave.Editor` assembly boundary, Chronicle Setup preview plus create-only current-schema configuration authoring, and an initial non-destructive Validator covering currently representable configuration/path/root/assembly checks. Full provider/retention/recovery authoring, fixed-slot templates, repair mutation, Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data, redacted support export, persistent catalog cache, and the 32-scenario Save Laboratory remain separately gated later M5 work. | Jesse “Echo” Adams |
+| 1.45.0 | 2026-08-11 | Approved | Closed `ESV-M5-01` under ESV-D-037. Activation `affe3ae`; implementation `69721af`; focused Chronicle Editor `697 / 697`, `0` failed, adding `37` tests over the `660 / 660` floor. Recorded the corrected committed implementation scope as `21 files`, `2404` insertions, `1` deletion, with zero Runtime C# changes. Manual Unity proof confirmed deterministic Preview-before-mutation, explicit schema-2 Apply, `ESV-SETUP-002` occupied-target no-overwrite, Validator `Issues: 0`, and clean temporary-asset removal. Retained the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`; M5 remains open and no M5-02 slice is activated by this closeout. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -3971,3 +3972,25 @@ Provisional M5 sequence after M5-01, each requiring separate activation:
 - M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling;
 - M5-05 — Standalone Chronicle Save Laboratory plus 32-scenario execution;
 - M5 final reconciliation/closeout.
+
+
+### 28.33 ESV-M5-01 closeout
+
+ESV-M5-01 is complete.
+
+Retained evidence:
+- activation commit `affe3ae`;
+- implementation commit `69721af`;
+- focused Chronicle Editor **697 / 697 passed, 0 failed**;
+- **37** net-new focused tests over the incoming **660 / 660** floor;
+- committed implementation/test scope **21 files**, `2404` insertions, `1` deletion;
+- **0 Runtime C# changes**;
+- manual Setup Preview/Apply/no-clobber proof;
+- manual Validator **Issues: 0** proof;
+- clean temporary-asset removal and clean repository state.
+
+The Setup path-field manual pass exposed a minor clarity advisory when an entry produced `Assets/Assets/...`; the safety contract held because Preview rejected the missing folder without mutation. This remains UX polish rather than an authority/runtime defect.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**M5 remains open. No M5-02 implementation is active.** The next M5 slice requires a separate bounded authority/activation checkpoint.

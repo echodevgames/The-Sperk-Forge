@@ -63,9 +63,9 @@
 
 ## Latest completed implementation checkpoint
 
-`ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation`
+`ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation`
 
-Implementation is committed at `c6ba1ad`; closeout is committed at `e3d7a2e`; the retained focused Chronicle Editor gate is **660 / 660**.
+Activation is committed at `affe3ae`; implementation is committed at `69721af`; the closing focused Chronicle Editor gate passed **697 / 697**, with **0 failed**. Manual Setup preview/apply/no-clobber and Validator-zero-issue sanity proof are complete.
 
 ## Final M4 reconciliation checkpoint
 
@@ -89,3 +89,12 @@ Final R4 evidence:
 - no runtime/test-code changes in R4.
 
 The next eligible package milestone is M5, but it requires its own authority/activation checkpoint.
+
+
+## Current Chronicle milestone state
+
+Chronicle M4 remains **Complete**.
+
+`ESV-M5-01` is **Complete**. M5 remains open, but no M5-02 slice is active. The next M5 capability requires its own bounded authority/activation checkpoint.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-01 does not reclassify later Laboratory, performance/stress, integration/adoption, or release rows.

@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M4-R4 – Chronicle M4 complete; ESV-M5-01 Editor tooling/Setup/Validator foundation now active
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 active as Editor-only Setup/Validator foundation; incoming Chronicle floor `660 / 660`; registry remains `61 Complete / 39 Deferred / 0 Blocked`
+**Completed package checkpoint:** ESV-M5-01 – Chronicle Editor Tooling Assembly, Setup Preview, and Validator Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 complete at implementation `69721af`; focused Chronicle Editor `697 / 697`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open with no M5-02 slice active
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete at `e63d83f`; ESV-M5-01 active; Editor assembly + Setup preview/create-only current-schema config + Validator foundation only; incoming `660 / 660`** |
+| Chronicle implementation | **M4 complete at `e63d83f`; ESV-M5-01 complete at `69721af`; Editor Setup/Validator foundation green at `697 / 697`; M5 open; no M5-02 active** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -99,7 +99,7 @@ Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
 `ESV-M4-R3` is complete at `c6ba1ad`; the focused Chronicle Editor gate passed **660 / 660**, adding **24** focused package-document migration tests over the incoming **636 / 636** floor. Chronicle now owns deterministic read-time package-document migration through an internal version probe, package-owned step registry, contiguous chain coordinator, and migration-aware reader integrated into current-generation, catalog, and recovery reads. Missing/ambiguous/failed/invalid/newer paths fail closed, source generations remain immutable, participant migration stays separate, and current production package-document versions remain `1.0.0`. Audit gap **A-04 / CAP-014 is closed**.
 
-Final 100-case registry/document evidence reconciliation remains mandatory before M4 close. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
+Chronicle M4 is complete and the reconciled registry remains **61 Complete / 39 Deferred / 0 Blocked**. ESV-M5-01 is now complete at `69721af` with focused Chronicle Editor evidence **697 / 697** and manual Setup/Validator proof. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, broader authoring/Browser/Simulator/Laboratory work, scene travel, peer bridges, and release qualification remain later bounded work.
 
 SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
@@ -164,3 +164,21 @@ ESV-M5-01 is active from clean M4 closeout baseline `e63d83f` under v1.44.0 / ES
 The first M5 slice is intentionally Editor-only and non-destructive by default. It establishes the tooling assembly, Setup preview/create-only current-schema configuration path, and initial Validator. Browser, simulation, support export, persistent-cache/cleanup work, and the 32-scenario Save Laboratory remain separately gated.
 
 The focused Chronicle regression floor carried into M5 is **660 / 660 passed, 0 failed**.
+
+
+## Chronicle M5-01 closeout state
+
+`ESV-M5-01` is **Complete**.
+
+Evidence:
+- activation `affe3ae`;
+- implementation `69721af`;
+- focused Chronicle Editor **697 / 697 passed, 0 failed**;
+- **37** net-new focused tests;
+- **21-file** committed implementation/test scope;
+- no Runtime C# changes;
+- manual Setup preview/apply/no-overwrite proof;
+- Validator **Issues: 0**;
+- clean temporary-asset cleanup.
+
+M5 remains open. No M5-02 implementation is active until a separate bounded authority/activation checkpoint.
