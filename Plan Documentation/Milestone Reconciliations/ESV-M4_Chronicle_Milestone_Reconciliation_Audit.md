@@ -347,3 +347,32 @@ The authority path is now:
    - declare M4 complete only from actual final evidence.
 
 **M5 remains locked through all four steps.**
+
+
+# R1 completion update
+
+**R1 status:** COMPLETE
+**Planning/activation commit:** `bdb0c00`
+**Implementation commit:** `ab18361`
+**Focused Chronicle Editor evidence:** **618 / 618 passed, 0 failed**
+**Prior floor:** **587 / 587**
+**Net new focused tests:** **31**
+
+R1 resolves:
+- **A-01 — Public load facade incomplete**
+- **A-02 — Public catalog/create/select facade incomplete**
+
+Resolved public composition:
+- participant registration;
+- catalog snapshot/refresh;
+- slot create/select;
+- prepared-load creation;
+- prepared-load apply;
+- same-scene convenience load.
+
+Still open:
+- **A-03 — CAP-002 slot-policy runtime configuration** → R2;
+- **A-04 — CAP-014 package-document migration** → R3;
+- stale 100-case registry/document evidence mapping → final reconciliation.
+
+**M4 remains open. M5 remains locked.**

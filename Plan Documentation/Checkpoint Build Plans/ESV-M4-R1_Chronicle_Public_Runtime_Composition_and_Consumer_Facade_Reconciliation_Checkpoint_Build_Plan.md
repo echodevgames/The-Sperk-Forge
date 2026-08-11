@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint-build-plan
   - sfgss/package/chronicle
   - sfgss/reconciliation
-status: active
+status: complete
 updated: 2026-08-11
 ---
 # ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — Checkpoint Build Plan
@@ -11,8 +11,8 @@ updated: 2026-08-11
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-R1
 **Milestone:** M4 — Slots / Autosave / Recovery Reconciliation
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.35.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.36.0
 **Authority decision:** ESV-D-033
 **Planning baseline:** `48454ea`
 **Unity baseline:** 6000.3.8f1
@@ -446,3 +446,31 @@ Ordinary bounded public-facade type naming, result-shape composition, test suppo
 5. documentation records the actual evidence;
 6. R2 remains the next gate;
 7. M5 remains locked.
+
+
+## Closeout evidence
+
+**Planning/activation commit:** `bdb0c00`
+**Implementation commit:** `ab18361`
+**Final focused Chronicle Editor gate:** **618 / 618 passed, 0 failed**
+**Prior regression floor:** **587 / 587**
+**Net new focused tests:** **31**
+**Committed implementation/test scope:** **29 files**, `2995` insertions, `18` deletions
+
+Observed:
+- all 29 implementation/test files staged and committed cleanly;
+- Unity compile/import green;
+- first reported focused run passed **618 / 618**;
+- no R1 hotfix was required;
+- base storage/participant contracts remained unchanged;
+- configuration schema 1 remained untouched for R2;
+- technical capacity remained 64;
+- no automatic recovery fallback, generic queue, scene travel, DDOL, or M5 tooling was introduced.
+
+## Checkpoint disposition
+
+ESV-M4-R1 is **complete**.
+
+This closeout does not activate R2 automatically, does not complete M4, and does not activate M5.
+
+The next planning gate is **M4 Reconciliation R2 — Slot Policy Runtime Configuration**.

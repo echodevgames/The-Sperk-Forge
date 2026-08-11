@@ -726,3 +726,43 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Apply-side guards confirmed no one-step destructive public API, no direct filesystem authority in the deletion core, no participant callbacks, no scene/DDOL authority, and no base storage-contract widening.
 - No M4-10 runtime/test hotfix was required after the implementation payload; the first reported focused gate was green.
 - M4 is **not** declared complete by this checkpoint closeout. The next step is a dedicated M4 milestone reconciliation before M5 is activated.
+
+### Added
+
+#### ESV-M4-R1 — Public Runtime Composition and Consumer Facade Reconciliation
+
+- Public participant registration through `IEchoSaveService`.
+- Immutable public catalog snapshot access.
+- Explicit public catalog refresh.
+- Consumer-facing slot creation over the proven M4-02 technical creation path.
+- Public session-only active-slot selection.
+- Public `PrepareLoadAsync(SaveLoadRequest)`.
+- Public `ApplyPreparedLoadAsync(PreparedSaveLoad)`.
+- Public same-scene `LoadAndApplyAsync(SaveLoadRequest)`.
+- Consumer-facing slot-create and load request/result/status truth.
+- Existing participant registry, catalog, technical creation, current-generation read, participant preparation/migration, prepared-load lifetime, and apply authorities reused rather than duplicated.
+
+### Verified
+
+#### ESV-M4-R1 Closeout
+
+- Planning/authority activation commit: `bdb0c00`.
+- Implementation commit: `ab18361`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **618 / 618**, `0` failed.
+- Prior focused Chronicle floor **587 / 587** remained green.
+- Net new focused tests: **31**.
+- Implementation/test scope: **29 files**, `2995` insertions, `18` deletions.
+- Base `ISaveStorageBackend` remained unchanged.
+- Base `ISaveParticipant` remained unchanged.
+- `EchoSaveConfiguration` remained schema 1 for R2.
+- R1 retained technical slot capacity `64`.
+- No automatic recovery fallback, generic operation queue, scene travel, DDOL, or M5 tooling entered the facade.
+- No R1 runtime/test hotfix was required after apply; the first reported focused run was green.
+
+### Reconciliation state
+
+- R1 is complete.
+- R2 slot-policy runtime configuration remains the next M4 reconciliation gate but is **not automatically activated** by this closeout.
+- R3 package-document migration remains required after R2.
+- M5 remains locked until R2, R3, and final registry/document reconciliation are complete.

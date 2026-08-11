@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.35.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.36.0
 **Completed checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — active / authorized
-**Status:** ESV-M4-01 through ESV-M4-10 complete; M4 reconciliation active at ESV-M4-R1; M5 locked
+**Current checkpoint:** M4 Reconciliation R2 — Slot Policy Runtime Configuration — next gate / not activated
+**Status:** ESV-M4-R1 complete; M4 reconciliation remains active; R2 next; M5 locked
 
-**Authority reconciliation:** Specification v1.35.0 records the `48454ea` M4 audit disposition, ESV-D-033, and active `ESV-M4-R1` public runtime composition. R2 slot-policy configuration and R3 package-document migration remain approved follow-on reconciliation work; M5 is locked.
+**Authority reconciliation:** Specification v1.36.0 records ESV-M4-R1 complete at `ab18361` with focused Chronicle Editor evidence `618 / 618`. R2 slot-policy runtime configuration is the next gate but is not yet activated; R3 package-document migration and final registry/document reconciliation remain required before M4 can close.
 
 ## ESV-M4-02 closeout
 
@@ -565,3 +565,37 @@ Still deferred to later reconciliation:
 - automatic autosave timers;
 - production permission-provider wiring;
 - scene travel, bridges, service locator, DDOL.
+
+
+## ESV-M4-R1 closeout
+
+**Planning/activation commit:** `bdb0c00`
+**Implementation commit:** `ab18361`
+**Final focused gate:** **618 / 618 passed, 0 failed**
+**Prior focused floor:** **587 / 587**
+**Net new focused tests:** **31**
+**Implementation/test scope:** **29 files**, `2995` insertions, `18` deletions
+
+Completed public composition:
+- participant registration;
+- immutable catalog snapshot;
+- explicit catalog refresh;
+- consumer-facing slot create;
+- session-only slot select;
+- prepared-load creation;
+- prepared-load apply;
+- same-scene convenience load.
+
+Preserved:
+- existing participant/catalog/create/prepare/apply authorities;
+- base storage and participant contracts;
+- configuration schema 1;
+- technical capacity 64 for R1;
+- explicit recovery/no automatic fallback;
+- immutable generation durability;
+- no generic queue;
+- no scene/DDOL/M5 authority.
+
+No R1 hotfix was required after implementation apply.
+
+**Next gate:** R2 — Slot Policy Runtime Configuration. Do not activate R3 or M5 before R2 is planned, implemented, tested, and closed.

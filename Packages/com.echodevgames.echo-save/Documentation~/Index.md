@@ -58,12 +58,14 @@
 - [[Developer/Test Reports/ESV-M4-09_Chronicle_Slot_Rename_Full_State_Duplication_Stable_Identity_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-09 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-10_Chronicle_Destructive_Slot_Deletion_Planning_Confirmed_Trash_and_Bounded_Trash_Retention_Foundation|ESV-M4-10 Closeout]]
 - [[Developer/Test Reports/ESV-M4-10_Chronicle_Destructive_Slot_Deletion_Planning_Confirmed_Trash_and_Bounded_Trash_Retention_Foundation_Test_Report|ESV-M4-10 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-R1_Chronicle_Public_Runtime_Composition_and_Consumer_Facade_Reconciliation|ESV-M4-R1 Closeout]]
+- [[Developer/Test Reports/ESV-M4-R1_Chronicle_Public_Runtime_Composition_and_Consumer_Facade_Reconciliation_Test_Report|ESV-M4-R1 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation`
+`ESV-M4-R1 — Public Runtime Composition and Consumer Facade Reconciliation`
 
-Chronicle now provides read-only immutable deletion planning plus admitted confirmed recoverable trash with stale/expired/replayed-plan rejection, active-slot/catalog reconciliation, and bounded trash retention. The implementation is committed at `01e4cdd`; the focused Chronicle Editor gate is **587 / 587**.
+Chronicle's intended primary consumer service now composes participant registration, catalog snapshot/refresh, slot create/select, prepared-load creation/apply, and same-scene convenience load over the existing M3/M4 authorities. Implementation is committed at `ab18361`; the focused Chronicle Editor gate is **618 / 618**.
 
 ## Completed milestone
 
@@ -71,6 +73,6 @@ Chronicle now provides read-only immutable deletion planning plus admitted confi
 
 ## Current checkpoint
 
-No follow-on runtime checkpoint is activated by the ESV-M4-10 closeout.
+No follow-on implementation checkpoint is active.
 
-The next gate is a dedicated **M4 milestone reconciliation**. M4 is not yet declared complete and M5 is not yet activated.
+The next M4 reconciliation gate is **R2 — Slot Policy Runtime Configuration**. R3 package-document migration and final registry/document reconciliation remain required before M4 can close. M5 remains locked.

@@ -6,7 +6,9 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation**. Planning/activation is committed at `2244e3c`, implementation is committed at `01e4cdd`, and the final focused Chronicle Editor gate is **587 / 587**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active pending a dedicated milestone reconciliation.** No M5 checkpoint is activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-R1 — Public Runtime Composition and Consumer Facade Reconciliation**. Planning/authority activation is committed at `bdb0c00`, implementation is committed at `ab18361`, and the final focused Chronicle Editor gate is **618 / 618**. M4 reconciliation remains active. R2 slot-policy runtime configuration is the next gate but is not yet activated. M5 remains locked.
+
+R1 closes the public consumer-composition gaps found by the M4 audit. `IEchoSaveService` now exposes participant registration, catalog snapshot/refresh, slot create/select, two-phase prepared loading, and same-scene convenience load while reusing the established M3/M4 registry, catalog, creation, preparation, prepared-handle, and apply authorities.
 
 ## Current persistence boundary
 

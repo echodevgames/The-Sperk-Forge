@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 Reconciliation R1 — public runtime composition
-**Current checkpoint:** ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — **active / authorized**
+**Current focus:** Chronicle M4 Reconciliation R2 — slot-policy runtime configuration planning
+**Current checkpoint:** M4 Reconciliation R2 — Slot Policy Runtime Configuration — **next gate / not activated**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -758,11 +758,26 @@ Those remain future release-qualification work if/when First Light returns to th
 
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
+## ESV-M4-R1 Closeout
+
+ESV-M4-R1 is **complete**.
+
+Evidence:
+- planning/activation commit: `bdb0c00`;
+- implementation commit: `ab18361`;
+- focused Chronicle Editor: **618 / 618 passed, 0 failed**;
+- prior focused floor: **587 / 587**;
+- net new focused tests: **31**;
+- implementation/test scope: **29 files**, `2995` insertions, `18` deletions.
+
+R1 closed audit gaps A-01 and A-02 by composing the existing participant, catalog, slot-create/select, prepared-load, and apply authorities through the public Chronicle service.
+
+No R1 hotfix was required.
+
 ## Next Action
 
-1. Commit/push the `ESV-M4-R1` planning/authority activation.
-2. Implement only the bounded public runtime composition defined by ESV-D-033.
-3. Preserve the **587 / 587** Chronicle focused regression floor.
-4. Close R1 using Unity's actual discovered total.
-5. Activate R2 only after R1 closeout.
-6. Keep M5 locked until R1, R2, R3, and final registry/document reconciliation all close cleanly.
+1. Plan and authorize R2 — Slot Policy Runtime Configuration.
+2. Preserve **618 / 618** as the incoming Chronicle focused regression floor.
+3. Keep R2 limited to CAP-002 runtime slot-policy/configuration repair.
+4. Do not implement package-document migration until R3.
+5. Do not activate M5 until R2, R3, and final registry/document reconciliation are complete.
