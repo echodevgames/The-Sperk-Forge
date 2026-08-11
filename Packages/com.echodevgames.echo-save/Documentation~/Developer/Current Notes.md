@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.37.0
-**Completed checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.38.0
+**Completed checkpoint:** ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation — active / authorized
-**Status:** ESV-M4-R1 complete; ESV-M4-R2 active; R3/final reconciliation remain; M5 locked
+**Current checkpoint:** ESV-M4-R3 — Package-Document Migration — next / not activated
+**Status:** ESV-M4-R1 and ESV-M4-R2 complete; R3/final reconciliation remain; M4 open; M5 locked
 
-**Authority reconciliation:** Specification v1.37.0 activates `ESV-M4-R2` at clean `176b240` under ESV-D-034. R2 replaces the hidden technical capacity authority with schema-versioned project slot-policy configuration while retaining read-only legacy schema-1 behavior at capacity 64. R3 package-document migration remains next after R2 closeout; M5 remains locked.
+**Authority reconciliation:** Specification v1.38.0 closes `ESV-M4-R2` at implementation commit `8a8e7e7` with focused Chronicle Editor evidence `636 / 636`. CAP-002 schema-2 slot-policy authority is implemented; legacy schema-1 remains read-only-compatible at capacity 64. R3 package-document migration is next but not activated; final registry/document reconciliation remains mandatory before M4 close and M5 activation.
 
 ## ESV-M4-02 closeout
 
@@ -598,38 +598,35 @@ Preserved:
 
 No R1 hotfix was required after implementation apply.
 
-**Next gate:** R2 — Slot Policy Runtime Configuration. Do not activate R3 or M5 before R2 is planned, implemented, tested, and closed.
+**R1 closeout next gate (historical):** R2 — Slot Policy Runtime Configuration. R2 is now complete; R3 remains separately gated.
 
 
-## ESV-M4-R2 activation
+## ESV-M4-R2 closeout
 
 **Checkpoint:** Slot Policy Runtime Configuration and CAP-002 Reconciliation
 **Planning baseline:** `176b240`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.37.0
-**Decision:** ESV-D-034
-**Incoming focused floor:** **618 / 618**
+**Planning/activation commit:** `428369e`
+**Implementation commit:** `8a8e7e7`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.38.0 / ESV-D-034
+**Final focused gate:** **636 / 636 passed, 0 failed**
+**Prior focused floor:** **618 / 618**
+**Net new focused R2 tests:** **18**
+**Implementation/test scope:** **8 files**, `768` insertions, `13` deletions
 
-R2 resolves audit blocker A-03 / CAP-002.
+Completed behavior:
+- `EchoSaveConfiguration` serialized schema 2 owns slot-policy configuration;
+- `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` resolve to one finite immutable session capacity;
+- schema 1 maps read-only to historical `ConfigurableMultiSlot` capacity `64` without asset mutation;
+- invalid schema-2 policy and unsupported future schemas block before storage/backend side effects;
+- create and duplicate share the same resolved `EffectiveCapacity`;
+- degraded canonical live slots count, trash does not, and confirmed delete frees capacity through existing catalog truth;
+- ESV-T-015 through ESV-T-018 are complete;
+- R1 public facade/source compatibility remains green.
 
-Approved policy modes:
-- `SingleSlot`;
-- `FixedMultiSlot`;
-- `ConfigurableMultiSlot`;
-- `BoundedProfiles`.
+Implementation-history note:
+- the first Unity compile exposed one existing regression test still referencing `EchoSaveService.DefaultTechnicalSlotCapacity`;
+- a bounded pre-commit compile correction restored that internal symbol as an alias to the schema-1 legacy capacity only;
+- schema-2 runtime behavior continues to consume `SaveSlotPolicy.EffectiveCapacity` for create and duplicate;
+- final Unity compilation and **636 / 636** evidence supersede the intermediate compile failure.
 
-Every policy resolves to one finite effective live-slot capacity.
-
-Legacy schema-1 configuration remains readable as historical configurable capacity `64` without mutating the asset.
-
-R2 wires the resolved capacity into create and duplicate only. Existing canonical catalog-count truth remains authoritative.
-
-Still deferred:
-- R3 package-document migration;
-- fixed-slot auto-provisioning/templates as runtime prerequisites;
-- M5 Setup/Validator/Browser/Simulator/Laboratory;
-- runtime policy mutation;
-- generic queues;
-- automatic recovery fallback;
-- persistent catalog cache;
-- automatic autosave timers;
-- scene travel/bridges/DDOL.
+**Next gate:** R3 package-document migration is next but not activated. Final registry/document reconciliation remains mandatory after R3. M4 remains open and M5 remains locked.

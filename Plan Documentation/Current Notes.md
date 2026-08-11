@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 Reconciliation R2 — slot-policy runtime configuration
-**Current checkpoint:** ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation — **active / authorized**
+**Current focus:** Chronicle M4 reconciliation — R2 complete; R3 package-document migration next / not activated
+**Current checkpoint:** No active runtime checkpoint; ESV-M4-R3 is **next / not activated**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -774,31 +774,32 @@ R1 closed audit gaps A-01 and A-02 by composing the existing participant, catalo
 
 No R1 hotfix was required.
 
-## ESV-M4-R2 Activation
+## ESV-M4-R2 Closeout
 
-R2 is **active / authorized**.
+ESV-M4-R2 is **complete**.
 
-Authority:
-- clean planning baseline: `176b240`;
-- Chronicle specification: **v1.37.0**;
-- decision: **ESV-D-034**;
-- incoming focused Chronicle floor: **618 / 618**.
+Evidence:
+- planning baseline: `176b240`;
+- planning/activation commit: `428369e`;
+- implementation commit: `8a8e7e7`;
+- Chronicle specification closeout: **v1.38.0**;
+- focused Chronicle Editor: **636 / 636 passed, 0 failed**;
+- incoming focused floor: **618 / 618**;
+- net new focused R2 tests: **18**;
+- implementation/test scope: **8 files**, `768` insertions, `13` deletions.
 
-R2 owns:
-- `EchoSaveConfiguration` schema 2;
-- `SaveSlotPolicyMode`;
-- schema-versioned `SaveSlotPolicy`;
-- explicit schema-1 read-only compatibility mapping to historical capacity 64;
-- one resolved finite effective live-slot capacity;
-- create/duplicate capacity wiring;
-- CAP-002 tests ESV-T-015 through ESV-T-018.
+R2 closes audit blocker **A-03 / CAP-002**. `EchoSaveConfiguration` schema 2 now owns project-authored slot policy; `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` each resolve to one finite immutable service-session capacity. Create and duplicate consume that same resolved capacity. Schema-1 configurations remain readable at historical capacity 64 without runtime asset mutation.
 
-R2 does not own fixed-slot auto-provisioning, `SaveSlotTemplate` runtime identity, document migration, M5 tooling, runtime policy mutation, generic queues, scene travel, or DDOL.
+One pre-commit compile compatibility correction restored `EchoSaveService.DefaultTechnicalSlotCapacity` as an internal alias to the legacy schema-1 value because an existing regression test still referenced the symbol. It does **not** drive schema-2 behavior; final Unity compile and **636 / 636** evidence are authoritative.
+
+ESV-T-015 through ESV-T-018 are now complete. Degraded canonical live slots continue to count, trash does not count, and confirmed deletion frees capacity only through the existing durable/catalog truth.
+
+R2 does not add fixed-slot auto-provisioning, runtime template identity, document migration, M5 tooling, runtime policy mutation, generic queues, scene travel, or DDOL.
 
 ## Next Action
 
-1. Implement only `ESV-M4-R2` against clean `176b240`.
-2. Preserve **618 / 618** as the incoming focused regression floor.
-3. Record Unity's actual discovered total after implementation.
-4. Close R2 before activating R3.
-5. Keep M5 locked.
+1. Treat `8a8e7e7` as the completed R2 runtime baseline.
+2. Preserve **636 / 636** as the focused Chronicle regression floor.
+3. ESV-M4-R3 package-document migration is next, but do not activate it without a bounded authority/checkpoint commit.
+4. Keep final 100-case registry/document evidence reconciliation separate and mandatory after R3.
+5. Keep M4 open and M5 locked.

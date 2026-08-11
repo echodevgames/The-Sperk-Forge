@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M4-10 – Chronicle Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 complete; `ESV-M4-R2` slot-policy runtime configuration active at `176b240` with incoming `618 / 618`; R3/final reconciliation remain; M5 locked
+**Completed package checkpoint:** ESV-M4-R2 – Chronicle Slot Policy Runtime Configuration and CAP-002 Reconciliation
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 and ESV-M4-R2 complete; R2 implementation `8a8e7e7` with focused `636 / 636`; R3/final reconciliation remain; M4 open; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1 complete; `ESV-M4-R2` active at `176b240` with incoming 618 / 618; R3/final reconciliation remain before M4 close; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1 and ESV-M4-R2 complete; R2 at `8a8e7e7` with 636 / 636; ESV-M4-R3 package-document migration is next / not activated; final reconciliation remains before M4 close; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -93,7 +93,11 @@ Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
 `ESV-M4-10` is complete at `01e4cdd`; the focused Chronicle Editor gate passed **587 / 587**. Chronicle now provides read-only zero-mutation deletion planning, immutable expiring one-use source-bound plans, root-local Busy/no-queue confirmed deletion, fresh source revalidation, complete-tree recoverable trash publication, active-slot/catalog reconciliation, bounded fail-closed trash retention, and truthful post-commit failure states.
 
-No follow-on runtime checkpoint is activated by this closeout. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, full recovery/slot-policy configuration assets, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. The immediate next gate is the dedicated M4 milestone reconciliation.
+`ESV-M4-R1` is complete at `ab18361`; the focused Chronicle Editor gate passed **618 / 618** and closed audit gaps A-01/A-02 through bounded public runtime composition.
+
+`ESV-M4-R2` is complete at `8a8e7e7`; the focused Chronicle Editor gate passed **636 / 636**, adding **18** focused policy tests. Chronicle now resolves schema-2 project-owned `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` policy into one immutable finite service-session capacity shared by create and duplicate, while schema-1 remains non-mutating compatible at historical capacity 64. ESV-T-015 through ESV-T-018 are complete and audit gap A-03 is closed.
+
+No follow-on runtime checkpoint is activated by this closeout. ESV-M4-R3 package-document migration is next but still requires bounded activation; final 100-case registry/document evidence reconciliation remains mandatory after R3. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
 
 SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
@@ -114,17 +118,17 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M4-R2` is **active / authorized** at clean baseline `176b240`.
+`ESV-M4-R2` is **complete** at implementation commit `8a8e7e7`.
 
-R2 resolves CAP-002 by replacing the historical hardcoded slot capacity with schema-versioned project configuration.
+Final focused Chronicle Editor evidence: **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor.
 
-Incoming focused Chronicle Editor floor: **618 / 618**.
+CAP-002 schema-2 slot-policy runtime configuration is reconciled. Schema-1 capacity-64 compatibility remains read-only/non-mutating, and create/duplicate share one resolved immutable session capacity.
 
-R2 does not activate M5 and does not own package-document migration.
+ESV-M4-R3 package-document migration is **next / not activated**.
 
-After R2 closeout:
-- R3 package-document migration remains mandatory;
-- final registry/document reconciliation remains mandatory;
-- only then may M4 close.
+Still mandatory before M4 close:
+- R3 package-document migration preserving CAP-014;
+- final 100-case registry/document evidence reconciliation;
+- final focused Chronicle regression evidence at the actual closing total.
 
 **M5 remains locked.**

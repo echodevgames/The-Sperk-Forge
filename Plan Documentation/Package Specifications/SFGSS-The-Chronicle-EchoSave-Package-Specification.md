@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.37.0
+**Specification version:** 1.38.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. ESV-M4-R1 is complete at `ab18361` with focused Chronicle Editor evidence **618 / 618**. `ESV-M4-R2` is now the active bounded M4 reconciliation checkpoint at clean baseline `176b240`. R2 owns CAP-002 runtime slot-policy/configuration truth only: `EchoSaveConfiguration` advances to schema 2; project-authored policy replaces the hardcoded technical capacity; create/duplicate capacity checks consume one resolved runtime policy; legacy schema-1 assets remain readable through an explicit non-mutating compatibility mapping equivalent to the historical 64-slot behavior and are never silently rewritten. R3 package-document migration and final registry/document reconciliation remain mandatory before M4 can close. M5 remains locked.
+> **Approval rule:** This specification is approved as package authority. ESV-M4-R2 is complete at implementation commit `8a8e7e7` with focused Chronicle Editor evidence **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor. CAP-002 runtime slot-policy/configuration truth is implemented: `EchoSaveConfiguration` schema 2 owns project-authored policy; all four approved modes resolve to one finite immutable session capacity consumed by create and duplicate; schema-1 assets remain readable through a non-mutating compatibility mapping equivalent to historical capacity 64. R3 package-document migration is the next M4 reconciliation gate but is not activated by this closeout. Final registry/document reconciliation remains mandatory before M4 can close. M5 remains locked.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -71,6 +71,7 @@
 | 1.35.0 | 2026-08-11 | Approved | Recorded the M4 milestone reconciliation audit at clean baseline `48454ea` and activated `ESV-M4-R1` public runtime composition. Added ESV-D-033: preserve the approved MVP public-service promises and repair them in bounded reconciliation passes rather than weakening the specification. R1 exposes participant registration, catalog snapshot/refresh, slot creation/selection, prepared-load/apply, and same-scene convenience load over existing M3/M4 machinery; R2 owns slot-policy configuration; R3 owns package-document migration while CAP-014 remains intact. M5 remains locked until reconciliation closeout. | Jesse “Echo” Adams |
 | 1.36.0 | 2026-08-11 | Approved | Closed ESV-M4-R1 at implementation commit `ab18361` with focused Chronicle Editor evidence `618 / 618` and prior `587 / 587` floor preserved. Recorded public participant registration, catalog snapshot/refresh, slot create/select, prepared load/apply, and same-scene convenience load composition over existing M3/M4 authorities; retained configuration schema 1 and technical capacity 64 for R2; no automatic recovery fallback, generic queue, scene/DDOL, or M5 tooling. R2 is next but not activated; R3 and final registry reconciliation remain required before M4 close. | Jesse “Echo” Adams |
 | 1.37.0 | 2026-08-11 | Approved | Activated `ESV-M4-R2` at clean baseline `176b240` with incoming Chronicle floor `618 / 618`. Added ESV-D-034: CAP-002 is a runtime capacity/admission policy owned by `EchoSaveConfiguration` schema 2; new assets author SingleSlot, FixedMultiSlot, ConfigurableMultiSlot, or BoundedProfiles policy; all modes resolve to one finite effective live-slot capacity consumed by create/duplicate; `BoundedProfiles` means no design-visible fixed count, never infinite resources; schema-1 assets are read through an explicit legacy 64-slot compatibility mapping without runtime asset mutation; fixed-slot templates remain optional M5 authoring metadata and are not required for R2 runtime enforcement. R3 document migration and final registry reconciliation remain required; M5 remains locked. | Jesse “Echo” Adams |
+| 1.38.0 | 2026-08-11 | Approved | Closed `ESV-M4-R2` at implementation commit `8a8e7e7` with focused Chronicle Editor evidence `636 / 636`, 18 net new focused policy tests, schema-2 slot-policy authority, non-mutating schema-1 capacity-64 compatibility, one shared create/duplicate effective capacity, and ESV-T-015 through ESV-T-018 complete. One pre-commit compile compatibility correction restored `DefaultTechnicalSlotCapacity` as a legacy-only alias without restoring schema-2 hardcoded authority. R3 remains next but not activated; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1666,10 +1667,10 @@ At each checkpoint:
 | ESV-T-012 | Config | Invalid limits | Validator blocks | Planned |
 | ESV-T-013 | Config | Missing serializer | Initialization blocks | Planned |
 | ESV-T-014 | Config | Missing backend | Initialization blocks | Planned |
-| ESV-T-015 | Slots | Create single slot | Stable ID and metadata created | Planned |
-| ESV-T-016 | Slots | Fixed slot capacity | Extra slot rejected | Planned |
-| ESV-T-017 | Slots | Configurable capacity | Configured limit enforced | Planned |
-| ESV-T-018 | Slots | Unlimited policy safety cap | Platform/config cap enforced | Planned |
+| ESV-T-015 | Slots | Create single slot | Stable ID and metadata created | Complete |
+| ESV-T-016 | Slots | Fixed slot capacity | Extra slot rejected | Complete |
+| ESV-T-017 | Slots | Configurable capacity | Configured limit enforced | Complete |
+| ESV-T-018 | Slots | Unlimited policy safety cap | Platform/config cap enforced | Complete |
 | ESV-T-019 | Slots | Rename slot | ID/path unchanged | Planned |
 | ESV-T-020 | Slots | Duplicate slot | New ID and equivalent payload | Planned |
 | ESV-T-021 | Slots | Delete without plan | No mutation | Complete |
@@ -3022,15 +3023,19 @@ After R1:
 
 R1 completed without a post-apply runtime/test hotfix.
 
-R1 completion does not complete M4. R2 slot-policy runtime configuration is the next gate but is not activated by this closeout. R3 package-document migration and final registry/document reconciliation remain required. M5 remains locked.
+R1 completion did not complete M4. R2 slot-policy runtime configuration was the next gate at R1 closeout and is now complete at `8a8e7e7`. R3 package-document migration and final registry/document reconciliation remain required. M5 remains locked.
 
-### 28.28 ESV-M4-R2 slot-policy runtime configuration and CAP-002 reconciliation activation
+### 28.28 ESV-M4-R2 slot-policy runtime configuration and CAP-002 reconciliation
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
 **Milestone:** M4 — Slots / Autosave / Recovery reconciliation.
 
 **Clean planning baseline:** `176b240`.
+
+**Planning/activation commit:** `428369e`.
+
+**Implementation commit:** `8a8e7e7`.
 
 **Carried focused regression floor:** **618 / 618**.
 
@@ -3040,7 +3045,7 @@ R1 completion does not complete M4. R2 slot-policy runtime configuration is the 
 
 R2 resolves audit blocker **A-03 / CAP-002**.
 
-The current service still carries the historical technical constant `64`. R2 removes that hidden runtime capacity authority and replaces it with project-owned, validated, schema-versioned configuration.
+R2 began from the historical technical capacity `64` and replaced that hidden runtime authority with project-owned, validated, schema-versioned configuration. The legacy internal constant remains only as a source-compatibility alias to schema-1 behavior and does not drive schema-2 capacity.
 
 #### Configuration schema
 
@@ -3222,48 +3227,63 @@ After R2:
 2. The final reconciliation pass must map the test registry and documentation to retained evidence.
 3. Only then may M4 be declared complete and M5 activated.
 
+#### R2 completion evidence
+
+**Planning baseline:** `176b240`.
+**Planning/activation commit:** `428369e`.
+**Implementation commit:** `8a8e7e7`.
+**Focused Chronicle Editor evidence:** **636 / 636 passed, 0 failed**.
+**Prior focused floor:** **618 / 618**.
+**Net new focused R2 tests:** **18**.
+**Implementation/test scope:** **8 files**, `768` insertions, `13` deletions.
+
+R2 completed CAP-002 with schema-2 project-owned slot-policy configuration, all four approved policy modes, one immutable service-session effective capacity shared by create and duplicate, and non-mutating schema-1 compatibility at historical capacity 64. ESV-T-015 through ESV-T-018 are complete.
+
+Implementation-history note: the first Unity compile exposed one existing regression test that still referenced the internal `DefaultTechnicalSlotCapacity` symbol. Before commit, the symbol was restored as a compatibility alias to the schema-1 legacy value only; schema-2 runtime authority continues to use `SaveSlotPolicy.EffectiveCapacity`. Final Unity compilation and the **636 / 636** gate are authoritative.
+
+R2 closes audit blocker **A-03**. R3 package-document migration remains next but is not activated. M4 remains open and M5 remains locked.
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.37.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.38.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.37.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10
-Current milestone/checkpoint: ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation — active / authorized
+Current specification version: 1.38.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10; ESV-M4-R1; ESV-M4-R2
+Current milestone/checkpoint: M4 reconciliation remains open; ESV-M4-R3 package-document migration is next / not activated
 Current Unity version: 6000.3.8f1
-Current implementation status: ESV-M4-R1 complete; ESV-M4-R2 active at `176b240` with incoming Chronicle floor `618 / 618`; R3/final reconciliation remain; M5 locked
-Known blockers: M4 audit gaps A-01 through A-04; R1 owns A-01/A-02 composition only
+Current implementation status: ESV-M4-R1 and R2 complete; R2 implementation `8a8e7e7`; focused Chronicle Editor gate `636 / 636`; R3/final reconciliation remain; M5 locked
+Known blockers: A-04 / CAP-014 package-document migration plus final 100-case registry/document evidence reconciliation
 Current Notes reviewed through: August 11, 2026
 
-Before writing Chronicle runtime code:
-1. Rehydrate exact `48454ea` planning baseline.
-2. Preserve the **587 / 587** focused Chronicle regression floor.
-3. Implement only `ESV-M4-R1` public runtime composition authorized by ESV-D-033.
-4. Reuse existing participant registry, catalog, technical slot creation, prepared-load, apply, save, recovery, and slot-operation authorities rather than duplicating them.
-5. Do not change `EchoSaveConfiguration` schema or implement CAP-002 policy expansion in R1.
-6. Do not implement package-document migration in R1; that is the approved R3 repair and CAP-014 remains intact.
-7. Do not activate M5.
+Before writing more Chronicle runtime code:
+1. Treat `8a8e7e7` as the completed R2 runtime baseline.
+2. Preserve the **636 / 636** focused Chronicle regression floor.
+3. Do not begin R3 runtime work until a bounded R3 authority/checkpoint activation is committed.
+4. Preserve CAP-014 intact: R3 implements package-document migration rather than weakening the capability.
+5. Keep final registry/document reconciliation mandatory after R3.
+6. Do not activate M5.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.37.0 |
-| Completed checkpoint | ESV-M4-10 - Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation |
-| Implementation commit | `01e4cdd` |
-| Tests passed | ESV-M4-10 focused Chronicle Editor gate `587 / 587`; prior `562 / 562` regression floor preserved; Unity compile/import green |
-| Tests failed | Final ESV-M4-10 gate: `0` |
-| Known issues | M4 audit gaps A-01 through A-04; R1 addresses public composition A-01/A-02 |
-| Decisions added | ESV-D-001 through ESV-D-033; ESV-D-033 defines the approved R1/R2/R3 M4 reconciliation path and preserves CAP-014 document migration |
+| Package version | Runtime package `0.1.0`; Specification v1.38.0 |
+| Completed checkpoint | ESV-M4-R2 - Slot Policy Runtime Configuration and CAP-002 Reconciliation |
+| Implementation commit | `8a8e7e7` |
+| Tests passed | Final ESV-M4-R2 focused Chronicle Editor gate `636 / 636`; prior `618 / 618` regression floor preserved; Unity compile/import green |
+| Tests failed | Final ESV-M4-R2 gate: `0` |
+| Known issues | A-04 / CAP-014 package-document migration plus final 100-case registry/document evidence reconciliation remain before M4 close |
+| Decisions added | ESV-D-001 through ESV-D-034; ESV-D-034 defines schema-2 CAP-002 slot-policy authority and legacy schema-1 compatibility |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-R2 active / authorized at clean baseline `176b240`; implementation is limited to CAP-002 runtime slot-policy/configuration reconciliation and must preserve `618 / 618`. |
+| Implementation permission | No follow-on runtime checkpoint is active. ESV-M4-R3 is next but requires its own bounded authority/checkpoint activation; M5 remains locked. |
 
 ## 30. Approval
 
@@ -3309,7 +3329,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.33.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-09 are complete. M4 remains active with ESV-M4-10 authorized as the bounded destructive delete/trash checkpoint.
+The Chronicle specification is complete and **Approved v1.38.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, and ESV-M4-R2 are complete. M4 remains open for R3 package-document migration and final registry/document reconciliation; R3 is next but not activated, and M5 remains locked.
 
 
 ---

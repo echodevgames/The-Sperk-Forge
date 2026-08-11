@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint-build-plan
   - sfgss/package/chronicle
   - sfgss/reconciliation
-status: active
+status: complete
 updated: 2026-08-11
 ---
 # ESV-M4-R2 — Chronicle Slot Policy Runtime Configuration and CAP-002 Reconciliation — Checkpoint Build Plan
@@ -11,8 +11,8 @@ updated: 2026-08-11
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-R2
 **Milestone:** M4 — Slots / Autosave / Recovery Reconciliation
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.37.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.38.0
 **Authority decision:** ESV-D-034
 **Planning baseline:** `176b240`
 **Unity baseline:** 6000.3.8f1
@@ -220,7 +220,7 @@ At minimum distinguish:
 - unsupported configuration schema;
 - capacity reached under the resolved policy.
 
-Existing ESV-SLOT-004 capacity-reached truth remains authoritative.
+Existing structured capacity-reached result/diagnostic truth remains authoritative; R2 does not renumber established runtime diagnostics.
 
 Do not turn legacy schema 1 into a runtime failure solely because R2 adds schema 2.
 
@@ -335,3 +335,27 @@ On R2 completion record:
 8. documentation records actual evidence;
 9. R3 remains next;
 10. M5 remains locked.
+
+## 19. Completion evidence
+
+**Status:** **COMPLETE**
+**Planning baseline:** `176b240`
+**Planning/activation commit:** `428369e`
+**Implementation commit:** `8a8e7e7`
+**Unity baseline:** 6000.3.8f1
+**Final focused Chronicle Editor gate:** **636 / 636 passed, 0 failed**
+**Incoming focused floor:** **618 / 618**
+**Net new focused R2 tests:** **18**
+**Implementation/test scope:** **8 files**, `768` insertions, `13` deletions
+
+Completion truth:
+- `EchoSaveConfiguration` schema 2 owns project-authored slot policy;
+- all four approved modes resolve to one finite immutable session `EffectiveCapacity`;
+- schema 1 maps read-only to `ConfigurableMultiSlot` capacity `64` without asset mutation;
+- invalid schema 2 and unsupported future schemas fail before storage/backend side effects;
+- create and duplicate receive the same resolved session capacity;
+- degraded canonical live slots count, trash does not, and confirmed deletion frees capacity through catalog truth;
+- ESV-T-015 through ESV-T-018 are complete;
+- the compatibility-only `DefaultTechnicalSlotCapacity` symbol was restored before the implementation commit as an alias to the legacy schema-1 value and does not drive schema-2 runtime behavior.
+
+R2 closes audit blocker **A-03 / CAP-002**. R3 package-document migration is next but is **not activated** by this closeout. M4 remains open and M5 remains locked.

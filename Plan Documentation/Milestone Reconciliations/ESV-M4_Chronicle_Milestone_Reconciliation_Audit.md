@@ -378,27 +378,33 @@ Still open:
 **M4 remains open. M5 remains locked.**
 
 
-# R2 activation update
+# R2 completion update
 
-**R2 status:** ACTIVE / AUTHORIZED
+**R2 status:** COMPLETE
 **Planning baseline:** `176b240`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.37.0
-**Decision:** ESV-D-034
-**Incoming focused floor:** **618 / 618**
+**Planning/activation commit:** `428369e`
+**Implementation commit:** `8a8e7e7`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.38.0 / ESV-D-034
+**Focused Chronicle Editor evidence:** **636 / 636 passed, 0 failed**
+**Prior floor:** **618 / 618**
+**Net new focused R2 tests:** **18**
 
-R2 owns audit blocker:
-- **A-03 — CAP-002 slot-policy runtime configuration**
+R2 resolves:
+- **A-03 — CAP-002 slot-policy runtime configuration**.
 
-Approved repair:
-- configuration schema 2;
-- four explicit policy modes;
-- one finite resolved live-slot capacity;
-- schema-1 non-mutating compatibility mapping to historical capacity 64;
-- create/duplicate capacity wiring;
-- ESV-T-015 through ESV-T-018 focused evidence.
+Resolved CAP-002 truth:
+- `EchoSaveConfiguration` schema 2 owns project-authored slot policy;
+- all four approved policy modes resolve to one finite immutable service-session capacity;
+- schema-1 configurations retain non-mutating historical capacity-64 compatibility;
+- create and duplicate consume the same resolved effective capacity;
+- canonical live-slot counting remains catalog-owned, including degraded slots and excluding trash;
+- ESV-T-015 through ESV-T-018 are complete;
+- the final Chronicle Editor gate is **636 / 636**.
 
-Still open after R2:
-- **A-04 — package-document migration** → R3;
-- 100-case registry/document evidence mapping → final reconciliation.
+Implementation-history note: one pre-commit compile compatibility correction restored the existing internal `DefaultTechnicalSlotCapacity` symbol as an alias to the legacy schema-1 value. It does not restore hardcoded schema-2 authority; runtime create and duplicate continue to consume `SaveSlotPolicy.EffectiveCapacity`.
 
-**M4 remains open. M5 remains locked.**
+Still open:
+- **A-04 — CAP-014 package-document migration** → R3;
+- final 100-case registry/document evidence mapping → final reconciliation.
+
+**M4 remains open. R3 is next but not activated. M5 remains locked.**
