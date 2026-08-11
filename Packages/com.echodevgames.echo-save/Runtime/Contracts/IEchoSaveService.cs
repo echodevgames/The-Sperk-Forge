@@ -5,8 +5,8 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Primary package-local Chronicle service surface.
     ///
-    /// M4-05 adds explicit caller-triggered autosave submission with one
-    /// latest-wins pending request while reusing M4-04 admission and save truth.
+    /// M4-07 adds bounded read-only recovery-plan construction while keeping
+    /// recovery execution and all durable repair mutation separately deferred.
     /// </summary>
     public interface IEchoSaveService
     {
@@ -21,6 +21,9 @@ namespace EchoDevGames.EchoSave
 
         AutosaveSubmissionResult RequestAutosave(
             AutosaveRequest request);
+
+        Awaitable<SaveRecoveryPlan> BuildRecoveryPlanAsync(
+            SaveSlotId slotId);
 
         Awaitable<EchoSaveLifecycleResult> ShutdownAsync();
     }

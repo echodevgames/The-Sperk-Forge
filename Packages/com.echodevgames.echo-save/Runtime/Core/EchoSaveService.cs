@@ -4,11 +4,11 @@ using UnityEngine;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// Chronicle lifecycle, public manual-save, and bounded autosave service.
+    /// Chronicle lifecycle, public save/autosave, and read-only recovery
+    /// planning service.
     ///
-    /// M4-05 adds explicit caller-triggered autosave submission with one
-    /// latest-wins pending request. Manual save and autosave reuse the same
-    /// root-local admission authority and the same durable save transaction.
+    /// M4-07 adds bounded recovery-plan construction without acquiring the
+    /// mutating-operation admission lease or performing durable repair.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
@@ -17,6 +17,9 @@ namespace EchoDevGames.EchoSave
             256;
 
         internal const int DefaultRetentionDiscoveryLimit =
+            512;
+
+        internal const int DefaultRecoveryDiscoveryLimit =
             512;
 
         private EchoSaveConfiguration configuration;
@@ -34,6 +37,8 @@ namespace EchoDevGames.EchoSave
         private SaveSlotCatalog slotCatalog;
         private ISaveManualTransactionExecutor
             manualSaveTransactionExecutor;
+        private ISaveRecoveryPlanBuilder
+            recoveryPlanBuilder;
 
         private PendingAutosaveRequest pendingAutosave;
         private long nextAutosaveTicketId;
@@ -80,6 +85,16 @@ namespace EchoDevGames.EchoSave
             AutosaveRequest request) =>
             RequestAutosaveCore(
                 request);
+
+        public async Awaitable<SaveRecoveryPlan>
+            BuildRecoveryPlanAsync(
+                SaveSlotId slotId)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return BuildRecoveryPlanCore(
+                slotId);
+        }
 
         public async Awaitable<EchoSaveLifecycleResult>
             ShutdownAsync()
@@ -360,6 +375,12 @@ namespace EchoDevGames.EchoSave
             RequestAutosaveCore(
                 request);
 
+        internal SaveRecoveryPlan
+            BuildRecoveryPlanSynchronouslyForTesting(
+                SaveSlotId slotId) =>
+            BuildRecoveryPlanCore(
+                slotId);
+
         internal int PendingAutosaveCountForTesting =>
             pendingAutosave == null
                 ? 0
@@ -403,6 +424,38 @@ namespace EchoDevGames.EchoSave
         internal SaveSlotCatalog
             SlotCatalogForTesting =>
                 slotCatalog;
+
+        private SaveRecoveryPlan BuildRecoveryPlanCore(
+            SaveSlotId slotId)
+        {
+            if (state !=
+                EchoSaveServiceState.Ready ||
+                recoveryPlanBuilder == null)
+            {
+                return SaveRecoveryPlan.Failure(
+                    SaveRecoveryPlanStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes
+                        .RecoveryServiceNotReady,
+                    "The Chronicle must be Ready before a recovery plan can be built.",
+                    slotId);
+            }
+
+            if (!SaveSlotId.TryParse(
+                    slotId.Value,
+                    out SaveSlotId validatedSlot))
+            {
+                return SaveRecoveryPlan.Failure(
+                    SaveRecoveryPlanStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .RecoveryInvalidRequest,
+                    "Chronicle recovery planning requires one valid technical slot identity.",
+                    slotId);
+            }
+
+            return recoveryPlanBuilder.Build(
+                validatedSlot);
+        }
+
 
         private SaveOperationResult SaveCore(
             SaveRequest request)
@@ -970,6 +1023,13 @@ namespace EchoDevGames.EchoSave
                         serializer,
                         DefaultRetentionDiscoveryLimit);
 
+            recoveryPlanBuilder =
+                new SaveRecoveryPlanBuilder(
+                    storageBackend,
+                    serializer,
+                    integrity,
+                    DefaultRecoveryDiscoveryLimit);
+
             manualSaveTransactionExecutor =
                 new SaveManualTransactionCoordinator(
                     slotCatalog,
@@ -985,6 +1045,9 @@ namespace EchoDevGames.EchoSave
         private void ResetManualSaveRuntime()
         {
             manualSaveTransactionExecutor =
+                null;
+
+            recoveryPlanBuilder =
                 null;
 
             slotCatalog =
