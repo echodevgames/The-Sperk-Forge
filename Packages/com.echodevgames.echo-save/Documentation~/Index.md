@@ -48,12 +48,14 @@
 - [[Developer/Test Reports/ESV-M4-04_Chronicle_Public_Manual_Save_Admission_Busy_Cancellation_and_Lifecycle_Foundation_Test_Report|ESV-M4-04 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-05_Chronicle_Autosave_Request_Coalescing_and_Latest_Wins_Pending_Admission_Foundation|ESV-M4-05 Closeout]]
 - [[Developer/Test Reports/ESV-M4-05_Chronicle_Autosave_Request_Coalescing_and_Latest_Wins_Pending_Admission_Foundation_Test_Report|ESV-M4-05 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation|ESV-M4-06 Closeout]]
+- [[Developer/Test Reports/ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation_Test_Report|ESV-M4-06 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation`
+`ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation`
 
-Chronicle now accepts explicit caller-triggered autosave requests, retains at most one latest pending request while another mutation owns admission, coalesces/supersedes without growing a queue, reuses the M4-04 admission authority and M4-03/M4-04 durable save path, preserves manual-save Busy semantics, and settles pending work safely across admission release and shutdown. The implementation is committed at `9917f1b`; the focused Chronicle Editor gate is **473 / 473**.
+Chronicle now bounds ordinary committed-generation history after successful publication, preserves the current generation and immediate recovery predecessor, deletes only excess verified committed history through provider-neutral capability, and reports cleanup maintenance separately from committed save truth. The implementation is committed at `e714a90`; the focused Chronicle Editor gate is **497 / 497**.
 
 ## Completed milestone
 
@@ -61,6 +63,6 @@ Chronicle now accepts explicit caller-triggered autosave requests, retains at mo
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-05 closeout.
+No follow-on M4 checkpoint is activated by the ESV-M4-06 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **473 / 473** regression floor.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **497 / 497** regression floor.

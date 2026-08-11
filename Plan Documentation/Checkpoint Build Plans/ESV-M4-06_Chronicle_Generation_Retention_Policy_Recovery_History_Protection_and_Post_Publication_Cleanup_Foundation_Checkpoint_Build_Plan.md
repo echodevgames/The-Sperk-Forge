@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-06 — Chronicle Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation
@@ -11,7 +11,7 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-06
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOSAVE-001 v1.25.0
 **Decision:** ESV-D-028
 **Prior checkpoint:** ESV-M4-05 — **Complete**
@@ -268,3 +268,47 @@ Stop when Chronicle can bound ordinary committed generation history after a succ
 Do **not** implement recovery execution yet.
 
 Do **not** add slot deletion/trash or generic operation queues.
+
+
+## 8. Completion Evidence
+
+**Planning baseline:** `3cdad0f`
+
+**Planning/activation commit:** `3d8e0b8`
+
+**Implementation commit:** `e714a90`
+
+**Final effective runtime baseline:** `e714a90`
+
+**Unity compile/import:** Green
+
+**Focused Chronicle Editor gate:** **497 / 497 passed, 0 failed**
+
+**Prior focused regression floor:** **473 / 473**
+
+**Net new focused tests:** **24**
+
+**Committed implementation/test scope:** **33 files**, `2136` insertions, `12` deletions
+
+Observed completion:
+- bounded project-owned total-generation retention policy;
+- minimum safe total bound of two;
+- provider-neutral bounded generation discovery;
+- optional complete-tree deletion capability without changing base `ISaveStorageBackend`;
+- fail-closed candidate classification;
+- current and immediate predecessor protection;
+- deterministic oldest-first excess-history deletion;
+- zero retention before successful head publication;
+- shared manual/autosave post-publication retention;
+- public maintenance truth;
+- committed save truth preserved across retention failure.
+
+### Integration-test correction
+
+The first focused run discovered **497** tests with **495 passed / 2 failed**. The new manual-retention integration fixture had no participant registered, so the transaction stopped during participant capture before publication/retention. The third injected-publication-failure test also passed for that wrong early-stop reason.
+
+A test-only correction registered one ordinary participant in all three integration cases. Runtime implementation, API, architecture, authority, and test discovery did not change.
+
+Final rerun: **497 / 497 passed, 0 failed**.
+
+No follow-on M4 checkpoint is activated by this closeout.

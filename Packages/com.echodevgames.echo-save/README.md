@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-05 — Autosave Request Coalescing and Latest-Wins Pending Admission Foundation**. Planning/activation is committed at `8504ed4`, implementation is committed at `9917f1b`, and the final focused Chronicle Editor gate is **473 / 473**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation**. Planning/activation is committed at `3d8e0b8`, implementation is committed at `e714a90`, and the final focused Chronicle Editor gate is **497 / 497**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
 
 ## Current persistence boundary
 
@@ -24,7 +24,9 @@ M4-04 exposes that proven transaction through public active-slot `SaveAsync`, ad
 
 M4-05 adds explicit caller-triggered `RequestAutosave`, retains at most one pending latest autosave while admission is occupied, supersedes older pending metadata instead of growing a queue, preserves manual-save Busy semantics, drains at most the latest pending autosave after admission release, and prevents pending work from starting after shutdown admission closure. Chronicle still does not decide when gameplay should autosave.
 
-It still does **not** include persistent catalog-cache optimization, rename/duplicate/delete, full slot-policy configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, retention, recovery, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+M4-06 adds bounded total committed-generation retention after successful publication. It discovers history through provider-neutral storage capability, protects the current generation and immediate recovery predecessor, deletes only excess verified committed history oldest-first through optional tree-deletion capability, and reports cleanup maintenance separately from committed save truth.
+
+It still does **not** include persistent catalog-cache optimization, rename/duplicate/delete/trash, full slot-policy configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, recovery execution/quarantine, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 ## Minimal use
 

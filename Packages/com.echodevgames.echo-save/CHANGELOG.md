@@ -558,3 +558,39 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - At most one pending latest autosave is retained.
 - Manual save remains Busy rather than queued.
 - Retention, generic queued operation scheduling, recovery, destructive slot operations, persistent catalog cache, and broader slot-policy work remain deferred.
+
+
+### Added
+
+#### ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation
+
+- Project-owned bounded `SaveRetentionPolicy`.
+- Minimum safe total-generation retention of two.
+- Provider-neutral bounded generation-directory discovery.
+- Additive optional `ISaveStorageTreeDeletionBackend`.
+- Unchanged base `ISaveStorageBackend`.
+- Fail-closed canonical committed-generation classification.
+- Protection of current and immediate predecessor generations.
+- Deterministic oldest-first excess-history deletion.
+- Retention maintenance only after successful generation/head publication.
+- Shared manual-save and autosave retention path.
+- Public `SaveOperationResult.RetentionResult` maintenance truth.
+- Focused policy, provider, coordinator, manual/autosave integration, failure, and boundary tests.
+
+### Verified
+
+#### ESV-M4-06 Closeout
+
+- Planning/activation committed at `3d8e0b8`.
+- Implementation committed at `e714a90`.
+- Final effective runtime baseline is `e714a90`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **497 / 497**, with `0` failed.
+- All prior **473 / 473** Chronicle regressions remained green.
+- M4-06 adds **24** net focused tests over the prior floor.
+- Final committed implementation/test scope is **33 files**, `2136` insertions and `12` deletions.
+- Initial focused run was **495 / 497** because two new manual-retention integration tests registered no participant and therefore failed before reaching publication/retention.
+- The third injected-publication-failure integration test also stopped early and passed for the wrong reason.
+- One test-only setup correction registered a normal participant in all three integration cases; runtime implementation, API, architecture, authority, and discovery count did not change.
+- Final rerun passed **497 / 497**.
+- Recovery execution/quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.

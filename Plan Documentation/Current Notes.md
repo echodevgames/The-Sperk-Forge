@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-06 generation retention
-**Current checkpoint:** ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation — **active / authorized**
+**Current focus:** Chronicle M4 — ESV-M4-06 complete; next bounded checkpoint planning
+**Current checkpoint:** None activated — ESV-M4-06 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -176,30 +176,43 @@ Evidence:
 
 No follow-on M4 checkpoint is activated by this closeout.
 
-## Chronicle ESV-M4-06 Activation
+## Chronicle ESV-M4-06 Closeout
 
-`ESV-M4-06 — Chronicle Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation` is **active / authorized** at clean baseline `3cdad0f`.
+`ESV-M4-06 — Chronicle Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation` is **complete**.
 
-Authority decision: **ESV-D-028**.
-
-Authorized boundary:
-- project-owned bounded total-generation retention policy;
-- minimum safe retained history of current + immediate predecessor;
-- provider-neutral bounded generation discovery;
-- additive optional complete-tree deletion capability while base `ISaveStorageBackend` remains unchanged;
-- fail-closed classification of candidate generations;
-- only verified committed non-current generations may be deleted;
-- current and immediate predecessor are always protected;
-- cleanup runs only after successful generation/head publication;
-- cleanup failure is reported as maintenance truth and never rewrites committed-save truth;
+Evidence:
+- planning baseline: `3cdad0f`;
+- planning/activation commit: `3d8e0b8`;
+- implementation commit: `e714a90`;
+- final effective runtime baseline: `e714a90`;
+- Unity compile/import: **green**;
+- final focused `EchoDevGames.EchoSave.Tests.Editor`: **497 / 497 passed, 0 failed**;
+- prior **473 / 473** Chronicle regression floor preserved;
+- **24** net new focused tests;
+- committed implementation/test scope: **33 files**, `2136` insertions, `12` deletions;
+- bounded `SaveRetentionPolicy` is present;
+- base `ISaveStorageBackend` remains unchanged;
+- additive optional `ISaveStorageTreeDeletionBackend` owns provider tree deletion;
+- current and immediate predecessor generations are protected;
+- untrustworthy history fails closed without deletion;
+- only excess verified committed history is eligible;
+- deletion order is deterministic oldest-first;
+- retention begins only after committed generation/head publication;
 - manual save and autosave share the same retention path;
-- malformed, corrupt, unsupported, and unrecognized material is preserved for later recovery/quarantine authority.
+- retention failure is maintenance truth and never fabricates save rollback.
+
+Integration-test correction:
+- first focused run: **495 / 497**, `2` failed;
+- both failures came from new integration tests that registered no participant and therefore stopped during capture before publication/retention;
+- the third failure-injection integration test also passed for that wrong early-stop reason;
+- a test-only setup correction registered one ordinary participant in all three cases;
+- runtime implementation, API, architecture, authority, and discovery count were unchanged;
+- final rerun: **497 / 497**.
 
 Still deferred:
-- recovery planning/execution;
+- recovery planning/execution and fallback selection;
 - quarantine movement;
-- rename/duplicate/delete/trash;
-- trash retention;
+- rename/duplicate/delete/trash and trash retention;
 - persistent catalog cache;
 - generic operation queues/capacity/overflow;
 - automatic autosave timers;
@@ -207,7 +220,7 @@ Still deferred:
 - full configuration/Setup expansion;
 - scene travel, bridges, service locator, DDOL.
 
-Carried focused regression floor: **473 / 473**.
+No follow-on M4 checkpoint is activated by this closeout.
 
 
 ## Chronicle ESV-M4-05 Closeout
@@ -471,8 +484,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `3cdad0f`.
-2. Read `ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation_Checkpoint_Build_Plan.md`.
-3. Preserve the focused **473 / 473** Chronicle regression floor.
-4. Implement only bounded total-generation retention, protected current/immediate-predecessor history, provider-neutral discovery/tree deletion, and truthful post-publication cleanup under ESV-D-028.
+1. Rehydrate exact `e714a90`.
+2. Preserve the focused **497 / 497** Chronicle regression floor.
+3. Treat ESV-M4-06 bounded retention and post-publication cleanup as complete.
+4. Define and activate the next bounded M4 Checkpoint Build Plan before writing further runtime code.
 5. Keep recovery execution/quarantine, rename/duplicate/delete/trash, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
