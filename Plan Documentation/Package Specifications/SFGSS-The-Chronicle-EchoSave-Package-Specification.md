@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.26.0
+**Specification version:** 1.27.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-06 are complete. `ESV-M4-06` is committed at `e714a90` with final focused Chronicle Editor evidence `497 / 497`. It establishes bounded total committed-generation retention, provider-neutral discovery, additive optional tree deletion, current/immediate-predecessor protection, deterministic oldest-first excess cleanup, and truthful post-publication maintenance results. No follow-on M4 checkpoint is activated by this closeout.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-06 are complete. `ESV-M4-07` is now the active bounded checkpoint at clean baseline `9695450`. It authorizes read-only recovery-candidate discovery, full candidate generation verification, deterministic newest-valid fallback selection, immutable recovery-plan/result truth, and source-provenance binding sufficient for later stale-plan rejection while explicitly deferring recovery execution/head rewrite, catalog mutation, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -58,6 +58,7 @@
 | 1.24.0 | 2026-08-10 | Approved | Closed ESV-M4-05 at implementation commit `9917f1b` with focused Chronicle Editor evidence `473 / 473`; recorded explicit caller-triggered `RequestAutosave`, at-most-one latest-wins pending request, deterministic coalescing/supersession, reuse of the M4-04 root-local admission authority and M4-03/M4-04 durable active-slot save path, manual-save Busy preservation, pending drain after admission release, and shutdown-safe pending settlement as complete. Updated the stale M4-04 public-surface regression assertion to the newly authorized autosave API. Retention, generic queued multi-operation scheduling, recovery, rename/duplicate/delete, persistent catalog cache, and full slot-policy/configuration expansion remain deferred; no follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
 | 1.25.0 | 2026-08-10 | Approved | Activated ESV-M4-06 bounded generation-retention and post-publication cleanup foundation at clean baseline `3cdad0f`: project-owned `SaveRetentionPolicy`, bounded provider-neutral generation discovery, additive optional tree-deletion capability without changing base `ISaveStorageBackend`, deterministic safe cleanup of excess verified committed generations only after a new head is authoritative, protection of current and immediate recovery generations, and truthful cleanup-failure diagnostics that never fabricate save rollback; recovery execution, destructive slot operations/trash, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred. | Jesse “Echo” Adams |
 | 1.26.0 | 2026-08-10 | Approved | Closed ESV-M4-06 at implementation commit `e714a90` with focused Chronicle Editor evidence `497 / 497`; recorded bounded project-owned `SaveRetentionPolicy`, provider-neutral generation discovery, additive optional `ISaveStorageTreeDeletionBackend`, current/immediate-predecessor protection, deterministic oldest-first deletion of excess verified committed history, shared manual/autosave post-publication retention, and truthful maintenance failure without fabricated save rollback. The first focused run exposed two new integration-test setup failures because no participant was registered; a test-only correction made all three integration cases reach their intended publication/retention boundary. Recovery execution/quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred; no follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
+| 1.27.0 | 2026-08-10 | Approved | Activated ESV-M4-07 bounded read-only recovery planning at clean baseline `9695450`: provider-neutral bounded generation discovery, full manifest/payload/integrity verification for recovery candidates, deterministic newest-valid ordering, missing/invalid-head and corrupt-current plan truth, immutable plan provenance for later stale-plan rejection, and zero durable mutation during planning. Recovery execution/head rewrite/catalog reconciliation, automatic fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -1898,6 +1899,7 @@ Project-specific migration tooling must:
 | ESV-D-026 | Public manual save enters through one root-local mutating-operation admission authority; an overlapping manual save returns Busy immediately rather than queueing, cancellation is honored only before durable publication begins, and shutdown closes new admission without abandoning a publication already crossing the commit boundary | Approved | Establishes the production-facing manual-save seam without prematurely implementing autosave coalescing or every later mutating operation | M4-04 expands `IEchoSaveService` with active-slot `SaveAsync`, maps public results to M4-03 durable truth, proves Busy/cancel/Too-Late/shutdown behavior, and leaves generic multi-operation queue policy plus autosave for later checkpoints |
 | ESV-D-027 | Autosave is an explicit caller-triggered request source, not a Chronicle-owned gameplay timer; Chronicle coalesces autosaves into at most one pending latest request and reuses the same root-local mutating admission/durable save path as manual save | Approved | Preserves project ownership of when autosave should occur, keeps request spam bounded, and avoids inventing a generic queue before other operation types exist | M4-05 adds `RequestAutosave` submission/coalescing truth and one latest-wins pending autosave slot; manual save remains Busy while occupied, pending autosave never becomes an unbounded queue, and retention remains a later bounded checkpoint |
 | ESV-D-028 | Generation retention is post-publication maintenance over verified committed non-current generations; it never participates in head commit, never deletes the current head generation or its immediate recovery predecessor, and retention failure never fabricates rollback of an already committed save | Approved | Preserves durable-truth semantics while bounding disk growth and protecting one immediate recovery generation | M4-06 introduces bounded retention policy/discovery/tree-deletion seams and post-publication cleanup; corrupt/unsupported/unrecognized material remains for later recovery/quarantine authority rather than being silently deleted |
+| ESV-D-029 | Recovery planning is read-only, bounded, and deterministic; only fully verified committed generations may become candidates, the preferred fallback is the newest valid candidate by validated technical timestamp with generation ID as tie-break, and every immutable plan binds exact observed source provenance for later stale-plan rejection before any execution | Approved | Prevents damaged current state from being overwritten during diagnosis and makes future recovery execution auditable/revalidatable | M4-07 builds plans only; head publication, catalog mutation, automatic fallback, quarantine, and recovery execution remain later bounded work |
 
 ### 27.2 Release-blocking questions
 
@@ -2493,46 +2495,115 @@ ESV-D-028 remains the durable M4-06 authority.
 
 No follow-on M4 checkpoint is activated by this closeout.
 
+### 28.23 ESV-M4-07 recovery-candidate planning activation
+
+**Status:** Active / authorized.
+
+**Exact implementation baseline:** `9695450`.
+
+**Carried focused regression floor:** **497 / 497**.
+
+ESV-M4-07 authorizes the first bounded recovery-planning path.
+
+### ESV-D-029 — recovery planning is read-only and provenance-bound
+
+> Chronicle recovery planning may inspect damaged head/current-generation state and retained generations, but it performs zero durable mutation. Only fully verified committed generations may become candidates. Candidate ordering is deterministic newest-valid first. The immutable plan records exact observed source provenance so a later execution checkpoint can reject stale evidence before publication.
+
+M4-07 owns:
+
+- additive public read-only `BuildRecoveryPlanAsync(SaveSlotId)` surface consistent with the already-approved API map;
+- bounded provider-neutral discovery beneath `slots/<slot-id>/generations`;
+- explicit observed-head classification:
+  - healthy/valid current generation;
+  - missing head;
+  - unreadable/malformed/unsupported head;
+  - valid head whose current generation is missing/corrupt/unverifiable;
+- complete recovery-candidate verification using existing package-document validation, payload/manifest agreement, payload length, integrity provider verification, slot/generation identity agreement, and committed-state requirements;
+- no participant Apply/capture/default callbacks during recovery planning;
+- no document migration or participant migration during candidate qualification;
+- unsupported newer package documents remain preserved and ineligible rather than guessed;
+- noncanonical generation children remain preserved and excluded;
+- malformed, incomplete, corrupt, mismatched, or unsupported candidate material remains preserved and excluded from the valid-candidate list;
+- deterministic newest-valid ordering by validated technical timestamp, then canonical generation ID ordinal tie-break;
+- a preferred candidate only when recovery is actually required and at least one verified candidate exists;
+- missing-head recovery may select the newest verified committed generation;
+- corrupt/unverifiable current recovery excludes the broken current generation and may select a prior verified committed generation;
+- a healthy valid current generation reports recovery not required and never fabricates a fallback action;
+- immutable plan/result objects containing:
+  - target `SaveSlotId`;
+  - observed head condition;
+  - observed current generation identity when trustworthy;
+  - ordered verified candidate summaries;
+  - preferred candidate when applicable;
+  - bounded rejected/ignored evidence counts;
+  - stable diagnostic/status truth;
+  - opaque source-provenance fingerprint sufficient for later stale-plan execution rejection;
+- exact plan identity/provenance must be derived only from technical save evidence, never display-name/path/UI state;
+- planning reads only; it never creates, replaces, deletes, moves, renames, quarantines, or repairs durable data.
+
+M4-07 does **not** own:
+
+- `ExecuteRecoveryAsync`;
+- head rewrite/publication to a selected candidate;
+- catalog reconciliation after recovery;
+- automatic/configured fallback execution;
+- mutation admission/Busy/cancellation semantics for recovery execution;
+- stale-plan execution rejection itself beyond capturing the provenance needed for that later check;
+- quarantine movement;
+- incomplete-generation cleanup;
+- rename / duplicate / delete / trash;
+- trash-history retention;
+- persistent `catalog.cache.json`;
+- generic operation queues/capacity/overflow;
+- automatic timer/checkpoint autosave triggers;
+- permission-provider production facade wiring;
+- full `SaveRecoveryPolicy` / `EchoSaveConfiguration` / Setup authoring expansion;
+- document migration;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+The first recovery checkpoint deliberately separates **diagnosis/selection** from **mutation**. ESV-T-074 through ESV-T-077 belong here. ESV-T-078 recovery execution and ESV-T-079 stale-plan execution rejection remain for the follow-on execution checkpoint.
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.26.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.27.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.26.0
+Current specification version: 1.27.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06
-Current milestone/checkpoint: M4 remains active; no follow-on bounded checkpoint is currently activated
+Current milestone/checkpoint: ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation — active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01 through M4-06 are complete; ESV-M4-06 implementation is committed at e714a90 with 497 / 497 focused Chronicle Editor evidence
+Current implementation status: M2 and M3 are complete; M4-01 through M4-06 are complete; ESV-M4-07 planning is activated at clean baseline 9695450 with the 497 / 497 focused regression floor
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing further M4 code:
-1. Rehydrate exact `e714a90`.
-2. Preserve the **497 / 497** focused Chronicle regression floor.
-3. Treat ESV-M4-06 bounded total-generation retention and post-publication cleanup as complete.
-4. Do not begin further runtime implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
-5. Keep recovery execution/quarantine, rename/duplicate/delete/trash, persistent catalog cache, generic operation queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+Before writing ESV-M4-07 code:
+1. Rehydrate exact `9695450`.
+2. Read the active ESV-M4-07 Checkpoint Build Plan completely.
+3. Preserve the **497 / 497** focused Chronicle regression floor.
+4. Implement only read-only bounded recovery-candidate discovery, full generation verification, deterministic preferred-candidate selection, immutable recovery-plan truth, and source-provenance capture under ESV-D-029.
+5. Perform zero durable mutation during planning.
+6. Keep recovery execution/head rewrite/catalog reconciliation, automatic fallback, quarantine, rename/duplicate/delete/trash, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.26.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.27.0 |
 | Completed checkpoint | ESV-M4-06 - Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation |
 | Implementation commit | `e714a90` |
 | Tests passed | ESV-M4-06 focused Chronicle Editor gate `497 / 497`; prior `473 / 473` regression floor preserved; Unity compile/import green |
 | Tests failed | Final ESV-M4-06 gate: `0` |
 | Known issues | None blocking bounded next-checkpoint planning |
-| Decisions added | ESV-D-001 through ESV-D-028; ESV-D-028 defines retention as post-publication maintenance that protects current/immediate recovery generations and never fabricates rollback |
+| Decisions added | ESV-D-001 through ESV-D-029; ESV-D-029 defines recovery planning as read-only, fully verified, deterministically ordered, and source-provenance-bound for later stale-plan rejection |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No follow-on M4 checkpoint is activated; further runtime implementation requires a new bounded Checkpoint Build Plan |
+| Implementation permission | ESV-M4-07 active / authorized at `9695450`; implementation is bounded by its Checkpoint Build Plan and ESV-D-029 |
 
 ## 30. Approval
 
@@ -2578,7 +2649,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.26.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-06 are complete. M4 remains active, but no follow-on bounded checkpoint is currently activated.
+The Chronicle specification is complete and **Approved v1.27.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-06 are complete. M4 remains active, with ESV-M4-07 authorized as the bounded recovery-candidate planning checkpoint.
 
 
 ---

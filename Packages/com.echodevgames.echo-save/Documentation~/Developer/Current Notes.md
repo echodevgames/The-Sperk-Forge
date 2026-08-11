@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.26.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.27.0
 **Completed checkpoint:** ESV-M4-06 — Generation Retention Policy, Recovery-History Protection, and Post-Publication Cleanup Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — ESV-M4-06 complete
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; M4 remains active
+**Current checkpoint:** ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.26.0 records ESV-M4-06 complete at implementation commit `e714a90` with final focused Chronicle Editor evidence `497 / 497`; no follow-on M4 checkpoint is activated.
+**Authority reconciliation:** Specification v1.27.0 records ESV-M4-06 complete and activates bounded ESV-M4-07 at clean baseline `9695450` under ESV-D-029.
 
 ## ESV-M4-02 closeout
 
@@ -239,3 +239,41 @@ Still deferred:
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **497 / 497** focused regression floor.
+
+## ESV-M4-07 active boundary
+
+**Exact planning baseline:** `9695450`.
+
+**Carried focused regression floor:** **497 / 497**.
+
+M4-07 owns:
+- additive public read-only `BuildRecoveryPlanAsync(SaveSlotId)`;
+- bounded provider-neutral generation discovery;
+- explicit healthy/missing/invalid/corrupt-current recovery diagnosis;
+- full manifest + payload + integrity verification for candidate eligibility;
+- committed matching slot/generation identity requirements;
+- preservation/exclusion of noncanonical, malformed, incomplete, corrupt, mismatched, and unsupported material;
+- deterministic newest-valid ordering by validated technical timestamp and canonical generation-ID tie-break;
+- preferred candidate only when recovery is required;
+- immutable recovery-plan/result truth;
+- exact technical source-provenance fingerprint for later stale-plan rejection;
+- zero storage mutation, catalog mutation, selection mutation, participant callback, or migration side effect.
+
+M4-07 does **not** own:
+- recovery execution or head publication;
+- catalog reconciliation after recovery;
+- automatic/configured fallback execution;
+- recovery mutation admission/Busy/cancellation;
+- quarantine;
+- rename/duplicate/delete/trash;
+- persistent `catalog.cache.json`;
+- generic queues/capacity/overflow;
+- automatic autosave timers;
+- permission-provider production facade wiring;
+- full `SaveRecoveryPolicy`, `EchoSaveConfiguration`, or Setup authoring expansion;
+- document migration;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+ESV-T-074 through ESV-T-077 are the intended bounded recovery proofs for this checkpoint. ESV-T-078 recovery execution and ESV-T-079 stale-plan execution rejection remain deferred.
+
+The next implementation must preserve the **497 / 497** focused regression floor.
