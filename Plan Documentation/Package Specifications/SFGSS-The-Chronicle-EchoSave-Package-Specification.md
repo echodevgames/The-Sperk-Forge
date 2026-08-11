@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.47.0
+**Specification version:** 1.48.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 is complete at `8774dd2`. ESV-M5-02 is **Complete** under ESV-D-038 with activation commit `3456489`, implementation commit `d2e9252`, and focused Chronicle Editor evidence **724 / 724 passed, 0 failed**. Schema 3 is the current authoring target; schema-1/schema-2 compatibility remains deterministic and non-mutating. Setup supports explicit Create/Edit/upgrade Preview/Apply and selected root-reference repair with Undo recording. Validator covers the M5-02 retention/provider/fixed-template/discovery-limit truth. Manual proof confirmed schema-2 → schema-3 Preview/Apply, stable post-Apply `NoChanges`, selected-root Preview/Apply/Undo, and Validator `Issues: 0`. Repository-hygiene commit `423fac1` repaired an unrelated pre-existing empty First Light folder `.meta` and changed no Chronicle implementation file. Browser/Simulator/Laboratory and production save-data repair remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open; M5-03 is not active.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 and ESV-M5-02 are complete. ESV-M5-03 is **Active / Authorized** from clean baseline `b4d4d0b` under ESV-D-039. M5-03 owns read-only Save Browser, Generation Inspector, and Migration Graph tooling. Inspection may expose narrow additive read-only runtime DTO/query surfaces where existing internal truth is otherwise inaccessible, but it may not mutate heads, generations, trash, recovery state, slot identity, project configuration, or production save data. Simulator/Recovery Planner/Test Data/support export, persistent-cache cleanup, and Laboratory remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
 
 ---
 
@@ -79,6 +79,7 @@
 | 1.45.0 | 2026-08-11 | Approved | Closed `ESV-M5-01` under ESV-D-037. Activation `affe3ae`; implementation `69721af`; focused Chronicle Editor `697 / 697`, `0` failed, adding `37` tests over the `660 / 660` floor. Recorded the corrected committed implementation scope as `21 files`, `2404` insertions, `1` deletion, with zero Runtime C# changes. Manual Unity proof confirmed deterministic Preview-before-mutation, explicit schema-2 Apply, `ESV-SETUP-002` occupied-target no-overwrite, Validator `Issues: 0`, and clean temporary-asset removal. Retained the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`; M5 remains open and no M5-02 slice is activated by this closeout. | Jesse “Echo” Adams |
 | 1.46.0 | 2026-08-11 | Approved | Activated `ESV-M5-02` from clean M5-01 closeout baseline `8774dd2` with incoming focused Chronicle floor `697 / 697`. Added ESV-D-038: full Setup/configuration authoring and safe repair previews use explicit schema evolution, deterministic compatibility defaults, Preview-before-mutation, explicit Apply, Undo/backup-safe selected repairs, and fail-closed handling for ambiguous/destructive targets. Older schema-1/schema-2 configuration assets remain runtime-readable and are never silently rewritten. Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data/support export, persistent cache/cleanup, direct-scene Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
 | 1.47.0 | 2026-08-11 | Approved | Closed `ESV-M5-02` under ESV-D-038. Activation `3456489`; implementation `d2e9252`; focused Chronicle Editor `724 / 724`, `0` failed, adding `27` tests over the `697 / 697` floor. Recorded the committed implementation scope as `23 files`, `3268` insertions, `281` deletions. Manual Unity proof confirmed schema-2 → schema-3 read-only Preview, explicit Apply, stable schema-3 `NoChanges`, selected `EchoSaveRoot` reference Preview/Apply with Undo back to `None`, and Validator `Issues: 0`. Unrelated repository-hygiene commit `423fac1` repaired a pre-existing empty First Light folder `.meta` after Chronicle cleanup and changed no Chronicle implementation file. Retained the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`; M5 remains open and M5-03 is not activated by this closeout. | Jesse “Echo” Adams |
+| 1.48.0 | 2026-08-11 | Approved | Activated `ESV-M5-03` from clean M5-02 closeout baseline `b4d4d0b` with incoming focused Chronicle floor `724 / 724`. Added ESV-D-039: Save Browser, Generation Inspector, and Migration Graph are read-only inspection tools over actual Chronicle catalog/slot/generation/package-document/migration truth. Narrow additive read-only runtime DTO/query surfaces are allowed where required, but inspection may not mutate heads, generations, trash, recovery state, slot identity, project configuration, or production save data. Unsupported-newer, missing-migration, incomplete/corrupt, and stale-head truth remains visible and fail-closed. Simulator/Recovery Planner/Test Data/support export, persistent cache/cleanup, direct-scene Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1938,6 +1939,7 @@ Project-specific migration tooling must:
 
 | ESV-D-037 | M5 begins with a strict Editor-only Setup/Validator foundation. `ESV-M5-01` creates the Editor assembly boundary, a deterministic non-mutating Setup preview, create-only authoring of a new current-schema `EchoSaveConfiguration`, and a non-destructive Validator for checks that current runtime/configuration truth can already support. It does not use M5 as permission for broad runtime/configuration expansion | Approved | M4 closed with runtime truth stable at `660 / 660`; the safest next step is to establish tooling isolation and preview/validation discipline before Browser, Simulator, repair, or Laboratory work can touch project or sandbox data | M5-01 may add Editor-only code/tests and project-asset creation through explicit user action. It may not change `IEchoSaveService`, durable publication/recovery behavior, package document versions, participant contracts, scene/lifetime authority, production save roots, or later M5 tools. Existing assets are never overwritten by default; validation is read-only; sample/Laboratory storage is not created yet | No |
 | ESV-D-038 | M5-02 completes the project-authoring side of Chronicle Setup through explicit schema evolution and safe repair previews. `EchoSaveConfiguration` may advance to schema 3 to represent the already-approved configuration domains (slot policy, retention, provider selection, limits, recovery policy, and optional fixed-slot authoring metadata), but a field may become user-authorable only when Runtime or Editor tooling consumes that value as real truth. Schema-1/schema-2 compatibility is read-only and deterministic; runtime never rewrites assets. Editor upgrades/repairs are selected, previewed, explicit, Undo/backup-safe where possible, and fail closed when target authority or data safety is ambiguous | Approved | M5-01 proved the safety shell but intentionally stopped at create-only schema-2 authoring. The next risk is editing/upgrading real project assets; one bounded authority must prevent convenience tooling from becoming silent migration or destructive repair | M5-02 may change Runtime configuration/policy types only as needed to make schema-3 authored values truthful, and may expand Setup/Validator tests. It may not change save document versions, participant contracts, `IEchoSaveService` operation semantics, immutable publication/recovery truth, scene/lifetime authority, or mutate production save data. Browser/Simulator/Laboratory remain later | No |
+| ESV-D-039 | M5-03 establishes a strictly read-only inspection layer: Save Browser, Generation Inspector, and Migration Graph. The Browser consumes actual Chronicle catalog/slot truth; the Inspector reads immutable generation/package-document evidence; the Graph reflects registered migration edges and reachable paths. Additive runtime DTO/query surfaces may expose already-owned truth without adding mutation authority. Unsupported-newer, missing migration, corrupt/incomplete, stale-head, and recovery-candidate states must remain explicit | Approved | M5-02 completed project authoring/repair. The next usability risk is observing durable save state without accidentally turning inspection into repair or recovery | M5-03 may add Editor windows/services/tests and narrow read-only runtime query models. It may not mutate save/project state, execute recovery, alter package document versions, change participant contracts, or activate simulator/laboratory work | No |
 ### 27.2 Release-blocking questions
 
 None. Exact filesystem replacement/flush behavior, package dependency versions, performance budgets, and supported-platform matrix are implementation verification tasks, not unresolved authority decisions.
@@ -3971,7 +3973,7 @@ Registry rule: M5-01 does not mass-promote Deferred ESV-T rows. Its evidence may
 
 Provisional M5 sequence after M5-01, each requiring separate activation:
 - **M5-02 — full Setup/configuration authoring and safe repair previews — COMPLETE at implementation `d2e9252`;**
-- M5-03 — Browser, Generation Inspector, and Migration Graph — not active;
+- **M5-03 — Browser, Generation Inspector, and Migration Graph — ACTIVE / AUTHORIZED at `b4d4d0b`;**
 - M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling;
 - M5-05 — Standalone Chronicle Save Laboratory plus 32-scenario execution;
 - M5 final reconciliation/closeout.
@@ -4111,3 +4113,92 @@ Manual closeout evidence:
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **M5 remains open. M5-03 requires a separate authority/activation checkpoint.**
+
+
+### 28.36 ESV-M5-03 Save Browser, Generation Inspector, and Migration Graph activation
+
+**Status:** Active / Authorized.
+
+**Milestone:** M5 — Tooling and Laboratory.
+
+**Clean planning baseline:** `b4d4d0b` — `Close out ESV-M5-02 full setup and repair previews`.
+
+**Carried focused Chronicle regression floor:** **724 / 724 passed, 0 failed**.
+
+**Authority decision:** ESV-D-039.
+
+M5-03 owns a strictly read-only inspection layer.
+
+#### Save Browser
+
+The Browser may:
+- refresh discovered Chronicle slots from real catalog truth;
+- show slot identity/display metadata without using display text as path authority;
+- show current head/generation state;
+- show trash/recoverability/health state already represented by Chronicle;
+- show last-known publication/recovery warnings;
+- select a slot for deeper inspection.
+
+The Browser may not:
+- create, duplicate, delete, restore, recover, rename, or repair a slot;
+- change a head;
+- mutate save bytes;
+- mutate project configuration.
+
+#### Generation Inspector
+
+The Inspector may:
+- enumerate immutable committed generations for a selected slot;
+- show generation ID, timestamps/ordering truth, head/current relationship, manifest/package-document metadata, integrity/support state, and recovery candidacy;
+- inspect package-document versions without mutating them;
+- surface unsupported-newer, missing-migration, incomplete/corrupt, or stale-head evidence.
+
+The Inspector may not rewrite generation/package documents or trigger recovery.
+
+#### Migration Graph
+
+The Graph may:
+- enumerate registered package-document migration steps;
+- show directed source-version → target-version edges;
+- show reachable paths to the current package-document version;
+- identify gaps, ambiguity, cycles, duplicates, or unsupported-newer states;
+- show which participant/package document would require a missing path.
+
+The Graph is descriptive only. It does not run migrations against production data.
+
+#### Read-only runtime seam
+
+If Editor tooling cannot consume existing internal truth safely, M5-03 may add narrow additive runtime models/query services that:
+- expose immutable/read-only snapshots;
+- return copied DTO collections rather than mutable internal structures;
+- do not provide mutation handles;
+- preserve current operation/runtime contracts;
+- do not add UnityEditor dependencies to Runtime.
+
+#### Explicitly out of scope
+
+M5-03 does not own:
+- Failure Simulator;
+- Recovery Planner execution UI;
+- Test Data Generator;
+- redacted snapshot/support export;
+- persistent catalog cache;
+- cleanup/quarantine/permanent erase/restore-from-trash;
+- direct-scene initializer or Save Laboratory;
+- LAB-001 through LAB-032;
+- scene travel, peer-package bridges, service-location, or project-wide DDOL;
+- package document version changes;
+- participant contract changes.
+
+Closeout requires:
+- implementation commit;
+- clean Unity compile;
+- focused Chronicle Editor suite green at actual discovered total and not below **724 / 724**;
+- manual Browser refresh/selection proof;
+- manual Generation Inspector proof over at least one disposable committed generation;
+- manual Migration Graph proof showing registered edges/path or an intentionally empty/no-migration state accurately;
+- proof that refresh/selection/inspection performs zero writes;
+- documentation reconciliation;
+- no simulator/laboratory behavior introduced.
+
+M5 remains open after M5-03. M5-04 requires a separate activation.

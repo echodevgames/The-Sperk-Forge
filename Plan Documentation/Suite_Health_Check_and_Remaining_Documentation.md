@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-02 – Chronicle Full Setup/Configuration Authoring and Safe Repair Previews
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 implemented at `d2e9252` and closing at focused Chronicle `724 / 724`; unrelated First Light folder-meta hygiene repaired separately at `423fac1`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; no M5-03 active
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 Save Browser/Generation Inspector/Migration Graph active from `b4d4d0b`; incoming focused Chronicle floor `724 / 724`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 closed; ESV-M5-02 complete at implementation `d2e9252`; focused Chronicle `724 / 724`; M5 open; no M5-03 active** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 active for read-only Browser/Generation Inspector/Migration Graph; incoming focused floor `724 / 724`; M5 open** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -211,3 +211,12 @@ Evidence:
 Repository-hygiene commit `423fac1` repaired a pre-existing zero-byte First Light Example folder `.meta` discovered during cleanup. It changed no Chronicle implementation file and is not part of M5-02 feature scope.
 
 M5 remains open. M5-03 — Browser, Generation Inspector, and Migration Graph — is not active until a separate bounded authority/activation checkpoint.
+
+
+## Chronicle M5-03 activation state
+
+`ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph` is **Active / Authorized** from clean baseline `b4d4d0b`.
+
+This checkpoint is inspection-only. It may expose additive read-only query/DTO surfaces where necessary, but it may not execute recovery or mutate project/save state.
+
+Failure simulation, recovery planning, support export, persistent cache/cleanup, and the Save Laboratory remain later M5 gates.

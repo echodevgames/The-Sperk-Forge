@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.47.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.48.0
 **Completed checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — COMPLETE; no M5-03 checkpoint active
-**Status:** M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 implementation `d2e9252` and manual closeout evidence complete; focused Chronicle Editor `724 / 724`; M5 remains open; no M5-03 slice active
+**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 active from clean closeout baseline `b4d4d0b`; incoming focused Chronicle floor `724 / 724`; M5 remains open
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -835,3 +835,31 @@ Manual Unity proof:
 - disposable Chronicle test state was removed.
 
 **ESV-M5-02 is Complete. M5 is not complete. No M5-03 checkpoint is active.**
+
+
+## ESV-M5-03 activation
+
+**Clean planning baseline:** `b4d4d0b` — `Close out ESV-M5-02 full setup and repair previews`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.48.0 / ESV-D-039
+**Incoming focused Chronicle floor:** **724 / 724 passed, 0 failed**
+**Milestone:** M5 — Tooling and Laboratory
+
+M5-03 owns the read-only Chronicle inspection layer:
+
+- Save Browser over discovered slots and their durable state;
+- Generation Inspector over immutable committed generation metadata and package-document state;
+- Migration Graph over registered package-document migration edges and reachable paths;
+- read-only warnings for unsupported-newer, missing migration, incomplete/corrupt evidence, stale heads, missing candidates, or other already-defined Chronicle truth;
+- deterministic refresh and selection behavior;
+- explicit separation between inspection and later recovery/simulation actions.
+
+M5-03 may add narrow additive read-only DTO/query surfaces when the Editor cannot safely consume existing internal truth, but it may not widen mutation authority.
+
+M5-03 does **not** authorize:
+- head changes, recovery execution, trash restore, erase, cleanup, quarantine, or repair;
+- project configuration mutation;
+- Failure Simulator, Recovery Planner, Test Data Generator, redacted support export, or persistent cache;
+- direct-scene Laboratory content or LAB-001 through LAB-032;
+- scene travel, peer integration, service-locator behavior, or package-owned project-wide DDOL.
+
+No M5-04 implementation is active until M5-03 closes through its own evidence and documentation checkpoint.

@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-02 complete; M5-03 Browser/Generation Inspector/Migration Graph not yet activated
-**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — **COMPLETE**; no M5-03 checkpoint active
+**Current focus:** Chronicle M5 — M5-03 Save Browser, Generation Inspector, and Migration Graph active
+**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -984,3 +984,23 @@ Manual proof confirmed schema-2 → schema-3 Preview/Apply with read-only pre-Ap
 The unrelated metadata repair in `423fac1` changed no Chronicle implementation file and is not part of ESV-M5-02 scope.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. **ESV-M5-02 is Complete. M5 remains open. No M5-03 slice is active until a separate authority/activation checkpoint is committed.**
+
+
+## ESV-M5-03 activation
+
+**Planning baseline:** `b4d4d0b`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.48.0 / ESV-D-039
+**Incoming focused Chronicle floor:** **724 / 724 passed, 0 failed**
+
+ESV-M5-03 is the separately bounded read-only inspection slice.
+
+Authority locks:
+- inspection never mutates production save data or project configuration;
+- Browser state comes from actual Chronicle catalog/slot/generation truth rather than inferred filenames;
+- Generation Inspector treats committed generation bytes and package documents as immutable evidence;
+- Migration Graph reflects registered migration edges and reachable paths only;
+- unsupported-newer or missing-migration states remain visible and fail closed rather than being “fixed” by the inspector;
+- refresh/selection is deterministic and does not execute recovery;
+- any required new runtime surface must be additive and read-only.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
