@@ -407,4 +407,34 @@ Still open:
 - **A-04 — CAP-014 package-document migration** → R3;
 - final 100-case registry/document evidence mapping → final reconciliation.
 
-**M4 remains open. R3 is next but not activated. M5 remains locked.**
+**R2 closeout state:** M4 remained open; R3 was next but not yet activated; M5 remained locked.
+
+# R3 activation update
+
+**R3 status:** ACTIVE / AUTHORIZED
+**Clean planning baseline:** `0ebf1a1`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.39.0 / ESV-D-035
+**Incoming focused Chronicle floor:** **636 / 636 passed, 0 failed**
+**Target:** **A-04 / CAP-014 package-document migration**
+
+The approved R3 disposition selects the existing **Path A** from this audit: preserve CAP-014 exactly as written and implement the missing package-document migration half rather than splitting or weakening the capability.
+
+R3 authority is bounded as follows:
+- Chronicle owns package-document migration steps because Chronicle owns the package document schema;
+- package-document migration and participant migration remain separate domains and registries;
+- package document kind plus exact `(major, minor, revision)` source version selects one deterministic contiguous package-owned upgrade chain;
+- migration runs on detached serialized content in memory before exact-current package DTO validation;
+- exact-current package documents do not migrate;
+- missing/ambiguous chains, step failure, invalid output, or unsupported newer versions fail closed;
+- no downgrade is authorized;
+- source generations remain untouched and read-time migration never auto-rewrites or republishes the source;
+- existing integrity, commit-state, immutable-generation, and head-last durability rules remain in force;
+- current package document versions remain `1.0.0`; R3 does not invent a production version bump merely to create a test fixture;
+- tests may use internal deterministic fixture steps to prove production migration infrastructure;
+- R3 directly targets ESV-T-067, ESV-T-068, ESV-T-069, document-side ESV-T-072, and ESV-T-073 while preserving existing participant migration evidence for ESV-T-070/071.
+
+A-04 remains **open during R3 implementation** and closes only when R3 implementation/evidence/document closeout proves the authorized behavior.
+
+After R3, the final 100-case registry/document evidence mapping remains mandatory.
+
+**M4 remains open. M5 remains locked.**

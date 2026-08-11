@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.38.0
+**Specification version:** 1.39.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. ESV-M4-R2 is complete at implementation commit `8a8e7e7` with focused Chronicle Editor evidence **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor. CAP-002 runtime slot-policy/configuration truth is implemented: `EchoSaveConfiguration` schema 2 owns project-authored policy; all four approved modes resolve to one finite immutable session capacity consumed by create and duplicate; schema-1 assets remain readable through a non-mutating compatibility mapping equivalent to historical capacity 64. R3 package-document migration is the next M4 reconciliation gate but is not activated by this closeout. Final registry/document reconciliation remains mandatory before M4 can close. M5 remains locked.
+> **Approval rule:** This specification is approved as package authority. ESV-M4-R2 is complete at implementation commit `8a8e7e7` with focused Chronicle Editor evidence **636 / 636 passed, 0 failed**. ESV-M4-R3 is now **active / authorized** from clean planning baseline `0ebf1a1` under ESV-D-035. R3 preserves CAP-014 intact and implements package-owned, read-time, in-memory migration of older supported package documents through deterministic contiguous exact-version chains before current-version document validation. Source generation bytes remain immutable, successful read-time migration does not rewrite the source generation, downgrade is not supported, missing/invalid/newer paths fail closed, and participant migration remains a separate later phase over participant-owned payload schemas. Current package document formats remain `1.0.0`; R3 does not manufacture a meaningless format bump merely to create a migration fixture. Final 100-case registry/document reconciliation remains mandatory after R3 before M4 can close. M5 remains locked.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -72,6 +72,7 @@
 | 1.36.0 | 2026-08-11 | Approved | Closed ESV-M4-R1 at implementation commit `ab18361` with focused Chronicle Editor evidence `618 / 618` and prior `587 / 587` floor preserved. Recorded public participant registration, catalog snapshot/refresh, slot create/select, prepared load/apply, and same-scene convenience load composition over existing M3/M4 authorities; retained configuration schema 1 and technical capacity 64 for R2; no automatic recovery fallback, generic queue, scene/DDOL, or M5 tooling. R2 is next but not activated; R3 and final registry reconciliation remain required before M4 close. | Jesse “Echo” Adams |
 | 1.37.0 | 2026-08-11 | Approved | Activated `ESV-M4-R2` at clean baseline `176b240` with incoming Chronicle floor `618 / 618`. Added ESV-D-034: CAP-002 is a runtime capacity/admission policy owned by `EchoSaveConfiguration` schema 2; new assets author SingleSlot, FixedMultiSlot, ConfigurableMultiSlot, or BoundedProfiles policy; all modes resolve to one finite effective live-slot capacity consumed by create/duplicate; `BoundedProfiles` means no design-visible fixed count, never infinite resources; schema-1 assets are read through an explicit legacy 64-slot compatibility mapping without runtime asset mutation; fixed-slot templates remain optional M5 authoring metadata and are not required for R2 runtime enforcement. R3 document migration and final registry reconciliation remain required; M5 remains locked. | Jesse “Echo” Adams |
 | 1.38.0 | 2026-08-11 | Approved | Closed `ESV-M4-R2` at implementation commit `8a8e7e7` with focused Chronicle Editor evidence `636 / 636`, 18 net new focused policy tests, schema-2 slot-policy authority, non-mutating schema-1 capacity-64 compatibility, one shared create/duplicate effective capacity, and ESV-T-015 through ESV-T-018 complete. One pre-commit compile compatibility correction restored `DefaultTechnicalSlotCapacity` as a legacy-only alias without restoring schema-2 hardcoded authority. R3 remains next but not activated; M4 remains open and M5 locked. | Jesse “Echo” Adams |
+| 1.39.0 | 2026-08-11 | Approved | Activated `ESV-M4-R3` at clean baseline `0ebf1a1` with incoming focused Chronicle floor `636 / 636`. Added ESV-D-035: preserve CAP-014 whole and implement package-owned read-time in-memory package-document migration as deterministic contiguous exact-version chains; source generations remain immutable, no automatic rewrite or downgrade occurs, missing/invalid/newer paths fail closed, document migration precedes separate participant migration, and current package document formats remain `1.0.0` until a real shape change requires a production migration step. Final 100-case registry/document reconciliation remains after R3; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1918,6 +1919,7 @@ Project-specific migration tooling must:
 | ESV-D-032 | Destructive slot deletion is a two-step plan-bound mutation: prepare-delete is read-only and produces an immutable package/session/source-provenance-bound plan; confirm-delete requires one valid unexpired unused plan, revalidates the bound canonical source before mutation, reuses root-local mutation admission, and commits deletion only when the slot tree has been moved to package-owned recoverable trash. Active-slot clearing and catalog reconciliation occur only after durable removal; bounded trash retention is post-commit maintenance and cannot fabricate rollback | Approved | Prevents accidental/stale/replayed destructive actions while making the safe default deletion recoverable and preserving the same durable-truth discipline used by save/recovery | M4-10 covers ESV-T-021 through ESV-T-023; permanent erase, restore-from-trash public API, quarantine cleanup, persistent cache, and generic queues remain separately bounded work |
 | ESV-D-033 | M4 reconciliation preserves the already-approved MVP public runtime contract instead of weakening it: R1 must compose existing proven M3/M4 internals behind a coherent `IEchoSaveService` facade for participant registration, catalog snapshot/refresh, slot creation/selection, two-phase loading, and same-scene convenience load; R2 owns runtime slot-policy configuration; R3 implements package-document migration so CAP-014 remains intact | Approved | The `48454ea` milestone audit proved the internal foundations exist but the consumer-facing composition and two remaining MVP capabilities are incomplete | M4 cannot close and M5 cannot activate until R1/R2/R3 plus registry/document reconciliation are complete; R1 may add public facade DTOs/results and service wiring but may not change save-generation durability, participant contracts, base storage contracts, scene ownership, or M5 tooling | No |
 | ESV-D-034 | CAP-002 slot policy becomes one schema-versioned project configuration authority: `EchoSaveConfiguration` schema 2 owns one `SaveSlotPolicy` using `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, or `BoundedProfiles`; all resolve to a finite effective live-slot capacity used by create and duplicate; schema-1 assets map read-only to the historical 64-slot behavior and are never rewritten at runtime; fixed-slot templates are optional M5 authoring metadata rather than a runtime prerequisite | Approved | The M4 audit found hardcoded capacity 64 was the remaining CAP-002 runtime gap. A single policy resolver removes hidden capacity truth without introducing fixed-slot identity/provisioning, mutable runtime configuration, or M5 tooling into R2 | R2 may advance configuration schema and add policy/result/validation types plus capacity wiring/tests; it may not implement document migration, fixed-slot auto-provisioning, Setup UI, runtime policy mutation, generic queues, scene authority, or peer-package dependencies | No |
+| ESV-D-035 | CAP-014 remains one whole migration capability. R3 implements package-owned package-document migration at read time: Chronicle probes document kind plus exact stored package version, resolves one deterministic contiguous upgrade chain to the exact current version, migrates detached serialized content in memory, then performs existing current-version deserialization/validation. Package migration is Chronicle-owned rather than consumer-registerable; participant migration remains a separate later phase. Source generations are never rewritten by read-time migration, no downgrade occurs, missing/ambiguous/failing/newer paths fail closed, and current `1.0.0` package formats are not bumped merely to manufacture a fixture | Approved | The M4 audit found CAP-014 only partially satisfied because participant migration exists while package-document migration is deferred. Keeping the capability intact preserves the approved save-format promise without inventing a fake historical production format or weakening immutable-generation durability | R3 may add internal package-document version/step/registry/executor/read-coordination types and wire package document read paths used by load/catalog/recovery; it may not change participant contracts, expose consumer package-migration registration, rewrite source generations on load, downgrade formats, change durable publication rules, add M5 tooling, generic queues, scene ownership, or peer-package dependencies | No |
 
 ### 27.2 Release-blocking questions
 
@@ -3241,7 +3243,339 @@ R2 completed CAP-002 with schema-2 project-owned slot-policy configuration, all 
 
 Implementation-history note: the first Unity compile exposed one existing regression test that still referenced the internal `DefaultTechnicalSlotCapacity` symbol. Before commit, the symbol was restored as a compatibility alias to the schema-1 legacy value only; schema-2 runtime authority continues to use `SaveSlotPolicy.EffectiveCapacity`. Final Unity compilation and the **636 / 636** gate are authoritative.
 
-R2 closes audit blocker **A-03**. R3 package-document migration remains next but is not activated. M4 remains open and M5 remains locked.
+R2 closes audit blocker **A-03**. At R2 closeout, R3 package-document migration was next but not yet activated. M4 remained open and M5 remained locked.
+
+### 28.29 ESV-M4-R3 package-document migration and CAP-014 reconciliation
+
+**Status:** Active / authorized.
+
+**Milestone:** M4 — Slots / Autosave / Recovery reconciliation.
+
+**Clean planning baseline:** `0ebf1a1`.
+
+**Carried focused regression floor:** **636 / 636**.
+
+**Authority decision:** ESV-D-035.
+
+#### R3 audit target
+
+R3 resolves audit blocker **A-04 / CAP-014** without splitting or weakening CAP-014.
+
+Chronicle already owns participant migration for participant-authored schema versions. R3 adds the missing package-document half for Chronicle-owned serialized document shapes.
+
+The two migration domains remain separate:
+
+1. **Package-document migration**
+   - owned by Chronicle;
+   - upgrades Chronicle-owned document structure/version;
+   - runs while reading package documents;
+   - completes before current-version package DTO validation and before participant payload preparation.
+
+2. **Participant migration**
+   - owned by the existing participant migration machinery;
+   - upgrades participant IDs/schema payloads;
+   - runs only after the package payload document is readable as the current Chronicle shape;
+   - keeps its existing registration, chain, failure, and apply boundaries.
+
+R3 does not merge those domains into one registry or one consumer-facing migration API.
+
+#### Package document version authority
+
+Each Chronicle package document kind retains an independent exact semantic version:
+
+- `Envelope`;
+- `Manifest`;
+- `Payload`;
+- `HeadPointer`.
+
+A package-document version is an exact `(major, minor, revision)` value associated with one document kind.
+
+Current production versions remain:
+
+```text
+Envelope    1.0.0
+Manifest    1.0.0
+Payload     1.0.0
+HeadPointer 1.0.0
+```
+
+R3 must **not** increment any current package-document version merely so automated tests can exercise migration. A production version bump belongs to the first real package-document shape change that requires one.
+
+The R3 migration engine is production code even when the current built-in migration-step set is empty. Focused tests may construct internal deterministic fixture steps/registries to prove chain behavior without claiming a fictional historical production format.
+
+#### Package-document migration step contract
+
+One migration step represents one exact directed edge:
+
+```text
+DocumentKind + SourceVersion -> TargetVersion
+```
+
+A step must have:
+
+- one stable package-owned step ID;
+- one exact document kind;
+- one exact source version;
+- one exact target version;
+- deterministic transformation of detached serialized package-document content;
+- no durable storage mutation;
+- no participant callback;
+- no scene/project service dependency;
+- bounded input/output behavior;
+- stable failure/provenance diagnostics without payload contents.
+
+Step output must:
+
+- be nonempty and within package size limits;
+- still identify the same package document kind;
+- declare exactly the step's target version;
+- remain eligible for the next contiguous step or final current-version validation.
+
+A step exception, invalid output, kind mismatch, version mismatch, or size violation fails the package-document migration attempt.
+
+#### Registry and chain resolution
+
+Package-document migration steps are **package-owned**.
+
+R3 does not expose a public project/consumer registration API for package-document migrations because Chronicle owns the package document schema being upgraded.
+
+Chain rules:
+
+- lookup is by document kind plus exact source version;
+- at most one step may leave one exact source version for one document kind;
+- duplicate/ambiguous edges are invalid;
+- each step target must equal the next step source exactly;
+- the chain must terminate at that document kind's exact current version;
+- no implicit skip is allowed;
+- no downgrade edge is allowed;
+- chain resolution is bounded and loop-safe;
+- missing chain material fails before participant preparation/apply;
+- a stored version newer than the supported current version is never silently downgraded.
+
+Future package releases that change a Chronicle-owned document shape must ship the required package-owned migration step for each still-supported prior version.
+
+#### Read-time migration pipeline
+
+R3 introduces one migration-aware package-document read seam.
+
+Conceptually:
+
+```text
+bounded source bytes/text
+  -> probe document kind + stored exact version
+  -> if exact current: existing deserialize/current validation
+  -> if older supported: resolve package-owned chain
+  -> execute chain on detached in-memory serialized content
+  -> deserialize migrated current document
+  -> existing SavePackageDocumentValidator.ValidateCurrent
+  -> existing document-specific/commit/integrity validation
+  -> participant preparation/migration when applicable
+```
+
+`SavePackageDocumentValidator.ValidateCurrent` remains strict. R3 does not weaken it into a historical-version parser.
+
+The migration-aware read seam performs historical normalization **before** that current-version gate, then presents only exact-current package documents to existing current-shape consumers.
+
+#### Source immutability and publication boundary
+
+Read-time package migration is normalization, not publication.
+
+Therefore:
+
+- source generation files remain byte-for-byte untouched;
+- `head.json` is not republished because a read required migration;
+- a successful load/catalog/recovery read does not automatically rewrite the old generation;
+- source timestamps/IDs are not rewritten;
+- migration failure leaves the source untouched;
+- the next separately authorized successful save/publication writes the then-current package document format through the normal immutable-generation pipeline.
+
+R3 does not introduce “load and upgrade in place.”
+
+#### Integrity and commit validation
+
+Migration cannot be used to bypass existing source-integrity or commit truth.
+
+R3 must preserve:
+
+- bounded file/input reads;
+- generation commit-state rules;
+- existing checksum/integrity validation that applies to source bytes;
+- slot/generation identity validation;
+- current-version document validation after migration;
+- participant-entry checksum/size validation before participant apply;
+- immutable-generation and head-last publication rules.
+
+Where an integrity assertion is defined over the original stored bytes, that assertion is evaluated against the original stored bytes, not silently replaced by migrated in-memory bytes.
+
+#### Ordering with participant migration
+
+For a prepared load that requires both migration domains, ordering is:
+
+1. read/verify the selected source generation;
+2. migrate required Chronicle package documents to current package shape in memory;
+3. validate the resulting current package documents;
+4. construct the current package payload-entry view;
+5. resolve/execute existing participant ID/schema migration;
+6. complete prepare/preflight;
+7. apply participants only after successful prepare.
+
+A package-document migration failure therefore occurs before participant mutation.
+
+Participant migration contracts, aliases, missing-step behavior, defaulting, and apply semantics remain unchanged by R3.
+
+#### Failure and forward-version behavior
+
+R3 fails closed when:
+
+- document kind/version cannot be probed safely;
+- the stored version is unsupported/newer;
+- no contiguous package-owned chain reaches current;
+- a duplicate/ambiguous chain edge exists;
+- a step throws or reports failure;
+- step output is empty/oversized;
+- output changes document kind unexpectedly;
+- output reports a version other than the declared target;
+- migrated current content fails existing current document validation;
+- downstream existing integrity/commit validation fails.
+
+Failure must preserve source files and produce structured diagnostic context.
+
+R3 does not promise downgrade.
+
+R3 also does not invent forward-compatible interpretation of unknown newer package versions. Any future policy that intentionally tolerates additive newer fields must be separately explicit and tested.
+
+#### Diagnostics and provenance
+
+Each executed package-document migration step records bounded provenance containing at least:
+
+- stable step ID;
+- document kind;
+- exact source version;
+- exact target version;
+- ordered step position/count when a chain is used;
+- terminal success/failure classification;
+- stable diagnostic code/context.
+
+Diagnostics must not include participant payload contents or arbitrary serialized save contents.
+
+Migration provenance is in-memory operation evidence unless/until a later successful save publishes a current-format generation under existing manifest rules.
+
+#### Public API and compatibility boundary
+
+R3 should not require a breaking change to `IEchoSaveService`.
+
+Preferred implementation is internal package machinery composed under existing catalog/load/recovery read paths.
+
+R3 may add internal/public-value diagnostic types only when required for stable testing or existing result surfaces, but it must preserve source compatibility of the R1/R2 public service contract.
+
+R3 must not:
+
+- add consumer registration of package-document migration steps;
+- change `ISaveParticipant` or participant migration contracts;
+- make Chronicle a service locator;
+- add scene travel or project-owned DDOL;
+- change slot policy;
+- add generic operation queues;
+- add M5 tooling.
+
+#### Catalog, load, and recovery integration
+
+Any Chronicle path that reads a package-owned document and currently assumes exact-current serialized shape must route through the migration-aware read seam when historical package versions are legal inputs.
+
+R3 specifically reviews:
+
+- prepared/convenience load package-document reads;
+- catalog manifest/head inspection;
+- recovery candidate verification;
+- any shared serialization helper those paths reuse.
+
+The integration must not add mutation side effects to catalog or recovery planning.
+
+#### R3 test-registry ownership
+
+R3 directly owns focused proof for:
+
+- **ESV-T-067** — current package-document version requires no migration;
+- **ESV-T-068** — contiguous package-document chain migrates in memory;
+- **ESV-T-069** — missing package-document step blocks with source unchanged;
+- **ESV-T-072 (document side)** — package-document migration step throws/fails and prepare/read fails source unchanged;
+- **ESV-T-073** — newer package-document format is refused and preserved.
+
+Existing participant-migration evidence for **ESV-T-070** and **ESV-T-071** remains owned by the participant migration implementation and is not rewritten by R3.
+
+Focused tests must additionally prove:
+
+- deterministic exact-version chain resolution;
+- duplicate/ambiguous source edges are rejected;
+- chain loops cannot run unbounded;
+- exact-current documents bypass migration steps;
+- no source file is rewritten after successful in-memory migration;
+- no source file is rewritten after migration failure;
+- final migrated output must report the exact current version and same document kind;
+- package-document migration completes before participant migration/preparation;
+- participant callbacks are absent during package-document migration;
+- catalog/recovery read-only paths remain mutation-free;
+- existing current-version serializer/document validators remain strict;
+- the Chronicle focused floor does not drop below **636 / 636**.
+
+#### Expected implementation areas
+
+R3 may add bounded runtime types under package-owned document/migration infrastructure, for example:
+
+```text
+SavePackageDocumentVersion
+ISavePackageDocumentMigrationStep
+SavePackageDocumentMigrationRegistry
+SavePackageDocumentMigrationPlan
+SavePackageDocumentMigrationResult
+SavePackageDocumentMigrationProvenance
+SavePackageDocumentMigrationCoordinator
+SavePackageDocumentVersionProbe / migration-aware reader
+```
+
+Names may be refined during implementation if existing conventions make a better fit, provided the authority boundaries above remain unchanged.
+
+Likely existing seams reviewed/wired include:
+
+- `SaveDocumentVersions`;
+- `SavePackageDocumentValidator`;
+- `UnityJsonSaveSerializer` or a package-document reader composed around it;
+- load/preparation document reads;
+- catalog document reads;
+- recovery document reads;
+- focused Editor tests.
+
+#### Explicitly out of R3
+
+- fabricated package-document version bump solely for tests;
+- participant migration redesign;
+- consumer/project package-document migration registration;
+- automatic rewrite-on-load;
+- downgrade;
+- automatic recovery fallback;
+- persistent `catalog.cache.json`;
+- permanent erase or public trash restore;
+- quarantine/incomplete cleanup;
+- generic operation queues;
+- automatic autosave timers;
+- permission-provider production wiring;
+- Setup/Validator/Browser/Simulator/Laboratory UI;
+- scene travel;
+- peer-package bridges;
+- service-locator behavior;
+- Chronicle-owned/project-wide DDOL;
+- M5 implementation.
+
+#### R3 closeout rule
+
+R3 completion does **not** complete M4 by itself.
+
+After R3:
+
+1. A final reconciliation pass must map the applicable 100-case test registry and documentation to retained implementation evidence.
+2. Final focused Chronicle regression evidence must be recorded at the actual closing total.
+3. Only after that reconciliation may M4 be declared complete.
+4. M5 remains locked until M4 closes cleanly.
 
 ## 29. New-Conversation Handoff
 
@@ -3249,41 +3583,43 @@ R2 closes audit blocker **A-03**. R3 package-document migration remains next but
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.38.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.39.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.38.0
+Current specification version: 1.39.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10; ESV-M4-R1; ESV-M4-R2
-Current milestone/checkpoint: M4 reconciliation remains open; ESV-M4-R3 package-document migration is next / not activated
+Current milestone/checkpoint: M4 reconciliation remains open; ESV-M4-R3 package-document migration is ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation status: ESV-M4-R1 and R2 complete; R2 implementation `8a8e7e7`; focused Chronicle Editor gate `636 / 636`; R3/final reconciliation remain; M5 locked
-Known blockers: A-04 / CAP-014 package-document migration plus final 100-case registry/document evidence reconciliation
+Current implementation status: ESV-M4-R1 and R2 complete; R3 authority active from clean baseline `0ebf1a1`; incoming focused Chronicle floor `636 / 636`; R3 implementation plus final reconciliation remain; M5 locked
+Known blockers: A-04 / CAP-014 is the active R3 package-document migration target; final 100-case registry/document evidence reconciliation remains after R3
 Current Notes reviewed through: August 11, 2026
 
 Before writing more Chronicle runtime code:
-1. Treat `8a8e7e7` as the completed R2 runtime baseline.
+1. Treat `0ebf1a1` as the clean R3 planning baseline.
 2. Preserve the **636 / 636** focused Chronicle regression floor.
-3. Do not begin R3 runtime work until a bounded R3 authority/checkpoint activation is committed.
-4. Preserve CAP-014 intact: R3 implements package-document migration rather than weakening the capability.
-5. Keep final registry/document reconciliation mandatory after R3.
-6. Do not activate M5.
+3. Implement only the bounded ESV-M4-R3 package-document migration authority in section 28.29 / ESV-D-035.
+4. Preserve CAP-014 intact and keep package-document migration separate from existing participant migration.
+5. Do not manufacture a package-document version bump solely for migration tests; current production package document versions remain `1.0.0` until a real shape change requires a production step.
+6. Keep source generations immutable and never rewrite/downgrade them during read-time migration.
+7. Keep final 100-case registry/document reconciliation mandatory after R3.
+8. Do not activate M5.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.38.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.39.0 |
 | Completed checkpoint | ESV-M4-R2 - Slot Policy Runtime Configuration and CAP-002 Reconciliation |
 | Implementation commit | `8a8e7e7` |
 | Tests passed | Final ESV-M4-R2 focused Chronicle Editor gate `636 / 636`; prior `618 / 618` regression floor preserved; Unity compile/import green |
 | Tests failed | Final ESV-M4-R2 gate: `0` |
-| Known issues | A-04 / CAP-014 package-document migration plus final 100-case registry/document evidence reconciliation remain before M4 close |
-| Decisions added | ESV-D-001 through ESV-D-034; ESV-D-034 defines schema-2 CAP-002 slot-policy authority and legacy schema-1 compatibility |
+| Known issues | A-04 / CAP-014 is active under R3; final 100-case registry/document evidence reconciliation remains after R3 before M4 close |
+| Decisions added | ESV-D-001 through ESV-D-035; ESV-D-035 defines package-owned read-time package-document migration while preserving CAP-014 and immutable source generations |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No follow-on runtime checkpoint is active. ESV-M4-R3 is next but requires its own bounded authority/checkpoint activation; M5 remains locked. |
+| Implementation permission | ESV-M4-R3 is ACTIVE / AUTHORIZED from clean baseline `0ebf1a1` under ESV-D-035. Implement only bounded package-document migration; final reconciliation remains after R3 and M5 remains locked. |
 
 ## 30. Approval
 
@@ -3329,7 +3665,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.38.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, and ESV-M4-R2 are complete. M4 remains open for R3 package-document migration and final registry/document reconciliation; R3 is next but not activated, and M5 remains locked.
+The Chronicle specification is complete and **Approved v1.39.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, and ESV-M4-R2 are complete. ESV-M4-R3 package-document migration is active / authorized from clean baseline `0ebf1a1`; M4 remains open for R3 implementation plus final registry/document reconciliation, and M5 remains locked.
 
 
 ---

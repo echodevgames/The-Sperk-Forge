@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M4-R2 – Chronicle Slot Policy Runtime Configuration and CAP-002 Reconciliation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 and ESV-M4-R2 complete; R2 implementation `8a8e7e7` with focused `636 / 636`; R3/final reconciliation remain; M4 open; M5 locked
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 and ESV-M4-R2 complete; ESV-M4-R3 package-document migration active / authorized from `0ebf1a1` with incoming focused floor `636 / 636`; final reconciliation remains; M4 open; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1 and ESV-M4-R2 complete; R2 at `8a8e7e7` with 636 / 636; ESV-M4-R3 package-document migration is next / not activated; final reconciliation remains before M4 close; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1 and ESV-M4-R2 complete; ESV-M4-R3 package-document migration ACTIVE / AUTHORIZED from `0ebf1a1` with incoming 636 / 636; final reconciliation remains after R3 before M4 close; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -97,7 +97,7 @@ Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
 `ESV-M4-R2` is complete at `8a8e7e7`; the focused Chronicle Editor gate passed **636 / 636**, adding **18** focused policy tests. Chronicle now resolves schema-2 project-owned `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` policy into one immutable finite service-session capacity shared by create and duplicate, while schema-1 remains non-mutating compatible at historical capacity 64. ESV-T-015 through ESV-T-018 are complete and audit gap A-03 is closed.
 
-No follow-on runtime checkpoint is activated by this closeout. ESV-M4-R3 package-document migration is next but still requires bounded activation; final 100-case registry/document evidence reconciliation remains mandatory after R3. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
+ESV-M4-R3 is now active / authorized from clean planning baseline `0ebf1a1` under SFGSS-PKG-ECHOSAVE-001 v1.39.0 / ESV-D-035. R3 preserves CAP-014 and adds Chronicle-owned read-time in-memory package-document migration through deterministic contiguous exact-version chains without rewriting source generations or redesigning participant migration. Current production package-document versions remain `1.0.0`; no synthetic version bump is authorized merely for tests. Final 100-case registry/document evidence reconciliation remains mandatory after R3. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
 
 SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
@@ -120,14 +120,14 @@ No such work is active merely because FL-M6-01 closed.
 
 `ESV-M4-R2` is **complete** at implementation commit `8a8e7e7`.
 
-Final focused Chronicle Editor evidence: **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor.
+Final R2 focused Chronicle Editor evidence: **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor.
 
-CAP-002 schema-2 slot-policy runtime configuration is reconciled. Schema-1 capacity-64 compatibility remains read-only/non-mutating, and create/duplicate share one resolved immutable session capacity.
+`ESV-M4-R3` package-document migration is **ACTIVE / AUTHORIZED** from clean planning baseline `0ebf1a1` under ESV-D-035, carrying **636 / 636** as its incoming focused regression floor.
 
-ESV-M4-R3 package-document migration is **next / not activated**.
+R3 preserves CAP-014 intact and owns Chronicle package-document migration only. Source generations stay immutable, participant migration stays separate, current production package document versions remain `1.0.0`, and no migration-on-read rewrite/downgrade is authorized.
 
 Still mandatory before M4 close:
-- R3 package-document migration preserving CAP-014;
+- implement, test, and close R3 package-document migration;
 - final 100-case registry/document evidence reconciliation;
 - final focused Chronicle regression evidence at the actual closing total.
 

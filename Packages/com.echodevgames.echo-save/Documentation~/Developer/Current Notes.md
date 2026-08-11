@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.38.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.39.0
 **Completed checkpoint:** ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-R3 — Package-Document Migration — next / not activated
-**Status:** ESV-M4-R1 and ESV-M4-R2 complete; R3/final reconciliation remain; M4 open; M5 locked
+**Current checkpoint:** ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation — ACTIVE / AUTHORIZED
+**Status:** ESV-M4-R1 and ESV-M4-R2 complete; R3 active / authorized; final reconciliation remains; M4 open; M5 locked
 
-**Authority reconciliation:** Specification v1.38.0 closes `ESV-M4-R2` at implementation commit `8a8e7e7` with focused Chronicle Editor evidence `636 / 636`. CAP-002 schema-2 slot-policy authority is implemented; legacy schema-1 remains read-only-compatible at capacity 64. R3 package-document migration is next but not activated; final registry/document reconciliation remains mandatory before M4 close and M5 activation.
+**Authority reconciliation:** Specification v1.39.0 activates `ESV-M4-R3` from clean planning baseline `0ebf1a1` under ESV-D-035 with incoming focused Chronicle floor `636 / 636`. R3 preserves CAP-014 and implements Chronicle-owned read-time in-memory package-document migration without source-generation rewrite or downgrade; participant migration remains separate. Current package-document formats remain `1.0.0` until a real shape change requires a production step. Final registry/document reconciliation remains mandatory after R3 before M4 close and M5 activation.
 
 ## ESV-M4-02 closeout
 
@@ -629,4 +629,37 @@ Implementation-history note:
 - schema-2 runtime behavior continues to consume `SaveSlotPolicy.EffectiveCapacity` for create and duplicate;
 - final Unity compilation and **636 / 636** evidence supersede the intermediate compile failure.
 
-**Next gate:** R3 package-document migration is next but not activated. Final registry/document reconciliation remains mandatory after R3. M4 remains open and M5 remains locked.
+**Next gate:** R3 package-document migration is now active / authorized from `0ebf1a1`. Final registry/document reconciliation remains mandatory after R3. M4 remains open and M5 remains locked.
+
+## ESV-M4-R3 activation
+
+**Checkpoint:** Package-Document Migration and CAP-014 Reconciliation
+**Status:** ACTIVE / AUTHORIZED
+**Planning baseline:** `0ebf1a1`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.39.0 / ESV-D-035
+**Incoming focused floor:** **636 / 636 passed, 0 failed**
+**Audit target:** **A-04 / CAP-014**
+
+Authorized implementation truth:
+- package-document migration is Chronicle-owned because Chronicle owns envelope/manifest/payload/head document schemas;
+- each document kind uses exact package version identity and a deterministic contiguous source-to-target chain;
+- migration transforms detached serialized content in memory before current-version package DTO validation;
+- current-version documents bypass migration;
+- package migration completes before existing participant migration/preparation;
+- missing/ambiguous chains, step failure/exception, invalid output, or unsupported newer version fail closed;
+- source generation files and `head.json` are never rewritten merely because a read required migration;
+- successful read-time migration does not auto-publish an upgraded generation;
+- the next normal successful save writes current-format package documents through existing immutable-generation/head-last durability;
+- consumer/project registration of package-document migration steps is out of scope;
+- current production package-document versions remain `1.0.0`; no fake version bump is authorized for tests;
+- focused tests may use internal deterministic fixture steps to prove production chain/reader behavior.
+
+R3 evidence targets:
+- ESV-T-067 current package version no migration;
+- ESV-T-068 contiguous document chain;
+- ESV-T-069 missing document step;
+- document-side ESV-T-072 migration step failure;
+- ESV-T-073 newer package format refusal/preservation;
+- regression proof for source immutability, deterministic chain resolution, ordering before participant migration, and read-only catalog/recovery integration.
+
+**After R3:** final 100-case registry/document evidence reconciliation remains mandatory. M4 remains open and M5 remains locked.
