@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.45.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.46.0
 **Completed checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — COMPLETE; no M5-02 checkpoint active
-**Status:** M4 complete; ESV-M5-01 complete at implementation commit `69721af`; focused Chronicle Editor `697 / 697`; M5 remains open; no M5-02 slice active
+**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 complete at closeout `8774dd2`; ESV-M5-02 active from that clean baseline; incoming focused Chronicle floor `697 / 697`; M5 remains open
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 closes ESV-M5-01 under ESV-D-037. The checkpoint preserves the completed M4 runtime unchanged, adds only the bounded Editor Setup/Validator foundation, records `697 / 697` focused Chronicle Editor evidence plus manual Setup/Validator sanity proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-02 implementation activated.
 
@@ -781,3 +781,24 @@ Manual Unity proof completed:
 An initial manual path entry produced an `Assets/Assets/...` target and missing-folder rejection. The rejection was safe and zero-mutation; the path-field clarity is retained as a non-blocking UX polish note.
 
 **M5-01 is Complete. M5 is not complete. No M5-02 checkpoint is active.**
+
+
+## ESV-M5-02 activation
+
+**Clean planning baseline:** `8774dd2` — `Close out ESV-M5-01 editor tooling foundation`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.46.0 / ESV-D-038
+**Incoming focused Chronicle floor:** **697 / 697 passed, 0 failed**
+**Milestone:** M5 — Tooling and Laboratory
+
+M5-02 owns the next Setup/configuration-authoring layer:
+
+- explicit schema-3 project configuration authoring/upgrade with non-mutating schema-1/schema-2 runtime compatibility;
+- project-owned retention, provider-selection, limits, recovery-policy, and optional fixed-slot-template configuration only where runtime/tooling can consume the authored truth;
+- Setup editing of existing selected configuration assets only after deterministic Preview and explicit Apply;
+- create-only optional root prefab/template assets and safe selected-reference repair previews;
+- repair plans that name exact target objects/assets/properties, values before/after, and whether Undo/backup applies;
+- expanded non-destructive validation for configuration/provider/retention/fixed-slot/repair-preview truth.
+
+M5-02 does **not** authorize silent runtime asset migration, destructive repair, automatic authority choice between duplicate roots, permanent save-data mutation, Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data, support export, persistent catalog cache, cleanup/quarantine, direct-scene Laboratory content, or any LAB-001 through LAB-032 execution.
+
+No M5-03 implementation is active until M5-02 closes through its own evidence and documentation checkpoint.

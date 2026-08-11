@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-01 – Chronicle Editor Tooling Assembly, Setup Preview, and Validator Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 complete at implementation `69721af`; focused Chronicle Editor `697 / 697`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open with no M5-02 slice active
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 full Setup/configuration authoring and safe repair previews active; incoming Chronicle floor `697 / 697`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete at `e63d83f`; ESV-M5-01 complete at `69721af`; Editor Setup/Validator foundation green at `697 / 697`; M5 open; no M5-02 active** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 active for schema/configuration authoring + safe repair previews; incoming focused floor `697 / 697`; M5 open** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -182,3 +182,12 @@ Evidence:
 - clean temporary-asset cleanup.
 
 M5 remains open. No M5-02 implementation is active until a separate bounded authority/activation checkpoint.
+
+
+## Chronicle M5-02 activation state
+
+`ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews` is **Active / Authorized** from clean baseline `8774dd2`.
+
+It extends the M5-01 Editor safety model rather than weakening it: preview first, explicit Apply, compatibility-preserving schema evolution, no silent overwrite/upgrade, and no production save-data mutation.
+
+Browser/Inspector, Simulator/Recovery Planner, support/privacy tooling, persistent cache/cleanup, and the standalone Save Laboratory remain later M5 gates.

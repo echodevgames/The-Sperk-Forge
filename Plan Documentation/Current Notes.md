@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-01 complete; next bounded M5 slice not yet activated
-**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — **COMPLETE**; no M5-02 checkpoint active
+**Current focus:** Chronicle M5 — M5-02 full Setup/configuration authoring and safe repair previews active
+**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -936,3 +936,23 @@ Manual proof confirmed successful Preview, explicit Apply, `ESV-SETUP-002` no-ov
 A small Setup path-field clarity advisory was observed during the manual pass when an entry produced `Assets/Assets/...`; the tool rejected safely with zero mutation. It is not an M5-01 blocker.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. **M5-01 is Complete. M5 remains open. No M5-02 slice is active until a separate authority/activation checkpoint is committed.**
+
+
+## ESV-M5-02 activation
+
+**Planning baseline:** `8774dd2`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.46.0 / ESV-D-038
+**Incoming focused Chronicle floor:** **697 / 697 passed, 0 failed**
+
+ESV-M5-02 is the separately bounded continuation of M5 Setup/configuration work.
+
+Authority locks:
+- schema-3 authoring/upgrade is explicit and compatibility-preserving;
+- runtime never silently rewrites schema-1/schema-2 assets;
+- every existing-asset/root/reference repair has a deterministic Preview before mutation;
+- Apply is explicit and Undo/backup-safe where Unity permits;
+- ambiguous/destructive repairs fail closed;
+- authored provider/retention/limit/recovery/template values are exposed only when they have real runtime/tooling semantics;
+- Browser/Simulator/Laboratory and production save-data repair remain later checkpoints.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
