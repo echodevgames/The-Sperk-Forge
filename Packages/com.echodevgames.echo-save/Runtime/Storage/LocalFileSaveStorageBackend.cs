@@ -87,6 +87,47 @@ namespace EchoDevGames.EchoSave
             }
         }
 
+        /// <summary>
+        /// Initializes an already-existing local root for inspection without
+        /// creating directories or files.
+        /// </summary>
+        internal SaveStorageResult InitializeReadOnly()
+        {
+            if (initialized)
+            {
+                return SaveStorageResult.NoChange(
+                    "The Chronicle local storage backend is already initialized.");
+            }
+
+            try
+            {
+                if (!Directory.Exists(
+                        RootPath))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.NotFound,
+                        EchoSaveDiagnosticCodes.StorageNotFound,
+                        "The Chronicle local storage root does not exist; read-only inspection has nothing to open.");
+                }
+
+                initialized = true;
+
+                return SaveStorageResult.Success(
+                    "The Chronicle local storage root is ready for read-only inspection.");
+            }
+            catch (Exception exception)
+                when (IsExpectedIoException(
+                    exception))
+            {
+                initialized = false;
+
+                return IoFailure(
+                    EchoSaveDiagnosticCodes.StorageInitializationFailed,
+                    "The Chronicle local storage root could not be opened for read-only inspection.",
+                    exception);
+            }
+        }
+
         public SaveStorageResult Exists(
             SaveStorageKey key,
             out bool exists)

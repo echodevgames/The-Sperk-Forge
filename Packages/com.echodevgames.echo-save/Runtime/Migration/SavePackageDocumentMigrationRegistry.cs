@@ -270,6 +270,63 @@ namespace EchoDevGames.EchoSave
             new SavePackageDocumentMigrationRegistry(
                 Array.Empty<ISavePackageDocumentMigrationStep>());
 
+        internal SavePackageDocumentMigrationInspectionEntry[]
+            CreateInspectionEntries()
+        {
+            List<SavePackageDocumentMigrationInspectionEntry> copy =
+                new List<SavePackageDocumentMigrationInspectionEntry>(
+                    entries.Count);
+
+            foreach (Entry entry in
+                     entries.Values)
+            {
+                copy.Add(
+                    new SavePackageDocumentMigrationInspectionEntry(
+                        entry.StepId,
+                        entry.DocumentKind,
+                        entry.SourceVersion,
+                        entry.TargetVersion));
+            }
+
+            copy.Sort(
+                (left, right) =>
+                {
+                    int kind =
+                        string.CompareOrdinal(
+                            left.DocumentKind,
+                            right.DocumentKind);
+
+                    if (kind != 0)
+                    {
+                        return kind;
+                    }
+
+                    int source =
+                        left.SourceVersion.CompareTo(
+                            right.SourceVersion);
+
+                    if (source != 0)
+                    {
+                        return source;
+                    }
+
+                    int target =
+                        left.TargetVersion.CompareTo(
+                            right.TargetVersion);
+
+                    if (target != 0)
+                    {
+                        return target;
+                    }
+
+                    return string.CompareOrdinal(
+                        left.StepId,
+                        right.StepId);
+                });
+
+            return copy.ToArray();
+        }
+
         internal SavePackageDocumentMigrationPlanResult TryBuildPlan(
             string documentKind,
             SavePackageDocumentVersion sourceVersion,
