@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation**. Planning/activation is committed at `7d2d987`, implementation is committed at `459023f`, and the final focused Chronicle Editor gate is **562 / 562**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation**. Planning/activation is committed at `2244e3c`, implementation is committed at `01e4cdd`, and the final focused Chronicle Editor gate is **587 / 587**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active pending a dedicated milestone reconciliation.** No M5 checkpoint is activated by this closeout.
 
 ## Current persistence boundary
 
@@ -32,7 +32,9 @@ M4-08 adds explicit recovery execution. It reuses root-local mutation admission,
 
 M4-09 adds non-destructive public slot rename and full-state duplication. Rename preserves technical slot identity/path and commits display metadata through a new immutable generation with source-freshness protection, retention, and catalog reconciliation. Duplicate enforces canonical slot capacity, creates new package-generated slot/generation identities, copies only a fully verified current source state without participant callbacks, revalidates the source before publication, publishes head last, preserves source bytes, and does not auto-select the duplicate.
 
-It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, prepare-delete/confirm-delete, trash/trash retention, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+M4-10 adds read-only deletion planning and admitted confirmed recoverable trash. Deletion plans bind package/session/source provenance, expire, reject replay, and perform zero mutation until explicit confirmation. Confirm-delete reuses root-local admission, revalidates exact source truth, moves the complete live slot tree into recoverable `trash/`, clears active selection only after durable removal, reconciles the live catalog, and applies bounded fail-closed trash retention. The final focused gate is **587 / 587**.
+
+It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or M5 Editor tooling/Laboratory qualification.
 
 ## Minimal use
 

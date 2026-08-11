@@ -3,7 +3,7 @@
 tags:
   - sfgss/checkpoint-build-plan
   - sfgss/package/chronicle
-status: active
+status: complete
 updated: 2026-08-11
 ---
 # ESV-M4-10 — Chronicle Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — Checkpoint Build Plan
@@ -11,8 +11,8 @@ updated: 2026-08-11
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-10
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.33.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.34.0
 **Decision:** ESV-D-032
 **Prior checkpoint:** ESV-M4-09 — **Complete**
 **Clean planning baseline:** `4d2f2ac`
@@ -231,3 +231,34 @@ After M4-10 closes:
 5. formally close M4 only if the audit is clean.
 
 If M4 closes cleanly, activate **M5 — Tooling and Laboratory** next.
+
+
+## Closeout evidence
+
+**Planning/activation commit:** `2244e3c`
+**Implementation commit:** `01e4cdd`
+**Final focused Chronicle Editor gate:** **587 / 587 passed, 0 failed**
+**Prior regression floor preserved:** **562 / 562**
+**Net new focused tests:** **25**
+**Committed implementation/test scope:** **28 files**, `2863` insertions, `6` deletions
+
+Observed closeout:
+- implementation payload applied cleanly;
+- generated payload and tracked diff whitespace checks passed;
+- base `ISaveStorageBackend` remained unchanged;
+- public two-step delete surface was present;
+- one-step destructive public API remained absent;
+- deletion runtime retained no direct filesystem authority;
+- participant callbacks remained absent;
+- scene/DDOL authority remained absent;
+- payload-free planning and exact source revalidation guards passed;
+- durable complete-tree trash publication and bounded post-commit trash maintenance guards passed;
+- Unity focused gate passed **587 / 587** on the first reported run.
+
+## Checkpoint disposition
+
+ESV-M4-10 is **complete**.
+
+This closeout does not declare M4 complete and does not activate M5.
+
+The next gate is a dedicated M4 milestone reconciliation against CAP-002 through CAP-018, applicable test-registry truth, closeout records, and committed implementation.

@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.33.0
+**Specification version:** 1.34.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -16,11 +16,11 @@
 **Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`
 **Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 10, 2026
+**Last updated:** August 11, 2026
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-09 are complete. `ESV-M4-10` is now the active bounded checkpoint at clean documentation baseline `4d2f2ac`. It authorizes the remaining destructive CAP-017 slice: read-only two-step deletion planning, one-use plan/freshness validation, admitted confirm-delete, recoverable trash publication, bounded trash retention, active-slot clearing after durable removal, and truthful post-mutation catalog reconciliation under ESV-D-032. Permanent erase, restore-from-trash API, quarantine/incomplete cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and M5 tooling remain deferred.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-10 are complete. ESV-M4-10 implementation is committed at `01e4cdd` with focused Chronicle Editor evidence **587 / 587 passed, 0 failed**, preserving the prior **562 / 562** floor. No follow-on runtime checkpoint or M5 implementation is active. The next gate is a dedicated M4 milestone reconciliation before M4 can be declared complete. Permanent erase, restore-from-trash API, quarantine/incomplete cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and M5 tooling remain deferred until separately authorized.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -67,6 +67,7 @@
 
 ---
 | 1.33.0 | 2026-08-11 | Approved | Activated ESV-M4-10 bounded destructive-slot deletion/trash foundation at clean baseline `4d2f2ac`: read-only immutable deletion plans, package/session/source-provenance binding, bounded expiry and one-use confirmation, root-local Busy admission reuse, confirmed recoverable trash move as the durable delete boundary, active-slot clear only after durable removal, bounded post-commit trash retention, and truthful catalog reconciliation. Added ESV-D-032. Permanent erase, restore-from-trash API, quarantine cleanup, persistent catalog cache, automatic recovery fallback, generic queues, automatic autosave timers, and M5 tooling remain deferred. | Jesse “Echo” Adams |
+| 1.34.0 | 2026-08-11 | Approved | Closed ESV-M4-10 at implementation commit `01e4cdd` with focused Chronicle Editor evidence `587 / 587`; recorded zero-mutation two-step deletion planning, expiring one-use package/session/source-bound plans, root-local Busy/no-queue confirmation, exact source revalidation, recoverable complete-tree trash publication as durable delete truth, active-slot/catalog reconciliation, bounded fail-closed trash retention, unchanged base storage contract, and ESV-T-021 through ESV-T-023 completion. M4 remains pending a dedicated milestone reconciliation; M5 is not activated. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1666,9 +1667,9 @@ At each checkpoint:
 | ESV-T-018 | Slots | Unlimited policy safety cap | Platform/config cap enforced | Planned |
 | ESV-T-019 | Slots | Rename slot | ID/path unchanged | Planned |
 | ESV-T-020 | Slots | Duplicate slot | New ID and equivalent payload | Planned |
-| ESV-T-021 | Slots | Delete without plan | No mutation | Planned |
-| ESV-T-022 | Slots | Expired delete plan | Rejected | Planned |
-| ESV-T-023 | Slots | Confirm delete | Trash/delete policy applied | Planned |
+| ESV-T-021 | Slots | Delete without plan | No mutation | Complete |
+| ESV-T-022 | Slots | Expired delete plan | Rejected | Complete |
+| ESV-T-023 | Slots | Confirm delete | Trash/delete policy applied | Complete |
 | ESV-T-024 | Catalog | List slots | Payload files unopened | Planned |
 | ESV-T-025 | Catalog | Corrupt cache | Rebuild succeeds | Planned |
 | ESV-T-026 | Catalog | Missing cache | Rebuild succeeds | Planned |
@@ -2745,17 +2746,27 @@ Focused tests must additionally prove:
 **M4-09 completion evidence:** implementation commit `459023f`; focused Chronicle Editor **562 / 562 passed, 0 failed**; prior **540 / 540** floor preserved; **22** net new focused tests; committed implementation/test scope **26 files**, `3100` insertions, `8` deletions; ESV-T-019 and ESV-T-020 complete; no follow-on M4 checkpoint activated.
 
 
-### 28.26 ESV-M4-10 destructive slot deletion planning, confirmed trash, and bounded trash retention activation
+### 28.26 ESV-M4-10 destructive slot deletion planning, confirmed trash, and bounded trash retention closeout
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
 **Clean planning baseline:** `4d2f2ac`.
 
 **Carried focused regression floor:** **562 / 562**.
 
+**Planning/activation commit:** `2244e3c`.
+
+**Implementation commit:** `01e4cdd`.
+
+**Final focused gate:** **587 / 587 passed, 0 failed**.
+
+**Net new focused tests:** **25**.
+
+**Implementation/test scope:** **28 files**, `2863` insertions, `6` deletions.
+
 **Authority decision:** ESV-D-032.
 
-ESV-M4-10 is intended to complete the remaining destructive CAP-017 runtime slice before M4 milestone reconciliation.
+ESV-M4-10 completes the remaining bounded destructive CAP-017 runtime slice authorized by ESV-D-032. M4 itself remains pending a dedicated milestone reconciliation.
 
 #### Prepare-delete boundary
 
@@ -2833,7 +2844,7 @@ M4-10 maps directly to:
 - ESV-T-022 — expired delete plan: rejected;
 - ESV-T-023 — confirm delete: recoverable trash/delete policy applied.
 
-Focused tests must additionally prove:
+Focused tests additionally prove:
 - prepare-delete performs zero durable mutation;
 - plan/session/source provenance is immutable and bounded;
 - stale source after preparation rejects before destructive mutation;
@@ -2849,7 +2860,9 @@ Focused tests must additionally prove:
 
 **Explicitly still deferred:** permanent erase API; public restore-from-trash API; quarantine/incomplete-generation cleanup; persistent `catalog.cache.json`; automatic/configured recovery fallback; recovery-on-load; generic queued multi-operation scheduling/capacity/overflow; recovery cancellation overload; automatic timer/checkpoint autosave triggers; permission-provider production wiring; full `EchoSaveConfiguration`/Setup authoring; Editor browser/simulator/Laboratory work; scene travel; peer bridges; service locator; Chronicle-owned/project-wide DDOL.
 
-No M5 tooling implementation is authorized by ESV-M4-10. M4 milestone closeout requires a separate reconciliation after this checkpoint's final evidence.
+**M4-10 completion evidence:** implementation commit `01e4cdd`; focused Chronicle Editor **587 / 587 passed, 0 failed**; prior **562 / 562** floor preserved; **25** net new focused tests; committed implementation/test scope **28 files**, `2863` insertions, `6` deletions; ESV-T-021 through ESV-T-023 complete.
+
+No M5 tooling implementation is authorized by this closeout. M4 milestone closeout requires the dedicated reconciliation next.
 
 ## 29. New-Conversation Handoff
 
@@ -2857,40 +2870,40 @@ No M5 tooling implementation is authorized by ESV-M4-10. M4 milestone closeout r
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.33.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.34.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.33.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09
-Current milestone/checkpoint: ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — active / authorized
+Current specification version: 1.34.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10
+Current milestone/checkpoint: M4 milestone reconciliation — next gate; no implementation checkpoint active
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; ESV-M4-01 through ESV-M4-09 are complete; ESV-M4-10 planning is active at clean baseline 4d2f2ac; carried focused Chronicle Editor floor 562 / 562
+Current implementation status: M2 and M3 are complete; ESV-M4-01 through ESV-M4-10 are complete; M4 remains active pending milestone reconciliation; latest focused Chronicle Editor gate 587 / 587
 Known blockers: None
-Current Notes reviewed through: August 10, 2026
+Current Notes reviewed through: August 11, 2026
 
-Before writing ESV-M4-10 runtime code:
-1. Rehydrate exact `4d2f2ac`.
-2. Preserve the **562 / 562** focused Chronicle regression floor.
-3. Implement only two-step deletion planning, plan/source revalidation, admitted confirmed recoverable trash, active-slot/catalog truth, and bounded trash retention authorized by ESV-D-032.
-4. Do not add permanent erase, restore-from-trash public API, quarantine cleanup, persistent catalog cache, automatic recovery fallback, generic queues, automatic autosave timers, or M5 tooling.
-5. Preserve the base `ISaveStorageBackend`; any destructive tree-move capability must be additive/optional and provider-neutral.
+Before writing any further Chronicle runtime code:
+1. Rehydrate exact `01e4cdd` plus the ESV-M4-10 documentation closeout.
+2. Preserve the **587 / 587** focused Chronicle regression floor.
+3. Perform the dedicated M4 milestone reconciliation first.
+4. Reconcile CAP-002 through CAP-018, the applicable test registry, Current Notes, closeout records, README/CHANGELOG/index, Suite Health, and specification handoff truth.
+5. Do not activate M5 or add new runtime features until M4 reconciliation is clean and explicitly closed.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.33.0 |
-| Completed checkpoint | ESV-M4-09 - Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation |
-| Implementation commit | `459023f` |
-| Tests passed | ESV-M4-09 focused Chronicle Editor gate `562 / 562`; prior `540 / 540` regression floor preserved; Unity compile/import green |
-| Tests failed | Final ESV-M4-09 gate: `0` |
-| Known issues | None blocking bounded next-checkpoint planning |
-| Decisions added | ESV-D-001 through ESV-D-031; ESV-D-031 defines rename/duplicate as non-destructive admitted slot mutations over immutable generations with stable rename identity/path, duplicate capacity/new identity, source revalidation, zero participant callbacks, and truthful head/catalog boundaries |
+| Package version | Runtime package `0.1.0`; Specification v1.34.0 |
+| Completed checkpoint | ESV-M4-10 - Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation |
+| Implementation commit | `01e4cdd` |
+| Tests passed | ESV-M4-10 focused Chronicle Editor gate `587 / 587`; prior `562 / 562` regression floor preserved; Unity compile/import green |
+| Tests failed | Final ESV-M4-10 gate: `0` |
+| Known issues | None blocking M4 milestone reconciliation |
+| Decisions added | ESV-D-001 through ESV-D-032; ESV-D-032 defines two-step plan-bound recoverable slot deletion with source revalidation, root-local admission, durable trash commit truth, active-slot/catalog reconciliation, and post-commit bounded trash retention |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-10 active / authorized at clean baseline `4d2f2ac`; implementation is bounded by its Checkpoint Build Plan and ESV-D-032 and must preserve `562 / 562` |
+| Implementation permission | No follow-on runtime checkpoint active. M4 milestone reconciliation is required before M5 or further Chronicle runtime implementation. |
 
 ## 30. Approval
 

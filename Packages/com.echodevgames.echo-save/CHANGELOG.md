@@ -691,3 +691,38 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - The base `ISaveStorageBackend` contract remains unchanged.
 - No M4-09 runtime/test hotfix was required after the implementation payload; the first reported focused gate was green.
 - Prepare-delete/confirm-delete, trash/trash retention, quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
+
+### Added
+
+#### ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
+
+- Public read-only `PrepareDeleteSlotAsync(SaveSlotId)`.
+- Public admitted `ConfirmDeleteSlotAsync(SaveDeletionPlan)`.
+- Immutable deletion plans bound to package/session authority and exact source provenance.
+- Bounded five-minute default plan lifetime and one-use/replay protection.
+- Payload-free head/current-manifest deletion-source provenance.
+- Root-local Busy/no-queue destructive admission reuse.
+- Fresh exact-source revalidation before destructive storage mutation.
+- Recoverable package-owned trash as the durable safe-delete boundary.
+- Active-slot clearing only after durable removal.
+- Live catalog reconciliation after durable delete truth.
+- Bounded deterministic oldest-first trash retention.
+- Fail-closed trash-record classification.
+- Truthful committed-but-unreconciled and committed-but-maintenance-failed result states.
+- Focused ESV-T-021 / ESV-T-022 / ESV-T-023 coverage.
+- Zero participant callbacks and unchanged base `ISaveStorageBackend`.
+
+### Verified
+
+#### ESV-M4-10 Closeout
+
+- Planning/activation committed at `2244e3c`.
+- Implementation committed at `01e4cdd`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **587 / 587**, with `0` failed.
+- All prior **562 / 562** Chronicle regressions remained green.
+- M4-10 adds **25** net focused tests over the prior floor.
+- Final committed implementation/test scope is **28 files**, `2863` insertions and `6` deletions.
+- Apply-side guards confirmed no one-step destructive public API, no direct filesystem authority in the deletion core, no participant callbacks, no scene/DDOL authority, and no base storage-contract widening.
+- No M4-10 runtime/test hotfix was required after the implementation payload; the first reported focused gate was green.
+- M4 is **not** declared complete by this checkpoint closeout. The next step is a dedicated M4 milestone reconciliation before M5 is activated.

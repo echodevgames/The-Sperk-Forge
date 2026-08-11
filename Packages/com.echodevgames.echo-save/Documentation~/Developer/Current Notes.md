@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.33.0
-**Completed checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.34.0
+**Completed checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 through ESV-M4-09 complete; ESV-M4-10 active; M4 remains active
+**Current checkpoint:** M4 milestone reconciliation — pending / no implementation activated
+**Status:** M3 complete; ESV-M4-01 through ESV-M4-10 complete; M4 remains active pending milestone reconciliation
 
-**Authority reconciliation:** Specification v1.33.0 records ESV-M4-09 complete at implementation `459023f` with focused gate `562 / 562` and activates bounded ESV-M4-10 at clean documentation baseline `4d2f2ac` under ESV-D-032 with carried focused regression floor `562 / 562`.
+**Authority reconciliation:** Specification v1.34.0 records ESV-M4-10 complete at implementation `01e4cdd` with focused gate `587 / 587`. No M5 work is active; a dedicated M4 milestone reconciliation is the next gate.
 
 ## ESV-M4-02 closeout
 
@@ -455,3 +455,52 @@ Still deferred:
 - scene travel, bridges, service locator, DDOL.
 
 Do not mark M4 complete automatically after implementation. ESV-M4-10 closeout must be followed by a dedicated M4 milestone reconciliation.
+
+
+## ESV-M4-10 closeout
+
+**Planning baseline:** `4d2f2ac`.
+**Planning/activation commit:** `2244e3c`.
+**Implementation commit:** `01e4cdd`.
+**Final focused gate:** **587 / 587 passed, 0 failed**.
+**Prior focused regression floor:** **562 / 562**.
+**Net new focused tests:** **25**.
+**Committed implementation/test scope:** **28 files**, `2863` insertions, `6` deletions.
+
+Completed behavior:
+- public read-only `PrepareDeleteSlotAsync(SaveSlotId)`;
+- immutable package/session/source-bound `SaveDeletionPlan`;
+- bounded expiry and one-use confirmation truth;
+- zero durable mutation during prepare-delete;
+- public admitted `ConfirmDeleteSlotAsync(SaveDeletionPlan)`;
+- immediate Busy rejection with no delete queue;
+- fresh exact-source/catalog revalidation before destructive mutation;
+- complete live-slot move into recoverable package-owned trash;
+- active-slot clear only after durable removal;
+- non-active delete preserves current active selection;
+- post-delete live catalog reconciliation;
+- bounded fail-closed oldest-first trash retention;
+- truthful committed-but-unreconciled and committed-but-maintenance-failed states;
+- ESV-T-021 / ESV-T-022 / ESV-T-023 complete;
+- zero participant callbacks;
+- unchanged base `ISaveStorageBackend`.
+
+Still deferred:
+- permanent erase;
+- public restore-from-trash;
+- quarantine/incomplete cleanup;
+- persistent catalog cache;
+- automatic/configured recovery fallback;
+- recovery-on-load;
+- generic operation queues/capacity/overflow;
+- recovery cancellation overload;
+- automatic autosave timers/gameplay triggers;
+- permission-provider production wiring;
+- full configuration/Setup authoring;
+- M5 Editor tooling/Laboratory;
+- document migration;
+- scene travel, bridges, service locator, DDOL.
+
+No follow-on runtime checkpoint is active.
+
+**Next gate:** dedicated M4 milestone reconciliation. Do not declare M4 complete or activate M5 until the milestone audit reconciles authority, implemented capability truth, the applicable test registry, and closeout documentation.

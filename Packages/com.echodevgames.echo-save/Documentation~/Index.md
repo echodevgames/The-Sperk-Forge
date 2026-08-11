@@ -56,12 +56,14 @@
 - [[Developer/Test Reports/ESV-M4-08_Chronicle_Explicit_Recovery_Execution_Stale_Plan_Revalidation_Head_Repointing_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-08 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-09_Chronicle_Slot_Rename_Full_State_Duplication_Stable_Identity_and_Catalog_Reconciliation_Foundation|ESV-M4-09 Closeout]]
 - [[Developer/Test Reports/ESV-M4-09_Chronicle_Slot_Rename_Full_State_Duplication_Stable_Identity_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-09 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-10_Chronicle_Destructive_Slot_Deletion_Planning_Confirmed_Trash_and_Bounded_Trash_Retention_Foundation|ESV-M4-10 Closeout]]
+- [[Developer/Test Reports/ESV-M4-10_Chronicle_Destructive_Slot_Deletion_Planning_Confirmed_Trash_and_Bounded_Trash_Retention_Foundation_Test_Report|ESV-M4-10 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation`
+`ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation`
 
-Chronicle can now rename a slot without changing its technical identity/path by publishing a new immutable generation, and can duplicate one fully verified current slot state into a new package-generated slot/generation identity without participant callbacks or source mutation. Both operations reuse root-local admission, source revalidation, head-last durable truth, and post-publication catalog reconciliation. The implementation is committed at `459023f`; the focused Chronicle Editor gate is **562 / 562**.
+Chronicle now provides read-only immutable deletion planning plus admitted confirmed recoverable trash with stale/expired/replayed-plan rejection, active-slot/catalog reconciliation, and bounded trash retention. The implementation is committed at `01e4cdd`; the focused Chronicle Editor gate is **587 / 587**.
 
 ## Completed milestone
 
@@ -69,6 +71,6 @@ Chronicle can now rename a slot without changing its technical identity/path by 
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-09 closeout.
+No follow-on runtime checkpoint is activated by the ESV-M4-10 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **562 / 562** regression floor.
+The next gate is a dedicated **M4 milestone reconciliation**. M4 is not yet declared complete and M5 is not yet activated.

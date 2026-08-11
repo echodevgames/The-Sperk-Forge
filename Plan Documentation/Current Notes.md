@@ -3,9 +3,9 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-10 destructive slot deletion/trash foundation
-**Current checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — **active / authorized**
+**Last reconciled:** August 11, 2026
+**Current focus:** Chronicle M4 milestone reconciliation after ESV-M4-10 closeout
+**Current checkpoint:** M4 milestone reconciliation — **next gate / no implementation activated**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -506,6 +506,38 @@ Still deferred:
 
 M4 is **not** marked complete merely by activating this checkpoint. After M4-10 implementation/closeout, perform a dedicated M4 milestone reconciliation against CAP-002 through CAP-018 and the applicable registry before advancing to M5.
 
+## Chronicle ESV-M4-10 Closeout
+
+`ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation` is **complete**.
+
+Evidence:
+- planning/activation commit: `2244e3c`;
+- implementation commit: `01e4cdd`;
+- final focused `EchoDevGames.EchoSave.Tests.Editor`: **587 / 587 passed, 0 failed**;
+- prior focused floor: **562 / 562**;
+- net new focused tests: **25**;
+- committed implementation/test scope: **28 files**, `2863` insertions, `6` deletions.
+
+Completed runtime truth:
+- read-only zero-mutation `PrepareDeleteSlotAsync`;
+- immutable expiring one-use package/session/source-bound plan truth;
+- root-local admitted `ConfirmDeleteSlotAsync`;
+- Busy/no-queue behavior;
+- fresh exact-source revalidation before destructive mutation;
+- recoverable trash complete-tree publication as durable delete truth;
+- active-slot clearing only after durable removal;
+- truthful live-catalog reconciliation;
+- bounded fail-closed post-commit trash retention;
+- ESV-T-021 through ESV-T-023 completed;
+- zero participant callbacks;
+- unchanged base `ISaveStorageBackend`.
+
+M4 is **not** declared complete by this closeout.
+
+No M5 implementation is active.
+
+The next required work is the dedicated **M4 milestone reconciliation**.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -689,9 +721,9 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Commit/push the ESV-M4-10 planning/authority activation.
-2. Implement only the bounded ESV-D-032 destructive deletion/trash slice.
-3. Preserve the **562 / 562** Chronicle focused regression floor.
-4. Close ESV-M4-10 with actual discovered Unity evidence.
-5. Perform a dedicated M4 milestone reconciliation before declaring M4 complete or activating M5.
-6. If M4 reconciles cleanly, begin M5 — Tooling and Laboratory, where Chronicle becomes visibly interactive through Setup, Validator, Save Browser, Failure Simulator, Recovery Planner, and the 32-scenario Chronicle Save Laboratory.
+1. Reconcile M4 authority against the committed ESV-M4-01 through ESV-M4-10 closeouts.
+2. Reconcile CAP-002 through CAP-018 and the applicable test registry against actual implemented truth.
+3. Reconcile package/root Current Notes, CHANGELOG, README, Documentation index, Suite Health, checkpoint/test records, and specification handoff state.
+4. Preserve the **587 / 587** Chronicle focused regression floor while auditing. Do not add runtime features during the audit.
+5. Declare M4 complete only if the reconciliation is clean.
+6. Only after clean M4 closeout may M5 — Tooling and Laboratory be activated.
