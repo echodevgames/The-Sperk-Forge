@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-07 complete; next bounded checkpoint planning
-**Current checkpoint:** None activated — ESV-M4-07 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-08 explicit recovery execution
+**Current checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -352,6 +352,43 @@ Still deferred:
 
 No follow-on M4 checkpoint is activated by this closeout.
 
+## Chronicle ESV-M4-08 Activation
+
+`ESV-M4-08 — Chronicle Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation` is **active / authorized** at clean baseline `0396adb`.
+
+Authority decision: **ESV-D-030**.
+
+Authorized boundary:
+- public explicit `ExecuteRecoveryAsync(SaveRecoveryPlan, SaveRecoveryCandidate)`;
+- one root-local mutation admission lease;
+- immediate Busy rejection with no recovery queue;
+- fresh M4-07 plan rebuild after admission;
+- exact source-provenance stale-plan comparison;
+- candidate must still exist and verify in the fresh plan;
+- zero mutation before freshness/candidate proof;
+- selected committed generation stays immutable;
+- only `head.json` is repointed to the selected candidate;
+- broken/untrusted source generation is not copied into `previousGenerationId`;
+- post-head catalog reconciliation;
+- truthful committed-head versus catalog-reconciled result;
+- no participant apply/capture/default callbacks;
+- no active-slot selection side effect.
+
+Still deferred:
+- automatic/configured fallback;
+- recovery-on-load;
+- quarantine or corrupt-generation cleanup;
+- rename/duplicate/delete/trash;
+- persistent catalog cache;
+- generic queues/capacity/overflow;
+- recovery cancellation overload;
+- automatic autosave timers;
+- permission-provider production wiring;
+- full recovery/configuration/Setup authoring;
+- scene travel, bridges, service locator, DDOL.
+
+Carried focused regression floor: **524 / 524**.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -534,8 +571,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `9f68555`.
-2. Preserve the focused **524 / 524** Chronicle regression floor.
-3. Treat ESV-M4-07 read-only recovery planning as complete.
-4. Define and activate the next bounded M4 Checkpoint Build Plan before writing further runtime code.
-5. Keep recovery execution/head rewrite/catalog reconciliation, automatic fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `0396adb`.
+2. Read `ESV-M4-08_Chronicle_Explicit_Recovery_Execution_Stale_Plan_Revalidation_Head_Repointing_and_Catalog_Reconciliation_Foundation_Checkpoint_Build_Plan.md`.
+3. Preserve the focused **524 / 524** Chronicle regression floor.
+4. Implement only explicit admitted recovery execution, stale-plan/candidate revalidation, head repointing, and truthful catalog reconciliation under ESV-D-030.
+5. Keep automatic/configured fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.

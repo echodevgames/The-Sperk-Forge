@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.28.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.29.0
 **Completed checkpoint:** ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — ESV-M4-07 complete
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; M4 remains active
+**Current checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.28.0 records ESV-M4-07 complete at implementation commit `9f68555` with final focused Chronicle Editor evidence `524 / 524`; no follow-on M4 checkpoint is activated.
+**Authority reconciliation:** Specification v1.29.0 records ESV-M4-07 complete and activates bounded ESV-M4-08 at clean baseline `0396adb` under ESV-D-030.
 
 ## ESV-M4-02 closeout
 
@@ -296,3 +296,46 @@ Still deferred:
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **524 / 524** focused regression floor.
+
+## ESV-M4-08 active boundary
+
+**Exact planning baseline:** `0396adb`.
+
+**Carried focused regression floor:** **524 / 524**.
+
+M4-08 owns:
+- public explicit `ExecuteRecoveryAsync(SaveRecoveryPlan, SaveRecoveryCandidate)`;
+- root-local mutation admission reuse;
+- immediate Busy rejection with no recovery queue;
+- supplied plan/candidate structural validation;
+- fresh M4-07 recovery-plan rebuild after admission;
+- exact source-provenance stale-plan rejection;
+- selected candidate must remain fully verified in the fresh plan;
+- zero durable mutation before freshness/candidate proof;
+- selected generation contents remain immutable and untouched;
+- `head.json` repointing only;
+- no propagation of an untrusted broken source generation into `previousGenerationId`;
+- truthful head-publication result;
+- post-head catalog refresh/reconciliation;
+- truthful published-but-catalog-not-reconciled partial success;
+- no participant callbacks, no active-slot selection mutation.
+
+M4-08 does **not** own:
+- automatic/configured fallback;
+- automatic recovery during load;
+- quarantine/incomplete-generation cleanup;
+- rename/duplicate/delete/trash;
+- persistent `catalog.cache.json`;
+- generic queues/capacity/overflow;
+- recovery cancellation overload;
+- automatic autosave timers;
+- permission-provider production facade wiring;
+- full recovery/configuration/Setup expansion;
+- document/participant migration during recovery;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+Primary registry proofs:
+- ESV-T-078 — execute plan safely;
+- ESV-T-079 — stale plan rejected before mutation.
+
+The next implementation must preserve the **524 / 524** focused regression floor.
