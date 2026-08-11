@@ -475,3 +475,22 @@ Still open:
 - final M4 capability/evidence reconciliation and actual closing Chronicle test total.
 
 **R3 closeout state:** M4 remains open. The final reconciliation pass is next but not activated by R3 closeout. M5 remains locked.
+
+
+# R4 activation update
+
+**R4 status:** ACTIVE / AUTHORIZED
+**Clean planning baseline:** `e3d7a2e`
+**R3 implementation baseline:** `c6ba1ad`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.41.0 / ESV-D-036
+**Incoming focused Chronicle Editor floor:** **660 / 660 passed, 0 failed**
+
+A-01 through A-04 are resolved. The only remaining M4 reconciliation blocker is stale/incomplete mapping between the 100-case specification registry and retained repository evidence/documentation.
+
+R4 does not treat all 100 rows as M4 requirements and does not mass-mark them Complete. Each row must be reconciled individually. Rows with retained direct evidence may become Complete; later M5/Laboratory/clean-project/release/performance/stress/integration/adoption rows remain explicitly not complete until their own gates.
+
+R4 authorizes documentation/evidence reconciliation and the final focused test rerun only. Runtime and test-code changes are not authorized. If any M4-applicable row lacks retained proof, M4 closeout stops and a separate bounded repair checkpoint is required.
+
+R4 must also reconcile stale package README, CHANGELOG, documentation index/navigation, Current Notes, Suite Health, audit/specification/handoff truth, and applicable checkpoint records.
+
+M4 may close only if every registry row has an explicit disposition, every M4-applicable row has retained evidence, no runtime blocker remains, documentation agrees, and the final focused Chronicle suite is green at the actual closing total. M5 remains locked until the committed R4 closeout records M4 complete.

@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M4-R3 – Chronicle Package-Document Migration and CAP-014 Reconciliation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1, R2, and R3 complete; R3 implementation `c6ba1ad` is green at `660 / 660`; final registry/document evidence reconciliation is next but not activated; M4 open; M5 locked
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1, R2, and R3 complete; ESV-M4-R4 final 100-case registry/document evidence reconciliation is active from `e3d7a2e`; incoming Chronicle floor `660 / 660`; M4 open; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 complete; R3 implementation `c6ba1ad` passed 660 / 660; A-04 / CAP-014 closed; final registry/document evidence reconciliation next but not activated; M4 open; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1, R2, and R3 complete; R4 final 100-case registry/document evidence reconciliation ACTIVE from `e3d7a2e`; incoming 660 / 660; A-01 through A-04 closed; R4 authorizes documentation/evidence only; M4 open; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -131,6 +131,6 @@ Still mandatory before M4 close:
 - final M4 capability/evidence matrix and stale-document repair;
 - final focused Chronicle regression evidence at the actual closing total.
 
-The final reconciliation is **next but not activated by this closeout**.
+The final reconciliation is now **ESV-M4-R4 ACTIVE / AUTHORIZED** from clean baseline `e3d7a2e`.
 
-**M4 remains open. M5 remains locked.**
+**M4 remains open. M5 remains locked. R4 must reconcile all 100 registry rows individually and rerun the focused Chronicle suite before M4 can close.**

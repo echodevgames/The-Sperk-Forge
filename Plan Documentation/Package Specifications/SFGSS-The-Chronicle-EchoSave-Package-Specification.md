@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.40.0
+**Specification version:** 1.41.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. ESV-M4-R3 is complete at implementation commit `c6ba1ad` with focused Chronicle Editor evidence **660 / 660 passed, 0 failed**, preserving the incoming **636 / 636** floor and adding **24** focused package-document migration tests. R3 preserves CAP-014 intact and completes its package-document half through Chronicle-owned, read-time, in-memory deterministic contiguous exact-version migration before current-version package DTO validation. Source generation bytes remain immutable, successful migration does not rewrite or republish the source, downgrade is not supported, missing/ambiguous/invalid/newer paths fail closed, and participant migration remains a separate later phase over participant-owned payload schemas. Current package document formats remain `1.0.0`; no synthetic production format bump was created for tests. Final applicable 100-case registry/document evidence reconciliation is next but not activated by this closeout. M4 remains open and M5 remains locked.
+> **Approval rule:** This specification is approved as package authority. ESV-M4-R3 is complete at implementation commit `c6ba1ad` with focused Chronicle Editor evidence **660 / 660 passed, 0 failed**. ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — is now **active / authorized** from clean baseline `e3d7a2e`. R4 is an evidence-and-documentation reconciliation checkpoint, not a new runtime capability checkpoint: it must review ESV-T-001 through ESV-T-100 individually, repair only statuses supported by retained evidence, explicitly preserve later M5/release/adoption rows as not-yet-complete, synchronize stale package/suite documentation, rerun the focused Chronicle Editor suite at the actual closing total, and declare M4 complete only if no M4-applicable evidence gap remains. No runtime or test-code change is authorized by R4 itself; any discovered M4-applicable implementation/evidence gap must stop closeout and receive a separate bounded repair checkpoint. M5 remains locked until a committed R4 closeout actually records M4 complete.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -74,6 +74,7 @@
 | 1.38.0 | 2026-08-11 | Approved | Closed `ESV-M4-R2` at implementation commit `8a8e7e7` with focused Chronicle Editor evidence `636 / 636`, 18 net new focused policy tests, schema-2 slot-policy authority, non-mutating schema-1 capacity-64 compatibility, one shared create/duplicate effective capacity, and ESV-T-015 through ESV-T-018 complete. One pre-commit compile compatibility correction restored `DefaultTechnicalSlotCapacity` as a legacy-only alias without restoring schema-2 hardcoded authority. R3 remains next but not activated; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.39.0 | 2026-08-11 | Approved | Activated `ESV-M4-R3` at clean baseline `0ebf1a1` with incoming focused Chronicle floor `636 / 636`. Added ESV-D-035: preserve CAP-014 whole and implement package-owned read-time in-memory package-document migration as deterministic contiguous exact-version chains; source generations remain immutable, no automatic rewrite or downgrade occurs, missing/invalid/newer paths fail closed, document migration precedes separate participant migration, and current package document formats remain `1.0.0` until a real shape change requires a production migration step. Final 100-case registry/document reconciliation remains after R3; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.40.0 | 2026-08-11 | Approved | Closed `ESV-M4-R3` at implementation commit `c6ba1ad` with focused Chronicle Editor evidence `660 / 660`, preserving the `636 / 636` floor and adding 24 focused migration tests across a 17-file implementation/test scope (`3359` insertions, `31` deletions). CAP-014 is now complete without splitting participant/document migration authority: Chronicle owns package-document version probing, deterministic contiguous in-memory migration, fail-closed historical/newer handling, and migration-aware current-generation/catalog/recovery reads while source generations remain immutable and production document versions remain `1.0.0`. ESV-T-067, ESV-T-068, ESV-T-069, ESV-T-072, and ESV-T-073 gain retained R3 evidence. Final 100-case registry/document reconciliation is next but not activated; M4 remains open and M5 locked. | Jesse “Echo” Adams |
+| 1.41.0 | 2026-08-11 | Approved | Activated `ESV-M4-R4` at clean post-R3-closeout baseline `e3d7a2e` with incoming focused Chronicle floor `660 / 660`. Added ESV-D-036: final M4 registry reconciliation is row-by-row evidence classification, not a requirement to falsely mark all 100 release-lifecycle cases Complete. A row becomes Complete only from retained direct evidence; later M5, Laboratory, clean-project, release, integration, performance, stress, and adoption rows remain explicitly Planned/Deferred until their own gates. R4 may repair documentation/status mapping and rerun the existing focused Chronicle suite, but it may not change runtime or test code. Any unresolved M4-applicable row blocks closeout and requires a separate bounded repair checkpoint. M4 may close only after the full registry/document map is reconciled and the final focused suite is green at the actual closing total; M5 remains locked until that closeout commit. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1921,6 +1922,7 @@ Project-specific migration tooling must:
 | ESV-D-033 | M4 reconciliation preserves the already-approved MVP public runtime contract instead of weakening it: R1 must compose existing proven M3/M4 internals behind a coherent `IEchoSaveService` facade for participant registration, catalog snapshot/refresh, slot creation/selection, two-phase loading, and same-scene convenience load; R2 owns runtime slot-policy configuration; R3 implements package-document migration so CAP-014 remains intact | Approved | The `48454ea` milestone audit proved the internal foundations exist but the consumer-facing composition and two remaining MVP capabilities are incomplete | M4 cannot close and M5 cannot activate until R1/R2/R3 plus registry/document reconciliation are complete; R1 may add public facade DTOs/results and service wiring but may not change save-generation durability, participant contracts, base storage contracts, scene ownership, or M5 tooling | No |
 | ESV-D-034 | CAP-002 slot policy becomes one schema-versioned project configuration authority: `EchoSaveConfiguration` schema 2 owns one `SaveSlotPolicy` using `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, or `BoundedProfiles`; all resolve to a finite effective live-slot capacity used by create and duplicate; schema-1 assets map read-only to the historical 64-slot behavior and are never rewritten at runtime; fixed-slot templates are optional M5 authoring metadata rather than a runtime prerequisite | Approved | The M4 audit found hardcoded capacity 64 was the remaining CAP-002 runtime gap. A single policy resolver removes hidden capacity truth without introducing fixed-slot identity/provisioning, mutable runtime configuration, or M5 tooling into R2 | R2 may advance configuration schema and add policy/result/validation types plus capacity wiring/tests; it may not implement document migration, fixed-slot auto-provisioning, Setup UI, runtime policy mutation, generic queues, scene authority, or peer-package dependencies | No |
 | ESV-D-035 | CAP-014 remains one whole migration capability. R3 implements package-owned package-document migration at read time: Chronicle probes document kind plus exact stored package version, resolves one deterministic contiguous upgrade chain to the exact current version, migrates detached serialized content in memory, then performs existing current-version deserialization/validation. Package migration is Chronicle-owned rather than consumer-registerable; participant migration remains a separate later phase. Source generations are never rewritten by read-time migration, no downgrade occurs, missing/ambiguous/failing/newer paths fail closed, and current `1.0.0` package formats are not bumped merely to manufacture a fixture | Approved | The M4 audit found CAP-014 only partially satisfied because participant migration exists while package-document migration is deferred. Keeping the capability intact preserves the approved save-format promise without inventing a fake historical production format or weakening immutable-generation durability | R3 may add internal package-document version/step/registry/executor/read-coordination types and wire package document read paths used by load/catalog/recovery; it may not change participant contracts, expose consumer package-migration registration, rewrite source generations on load, downgrade formats, change durable publication rules, add M5 tooling, generic queues, scene ownership, or peer-package dependencies | No |
+| ESV-D-036 | Final M4 reconciliation is an evidence-classification and documentation-parity gate over ESV-T-001 through ESV-T-100. Registry rows are reviewed individually: only rows with retained direct proof become Complete; rows owned by later M5 tooling/Laboratory, clean-project, release qualification, integration/adoption, performance/stress, or other deferred scope remain explicitly not complete and do not become M4-complete by implication. R4 itself authorizes no runtime or test-code change. Any M4-applicable row lacking retained proof is a blocker that requires a separate bounded repair checkpoint before M4 can close | Approved | The milestone audit found the registry stale in both directions: implemented M4 behavior remained marked Planned, while the 100-case registry also contains later package-graduation work that must not be mass-promoted merely to close M4. Explicit applicability/evidence classification preserves both milestone honesty and the package release gates | R4 may update authority/status/evidence documentation, README/CHANGELOG/index/handoff truth, and rerun the existing focused Chronicle suite. It may not invent evidence, weaken release gates, mark later work Complete, alter runtime/test code, or activate M5. M4 closes only from a committed R4 closeout with zero unresolved M4-applicable gaps and a green final focused suite | No |
 
 ### 27.2 Release-blocking questions
 
@@ -3608,47 +3610,201 @@ R3 closes audit blocker **A-04 / CAP-014**. Registry rows **ESV-T-067**, **ESV-T
 
 The final applicable 100-case registry/document evidence reconciliation is next but is **not activated by R3 closeout**. M4 remains open and M5 remains locked.
 
+### 28.30 ESV-M4-R4 final 100-case registry, documentation evidence reconciliation, and M4 closeout
+
+**Status:** Active / authorized.
+
+**Milestone:** M4 — Slots / Autosave / Recovery reconciliation.
+
+**Clean planning baseline:** `e3d7a2e`.
+
+**Carried focused regression floor:** **660 / 660**.
+
+**Authority decision:** ESV-D-036.
+
+#### R4 purpose
+
+R4 is the final M4 evidence-and-documentation reconciliation gate. It does not add another Chronicle runtime capability.
+
+Its job is to determine, from retained repository evidence, exactly which of the 100 specification registry rows have already been proven by completed M1-M4 work, which rows remain deliberately later work, and whether any M4-applicable row is still missing direct proof.
+
+The governing rule is:
+
+> Reconcile evidence honestly. Do not convert “planned someday” into “complete now,” and do not leave already-proven M4 behavior falsely marked Planned.
+
+#### Registry reconciliation rules
+
+Every row from **ESV-T-001 through ESV-T-100** must be reviewed individually.
+
+For each row, R4 must record:
+
+- current registry status;
+- capability/scenario intent;
+- M4 applicability;
+- retained evidence source when one exists;
+- final reconciled status/disposition;
+- issue/blocker note when evidence is insufficient.
+
+A row may be marked **Complete** only when retained evidence directly proves the row's expected result.
+
+Acceptable retained evidence includes:
+
+- a named automated Chronicle test or test class that is still present and green;
+- a checkpoint implementation/closeout record whose executed test gate directly proves the scenario;
+- a retained manual evidence record when the scenario is inherently manual and that record is authoritative.
+
+Checkpoint completion by itself is not permission to mark unrelated registry rows Complete.
+
+#### Later-work disposition
+
+The 100-case registry spans more than M4 runtime implementation. Rows whose authoritative scope belongs to later work remain not complete.
+
+Examples include, where applicable:
+
+- M5 Editor tooling, Setup, Validator, Browser, Simulator, and Save Laboratory work;
+- direct-scene/Laboratory scenarios not yet executed;
+- clean-project reproduction;
+- external tarball/Git/package installation qualification;
+- platform qualification;
+- performance/stress measurements not yet executed;
+- integration/adoption work with First Light, Looking Glass, Passage, or existing projects;
+- release qualification/private beta evidence.
+
+Such rows must remain **Planned**, **Deferred**, or otherwise explicitly not-complete according to the reconciled documentation. They do not become Complete merely because M4 is ready to close.
+
+#### M4-applicable gap rule
+
+If a registry row is determined to be M4-applicable and the repository does not contain retained proof for it:
+
+1. do not infer completion;
+2. do not write a documentation-only claim;
+3. record the row as an unresolved M4 reconciliation blocker;
+4. stop M4 closeout;
+5. create a separate bounded repair checkpoint before changing runtime or test code.
+
+R4 itself authorizes **no runtime or test-code changes**.
+
+This keeps the final reconciliation from smuggling new implementation into what is supposed to be an evidence audit.
+
+#### Documentation parity scope
+
+R4 must reconcile stale current-state claims across the repository, including at minimum:
+
+- this Chronicle package specification and the 100-case registry;
+- `Plan Documentation/Current Notes.md`;
+- package `Documentation~/Developer/Current Notes.md`;
+- `ESV-M4_Chronicle_Milestone_Reconciliation_Audit.md`;
+- `Suite_Health_Check_and_Remaining_Documentation.md`;
+- package `README.md`;
+- package `CHANGELOG.md`;
+- package documentation index / navigation pages that state current capability or milestone status;
+- R1/R2/R3/final checkpoint records where current-state wording requires correction;
+- new-conversation handoff truth.
+
+Historical evidence must remain historical. R4 should repair current-state contradictions without rewriting valid historical checkpoint records into a fictional single narrative.
+
+#### Test execution rule
+
+The incoming focused Chronicle Editor floor is **660 / 660 passed, 0 failed**.
+
+Before M4 can close:
+
+1. the registry/document reconciliation must be complete;
+2. the focused `EchoDevGames.EchoSave.Tests.Editor` suite must be rerun;
+3. the actual discovered closing total must be recorded;
+4. failures must be resolved before closeout;
+5. the final evidence must not claim a count that was not executed.
+
+Because R4 authorizes no new test code, the expected discovery count is normally unchanged. If the discovered count differs, record the actual result and investigate rather than forcing the historical number.
+
+#### M4 close rule
+
+R4 may declare **M4 complete** only if all of the following are true:
+
+- A-01 through A-04 remain resolved;
+- every ESV-T-001 through ESV-T-100 row has an explicit reconciled disposition;
+- every M4-applicable row is supported by retained evidence;
+- later milestone/release rows remain honestly not complete;
+- package/suite documentation agrees on the current runtime boundary;
+- no undocumented M4 runtime blocker remains;
+- the final focused Chronicle Editor suite is green at the actual closing total;
+- the working tree is clean after the closeout commit.
+
+If any condition fails, M4 remains open.
+
+#### M5 lock
+
+R4 activation does not activate M5.
+
+Even a green R4 evidence run does not activate M5 until the **committed R4 closeout** explicitly records M4 complete.
+
+M5 must begin, if approved, through its own separately bounded activation commit.
+
+#### R4 expected artifact sequence
+
+1. **Activation commit**
+   - authority v1.41.0 / ESV-D-036;
+   - R4 checkpoint plan;
+   - no runtime changes.
+2. **Evidence reconciliation work**
+   - row-by-row 100-case mapping;
+   - stale README/CHANGELOG/index/current-state repair;
+   - no runtime/test-code changes unless a separate blocker checkpoint is activated.
+3. **Final focused Unity gate**
+   - rerun the Chronicle Editor suite;
+   - record the actual total.
+4. **R4 / M4 closeout commit**
+   - final registry state;
+   - final M4 capability/evidence matrix;
+   - final documentation parity;
+   - M4 complete only if every close rule passes.
+5. **Later separate M5 activation**
+   - never implied by R4 activation or test success.
+
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.40.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.41.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.40.0
+Current specification version: 1.41.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10; ESV-M4-R1; ESV-M4-R2; ESV-M4-R3
-Current milestone/checkpoint: M4 reconciliation remains open; final applicable 100-case registry/document evidence reconciliation is next but NOT ACTIVATED
+Current milestone/checkpoint: ESV-M4-R4 final 100-case registry/document evidence reconciliation and M4 closeout is ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation status: ESV-M4-R1, R2, and R3 complete; R3 implementation `c6ba1ad`; focused Chronicle floor now `660 / 660`; final reconciliation remains; M5 locked
-Known blockers: runtime blocker A-04 / CAP-014 is closed; stale 100-case registry/document evidence mapping remains the final M4 reconciliation blocker
+Current implementation status: ESV-M4-R1, R2, and R3 complete; R4 is documentation/evidence-only from baseline `e3d7a2e`; focused Chronicle floor `660 / 660`; M4 remains open until R4 closeout; M5 locked
+Known blockers: runtime blockers A-01 through A-04 are closed; stale 100-case registry/document evidence mapping is the active final M4 reconciliation blocker
 Current Notes reviewed through: August 11, 2026
 
 Before writing more Chronicle runtime code or activating M5:
-1. Treat `c6ba1ad` as the committed R3 implementation baseline.
+1. Treat `e3d7a2e` as the clean R4 planning baseline and `c6ba1ad` as the retained R3 implementation baseline.
 2. Preserve the **660 / 660** focused Chronicle regression floor.
-3. Perform the separate final applicable 100-case registry/document evidence reconciliation.
-4. Reconcile registry rows individually against retained evidence; do not mass-mark planned cases complete.
-5. Produce final M4 capability/evidence truth and rerun the focused Chronicle suite at the actual closing total.
-6. Keep M4 open and M5 locked until that final reconciliation proves M4 can close cleanly.
+3. Execute ESV-M4-R4 as a documentation/evidence reconciliation only.
+4. Reconcile ESV-T-001 through ESV-T-100 individually; mark Complete only from retained direct evidence and leave later M5/release/adoption rows explicitly not complete.
+5. If an M4-applicable row lacks proof, stop closeout and create a separate bounded repair checkpoint before changing runtime or tests.
+6. Synchronize stale README, CHANGELOG, package index, Current Notes, Suite Health, audit, specification, and handoff truth.
+7. Rerun the focused Chronicle suite and record the actual closing total.
+8. Keep M4 open and M5 locked until the committed R4 closeout proves every M4 close rule.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.40.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.41.0 |
 | Completed checkpoint | ESV-M4-R3 - Package-Document Migration and CAP-014 Reconciliation |
 | Implementation commit | `c6ba1ad` |
 | Tests passed | Final ESV-M4-R3 focused Chronicle Editor gate `660 / 660`; prior `636 / 636` regression floor preserved; Unity compile/import green |
 | Tests failed | Final ESV-M4-R3 gate: `0` |
-| Known issues | Runtime audit blockers A-01 through A-04 are resolved; final applicable 100-case registry/document evidence reconciliation remains before M4 close |
-| Decisions added | ESV-D-001 through ESV-D-035; ESV-D-035 defines package-owned read-time package-document migration while preserving CAP-014 and immutable source generations |
+| Known issues | Runtime audit blockers A-01 through A-04 are resolved; ESV-M4-R4 is active to reconcile all 100 registry rows/document evidence before M4 close |
+| Decisions added | ESV-D-001 through ESV-D-036; ESV-D-036 defines honest row-by-row final registry evidence classification and forbids documentation-only invention of missing M4 proof |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No new runtime checkpoint is activated by R3 closeout. Final registry/document evidence reconciliation is next; M4 remains open and M5 remains locked. |
+| Implementation permission | ESV-M4-R4 is active for documentation/evidence reconciliation and final test rerun only. Runtime/test-code changes are not authorized; unresolved M4-applicable gaps require a separate repair checkpoint. M4 remains open and M5 locked. |
 
 ## 30. Approval
 
@@ -3694,7 +3850,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.40.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 are complete. R3 implementation `c6ba1ad` is green at **660 / 660** and closes A-04 / CAP-014. M4 remains open only for the separate final applicable 100-case registry/document evidence reconciliation and final closing evidence; M5 remains locked.
+The Chronicle specification is complete and **Approved v1.41.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 are complete. R3 implementation `c6ba1ad` is green at **660 / 660** and closes A-04 / CAP-014. ESV-M4-R4 is active from clean baseline `e3d7a2e` as the final row-by-row 100-case registry/document evidence reconciliation and M4 closeout gate. It authorizes no runtime/test-code change; M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
 
 
 ---

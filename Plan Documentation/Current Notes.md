@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 reconciliation — R3 complete; final registry/document evidence reconciliation next
-**Current checkpoint:** Final M4 registry/document evidence reconciliation — **NEXT / NOT ACTIVATED**
+**Current focus:** Chronicle M4 reconciliation — R4 final 100-case registry/document evidence reconciliation active
+**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -839,11 +839,34 @@ Package-document migration remains separate from participant migration. The prod
 
 The migration-aware read seam is integrated into current-generation loading, catalog scanning, and recovery candidate verification. R3-owned ESV-T-067, ESV-T-068, ESV-T-069, ESV-T-072, and ESV-T-073 now have retained green evidence.
 
+## ESV-M4-R4 Activation
+
+ESV-M4-R4 — **Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout** — is **active / authorized**.
+
+Authority:
+- clean planning baseline: `e3d7a2e`;
+- R3 implementation baseline retained: `c6ba1ad`;
+- incoming focused Chronicle regression floor: **660 / 660 passed, 0 failed**;
+- Chronicle specification: **v1.41.0**;
+- decision: **ESV-D-036**.
+
+R4 is a documentation/evidence reconciliation checkpoint, not a runtime feature checkpoint.
+
+It must review **ESV-T-001 through ESV-T-100 individually**. A row becomes Complete only from retained direct evidence. Rows belonging to later M5 tooling/Laboratory, clean-project, release qualification, performance/stress, integration/adoption, or other deferred work stay explicitly not complete and are not mass-promoted to make M4 look finished.
+
+R4 authorizes no runtime or test-code changes. If an M4-applicable row lacks retained proof, M4 closeout stops and that gap receives a separate bounded repair checkpoint.
+
+R4 must also synchronize stale current-state documentation, including the package README, CHANGELOG, package documentation index/navigation, Current Notes, Suite Health, milestone audit, package specification, checkpoint records where needed, and handoff truth.
+
 ## Next Action
 
-1. Treat `c6ba1ad` as the committed R3 implementation baseline.
-2. Preserve **660 / 660** as the current focused Chronicle regression floor.
-3. Perform the separate final applicable 100-case registry/document evidence reconciliation before declaring M4 complete.
-4. Reconcile stale registry states and retained evidence individually rather than mass-marking cases complete.
-5. Produce the final M4 capability/evidence truth and rerun the focused Chronicle suite at the actual closing total.
-6. Do not activate M5 until the final reconciliation proves M4 can close cleanly.
+1. Treat `e3d7a2e` as the clean R4 planning baseline.
+2. Preserve **660 / 660** as the focused Chronicle regression floor.
+3. Build the row-by-row ESV-T-001 through ESV-T-100 evidence/disposition map.
+4. Repair stale registry statuses only where retained direct evidence supports the change.
+5. Leave later M5/release/adoption rows explicitly not complete.
+6. Reconcile README/CHANGELOG/index/current-state documentation against the final map.
+7. If any M4-applicable row lacks proof, stop and open a bounded repair checkpoint rather than editing runtime/tests inside R4.
+8. Rerun the focused Chronicle Editor suite and record the actual closing total.
+9. Declare M4 complete only from a committed R4 closeout with zero unresolved M4-applicable gaps.
+10. Keep M5 locked until that closeout commit.
