@@ -24,7 +24,8 @@ namespace EchoDevGames.EchoSave
             bool generationPublished,
             bool headPublished,
             bool catalogReconciled,
-            SaveSlotCatalogEntry reconciledEntry)
+            SaveSlotCatalogEntry reconciledEntry,
+            SaveRetentionResult retentionResult = default)
         {
             Status =
                 status;
@@ -70,6 +71,9 @@ namespace EchoDevGames.EchoSave
 
             ReconciledEntry =
                 reconciledEntry;
+
+            RetentionResult =
+                retentionResult;
         }
 
         internal SaveManualTransactionStatus Status { get; }
@@ -101,6 +105,8 @@ namespace EchoDevGames.EchoSave
         internal bool CatalogReconciled { get; }
 
         internal SaveSlotCatalogEntry ReconciledEntry { get; }
+
+        internal SaveRetentionResult RetentionResult { get; }
 
         internal bool Succeeded =>
             Status ==

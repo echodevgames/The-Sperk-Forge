@@ -467,5 +467,17 @@ namespace EchoDevGames.EchoSave
 
         internal const string AutosaveExecuted =
             "ESV-AUTO-010";
+
+        internal const string RetentionInvalidPolicy =
+            "ESV-RET-001";
+
+        internal const string RetentionUnsupportedStorage =
+            "ESV-RET-002";
+
+        internal const string RetentionUntrustworthy =
+            "ESV-RET-003";
+
+        internal const string RetentionDeleteFailed =
+            "ESV-RET-004";
     }
 }

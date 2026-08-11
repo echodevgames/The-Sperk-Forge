@@ -12,7 +12,8 @@ namespace EchoDevGames.EchoSave
     /// </summary>
     public sealed class LocalFileSaveStorageBackend :
         ISaveStoragePublicationBackend,
-        ISaveStorageDiscoveryBackend
+        ISaveStorageDiscoveryBackend,
+        ISaveStorageTreeDeletionBackend
     {
         private static readonly
             SaveStorageBackendId BackendId =
@@ -357,6 +358,60 @@ namespace EchoDevGames.EchoSave
                     exception);
             }
         }
+
+
+        public SaveStorageResult DeleteTree(
+            SaveStorageKey directoryKey)
+        {
+            SaveStorageResult ready =
+                EnsureReady();
+
+            if (!ready.Succeeded)
+            {
+                return ready;
+            }
+
+            SaveStorageResult resolved =
+                Resolve(
+                    directoryKey,
+                    out string fullPath);
+
+            if (!resolved.Succeeded)
+            {
+                return resolved;
+            }
+
+            try
+            {
+                if (!Directory.Exists(
+                        fullPath))
+                {
+                    return new SaveStorageResult(
+                        SaveStorageStatus.NotFound,
+                        EchoSaveDiagnosticCodes
+                            .StorageNotFound,
+                        "The requested Chronicle storage tree was not found.");
+                }
+
+                Directory.Delete(
+                    fullPath,
+                    true);
+
+                return SaveStorageResult.Success(
+                    "The Chronicle storage tree was deleted successfully.");
+            }
+            catch (Exception exception)
+                when (IsExpectedIoException(
+                    exception))
+            {
+                return IoFailure(
+                    EchoSaveDiagnosticCodes
+                        .StorageIoFailure,
+                    "The Chronicle storage-tree delete failed.",
+                    exception);
+            }
+        }
+
 
 
         public SaveStorageResult PublishNewTree(

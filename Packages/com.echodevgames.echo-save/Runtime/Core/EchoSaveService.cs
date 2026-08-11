@@ -16,6 +16,9 @@ namespace EchoDevGames.EchoSave
         internal const int DefaultCatalogScanLimit =
             256;
 
+        internal const int DefaultRetentionDiscoveryLimit =
+            512;
+
         private EchoSaveConfiguration configuration;
         private IEchoSaveLifecycleProbe lifecycleProbe;
         private IEchoSaveStorageBackendFactory storageBackendFactory;
@@ -960,6 +963,13 @@ namespace EchoDevGames.EchoSave
                         participantRegistry,
                         publicationCoordinator);
 
+            SaveGenerationRetentionCoordinator
+                retentionCoordinator =
+                    new SaveGenerationRetentionCoordinator(
+                        storageBackend,
+                        serializer,
+                        DefaultRetentionDiscoveryLimit);
+
             manualSaveTransactionExecutor =
                 new SaveManualTransactionCoordinator(
                     slotCatalog,
@@ -967,7 +977,9 @@ namespace EchoDevGames.EchoSave
                     captureCoordinator,
                     participantRegistry,
                     unknownPayloadStore,
-                    carryForwardCoordinator);
+                    carryForwardCoordinator,
+                    retentionCoordinator,
+                    SaveRetentionPolicy.Default);
         }
 
         private void ResetManualSaveRuntime()
@@ -1133,7 +1145,8 @@ namespace EchoDevGames.EchoSave
                 transaction.GenerationPublished,
                 transaction.HeadPublished,
                 transaction.CatalogReconciled,
-                transaction.ReconciledEntry);
+                transaction.ReconciledEntry,
+                transaction.RetentionResult);
         }
 
         private static SaveOperationResult Failure(

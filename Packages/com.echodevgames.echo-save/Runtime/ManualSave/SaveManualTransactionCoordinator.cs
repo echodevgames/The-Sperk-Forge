@@ -5,9 +5,10 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Bounded M4-03 manual-save transaction composition seam.
     ///
-    /// This coordinator composes already-proven Chronicle primitives. It does
-    /// not own public SaveAsync, generic operation admission, Busy/cancellation,
-    /// autosave, retention, recovery, rename/duplicate/delete, persistent
+    /// This coordinator composes already-proven Chronicle primitives. M4-06
+    /// adds post-publication retention maintenance through one injected
+    /// provider-neutral executor. It still does not own public SaveAsync,
+    /// generic operation queues, recovery, slot deletion/trash, persistent
     /// catalog cache, scene lifetime, bridges, or DDOL.
     /// </summary>
     internal sealed class SaveManualTransactionCoordinator :
@@ -27,6 +28,10 @@ namespace EchoDevGames.EchoSave
             unknownPayloadStore;
         private readonly SaveUnknownPayloadCarryForwardCoordinator
             carryForwardCoordinator;
+        private readonly ISaveGenerationRetentionExecutor
+            retentionExecutor;
+        private readonly SaveRetentionPolicy
+            retentionPolicy;
 
         internal SaveManualTransactionCoordinator(
             SaveSlotCatalog catalog,
@@ -35,6 +40,27 @@ namespace EchoDevGames.EchoSave
             SaveParticipantRegistry participantRegistry,
             SaveUnknownPayloadStore unknownPayloadStore,
             SaveUnknownPayloadCarryForwardCoordinator carryForwardCoordinator)
+            : this(
+                catalog,
+                currentGenerationReader,
+                captureCoordinator,
+                participantRegistry,
+                unknownPayloadStore,
+                carryForwardCoordinator,
+                null,
+                SaveRetentionPolicy.Default)
+        {
+        }
+
+        internal SaveManualTransactionCoordinator(
+            SaveSlotCatalog catalog,
+            SaveCurrentGenerationReader currentGenerationReader,
+            SaveParticipantCaptureCoordinator captureCoordinator,
+            SaveParticipantRegistry participantRegistry,
+            SaveUnknownPayloadStore unknownPayloadStore,
+            SaveUnknownPayloadCarryForwardCoordinator carryForwardCoordinator,
+            ISaveGenerationRetentionExecutor retentionExecutor,
+            SaveRetentionPolicy retentionPolicy)
         {
             this.catalog =
                 catalog ??
@@ -65,6 +91,12 @@ namespace EchoDevGames.EchoSave
                 carryForwardCoordinator ??
                 throw new ArgumentNullException(
                     nameof(carryForwardCoordinator));
+
+            this.retentionExecutor =
+                retentionExecutor;
+
+            this.retentionPolicy =
+                retentionPolicy;
         }
 
         internal SaveManualTransactionResult Save(
@@ -255,6 +287,14 @@ namespace EchoDevGames.EchoSave
                     publication);
             }
 
+            SaveRetentionResult retention =
+                retentionExecutor == null
+                    ? SaveRetentionResult.NotRequired(
+                        "Chronicle retention maintenance is not configured for this transaction.")
+                    : retentionExecutor.Apply(
+                        targetSlot,
+                        retentionPolicy);
+
             SaveSlotCatalogRefreshResult reconciliation =
                 catalog.Refresh();
 
@@ -262,6 +302,7 @@ namespace EchoDevGames.EchoSave
             {
                 return ReconciliationFailure(
                     publication,
+                    retention,
                     "The Chronicle manual save committed a new head, but catalog reconciliation failed. The committed generation remains authoritative.");
             }
 
@@ -282,13 +323,26 @@ namespace EchoDevGames.EchoSave
             {
                 return ReconciliationFailure(
                     publication,
+                    retention,
                     "The Chronicle manual save committed a new head, but the refreshed catalog did not expose the matching healthy generation with the existing active selection and display name.");
             }
 
+            string successDiagnostic =
+                retention.MaintenanceFailed
+                    ? retention.DiagnosticCode
+                    : string.Empty;
+
+            string successMessage =
+                "The Chronicle active slot was saved as one verified immutable participant-backed generation, head was published last, and the catalog was reconciled." +
+                (retention.MaintenanceFailed
+                    ? " The committed save remains authoritative, but retention maintenance did not fully complete. " +
+                      retention.Message
+                    : string.Empty);
+
             return new SaveManualTransactionResult(
                 SaveManualTransactionStatus.Succeeded,
-                string.Empty,
-                "The Chronicle active slot was saved as one verified immutable participant-backed generation, head was published last, and the catalog was reconciled.",
+                successDiagnostic,
+                successMessage,
                 targetSlot,
                 publication.SourceGenerationId,
                 publication.PublishedGenerationId,
@@ -300,7 +354,8 @@ namespace EchoDevGames.EchoSave
                 publication.GenerationPublished,
                 publication.HeadPublished,
                 true,
-                reconciledEntry);
+                reconciledEntry,
+                retention);
         }
 
         SaveManualTransactionResult
@@ -436,6 +491,7 @@ namespace EchoDevGames.EchoSave
         private static SaveManualTransactionResult
             ReconciliationFailure(
                 SaveCarryForwardPublicationResult publication,
+                SaveRetentionResult retention,
                 string message) =>
             new SaveManualTransactionResult(
                 SaveManualTransactionStatus
@@ -454,7 +510,8 @@ namespace EchoDevGames.EchoSave
                 publication.GenerationPublished,
                 publication.HeadPublished,
                 false,
-                null);
+                null,
+                retention);
 
         private static SaveManualTransactionResult Failure(
             SaveManualTransactionStatus status,
