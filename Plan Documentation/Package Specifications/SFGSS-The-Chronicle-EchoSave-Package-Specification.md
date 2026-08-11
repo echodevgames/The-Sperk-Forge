@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.34.0
+**Specification version:** 1.35.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-10 are complete. ESV-M4-10 implementation is committed at `01e4cdd` with focused Chronicle Editor evidence **587 / 587 passed, 0 failed**, preserving the prior **562 / 562** floor. No follow-on runtime checkpoint or M5 implementation is active. The next gate is a dedicated M4 milestone reconciliation before M4 can be declared complete. Permanent erase, restore-from-trash API, quarantine/incomplete cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and M5 tooling remain deferred until separately authorized.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-10 are complete. The M4 milestone reconciliation audit at clean baseline `48454ea` found four material completion gaps: public load composition, public catalog/create/select composition, incomplete slot-policy configuration, and incomplete package-document migration. Jesse approved preserving the existing MVP promises rather than weakening them. `ESV-M4-R1` is now the active bounded reconciliation checkpoint for public runtime composition only, with the **587 / 587** focused Chronicle Editor floor carried forward. R2 will own slot-policy runtime configuration, R3 will implement package-document migration while preserving CAP-014 intact, and the final reconciliation pass will repair registry/document evidence before M4 can close. M5 remains locked.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -68,6 +68,7 @@
 ---
 | 1.33.0 | 2026-08-11 | Approved | Activated ESV-M4-10 bounded destructive-slot deletion/trash foundation at clean baseline `4d2f2ac`: read-only immutable deletion plans, package/session/source-provenance binding, bounded expiry and one-use confirmation, root-local Busy admission reuse, confirmed recoverable trash move as the durable delete boundary, active-slot clear only after durable removal, bounded post-commit trash retention, and truthful catalog reconciliation. Added ESV-D-032. Permanent erase, restore-from-trash API, quarantine cleanup, persistent catalog cache, automatic recovery fallback, generic queues, automatic autosave timers, and M5 tooling remain deferred. | Jesse “Echo” Adams |
 | 1.34.0 | 2026-08-11 | Approved | Closed ESV-M4-10 at implementation commit `01e4cdd` with focused Chronicle Editor evidence `587 / 587`; recorded zero-mutation two-step deletion planning, expiring one-use package/session/source-bound plans, root-local Busy/no-queue confirmation, exact source revalidation, recoverable complete-tree trash publication as durable delete truth, active-slot/catalog reconciliation, bounded fail-closed trash retention, unchanged base storage contract, and ESV-T-021 through ESV-T-023 completion. M4 remains pending a dedicated milestone reconciliation; M5 is not activated. | Jesse “Echo” Adams |
+| 1.35.0 | 2026-08-11 | Approved | Recorded the M4 milestone reconciliation audit at clean baseline `48454ea` and activated `ESV-M4-R1` public runtime composition. Added ESV-D-033: preserve the approved MVP public-service promises and repair them in bounded reconciliation passes rather than weakening the specification. R1 exposes participant registration, catalog snapshot/refresh, slot creation/selection, prepared-load/apply, and same-scene convenience load over existing M3/M4 machinery; R2 owns slot-policy configuration; R3 owns package-document migration while CAP-014 remains intact. M5 remains locked until reconciliation closeout. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -743,8 +744,10 @@ Configuration assets and slot templates remain immutable during play. Runtime se
 | `ISavePermissionProvider` | Interface | Project-specific allow/deny advice | Project/bridge |
 | `SaveSlotId` | Value type | Stable slot identity | Package |
 | `SaveGenerationId` | Value type | Stable generation identity | Package |
-| `SaveSlotMetadata` | Immutable model | Lightweight slot display/health data | Service result |
-| `SaveCatalogSnapshot` | Immutable model | Bounded slot list and catalog health | Service result |
+| `SaveSlotCreateRequest` | Struct/class | Public project metadata for one new technical slot | Caller |
+| `SaveSlotCreateResult` | Immutable result | Durable slot-publication and catalog-reconciliation truth | Service |
+| `SaveSlotCatalogEntry` | Immutable model | Lightweight slot display/health data | Service result |
+| `SaveSlotCatalogSnapshot` | Immutable model | Bounded slot list and catalog health | Service result |
 | `SaveRequest` | Struct | Save target, reason, metadata, cancellation, options | Caller |
 | `SaveOperationResult` | Struct | Structured save terminal result | Service |
 | `SaveLoadRequest` | Struct | Slot/generation/recovery options | Caller |
@@ -760,19 +763,19 @@ Configuration assets and slot templates remain immutable during play. Runtime se
 |---|---|---|---|---|
 | `InitializeAsync()` | Validate providers and build catalog | Authority claimed | Ready/degraded/blocked result | Completes on main thread |
 | `RegisterParticipant(ISaveParticipant)` | Add participant | Ready or initializing; unique ID | Registration or structured failure | Main thread |
-| `GetCatalogSnapshot()` | Read current immutable catalog | Initialized | Snapshot, never mutable internals | Main thread, no I/O |
-| `RefreshCatalogAsync()` | Re-scan heads/manifests | No mutating op or queued by policy | Updated catalog result | I/O background, complete main |
-| `CreateSlotAsync(CreateSlotRequest)` | Create stable slot | Capacity/policy permit | New metadata or rejection | Async |
-| `SelectSlot(SaveSlotId)` | Set session active slot | Slot exists/healthy by policy | Result/event | Main thread |
-| `RenameSlotAsync(RenameSlotRequest)` | Change display metadata only | Valid slot/name | New generation/manifest or metadata commit | Async |
-| `DuplicateSlotAsync(DuplicateSlotRequest)` | Copy current verified generation into new slot ID | Capacity and source healthy | New slot or failure | Async |
+| `GetCatalogSnapshot()` | Read current immutable catalog | Ready | `SaveSlotCatalogSnapshot`, never mutable internals | Main thread, no I/O |
+| `RefreshCatalogAsync()` | Re-scan heads/manifests | Ready and root-local operation admission available | `SaveSlotCatalogRefreshResult` or Busy/lifecycle failure | Async/read, complete main |
+| `CreateSlotAsync(SaveSlotCreateRequest)` | Create stable slot through the proven M4-02 technical creation path | Ready; current R1 technical capacity permits | `SaveSlotCreateResult`; never auto-select | Async/exclusive |
+| `SelectSlot(SaveSlotId)` | Set session active slot | Ready; slot exists and is selectable in current catalog | `SaveActiveSlotSelectionResult` | Main thread, memory-only |
+| `RenameSlotAsync(SaveSlotRenameRequest)` | Change display metadata only | Valid slot/name | New generation/manifest or metadata commit | Async |
+| `DuplicateSlotAsync(SaveSlotDuplicateRequest)` | Copy current verified generation into new slot ID | Capacity and source healthy | New slot or failure | Async |
 | `PrepareDeleteSlotAsync(SaveSlotId)` | Build destructive plan/token | Slot exists | Plan, no mutation | Async/read |
 | `ConfirmDeleteSlotAsync(SaveDeletionPlan)` | Move/delete slot per policy | Valid unexpired plan | Result and catalog update | Async/exclusive |
 | `SaveAsync(SaveRequest)` | Capture and commit a generation | Active/target slot, participants ready, permission allowed | `SaveOperationResult` | Capture main; serialize/I/O background; complete main |
 | `RequestAutosave(AutosaveRequest)` | Submit coalescible autosave | Autosave enabled | Accepted/coalesced/rejected ticket | Main thread |
-| `PrepareLoadAsync(SaveLoadRequest)` | Read/validate/recover/migrate | Slot exists | `PreparedSaveLoad` or failure | I/O background; complete main |
-| `ApplyPreparedLoadAsync(PreparedSaveLoad, ApplyLoadOptions)` | Apply to registered participants | Valid handle and participants | Detailed participant report | Main thread |
-| `LoadAndApplyAsync(SaveLoadRequest)` | Convenience prepare/apply | All required participants ready | Load result | Async, apply main |
+| `PrepareLoadAsync(SaveLoadRequest)` | Read/validate/prepare current canonical generation without applying participants | Ready; explicit slot exists; no automatic recovery fallback in R1 | `PreparedLoadCreationResult` | Async/read; complete main |
+| `ApplyPreparedLoadAsync(PreparedSaveLoad)` | Apply one already prepared handle using participant-owned missing-payload policy | Ready; valid handle and participants | `SavePreparedLoadApplyResult` | Main thread/exclusive |
+| `LoadAndApplyAsync(SaveLoadRequest)` | Convenience prepare then apply in the current scene | Ready; all required participants ready; no scene travel | `SaveLoadResult` | Async; apply on main thread |
 | `BuildRecoveryPlanAsync(SaveSlotId)` | Inspect generations | Slot path accessible | Candidate plan | Background read |
 | `ExecuteRecoveryAsync(SaveRecoveryPlan, candidate)` | Publish selected verified generation | Explicit/allowed policy | Recovery result | Async/exclusive |
 | `ExportRedactedSnapshotAsync(path/options)` | Support report | Explicit request | Payload-free export | Async |
@@ -1910,6 +1913,7 @@ Project-specific migration tooling must:
 | ESV-D-030 | Explicit recovery execution is one root-local mutating operation that must rebuild/revalidate the M4-07 source snapshot and selected candidate before publishing a head; a stale/mismatched plan or candidate fails before mutation; successful head publication is durable recovery truth and later catalog reconciliation failure is reported separately rather than rolling back the head | Approved | Makes recovery auditable and race-resistant while preserving the same durable-truth model used by save publication | M4-08 republishes only the small head pointer to an already verified immutable committed generation; it does not rewrite generation payloads, auto-select fallback, quarantine evidence, or invent a generic queue |
 | ESV-D-031 | Slot rename and duplication are non-destructive admitted slot mutations over the immutable-generation model: rename never changes `SaveSlotId` or physical slot path and commits display-metadata change through a new generation/head update; duplicate never mutates the source, requires capacity, creates a new package-generated slot/generation identity, copies the verified source state without participant callbacks, and revalidates the bound source before publishing the destination | Approved | Preserves immutable history, stable slot identity, and race-resistant copy semantics without smuggling destructive delete/trash or a generic operation queue into the same checkpoint | M4-09 covers ESV-T-019 and ESV-T-020 only; delete-plan/confirm, trash, persistent cache, and automatic recovery remain later bounded work |
 | ESV-D-032 | Destructive slot deletion is a two-step plan-bound mutation: prepare-delete is read-only and produces an immutable package/session/source-provenance-bound plan; confirm-delete requires one valid unexpired unused plan, revalidates the bound canonical source before mutation, reuses root-local mutation admission, and commits deletion only when the slot tree has been moved to package-owned recoverable trash. Active-slot clearing and catalog reconciliation occur only after durable removal; bounded trash retention is post-commit maintenance and cannot fabricate rollback | Approved | Prevents accidental/stale/replayed destructive actions while making the safe default deletion recoverable and preserving the same durable-truth discipline used by save/recovery | M4-10 covers ESV-T-021 through ESV-T-023; permanent erase, restore-from-trash public API, quarantine cleanup, persistent cache, and generic queues remain separately bounded work |
+| ESV-D-033 | M4 reconciliation preserves the already-approved MVP public runtime contract instead of weakening it: R1 must compose existing proven M3/M4 internals behind a coherent `IEchoSaveService` facade for participant registration, catalog snapshot/refresh, slot creation/selection, two-phase loading, and same-scene convenience load; R2 owns runtime slot-policy configuration; R3 implements package-document migration so CAP-014 remains intact | Approved | The `48454ea` milestone audit proved the internal foundations exist but the consumer-facing composition and two remaining MVP capabilities are incomplete | M4 cannot close and M5 cannot activate until R1/R2/R3 plus registry/document reconciliation are complete; R1 may add public facade DTOs/results and service wiring but may not change save-generation durability, participant contracts, base storage contracts, scene ownership, or M5 tooling | No |
 
 ### 27.2 Release-blocking questions
 
@@ -2864,46 +2868,186 @@ Focused tests additionally prove:
 
 No M5 tooling implementation is authorized by this closeout. M4 milestone closeout requires the dedicated reconciliation next.
 
+
+### 28.27 ESV-M4-R1 public runtime composition and consumer facade reconciliation activation
+
+**Status:** Active / authorized.
+
+**Milestone:** M4 — Slots / Autosave / Recovery reconciliation.
+
+**Clean planning baseline:** `48454ea`.
+
+**Carried focused regression floor:** **587 / 587**.
+
+**Authority decision:** ESV-D-033.
+
+#### Audit trigger
+
+The dedicated M4 milestone reconciliation found that M3/M4 built substantial internal runtime machinery but did not finish the public consumer facade promised by Sections 7 and 10.
+
+R1 addresses the composition gaps only.
+
+#### R1 owns
+
+1. Public participant registration through `IEchoSaveService`.
+2. Public immutable catalog snapshot access.
+3. Public explicit catalog refresh.
+4. Public slot creation over the proven M4-02 technical creation coordinator.
+5. Public active-slot selection over the proven M4-01 session catalog authority.
+6. Public two-phase load preparation over the proven M3 read/validate/participant-preparation/migration/prepared-handle foundations.
+7. Public prepared-handle apply over the proven M3-09 apply planner/executor.
+8. Public same-scene convenience load as prepare-then-apply composition.
+9. Public consumer DTO/result/status types needed to avoid exposing internal `Technical*` implementation names.
+10. Root-local lifecycle/admission truth for the new public operations.
+11. Focused public-surface and composition tests proving the facade uses the existing authorities rather than duplicating them.
+
+#### Public surface target
+
+R1 targets the following consumer-facing shape:
+
+```text
+SaveParticipantRegistrationResult RegisterParticipant(ISaveParticipant participant)
+
+SaveSlotCatalogSnapshot GetCatalogSnapshot()
+Awaitable<SaveSlotCatalogRefreshResult> RefreshCatalogAsync()
+
+Awaitable<SaveSlotCreateResult> CreateSlotAsync(SaveSlotCreateRequest request)
+SaveActiveSlotSelectionResult SelectSlot(SaveSlotId slotId)
+
+Awaitable<PreparedLoadCreationResult> PrepareLoadAsync(SaveLoadRequest request)
+Awaitable<SavePreparedLoadApplyResult> ApplyPreparedLoadAsync(PreparedSaveLoad handle)
+Awaitable<SaveLoadResult> LoadAndApplyAsync(SaveLoadRequest request)
+```
+
+Existing M4 public save/autosave/recovery/rename/duplicate/delete methods remain source-compatible.
+
+#### Load semantics locked for R1
+
+- R1 loads the explicit slot's current canonical generation.
+- R1 does not silently execute recovery fallback.
+- Callers use `BuildRecoveryPlanAsync` / `ExecuteRecoveryAsync` when recovery is required.
+- Prepare performs no participant mutation.
+- Apply performs complete preflight before the first participant mutation.
+- Participant missing-payload policy remains descriptor-owned.
+- `ApplyPreparedLoadAsync` therefore does not invent a caller-owned `ApplyLoadOptions` policy override.
+- Convenience load is same-scene only and performs no scene travel.
+- Failed convenience composition must not leak an unbounded prepared handle.
+- Source save generations remain immutable.
+
+#### Catalog/create/select semantics locked for R1
+
+- `GetCatalogSnapshot()` is memory-only and performs no storage I/O.
+- `RefreshCatalogAsync()` reuses the proven payload-free catalog scan.
+- R1 may serialize refresh/prepare/apply against the existing root-local operation authority, but it does not create a generic queue.
+- `CreateSlotAsync` adapts the proven M4-02 technical creation coordinator; it does not rewrite slot publication.
+- The current bounded technical capacity remains **64** during R1.
+- R2, not R1, replaces that hard runtime default with project-owned slot-policy configuration.
+- Create does not auto-select.
+- `SelectSlot` is session-only and never writes durable storage.
+- Degraded/unselectable entries remain non-selectable.
+
+#### Participant registration semantics locked for R1
+
+- The existing open-ended `SaveParticipantRegistry` remains the single runtime registry authority.
+- R1 exposes it through `IEchoSaveService`; it does not add a central participant catalog.
+- Registration stays main-thread and memory-only.
+- Registration never captures, applies, or writes storage merely because a participant joined.
+- Disposable registration ownership and duplicate/alias collision truth remain unchanged.
+
+#### Explicitly out of R1
+
+- `EchoSaveConfiguration` schema expansion;
+- configurable slot policies/capacity;
+- package-document migration;
+- registry-wide test-status cleanup;
+- persistent `catalog.cache.json`;
+- automatic/configured recovery fallback or recovery-on-load;
+- automatic autosave timers;
+- generic operation queues/capacity/overflow;
+- permission-provider production wiring;
+- permanent erase or public restore-from-trash;
+- quarantine/incomplete cleanup;
+- redacted support export;
+- broad event-surface expansion;
+- M5 Setup/Validator/Browser/Simulator/Laboratory;
+- scene travel;
+- peer-package bridges;
+- service-locator behavior;
+- Chronicle-owned/project-wide DDOL.
+
+#### R1 focused proof requirements
+
+At minimum, focused tests must prove:
+
+- public interface exposes the authorized facade and no unrelated new surface;
+- registration success, duplicate-ID rejection, alias collision, disposal/unregister ownership;
+- catalog snapshot access is memory-only;
+- public refresh faithfully returns M4-01 catalog truth;
+- public create faithfully maps M4-02 durable publication/catalog reconciliation and does not auto-select;
+- public selection is session-only and rejects missing/degraded slots;
+- prepare load returns a bounded `PreparedSaveLoad` without participant mutation;
+- prepare load preserves source bytes and does not auto-execute recovery;
+- apply rejects invalid/disposed/expired/foreign/stale handles before mutation;
+- apply retains M3-09 all-preflight-before-mutation semantics;
+- same-scene convenience load successfully prepares and applies;
+- convenience-load preparation failure performs no apply;
+- convenience-load apply failure reports truthful partial apply state and does not fabricate rollback;
+- load/apply invokes no scene travel or DDOL behavior;
+- existing save/autosave/recovery/slot-operation regressions remain green;
+- focused Chronicle Editor floor is not allowed to drop below **587 / 587**.
+
+#### R1 closeout rule
+
+R1 completion does **not** complete M4.
+
+After R1:
+1. R2 must implement the approved CAP-002 runtime slot-policy/configuration model.
+2. R3 must implement package-document migration while preserving CAP-014.
+3. The final reconciliation pass must map the 100-case registry and documentation to retained evidence.
+4. Only then may M4 be declared complete and M5 activated.
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.34.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.35.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.34.0
+Current specification version: 1.35.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10
-Current milestone/checkpoint: M4 milestone reconciliation — next gate; no implementation checkpoint active
+Current milestone/checkpoint: ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — active / authorized
 Current Unity version: 6000.3.8f1
 Current implementation status: M2 and M3 are complete; ESV-M4-01 through ESV-M4-10 are complete; M4 remains active pending milestone reconciliation; latest focused Chronicle Editor gate 587 / 587
-Known blockers: None
+Known blockers: M4 audit gaps A-01 through A-04; R1 owns A-01/A-02 composition only
 Current Notes reviewed through: August 11, 2026
 
-Before writing any further Chronicle runtime code:
-1. Rehydrate exact `01e4cdd` plus the ESV-M4-10 documentation closeout.
+Before writing Chronicle runtime code:
+1. Rehydrate exact `48454ea` planning baseline.
 2. Preserve the **587 / 587** focused Chronicle regression floor.
-3. Perform the dedicated M4 milestone reconciliation first.
-4. Reconcile CAP-002 through CAP-018, the applicable test registry, Current Notes, closeout records, README/CHANGELOG/index, Suite Health, and specification handoff truth.
-5. Do not activate M5 or add new runtime features until M4 reconciliation is clean and explicitly closed.
+3. Implement only `ESV-M4-R1` public runtime composition authorized by ESV-D-033.
+4. Reuse existing participant registry, catalog, technical slot creation, prepared-load, apply, save, recovery, and slot-operation authorities rather than duplicating them.
+5. Do not change `EchoSaveConfiguration` schema or implement CAP-002 policy expansion in R1.
+6. Do not implement package-document migration in R1; that is the approved R3 repair and CAP-014 remains intact.
+7. Do not activate M5.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.34.0 |
+| Package version | Runtime package `0.1.0`; Specification v1.35.0 |
 | Completed checkpoint | ESV-M4-10 - Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation |
 | Implementation commit | `01e4cdd` |
 | Tests passed | ESV-M4-10 focused Chronicle Editor gate `587 / 587`; prior `562 / 562` regression floor preserved; Unity compile/import green |
 | Tests failed | Final ESV-M4-10 gate: `0` |
-| Known issues | None blocking M4 milestone reconciliation |
-| Decisions added | ESV-D-001 through ESV-D-032; ESV-D-032 defines two-step plan-bound recoverable slot deletion with source revalidation, root-local admission, durable trash commit truth, active-slot/catalog reconciliation, and post-commit bounded trash retention |
+| Known issues | M4 audit gaps A-01 through A-04; R1 addresses public composition A-01/A-02 |
+| Decisions added | ESV-D-001 through ESV-D-033; ESV-D-033 defines the approved R1/R2/R3 M4 reconciliation path and preserves CAP-014 document migration |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | No follow-on runtime checkpoint active. M4 milestone reconciliation is required before M5 or further Chronicle runtime implementation. |
+| Implementation permission | ESV-M4-R1 active / authorized at clean baseline `48454ea`; implementation is limited to public runtime composition and must preserve `587 / 587`. |
 
 ## 30. Approval
 

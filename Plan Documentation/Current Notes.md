@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 milestone reconciliation after ESV-M4-10 closeout
-**Current checkpoint:** M4 milestone reconciliation — **next gate / no implementation activated**
+**Current focus:** Chronicle M4 Reconciliation R1 — public runtime composition
+**Current checkpoint:** ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -461,7 +461,7 @@ Still deferred:
 No follow-on M4 checkpoint is activated by this closeout. Any next Chronicle implementation requires a separately bounded Checkpoint Build Plan and must preserve the **562 / 562** focused regression floor.
 
 
-## Chronicle ESV-M4-10 Activation
+## Historical — Chronicle ESV-M4-10 Activation
 
 `ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation` is **active / authorized**.
 
@@ -537,6 +537,45 @@ M4 is **not** declared complete by this closeout.
 No M5 implementation is active.
 
 The next required work is the dedicated **M4 milestone reconciliation**.
+
+
+## Chronicle M4 Milestone Reconciliation Audit + R1 Activation
+
+The M4 audit against clean repository baseline `48454ea` found four material completion gaps:
+
+1. **A-01 — public load facade incomplete:** M3 prepared-load/apply machinery exists, but `IEchoSaveService` does not yet expose the promised prepare/apply/convenience load flow.
+2. **A-02 — public catalog/create/select facade incomplete:** M4 catalog, technical creation, and active-selection machinery exist, but the primary service does not expose the promised consumer operations.
+3. **A-03 — CAP-002 slot-policy configuration incomplete:** runtime configuration is still schema 1 and does not own the approved single/fixed/configurable/bounded-unlimited policy model.
+4. **A-04 — CAP-014 package-document migration incomplete:** participant migration exists; package-document migration remains deferred.
+
+Approved disposition:
+- preserve the existing MVP promises;
+- do not weaken CAP-002/CAP-012/CAP-013/CAP-014/CAP-017 merely to close M4;
+- execute the repair in bounded reconciliation passes;
+- **R1:** public runtime composition;
+- **R2:** slot-policy runtime configuration;
+- **R3:** package-document migration, preserving CAP-014 intact;
+- final pass: test-registry/document evidence reconciliation;
+- only then may M4 close and M5 activate.
+
+**ESV-M4-R1 is now active / authorized.**
+
+Authority:
+- clean planning baseline: `48454ea`;
+- Chronicle specification: **v1.35.0**;
+- decision: **ESV-D-033**;
+- carried focused regression floor: **587 / 587**.
+
+R1 owns only:
+- participant registration facade;
+- catalog snapshot/refresh facade;
+- public slot create/select facade;
+- prepared-load/apply facade;
+- same-scene convenience load;
+- consumer-facing facade DTO/results needed for those operations;
+- focused composition tests.
+
+R1 explicitly does not own configuration schema expansion, slot-policy implementation, package-document migration, M5 tools, automatic recovery fallback, persistent catalog cache, generic queues, scene travel, peer bridges, or DDOL.
 
 ## Suite Distribution Kit Standard
 
@@ -721,9 +760,9 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Reconcile M4 authority against the committed ESV-M4-01 through ESV-M4-10 closeouts.
-2. Reconcile CAP-002 through CAP-018 and the applicable test registry against actual implemented truth.
-3. Reconcile package/root Current Notes, CHANGELOG, README, Documentation index, Suite Health, checkpoint/test records, and specification handoff state.
-4. Preserve the **587 / 587** Chronicle focused regression floor while auditing. Do not add runtime features during the audit.
-5. Declare M4 complete only if the reconciliation is clean.
-6. Only after clean M4 closeout may M5 — Tooling and Laboratory be activated.
+1. Commit/push the `ESV-M4-R1` planning/authority activation.
+2. Implement only the bounded public runtime composition defined by ESV-D-033.
+3. Preserve the **587 / 587** Chronicle focused regression floor.
+4. Close R1 using Unity's actual discovered total.
+5. Activate R2 only after R1 closeout.
+6. Keep M5 locked until R1, R2, R3, and final registry/document reconciliation all close cleanly.

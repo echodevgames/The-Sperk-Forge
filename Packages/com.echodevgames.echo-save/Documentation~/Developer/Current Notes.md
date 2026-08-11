@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.34.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.35.0
 **Completed checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** M4 milestone reconciliation — pending / no implementation activated
-**Status:** M3 complete; ESV-M4-01 through ESV-M4-10 complete; M4 remains active pending milestone reconciliation
+**Current checkpoint:** ESV-M4-R1 — Chronicle Public Runtime Composition and Consumer Facade Reconciliation — active / authorized
+**Status:** ESV-M4-01 through ESV-M4-10 complete; M4 reconciliation active at ESV-M4-R1; M5 locked
 
-**Authority reconciliation:** Specification v1.34.0 records ESV-M4-10 complete at implementation `01e4cdd` with focused gate `587 / 587`. No M5 work is active; a dedicated M4 milestone reconciliation is the next gate.
+**Authority reconciliation:** Specification v1.35.0 records the `48454ea` M4 audit disposition, ESV-D-033, and active `ESV-M4-R1` public runtime composition. R2 slot-policy configuration and R3 package-document migration remain approved follow-on reconciliation work; M5 is locked.
 
 ## ESV-M4-02 closeout
 
@@ -38,19 +38,38 @@ Implementation-history note:
 - one final-verification expectation was corrected to preserve `generationPublished = true` after immutable publication;
 - final Unity evidence is the authoritative **425 / 425** gate.
 
-## M4 milestone state
+## M4 milestone reconciliation state
 
-**M4 — Slots / Autosave / Recovery remains active.**
+**M4 — Slots / Autosave / Recovery remains active under reconciliation.**
 
-Chronicle now has:
+Current committed runtime capability truth at `48454ea` includes:
 - provider-neutral payload-free catalog reconstruction;
-- healthy/degraded immutable catalog snapshots;
-- explicit session-only active-slot selection;
-- bounded technical slot creation;
-- positive capacity enforcement;
-- package-generated technical identity with collision retry;
-- real empty immutable first-generation publication with `head.json` last;
-- truthful post-publication catalog reconciliation.
+- session-only active-slot selection;
+- bounded technical slot creation with current hard capacity `64`;
+- public manual save and one-root Busy/no-queue mutating admission;
+- explicit caller-triggered latest-wins autosave;
+- bounded generation retention;
+- read-only recovery planning;
+- explicit recovery execution;
+- public rename and full-state duplication;
+- two-step recoverable deletion/trash;
+- participant registry/capture/preservation/preparation/migration/apply foundations;
+- bounded prepared-load handle lifetime machinery;
+- focused Chronicle Editor evidence **587 / 587**.
+
+M4 reconciliation blockers:
+- **A-01:** prepared-load/apply/convenience load are not composed through `IEchoSaveService`;
+- **A-02:** participant registration plus catalog/create/select are not composed through `IEchoSaveService`;
+- **A-03:** CAP-002 full runtime slot-policy configuration is not implemented;
+- **A-04:** CAP-014 package-document migration is not implemented.
+
+Approved sequence:
+1. `ESV-M4-R1` — public runtime composition;
+2. R2 — slot-policy runtime configuration;
+3. R3 — package-document migration;
+4. final test-registry/document evidence reconciliation;
+5. M4 closeout;
+6. M5 activation only after clean M4 closeout.
 
 ## ESV-M4-03 closeout
 
@@ -504,3 +523,45 @@ Still deferred:
 No follow-on runtime checkpoint is active.
 
 **Next gate:** dedicated M4 milestone reconciliation. Do not declare M4 complete or activate M5 until the milestone audit reconciles authority, implemented capability truth, the applicable test registry, and closeout documentation.
+
+
+## ESV-M4-R1 activation
+
+**Checkpoint:** Chronicle Public Runtime Composition and Consumer Facade Reconciliation
+
+**Planning baseline:** `48454ea`
+
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.35.0
+
+**Decision:** ESV-D-033
+
+**Carried regression floor:** **587 / 587**
+
+R1 composes the existing internal authorities into the consumer service surface. It does not rewrite generation publication, participant contracts, catalog reconstruction, slot identity, recovery, autosave, or deletion semantics.
+
+Authorized public composition:
+- `RegisterParticipant(ISaveParticipant)`;
+- `GetCatalogSnapshot()`;
+- `RefreshCatalogAsync()`;
+- `CreateSlotAsync(SaveSlotCreateRequest)`;
+- `SelectSlot(SaveSlotId)`;
+- `PrepareLoadAsync(SaveLoadRequest)`;
+- `ApplyPreparedLoadAsync(PreparedSaveLoad)`;
+- `LoadAndApplyAsync(SaveLoadRequest)`.
+
+R1 naming reconciliation:
+- public catalog types use the already-established `SaveSlotCatalogEntry` / `SaveSlotCatalogSnapshot` names;
+- public create uses `SaveSlotCreateRequest` / `SaveSlotCreateResult`, while internal `SaveTechnicalSlot*` types remain implementation details;
+- prepared-load apply uses participant-owned descriptor policy and therefore does not add a caller-owned `ApplyLoadOptions` override in R1.
+
+Still deferred to later reconciliation:
+- `EchoSaveConfiguration` schema expansion and slot-policy configuration (R2);
+- package-document migration (R3);
+- registry evidence cleanup (final reconciliation);
+- M5 tooling/Laboratory;
+- persistent catalog cache;
+- automatic recovery fallback/recovery-on-load;
+- generic queues;
+- automatic autosave timers;
+- production permission-provider wiring;
+- scene travel, bridges, service locator, DDOL.

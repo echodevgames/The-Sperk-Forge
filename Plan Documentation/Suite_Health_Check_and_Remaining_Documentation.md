@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M4-10 – Chronicle Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete; Chronicle M4-01 through M4-10 complete; ESV-M4-10 implementation baseline `01e4cdd` with `587 / 587`; M4 milestone reconciliation is next; no M5 implementation active
+**Current implementation state:** First Light complete/frozen; Chronicle M2/M3 and ESV-M4-01 through M4-10 complete; M4 reconciliation audit complete at `48454ea`; `ESV-M4-R1` public runtime composition active under ESV-D-033; carried Chronicle floor `587 / 587`; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M3 complete; ESV-M4-01 through ESV-M4-10 complete; M4-10 implementation baseline `01e4cdd` with 587 / 587; M4 milestone reconciliation next; M5 not active** |
+| Chronicle implementation | **ESV-M4-01 through M4-10 complete; audit baseline `48454ea`; `ESV-M4-R1` active; carried floor 587 / 587; R2/R3/final reconciliation remain before M4 close; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -114,10 +114,20 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M4-10` is **complete** at implementation baseline `01e4cdd` with **587 / 587** focused Chronicle Editor tests.
+The Chronicle M4 milestone reconciliation audit is complete at clean baseline `48454ea`.
 
-**M3 — Participants and Loading is complete. M4 — Slots / Autosave / Recovery remains active pending milestone reconciliation.**
+Four completion gaps are recorded:
+- public load facade;
+- public catalog/create/select/participant-registration facade;
+- runtime slot-policy configuration;
+- package-document migration.
 
-No next implementation checkpoint is currently activated. The next Chronicle activity is the dedicated M4 milestone reconciliation and must preserve the **587 / 587** regression floor.
+Jesse approved preserving the existing MVP capability promises.
 
-M5 tooling is not active. Permanent erase, restore-from-trash public API, persistent catalog cache, full slot/recovery-policy assets, automatic autosave timers, generic queued multi-operation scheduling, automatic/configured fallback, quarantine/cleanup, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later separately authorized work.
+`ESV-M4-R1` is **active / authorized** for the first repair slice: public runtime composition only.
+
+**Carried Chronicle focused regression floor:** **587 / 587**.
+
+R2 slot-policy configuration, R3 package-document migration, and final registry/document reconciliation remain mandatory before M4 can close.
+
+**M5 is locked.**
