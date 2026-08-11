@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-02 full Setup/configuration authoring and safe repair previews active
-**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M5 — M5-02 complete; M5-03 Browser/Generation Inspector/Migration Graph not yet activated
+**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — **COMPLETE**; no M5-03 checkpoint active
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -956,3 +956,31 @@ Authority locks:
 - Browser/Simulator/Laboratory and production save-data repair remain later checkpoints.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+
+
+## ESV-M5-02 closeout
+
+**Activation commit:** `3456489`
+**Implementation commit:** `d2e9252`
+**Repository hygiene before documentation closeout:** `423fac1` repaired an unrelated pre-existing empty First Light Example folder `.meta`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 / ESV-D-038
+**Focused Chronicle Editor:** **724 / 724 passed, 0 failed**
+**Incoming floor:** **697 / 697**
+**Net-new focused tests:** **27**
+**Implementation scope:** **23 files**, `3268` insertions, `281` deletions
+
+M5-02 closes the full Setup/configuration-authoring and safe selected-reference repair slice:
+- current schema-3 authoring;
+- deterministic schema-1/schema-2 compatibility without runtime asset rewriting;
+- immutable runtime-policy snapshot;
+- configured retention/provider/limit/manual-recovery truth;
+- optional fixed-slot-template authoring metadata;
+- Preview-first Create/Edit/schema-upgrade Apply;
+- selected `EchoSaveRoot` configuration-reference Preview/Apply with Undo;
+- expanded read-only Validator checks.
+
+Manual proof confirmed schema-2 → schema-3 Preview/Apply with read-only pre-Apply state, stable schema-3 `NoChanges` afterward, exact root-reference repair Preview, explicit Apply, successful Undo back to `None`, and Validator **Issues: 0**.
+
+The unrelated metadata repair in `423fac1` changed no Chronicle implementation file and is not part of ESV-M5-02 scope.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. **ESV-M5-02 is Complete. M5 remains open. No M5-03 slice is active until a separate authority/activation checkpoint is committed.**

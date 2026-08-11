@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.46.0
-**Completed checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.47.0
+**Completed checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 complete at closeout `8774dd2`; ESV-M5-02 active from that clean baseline; incoming focused Chronicle floor `697 / 697`; M5 remains open
+**Current checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews — COMPLETE; no M5-03 checkpoint active
+**Status:** M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 implementation `d2e9252` and manual closeout evidence complete; focused Chronicle Editor `724 / 724`; M5 remains open; no M5-03 slice active
 
-**Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.45.0 closes ESV-M5-01 under ESV-D-037. The checkpoint preserves the completed M4 runtime unchanged, adds only the bounded Editor Setup/Validator foundation, records `697 / 697` focused Chronicle Editor evidence plus manual Setup/Validator sanity proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-02 implementation activated.
+**Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
 ## ESV-M4-02 closeout
 
@@ -802,3 +802,36 @@ M5-02 owns the next Setup/configuration-authoring layer:
 M5-02 does **not** authorize silent runtime asset migration, destructive repair, automatic authority choice between duplicate roots, permanent save-data mutation, Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data, support export, persistent catalog cache, cleanup/quarantine, direct-scene Laboratory content, or any LAB-001 through LAB-032 execution.
 
 No M5-03 implementation is active until M5-02 closes through its own evidence and documentation checkpoint.
+
+
+## ESV-M5-02 closeout
+
+**Planning baseline:** `8774dd2`
+**Activation commit:** `3456489`
+**Implementation commit:** `d2e9252`
+**Repository-hygiene commit before documentation closeout:** `423fac1` — repaired an unrelated pre-existing empty First Light Example folder `.meta`; no Chronicle implementation file changed
+**Closeout authority:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 / ESV-D-038
+**Focused Chronicle Editor:** **724 / 724 passed, 0 failed**
+**Incoming floor:** **697 / 697**
+**Net-new focused tests:** **27**
+**Committed implementation scope:** **23 files**, `3268` insertions, `281` deletions
+
+Implemented truth:
+- schema 3 is the current project-authoring configuration shape;
+- schema 1/schema 2 remain deterministic non-mutating compatibility inputs;
+- runtime captures immutable policy truth for slot policy/capacity, retention, provider IDs, bounded discovery limits, and manual recovery mode;
+- Setup supports explicit Create/Edit/upgrade Preview and Apply;
+- selected `EchoSaveRoot` configuration-reference repair is Preview-first, target-bound, and Undo-recorded;
+- Validator adds retention/provider/fixed-template/discovery-limit checks;
+- Browser/Simulator/Laboratory and production save-data repair remain later gates.
+
+Manual Unity proof:
+- schema-2 configuration Preview showed exact source schema 2 → target schema 3 while the Inspector remained schema 2;
+- Apply advanced the disposable asset to schema 3 and immediate re-preview reported `NoChanges`;
+- root repair Preview showed exact `(none)` → `Assets/EchoSaveConfiguration.asset` serialized reference change;
+- Apply assigned the reference and reported an Undo-recorded repair;
+- Undo restored the root reference to `None`;
+- Validator reported **Issues: 0**;
+- disposable Chronicle test state was removed.
+
+**ESV-M5-02 is Complete. M5 is not complete. No M5-03 checkpoint is active.**

@@ -853,3 +853,38 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - An initial manual path entry exposed a minor path-field clarity advisory (`Assets/Assets/...`); Setup correctly rejected the missing target folder without mutation. This is UX polish, not an M5-01 blocker.
 - The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 - M5-01 completion does **not** complete M5 and does **not** activate M5-02.
+
+### Added
+#### ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews
+- `EchoSaveConfiguration` current authoring schema 3.
+- Non-mutating schema-1 and schema-2 runtime compatibility through deterministic in-memory defaults.
+- Immutable `EchoSaveRuntimePolicy` session truth covering slot policy/capacity, retention, provider IDs, bounded discovery limits, and recovery mode.
+- Configured bounded retention and discovery limits consumed by runtime composition.
+- Truthful default serializer/storage provider IDs with fail-closed missing-provider handling.
+- `ManualOnly` recovery policy authoring only; no decorative automatic-fallback switch.
+- Optional `SaveSlotTemplate` authoring metadata with duplicate-ID validation.
+- Setup create/edit modes with explicit schema-2 → schema-3 upgrade Preview/Apply.
+- Exact before/after change reporting, stale-target fingerprinting, and safer `Assets/` path normalization.
+- Selected `EchoSaveRoot` configuration-reference repair Preview/Apply using serialized project-reference truth and Unity Undo recording.
+- Validator coverage for retention, providers, fixed-slot-template identity, and bounded discovery limits.
+- Focused schema-3 compatibility, Setup edit/upgrade/repair, and Validator tests.
+
+### Verified
+#### ESV-M5-02 Closeout
+- Activation commit: `3456489`.
+- Implementation commit: `d2e9252`.
+- Final implementation scope: **23 files**, `3268` insertions, `281` deletions.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **724 / 724**, with **0 failed**.
+- Incoming M5-02 floor was **697 / 697**; M5-02 adds **27** net-new focused Chronicle tests.
+- Manual create Preview showed schema-3 target truth and fixed the earlier `Assets/Assets/...` path ambiguity.
+- Controlled schema-2 → schema-3 Edit Preview showed `Source Schema: 2`, `Target Schema: 3`, and exact `Schema Version: "2" -> "3"` change while the Inspector remained schema 2 before Apply.
+- Explicit Apply advanced the disposable configuration to schema 3; immediate re-preview reported `NoChanges`.
+- Selected-root repair Preview showed exact `EchoSaveRoot.configuration: "(none)" -> "Assets/EchoSaveConfiguration.asset"` mutation before Apply.
+- Explicit repair Apply assigned the configuration and reported an Undo-recorded repair.
+- Unity Undo restored the selected root reference to `None`.
+- M5-02 Validator reported **Issues: 0** / no M5-02 Chronicle validation issues for the disposable schema-3 configuration.
+- Disposable Chronicle test state was removed.
+- Cleanup exposed an unrelated pre-existing zero-byte tracked `First Light Example.meta`; it was repaired separately in repository-hygiene commit `423fac1`. No Chronicle implementation file changed in that hygiene commit.
+- Final repository state after the hygiene repair was clean and synchronized with `origin/main`.
+- The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+- **ESV-M5-02 is Complete. M5 remains open. M5-03 is not activated.**

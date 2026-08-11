@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M5-01 – Chronicle Editor Tooling Assembly, Setup Preview, and Validator Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 full Setup/configuration authoring and safe repair previews active; incoming Chronicle floor `697 / 697`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
+**Completed package checkpoint:** ESV-M5-02 – Chronicle Full Setup/Configuration Authoring and Safe Repair Previews
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 implemented at `d2e9252` and closing at focused Chronicle `724 / 724`; unrelated First Light folder-meta hygiene repaired separately at `423fac1`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; no M5-03 active
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 closed at `8774dd2`; ESV-M5-02 active for schema/configuration authoring + safe repair previews; incoming focused floor `697 / 697`; M5 open** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 closed; ESV-M5-02 complete at implementation `d2e9252`; focused Chronicle `724 / 724`; M5 open; no M5-03 active** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -191,3 +191,23 @@ M5 remains open. No M5-02 implementation is active until a separate bounded auth
 It extends the M5-01 Editor safety model rather than weakening it: preview first, explicit Apply, compatibility-preserving schema evolution, no silent overwrite/upgrade, and no production save-data mutation.
 
 Browser/Inspector, Simulator/Recovery Planner, support/privacy tooling, persistent cache/cleanup, and the standalone Save Laboratory remain later M5 gates.
+
+
+## Chronicle M5-02 closeout state
+
+`ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews` is **Complete**.
+
+Evidence:
+- activation `3456489`;
+- implementation `d2e9252`;
+- focused Chronicle Editor **724 / 724 passed, 0 failed**;
+- **27** net-new focused tests;
+- **23-file** implementation scope, `3268` insertions, `281` deletions;
+- schema-2 → schema-3 Preview/Apply manual proof;
+- selected-root reference Preview/Apply/Undo proof;
+- Validator **Issues: 0**;
+- disposable proof state removed.
+
+Repository-hygiene commit `423fac1` repaired a pre-existing zero-byte First Light Example folder `.meta` discovered during cleanup. It changed no Chronicle implementation file and is not part of M5-02 feature scope.
+
+M5 remains open. M5-03 — Browser, Generation Inspector, and Migration Graph — is not active until a separate bounded authority/activation checkpoint.

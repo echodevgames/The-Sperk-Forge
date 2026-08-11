@@ -63,9 +63,9 @@
 
 ## Latest completed implementation checkpoint
 
-`ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation`
+`ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews`
 
-Activation is committed at `affe3ae`; implementation is committed at `69721af`; the closing focused Chronicle Editor gate passed **697 / 697**, with **0 failed**. Manual Setup preview/apply/no-clobber and Validator-zero-issue sanity proof are complete.
+Activation is committed at `3456489`; implementation is committed at `d2e9252`; the closing focused Chronicle Editor gate passed **724 / 724**, with **0 failed**. Manual schema-2 → schema-3 Preview/Apply, selected-root repair Preview/Apply/Undo, and Validator-zero-issue proof are complete. Repository-hygiene commit `423fac1` repaired an unrelated pre-existing empty First Light folder `.meta` after Chronicle cleanup.
 
 ## Final M4 reconciliation checkpoint
 
@@ -95,6 +95,6 @@ The next eligible package milestone is M5, but it requires its own authority/act
 
 Chronicle M4 remains **Complete**.
 
-`ESV-M5-01` is **Complete**. M5 remains open, but no M5-02 slice is active. The next M5 capability requires its own bounded authority/activation checkpoint.
+`ESV-M5-01` and `ESV-M5-02` are **Complete**. M5 remains open, but no M5-03 slice is active. The next M5 capability requires its own bounded authority/activation checkpoint.
 
-The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-01 does not reclassify later Laboratory, performance/stress, integration/adoption, or release rows.
+The current focused Chronicle Editor floor is **724 / 724**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-02 does not reclassify later Browser/Simulator/Laboratory, performance/stress, integration/adoption, or release rows.

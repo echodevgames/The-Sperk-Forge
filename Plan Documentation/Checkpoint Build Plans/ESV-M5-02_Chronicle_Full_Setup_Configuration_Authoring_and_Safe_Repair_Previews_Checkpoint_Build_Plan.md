@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-02
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `8774dd2` — `Close out ESV-M5-01 editor tooling foundation`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.46.0 / ESV-D-038
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 / ESV-D-038
 **Incoming focused Chronicle floor:** **697 / 697 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 
@@ -282,3 +282,78 @@ M5-02 completion does not complete M5.
 ## 14. Next-gate rule
 
 M5-03 — Browser, Generation Inspector, and Migration Graph — requires a separate activation after M5-02 closeout.
+
+
+## 15. Closeout record
+
+**Activation commit:** `3456489`
+**Implementation commit:** `d2e9252`
+**Repository-hygiene commit before documentation closeout:** `423fac1`
+**Final focused Chronicle Editor:** **724 / 724 passed, 0 failed**
+**Incoming regression floor:** **697 / 697**
+**Net-new focused tests:** **27**
+**Committed implementation scope:** **23 files**, `3268` insertions, `281` deletions
+
+`423fac1` is explicitly not part of Chronicle implementation scope. During removal of disposable M5-02 proof state, Unity surfaced a pre-existing tracked zero-byte `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/First Light Example.meta`. That unrelated First Light folder metadata was repaired in its own repository-hygiene commit before this documentation closeout.
+
+### Automated evidence
+
+The focused `EchoDevGames.EchoSave.Tests.Editor` assembly passed **724 / 724** with zero failures.
+
+This preserves every prior **697 / 697** Chronicle regression and adds **27** focused tests covering the M5-02 schema/configuration/Setup/Validator surface.
+
+Verified areas include:
+- schema-3 defaults and current authoring;
+- schema-1 historical 64-slot compatibility;
+- schema-2 M4 slot-policy compatibility;
+- future-schema rejection;
+- non-mutating compatibility reads;
+- immutable runtime-policy capture;
+- configured retention and bounded discovery limits;
+- truthful default provider IDs and missing-provider failure;
+- fixed-slot-template identity validation;
+- Setup Create/Edit/upgrade Preview/Apply;
+- stale-preview rejection;
+- improved `Assets/` path normalization;
+- selected root-reference Preview/Apply and duplicate-root blocking;
+- existing M5-01 Setup/Validator behavior;
+- full prior Chronicle regression.
+
+### Manual Unity evidence
+
+Manual sanity proof completed after automated green:
+
+1. A disposable configuration was created through the schema-3 Create path.
+2. The disposable asset was set to schema 2 solely to provide a controlled legacy upgrade subject.
+3. Edit Preview reported:
+   - disposition `Update`;
+   - source schema `2`;
+   - target schema `3`;
+   - exact `Schema Version: "2" -> "3"` change;
+   - existing `ConfigurableMultiSlot` / capacity `64` truth.
+4. The Inspector remained schema 2 before Apply, proving Preview was read-only.
+5. Explicit Apply advanced the asset to schema 3.
+6. Immediate post-Apply Preview reported `NoChanges`.
+7. A disposable `EchoSaveRoot` with no configuration was selected for repair.
+8. Repair Preview reported exact `EchoSaveRoot.configuration: "(none)" -> "Assets/EchoSaveConfiguration.asset"` mutation while the Inspector still showed `None`.
+9. Explicit Apply assigned the configuration and reported an Undo-recorded repair.
+10. Unity Undo restored the reference to `None`.
+11. M5-02 Validator reported **Issues: 0** / no M5-02 Chronicle validation issues.
+12. Disposable Chronicle test state was removed.
+
+### Closeout disposition
+
+All M5-02 closeout requirements are satisfied:
+- authority committed;
+- implementation committed;
+- Unity compilation green;
+- focused Chronicle Editor suite green above the required floor;
+- schema upgrade/edit Preview/Apply proof recorded;
+- safe selected-reference Preview/Apply/Undo proof recorded;
+- Validator proof recorded;
+- documentation reconciled;
+- no Browser/Simulator/Laboratory capability introduced.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-02 is Complete. M5 remains open. M5-03 requires a separate activation.**
