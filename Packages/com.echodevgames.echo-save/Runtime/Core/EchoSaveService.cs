@@ -4,11 +4,12 @@ using UnityEngine;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// Chronicle lifecycle, public save/autosave, and read-only recovery
-    /// planning service.
+    /// Chronicle lifecycle, public save/autosave, recovery planning, and
+    /// explicit admitted recovery-execution service.
     ///
-    /// M4-07 adds bounded recovery-plan construction without acquiring the
-    /// mutating-operation admission lease or performing durable repair.
+    /// M4-08 reuses the root-local mutating admission authority, revalidates
+    /// immutable M4-07 plan provenance, and commits recovery by repointing only
+    /// head.json to an already verified immutable generation.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
@@ -39,6 +40,8 @@ namespace EchoDevGames.EchoSave
             manualSaveTransactionExecutor;
         private ISaveRecoveryPlanBuilder
             recoveryPlanBuilder;
+        private ISaveRecoveryExecutor
+            recoveryExecutor;
 
         private PendingAutosaveRequest pendingAutosave;
         private long nextAutosaveTicketId;
@@ -94,6 +97,18 @@ namespace EchoDevGames.EchoSave
 
             return BuildRecoveryPlanCore(
                 slotId);
+        }
+
+        public async Awaitable<SaveRecoveryResult>
+            ExecuteRecoveryAsync(
+                SaveRecoveryPlan plan,
+                SaveRecoveryCandidate candidate)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return ExecuteRecoveryCore(
+                plan,
+                candidate);
         }
 
         public async Awaitable<EchoSaveLifecycleResult>
@@ -381,6 +396,14 @@ namespace EchoDevGames.EchoSave
             BuildRecoveryPlanCore(
                 slotId);
 
+        internal SaveRecoveryResult
+            ExecuteRecoverySynchronouslyForTesting(
+                SaveRecoveryPlan plan,
+                SaveRecoveryCandidate candidate) =>
+            ExecuteRecoveryCore(
+                plan,
+                candidate);
+
         internal int PendingAutosaveCountForTesting =>
             pendingAutosave == null
                 ? 0
@@ -454,6 +477,95 @@ namespace EchoDevGames.EchoSave
 
             return recoveryPlanBuilder.Build(
                 validatedSlot);
+        }
+
+
+        private SaveRecoveryResult ExecuteRecoveryCore(
+            SaveRecoveryPlan plan,
+            SaveRecoveryCandidate candidate)
+        {
+            if (state !=
+                EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state ==
+                        EchoSaveServiceState.ShuttingDown ||
+                    state ==
+                        EchoSaveServiceState.Shutdown;
+
+                return SaveRecoveryResult.Failure(
+                    admissionClosed
+                        ? SaveRecoveryExecutionStatus
+                            .AdmissionClosed
+                        : SaveRecoveryExecutionStatus
+                            .ServiceNotReady,
+                    admissionClosed
+                        ? EchoSaveDiagnosticCodes
+                            .RecoveryExecuteAdmissionClosed
+                        : EchoSaveDiagnosticCodes
+                            .RecoveryExecuteServiceNotReady,
+                    admissionClosed
+                        ? "The Chronicle is not accepting new recovery mutations after admission closed."
+                        : "The Chronicle must be Ready before explicit recovery execution can begin.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    candidate.GenerationId);
+            }
+
+            if (recoveryExecutor == null)
+            {
+                return SaveRecoveryResult.Failure(
+                    SaveRecoveryExecutionStatus
+                        .ServiceNotReady,
+                    EchoSaveDiagnosticCodes
+                        .RecoveryExecuteServiceNotReady,
+                    "The Chronicle recovery-execution runtime is unavailable.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    candidate.GenerationId);
+            }
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Closed)
+            {
+                return SaveRecoveryResult.Failure(
+                    SaveRecoveryExecutionStatus
+                        .AdmissionClosed,
+                    EchoSaveDiagnosticCodes
+                        .RecoveryExecuteAdmissionClosed,
+                    "The Chronicle is not accepting new mutating operations.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    candidate.GenerationId);
+            }
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Busy)
+            {
+                return SaveRecoveryResult.Failure(
+                    SaveRecoveryExecutionStatus.Busy,
+                    EchoSaveDiagnosticCodes
+                        .RecoveryExecuteBusy,
+                    "Another Chronicle mutating operation already owns the root-local admission lease. Recovery execution was rejected as Busy and was not queued.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    candidate.GenerationId);
+            }
+
+            using (lease)
+            {
+                return recoveryExecutor.Execute(
+                    plan,
+                    candidate);
+            }
         }
 
 
@@ -1030,6 +1142,13 @@ namespace EchoDevGames.EchoSave
                     integrity,
                     DefaultRecoveryDiscoveryLimit);
 
+            recoveryExecutor =
+                new SaveRecoveryExecutionCoordinator(
+                    storageBackend,
+                    serializer,
+                    recoveryPlanBuilder,
+                    slotCatalog);
+
             manualSaveTransactionExecutor =
                 new SaveManualTransactionCoordinator(
                     slotCatalog,
@@ -1048,6 +1167,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             recoveryPlanBuilder =
+                null;
+
+            recoveryExecutor =
                 null;
 
             slotCatalog =

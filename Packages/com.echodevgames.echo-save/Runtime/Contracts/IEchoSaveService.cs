@@ -5,8 +5,9 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Primary package-local Chronicle service surface.
     ///
-    /// M4-07 adds bounded read-only recovery-plan construction while keeping
-    /// recovery execution and all durable repair mutation separately deferred.
+    /// M4-08 adds explicit admitted recovery execution over immutable M4-07
+    /// plans while preserving generation immutability and truthful head/catalog
+    /// commit semantics.
     /// </summary>
     public interface IEchoSaveService
     {
@@ -24,6 +25,10 @@ namespace EchoDevGames.EchoSave
 
         Awaitable<SaveRecoveryPlan> BuildRecoveryPlanAsync(
             SaveSlotId slotId);
+
+        Awaitable<SaveRecoveryResult> ExecuteRecoveryAsync(
+            SaveRecoveryPlan plan,
+            SaveRecoveryCandidate candidate);
 
         Awaitable<EchoSaveLifecycleResult> ShutdownAsync();
     }

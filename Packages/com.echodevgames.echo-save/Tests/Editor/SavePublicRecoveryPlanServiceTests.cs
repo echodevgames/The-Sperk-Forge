@@ -147,7 +147,7 @@ namespace EchoDevGames.EchoSave.Tests.Editor
         }
 
         [Test]
-        public void RecoveryPlanModelExposesNoExecutionOrPathSurface()
+        public void RecoveryPlanRemainsPayloadFreeWhileServiceAddsExplicitExecution()
         {
             PropertyInfo[] properties =
                 typeof(SaveRecoveryPlan)
@@ -167,11 +167,22 @@ namespace EchoDevGames.EchoSave.Tests.Editor
                             "Catalog"),
                 Is.False);
 
-            Assert.That(
+            MethodInfo execute =
                 typeof(IEchoSaveService)
                     .GetMethod(
-                        "ExecuteRecoveryAsync"),
-                Is.Null);
+                        "ExecuteRecoveryAsync",
+                        new[]
+                        {
+                            typeof(SaveRecoveryPlan),
+                            typeof(SaveRecoveryCandidate)
+                        });
+
+            Assert.That(execute, Is.Not.Null);
+            Assert.That(
+                execute.ReturnType,
+                Is.EqualTo(
+                    typeof(Awaitable<
+                        SaveRecoveryResult>)));
         }
     }
 }

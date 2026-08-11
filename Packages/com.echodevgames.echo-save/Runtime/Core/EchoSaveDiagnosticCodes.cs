@@ -515,5 +515,38 @@ namespace EchoDevGames.EchoSave
 
         internal const string RecoveryCurrentInvalid =
             "ESV-REC-014";
+
+        internal const string RecoveryExecuteInvalidRequest =
+            "ESV-REC-020";
+
+        internal const string RecoveryExecuteServiceNotReady =
+            "ESV-REC-021";
+
+        internal const string RecoveryExecuteAdmissionClosed =
+            "ESV-REC-022";
+
+        internal const string RecoveryExecuteBusy =
+            "ESV-REC-023";
+
+        internal const string RecoveryExecuteRevalidationFailed =
+            "ESV-REC-024";
+
+        internal const string RecoveryExecuteStalePlan =
+            "ESV-REC-025";
+
+        internal const string RecoveryExecuteCandidateInvalid =
+            "ESV-REC-026";
+
+        internal const string RecoveryExecuteBackendUnsupported =
+            "ESV-REC-027";
+
+        internal const string RecoveryExecuteHeadPublicationFailed =
+            "ESV-REC-028";
+
+        internal const string RecoveryExecuteCatalogReconciliationFailed =
+            "ESV-REC-029";
+
+        internal const string RecoveryExecuteSucceeded =
+            "ESV-REC-030";
     }
 }
