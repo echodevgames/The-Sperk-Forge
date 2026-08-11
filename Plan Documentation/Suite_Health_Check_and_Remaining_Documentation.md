@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M5-02 – Chronicle Full Setup/Configuration Authoring and Safe Repair Previews
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 Save Browser/Generation Inspector/Migration Graph active from `b4d4d0b`; incoming focused Chronicle floor `724 / 724`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
+**Completed package checkpoint:** ESV-M5-03 – Chronicle Save Browser, Generation Inspector, and Migration Graph
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01, M5-02, and M5-03 complete; M5-03 implementation `9c3771c`; focused Chronicle Editor `735 / 735`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-04 not activated
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 active for read-only Browser/Generation Inspector/Migration Graph; incoming focused floor `724 / 724`; M5 open** |
+| Chronicle implementation | **M4 complete; ESV-M5-01, M5-02, and M5-03 complete; read-only Browser/Generation Inspector/Migration Graph proven; focused Chronicle `735 / 735`; M5 open; M5-04 inactive** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -220,3 +220,23 @@ M5 remains open. M5-03 — Browser, Generation Inspector, and Migration Graph �
 This checkpoint is inspection-only. It may expose additive read-only query/DTO surfaces where necessary, but it may not execute recovery or mutate project/save state.
 
 Failure simulation, recovery planning, support export, persistent cache/cleanup, and the Save Laboratory remain later M5 gates.
+
+
+## Chronicle M5-03 closeout state
+
+`ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph` is **Complete**.
+
+- activation `e805ae3`;
+- implementation `9c3771c`;
+- focused Chronicle Editor **735 / 735**, `0` failed;
+- **11** net-new focused tests over the `724 / 724` floor;
+- exact implementation scope **26 files / 2419 insertions**;
+- Browser missing-root/no-create manual proof complete;
+- Migration Graph valid-current-only/zero-edge manual proof complete;
+- Generation Inspector real committed-generation manual proof complete;
+- temporary proof state and tooling removed;
+- final repository verification clean at `9c3771c`.
+
+M5 remains open. Failure Simulator, Recovery Planner, Test Data, support/privacy tooling, persistent cache/cleanup, and the Save Laboratory remain later separately activated gates.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.

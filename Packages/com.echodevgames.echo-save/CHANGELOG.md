@@ -888,3 +888,31 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Final repository state after the hygiene repair was clean and synchronized with `origin/main`.
 - The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 - **ESV-M5-02 is Complete. M5 remains open. M5-03 is not activated.**
+
+
+### Added
+#### ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
+- Read-only `EchoSaveInspectionSession` over existing production Chronicle configuration/root/catalog truth.
+- No-create local-file inspection initialization; an absent production root is represented as an empty inspection state and is not created by inspection.
+- Chronicle Save Browser using real catalog/slot truth with deterministic refresh and selection.
+- Generation Inspector over immutable committed-generation manifest evidence, including current-head relationship, support/health state, manifest source/current version, commit state, participant count, and payload byte length.
+- Migration Graph over package-owned package-document version authority and registered migration edges without executing production migration.
+- Copied read-only generation and migration-graph snapshots with no mutation handles.
+- Focused inspection-session, Editor-service, and migration-graph tests.
+
+### Verified
+#### ESV-M5-03 Closeout
+- Activation commit: `e805ae3`.
+- Implementation commit: `9c3771c`.
+- Final implementation scope: **26 files**, `2419` insertions, `0` deletions.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **735 / 735**, with **0 failed**.
+- Incoming M5-03 floor was **724 / 724**; M5-03 adds **11** net-new focused Chronicle tests.
+- Save Browser missing-root proof reported `SucceededEmpty`, `Slots (0)`, and explicitly confirmed that the production save root was absent and no directory was created.
+- Migration Graph proof reported a **Valid** production registry with **0 registered edges**; `echosave.envelope`, `echosave.manifest`, `echosave.payload`, and `echosave.head` each reported current version `1.0.0` and zero registered edges.
+- Generation Inspector proof used disposable slot `c4623739-1627-4556-af58-77a5fb7df34b` and generation `20260811T2226264786596Z-0000000000000001-b565851fd2294a49b10043e48139435f`.
+- The inspected generation reported **CURRENT**, **Healthy**, manifest `1.0.0 -> 1.0.0`, **Migrated In Memory: No**, **Committed**, and `0 participants / 238 bytes`.
+- The temporary Editor-only proof seeder and disposable production slot/root were removed after evidence capture.
+- The disposable configuration asset was removed; First Light scene noise and generated solution noise were restored.
+- Final `git status --short` and `git diff --check` were silent at clean implementation baseline `9c3771c`.
+- The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+- **ESV-M5-03 is Complete. M5 remains open. M5-04 is not activated.**

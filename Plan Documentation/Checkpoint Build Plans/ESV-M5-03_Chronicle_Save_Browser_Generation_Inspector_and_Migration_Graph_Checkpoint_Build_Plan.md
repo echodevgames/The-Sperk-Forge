@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-03
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `b4d4d0b` — `Close out ESV-M5-02 full setup and repair previews`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.48.0 / ESV-D-039
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.49.0 / ESV-D-039
 **Incoming focused Chronicle floor:** **724 / 724 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 
@@ -214,3 +214,94 @@ M5-03 completion does not complete M5.
 ## 11. Next-gate rule
 
 M5-04 — Failure Simulator, Recovery Planner, Test Data, and Support Snapshot tooling — requires a separate activation after M5-03 closeout.
+
+
+## 12. Closeout record
+
+**Activation commit:** `e805ae3`
+**Implementation commit:** `9c3771c`
+**Closing authority:** SFGSS-PKG-ECHOSAVE-001 v1.49.0 / ESV-D-039
+**Focused Chronicle Editor gate:** **735 / 735 passed, 0 failed**
+**Incoming floor:** **724 / 724**
+**Net-new focused tests:** **11**
+**Implementation scope:** **26 files**, `2419` insertions, `0` deletions
+
+### Automated evidence
+
+- Unity compiled cleanly.
+- `EchoDevGames.EchoSave.Tests.Editor` passed **735 / 735**, `0` failed.
+- M5-03 added **11** focused tests over the incoming `724 / 724` floor.
+- The implementation retained zero Runtime `UnityEditor` references.
+- Missing-root read-only inspection, deterministic refresh, migration-graph current-only state, and fail-closed inspection behavior are covered by focused tests.
+
+### Manual Browser proof
+
+With a disposable schema-3 `EchoSaveConfiguration` selected, Save Browser refresh against an absent production root reported:
+
+- `Catalog: SucceededEmpty`;
+- `Slots (0)`;
+- no discovered technical slots;
+- explicit message that the production save root was absent and no directory was created.
+
+This proves the Browser's missing-root path is read-only and no-create.
+
+### Manual Migration Graph proof
+
+The production Migration Graph reported:
+
+- `Registry: Valid`;
+- `Registered Edges: 0`;
+- `echosave.envelope` current version `1.0.0`, registered edges `0`;
+- `echosave.manifest` current version `1.0.0`, registered edges `0`;
+- `echosave.payload` current version `1.0.0`, registered edges `0`;
+- `echosave.head` current version `1.0.0`, registered edges `0`.
+
+This is the truthful current-only package-document state. No migration was executed.
+
+### Manual Generation Inspector proof
+
+Because Chronicle intentionally has no player-facing save UI in this package, one temporary Editor-only proof seeder was used solely to create a disposable real technical slot through Chronicle's existing slot-creation authority.
+
+Proof identifiers:
+
+- slot: `c4623739-1627-4556-af58-77a5fb7df34b`;
+- generation: `20260811T2226264786596Z-0000000000000001-b565851fd2294a49b10043e48139435f`.
+
+Save Browser reported:
+
+- `Slots (1)`;
+- slot health `Healthy`;
+- current generation matching the seeded generation;
+- `0 / 238 bytes`.
+
+Generation Inspector reported:
+
+- status `Succeeded`;
+- generation marked `CURRENT`;
+- generation status `Healthy`;
+- manifest version `1.0.0 -> 1.0.0`;
+- `Migrated In Memory: No`;
+- commit state `Committed`;
+- `0 participants / 238 bytes`.
+
+### Cleanup proof
+
+After the screenshot evidence:
+
+- the recorded disposable slot was removed;
+- the production `EchoSave` proof root returned to absent/empty;
+- Browser again reported `SucceededEmpty` / `Slots (0)`;
+- the temporary Editor proof seeder `.cs` and `.meta` were removed;
+- the disposable `EchoSaveConfiguration.asset` and `.meta` were removed;
+- the temporarily dirtied First Light showcase scene was restored;
+- generated `The Sperk Forge.slnx` noise was restored;
+- final `git status --short` emitted no output;
+- final `git diff --check` emitted no output.
+
+### Disposition
+
+All M5-03 closeout requirements are satisfied.
+
+**ESV-M5-03 is Complete.**
+
+M5 remains open. M5-04 is not activated by this closeout and requires a separate authority checkpoint.

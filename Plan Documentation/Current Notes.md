@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-03 Save Browser, Generation Inspector, and Migration Graph active
-**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M5 — M5-03 Save Browser, Generation Inspector, and Migration Graph complete; M5-04 not activated
+**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — **COMPLETE**; no M5-04 checkpoint active
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1004,3 +1004,28 @@ Authority locks:
 - any required new runtime surface must be additive and read-only.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+
+
+## ESV-M5-03 closeout
+
+**Activation:** `e805ae3`
+**Implementation:** `9c3771c`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.49.0 / ESV-D-039
+**Focused Chronicle Editor:** **735 / 735 passed, 0 failed**
+**Incoming floor:** **724 / 724**
+**Net-new focused tests:** **11**
+**Implementation scope:** **26 files**, `2419` insertions
+
+Manual inspection proof is complete:
+- Browser empty-root/no-create: `SucceededEmpty`, `Slots (0)`, no production root created;
+- Migration Graph: valid production registry, zero registered edges, all four current production document kinds at `1.0.0`;
+- Generation Inspector: disposable real Chronicle slot/generation reported `CURRENT`, `Healthy`, `Committed`, manifest `1.0.0 -> 1.0.0`, no in-memory migration, `0 participants / 238 bytes`;
+- disposable generation/root, temporary proof seeder, and disposable configuration were removed;
+- unrelated First Light scene and generated solution noise were restored;
+- final repository verification was silent/clean at `9c3771c`.
+
+The inspection boundary remained zero-write except for the deliberately separate temporary seed/cleanup flow used solely to create proof evidence. Browser refresh, selection, Generation Inspector, and Migration Graph did not mutate save/project state.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-03 is Complete. M5 remains open. M5-04 requires separate activation.**

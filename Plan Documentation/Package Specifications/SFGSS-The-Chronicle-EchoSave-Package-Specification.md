@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.48.0
+**Specification version:** 1.49.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 and ESV-M5-02 are complete. ESV-M5-03 is **Active / Authorized** from clean baseline `b4d4d0b` under ESV-D-039. M5-03 owns read-only Save Browser, Generation Inspector, and Migration Graph tooling. Inspection may expose narrow additive read-only runtime DTO/query surfaces where existing internal truth is otherwise inaccessible, but it may not mutate heads, generations, trash, recovery state, slot identity, project configuration, or production save data. Simulator/Recovery Planner/Test Data/support export, persistent-cache cleanup, and Laboratory remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01, ESV-M5-02, and ESV-M5-03 are complete. ESV-M5-03 closed at implementation `9c3771c` with focused Chronicle Editor `735 / 735`, Browser missing-root/no-create proof, a valid current-only zero-edge Migration Graph, and Generation Inspector proof over one real disposable committed generation. ESV-D-039 remains the governing read-only inspection authority: Browser/Inspector/Graph may observe existing Chronicle truth but may not mutate save/project state or execute migration/recovery. M5 remains open; M5-04 and later Simulator/Recovery Planner/Test Data/support/privacy/persistent-cache/Laboratory work require separate activation. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 ---
 
@@ -80,6 +80,7 @@
 | 1.46.0 | 2026-08-11 | Approved | Activated `ESV-M5-02` from clean M5-01 closeout baseline `8774dd2` with incoming focused Chronicle floor `697 / 697`. Added ESV-D-038: full Setup/configuration authoring and safe repair previews use explicit schema evolution, deterministic compatibility defaults, Preview-before-mutation, explicit Apply, Undo/backup-safe selected repairs, and fail-closed handling for ambiguous/destructive targets. Older schema-1/schema-2 configuration assets remain runtime-readable and are never silently rewritten. Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data/support export, persistent cache/cleanup, direct-scene Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
 | 1.47.0 | 2026-08-11 | Approved | Closed `ESV-M5-02` under ESV-D-038. Activation `3456489`; implementation `d2e9252`; focused Chronicle Editor `724 / 724`, `0` failed, adding `27` tests over the `697 / 697` floor. Recorded the committed implementation scope as `23 files`, `3268` insertions, `281` deletions. Manual Unity proof confirmed schema-2 → schema-3 read-only Preview, explicit Apply, stable schema-3 `NoChanges`, selected `EchoSaveRoot` reference Preview/Apply with Undo back to `None`, and Validator `Issues: 0`. Unrelated repository-hygiene commit `423fac1` repaired a pre-existing empty First Light folder `.meta` after Chronicle cleanup and changed no Chronicle implementation file. Retained the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`; M5 remains open and M5-03 is not activated by this closeout. | Jesse “Echo” Adams |
 | 1.48.0 | 2026-08-11 | Approved | Activated `ESV-M5-03` from clean M5-02 closeout baseline `b4d4d0b` with incoming focused Chronicle floor `724 / 724`. Added ESV-D-039: Save Browser, Generation Inspector, and Migration Graph are read-only inspection tools over actual Chronicle catalog/slot/generation/package-document/migration truth. Narrow additive read-only runtime DTO/query surfaces are allowed where required, but inspection may not mutate heads, generations, trash, recovery state, slot identity, project configuration, or production save data. Unsupported-newer, missing-migration, incomplete/corrupt, and stale-head truth remains visible and fail-closed. Simulator/Recovery Planner/Test Data/support export, persistent cache/cleanup, direct-scene Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
+| 1.49.0 | 2026-08-11 | Approved | Closed `ESV-M5-03` under ESV-D-039. Activation `e805ae3`; implementation `9c3771c`; focused Chronicle Editor `735 / 735`, `0` failed, adding `11` focused tests over the `724 / 724` floor. Recorded the exact implementation scope as `26 files` / `2419` insertions. Manual proof confirmed Browser missing-root/no-create `SucceededEmpty`, a valid current-only production Migration Graph with zero registered edges for envelope/manifest/payload/head at `1.0.0`, and Generation Inspector over one real disposable committed generation reported `CURRENT`, `Healthy`, `Committed`, manifest `1.0.0 -> 1.0.0`, no in-memory migration, and `0 participants / 238 bytes`. Temporary proof slot/root/seeder/configuration were removed and final repository verification was clean at `9c3771c`. M5 remains open; M5-04 is not activated. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -3973,7 +3974,7 @@ Registry rule: M5-01 does not mass-promote Deferred ESV-T rows. Its evidence may
 
 Provisional M5 sequence after M5-01, each requiring separate activation:
 - **M5-02 — full Setup/configuration authoring and safe repair previews — COMPLETE at implementation `d2e9252`;**
-- **M5-03 — Browser, Generation Inspector, and Migration Graph — ACTIVE / AUTHORIZED at `b4d4d0b`;**
+- **M5-03 — Browser, Generation Inspector, and Migration Graph — COMPLETE at implementation `9c3771c`;**
 - M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling;
 - M5-05 — Standalone Chronicle Save Laboratory plus 32-scenario execution;
 - M5 final reconciliation/closeout.
@@ -4202,3 +4203,44 @@ Closeout requires:
 - no simulator/laboratory behavior introduced.
 
 M5 remains open after M5-03. M5-04 requires a separate activation.
+
+
+### 28.37 ESV-M5-03 closeout
+
+**Status:** Complete.
+
+**Activation commit:** `e805ae3`.
+
+**Implementation commit:** `9c3771c`.
+
+**Closing focused Chronicle Editor gate:** **735 / 735 passed, 0 failed**.
+
+**Incoming floor:** **724 / 724**.
+
+**Net-new focused tests:** **11**.
+
+**Implementation scope:** **26 files**, `2419` insertions, `0` deletions.
+
+**Authority:** ESV-D-039 remains unchanged. M5-03 closes the implementation/evidence slice without widening mutation authority.
+
+Retained implementation truth:
+- Save Browser consumes actual Chronicle catalog/slot truth and exposes no mutation commands;
+- missing production roots are represented as an empty inspection state and are not created by inspection;
+- Generation Inspector reads immutable committed-generation manifest evidence and current-head relationship without rewriting generation/package documents;
+- Migration Graph describes current package-document authorities and registered edges without executing migration;
+- inspection snapshots are copied/read-only and expose no mutation handles;
+- no Runtime source adds a `UnityEditor` dependency.
+
+Retained manual proof:
+- empty-root Browser refresh: `SucceededEmpty`, `Slots (0)`, no root created;
+- production Migration Graph: valid registry, `0` registered edges, envelope/manifest/payload/head each current at `1.0.0`;
+- disposable proof slot `c4623739-1627-4556-af58-77a5fb7df34b`;
+- disposable proof generation `20260811T2226264786596Z-0000000000000001-b565851fd2294a49b10043e48139435f`;
+- Generation Inspector: `CURRENT`, `Healthy`, `Committed`, manifest `1.0.0 -> 1.0.0`, `Migrated In Memory: No`, `0 participants / 238 bytes`;
+- post-proof cleanup returned Browser to `SucceededEmpty` / `Slots (0)`;
+- temporary proof seeder, disposable slot/root/configuration, and Unity-generated repository noise were removed/restored;
+- final `git status --short` and `git diff --check` were silent at clean implementation commit `9c3771c`.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**M5 remains open. M5-04 requires separate activation.**

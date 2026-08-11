@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.48.0
-**Completed checkpoint:** ESV-M5-02 — Full Setup/Configuration Authoring and Safe Repair Previews
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.49.0
+**Completed checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 and M5-02 complete; ESV-M5-03 active from clean closeout baseline `b4d4d0b`; incoming focused Chronicle floor `724 / 724`; M5 remains open
+**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — COMPLETE; no M5-04 checkpoint active
+**Status:** M4 complete; ESV-M5-01, M5-02, and M5-03 complete; implementation `9c3771c`; focused Chronicle Editor `735 / 735`; M5 remains open; no M5-04 slice active
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -863,3 +863,35 @@ M5-03 does **not** authorize:
 - scene travel, peer integration, service-locator behavior, or package-owned project-wide DDOL.
 
 No M5-04 implementation is active until M5-03 closes through its own evidence and documentation checkpoint.
+
+
+## ESV-M5-03 closeout
+
+**Activation commit:** `e805ae3`
+**Implementation commit:** `9c3771c`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.49.0 / ESV-D-039
+**Focused Chronicle Editor:** **735 / 735 passed, 0 failed**
+**Incoming floor:** **724 / 724**
+**Net-new focused tests:** **11**
+**Implementation scope:** **26 files**, `2419` insertions, `0` deletions
+
+M5-03 closes the strictly read-only Chronicle inspection slice:
+
+- `EchoSaveInspectionSession` opens existing production truth without creating an absent root;
+- Save Browser refreshes actual catalog/slot state deterministically and exposes no mutation actions;
+- Generation Inspector reads immutable committed-generation manifest evidence and current-head relationship without rewriting generation/package documents;
+- Migration Graph describes package-owned current document authorities and registered migration edges without running production migrations;
+- copied inspection DTO/snapshot state exposes no mutation handles.
+
+Manual evidence:
+- initial Browser refresh against an absent production root reported `SucceededEmpty`, `Slots (0)`, and explicitly stated that no directory was created;
+- Migration Graph reported `Registry: Valid`, `Registered Edges: 0`, with `echosave.envelope`, `echosave.manifest`, `echosave.payload`, and `echosave.head` each at current version `1.0.0` and zero registered edges;
+- disposable slot `c4623739-1627-4556-af58-77a5fb7df34b` published generation `20260811T2226264786596Z-0000000000000001-b565851fd2294a49b10043e48139435f`;
+- Generation Inspector reported that generation as `CURRENT`, `Healthy`, manifest `1.0.0 -> 1.0.0`, `Migrated In Memory: No`, `Committed`, with `0 participants / 238 bytes`;
+- cleanup removed the seeded slot/root, temporary Editor proof seeder, and disposable configuration asset;
+- First Light scene and generated solution noise were restored;
+- final `git status --short` and `git diff --check` were silent at clean `9c3771c`.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-03 is Complete. M5 remains open. M5-04 is not activated.**
