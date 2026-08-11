@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.31.0
-**Completed checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.33.0
+**Completed checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 complete; ESV-M4-09 active; M4 remains active
+**Current checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 through ESV-M4-09 complete; ESV-M4-10 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.31.0 retains ESV-M4-08 complete and activates bounded ESV-M4-09 at clean baseline `07bbd2b` under ESV-D-031 with carried focused regression floor `540 / 540`.
+**Authority reconciliation:** Specification v1.33.0 records ESV-M4-09 complete at implementation `459023f` with focused gate `562 / 562` and activates bounded ESV-M4-10 at clean documentation baseline `4d2f2ac` under ESV-D-032 with carried focused regression floor `562 / 562`.
 
 ## ESV-M4-02 closeout
 
@@ -417,3 +417,41 @@ Still deferred:
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
 No follow-on M4 checkpoint is active. Any further Chronicle runtime implementation requires a separately bounded authorized Checkpoint Build Plan and must preserve the **562 / 562** focused regression floor.
+
+## ESV-M4-10 activation
+
+**Clean planning baseline:** `4d2f2ac`.
+
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.33.0 / ESV-D-032.
+
+**Carried focused regression floor:** **562 / 562**.
+
+Authorized behavior:
+- read-only two-step deletion planning;
+- immutable package/session/source-provenance-bound deletion plans;
+- bounded expiry and one-use confirmation;
+- no mutation during prepare-delete;
+- root-local Busy/no-queue confirm-delete admission;
+- fresh source revalidation before destructive mutation;
+- recoverable trash move as durable delete truth;
+- active-slot clear only after durable delete;
+- catalog reconciliation after durable removal;
+- bounded post-commit trash retention;
+- ESV-T-021 through ESV-T-023;
+- no participant callbacks;
+- unchanged base `ISaveStorageBackend`.
+
+Still deferred:
+- permanent erase;
+- public restore-from-trash;
+- quarantine/incomplete cleanup;
+- persistent catalog cache;
+- automatic/configured recovery fallback;
+- generic queues;
+- automatic autosave timers;
+- permission-provider production wiring;
+- full configuration/Setup authoring;
+- M5 Editor tooling/Laboratory;
+- scene travel, bridges, service locator, DDOL.
+
+Do not mark M4 complete automatically after implementation. ESV-M4-10 closeout must be followed by a dedicated M4 milestone reconciliation.

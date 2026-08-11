@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-09 complete; no follow-on checkpoint active
-**Current checkpoint:** none — ESV-M4-09 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-10 destructive slot deletion/trash foundation
+**Current checkpoint:** ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -460,6 +460,52 @@ Still deferred:
 
 No follow-on M4 checkpoint is activated by this closeout. Any next Chronicle implementation requires a separately bounded Checkpoint Build Plan and must preserve the **562 / 562** focused regression floor.
 
+
+## Chronicle ESV-M4-10 Activation
+
+`ESV-M4-10 — Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation` is **active / authorized**.
+
+Authority:
+- clean planning baseline: `4d2f2ac`;
+- Chronicle specification: **v1.33.0**;
+- decision: **ESV-D-032**;
+- carried focused regression floor: **562 / 562**.
+
+This is intended as the final bounded runtime-capability slice needed before an M4 milestone reconciliation, subject to implementation evidence and a post-checkpoint audit.
+
+M4-10 owns:
+- read-only `PrepareDeleteSlotAsync`;
+- immutable package/session/source-provenance-bound `SaveDeletionPlan`;
+- bounded expiry and one-use confirmation truth;
+- zero mutation during prepare-delete;
+- root-local admitted `ConfirmDeleteSlotAsync`;
+- immediate Busy rejection and no delete queue;
+- fresh exact-source revalidation before destructive mutation;
+- recoverable package-owned trash as the safe durable delete boundary;
+- active-slot clearing only after durable removal;
+- post-delete catalog reconciliation;
+- bounded post-commit trash retention;
+- ESV-T-021 / ESV-T-022 / ESV-T-023;
+- zero participant callbacks;
+- unchanged base `ISaveStorageBackend`.
+
+Still deferred:
+- permanent erase API;
+- public restore-from-trash API;
+- quarantine/incomplete cleanup;
+- persistent catalog cache;
+- automatic/configured recovery fallback;
+- recovery-on-load;
+- generic operation queues;
+- recovery cancellation overload;
+- automatic autosave timers/gameplay triggers;
+- permission-provider production wiring;
+- full configuration/Setup authoring;
+- M5 Editor tools and Save Laboratory;
+- scene travel, peer bridges, service locator, DDOL.
+
+M4 is **not** marked complete merely by activating this checkpoint. After M4-10 implementation/closeout, perform a dedicated M4 milestone reconciliation against CAP-002 through CAP-018 and the applicable registry before advancing to M5.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -643,8 +689,9 @@ Do not begin FL-M6-02 automatically. Do not add more First Light features merely
 
 ## Next Action
 
-1. Treat `459023f` as the latest completed Chronicle implementation baseline.
-2. Preserve the focused **562 / 562** Chronicle regression floor.
-3. Do not begin prepare-delete/confirm-delete or trash automatically.
-4. Reconcile the remaining M4 scope and create a separately bounded authorized Checkpoint Build Plan before any further Chronicle runtime implementation.
-5. Keep quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Commit/push the ESV-M4-10 planning/authority activation.
+2. Implement only the bounded ESV-D-032 destructive deletion/trash slice.
+3. Preserve the **562 / 562** Chronicle focused regression floor.
+4. Close ESV-M4-10 with actual discovered Unity evidence.
+5. Perform a dedicated M4 milestone reconciliation before declaring M4 complete or activating M5.
+6. If M4 reconciles cleanly, begin M5 — Tooling and Laboratory, where Chronicle becomes visibly interactive through Setup, Validator, Save Browser, Failure Simulator, Recovery Planner, and the 32-scenario Chronicle Save Laboratory.
