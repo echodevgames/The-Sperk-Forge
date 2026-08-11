@@ -6,9 +6,11 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-R1 — Public Runtime Composition and Consumer Facade Reconciliation**. Planning/authority activation is committed at `bdb0c00`, implementation is committed at `ab18361`, and the final focused Chronicle Editor gate is **618 / 618**. M4 reconciliation remains active. R2 slot-policy runtime configuration is the next gate but is not yet activated. M5 remains locked.
+Version `0.1.0` has completed Chronicle M4, including ESV-M4-R1 through R4. R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — is the closing M4 checkpoint; activation is retained at `81c53dd`.
 
-R1 closes the public consumer-composition gaps found by the M4 audit. `IEchoSaveService` now exposes participant registration, catalog snapshot/refresh, slot create/select, two-phase prepared loading, and same-scene convenience load while reusing the established M3/M4 registry, catalog, creation, preparation, prepared-handle, and apply authorities.
+The R4 evidence pass has reconciled every ESV-T-001 through ESV-T-100 row individually: **61 Complete**, **39 Deferred**, **0 Blocked**. Complete means retained direct evidence exists. Deferred means the exact scenario remains owned by later M5 Laboratory/Setup, clean-project/distribution, performance/stress, integration/adoption, or release qualification. No M4-applicable evidence gap was found.
+
+The fresh final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. The row map remains **61 Complete / 39 Deferred / 0 Blocked**. Chronicle M4 is complete. M5 is now eligible for a separate authority/activation checkpoint, but M5 is not automatically active.
 
 ## Current persistence boundary
 
@@ -36,7 +38,12 @@ M4-09 adds non-destructive public slot rename and full-state duplication. Rename
 
 M4-10 adds read-only deletion planning and admitted confirmed recoverable trash. Deletion plans bind package/session/source provenance, expire, reject replay, and perform zero mutation until explicit confirmation. Confirm-delete reuses root-local admission, revalidates exact source truth, moves the complete live slot tree into recoverable `trash/`, clears active selection only after durable removal, reconciles the live catalog, and applies bounded fail-closed trash retention. The final focused gate is **587 / 587**.
 
-It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or M5 Editor tooling/Laboratory qualification.
+
+R2 adds project-owned slot-policy configuration schema 2. `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` resolve to one immutable finite service-session capacity shared by create and duplicate. Schema-1 configurations remain non-mutating compatible at the historical capacity 64.
+
+R3 adds Chronicle-owned package-document migration as deterministic read-time, in-memory contiguous version chains ahead of strict current-version validation. Missing/ambiguous/failed/invalid/newer paths fail closed, source generations are never rewritten merely because migration was required, participant migration remains separate, and production package-document versions remain `1.0.0`.
+
+It still does **not** include automatic/configured recovery fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, automatic autosave timers, generic queued multi-operation scheduling, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or M5 Editor tooling/Laboratory and later clean-project/release qualification.
 
 ## Minimal use
 

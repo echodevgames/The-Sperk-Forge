@@ -766,3 +766,62 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - R2 slot-policy runtime configuration remains the next M4 reconciliation gate but is **not automatically activated** by this closeout.
 - R3 package-document migration remains required after R2.
 - M5 remains locked until R2, R3, and final registry/document reconciliation are complete.
+
+### Added
+#### ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation
+- `EchoSaveConfiguration` schema 2 slot-policy authority.
+- `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` finite effective capacities.
+- Non-mutating schema-1 compatibility at historical capacity 64.
+- One frozen service-session capacity shared by create and duplicate.
+- ESV-T-015 through ESV-T-018 retained as Complete.
+
+### Verified
+#### ESV-M4-R2 Closeout
+- Activation committed at `428369e`.
+- Implementation committed at `8a8e7e7`.
+- Closeout committed at `0ebf1a1`.
+- Focused Chronicle Editor gate passed **636 / 636**, with `0` failed.
+- **18** net new focused R2 tests.
+- A-03 / CAP-002 closed.
+
+### Added
+#### ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation
+- Internal Chronicle-owned package-document version probe, migration registry, contiguous-chain coordinator, and migration-aware reader.
+- Exact-current documents bypass migration.
+- Historical migration is detached, read-time, in-memory, deterministic, and source-immutable.
+- Missing, ambiguous, failed, invalid, overshooting, and newer paths fail closed.
+- Participant migration remains a separate authority.
+- Production package-document versions remain `1.0.0`.
+
+### Verified
+#### ESV-M4-R3 Closeout
+- Activation committed at `2dcae91`.
+- Implementation committed at `c6ba1ad`.
+- Closeout committed at `e3d7a2e`.
+- Focused Chronicle Editor gate passed **660 / 660**, with `0` failed.
+- **24** net new focused R3 tests over the **636 / 636** floor.
+- A-04 / CAP-014 closed.
+
+### Reconciled
+#### ESV-M4-R4 — Final 100-Case Registry and Documentation Evidence Pass
+- Activation committed at `81c53dd`.
+- Every ESV-T-001 through ESV-T-100 row was reviewed individually.
+- **61** rows are Complete from retained direct evidence.
+- **39** rows are Deferred to their actual later M5/Laboratory, clean-project/distribution, performance/stress, integration/adoption, or release gate.
+- **0** M4-applicable rows are Blocked.
+- Package README, CHANGELOG, documentation index, Current Notes, Suite Health, M4 audit, R4 checkpoint plan, package specification, and the dedicated evidence matrix are reconciled to the same state.
+- No runtime or test-code change is part of R4.
+- The incoming **660 / 660** focused Chronicle floor was rerun fresh during R4 and passed **660 / 660**, with **0 failed**.
+- R4 closes with **61 Complete / 39 Deferred / 0 Blocked** across ESV-T-001 through ESV-T-100.
+- Chronicle M4 is complete. M5 is eligible for separate activation but is not automatically active.
+
+### Verified
+#### ESV-M4-R4 / Chronicle M4 Closeout
+- Activation commit: `81c53dd`.
+- Fresh final focused Chronicle Editor gate: **660 / 660 passed, 0 failed**.
+- Project Test Runner discovery during the focused run: **1005 EditMode tests total**, with **345 outside the selected Chronicle assembly not run** in this gate.
+- Final registry disposition: **61 Complete / 39 Deferred / 0 Blocked**.
+- No runtime or test-code change was required by R4.
+- No M4-applicable evidence gap remained.
+- Chronicle M4 is **Complete**.
+- M5 is **eligible for separate activation** and remains inactive until that authority step occurs.

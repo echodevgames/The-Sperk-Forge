@@ -494,3 +494,33 @@ R4 authorizes documentation/evidence reconciliation and the final focused test r
 R4 must also reconcile stale package README, CHANGELOG, documentation index/navigation, Current Notes, Suite Health, audit/specification/handoff truth, and applicable checkpoint records.
 
 M4 may close only if every registry row has an explicit disposition, every M4-applicable row has retained evidence, no runtime blocker remains, documentation agrees, and the final focused Chronicle suite is green at the actual closing total. M5 remains locked until the committed R4 closeout records M4 complete.
+
+# R4 evidence reconciliation update
+
+**Activation commit:** `81c53dd`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.42.0 / ESV-D-036
+**100-case result:** **61 Complete / 39 Deferred / 0 Blocked**
+
+The row-by-row R4 audit is complete. Every ESV-T-001 through ESV-T-100 row now has an explicit disposition and evidence/owner note in `ESV-M4-R4_Chronicle_100-Case_Registry_Evidence_Matrix.md`.
+
+No M4-applicable row lacks retained direct proof. The 39 Deferred rows belong to later gates, including M5 Setup/Validator/Laboratory and persistent-cache/fault-injection work, clean-project/distribution, performance/stress, M6 integration/adoption, and M7 release qualification. They remain explicitly not complete.
+
+A-01 through A-04 remain closed. R4 therefore opens **no repair checkpoint**.
+
+Documentation drift identified by this audit has been reconciled across README, CHANGELOG, package documentation navigation, Current Notes, Suite Health, checkpoint/specification state, and the dedicated evidence matrix.
+
+**Final audit disposition:** runtime/capability blockers = zero; M4-applicable evidence blockers = zero; fresh focused Chronicle Editor = **660 / 660 passed, 0 failed**. Chronicle M4 is complete. M5 is eligible for separate activation but remains inactive until separately authorized.
+
+## R4 / M4 final closeout
+
+The final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**.
+
+Final M4 evidence state:
+- **61 Complete / 39 Deferred / 0 Blocked** across ESV-T-001 through ESV-T-100;
+- A-01 through A-04 closed;
+- zero unresolved M4-applicable evidence blockers;
+- no R4 runtime/test-code repair required;
+- documentation parity reconciled;
+- Chronicle M4 **Complete**.
+
+The 39 Deferred rows remain owned by later explicit gates and are not waived. M5 is now eligible for a separate authority/activation checkpoint.

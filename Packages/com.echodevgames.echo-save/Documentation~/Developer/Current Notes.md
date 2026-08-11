@@ -6,8 +6,8 @@
 **Specification:** SFGSS-PKG-ECHOSAVE-001 v1.41.0
 **Completed checkpoint:** ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — ACTIVE / AUTHORIZED
-**Status:** ESV-M4-R1, R2, and R3 complete; ESV-M4-R4 active as evidence/documentation reconciliation; M4 open; M5 locked
+**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — COMPLETE / M4 COMPLETE
+**Status:** ESV-M4-R1 through R4 complete; final row map 61 Complete / 39 Deferred / 0 Blocked; fresh final Chronicle Editor 660 / 660 green; M4 complete; M5 eligible for separate activation
 
 **Authority reconciliation:** Specification v1.41.0 activates `ESV-M4-R4` from clean post-R3-closeout baseline `e3d7a2e`, carrying the green `660 / 660` Chronicle Editor floor. R4 is documentation/evidence-only: it reconciles ESV-T-001 through ESV-T-100 row by row, marks Complete only where retained direct evidence exists, leaves later M5/release/adoption work explicitly not complete, synchronizes stale package/suite documentation, and reruns the focused suite at the actual closing total. Runtime/test-code changes are not authorized inside R4; any M4-applicable evidence gap requires a separate bounded repair checkpoint. M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
 
@@ -720,3 +720,28 @@ If an M4-applicable row lacks retained proof, R4 stops rather than manufacturing
 Required parity sweep includes the package README, CHANGELOG, documentation index/navigation, both Current Notes records, Suite Health, the M4 audit, the specification registry/handoff, and checkpoint records whose current-state wording is stale.
 
 R4 must rerun the focused Chronicle Editor suite at the actual closing total before M4 can be declared complete. M5 remains locked until the committed R4 closeout.
+
+## ESV-M4-R4 evidence reconciliation
+
+**Activation commit:** `81c53dd`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.42.0 / ESV-D-036
+**Reconciled registry:** **61 Complete / 39 Deferred / 0 Blocked**
+**Retained incoming focused evidence:** **660 / 660 passed, 0 failed**
+
+The final 100-case pass found no unresolved M4-applicable evidence gap. The 39 Deferred rows are explicitly later-gate work, not hidden M4 failures. They include M5 Laboratory/Setup and persistent-cache/fault-injection scenarios, clean-project/distribution qualification, performance/stress measurement, M6 integration/adoption, and M7 release work.
+
+The package README, CHANGELOG, Documentation Index, Current Notes, Suite Health, M4 audit, R4 plan, specification, and dedicated evidence matrix now agree on this boundary.
+
+No runtime or test-code file is changed by R4 reconciliation.
+
+**Final R4 test:** **660 / 660 passed, 0 failed**. Chronicle M4 is complete. M5 is eligible for separate activation but remains inactive until separately authorized.
+
+## ESV-M4-R4 final closeout
+
+**Final authority:** SFGSS-PKG-ECHOSAVE-001 v1.43.0 / ESV-D-036
+**Fresh final focused Chronicle Editor:** **660 / 660 passed, 0 failed**
+**Registry disposition:** **61 Complete / 39 Deferred / 0 Blocked**
+**M4:** **Complete**
+**M5:** eligible for separate activation; not active.
+
+No R4 runtime or test-code repair was required. The 39 Deferred rows remain later-gate work and are not reclassified by M4 closeout.

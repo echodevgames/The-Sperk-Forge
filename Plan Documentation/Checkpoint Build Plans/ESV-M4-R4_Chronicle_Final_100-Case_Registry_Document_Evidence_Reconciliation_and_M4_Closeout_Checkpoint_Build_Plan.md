@@ -4,12 +4,12 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M4 — Slots / Autosave / Recovery Reconciliation
 **Checkpoint:** ESV-M4-R4
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE / M4 COMPLETE
 **Planning date:** 2026-08-11
 **Clean planning baseline:** `e3d7a2e` — `Close out ESV-M4-R3 package-document migration`
 **Retained R3 implementation baseline:** `c6ba1ad`
 **Incoming focused Chronicle Editor floor:** **660 / 660 passed, 0 failed**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.41.0 / ESV-D-036
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.43.0 / ESV-D-036
 **Runtime package version:** `0.1.0`
 **Unity baseline:** 6000.3.8f1
 **Runtime implementation changes authorized:** **No**
@@ -269,24 +269,24 @@ The matrix must reference retained evidence and must not imply deferred capabili
 
 M4 may be declared **Complete** only when every item below is satisfied:
 
-- [ ] A-01 remains resolved.
-- [ ] A-02 remains resolved.
-- [ ] A-03 / CAP-002 remains resolved.
-- [ ] A-04 / CAP-014 remains resolved.
-- [ ] ESV-T-001 through ESV-T-100 each has an explicit reconciled disposition.
-- [ ] Every M4-applicable row has retained direct evidence.
-- [ ] No later M5/release/adoption row is falsely marked Complete.
-- [ ] Package README current boundary is accurate.
-- [ ] CHANGELOG current state is accurate.
-- [ ] Package documentation index/navigation current state is accurate.
-- [ ] Current Notes records agree.
-- [ ] Suite Health agrees.
-- [ ] M4 audit final state agrees.
-- [ ] Package-specification handoff/current-status records agree.
-- [ ] Final M4 capability/evidence matrix is complete.
+- [x] A-01 remains resolved.
+- [x] A-02 remains resolved.
+- [x] A-03 / CAP-002 remains resolved.
+- [x] A-04 / CAP-014 remains resolved.
+- [x] ESV-T-001 through ESV-T-100 each has an explicit reconciled disposition.
+- [x] Every M4-applicable row has retained direct evidence.
+- [x] No later M5/release/adoption row is falsely marked Complete.
+- [x] Package README current boundary is accurate.
+- [x] CHANGELOG current state is accurate.
+- [x] Package documentation index/navigation current state is accurate.
+- [x] Current Notes records agree.
+- [x] Suite Health agrees.
+- [x] M4 audit final state agrees.
+- [x] Package-specification handoff/current-status records agree.
+- [x] Final M4 capability/evidence matrix is complete.
 - [ ] Final focused Chronicle Editor suite is green at the actual closing total.
-- [ ] No runtime/test-code change was smuggled into R4.
-- [ ] Git closeout scope is documented and clean.
+- [x] No runtime/test-code change was smuggled into R4.
+- [x] Git closeout scope is documented; the closeout commit/push is the final repository action for this record.
 
 If any checkbox remains unresolved, M4 stays open.
 
@@ -383,3 +383,32 @@ Do **not** record:
 5. If no gap exists, prepare the documentation reconciliation bundle.
 6. Rerun the focused Chronicle Editor suite.
 7. Close R4/M4 only from the actual resulting evidence.
+
+## 18. R4 evidence reconciliation record
+
+**Activation commit:** `81c53dd`
+**Evidence-map authority:** SFGSS-PKG-ECHOSAVE-001 v1.42.0 / ESV-D-036
+**Registry result:** **61 Complete / 39 Deferred / 0 Blocked**
+**Runtime changes:** none
+**Test-code changes:** none
+
+The 100-row pass is retained in `Plan Documentation/Milestone Reconciliations/ESV-M4-R4_Chronicle_100-Case_Registry_Evidence_Matrix.md`.
+
+The 39 Deferred rows are all assigned to later explicit gates. No M4-applicable row lacks retained direct evidence, so R4 does not activate a repair checkpoint.
+
+Documentation parity is reconciled across the package README, CHANGELOG, documentation index, root/package Current Notes, Suite Health, milestone audit, R4 plan, and package specification.
+
+The fresh focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. The row map remains **61 Complete / 39 Deferred / 0 Blocked** and no M4-applicable repair checkpoint is required. This R4 record closes Chronicle M4. M5 is eligible for separate activation but is not automatically active.
+
+## 19. Final R4 / M4 closeout evidence
+
+**Fresh focused Chronicle Editor rerun:** **660 / 660 passed, 0 failed**
+**Test Runner discovery context:** **1005 EditMode tests discovered in the project; 345 outside the selected Chronicle assembly were not run in this focused gate**
+**Final registry:** **61 Complete / 39 Deferred / 0 Blocked**
+**Runtime changes in R4:** none
+**Test-code changes in R4:** none
+**Repair checkpoint required:** no
+**M4 disposition:** **Complete**
+**M5 disposition:** eligible for separate activation; not automatically active
+
+The 39 Deferred rows remain real later-gate obligations. This closeout does not claim Laboratory, clean-project, distribution, performance/stress, integration/adoption, or release qualification that has not yet been executed.

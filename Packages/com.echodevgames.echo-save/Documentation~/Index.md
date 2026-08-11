@@ -61,18 +61,31 @@
 - [[Developer/Checkpoints/ESV-M4-R1_Chronicle_Public_Runtime_Composition_and_Consumer_Facade_Reconciliation|ESV-M4-R1 Closeout]]
 - [[Developer/Test Reports/ESV-M4-R1_Chronicle_Public_Runtime_Composition_and_Consumer_Facade_Reconciliation_Test_Report|ESV-M4-R1 Test Report]]
 
-## Completed checkpoint
+## Latest completed implementation checkpoint
 
-`ESV-M4-R1 — Public Runtime Composition and Consumer Facade Reconciliation`
+`ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation`
 
-Chronicle's intended primary consumer service now composes participant registration, catalog snapshot/refresh, slot create/select, prepared-load creation/apply, and same-scene convenience load over the existing M3/M4 authorities. Implementation is committed at `ab18361`; the focused Chronicle Editor gate is **618 / 618**.
+Implementation is committed at `c6ba1ad`; closeout is committed at `e3d7a2e`; the retained focused Chronicle Editor gate is **660 / 660**.
+
+## Final M4 reconciliation checkpoint
+
+`ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout`
+
+Activation is committed at `81c53dd`. The row-by-row evidence pass is reconciled at **61 Complete / 39 Deferred / 0 Blocked**. The fresh final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. Chronicle M4 is complete. M5 is eligible for separate activation but is not automatically active.
+
+Authoritative R2/R3/R4 plans and the R4 evidence matrix live under `Plan Documentation/Checkpoint Build Plans/` and `Plan Documentation/Milestone Reconciliations/`. Package-local checkpoint/test-report navigation above remains the retained M1 through R1 record.
 
 ## Completed milestone
 
 `M3 — Participants and Loading`
 
-## Current checkpoint
+## Chronicle milestone state
 
-No follow-on implementation checkpoint is active.
+`M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration` is **Complete**.
 
-The next M4 reconciliation gate is **R2 — Slot Policy Runtime Configuration**. R3 package-document migration and final registry/document reconciliation remain required before M4 can close. M5 remains locked.
+Final R4 evidence:
+- `61 Complete / 39 Deferred / 0 Blocked`;
+- fresh focused Chronicle Editor `660 / 660 passed, 0 failed`;
+- no runtime/test-code changes in R4.
+
+The next eligible package milestone is M5, but it requires its own authority/activation checkpoint.

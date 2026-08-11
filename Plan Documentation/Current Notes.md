@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 reconciliation — R4 final 100-case registry/document evidence reconciliation active
-**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M4 complete — R4 final registry/document/test closeout complete; M5 eligible for separate activation
+**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — **COMPLETE / M4 COMPLETE**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -870,3 +870,30 @@ R4 must also synchronize stale current-state documentation, including the packag
 8. Rerun the focused Chronicle Editor suite and record the actual closing total.
 9. Declare M4 complete only from a committed R4 closeout with zero unresolved M4-applicable gaps.
 10. Keep M5 locked until that closeout commit.
+
+## ESV-M4-R4 Evidence Reconciliation
+
+**Activation commit:** `81c53dd`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.42.0 / ESV-D-036
+**Incoming focused Chronicle floor:** **660 / 660 passed, 0 failed**
+**Row-map result:** **61 Complete / 39 Deferred / 0 Blocked**
+
+Every ESV-T-001 through ESV-T-100 row has now been classified individually. Complete rows have retained direct M1-M4/R1-R3 evidence. Deferred rows are owned by later M5 Laboratory/Setup, persistent-cache/fault-injection, clean-project/distribution, performance/stress, integration/adoption, or release gates. No M4-applicable evidence gap was found, so no R4 repair checkpoint is required.
+
+Current-state documentation parity is reconciled across the package README, CHANGELOG, documentation index, root/package Current Notes, Suite Health, milestone audit, R4 plan, package specification, and the dedicated 100-case evidence matrix.
+
+R4 has changed documentation/evidence only. No runtime or test-code change is authorized or included.
+
+**Final R4 evidence:** fresh focused Chronicle Editor **660 / 660 passed, 0 failed**. The 100-case map remains **61 Complete / 39 Deferred / 0 Blocked**. **M4 is complete. M5 is eligible for separate activation and is not active yet.**
+
+## ESV-M4-R4 / M4 Closeout
+
+**Activation commit:** `81c53dd`
+**Final authority:** SFGSS-PKG-ECHOSAVE-001 v1.43.0 / ESV-D-036
+**Final registry:** **61 Complete / 39 Deferred / 0 Blocked**
+**Fresh final focused Chronicle Editor:** **660 / 660 passed, 0 failed**
+**Runtime/test-code changes in R4:** none
+**M4 status:** **Complete**
+**Next milestone:** M5 is eligible for a separate activation checkpoint; it is not automatically active.
+
+The 39 Deferred registry rows remain explicit later-gate obligations. M4 completion does not waive M5 Laboratory/Setup, persistent-cache/fault-injection, clean-project/distribution, performance/stress, integration/adoption, or release qualification.

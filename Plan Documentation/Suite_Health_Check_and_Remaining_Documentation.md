@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M4-R3 – Chronicle Package-Document Migration and CAP-014 Reconciliation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1, R2, and R3 complete; ESV-M4-R4 final 100-case registry/document evidence reconciliation is active from `e3d7a2e`; incoming Chronicle floor `660 / 660`; M4 open; M5 locked
+**Completed package checkpoint:** ESV-M4-R4 – Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout; Chronicle M4 complete
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 through R4 complete; final 100-case map `61 Complete / 39 Deferred / 0 Blocked`; fresh final Chronicle Editor `660 / 660`; M4 complete; M5 eligible for separate activation
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1, R2, and R3 complete; R4 final 100-case registry/document evidence reconciliation ACTIVE from `e3d7a2e`; incoming 660 / 660; A-01 through A-04 closed; R4 authorizes documentation/evidence only; M4 open; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1 through R4 complete; final registry 61 Complete / 39 Deferred / 0 Blocked; fresh focused Chronicle Editor 660 / 660; M4 complete; M5 eligible for separate activation** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -134,3 +134,25 @@ Still mandatory before M4 close:
 The final reconciliation is now **ESV-M4-R4 ACTIVE / AUTHORIZED** from clean baseline `e3d7a2e`.
 
 **M4 remains open. M5 remains locked. R4 must reconcile all 100 registry rows individually and rerun the focused Chronicle suite before M4 can close.**
+
+## R4 evidence reconciliation state
+
+The final registry pass has individually reconciled all ESV-T-001 through ESV-T-100 rows:
+
+- **61 Complete** from retained direct evidence;
+- **39 Deferred** to their actual later package-graduation gate;
+- **0 Blocked** as an unresolved M4-applicable evidence gap.
+
+This does not make the package release-qualified and does not waive later Laboratory, clean-project, distribution, performance/stress, integration/adoption, or release work.
+
+The fresh R4 closing focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. **M4 is complete. M5 is eligible for separate activation and is not automatically active.**
+
+## Chronicle M4 closeout state
+
+ESV-M4-R4 closed the milestone with:
+- **61 Complete / 39 Deferred / 0 Blocked** registry reconciliation;
+- **660 / 660 passed, 0 failed** fresh focused Chronicle Editor evidence;
+- no R4 runtime/test-code repair;
+- no unresolved M4-applicable evidence blocker.
+
+Chronicle M4 is **Complete**. M5 is now eligible for a separate activation checkpoint. Later Laboratory, clean-project, distribution, performance/stress, integration/adoption, and release obligations remain open where the registry says Deferred.

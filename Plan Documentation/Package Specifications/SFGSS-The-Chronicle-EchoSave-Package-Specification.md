@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.41.0
+**Specification version:** 1.43.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,9 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. ESV-M4-R3 is complete at implementation commit `c6ba1ad` with focused Chronicle Editor evidence **660 / 660 passed, 0 failed**. ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — is now **active / authorized** from clean baseline `e3d7a2e`. R4 is an evidence-and-documentation reconciliation checkpoint, not a new runtime capability checkpoint: it must review ESV-T-001 through ESV-T-100 individually, repair only statuses supported by retained evidence, explicitly preserve later M5/release/adoption rows as not-yet-complete, synchronize stale package/suite documentation, rerun the focused Chronicle Editor suite at the actual closing total, and declare M4 complete only if no M4-applicable evidence gap remains. No runtime or test-code change is authorized by R4 itself; any discovered M4-applicable implementation/evidence gap must stop closeout and receive a separate bounded repair checkpoint. M5 remains locked until a committed R4 closeout actually records M4 complete.
->
-> **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
+> **Approval rule:** This specification is approved as package authority. ESV-M4-R4 is complete from activation commit `81c53dd`. The final 100-case evidence map is **61 Complete / 39 Deferred / 0 Blocked**, and the fresh closing focused Chronicle Editor suite passed **660 / 660**, with **0 failed**. No runtime or test-code repair was required by R4. Chronicle M4 is **Complete**. The 39 Deferred rows remain later-gate obligations and are not waived. M5 is eligible for a separate authority/activation checkpoint but is not automatically active.
 
 ---
 
@@ -75,6 +73,8 @@
 | 1.39.0 | 2026-08-11 | Approved | Activated `ESV-M4-R3` at clean baseline `0ebf1a1` with incoming focused Chronicle floor `636 / 636`. Added ESV-D-035: preserve CAP-014 whole and implement package-owned read-time in-memory package-document migration as deterministic contiguous exact-version chains; source generations remain immutable, no automatic rewrite or downgrade occurs, missing/invalid/newer paths fail closed, document migration precedes separate participant migration, and current package document formats remain `1.0.0` until a real shape change requires a production migration step. Final 100-case registry/document reconciliation remains after R3; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.40.0 | 2026-08-11 | Approved | Closed `ESV-M4-R3` at implementation commit `c6ba1ad` with focused Chronicle Editor evidence `660 / 660`, preserving the `636 / 636` floor and adding 24 focused migration tests across a 17-file implementation/test scope (`3359` insertions, `31` deletions). CAP-014 is now complete without splitting participant/document migration authority: Chronicle owns package-document version probing, deterministic contiguous in-memory migration, fail-closed historical/newer handling, and migration-aware current-generation/catalog/recovery reads while source generations remain immutable and production document versions remain `1.0.0`. ESV-T-067, ESV-T-068, ESV-T-069, ESV-T-072, and ESV-T-073 gain retained R3 evidence. Final 100-case registry/document reconciliation is next but not activated; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.41.0 | 2026-08-11 | Approved | Activated `ESV-M4-R4` at clean post-R3-closeout baseline `e3d7a2e` with incoming focused Chronicle floor `660 / 660`. Added ESV-D-036: final M4 registry reconciliation is row-by-row evidence classification, not a requirement to falsely mark all 100 release-lifecycle cases Complete. A row becomes Complete only from retained direct evidence; later M5, Laboratory, clean-project, release, integration, performance, stress, and adoption rows remain explicitly Planned/Deferred until their own gates. R4 may repair documentation/status mapping and rerun the existing focused Chronicle suite, but it may not change runtime or test code. Any unresolved M4-applicable row blocks closeout and requires a separate bounded repair checkpoint. M4 may close only after the full registry/document map is reconciled and the final focused suite is green at the actual closing total; M5 remains locked until that closeout commit. | Jesse “Echo” Adams |
+| 1.42.0 | 2026-08-11 | Approved | Reconciled the R4 100-case registry and documentation evidence map from activation commit `81c53dd`: 61 rows are Complete from retained direct evidence, 39 are explicitly Deferred to later M5/Laboratory, clean-project/distribution, performance/stress, integration/adoption, or release gates, and 0 M4-applicable rows are Blocked. Added the dedicated R4 evidence matrix and synchronized README, CHANGELOG, documentation index, Current Notes, Suite Health, milestone audit, checkpoint, and specification current-state truth. No runtime/test-code change is introduced. Fresh final Chronicle Editor evidence is still pending; M4 remains open and M5 locked. | Jesse “Echo” Adams |
+| 1.43.0 | 2026-08-11 | Approved | Closed ESV-M4-R4 and Chronicle M4 after the fresh final focused Chronicle Editor rerun passed `660 / 660` with `0` failed. Retained the final registry disposition at `61 Complete / 39 Deferred / 0 Blocked`, confirmed zero M4-applicable evidence blockers, and recorded that R4 required no runtime or test-code repair. M5 is now eligible for separate activation but is not automatically active; all 39 Deferred rows remain later-gate obligations. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1656,106 +1656,114 @@ At each checkpoint:
 | Test ID | Category | Action | Expected result | Status |
 |---|---|---|---|---|
 
-| ESV-T-001 | Install | Clean project install | Package compiles and setup opens | Planned |
-| ESV-T-002 | Install | Tarball install | Package compiles with stable GUIDs | Planned |
-| ESV-T-003 | Install | Remove sample | Runtime still compiles | Planned |
-| ESV-T-004 | Install | No UnityEditor reference in runtime | Assembly audit passes | Planned |
-| ESV-T-005 | Lifecycle | One root claims | Service initializes once | Planned |
-| ESV-T-006 | Lifecycle | Duplicate before play | Duplicate has zero side effects | Planned |
-| ESV-T-007 | Lifecycle | Duplicate during scene load | Original remains authority | Planned |
-| ESV-T-008 | Lifecycle | Shutdown and recreate | Authority clears cleanly | Planned |
-| ESV-T-009 | Lifecycle | Domain reload disabled | Static state resets correctly | Planned |
-| ESV-T-010 | Config | Missing configuration | Blocked result ESV-CFG-001 | Planned |
-| ESV-T-011 | Config | Unsafe path | Operation refuses ESV-PATH-001 | Planned |
-| ESV-T-012 | Config | Invalid limits | Validator blocks | Planned |
-| ESV-T-013 | Config | Missing serializer | Initialization blocks | Planned |
-| ESV-T-014 | Config | Missing backend | Initialization blocks | Planned |
+| ESV-T-001 | Install | Clean project install | Package compiles and setup opens | Deferred |
+| ESV-T-002 | Install | Tarball install | Package compiles with stable GUIDs | Deferred |
+| ESV-T-003 | Install | Remove sample | Runtime still compiles | Deferred |
+| ESV-T-004 | Install | No UnityEditor reference in runtime | Assembly audit passes | Deferred |
+| ESV-T-005 | Lifecycle | One root claims | Service initializes once | Complete |
+| ESV-T-006 | Lifecycle | Duplicate before play | Duplicate has zero side effects | Complete |
+| ESV-T-007 | Lifecycle | Duplicate during scene load | Original remains authority | Deferred |
+| ESV-T-008 | Lifecycle | Shutdown and recreate | Authority clears cleanly | Complete |
+| ESV-T-009 | Lifecycle | Domain reload disabled | Static state resets correctly | Deferred |
+| ESV-T-010 | Config | Missing configuration | Blocked result ESV-CFG-001 | Complete |
+| ESV-T-011 | Config | Unsafe path | Operation refuses ESV-PATH-001 | Complete |
+| ESV-T-012 | Config | Invalid limits | Validator blocks | Complete |
+| ESV-T-013 | Config | Missing serializer | Initialization blocks | Deferred |
+| ESV-T-014 | Config | Missing backend | Initialization blocks | Deferred |
 | ESV-T-015 | Slots | Create single slot | Stable ID and metadata created | Complete |
 | ESV-T-016 | Slots | Fixed slot capacity | Extra slot rejected | Complete |
 | ESV-T-017 | Slots | Configurable capacity | Configured limit enforced | Complete |
 | ESV-T-018 | Slots | Unlimited policy safety cap | Platform/config cap enforced | Complete |
-| ESV-T-019 | Slots | Rename slot | ID/path unchanged | Planned |
-| ESV-T-020 | Slots | Duplicate slot | New ID and equivalent payload | Planned |
+| ESV-T-019 | Slots | Rename slot | ID/path unchanged | Complete |
+| ESV-T-020 | Slots | Duplicate slot | New ID and equivalent payload | Complete |
 | ESV-T-021 | Slots | Delete without plan | No mutation | Complete |
 | ESV-T-022 | Slots | Expired delete plan | Rejected | Complete |
 | ESV-T-023 | Slots | Confirm delete | Trash/delete policy applied | Complete |
-| ESV-T-024 | Catalog | List slots | Payload files unopened | Planned |
-| ESV-T-025 | Catalog | Corrupt cache | Rebuild succeeds | Planned |
-| ESV-T-026 | Catalog | Missing cache | Rebuild succeeds | Planned |
-| ESV-T-027 | Participants | Register unique participants | Deterministic registry | Planned |
-| ESV-T-028 | Participants | Duplicate participant ID | Later registration rejected | Planned |
-| ESV-T-029 | Participants | Required capture success | Payload entry written | Planned |
-| ESV-T-030 | Participants | Required capture failure | No generation published | Planned |
-| ESV-T-031 | Participants | Optional capture default failure | Save fails visibly | Planned |
-| ESV-T-032 | Participants | Missing required apply participant | Prepared load remains/reports | Planned |
-| ESV-T-033 | Participants | Missing payload initialize default | Participant default policy runs | Planned |
-| ESV-T-034 | Participants | Apply failure | Detailed partial/rollback report | Planned |
-| ESV-T-035 | Participants | Out-of-order unregister | Registry remains correct | Planned |
-| ESV-T-036 | Unknown | Removed optional participant | Opaque payload preserved | Planned |
-| ESV-T-037 | Unknown | Reinstalled participant | Preserved payload applies | Planned |
-| ESV-T-038 | Unknown | Explicit prune plan | Only selected payload removed | Planned |
-| ESV-T-039 | Unknown | Oversized unknown payload | Rejected/quarantined | Planned |
-| ESV-T-040 | Save | Basic save | Generation verifies and head advances | Planned |
-| ESV-T-041 | Save | Second save | Prior generation retained | Planned |
-| ESV-T-042 | Save | Rapid manual saves | Busy/reject policy enforced | Planned |
-| ESV-T-043 | Autosave | Rapid autosaves | One pending latest request | Planned |
-| ESV-T-044 | Autosave | Retention rotation | Bounds enforced after commit | Planned |
-| ESV-T-045 | Save | Permission denied | No capture/write | Planned |
-| ESV-T-046 | Save | Cancel queued | No side effects | Planned |
-| ESV-T-047 | Save | Cancel pre-publication | Head unchanged | Planned |
-| ESV-T-048 | Save | Cancel during head publication | Operation settles/TooLate | Planned |
-| ESV-T-049 | Save | File lock | Current generation survives | Planned |
-| ESV-T-050 | Save | Out of space simulation | Current generation survives | Planned |
-| ESV-T-051 | Commit | Crash before generation complete | Incomplete ignored | Planned |
-| ESV-T-052 | Commit | Crash after generation verify before head | Old head remains; orphan recoverable | Planned |
-| ESV-T-053 | Commit | Crash during head fallback update | Recovery scan chooses valid generation | Planned |
-| ESV-T-054 | Commit | Crash after head publish before cache | Head authoritative; cache rebuilds | Planned |
-| ESV-T-055 | Load | Prepare valid generation | Handle created | Planned |
-| ESV-T-056 | Load | Dispose prepared handle | No apply/disk mutation | Planned |
-| ESV-T-057 | Load | Prepared handle expiry | Apply rejected | Planned |
-| ESV-T-058 | Load | Load and apply same scene | State restored | Planned |
-| ESV-T-059 | Load | Prepare then simulated scene change | Apply after participant registration | Planned |
-| ESV-T-060 | Load | Wrong slot/generation identity | Validation rejects | Planned |
-| ESV-T-061 | Integrity | Truncated manifest | Corrupt status | Planned |
-| ESV-T-062 | Integrity | Truncated payload | Corrupt status | Planned |
-| ESV-T-063 | Integrity | Checksum mismatch | Recovery plan | Planned |
-| ESV-T-064 | Integrity | Manifest/payload entry mismatch | Rejected | Planned |
-| ESV-T-065 | Integrity | Oversized manifest | Rejected before large allocation | Planned |
-| ESV-T-066 | Integrity | Oversized payload | Rejected before apply | Planned |
+| ESV-T-024 | Catalog | List slots | Payload files unopened | Complete |
+| ESV-T-025 | Catalog | Corrupt cache | Rebuild succeeds | Deferred |
+| ESV-T-026 | Catalog | Missing cache | Rebuild succeeds | Deferred |
+| ESV-T-027 | Participants | Register unique participants | Deterministic registry | Complete |
+| ESV-T-028 | Participants | Duplicate participant ID | Later registration rejected | Complete |
+| ESV-T-029 | Participants | Required capture success | Payload entry written | Complete |
+| ESV-T-030 | Participants | Required capture failure | No generation published | Complete |
+| ESV-T-031 | Participants | Optional capture default failure | Save fails visibly | Deferred |
+| ESV-T-032 | Participants | Missing required apply participant | Prepared load remains/reports | Complete |
+| ESV-T-033 | Participants | Missing payload initialize default | Participant default policy runs | Complete |
+| ESV-T-034 | Participants | Apply failure | Detailed partial/rollback report | Complete |
+| ESV-T-035 | Participants | Out-of-order unregister | Registry remains correct | Complete |
+| ESV-T-036 | Unknown | Removed optional participant | Opaque payload preserved | Complete |
+| ESV-T-037 | Unknown | Reinstalled participant | Preserved payload applies | Deferred |
+| ESV-T-038 | Unknown | Explicit prune plan | Only selected payload removed | Deferred |
+| ESV-T-039 | Unknown | Oversized unknown payload | Rejected/quarantined | Complete |
+| ESV-T-040 | Save | Basic save | Generation verifies and head advances | Complete |
+| ESV-T-041 | Save | Second save | Prior generation retained | Complete |
+| ESV-T-042 | Save | Rapid manual saves | Busy/reject policy enforced | Complete |
+| ESV-T-043 | Autosave | Rapid autosaves | One pending latest request | Complete |
+| ESV-T-044 | Autosave | Retention rotation | Bounds enforced after commit | Complete |
+| ESV-T-045 | Save | Permission denied | No capture/write | Deferred |
+| ESV-T-046 | Save | Cancel queued | No side effects | Deferred |
+| ESV-T-047 | Save | Cancel pre-publication | Head unchanged | Complete |
+| ESV-T-048 | Save | Cancel during head publication | Operation settles/TooLate | Complete |
+| ESV-T-049 | Save | File lock | Current generation survives | Deferred |
+| ESV-T-050 | Save | Out of space simulation | Current generation survives | Deferred |
+| ESV-T-051 | Commit | Crash before generation complete | Incomplete ignored | Complete |
+| ESV-T-052 | Commit | Crash after generation verify before head | Old head remains; orphan recoverable | Complete |
+| ESV-T-053 | Commit | Crash during head fallback update | Recovery scan chooses valid generation | Deferred |
+| ESV-T-054 | Commit | Crash after head publish before cache | Head authoritative; cache rebuilds | Deferred |
+| ESV-T-055 | Load | Prepare valid generation | Handle created | Complete |
+| ESV-T-056 | Load | Dispose prepared handle | No apply/disk mutation | Complete |
+| ESV-T-057 | Load | Prepared handle expiry | Apply rejected | Complete |
+| ESV-T-058 | Load | Load and apply same scene | State restored | Complete |
+| ESV-T-059 | Load | Prepare then simulated scene change | Apply after participant registration | Deferred |
+| ESV-T-060 | Load | Wrong slot/generation identity | Validation rejects | Complete |
+| ESV-T-061 | Integrity | Truncated manifest | Corrupt status | Deferred |
+| ESV-T-062 | Integrity | Truncated payload | Corrupt status | Deferred |
+| ESV-T-063 | Integrity | Checksum mismatch | Recovery plan | Complete |
+| ESV-T-064 | Integrity | Manifest/payload entry mismatch | Rejected | Complete |
+| ESV-T-065 | Integrity | Oversized manifest | Rejected before large allocation | Deferred |
+| ESV-T-066 | Integrity | Oversized payload | Rejected before apply | Deferred |
 | ESV-T-067 | Migration | Current version | No migration | Complete |
 | ESV-T-068 | Migration | Contiguous document chain | Migrates in memory | Complete |
 | ESV-T-069 | Migration | Missing document step | Blocks source unchanged | Complete |
-| ESV-T-070 | Migration | Participant chain | Payload reaches current version | Planned |
-| ESV-T-071 | Migration | Participant alias ID | Old ID maps safely | Planned |
+| ESV-T-070 | Migration | Participant chain | Payload reaches current version | Complete |
+| ESV-T-071 | Migration | Participant alias ID | Old ID maps safely | Complete |
 | ESV-T-072 | Migration | Migration throws/fails | Prepare fails source unchanged | Complete |
 | ESV-T-073 | Migration | Newer major format | Refused preserved | Complete |
-| ESV-T-074 | Recovery | Missing head valid generations | Plan selects newest valid | Planned |
-| ESV-T-075 | Recovery | Current corrupt prior valid | Prior candidate offered | Planned |
-| ESV-T-076 | Recovery | Multiple valid candidates | Deterministic order | Planned |
-| ESV-T-077 | Recovery | No candidate | Files preserved | Planned |
-| ESV-T-078 | Recovery | Execute plan | Head/catalog update atomically/fallback safely | Planned |
-| ESV-T-079 | Recovery | Stale recovery plan | Rejected | Planned |
-| ESV-T-080 | Serializer | Unity JSON plain DTO | Round trip | Planned |
-| ESV-T-081 | Serializer | Unsupported DTO shape | Actionable failure | Planned |
-| ESV-T-082 | Serializer | Custom provider | Provider selected by ID | Planned |
-| ESV-T-083 | Serializer | Provider missing on load | Structured failure | Planned |
-| ESV-T-084 | Security | Path traversal ID | Rejected | Planned |
-| ESV-T-085 | Security | Absolute external path | Rejected by default | Planned |
-| ESV-T-086 | Security | Unknown type name in file | No arbitrary type activation | Planned |
-| ESV-T-087 | Privacy | Redacted snapshot | No payload/full path/display name | Planned |
-| ESV-T-088 | Performance | Idle root | No Update/allocations | Planned |
-| ESV-T-089 | Performance | 32-slot catalog | Manifest-only async refresh | Planned |
-| ESV-T-090 | Performance | 50 participants 5MB | Budgets measured/reportable | Planned |
-| ESV-T-091 | Stress | 100 sequential saves | Retention/disk bounded | Planned |
-| ESV-T-092 | Stress | Queue flood | Capacity enforced | Planned |
-| ESV-T-093 | Stress | Prepared-load flood | Count/bytes cap enforced | Planned |
-| ESV-T-094 | Direct scene | Development initializer | One sandbox root | Planned |
-| ESV-T-095 | Direct scene | Production root already exists | No duplicate | Planned |
-| ESV-T-096 | Integration | First Light absent/present | Both paths work | Planned |
-| ESV-T-097 | Integration | Looking Glass bridge removed | Core compiles/operates | Planned |
-| ESV-T-098 | Integration | Passage coordination failure | Prepared handle retry/dispose | Planned |
-| ESV-T-099 | Migration adoption | Existing project parallel run | Old system remains rollback | Planned |
-| ESV-T-100 | Release | External clean install and sample checklist | Pass | Planned |
+| ESV-T-074 | Recovery | Missing head valid generations | Plan selects newest valid | Complete |
+| ESV-T-075 | Recovery | Current corrupt prior valid | Prior candidate offered | Complete |
+| ESV-T-076 | Recovery | Multiple valid candidates | Deterministic order | Complete |
+| ESV-T-077 | Recovery | No candidate | Files preserved | Complete |
+| ESV-T-078 | Recovery | Execute plan | Head/catalog update atomically/fallback safely | Complete |
+| ESV-T-079 | Recovery | Stale recovery plan | Rejected | Complete |
+| ESV-T-080 | Serializer | Unity JSON plain DTO | Round trip | Complete |
+| ESV-T-081 | Serializer | Unsupported DTO shape | Actionable failure | Deferred |
+| ESV-T-082 | Serializer | Custom provider | Provider selected by ID | Complete |
+| ESV-T-083 | Serializer | Provider missing on load | Structured failure | Complete |
+| ESV-T-084 | Security | Path traversal ID | Rejected | Complete |
+| ESV-T-085 | Security | Absolute external path | Rejected by default | Complete |
+| ESV-T-086 | Security | Unknown type name in file | No arbitrary type activation | Complete |
+| ESV-T-087 | Privacy | Redacted snapshot | No payload/full path/display name | Deferred |
+| ESV-T-088 | Performance | Idle root | No Update/allocations | Deferred |
+| ESV-T-089 | Performance | 32-slot catalog | Manifest-only async refresh | Deferred |
+| ESV-T-090 | Performance | 50 participants 5MB | Budgets measured/reportable | Deferred |
+| ESV-T-091 | Stress | 100 sequential saves | Retention/disk bounded | Deferred |
+| ESV-T-092 | Stress | Queue flood | Capacity enforced | Deferred |
+| ESV-T-093 | Stress | Prepared-load flood | Count/bytes cap enforced | Deferred |
+| ESV-T-094 | Direct scene | Development initializer | One sandbox root | Deferred |
+| ESV-T-095 | Direct scene | Production root already exists | No duplicate | Deferred |
+| ESV-T-096 | Integration | First Light absent/present | Both paths work | Deferred |
+| ESV-T-097 | Integration | Looking Glass bridge removed | Core compiles/operates | Deferred |
+| ESV-T-098 | Integration | Passage coordination failure | Prepared handle retry/dispose | Deferred |
+| ESV-T-099 | Migration adoption | Existing project parallel run | Old system remains rollback | Deferred |
+| ESV-T-100 | Release | External clean install and sample checklist | Pass | Deferred |
+
+### 23.3.1 R4 evidence reconciliation result
+
+**R4 row-map result:** **61 Complete / 39 Deferred / 0 Blocked**.
+
+The complete row-by-row applicability, retained-evidence, and final-disposition map is retained in `Plan Documentation/Milestone Reconciliations/ESV-M4-R4_Chronicle_100-Case_Registry_Evidence_Matrix.md`.
+
+This does not close M4 by itself. R4 still requires a fresh focused Chronicle Editor rerun at the actual closing total and a committed closeout. Deferred rows remain later package-graduation obligations and are not implicitly waived.
 
 ### 23.4 Test data and isolation
 
@@ -3775,9 +3783,9 @@ migrations, recovery, tooling, the Save Laboratory, and release gates.
 Current package: EchoSave
 Current specification version: 1.41.0
 Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09; ESV-M4-10; ESV-M4-R1; ESV-M4-R2; ESV-M4-R3
-Current milestone/checkpoint: ESV-M4-R4 final 100-case registry/document evidence reconciliation and M4 closeout is ACTIVE / AUTHORIZED
+Current milestone/checkpoint: ESV-M4-R4 final 100-case registry/document evidence reconciliation and M4 closeout is COMPLETE / M4 COMPLETE
 Current Unity version: 6000.3.8f1
-Current implementation status: ESV-M4-R1, R2, and R3 complete; R4 is documentation/evidence-only from baseline `e3d7a2e`; focused Chronicle floor `660 / 660`; M4 remains open until R4 closeout; M5 locked
+Current implementation status: ESV-M4-R1 through R4 complete; final focused Chronicle Editor `660 / 660`; final registry `61 Complete / 39 Deferred / 0 Blocked`; M4 complete; M5 eligible for separate activation
 Known blockers: runtime blockers A-01 through A-04 are closed; stale 100-case registry/document evidence mapping is the active final M4 reconciliation blocker
 Current Notes reviewed through: August 11, 2026
 
@@ -3850,7 +3858,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.41.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 are complete. R3 implementation `c6ba1ad` is green at **660 / 660** and closes A-04 / CAP-014. ESV-M4-R4 is active from clean baseline `e3d7a2e` as the final row-by-row 100-case registry/document evidence reconciliation and M4 closeout gate. It authorizes no runtime/test-code change; M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
+The Chronicle specification is complete and **Approved v1.43.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, ESV-M4-01 through ESV-M4-10, ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 are complete. R3 implementation `c6ba1ad` is green at **660 / 660** and closes A-04 / CAP-014. ESV-M4-R4 is active from clean baseline `e3d7a2e` as the final row-by-row 100-case registry/document evidence reconciliation and M4 closeout gate. It authorizes no runtime/test-code change; M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
 
 
 ---
@@ -3884,3 +3892,34 @@ The original parent-authority header remains approval provenance. This addendum 
 - [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
 - [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
+
+### 28.31 ESV-M4-R4 evidence reconciliation progress
+
+R4 activation is committed at `81c53dd`.
+
+The row-by-row pass over ESV-T-001 through ESV-T-100 is complete for evidence classification:
+
+- **61 Complete** — retained direct checkpoint/test evidence exists;
+- **39 Deferred** — exact scenario belongs to a later M5/Laboratory, clean-project/distribution, performance/stress, integration/adoption, or release gate;
+- **0 Blocked** — no M4-applicable row lacks retained direct proof.
+
+Documentation parity has been repaired across the package README, CHANGELOG, documentation index, root/package Current Notes, Suite Health, milestone audit, R4 checkpoint plan, package specification, and the dedicated R4 evidence matrix.
+
+No runtime or test-code file is changed by this reconciliation.
+
+**M4 is complete.** The fresh focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. **M5 is eligible for separate activation and remains inactive until separately authorized.**
+
+### 28.32 ESV-M4-R4 / Chronicle M4 final closeout
+
+R4 activation is retained at `81c53dd`.
+
+Final evidence:
+- **61 Complete / 39 Deferred / 0 Blocked** across ESV-T-001 through ESV-T-100;
+- fresh focused Chronicle Editor **660 / 660 passed, 0 failed**;
+- zero unresolved M4-applicable evidence blockers;
+- zero R4 runtime/test-code repairs;
+- package/document current-state parity reconciled.
+
+**Chronicle M4 is Complete.**
+
+The 39 Deferred rows remain explicit later-gate obligations and are not waived by M4 completion. M5 is eligible for a separate authority/activation checkpoint and is not automatically active.
