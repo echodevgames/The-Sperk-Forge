@@ -197,6 +197,133 @@ namespace EchoDevGames.EchoSave
                 true);
         }
 
+
+        internal SaveGenerationPublicationResult
+            PublishStoredTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SavePayloadEntry[] payloadEntries,
+                SavePayloadInventoryEntry[] inventoryEntries,
+                string saveKind,
+                SaveGenerationId expectedCurrentGeneration)
+        {
+            return PublishStoredTransportGenerationCore(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                payloadEntries,
+                inventoryEntries,
+                saveKind,
+                expectedCurrentGeneration,
+                true,
+                false);
+        }
+
+        internal SaveGenerationPublicationResult
+            PublishInitialStoredTransportGeneration(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SavePayloadEntry[] payloadEntries,
+                SavePayloadInventoryEntry[] inventoryEntries,
+                string saveKind)
+        {
+            return PublishStoredTransportGenerationCore(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                payloadEntries,
+                inventoryEntries,
+                saveKind,
+                default,
+                false,
+                true);
+        }
+
+        private SaveGenerationPublicationResult
+            PublishStoredTransportGenerationCore(
+                SaveSlotId slotId,
+                string projectId,
+                string projectVersion,
+                string buildId,
+                string displayName,
+                SavePayloadEntry[] payloadEntries,
+                SavePayloadInventoryEntry[] inventoryEntries,
+                string saveKind,
+                SaveGenerationId expectedCurrentGeneration,
+                bool requireExpectedCurrentGeneration,
+                bool requireMissingCurrentHead)
+        {
+            bool participantBacked =
+                string.Equals(
+                    saveKind,
+                    "participant",
+                    StringComparison.Ordinal);
+
+            bool transport =
+                string.Equals(
+                    saveKind,
+                    "transport",
+                    StringComparison.Ordinal);
+
+            if (!participantBacked &&
+                !transport)
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.InvalidRequest,
+                    EchoSaveDiagnosticCodes
+                        .PublicationInvalidRequest,
+                    "Chronicle stored-state publication requires a canonical source save kind of 'participant' or 'transport'.",
+                    slotId,
+                    default,
+                    false);
+            }
+
+            SaveDocumentValidationResult validation =
+                SaveParticipantPublicationBatchValidator
+                    .ValidateStoredEntries(
+                        payloadEntries,
+                        inventoryEntries,
+                        integrityProvider);
+
+            if (!validation.Succeeded)
+            {
+                return Failure(
+                    SaveGenerationPublicationStatus.InvalidRequest,
+                    string.IsNullOrEmpty(
+                        validation.DiagnosticCode)
+                        ? EchoSaveDiagnosticCodes
+                            .PublicationParticipantBatchInvalid
+                        : validation.DiagnosticCode,
+                    validation.Message,
+                    slotId,
+                    default,
+                    false);
+            }
+
+            return PublishTransportGeneration(
+                slotId,
+                projectId,
+                projectVersion,
+                buildId,
+                displayName,
+                payloadEntries,
+                inventoryEntries,
+                participantBacked,
+                expectedCurrentGeneration,
+                requireExpectedCurrentGeneration,
+                requireMissingCurrentHead);
+        }
+
         private SaveGenerationPublicationResult
             PublishTransportGeneration(
                 SaveSlotId slotId,

@@ -4,12 +4,12 @@ using UnityEngine;
 namespace EchoDevGames.EchoSave
 {
     /// <summary>
-    /// Chronicle lifecycle, public save/autosave, recovery planning, and
-    /// explicit admitted recovery-execution service.
+    /// Chronicle lifecycle, public save/autosave, recovery, and bounded slot
+    /// mutation service.
     ///
-    /// M4-08 reuses the root-local mutating admission authority, revalidates
-    /// immutable M4-07 plan provenance, and commits recovery by repointing only
-    /// head.json to an already verified immutable generation.
+    /// M4-09 reuses root-local mutating admission for non-destructive rename
+    /// and full-state duplication without adding queues, participant callbacks,
+    /// destructive delete/trash, scene authority, or lifetime ownership.
     /// </summary>
     internal sealed class EchoSaveService :
         IEchoSaveService
@@ -22,6 +22,12 @@ namespace EchoDevGames.EchoSave
 
         internal const int DefaultRecoveryDiscoveryLimit =
             512;
+
+        internal const int DefaultTechnicalSlotCapacity =
+            64;
+
+        internal const int DefaultSlotIdentityAttempts =
+            8;
 
         private EchoSaveConfiguration configuration;
         private IEchoSaveLifecycleProbe lifecycleProbe;
@@ -42,6 +48,9 @@ namespace EchoDevGames.EchoSave
             recoveryPlanBuilder;
         private ISaveRecoveryExecutor
             recoveryExecutor;
+
+        private SaveSlotMutationCoordinator
+            slotMutationCoordinator;
 
         private PendingAutosaveRequest pendingAutosave;
         private long nextAutosaveTicketId;
@@ -109,6 +118,26 @@ namespace EchoDevGames.EchoSave
             return ExecuteRecoveryCore(
                 plan,
                 candidate);
+        }
+
+        public async Awaitable<SaveSlotRenameResult>
+            RenameSlotAsync(
+                SaveSlotRenameRequest request)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return RenameSlotCore(
+                request);
+        }
+
+        public async Awaitable<SaveSlotDuplicateResult>
+            DuplicateSlotAsync(
+                SaveSlotDuplicateRequest request)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return DuplicateSlotCore(
+                request);
         }
 
         public async Awaitable<EchoSaveLifecycleResult>
@@ -404,6 +433,18 @@ namespace EchoDevGames.EchoSave
                 plan,
                 candidate);
 
+        internal SaveSlotRenameResult
+            RenameSlotSynchronouslyForTesting(
+                SaveSlotRenameRequest request) =>
+            RenameSlotCore(
+                request);
+
+        internal SaveSlotDuplicateResult
+            DuplicateSlotSynchronouslyForTesting(
+                SaveSlotDuplicateRequest request) =>
+            DuplicateSlotCore(
+                request);
+
         internal int PendingAutosaveCountForTesting =>
             pendingAutosave == null
                 ? 0
@@ -568,6 +609,143 @@ namespace EchoDevGames.EchoSave
             }
         }
 
+
+
+        private SaveSlotRenameResult RenameSlotCore(
+            SaveSlotRenameRequest request)
+        {
+            if (state != EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state == EchoSaveServiceState.ShuttingDown ||
+                    state == EchoSaveServiceState.Shutdown;
+
+                return SaveSlotRenameResult.Failure(
+                    admissionClosed
+                        ? SaveSlotRenameStatus.AdmissionClosed
+                        : SaveSlotRenameStatus.ServiceNotReady,
+                    admissionClosed
+                        ? EchoSaveDiagnosticCodes.SlotRenameAdmissionClosed
+                        : EchoSaveDiagnosticCodes.SlotRenameServiceNotReady,
+                    admissionClosed
+                        ? "The Chronicle is not accepting new slot-rename mutations after admission closed."
+                        : "The Chronicle must be Ready before slot rename can begin.",
+                    request == null
+                        ? default
+                        : request.SlotId);
+            }
+
+            if (slotMutationCoordinator == null)
+            {
+                return SaveSlotRenameResult.Failure(
+                    SaveSlotRenameStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.SlotRenameServiceNotReady,
+                    "The Chronicle slot-mutation runtime is unavailable.",
+                    request == null
+                        ? default
+                        : request.SlotId);
+            }
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission == SaveOperationAdmissionStatus.Closed)
+            {
+                return SaveSlotRenameResult.Failure(
+                    SaveSlotRenameStatus.AdmissionClosed,
+                    EchoSaveDiagnosticCodes.SlotRenameAdmissionClosed,
+                    "The Chronicle is not accepting new mutating operations.",
+                    request == null
+                        ? default
+                        : request.SlotId);
+            }
+
+            if (admission == SaveOperationAdmissionStatus.Busy)
+            {
+                return SaveSlotRenameResult.Failure(
+                    SaveSlotRenameStatus.Busy,
+                    EchoSaveDiagnosticCodes.SlotRenameBusy,
+                    "Another Chronicle mutating operation already owns the root-local admission lease. Slot rename was rejected as Busy and was not queued.",
+                    request == null
+                        ? default
+                        : request.SlotId);
+            }
+
+            using (lease)
+            {
+                return slotMutationCoordinator.Rename(
+                    request);
+            }
+        }
+
+        private SaveSlotDuplicateResult DuplicateSlotCore(
+            SaveSlotDuplicateRequest request)
+        {
+            if (state != EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state == EchoSaveServiceState.ShuttingDown ||
+                    state == EchoSaveServiceState.Shutdown;
+
+                return SaveSlotDuplicateResult.Failure(
+                    admissionClosed
+                        ? SaveSlotDuplicateStatus.AdmissionClosed
+                        : SaveSlotDuplicateStatus.ServiceNotReady,
+                    admissionClosed
+                        ? EchoSaveDiagnosticCodes.SlotDuplicateAdmissionClosed
+                        : EchoSaveDiagnosticCodes.SlotDuplicateServiceNotReady,
+                    admissionClosed
+                        ? "The Chronicle is not accepting new slot-duplicate mutations after admission closed."
+                        : "The Chronicle must be Ready before slot duplication can begin.",
+                    request == null
+                        ? default
+                        : request.SourceSlotId);
+            }
+
+            if (slotMutationCoordinator == null)
+            {
+                return SaveSlotDuplicateResult.Failure(
+                    SaveSlotDuplicateStatus.ServiceNotReady,
+                    EchoSaveDiagnosticCodes.SlotDuplicateServiceNotReady,
+                    "The Chronicle slot-mutation runtime is unavailable.",
+                    request == null
+                        ? default
+                        : request.SourceSlotId);
+            }
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission == SaveOperationAdmissionStatus.Closed)
+            {
+                return SaveSlotDuplicateResult.Failure(
+                    SaveSlotDuplicateStatus.AdmissionClosed,
+                    EchoSaveDiagnosticCodes.SlotDuplicateAdmissionClosed,
+                    "The Chronicle is not accepting new mutating operations.",
+                    request == null
+                        ? default
+                        : request.SourceSlotId);
+            }
+
+            if (admission == SaveOperationAdmissionStatus.Busy)
+            {
+                return SaveSlotDuplicateResult.Failure(
+                    SaveSlotDuplicateStatus.Busy,
+                    EchoSaveDiagnosticCodes.SlotDuplicateBusy,
+                    "Another Chronicle mutating operation already owns the root-local admission lease. Slot duplication was rejected as Busy and was not queued.",
+                    request == null
+                        ? default
+                        : request.SourceSlotId);
+            }
+
+            using (lease)
+            {
+                return slotMutationCoordinator.Duplicate(
+                    request);
+            }
+        }
 
         private SaveOperationResult SaveCore(
             SaveRequest request)
@@ -1149,6 +1327,24 @@ namespace EchoDevGames.EchoSave
                     recoveryPlanBuilder,
                     slotCatalog);
 
+            SaveSlotMutationSourceReader
+                slotMutationSourceReader =
+                    new SaveSlotMutationSourceReader(
+                        storageBackend,
+                        serializer,
+                        integrity);
+
+            slotMutationCoordinator =
+                new SaveSlotMutationCoordinator(
+                    slotCatalog,
+                    slotMutationSourceReader,
+                    publicationCoordinator,
+                    retentionCoordinator,
+                    SaveRetentionPolicy.Default,
+                    DefaultTechnicalSlotCapacity,
+                    DefaultSlotIdentityAttempts,
+                    SaveSlotId.NewId);
+
             manualSaveTransactionExecutor =
                 new SaveManualTransactionCoordinator(
                     slotCatalog,
@@ -1170,6 +1366,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             recoveryExecutor =
+                null;
+
+            slotMutationCoordinator =
                 null;
 
             slotCatalog =

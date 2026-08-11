@@ -384,6 +384,62 @@ namespace EchoDevGames.EchoSave
         internal const string SlotCreateExistingHead =
             "ESV-SLOT-008";
 
+        internal const string SlotRenameInvalidRequest =
+            "ESV-SLOT-020";
+        internal const string SlotRenameServiceNotReady =
+            "ESV-SLOT-021";
+        internal const string SlotRenameAdmissionClosed =
+            "ESV-SLOT-022";
+        internal const string SlotRenameBusy =
+            "ESV-SLOT-023";
+        internal const string SlotRenameCatalogUnavailable =
+            "ESV-SLOT-024";
+        internal const string SlotRenameNotFound =
+            "ESV-SLOT-025";
+        internal const string SlotRenameSourceInvalid =
+            "ESV-SLOT-026";
+        internal const string SlotRenameSourceStale =
+            "ESV-SLOT-027";
+        internal const string SlotRenamePublicationFailed =
+            "ESV-SLOT-028";
+        internal const string SlotRenameRetentionMaintenanceFailed =
+            "ESV-SLOT-029";
+        internal const string SlotRenameCatalogReconciliationFailed =
+            "ESV-SLOT-030";
+        internal const string SlotRenameSucceeded =
+            "ESV-SLOT-031";
+        internal const string SlotRenameNoChange =
+            "ESV-SLOT-032";
+
+        internal const string SlotDuplicateInvalidRequest =
+            "ESV-SLOT-040";
+        internal const string SlotDuplicateServiceNotReady =
+            "ESV-SLOT-041";
+        internal const string SlotDuplicateAdmissionClosed =
+            "ESV-SLOT-042";
+        internal const string SlotDuplicateBusy =
+            "ESV-SLOT-043";
+        internal const string SlotDuplicateCatalogUnavailable =
+            "ESV-SLOT-044";
+        internal const string SlotDuplicateNotFound =
+            "ESV-SLOT-045";
+        internal const string SlotDuplicateSourceInvalid =
+            "ESV-SLOT-046";
+        internal const string SlotDuplicateCapacityReached =
+            "ESV-SLOT-047";
+        internal const string SlotDuplicateIdGenerationFailed =
+            "ESV-SLOT-048";
+        internal const string SlotDuplicateCollisionLimitExceeded =
+            "ESV-SLOT-049";
+        internal const string SlotDuplicateSourceStale =
+            "ESV-SLOT-050";
+        internal const string SlotDuplicatePublicationFailed =
+            "ESV-SLOT-051";
+        internal const string SlotDuplicateCatalogReconciliationFailed =
+            "ESV-SLOT-052";
+        internal const string SlotDuplicateSucceeded =
+            "ESV-SLOT-053";
+
         internal const string ManualSaveInvalidRequest =
             "ESV-SAVE-001";
 
