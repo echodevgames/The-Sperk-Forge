@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-03 – Chronicle Save Browser, Generation Inspector, and Migration Graph
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 sandbox QA/support tooling active from `ffff18f`; incoming focused Chronicle floor `735 / 735`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-04 complete; M5-04 implementation `577dc01`; focused Chronicle Editor `746 / 746`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-05 not activated
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 active for sandbox Failure Simulator, preview-only Recovery Planner, bounded Test Data, and redacted support tooling; incoming focused floor `735 / 735`; M5 open** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-04 complete; sandbox QA/support tooling proven; focused Chronicle `746 / 746`; M5 open; M5-05 inactive** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -252,3 +252,23 @@ The slice is intentionally divided by mutation boundary:
 - Redacted support export may read bounded diagnostic/manifest health truth but exports no participant payload contents and redacts filesystem/slot identity by default.
 
 M5-05 Save Laboratory remains inactive and separately gated.
+
+
+## Chronicle M5-04 closeout state
+
+`ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and Redacted Support Tooling` is **Complete**.
+
+- activation `df3c30b`;
+- implementation `577dc01`;
+- focused Chronicle Editor **746 / 746**, `0` failed;
+- **11** net-new focused tests over the `735 / 735` floor;
+- exact implementation scope **31 files / 3206 insertions**;
+- bounded Test Data manual proof complete;
+- Failure Simulator Preview/Apply/verified cleanup manual proof complete;
+- Recovery Planner preview-only/no Recover control manual proof complete;
+- Redacted Snapshot preview/export/privacy proof complete;
+- implementation committed and pushed from a clean tree.
+
+M5 remains open. Persistent cache/cleanup and direct-scene Save Laboratory work remain separately gated. M5-05 is not active.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.

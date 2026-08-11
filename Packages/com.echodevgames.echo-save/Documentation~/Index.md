@@ -63,9 +63,9 @@
 
 ## Latest completed implementation checkpoint
 
-`ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph`
+`ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and Redacted Support Tooling`
 
-Activation is committed at `e805ae3`; implementation is committed at `9c3771c`; the closing focused Chronicle Editor gate passed **735 / 735**, with **0 failed** and **11** net-new focused tests over the `724 / 724` floor. Manual proof confirmed Browser missing-root/no-create behavior, a valid current-only Migration Graph with zero registered edges across the four production package-document kinds, and Generation Inspector over one real disposable committed generation. All temporary proof data/scripts/assets were removed and the repository returned clean at `9c3771c`.
+Activation is committed at `df3c30b`; implementation is committed at `577dc01`; the closing focused Chronicle Editor gate passed **746 / 746**, with **0 failed** and **11** net-new focused tests over the `735 / 735` floor. Manual proof confirmed bounded deterministic sandbox generation/cleanup, exact-target Failure Simulator Preview/Apply/verified cleanup, preview-only Recovery Planner behavior with no Apply/Recover control, and explicit payload-free redacted JSON export with raw slot ID/local path/payload markers absent.
 
 ## Final M4 reconciliation checkpoint
 
@@ -95,6 +95,6 @@ The next eligible package milestone is M5, but it requires its own authority/act
 
 Chronicle M4 remains **Complete**.
 
-`ESV-M5-01`, `ESV-M5-02`, and `ESV-M5-03` are **Complete**. M5 remains open. M5-04 is not active and requires its own bounded authority/activation checkpoint.
+`ESV-M5-01` through `ESV-M5-04` are **Complete**. M5 remains open. M5-05 is not active and requires its own bounded authority/activation checkpoint.
 
-The current focused Chronicle Editor floor is **735 / 735**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-03 does not reclassify later Simulator/Laboratory, performance/stress, integration/adoption, or release rows.
+The current focused Chronicle Editor floor is **746 / 746**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-03 does not reclassify later Simulator/Laboratory, performance/stress, integration/adoption, or release rows.

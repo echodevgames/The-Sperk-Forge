@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-04
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `ffff18f` — `Close out ESV-M5-03 browser inspector and migration graph`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.50.0 / ESV-D-040
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.51.0 / ESV-D-040
 **Incoming focused Chronicle floor:** **735 / 735 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 
@@ -218,3 +218,102 @@ Required:
 - repository clean.
 
 M5 remains open after M5-04.
+
+
+## 13. Closeout record
+
+**Activation commit:** `df3c30b`
+**Implementation commit:** `577dc01`
+**Closing authority:** SFGSS-PKG-ECHOSAVE-001 v1.51.0 / ESV-D-040
+**Focused Chronicle Editor gate:** **746 / 746 passed, 0 failed**
+**Incoming floor:** **735 / 735**
+**Net-new focused tests:** **11**
+**Implementation scope:** **31 files**, `3206` insertions
+
+### Automated evidence
+
+- Unity compiled after one pre-commit API-name correction in the support snapshot exporter.
+- The correction replaced nonexistent `SaveSlotPolicy.EffectiveTechnicalSlotCapacity` with existing `SaveSlotPolicy.EffectiveCapacity`.
+- `EchoDevGames.EchoSave.Tests.Editor` passed **746 / 746**, `0` failed.
+- M5-04 added **11** focused tests over the incoming `735 / 735` floor.
+- Tests cover canonical sandbox collision refusal, bounded deterministic test data, ownership cleanup, Failure Simulator preview zero-write/stale-preview refusal, Recovery Planner missing-root zero-write behavior, redaction, and deterministic support output.
+- No Runtime source adds a `UnityEditor` reference.
+
+### Manual Test Data proof
+
+Using the disposable schema-3 configuration and sandbox `EchoSave-M5-04-Sandbox`:
+
+- Slot Count: `2`;
+- Generations / Slot: `2`;
+- Payload Padding Bytes: `64`;
+- Deterministic Seed: `504`;
+- Preview: `2` slots, `4` generations, `4352` estimated bytes;
+- Generate succeeded;
+- repeat Preview refused the existing sandbox instead of clobbering it;
+- Cleanup removed the owned sandbox.
+
+### Manual Failure Simulator proof
+
+Using the regenerated owned sandbox:
+
+- scenario: `Truncate Manifest`;
+- Preview identified exactly one `manifest.json` target under the owned sandbox;
+- Preview performed no mutation;
+- Apply reported `TruncateManifest` applied to exactly the previewed target;
+- Apply was disabled afterward until a new Preview;
+- `Cleanup Owned Sandbox` reported that the owned fixture was removed and post-cleanup absence was verified.
+
+### Manual Recovery Planner proof
+
+Using a syntactically valid technical slot ID with the production Chronicle root absent:
+
+- Status: `ServiceNotReady`;
+- Head Condition: `Invalid`;
+- Verified Candidates: `0`;
+- Rejected Canonical: `0`;
+- Ignored Non-Canonical: `0`;
+- Recovery Required: `No`;
+- Preferred Candidate: `(none)`;
+- UI explicitly reported that the production save root does not exist and there is no durable recovery evidence to plan;
+- UI explicitly stated `No Apply / Recover control exists in ESV-M5-04.`
+
+No durable mutation was performed.
+
+### Manual Redacted Snapshot proof
+
+Preview/export produced bounded JSON with:
+
+- schema `echosave.support.snapshot.v1`;
+- configuration schema `3`;
+- serializer provider `echodevgames.unity-json`;
+- storage provider `echodevgames.local-file`;
+- slot policy `ConfigurableMultiSlot`;
+- slot capacity `64`;
+- hashed `rootToken`;
+- hashed `selectedSlotToken`;
+- bounded empty slot/generation arrays;
+- both truncation flags `false`.
+
+CMD verification confirmed:
+- raw technical slot ID absent;
+- local `C:\Users\Jesse` path absent;
+- participant payload-content markers absent.
+
+### Cleanup / commit proof
+
+- disposable `Assets/EchoSaveConfiguration.asset` and `.meta` were removed;
+- only the intended M5-04 implementation scope remained;
+- `git diff --check` passed;
+- staged scope was exactly **31 files**;
+- commit `577dc01` records **31 files changed, 3206 insertions**;
+- push advanced `main` from `df3c30b` to `577dc01`;
+- `HEAD`, `origin/main`, and `origin/HEAD` all resolved to `577dc01`;
+- final `git status` reported `nothing to commit, working tree clean`.
+
+### Disposition
+
+All M5-04 closeout requirements are satisfied.
+
+**ESV-M5-04 is Complete.**
+
+M5 remains open. M5-05 is not activated by this closeout and requires a separate authority checkpoint.

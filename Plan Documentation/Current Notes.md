@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-04 Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling active
-**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M5 — M5-04 Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling complete; M5-05 not activated
+**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — **COMPLETE**; no M5-05 checkpoint active
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1048,3 +1048,26 @@ Authority locks:
 - No direct-scene Laboratory is activated by M5-04.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+
+
+## ESV-M5-04 closeout
+
+**Activation:** `df3c30b`
+**Implementation:** `577dc01`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.51.0 / ESV-D-040
+**Focused Chronicle Editor:** **746 / 746 passed, 0 failed**
+**Incoming floor:** **735 / 735**
+**Net-new focused tests:** **11**
+**Implementation scope:** **31 files**, `3206` insertions
+
+Manual QA/support proof is complete:
+- bounded deterministic Test Data Preview/Generate/no-clobber/Cleanup;
+- Failure Simulator exact-target `Truncate Manifest` Preview/Apply/verified Cleanup;
+- Recovery Planner preview-only absent-root proof with no Apply/Recover control;
+- Redacted Snapshot explicit export with hashed tokens and zero raw slot ID/full local path/participant payload markers.
+
+A pre-commit compile correction replaced the mistaken `SaveSlotPolicy.EffectiveTechnicalSlotCapacity` member reference with the existing `SaveSlotPolicy.EffectiveCapacity` property. The corrected implementation is what was tested, committed, and pushed at `577dc01`.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-04 is Complete. M5 remains open. M5-05 requires separate activation.**

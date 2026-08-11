@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.50.0
+**Specification version:** 1.51.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 through ESV-M5-03 are complete. ESV-M5-04 is **Active / Authorized** from clean baseline `ffff18f` under ESV-D-040. M5-04 owns sandbox-only Failure Simulator and bounded Test Data tooling, preview-only Recovery Planner, and explicit payload-free Redacted Snapshot Exporter. Sandbox tooling must fail closed on any production-root collision. Recovery Planner may not execute recovery or rewrite heads. Support export omits participant payload contents, redacts full local paths, and redacts/hashes technical slot identity in support mode. Persistent cache/cleanup and direct-scene Save Laboratory remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 through ESV-M5-04 are complete. ESV-M5-04 closed at implementation `577dc01` under ESV-D-040 with focused Chronicle Editor `746 / 746`, bounded Test Data Preview/Generate/no-clobber/Cleanup proof, exact-target Failure Simulator Preview/Apply/verified Cleanup proof, preview-only Recovery Planner proof with no Apply/Recover control, and payload-free Redacted Snapshot export/privacy proof. Sandbox mutation remains isolated from production; Recovery Planner remains non-mutating; support export remains payload-free and redacted. Persistent cache/cleanup and direct-scene Save Laboratory work remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open; M5-05 requires separate activation.
 
 ---
 
@@ -82,6 +82,7 @@
 | 1.48.0 | 2026-08-11 | Approved | Activated `ESV-M5-03` from clean M5-02 closeout baseline `b4d4d0b` with incoming focused Chronicle floor `724 / 724`. Added ESV-D-039: Save Browser, Generation Inspector, and Migration Graph are read-only inspection tools over actual Chronicle catalog/slot/generation/package-document/migration truth. Narrow additive read-only runtime DTO/query surfaces are allowed where required, but inspection may not mutate heads, generations, trash, recovery state, slot identity, project configuration, or production save data. Unsupported-newer, missing-migration, incomplete/corrupt, and stale-head truth remains visible and fail-closed. Simulator/Recovery Planner/Test Data/support export, persistent cache/cleanup, direct-scene Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
 | 1.49.0 | 2026-08-11 | Approved | Closed `ESV-M5-03` under ESV-D-039. Activation `e805ae3`; implementation `9c3771c`; focused Chronicle Editor `735 / 735`, `0` failed, adding `11` focused tests over the `724 / 724` floor. Recorded the exact implementation scope as `26 files` / `2419` insertions. Manual proof confirmed Browser missing-root/no-create `SucceededEmpty`, a valid current-only production Migration Graph with zero registered edges for envelope/manifest/payload/head at `1.0.0`, and Generation Inspector over one real disposable committed generation reported `CURRENT`, `Healthy`, `Committed`, manifest `1.0.0 -> 1.0.0`, no in-memory migration, and `0 participants / 238 bytes`. Temporary proof slot/root/seeder/configuration were removed and final repository verification was clean at `9c3771c`. M5 remains open; M5-04 is not activated. | Jesse “Echo” Adams |
 | 1.50.0 | 2026-08-11 | Approved | Activated `ESV-M5-04` from clean M5-03 closeout baseline `ffff18f` with incoming focused Chronicle floor `735 / 735`. Added ESV-D-040: Failure Simulator and bounded Test Data Generator are sandbox-only and must fail closed on production-root collisions; Recovery Planner is preview-only and may not execute recovery/head mutation; Redacted Snapshot Exporter is explicit-action, bounded, payload-free, omits/redacts full local paths, and redacts/hashes technical slot identity in support mode. Persistent cache/cleanup, destructive repair operations, direct-scene Save Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
+| 1.51.0 | 2026-08-11 | Approved | Closed `ESV-M5-04` under ESV-D-040. Activation `df3c30b`; implementation `577dc01`; focused Chronicle Editor `746 / 746`, `0` failed, adding `11` focused tests over the `735 / 735` floor. Recorded exact implementation scope as `31 files` / `3206` insertions. Manual proof confirmed bounded deterministic Test Data Preview/Generate/no-clobber/Cleanup; exact-target Failure Simulator `Truncate Manifest` Preview/Apply/verified Cleanup; preview-only Recovery Planner absent-root behavior with no Apply/Recover control; and explicit payload-free Redacted Snapshot JSON export with raw slot ID, full local path, and participant payload-content markers absent. A pre-commit compile correction replaced nonexistent `EffectiveTechnicalSlotCapacity` with existing `EffectiveCapacity`; the corrected source is what passed the closing gate and was committed. M5 remains open; M5-05 is not activated. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -3977,7 +3978,7 @@ Registry rule: M5-01 does not mass-promote Deferred ESV-T rows. Its evidence may
 Provisional M5 sequence after M5-01, each requiring separate activation:
 - **M5-02 — full Setup/configuration authoring and safe repair previews — COMPLETE at implementation `d2e9252`;**
 - **M5-03 — Browser, Generation Inspector, and Migration Graph — COMPLETE at implementation `9c3771c`;**
-- **M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — ACTIVE / AUTHORIZED at `ffff18f`;**
+- **M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — COMPLETE at implementation `577dc01`;**
 - M5-05 — Standalone Chronicle Save Laboratory plus 32-scenario execution;
 - M5 final reconciliation/closeout.
 
@@ -4366,3 +4367,49 @@ M5-04 closes only when:
 - no Save Laboratory scene/content is activated.
 
 M5 remains open after M5-04. M5-05 requires separate activation.
+
+
+### 28.39 ESV-M5-04 closeout
+
+**Status:** Complete.
+
+**Activation commit:** `df3c30b`.
+
+**Implementation commit:** `577dc01`.
+
+**Closing focused Chronicle Editor gate:** **746 / 746 passed, 0 failed**.
+
+**Incoming floor:** **735 / 735**.
+
+**Net-new focused tests:** **11**.
+
+**Implementation scope:** **31 files**, `3206` insertions.
+
+**Authority:** ESV-D-040 remains unchanged. M5-04 closes the QA/support tooling slice without widening production mutation authority.
+
+Retained implementation truth:
+- sandbox path comparison refuses equality with, nesting inside, or containment of production Chronicle root;
+- Test Data is deterministic, explicitly bounded, sandbox-only, and ownership-cleaned;
+- Failure Simulator is Preview-before-Apply, exact-target, sandbox-only, and stale-preview guarded;
+- Recovery Planner consumes existing immutable recovery-plan authority and exposes no recovery/head mutation action;
+- support export consumes payload-free metadata only and hashes root/slot/generation identity;
+- no Runtime source references `UnityEditor`.
+
+Retained manual proof:
+- Test Data Preview reported `2` slots, `4` generations, `4352` estimated bytes, padding `64`, seed `504`;
+- Generate succeeded; repeat Preview refused the existing sandbox; Cleanup removed the owned fixture;
+- Failure Simulator `Truncate Manifest` Preview identified one exact `manifest.json`; Apply mutated that target; Cleanup verified post-cleanup absence;
+- Recovery Planner absent-root Preview reported `ServiceNotReady`, invalid head condition, zero candidates, no recovery required, and no Apply/Recover control;
+- Redacted Snapshot export used `echosave.support.snapshot.v1`, configuration schema `3`, provider IDs, capacity `64`, hashed root/slot tokens, bounded empty arrays, false truncation flags;
+- CMD verification confirmed raw slot ID absent, `C:\Users\Jesse` absent, and participant payload-content markers absent;
+- disposable configuration proof asset was removed before commit;
+- final repository state was clean and synchronized at `577dc01`.
+
+Pre-commit correction:
+- initial support exporter code referenced nonexistent `SaveSlotPolicy.EffectiveTechnicalSlotCapacity`;
+- corrected to existing `SaveSlotPolicy.EffectiveCapacity`;
+- corrected source passed the final **746 / 746** gate and is the committed implementation.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**M5 remains open. M5-05 requires separate activation.**

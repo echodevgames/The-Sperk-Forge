@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.50.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.51.0
 **Completed checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 active from clean M5-03 closeout baseline `ffff18f`; incoming focused Chronicle floor `735 / 735`; M5 remains open
+**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — COMPLETE; no M5-05 checkpoint active
+**Status:** M4 complete; ESV-M5-01 through M5-04 complete; implementation `577dc01`; focused Chronicle Editor `746 / 746`; M5 remains open; no M5-05 slice active
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -939,3 +939,45 @@ M5-04 does **not** activate:
 - scene travel, peer-package bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL.
 
 M5-05 remains inactive until M5-04 closes separately.
+
+
+## ESV-M5-04 closeout
+
+**Activation commit:** `df3c30b`
+**Implementation commit:** `577dc01`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.51.0 / ESV-D-040
+**Focused Chronicle Editor:** **746 / 746 passed, 0 failed**
+**Incoming floor:** **735 / 735**
+**Net-new focused tests:** **11**
+**Implementation scope:** **31 files**, `3206` insertions
+
+Implementation truth:
+- canonical sandbox-path comparison refuses production equality, sandbox-under-production, and production-under-sandbox collisions;
+- Test Data Generator is deterministic, bounded, sandbox-only, ownership-marked, and cleanup-verifying;
+- Failure Simulator is Preview-before-Apply, mutates exactly one known owned sandbox target, and rejects stale previews;
+- Recovery Planner delegates to Chronicle's existing immutable recovery-plan authority and exposes no recovery/head mutation command;
+- Redacted Snapshot Exporter consumes payload-free catalog/generation metadata only and hashes root/slot/generation identity;
+- no Runtime source references `UnityEditor`.
+
+Pre-commit compile correction:
+- `EchoSaveSupportSnapshotService` initially referenced nonexistent `SaveSlotPolicy.EffectiveTechnicalSlotCapacity`;
+- this was corrected to `SaveSlotPolicy.EffectiveCapacity` before the implementation commit;
+- the corrected source passed the final **746 / 746** gate.
+
+Manual evidence:
+- Test Data Preview: **2 slots / 4 generations / 4352 estimated bytes**, padding `64`, seed `504`;
+- Generate succeeded;
+- repeat Preview correctly refused the now-existing sandbox instead of clobbering it;
+- Cleanup removed the owned fixture;
+- Failure Simulator `Truncate Manifest` Preview identified one exact `manifest.json` under the owned sandbox;
+- Apply mutated exactly that sandbox target;
+- Cleanup reported owned sandbox removal and verified post-cleanup absence;
+- Recovery Planner with absent production root reported `ServiceNotReady`, invalid head condition, zero candidates, no recovery required, and no Apply/Recover control;
+- Redacted Snapshot Preview/Export used schema `echosave.support.snapshot.v1` and hashed tokens;
+- CMD verification confirmed raw technical slot ID absent, `C:\Users\Jesse` absent, and participant payload-content markers absent;
+- disposable configuration proof asset was removed before commit;
+- repository committed/pushed clean at `577dc01`.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+**ESV-M5-04 is Complete. M5 remains open. M5-05 is not activated.**

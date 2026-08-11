@@ -916,3 +916,34 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Final `git status --short` and `git diff --check` were silent at clean implementation baseline `9c3771c`.
 - The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 - **ESV-M5-03 is Complete. M5 remains open. M5-04 is not activated.**
+
+
+### Added
+#### ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and Redacted Support Tooling
+- Sandbox-only Failure Simulator with Preview-before-Apply, exact bounded targets, stale-preview fingerprint refusal, and ownership-verified cleanup.
+- Deterministic bounded synthetic Test Data Generator with slot/generation/byte caps and explicit sandbox ownership markers.
+- Recovery Planner Editor surface over Chronicle's existing immutable `SaveRecoveryPlan` authority with no Recover/Apply action.
+- Payload-free Redacted Snapshot Exporter using bounded catalog/generation metadata and hashed root/slot/generation identity.
+- Canonical sandbox-path guard refusing equality with, nesting inside, or containment of the production Chronicle root.
+- Focused M5-04 tests for sandbox collision refusal, bounded generation, cleanup, preview zero-write behavior, stale preview rejection, recovery-planner no-write behavior, redaction, and deterministic support output.
+
+### Fixed
+#### ESV-M5-04 pre-commit compile correction
+- Corrected the support snapshot's `SaveSlotPolicy` capacity member reference from the nonexistent `EffectiveTechnicalSlotCapacity` name to the existing `EffectiveCapacity` property before the implementation commit and final test gate.
+
+### Verified
+#### ESV-M5-04 Closeout
+- Activation commit: `df3c30b`.
+- Implementation commit: `577dc01`.
+- Final implementation scope: **31 files**, `3206` insertions.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **746 / 746**, with **0 failed**.
+- Incoming M5-04 floor was **735 / 735**; M5-04 adds **11** net-new focused Chronicle tests.
+- Test Data Generator manual proof: Preview reported **2 slots / 4 generations / 4352 estimated bytes** using `64` payload-padding bytes and deterministic seed `504`; Generate succeeded; a repeat Preview correctly refused to clobber the existing sandbox; Cleanup removed the owned fixture.
+- Failure Simulator manual proof: `Truncate Manifest` Preview identified exactly one `manifest.json` target inside the owned M5-04 sandbox; Apply mutated that exact sandbox target; Cleanup reported that the owned fixture was removed and post-cleanup absence was verified.
+- Recovery Planner manual proof: with production root absent, Preview reported `ServiceNotReady`, `Head Condition: Invalid`, zero candidates, `Recovery Required: No`, preferred candidate `(none)`, and explicitly exposed no Apply/Recover control.
+- Redacted Snapshot manual proof: explicit JSON export used schema `echosave.support.snapshot.v1`, configuration schema `3`, provider IDs, slot capacity `64`, hashed `rootToken`/`selectedSlotToken`, bounded empty arrays, and false truncation flags.
+- CMD privacy checks passed: raw technical slot ID absent, local `C:\Users\Jesse` path absent, and participant payload-content markers absent.
+- Disposable `EchoSaveConfiguration.asset` proof state was removed before implementation commit.
+- Repository committed/pushed clean at `577dc01`.
+- The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+- **ESV-M5-04 is Complete. M5 remains open. M5-05 is not activated.**
