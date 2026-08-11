@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation**. Planning/activation is committed at `c324aa4`, implementation is committed at `1985fb0`, and the final focused Chronicle Editor gate is **540 / 540**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation**. Planning/activation is committed at `7d2d987`, implementation is committed at `459023f`, and the final focused Chronicle Editor gate is **562 / 562**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
 
 ## Current persistence boundary
 
@@ -30,7 +30,9 @@ M4-07 adds read-only recovery planning. It classifies missing/invalid/broken-cur
 
 M4-08 adds explicit recovery execution. It reuses root-local mutation admission, rebuilds and provenance-checks the M4-07 plan before mutation, requires the selected candidate to remain fully verified, republishes only `head.json`, preserves immutable generation bytes, and reports post-head catalog reconciliation without fabricated rollback.
 
-It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, rename/duplicate/delete/trash, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+M4-09 adds non-destructive public slot rename and full-state duplication. Rename preserves technical slot identity/path and commits display metadata through a new immutable generation with source-freshness protection, retention, and catalog reconciliation. Duplicate enforces canonical slot capacity, creates new package-generated slot/generation identities, copies only a fully verified current source state without participant callbacks, revalidates the source before publication, publishes head last, preserves source bytes, and does not auto-select the duplicate.
+
+It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, prepare-delete/confirm-delete, trash/trash retention, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 ## Minimal use
 

@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.31.0
+**Specification version:** 1.32.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-08 are complete. `ESV-M4-09` is now the active bounded checkpoint at clean baseline `07bbd2b`. It authorizes non-destructive slot rename and full-state duplication over the existing immutable-generation model, with stable slot identity/path semantics, root-local mutation admission, stale-source revalidation, head-last publication, bounded post-publication maintenance where applicable, and truthful catalog reconciliation under ESV-D-031. Delete planning/trash, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
+> **Approval rule:** This specification is approved as the package authority. PKG-LEARN-009, ESV-M1-01, Chronicle M2 through ESV-M2-04, Chronicle M3 through ESV-M3-09, and ESV-M4-01 through ESV-M4-09 are complete. ESV-M4-09 closed at implementation commit `459023f` with focused Chronicle Editor evidence `562 / 562`, satisfying ESV-D-031 for non-destructive slot rename and full-state duplication while preserving stable slot identity/path, immutable-generation/head-last publication, source revalidation, retention/catalog truth, and zero participant callbacks. No follow-on M4 checkpoint is active. Prepare-delete/confirm-delete, trash, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
 >
 > **v1.2.0 lifetime reconciliation:** SFGSS-ADR-006 clarifies that EchoSave durable transport, participant runtime truth, and Unity scene-surviving object lifetime are separate concerns. EchoSave may own a duplicate-safe package-local application-session root, but it does not own project-wide service composition or become a universal service locator.
 
@@ -63,6 +63,7 @@
 | 1.29.0 | 2026-08-10 | Approved | Activated ESV-M4-08 bounded explicit recovery execution at clean baseline `0396adb`: public `ExecuteRecoveryAsync` over M4-07 plans, reuse of the root-local mutating-operation admission authority, exact source-provenance and candidate revalidation before any head mutation, head repointing to one already verified committed generation without rewriting generation contents, stale-plan rejection, and truthful post-head catalog reconciliation. Automatic/configured fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader recovery/configuration tooling remain deferred. | Jesse “Echo” Adams |
 | 1.30.0 | 2026-08-10 | Approved | Closed ESV-M4-08 at implementation commit `1985fb0` with focused Chronicle Editor evidence `540 / 540`; recorded explicit public recovery execution, root-local Busy/no-queue admission reuse, fresh M4-07 provenance/candidate revalidation, stale-plan rejection before mutation, `head.json`-only repointing to an already verified immutable generation, selected-generation byte immutability, and truthful post-head catalog reconciliation. One test-only compile correction changed two new fake-executor counter references from `CallCount` to the existing `Calls` property without changing runtime/API/architecture/authority/test intent/discovery shape. Automatic/configured fallback, recovery-on-load, quarantine/cleanup, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader recovery/configuration tooling remain deferred; no follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
 | 1.31.0 | 2026-08-10 | Approved | Activated ESV-M4-09 bounded slot rename and full-state duplication at clean baseline `07bbd2b`: rename preserves `SaveSlotId` and physical slot path while publishing a new immutable metadata-updated generation; duplication requires capacity, creates a new package-generated slot/generation identity, copies the fully verified source payload/state without participant callbacks, revalidates source provenance before destination publication, publishes head last, and reconciles catalog truth. Added ESV-D-031. Delete planning/trash, persistent catalog cache, automatic/configured fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred. | Jesse “Echo” Adams |
+| 1.32.0 | 2026-08-10 | Approved | Closed ESV-M4-09 at implementation commit `459023f` with focused Chronicle Editor evidence `562 / 562`; recorded public bounded rename/duplicate operations, stable rename slot identity/path, immutable metadata-only rename publication, exact source revalidation, M4-06 retention reuse, canonical duplicate capacity and bounded ID collision handling, fully verified source-state copy into new slot/generation identities, source immutability, destination head-last publication, duplicate no-auto-select, truthful post-publication reconciliation state, and zero participant callbacks. Final implementation/test scope is 26 files with 22 net new focused tests. Prepare-delete/confirm-delete, trash, persistent catalog cache, automatic/configured fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred; no follow-on M4 checkpoint activated. | Jesse “Echo” Adams |
 
 ---
 ## 1. Package Identity and One-Sentence Contract
@@ -2640,11 +2641,21 @@ Still deferred:
 No follow-on M4 checkpoint is activated by this closeout.
 
 
-### 28.25 ESV-M4-09 slot rename and full-state duplication activation
+### 28.25 ESV-M4-09 slot rename and full-state duplication closeout
 
-**Status:** Active / authorized.
+**Status:** Complete.
 
-**Exact implementation baseline:** `07bbd2b`.
+**Planning baseline:** `07bbd2b`.
+
+**Planning/activation commit:** `7d2d987`.
+
+**Implementation commit:** `459023f`.
+
+**Final focused gate:** **562 / 562 passed, 0 failed**.
+
+**Prior focused regression floor:** **540 / 540**.
+
+**Net new focused tests:** **22**.
 
 **Carried focused regression floor:** **540 / 540**.
 
@@ -2729,48 +2740,48 @@ Focused tests must additionally prove:
 
 **Explicitly still deferred:** prepare-delete/confirm-delete; trash and trash retention; quarantine/incomplete-generation cleanup; persistent `catalog.cache.json`; automatic/configured recovery fallback; recovery-on-load; generic queued multi-operation scheduling/capacity/overflow; recovery cancellation overload; automatic timer/checkpoint autosave triggers; permission-provider production wiring; full `EchoSaveConfiguration`/Setup expansion; scene travel; peer bridges; service locator; Chronicle-owned/project-wide DDOL.
 
+**M4-09 completion evidence:** implementation commit `459023f`; focused Chronicle Editor **562 / 562 passed, 0 failed**; prior **540 / 540** floor preserved; **22** net new focused tests; committed implementation/test scope **26 files**, `3100` insertions, `8` deletions; ESV-T-019 and ESV-T-020 complete; no follow-on M4 checkpoint activated.
+
 ## 29. New-Conversation Handoff
 
 ```text
 We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat The Chronicle (EchoSave) Package Specification v1.31.0 as the authority
+Treat The Chronicle (EchoSave) Package Specification v1.32.0 as the authority
 for durable save files, slots, generations, manifests, participants, loading,
 migrations, recovery, tooling, the Save Laboratory, and release gates.
 
 Current package: EchoSave
-Current specification version: 1.31.0
-Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08
-Current milestone/checkpoint: ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation — active / authorized
+Current specification version: 1.32.0
+Completed checkpoints: ESV-M1-01; ESV-M2-01; ESV-M2-02; ESV-M2-03; ESV-M2-04; ESV-M3-01; ESV-M3-02; ESV-M3-03; ESV-M3-04; ESV-M3-05; ESV-M3-06; ESV-M3-07; ESV-M3-08; ESV-M3-09; ESV-M4-01; ESV-M4-02; ESV-M4-03; ESV-M4-04; ESV-M4-05; ESV-M4-06; ESV-M4-07; ESV-M4-08; ESV-M4-09
+Current milestone/checkpoint: M4 — Slots / Autosave / Recovery remains active; no follow-on bounded checkpoint is currently activated
 Current Unity version: 6000.3.8f1
-Current implementation status: M2 and M3 are complete; M4-01 through M4-08 are complete; ESV-M4-09 planning is activated at clean baseline 07bbd2b with the 540 / 540 focused regression floor
+Current implementation status: M2 and M3 are complete; ESV-M4-01 through ESV-M4-09 are complete; latest implementation commit 459023f; focused Chronicle Editor gate 562 / 562
 Known blockers: None
 Current Notes reviewed through: August 10, 2026
 
-Before writing ESV-M4-09 code:
-1. Rehydrate exact `07bbd2b`.
-2. Read the active ESV-M4-09 Checkpoint Build Plan completely.
-3. Preserve the **540 / 540** focused Chronicle regression floor.
-4. Reuse immutable-generation/head-last publication, M4-02 capacity truth, M4-04 root-local mutation admission, M4-06 post-publication retention, and M4-01 catalog reconciliation.
-5. Rename must preserve slot ID/path and must not rewrite committed source generation files in place.
-6. Duplicate must revalidate its bound source, create a new slot/generation identity, preserve the source, and perform no participant callbacks.
-7. Keep prepare-delete/confirm-delete, trash, quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+Before writing further Chronicle M4 code:
+1. Rehydrate exact `459023f`.
+2. Preserve the **562 / 562** focused Chronicle regression floor.
+3. Do not infer that prepare-delete/confirm-delete or trash is active merely because M4-09 completed non-destructive CAP-017 work.
+4. Create and approve a separately bounded Checkpoint Build Plan before the next runtime mutation slice.
+5. Keep quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Runtime package `0.1.0`; Specification v1.31.0 |
-| Completed checkpoint | ESV-M4-08 - Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation |
-| Implementation commit | `1985fb0` |
-| Tests passed | ESV-M4-08 focused Chronicle Editor gate `540 / 540`; prior `524 / 524` regression floor preserved; Unity compile/import green |
-| Tests failed | Final ESV-M4-08 gate: `0` |
+| Package version | Runtime package `0.1.0`; Specification v1.32.0 |
+| Completed checkpoint | ESV-M4-09 - Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation |
+| Implementation commit | `459023f` |
+| Tests passed | ESV-M4-09 focused Chronicle Editor gate `562 / 562`; prior `540 / 540` regression floor preserved; Unity compile/import green |
+| Tests failed | Final ESV-M4-09 gate: `0` |
 | Known issues | None blocking bounded next-checkpoint planning |
-| Decisions added | ESV-D-001 through ESV-D-030; ESV-D-030 defines explicit recovery execution as one admitted mutation that must revalidate plan provenance/candidate before head publication and preserve truthful post-head catalog state |
+| Decisions added | ESV-D-001 through ESV-D-031; ESV-D-031 defines rename/duplicate as non-destructive admitted slot mutations over immutable generations with stable rename identity/path, duplicate capacity/new identity, source revalidation, zero participant callbacks, and truthful head/catalog boundaries |
 | Active learning checkpoint | PKG-LEARN-009 complete |
-| Implementation permission | ESV-M4-09 active / authorized at `07bbd2b`; implementation is bounded by its Checkpoint Build Plan and ESV-D-031 |
+| Implementation permission | No follow-on M4 checkpoint is active; further runtime implementation requires a separately bounded authorized Checkpoint Build Plan and must preserve `562 / 562` |
 
 ## 30. Approval
 
@@ -2816,7 +2827,7 @@ A new collaborator can answer from this document:
 9. Other packages connect through bridges, project adapters, participant adapters, or provider packages.
 10. Release requires the 32 Laboratory scenarios, applicable 100-case registry, fault injection, migration fixtures, performance/privacy/security evidence, documentation parity, and external installation tests.
 
-The Chronicle specification is complete and **Approved v1.31.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-08 are complete. M4 remains active, with ESV-M4-09 authorized as the bounded non-destructive slot rename/duplication checkpoint.
+The Chronicle specification is complete and **Approved v1.32.0**. PKG-LEARN-009, Chronicle M2, Chronicle M3, and ESV-M4-01 through ESV-M4-09 are complete. M4 remains active, but no follow-on bounded M4 checkpoint is currently activated.
 
 
 ---

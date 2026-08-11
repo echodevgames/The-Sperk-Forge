@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 10, 2026
-**Completed package checkpoint:** ESV-M4-08 – Chronicle Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete; Chronicle M4-01 through M4-08 complete; ESV-M4-08 implementation baseline `1985fb0` with `540 / 540`; next M4 checkpoint not yet activated
+**Completed package checkpoint:** ESV-M4-09 – Chronicle Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation
+**Current implementation state:** First Light complete/frozen; Chronicle M2 complete; Chronicle M3 complete; Chronicle M4-01 through M4-09 complete; ESV-M4-09 implementation baseline `459023f` with `562 / 562`; next M4 checkpoint not yet activated
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M3 complete; ESV-M4-01 through ESV-M4-08 complete; M4-08 implementation baseline `1985fb0` with 540 / 540; next M4 checkpoint not yet activated** |
+| Chronicle implementation | **M3 complete; ESV-M4-01 through ESV-M4-09 complete; M4-09 implementation baseline `459023f` with 562 / 562; next M4 checkpoint not yet activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -88,7 +88,9 @@ Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
 `ESV-M4-08` is complete at `1985fb0`; the focused Chronicle Editor gate passed **540 / 540**. Chronicle can now explicitly execute one M4-07 recovery choice through shared mutation admission, reject stale plan/candidate evidence before mutation, repoint only `head.json` to an already verified immutable generation, preserve generation bytes, and reconcile catalog truth after the durable head commit.
 
-No follow-on Chronicle checkpoint is activated by this closeout. Automatic/configured fallback, recovery-on-load, quarantine/cleanup, persistent catalog-cache optimization, rename/duplicate/delete/trash, full recovery/slot-policy configuration assets, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
+`ESV-M4-09` is complete at `459023f`; the focused Chronicle Editor gate passed **562 / 562**. Chronicle can now rename one canonical healthy slot while preserving technical slot identity/path and publishing display metadata through a new immutable generation, and can duplicate one fully verified current source state into a new package-generated slot/generation identity. Both operations reuse root-local admission, source revalidation, head-last publication, and truthful post-publication catalog semantics; rename reuses retention, duplicate honors canonical capacity, participant callbacks remain absent, and the new duplicate is not auto-selected.
+
+No follow-on Chronicle checkpoint is activated by this closeout. Prepare-delete/confirm-delete, trash/trash retention, automatic/configured fallback, recovery-on-load, quarantine/cleanup, persistent catalog-cache optimization, full recovery/slot-policy configuration assets, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work. SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
 The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Glass. That order is a development plan, not a hard dependency graph.
 
@@ -107,10 +109,10 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M4-08` is **complete** at implementation baseline `1985fb0` with **540 / 540** focused Chronicle Editor tests.
+`ESV-M4-09` is **complete** at implementation baseline `459023f` with **562 / 562** focused Chronicle Editor tests.
 
 **M3 — Participants and Loading is complete. M4 — Slots / Autosave / Recovery remains active.**
 
-No next Chronicle checkpoint is currently activated. Further M4 implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **540 / 540** regression floor.
+No next Chronicle checkpoint is currently activated. Further M4 implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **562 / 562** regression floor.
 
-Persistent catalog cache, rename/duplicate/delete/trash, full slot/recovery-policy assets, automatic autosave timers, generic queued multi-operation scheduling, automatic/configured fallback, quarantine/cleanup, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.
+Persistent catalog cache, prepare-delete/confirm-delete, trash/trash retention, full slot/recovery-policy assets, automatic autosave timers, generic queued multi-operation scheduling, automatic/configured fallback, quarantine/cleanup, document migration, scene travel, peer persistence bridges, and project-wide DDOL composition remain locked for later checkpoints.

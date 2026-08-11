@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-09 slot rename and full-state duplication
-**Current checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation — **active / authorized**
+**Current focus:** Chronicle M4 — ESV-M4-09 complete; no follow-on checkpoint active
+**Current checkpoint:** none — ESV-M4-09 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -408,48 +408,57 @@ Still deferred:
 No follow-on M4 checkpoint is activated by this closeout. Further Chronicle implementation requires a new bounded Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.
 
 
-## Chronicle ESV-M4-09 Activation
+## Chronicle ESV-M4-09 Closeout
 
-`ESV-M4-09 — Chronicle Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation` is **active / authorized** at clean baseline `07bbd2b`.
+`ESV-M4-09 — Chronicle Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation` is **complete**.
 
-Authority decision: **ESV-D-031**.
+Evidence:
+- planning baseline: `07bbd2b`;
+- planning/activation commit: `7d2d987`;
+- implementation commit: `459023f`;
+- final effective runtime baseline: `459023f`;
+- Unity compile/import: **green**;
+- final focused `EchoDevGames.EchoSave.Tests.Editor`: **562 / 562 passed, 0 failed**;
+- prior **540 / 540** Chronicle regression floor preserved;
+- **22** net new focused tests;
+- committed implementation/test scope: **26 files**, `3100` insertions, `8` deletions;
+- base `ISaveStorageBackend` unchanged.
 
-Carried focused regression floor: **540 / 540**.
-
-Authorized boundary:
+Completed boundary:
 - public bounded rename and duplicate operations;
-- root-local mutation admission reuse;
-- Busy rejection with no rename/duplicate queues;
-- rename preserves stable `SaveSlotId` and physical path;
-- rename publishes metadata change as a new immutable generation rather than editing committed files in place;
-- rename keeps payload/state equivalent and invokes no participants;
-- rename reuses stale-source/head-last publication and post-publication retention/catalog truth;
-- duplicate requires a healthy fully verified source and available M4-02 slot capacity;
-- duplicate creates new package-generated slot and generation identities;
-- duplicate copies verified source state without participant capture;
-- duplicate revalidates source provenance before destination publication;
-- duplicate leaves source bytes untouched;
-- duplicate publishes destination generation/head last;
-- duplicate does not auto-select;
-- catalog failure after durable rename/duplicate publication reports partial truth without fabricated rollback.
-
-Primary registry targets:
-- ESV-T-019 — rename slot: ID/path unchanged;
-- ESV-T-020 — duplicate slot: new ID and equivalent payload/state.
+- root-local admission reuse with Busy/no-queue behavior;
+- rename stable `SaveSlotId` and stable physical path;
+- rename immutable metadata-only generation publication;
+- source provenance verification/revalidation;
+- expected-current stale-source protection;
+- post-rename retention and catalog reconciliation;
+- active-slot preservation;
+- duplicate canonical capacity enforcement;
+- bounded duplicate ID collision retry;
+- new duplicate slot/generation identities;
+- fully verified source-state copy without participant callbacks;
+- source bytes preserved;
+- destination head-last durable publication;
+- duplicate no-auto-select;
+- truthful committed-but-unreconciled catalog failure state;
+- ESV-T-019 and ESV-T-020 complete.
 
 Still deferred:
 - prepare-delete/confirm-delete;
-- trash and trash retention;
+- trash/trash retention;
 - quarantine/incomplete-generation cleanup;
 - persistent `catalog.cache.json`;
 - automatic/configured recovery fallback;
 - recovery-on-load;
 - generic operation queues/capacity/overflow;
 - recovery cancellation overload;
-- automatic autosave timers/gameplay triggers;
+- automatic autosave timers;
 - permission-provider production wiring;
 - full configuration/Setup expansion;
+- document migration;
 - scene travel, peer bridges, service locator, DDOL.
+
+No follow-on M4 checkpoint is activated by this closeout. Any next Chronicle implementation requires a separately bounded Checkpoint Build Plan and must preserve the **562 / 562** focused regression floor.
 
 ## Suite Distribution Kit Standard
 
@@ -633,8 +642,9 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `07bbd2b`.
-2. Read the active ESV-M4-09 Checkpoint Build Plan completely.
-3. Preserve the focused **540 / 540** Chronicle regression floor.
-4. Implement only non-destructive slot rename and full-state duplication under ESV-D-031.
-5. Keep delete planning/trash, quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+
+1. Treat `459023f` as the latest completed Chronicle implementation baseline.
+2. Preserve the focused **562 / 562** Chronicle regression floor.
+3. Do not begin prepare-delete/confirm-delete or trash automatically.
+4. Reconcile the remaining M4 scope and create a separately bounded authorized Checkpoint Build Plan before any further Chronicle runtime implementation.
+5. Keep quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.

@@ -356,43 +356,58 @@ Still deferred:
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.
 
 
-## ESV-M4-09 active boundary
+## ESV-M4-09 closeout
 
-**Exact planning baseline:** `07bbd2b`.
+**Planning baseline:** `07bbd2b`.
 
-**Carried focused regression floor:** **540 / 540**.
+**Planning/activation commit:** `7d2d987`.
 
-**Authority decision:** ESV-D-031.
+**Implementation commit:** `459023f`.
 
-M4-09 owns:
-- public bounded slot rename and duplicate operations;
-- shared root-local mutation admission / immediate Busy rejection;
-- rename display-metadata validation;
-- rename with stable `SaveSlotId` and stable physical path;
-- new immutable generation for rename rather than in-place committed-file edit;
-- payload/state equivalence across rename;
-- expected-current-generation stale-source rejection;
-- post-rename existing retention maintenance;
-- duplicate capacity enforcement using M4-02 canonical-slot counting;
-- new duplicate slot/generation IDs with bounded collision handling;
-- duplicate source current-generation verification and provenance binding;
-- source revalidation before destination publication;
+**Final effective runtime baseline:** `459023f`.
+
+**Final focused gate:** **562 / 562 passed, 0 failed**.
+
+**Prior focused regression floor:** **540 / 540**.
+
+**Net new focused tests:** **22**.
+
+**Committed implementation/test scope:** **26 files**, `3100` insertions, `8` deletions.
+
+Completed behavior:
+- public bounded `RenameSlotAsync(SaveSlotRenameRequest)`;
+- public bounded `DuplicateSlotAsync(SaveSlotDuplicateRequest)`;
+- shared root-local mutation admission reuse;
+- immediate Busy rejection with no rename/duplicate queues;
+- pre-Ready `ServiceNotReady` and post-shutdown `AdmissionClosed` truth;
+- stable `SaveSlotId` and stable physical path across rename;
+- rename as a new immutable metadata-updated generation rather than in-place committed-file mutation;
+- source-current-generation verification and exact provenance revalidation;
+- expected-current-generation protection before rename publication;
+- M4-06 retention after committed rename;
+- M4-01 catalog reconciliation after publication;
+- active-slot identity preservation;
+- duplicate M4-02 canonical-slot capacity accounting;
+- bounded package-generated duplicate slot-ID collision retry;
+- new destination slot/generation identities;
+- fully verified source-state copy without participant callbacks;
+- source committed bytes preserved;
 - destination generation/head-last publication;
-- source immutability;
 - duplicate no-auto-select behavior;
-- post-publication catalog reconciliation and truthful partial-result reporting;
-- no participant callbacks for either operation.
+- truthful committed-but-unreconciled result after post-head catalog failure;
+- unchanged base `ISaveStorageBackend`.
 
-M4-09 maps registry proofs:
-- ESV-T-019 — Rename slot;
-- ESV-T-020 — Duplicate slot.
+Registry proofs completed:
+- ESV-T-019 — rename changes display metadata while ID/path stay stable;
+- ESV-T-020 — duplicate creates a new slot identity with equivalent verified state.
 
-M4-09 does **not** own:
+Still deferred:
 - prepare-delete / confirm-delete;
-- trash or trash retention;
+- trash and trash retention;
 - quarantine / incomplete-generation cleanup;
 - persistent `catalog.cache.json`;
-- automatic/configured recovery fallback or recovery-on-load;
+- automatic/configured recovery fallback;
+- recovery-on-load;
 - generic operation queues/capacity/overflow;
 - recovery cancellation overload;
 - automatic autosave timers/gameplay triggers;
@@ -401,4 +416,4 @@ M4-09 does **not** own:
 - document migration;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-The next implementation must preserve the **540 / 540** focused regression floor.
+No follow-on M4 checkpoint is active. Any further Chronicle runtime implementation requires a separately bounded authorized Checkpoint Build Plan and must preserve the **562 / 562** focused regression floor.

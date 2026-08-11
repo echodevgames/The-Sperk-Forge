@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-09 — Chronicle Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation
@@ -11,13 +11,18 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-09
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.31.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.32.0
 **Decision:** ESV-D-031
 **Prior checkpoint:** ESV-M4-08 — **Complete**
 **Unity baseline:** 6000.3.8f1
-**Regression baseline:** focused Chronicle Editor **540 / 540**
-**Exact implementation baseline:** `07bbd2b`
+**Planning baseline:** `07bbd2b`
+**Planning/activation commit:** `7d2d987`
+**Implementation commit:** `459023f`
+**Prior focused regression floor:** **540 / 540**
+**Final focused Chronicle Editor gate:** **562 / 562**, `0` failed
+**Net new focused tests:** **22**
+**Committed implementation/test scope:** **26 files**, `3100` insertions, `8` deletions
 
 ## 1. Checkpoint purpose
 
@@ -309,3 +314,24 @@ documentation/authority closeout
 ```
 
 Do not predict the final discovered test count.
+
+## 13. Closeout evidence
+
+ESV-M4-09 completed every numbered completion gate:
+
+1. Unity compiled cleanly.
+2. The complete focused `EchoDevGames.EchoSave.Tests.Editor` assembly passed **562 / 562**.
+3. The prior **540 / 540** regression floor remained green.
+4. ESV-T-019 and ESV-T-020 are implemented.
+5. Rename/duplicate source, capacity, stale-race, lifecycle, retention, active-slot, and post-publication partial-truth proofs are green.
+6. The committed implementation/test scope was reviewed as **26 files**, `3100` insertions and `8` deletions.
+7. Runtime/public API changes match ESV-D-031.
+8. Base `ISaveStorageBackend` remained unchanged and delete/trash/cache/automatic-recovery/generic-queue scope did not enter the checkpoint.
+9. Final documentation records the actual discovered **562** test total.
+10. No follow-on checkpoint is auto-activated.
+
+**Implementation commit:** `459023f`.
+
+**Closeout authority:** SFGSS-PKG-ECHOSAVE-001 v1.32.0.
+
+**Next checkpoint:** not activated.

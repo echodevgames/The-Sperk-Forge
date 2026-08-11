@@ -663,3 +663,31 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Active-slot selection is preserved and participant callbacks remain absent.
 - The compile-only correction changed two new test references from `FakeManualSaveTransactionExecutor.CallCount` to the existing `Calls` property; runtime/API/architecture/authority/test intent/discovery shape were unchanged.
 - Automatic/configured fallback, recovery-on-load, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader recovery/configuration tooling remain deferred.
+
+### Added
+#### ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation
+- Public bounded `SaveSlotRenameRequest` / `SaveSlotRenameResult` / `SaveSlotRenameStatus`.
+- Public bounded `SaveSlotDuplicateRequest` / `SaveSlotDuplicateResult` / `SaveSlotDuplicateStatus`.
+- Additive `IEchoSaveService.RenameSlotAsync(...)` and `DuplicateSlotAsync(...)`.
+- Reuse of the M4-04 root-local mutating-operation admission authority with immediate Busy rejection and no rename/duplicate queues.
+- Rename preserves `SaveSlotId` and physical slot path while publishing display metadata through a new immutable generation.
+- Rename reuses expected-current-generation stale-source protection, head-last publication, M4-06 retention maintenance, and M4-01 catalog reconciliation.
+- Duplicate reuses canonical catalog-count capacity truth, bounded package-generated slot-ID collision retry, fully verified source-state cloning, source-provenance revalidation, new destination slot/generation identity, and head-last publication.
+- Rename and duplicate perform no participant capture/apply/default/migration callbacks.
+- Duplicate does not auto-select the newly created slot.
+- Post-publication maintenance/catalog failures preserve durable committed truth instead of fabricating rollback.
+- Focused ESV-T-019 / ESV-T-020, source-race, capacity, lifecycle/admission, active-slot, retention, and partial-result tests.
+
+### Verified
+#### ESV-M4-09 Closeout
+- Planning/activation committed at `7d2d987`.
+- Implementation committed at `459023f`.
+- Final effective runtime baseline is `459023f`.
+- Unity compile/import green.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **562 / 562**, with `0` failed.
+- All prior **540 / 540** Chronicle regressions remained green.
+- M4-09 adds **22** net focused tests over the prior floor.
+- Final committed implementation/test scope is **26 files**, `3100` insertions and `8` deletions.
+- The base `ISaveStorageBackend` contract remains unchanged.
+- No M4-09 runtime/test hotfix was required after the implementation payload; the first reported focused gate was green.
+- Prepare-delete/confirm-delete, trash/trash retention, quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
