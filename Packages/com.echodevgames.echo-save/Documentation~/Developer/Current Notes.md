@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.29.0
-**Completed checkpoint:** ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.30.0
+**Completed checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation — active / authorized
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 active; M4 remains active
+**Current checkpoint:** None activated — ESV-M4-08 complete
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 complete; M4 remains active
 
-**Authority reconciliation:** Specification v1.29.0 records ESV-M4-07 complete and activates bounded ESV-M4-08 at clean baseline `0396adb` under ESV-D-030.
+**Authority reconciliation:** Specification v1.30.0 records ESV-M4-08 complete at implementation commit `1985fb0` with final focused Chronicle Editor evidence `540 / 540`; no follow-on M4 checkpoint is activated.
 
 ## ESV-M4-02 closeout
 
@@ -297,30 +297,49 @@ Still deferred:
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **524 / 524** focused regression floor.
 
-## ESV-M4-08 active boundary
+## ESV-M4-08 closeout
 
-**Exact planning baseline:** `0396adb`.
+**Planning baseline:** `0396adb`.
 
-**Carried focused regression floor:** **524 / 524**.
+**Planning/activation commit:** `c324aa4`.
 
-M4-08 owns:
+**Implementation commit:** `1985fb0`.
+
+**Final effective runtime baseline:** `1985fb0`.
+
+**Final focused gate:** **540 / 540 passed, 0 failed**.
+
+**Prior focused regression floor:** **524 / 524**.
+
+**Net new focused tests:** **16**.
+
+**Committed implementation/test scope:** **18 files**, `1846` insertions, `10` deletions.
+
+Completed behavior:
 - public explicit `ExecuteRecoveryAsync(SaveRecoveryPlan, SaveRecoveryCandidate)`;
-- root-local mutation admission reuse;
+- root-local mutating-operation admission reuse;
 - immediate Busy rejection with no recovery queue;
-- supplied plan/candidate structural validation;
 - fresh M4-07 recovery-plan rebuild after admission;
 - exact source-provenance stale-plan rejection;
-- selected candidate must remain fully verified in the fresh plan;
+- exact selected-candidate membership and fresh verification;
 - zero durable mutation before freshness/candidate proof;
-- selected generation contents remain immutable and untouched;
+- selected generation contents remain immutable;
 - `head.json` repointing only;
-- no propagation of an untrusted broken source generation into `previousGenerationId`;
-- truthful head-publication result;
+- recovery-created `previousGenerationId` remains empty rather than blessing damaged source history;
 - post-head catalog refresh/reconciliation;
-- truthful published-but-catalog-not-reconciled partial success;
-- no participant callbacks, no active-slot selection mutation.
+- truthful `HeadPublished` versus `CatalogReconciled` result separation;
+- committed-head truth is preserved if catalog reconciliation later fails;
+- active-slot selection is preserved;
+- no participant capture/apply/default callbacks.
 
-M4-08 does **not** own:
+Compile-only test maintenance:
+- two new test references used nonexistent `FakeManualSaveTransactionExecutor.CallCount`;
+- the established fake exposes `Calls`;
+- the two references were corrected test-only;
+- runtime/API/architecture/ESV-D-030 authority/recovery behavior/test intent/discovery shape were unchanged;
+- final rerun passed **540 / 540**.
+
+Still deferred:
 - automatic/configured fallback;
 - automatic recovery during load;
 - quarantine/incomplete-generation cleanup;
@@ -334,8 +353,4 @@ M4-08 does **not** own:
 - document/participant migration during recovery;
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
-Primary registry proofs:
-- ESV-T-078 — execute plan safely;
-- ESV-T-079 — stale plan rejected before mutation.
-
-The next implementation must preserve the **524 / 524** focused regression floor.
+No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.

@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-08 explicit recovery execution
-**Current checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation — **active / authorized**
+**Current focus:** Chronicle M4 — ESV-M4-08 complete; next bounded checkpoint planning
+**Current checkpoint:** None activated — ESV-M4-08 is **complete**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -352,13 +352,24 @@ Still deferred:
 
 No follow-on M4 checkpoint is activated by this closeout.
 
-## Chronicle ESV-M4-08 Activation
+## Chronicle ESV-M4-08 Closeout
 
-`ESV-M4-08 — Chronicle Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation` is **active / authorized** at clean baseline `0396adb`.
+`ESV-M4-08 — Chronicle Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation` is **complete**.
 
 Authority decision: **ESV-D-030**.
 
-Authorized boundary:
+Evidence:
+- planning baseline: `0396adb`;
+- planning/activation commit: `c324aa4`;
+- implementation commit: `1985fb0`;
+- final effective runtime baseline: `1985fb0`;
+- Unity compile/import: **green**;
+- final focused `EchoDevGames.EchoSave.Tests.Editor`: **540 / 540 passed, 0 failed**;
+- prior **524 / 524** Chronicle regression floor preserved;
+- **16** net new focused tests;
+- committed implementation/test scope: **18 files**, `1846` insertions, `10` deletions.
+
+Completed boundary:
 - public explicit `ExecuteRecoveryAsync(SaveRecoveryPlan, SaveRecoveryCandidate)`;
 - one root-local mutation admission lease;
 - immediate Busy rejection with no recovery queue;
@@ -374,6 +385,13 @@ Authorized boundary:
 - no participant apply/capture/default callbacks;
 - no active-slot selection side effect.
 
+Implementation-history note:
+- first compilation exposed two new test references to nonexistent `FakeManualSaveTransactionExecutor.CallCount`;
+- the established fake exposes `Calls`;
+- the references were corrected test-only;
+- runtime/API/architecture/ESV-D-030 authority/recovery behavior/test intent/discovery shape were unchanged;
+- final focused gate passed **540 / 540**.
+
 Still deferred:
 - automatic/configured fallback;
 - recovery-on-load;
@@ -387,7 +405,7 @@ Still deferred:
 - full recovery/configuration/Setup authoring;
 - scene travel, bridges, service locator, DDOL.
 
-Carried focused regression floor: **524 / 524**.
+No follow-on M4 checkpoint is activated by this closeout. Further Chronicle implementation requires a new bounded Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.
 
 ## Suite Distribution Kit Standard
 
@@ -571,8 +589,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `0396adb`.
-2. Read `ESV-M4-08_Chronicle_Explicit_Recovery_Execution_Stale_Plan_Revalidation_Head_Repointing_and_Catalog_Reconciliation_Foundation_Checkpoint_Build_Plan.md`.
-3. Preserve the focused **524 / 524** Chronicle regression floor.
-4. Implement only explicit admitted recovery execution, stale-plan/candidate revalidation, head repointing, and truthful catalog reconciliation under ESV-D-030.
-5. Keep automatic/configured fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `1985fb0`.
+2. Preserve the focused **540 / 540** Chronicle regression floor.
+3. Treat ESV-M4-08 explicit recovery execution and ESV-D-030 as complete.
+4. Do not begin further Chronicle runtime implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
+5. Keep automatic/configured fallback, quarantine/cleanup, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.

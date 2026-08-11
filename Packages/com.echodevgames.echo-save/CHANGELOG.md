@@ -630,3 +630,36 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Runtime implementation, public API, architecture, ESV-D-029 authority, recovery behavior, test intent, and discovery count remained unchanged by both fixture corrections.
 - Final rerun passed **524 / 524**.
 - Recovery execution/head rewrite/catalog reconciliation, automatic fallback, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader configuration/tooling remain deferred.
+
+
+### Added
+#### ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
+- Public `ExecuteRecoveryAsync(SaveRecoveryPlan, SaveRecoveryCandidate)`.
+- Bounded `SaveRecoveryResult` / `SaveRecoveryExecutionStatus` truth.
+- Reuse of the root-local mutating-operation admission authority.
+- Immediate Busy rejection with no hidden recovery queue.
+- Fresh M4-07 plan rebuild after admission.
+- Exact source-provenance stale-plan rejection before mutation.
+- Exact selected-candidate membership/revalidation.
+- `head.json`-only recovery publication to an already verified immutable committed generation.
+- Recovery-created `previousGenerationId` remains empty rather than blessing damaged source history.
+- Post-head catalog reconciliation.
+- Truthful committed-head / catalog-unreconciled partial result.
+- Focused coordinator and public-service recovery-execution tests.
+
+### Verified
+#### ESV-M4-08 Closeout
+- Planning/activation committed at `c324aa4`.
+- Implementation committed at `1985fb0`.
+- Final effective runtime baseline is `1985fb0`.
+- Unity compile/import green after one test-only call-counter compile correction.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **540 / 540**, with `0` failed.
+- All prior **524 / 524** Chronicle regressions remained green.
+- M4-08 adds **16** net focused tests over the prior floor.
+- Final committed implementation/test scope is **18 files**, `1846` insertions and `10` deletions.
+- Stale plans and invalid/no-longer-valid candidates reject before head mutation.
+- Successful recovery republishes only `head.json`; selected generation bytes remain unchanged.
+- Catalog failure after a successful head publication reports recovery committed without fabricating rollback.
+- Active-slot selection is preserved and participant callbacks remain absent.
+- The compile-only correction changed two new test references from `FakeManualSaveTransactionExecutor.CallCount` to the existing `Calls` property; runtime/API/architecture/authority/test intent/discovery shape were unchanged.
+- Automatic/configured fallback, recovery-on-load, quarantine, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, and broader recovery/configuration tooling remain deferred.

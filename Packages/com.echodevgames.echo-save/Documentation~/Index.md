@@ -52,12 +52,14 @@
 - [[Developer/Test Reports/ESV-M4-06_Chronicle_Generation_Retention_Policy_Recovery_History_Protection_and_Post_Publication_Cleanup_Foundation_Test_Report|ESV-M4-06 Test Report]]
 - [[Developer/Checkpoints/ESV-M4-07_Chronicle_Recovery_Candidate_Discovery_Immutable_Recovery_Plan_Truth_and_Deterministic_Fallback_Selection_Foundation|ESV-M4-07 Closeout]]
 - [[Developer/Test Reports/ESV-M4-07_Chronicle_Recovery_Candidate_Discovery_Immutable_Recovery_Plan_Truth_and_Deterministic_Fallback_Selection_Foundation_Test_Report|ESV-M4-07 Test Report]]
+- [[Developer/Checkpoints/ESV-M4-08_Chronicle_Explicit_Recovery_Execution_Stale_Plan_Revalidation_Head_Repointing_and_Catalog_Reconciliation_Foundation|ESV-M4-08 Closeout]]
+- [[Developer/Test Reports/ESV-M4-08_Chronicle_Explicit_Recovery_Execution_Stale_Plan_Revalidation_Head_Repointing_and_Catalog_Reconciliation_Foundation_Test_Report|ESV-M4-08 Test Report]]
 
 ## Completed checkpoint
 
-`ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation`
+`ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation`
 
-Chronicle can now build one trustworthy immutable read-only recovery plan without changing durable data. It diagnoses source state, discovers retained history through bounded provider-neutral reads, admits only fully verified committed generations, orders candidates deterministically newest-valid first, chooses a preferred candidate only when recovery is required, and carries technical source provenance for later stale-plan execution rejection. The implementation is committed at `9f68555`; the focused Chronicle Editor gate is **524 / 524**.
+Chronicle can now execute one explicit immutable M4-07 recovery choice through the shared mutation admission authority, reject stale source provenance/candidates before mutation, repoint only `head.json` to an already verified committed generation, keep generation contents immutable, and reconcile the catalog with truthful committed-head versus reconciliation status. The implementation is committed at `1985fb0`; the focused Chronicle Editor gate is **540 / 540**.
 
 ## Completed milestone
 
@@ -65,6 +67,6 @@ Chronicle can now build one trustworthy immutable read-only recovery plan withou
 
 ## Current checkpoint
 
-No follow-on M4 checkpoint is activated by the ESV-M4-07 closeout.
+No follow-on M4 checkpoint is activated by the ESV-M4-08 closeout.
 
-The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **524 / 524** regression floor.
+The next Chronicle implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **540 / 540** regression floor.

@@ -6,7 +6,7 @@ The Chronicle is the durable save/load infrastructure package for The Sperk's Fo
 
 ## Current implementation boundary
 
-Version `0.1.0` has completed **ESV-M4-07 — Recovery Candidate Discovery, Immutable Recovery Plan Truth, and Deterministic Fallback Selection Foundation**. Planning/activation is committed at `7b00503`, implementation is committed at `9f68555`, and the final focused Chronicle Editor gate is **524 / 524**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
+Version `0.1.0` has completed **ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation**. Planning/activation is committed at `c324aa4`, implementation is committed at `1985fb0`, and the final focused Chronicle Editor gate is **540 / 540**. **M3 — Participants and Loading is complete.** **M4 — Slots / Autosave / Recovery remains active**, but no follow-on M4 checkpoint is automatically activated by this closeout.
 
 ## Current persistence boundary
 
@@ -28,7 +28,9 @@ M4-06 adds bounded total committed-generation retention after successful publica
 
 M4-07 adds read-only recovery planning. It classifies missing/invalid/broken-current head state, discovers retained generations through bounded provider-neutral reads, fully verifies candidate documents and integrity, preserves/excludes untrustworthy evidence, orders valid candidates newest-first deterministically, returns immutable payload-free plan/candidate truth, and fingerprints exact technical source provenance for later stale-plan rejection without mutating storage.
 
-It still does **not** include persistent catalog-cache optimization, rename/duplicate/delete/trash, full slot-policy configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, recovery execution/quarantine, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
+M4-08 adds explicit recovery execution. It reuses root-local mutation admission, rebuilds and provenance-checks the M4-07 plan before mutation, requires the selected candidate to remain fully verified, republishes only `head.json`, preserves immutable generation bytes, and reports post-head catalog reconciliation without fabricated rollback.
+
+It still does **not** include automatic/configured fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, rename/duplicate/delete/trash, full slot-policy/recovery configuration expansion, automatic autosave timers, generic queued multi-operation scheduling, document migration, scene travel, project-wide `DontDestroyOnLoad` composition, or peer-package bridges.
 
 ## Minimal use
 

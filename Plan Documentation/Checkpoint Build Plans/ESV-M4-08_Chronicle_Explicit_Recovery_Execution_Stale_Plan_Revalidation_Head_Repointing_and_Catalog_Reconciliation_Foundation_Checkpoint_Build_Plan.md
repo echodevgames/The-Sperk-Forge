@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/chronicle
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-10
 ---
 # ESV-M4-08 — Chronicle Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
@@ -11,8 +11,8 @@ updated: 2026-08-10
 **Package:** The Chronicle (`EchoSave`)
 **Checkpoint:** ESV-M4-08
 **Milestone:** M4 — Slots / Autosave / Recovery
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.29.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.30.0
 **Decision:** ESV-D-030
 **Prior checkpoint:** ESV-M4-07 — **Complete**
 **Unity baseline:** 6000.3.8f1
@@ -304,3 +304,22 @@ Stop when one explicit immutable M4-07 plan can be safely executed so that Chron
 7. reports committed-head and catalog-reconciliation truth separately.
 
 Do **not** add automatic fallback or quarantine yet.
+
+
+## 8. Completion evidence
+
+**Planning/activation commit:** `c324aa4`
+
+**Implementation commit:** `1985fb0`
+
+**Final focused Chronicle Editor gate:** **540 / 540 passed, 0 failed**
+
+**Net new focused tests:** **16**
+
+**Committed implementation/test scope:** **18 files**, `1846` insertions, `10` deletions
+
+The implementation reached the intended stop point: recovery execution reuses shared admission, rejects stale plan/candidate state before mutation, republishes only `head.json`, preserves generation bytes, and reconciles the catalog with truthful durable partial-state reporting.
+
+One compile-only test maintenance correction changed two new references from `FakeManualSaveTransactionExecutor.CallCount` to the existing `Calls` property. Runtime implementation, public API, architecture, ESV-D-030 authority, recovery behavior, test intent, and discovery shape were unchanged.
+
+No follow-on M4 checkpoint is activated by this closeout.
