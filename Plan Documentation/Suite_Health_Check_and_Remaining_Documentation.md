@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M4-R2 – Chronicle Slot Policy Runtime Configuration and CAP-002 Reconciliation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 and ESV-M4-R2 complete; ESV-M4-R3 package-document migration active / authorized from `0ebf1a1` with incoming focused floor `636 / 636`; final reconciliation remains; M4 open; M5 locked
+**Completed package checkpoint:** ESV-M4-R3 – Chronicle Package-Document Migration and CAP-014 Reconciliation
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1, R2, and R3 complete; R3 implementation `c6ba1ad` is green at `660 / 660`; final registry/document evidence reconciliation is next but not activated; M4 open; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1 and ESV-M4-R2 complete; ESV-M4-R3 package-document migration ACTIVE / AUTHORIZED from `0ebf1a1` with incoming 636 / 636; final reconciliation remains after R3 before M4 close; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1, ESV-M4-R2, and ESV-M4-R3 complete; R3 implementation `c6ba1ad` passed 660 / 660; A-04 / CAP-014 closed; final registry/document evidence reconciliation next but not activated; M4 open; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -97,7 +97,9 @@ Chronicle M1, M2, and **M3 — Participants and Loading** are complete.
 
 `ESV-M4-R2` is complete at `8a8e7e7`; the focused Chronicle Editor gate passed **636 / 636**, adding **18** focused policy tests. Chronicle now resolves schema-2 project-owned `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` policy into one immutable finite service-session capacity shared by create and duplicate, while schema-1 remains non-mutating compatible at historical capacity 64. ESV-T-015 through ESV-T-018 are complete and audit gap A-03 is closed.
 
-ESV-M4-R3 is now active / authorized from clean planning baseline `0ebf1a1` under SFGSS-PKG-ECHOSAVE-001 v1.39.0 / ESV-D-035. R3 preserves CAP-014 and adds Chronicle-owned read-time in-memory package-document migration through deterministic contiguous exact-version chains without rewriting source generations or redesigning participant migration. Current production package-document versions remain `1.0.0`; no synthetic version bump is authorized merely for tests. Final 100-case registry/document evidence reconciliation remains mandatory after R3. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
+`ESV-M4-R3` is complete at `c6ba1ad`; the focused Chronicle Editor gate passed **660 / 660**, adding **24** focused package-document migration tests over the incoming **636 / 636** floor. Chronicle now owns deterministic read-time package-document migration through an internal version probe, package-owned step registry, contiguous chain coordinator, and migration-aware reader integrated into current-generation, catalog, and recovery reads. Missing/ambiguous/failed/invalid/newer paths fail closed, source generations remain immutable, participant migration stays separate, and current production package-document versions remain `1.0.0`. Audit gap **A-04 / CAP-014 is closed**.
+
+Final 100-case registry/document evidence reconciliation remains mandatory before M4 close. Permanent erase, restore-from-trash public API, quarantine/cleanup, persistent catalog-cache optimization, automatic autosave timers, generic queued multi-operation scheduling, scene travel, peer bridges, and project-wide DDOL composition remain later bounded work.
 
 SFGSS-ADR-006 and the Laboratory → Reference Showcase → clean-project → Distribution Kit/release-evidence loop remain authoritative.
 
@@ -118,17 +120,17 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M4-R2` is **complete** at implementation commit `8a8e7e7`.
+`ESV-M4-R3` is **complete** at implementation commit `c6ba1ad`.
 
-Final R2 focused Chronicle Editor evidence: **636 / 636 passed, 0 failed**, preserving the incoming **618 / 618** floor.
+Final R3 focused Chronicle Editor evidence: **660 / 660 passed, 0 failed**, preserving the incoming **636 / 636** floor and adding **24** focused migration tests.
 
-`ESV-M4-R3` package-document migration is **ACTIVE / AUTHORIZED** from clean planning baseline `0ebf1a1` under ESV-D-035, carrying **636 / 636** as its incoming focused regression floor.
-
-R3 preserves CAP-014 intact and owns Chronicle package-document migration only. Source generations stay immutable, participant migration stays separate, current production package document versions remain `1.0.0`, and no migration-on-read rewrite/downgrade is authorized.
+R3 closes **A-04 / CAP-014**. Package-document migration is Chronicle-owned, read-time, in-memory, deterministic, source-immutable, and separate from participant migration. Current production package document versions remain `1.0.0`.
 
 Still mandatory before M4 close:
-- implement, test, and close R3 package-document migration;
-- final 100-case registry/document evidence reconciliation;
+- final applicable 100-case registry/document evidence reconciliation;
+- final M4 capability/evidence matrix and stale-document repair;
 - final focused Chronicle regression evidence at the actual closing total.
 
-**M5 remains locked.**
+The final reconciliation is **next but not activated by this closeout**.
+
+**M4 remains open. M5 remains locked.**

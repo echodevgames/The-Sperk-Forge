@@ -99,6 +99,8 @@ Therefore CAP-014 cannot truthfully be considered fully implemented under its cu
 
 Because this changes durable capability authority, it should be decided explicitly rather than silently edited.
 
+**Resolution status:** **RESOLVED by ESV-M4-R3.** R3 selected Path A, preserved CAP-014 intact, and implemented Chronicle-owned package-document migration at `c6ba1ad`. Final focused Chronicle Editor evidence is **660 / 660 passed, 0 failed**. Participant migration remains a separate domain, source generations remain immutable, and production package-document versions remain `1.0.0`.
+
 ---
 
 # 2. Capability reconciliation: CAP-002 through CAP-018
@@ -117,7 +119,7 @@ Because this changes durable capability authority, it should be decided explicit
 | CAP-011 Checksums/size bounds | **Needs final evidence mapping** | Integrity/checksum and several bounded stores are implemented, but the broad registry claim needs explicit test/evidence reconciliation. |
 | CAP-012 Two-phase loading | **Partial / blocker** | Internal prepare/apply machinery exists; promised public service facade is absent. |
 | CAP-013 Convenience load | **Missing / blocker** | Spec promises `LoadAndApplyAsync`; current service interface has no such operation. |
-| CAP-014 Migration chains | **Partial / blocker** | Participant migration exists; package-document migration is explicitly deferred. |
+| CAP-014 Migration chains | **Implemented** | Participant migration remains intact and R3 adds Chronicle-owned package-document migration through deterministic read-time in-memory exact-version chains; A-04 is closed. |
 | CAP-015 Backup retention | **Implemented** | Bounded committed-generation retention exists with protected recovery history. |
 | CAP-016 Autosave admission | **Implemented** | Explicit caller-triggered autosave plus one-pending latest-wins coalescing and retention reuse exist. |
 | CAP-017 Slot operations | **Partial / blocker** | Rename/duplicate/prepare-delete/confirm-delete are public; create/catalog/select remain internal or absent from the service facade. |
@@ -438,3 +440,38 @@ A-04 remains **open during R3 implementation** and closes only when R3 implement
 After R3, the final 100-case registry/document evidence mapping remains mandatory.
 
 **M4 remains open. M5 remains locked.**
+
+# R3 completion update
+
+**R3 status:** COMPLETE
+**Planning baseline:** `0ebf1a1`
+**Planning/activation commit:** `2dcae91`
+**Implementation commit:** `c6ba1ad`
+**Closeout authority:** SFGSS-PKG-ECHOSAVE-001 v1.40.0 / ESV-D-035
+**Focused Chronicle Editor evidence:** **660 / 660 passed, 0 failed**
+**Prior floor:** **636 / 636**
+**Net new focused R3 tests:** **24**
+**Committed implementation/test scope:** **17 files**, `3359` insertions, `31` deletions
+
+R3 resolves:
+- **A-04 — CAP-014 package-document migration**.
+
+Resolved CAP-014 truth:
+- package-document and participant migration remain separate Chronicle concerns;
+- exact-current package documents bypass migration;
+- package-owned historical migration uses deterministic contiguous exact-version chains;
+- migration transforms detached serialized text in memory before existing current-version DTO validation;
+- missing/ambiguous/invalid/failed/throwing/newer paths fail closed;
+- migration never rewrites or republishes the source generation merely because it was read;
+- current-generation loading, catalog scanning, and recovery verification consume the migration-aware package-document read seam where required;
+- current production package-document versions remain `1.0.0`;
+- no synthetic production version bump or consumer package-migration registration was introduced;
+- ESV-T-067, ESV-T-068, ESV-T-069, document-side ESV-T-072, and ESV-T-073 have retained green R3 evidence.
+
+No bounded compile/test hotfix was required after the implementation payload applied.
+
+Still open:
+- final applicable 100-case registry/document evidence mapping and stale-status repair;
+- final M4 capability/evidence reconciliation and actual closing Chronicle test total.
+
+**R3 closeout state:** M4 remains open. The final reconciliation pass is next but not activated by R3 closeout. M5 remains locked.

@@ -4,11 +4,16 @@
 **Public title:** The Chronicle — Save Infrastructure
 **Checkpoint:** ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation
 **Milestone:** M4 — Slots / Autosave / Recovery Reconciliation
-**Status:** **ACTIVE / AUTHORIZED**
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.39.0
+**Status:** **COMPLETE**
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.40.0 (R3 closeout; activated under v1.39.0 / ESV-D-035)
 **Authority decision:** ESV-D-035
 **Clean planning baseline:** `0ebf1a1`
+**Planning/activation commit:** `2dcae91`
+**Implementation commit:** `c6ba1ad`
 **Incoming focused Chronicle regression floor:** **636 / 636 passed, 0 failed**
+**Final focused Chronicle Editor evidence:** **660 / 660 passed, 0 failed**
+**Net new focused R3 tests:** **24**
+**Committed implementation/test scope:** **17 files**, `3359` insertions, `31` deletions
 **Unity baseline:** 6000.3.8f1
 **M4 state:** Open
 **M5 state:** **LOCKED**
@@ -743,3 +748,49 @@ M5 remains locked until clean M4 closeout.
 **M5 state:** LOCKED
 
 No runtime files are changed by this activation bundle.
+
+---
+
+## 29. Closeout Record
+
+ESV-M4-R3 is **COMPLETE**.
+
+### Commit and test evidence
+
+- clean planning baseline: `0ebf1a1`;
+- planning/activation commit: `2dcae91`;
+- implementation commit: `c6ba1ad`;
+- final focused Chronicle Editor gate: **660 / 660 passed, 0 failed**;
+- incoming focused floor: **636 / 636**;
+- net new focused R3 tests: **24**;
+- committed implementation/test scope: **17 files**, `3359` insertions, `31` deletions;
+- bounded compile/test hotfix after payload apply: **none**.
+
+### Completion-rule disposition
+
+R3 completion requirements are satisfied:
+
+- production package-document migration infrastructure exists;
+- exact-current documents use a zero-step path;
+- deterministic contiguous migration chains are proven with internal historical fixtures;
+- missing, ambiguous, invalid, failed, throwing, overshooting, and newer paths fail closed;
+- source generations remain unchanged;
+- package migration remains separate from and ordered before participant migration/preparation;
+- current-generation, catalog, and recovery package-document reads use the migration-aware seam where required;
+- focused Chronicle evidence exceeds the `636 / 636` incoming floor at **660 / 660**;
+- R3-owned ESV-T-067, ESV-T-068, ESV-T-069, ESV-T-072 (document side), and ESV-T-073 have retained evidence;
+- documentation is reconciled to implementation commit `c6ba1ad`.
+
+### CAP-014 outcome
+
+**A-04 / CAP-014 is resolved.** CAP-014 remains intact rather than split. Participant migration is preserved, and Chronicle now also owns package-document migration.
+
+Production envelope, manifest, payload, and head-pointer versions remain `1.0.0`. The production package-document migration registry is intentionally empty until a real package-format history exists. No synthetic public format bump was introduced for tests.
+
+### Remaining lock
+
+R3 closeout does **not** close M4.
+
+The next gate is the separate final applicable 100-case registry/document evidence reconciliation described by this plan. That gate is **next but not activated by R3 closeout**.
+
+M4 remains open. M5 remains locked.
