@@ -23,8 +23,10 @@ namespace EchoDevGames.EchoSave
         internal const int DefaultRecoveryDiscoveryLimit =
             512;
 
+        // Compatibility symbol retained for existing Chronicle tests/tooling.
+        // Runtime slot authority is resolved from SaveSlotPolicy per session.
         internal const int DefaultTechnicalSlotCapacity =
-            64;
+            EchoSaveConfiguration.LegacySchemaOneTechnicalSlotCapacity;
 
         internal const int DefaultSlotIdentityAttempts =
             8;
@@ -43,6 +45,7 @@ namespace EchoDevGames.EchoSave
                 TimeSpan.FromMinutes(5);
 
         private EchoSaveConfiguration configuration;
+        private SaveSlotPolicy slotPolicy;
         private IEchoSaveLifecycleProbe lifecycleProbe;
         private IEchoSaveStorageBackendFactory storageBackendFactory;
         private ISaveStorageBackend storageBackend;
@@ -352,6 +355,18 @@ namespace EchoDevGames.EchoSave
                         .MissingOrInvalidConfiguration,
                     validationMessage);
             }
+            if (!configuration.TryResolveSlotPolicy(
+                    out SaveSlotPolicy resolvedSlotPolicy,
+                    out string policyMessage))
+            {
+                return BlockInitialization(
+                    EchoSaveDiagnosticCodes
+                        .MissingOrInvalidConfiguration,
+                    policyMessage);
+            }
+
+            slotPolicy =
+                resolvedSlotPolicy;
 
             SaveStorageResult creation =
                 storageBackendFactory.TryCreate(
@@ -623,6 +638,9 @@ namespace EchoDevGames.EchoSave
             manualSaveTransactionExecutor =
                 executor;
         }
+
+        internal SaveSlotPolicy SlotPolicyForTesting =>
+            slotPolicy;
 
         internal ISaveStorageBackend
             StorageBackendForTesting =>
@@ -2452,7 +2470,7 @@ namespace EchoDevGames.EchoSave
                 new SaveTechnicalSlotCreationCoordinator(
                     slotCatalog,
                     publicationCoordinator,
-                    DefaultTechnicalSlotCapacity,
+                    slotPolicy.EffectiveCapacity,
                     DefaultSlotIdentityAttempts,
                     SaveSlotId.NewId);
 
@@ -2500,7 +2518,7 @@ namespace EchoDevGames.EchoSave
                     publicationCoordinator,
                     retentionCoordinator,
                     SaveRetentionPolicy.Default,
-                    DefaultTechnicalSlotCapacity,
+                    slotPolicy.EffectiveCapacity,
                     DefaultSlotIdentityAttempts,
                     SaveSlotId.NewId);
 
@@ -2580,6 +2598,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             participantRegistry =
+                null;
+
+            slotPolicy =
                 null;
         }
         private EchoSaveLifecycleResult BlockInitialization(
