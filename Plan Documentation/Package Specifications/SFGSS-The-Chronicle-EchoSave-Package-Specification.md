@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.43.0
+**Specification version:** 1.44.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. ESV-M4-R4 is complete from activation commit `81c53dd`. The final 100-case evidence map is **61 Complete / 39 Deferred / 0 Blocked**, and the fresh closing focused Chronicle Editor suite passed **660 / 660**, with **0 failed**. No runtime or test-code repair was required by R4. Chronicle M4 is **Complete**. The 39 Deferred rows remain later-gate obligations and are not waived. M5 is eligible for a separate authority/activation checkpoint but is not automatically active.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 is complete at closeout commit `e63d83f` with final focused Chronicle Editor evidence **660 / 660 passed, 0 failed** and a reconciled registry of **61 Complete / 39 Deferred / 0 Blocked**. ESV-M5-01 is now **ACTIVE / AUTHORIZED** as the first bounded M5 checkpoint. M5-01 may add only the Editor assembly/tooling foundation, non-destructive Setup preview/create-only current-schema configuration authoring, and the initial Validator foundation described by ESV-D-037. It may not change Chronicle runtime save semantics, public runtime APIs, package-document formats, slot/generation durability, participant contracts, or activate Browser/Simulator/Laboratory work. The **660 / 660** focused Chronicle regression floor must be preserved.
 
 ---
 
@@ -75,6 +75,7 @@
 | 1.41.0 | 2026-08-11 | Approved | Activated `ESV-M4-R4` at clean post-R3-closeout baseline `e3d7a2e` with incoming focused Chronicle floor `660 / 660`. Added ESV-D-036: final M4 registry reconciliation is row-by-row evidence classification, not a requirement to falsely mark all 100 release-lifecycle cases Complete. A row becomes Complete only from retained direct evidence; later M5, Laboratory, clean-project, release, integration, performance, stress, and adoption rows remain explicitly Planned/Deferred until their own gates. R4 may repair documentation/status mapping and rerun the existing focused Chronicle suite, but it may not change runtime or test code. Any unresolved M4-applicable row blocks closeout and requires a separate bounded repair checkpoint. M4 may close only after the full registry/document map is reconciled and the final focused suite is green at the actual closing total; M5 remains locked until that closeout commit. | Jesse “Echo” Adams |
 | 1.42.0 | 2026-08-11 | Approved | Reconciled the R4 100-case registry and documentation evidence map from activation commit `81c53dd`: 61 rows are Complete from retained direct evidence, 39 are explicitly Deferred to later M5/Laboratory, clean-project/distribution, performance/stress, integration/adoption, or release gates, and 0 M4-applicable rows are Blocked. Added the dedicated R4 evidence matrix and synchronized README, CHANGELOG, documentation index, Current Notes, Suite Health, milestone audit, checkpoint, and specification current-state truth. No runtime/test-code change is introduced. Fresh final Chronicle Editor evidence is still pending; M4 remains open and M5 locked. | Jesse “Echo” Adams |
 | 1.43.0 | 2026-08-11 | Approved | Closed ESV-M4-R4 and Chronicle M4 after the fresh final focused Chronicle Editor rerun passed `660 / 660` with `0` failed. Retained the final registry disposition at `61 Complete / 39 Deferred / 0 Blocked`, confirmed zero M4-applicable evidence blockers, and recorded that R4 required no runtime or test-code repair. M5 is now eligible for separate activation but is not automatically active; all 39 Deferred rows remain later-gate obligations. | Jesse “Echo” Adams |
+| 1.44.0 | 2026-08-11 | Approved | Activated `ESV-M5-01` from clean M4 closeout baseline `e63d83f` with incoming focused Chronicle floor `660 / 660`. Added ESV-D-037: M5 begins with an Editor-only tooling foundation rather than broad runtime expansion. M5-01 owns the `EchoDevGames.EchoSave.Editor` assembly boundary, Chronicle Setup preview plus create-only current-schema configuration authoring, and an initial non-destructive Validator covering currently representable configuration/path/root/assembly checks. Full provider/retention/recovery authoring, fixed-slot templates, repair mutation, Browser/Inspector/Migration Graph, Failure Simulator/Recovery Planner/Test Data, redacted support export, persistent catalog cache, and the 32-scenario Save Laboratory remain separately gated later M5 work. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1932,6 +1933,7 @@ Project-specific migration tooling must:
 | ESV-D-035 | CAP-014 remains one whole migration capability. R3 implements package-owned package-document migration at read time: Chronicle probes document kind plus exact stored package version, resolves one deterministic contiguous upgrade chain to the exact current version, migrates detached serialized content in memory, then performs existing current-version deserialization/validation. Package migration is Chronicle-owned rather than consumer-registerable; participant migration remains a separate later phase. Source generations are never rewritten by read-time migration, no downgrade occurs, missing/ambiguous/failing/newer paths fail closed, and current `1.0.0` package formats are not bumped merely to manufacture a fixture | Approved | The M4 audit found CAP-014 only partially satisfied because participant migration exists while package-document migration is deferred. Keeping the capability intact preserves the approved save-format promise without inventing a fake historical production format or weakening immutable-generation durability | R3 may add internal package-document version/step/registry/executor/read-coordination types and wire package document read paths used by load/catalog/recovery; it may not change participant contracts, expose consumer package-migration registration, rewrite source generations on load, downgrade formats, change durable publication rules, add M5 tooling, generic queues, scene ownership, or peer-package dependencies | No |
 | ESV-D-036 | Final M4 reconciliation is an evidence-classification and documentation-parity gate over ESV-T-001 through ESV-T-100. Registry rows are reviewed individually: only rows with retained direct proof become Complete; rows owned by later M5 tooling/Laboratory, clean-project, release qualification, integration/adoption, performance/stress, or other deferred scope remain explicitly not complete and do not become M4-complete by implication. R4 itself authorizes no runtime or test-code change. Any M4-applicable row lacking retained proof is a blocker that requires a separate bounded repair checkpoint before M4 can close | Approved | The milestone audit found the registry stale in both directions: implemented M4 behavior remained marked Planned, while the 100-case registry also contains later package-graduation work that must not be mass-promoted merely to close M4. Explicit applicability/evidence classification preserves both milestone honesty and the package release gates | R4 may update authority/status/evidence documentation, README/CHANGELOG/index/handoff truth, and rerun the existing focused Chronicle suite. It may not invent evidence, weaken release gates, mark later work Complete, alter runtime/test code, or activate M5. M4 closes only from a committed R4 closeout with zero unresolved M4-applicable gaps and a green final focused suite | No |
 
+| ESV-D-037 | M5 begins with a strict Editor-only Setup/Validator foundation. `ESV-M5-01` creates the Editor assembly boundary, a deterministic non-mutating Setup preview, create-only authoring of a new current-schema `EchoSaveConfiguration`, and a non-destructive Validator for checks that current runtime/configuration truth can already support. It does not use M5 as permission for broad runtime/configuration expansion | Approved | M4 closed with runtime truth stable at `660 / 660`; the safest next step is to establish tooling isolation and preview/validation discipline before Browser, Simulator, repair, or Laboratory work can touch project or sandbox data | M5-01 may add Editor-only code/tests and project-asset creation through explicit user action. It may not change `IEchoSaveService`, durable publication/recovery behavior, package document versions, participant contracts, scene/lifetime authority, production save roots, or later M5 tools. Existing assets are never overwritten by default; validation is read-only; sample/Laboratory storage is not created yet | No |
 ### 27.2 Release-blocking questions
 
 None. Exact filesystem replacement/flush behavior, package dependency versions, performance budgets, and supported-platform matrix are implementation verification tasks, not unresolved authority decisions.
@@ -3923,3 +3925,49 @@ Final evidence:
 **Chronicle M4 is Complete.**
 
 The 39 Deferred rows remain explicit later-gate obligations and are not waived by M4 completion. M5 is eligible for a separate authority/activation checkpoint and is not automatically active.
+
+### 28.33 ESV-M5-01 Editor tooling assembly, Setup preview, and Validator foundation activation
+
+**Status:** Active / Authorized.
+
+**Milestone:** M5 — Tooling and Laboratory.
+
+**Clean planning baseline:** `e63d83f` — `Close out ESV-M4-R4 and Chronicle M4`.
+
+**Carried focused Chronicle regression floor:** **660 / 660 passed, 0 failed**.
+
+**Authority decision:** ESV-D-037.
+
+M5-01 is deliberately an Editor-only foundation. M4 runtime behavior is treated as frozen input to the tooling layer.
+
+M5-01 owns:
+1. `EchoDevGames.EchoSave.Editor` as an Editor-only, non-auto-referenced assembly with an explicit Runtime reference and no reverse Runtime-to-Editor dependency.
+2. **Tools > Sperk’s Forge > The Chronicle > Setup** with a deterministic preview model before any project mutation.
+3. Create-only authoring of a new project-owned current-schema `EchoSaveConfiguration` at an explicit Assets path. Existing assets are never silently overwritten or upgraded.
+4. Authoring only fields already represented by current runtime schema 2: safe storage-root directory segment and the four R2 slot-policy modes/bounds.
+5. **Tools > Sperk’s Forge > The Chronicle > Validator** with deterministic structured issues and zero mutation during validation.
+6. Initial validation rules for currently representable truth: missing configuration selection, unsafe/empty root subpath, duplicate loaded-scene Chronicle roots, invalid current slot-policy mode/bounds, and Runtime assembly references to `UnityEditor`.
+7. Focused Editor tests proving assembly isolation, preview-before-apply, create-only/no-clobber behavior, repeat-safe results, serialized current-schema values, validation ordering/severity/codes, and zero validation mutation.
+
+M5-01 explicitly does **not** own:
+- `EchoSaveConfiguration` schema 3 or provider/retention/recovery/limit descriptors;
+- fixed-slot template assets or auto-provisioned slot identities;
+- root prefab creation/scene mutation;
+- automatic repair of existing assets;
+- missing configured serializer/backend checks that require later provider-selection authoring;
+- unsupported DTO-shape analyzers;
+- `SaveBrowserWindow`, `SaveGenerationInspector`, or migration graph UI;
+- failure simulator, recovery planner, test-data generator, redacted snapshot export;
+- persistent `catalog.cache.json`, quarantine/incomplete-generation cleanup, explicit unknown prune, restore-from-trash, or permanent erase;
+- `EchoSaveDirectSceneInitializer`, sample scene/UI, sandbox storage, or any LAB-001 through LAB-032 execution;
+- scene travel, peer-package bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL;
+- any change to `IEchoSaveService`, participant contracts, save document versions, immutable generation publication, or recovery truth.
+
+Registry rule: M5-01 does not mass-promote Deferred ESV-T rows. Its evidence may support later qualification, but rows whose exact acceptance gate is player build, Laboratory, clean project, provider configuration, performance/stress, integration/adoption, or release remain Deferred until that gate runs.
+
+Provisional M5 sequence after M5-01, each requiring separate activation:
+- M5-02 — full Setup/configuration authoring and safe repair previews;
+- M5-03 — Browser, Generation Inspector, and Migration Graph;
+- M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling;
+- M5-05 — Standalone Chronicle Save Laboratory plus 32-scenario execution;
+- M5 final reconciliation/closeout.

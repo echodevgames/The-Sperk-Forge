@@ -10,7 +10,7 @@ Version `0.1.0` has completed Chronicle M4, including ESV-M4-R1 through R4. R4 â
 
 The R4 evidence pass has reconciled every ESV-T-001 through ESV-T-100 row individually: **61 Complete**, **39 Deferred**, **0 Blocked**. Complete means retained direct evidence exists. Deferred means the exact scenario remains owned by later M5 Laboratory/Setup, clean-project/distribution, performance/stress, integration/adoption, or release qualification. No M4-applicable evidence gap was found.
 
-The fresh final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. The row map remains **61 Complete / 39 Deferred / 0 Blocked**. Chronicle M4 is complete. M5 is now eligible for a separate authority/activation checkpoint, but M5 is not automatically active.
+The fresh final focused Chronicle Editor rerun passed **660 / 660**, with **0 failed**. The row map remains **61 Complete / 39 Deferred / 0 Blocked**. Chronicle M4 is complete. **ESV-M5-01 is now active** as the bounded Editor tooling, Setup preview, and Validator foundation.
 
 ## Current persistence boundary
 
@@ -36,14 +36,14 @@ M4-08 adds explicit recovery execution. It reuses root-local mutation admission,
 
 M4-09 adds non-destructive public slot rename and full-state duplication. Rename preserves technical slot identity/path and commits display metadata through a new immutable generation with source-freshness protection, retention, and catalog reconciliation. Duplicate enforces canonical slot capacity, creates new package-generated slot/generation identities, copies only a fully verified current source state without participant callbacks, revalidates the source before publication, publishes head last, preserves source bytes, and does not auto-select the duplicate.
 
-M4-10 adds read-only deletion planning and admitted confirmed recoverable trash. Deletion plans bind package/session/source provenance, expire, reject replay, and perform zero mutation until explicit confirmation. Confirm-delete reuses root-local admission, revalidates exact source truth, moves the complete live slot tree into recoverable `trash/`, clears active selection only after durable removal, reconciles the live catalog, and applies bounded fail-closed trash retention. The final focused gate is **587 / 587**.
+M4-10 adds read-only deletion planning and admitted confirmed recoverable trash. Deletion plans bind package/session/source provenance, expire, reject replay, and perform zero mutation until explicit confirmation. Confirm-delete reuses root-local admission, revalidates exact source truth, moves the complete live slot tree into recoverable `trash/`, clears active selection only after durable removal, reconciles the live catalog, and applies bounded fail-closed trash retention. The current focused Chronicle regression floor is **660 / 660**.
 
 
 R2 adds project-owned slot-policy configuration schema 2. `SingleSlot`, `FixedMultiSlot`, `ConfigurableMultiSlot`, and `BoundedProfiles` resolve to one immutable finite service-session capacity shared by create and duplicate. Schema-1 configurations remain non-mutating compatible at the historical capacity 64.
 
 R3 adds Chronicle-owned package-document migration as deterministic read-time, in-memory contiguous version chains ahead of strict current-version validation. Missing/ambiguous/failed/invalid/newer paths fail closed, source generations are never rewritten merely because migration was required, participant migration remains separate, and production package-document versions remain `1.0.0`.
 
-It still does **not** include automatic/configured recovery fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, automatic autosave timers, generic queued multi-operation scheduling, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or M5 Editor tooling/Laboratory and later clean-project/release qualification.
+It still does **not** include automatic/configured recovery fallback, recovery-on-load, quarantine/incomplete-generation cleanup, persistent catalog-cache optimization, permanent erase, public restore-from-trash, automatic autosave timers, generic queued multi-operation scheduling, scene travel, project-wide `DontDestroyOnLoad` composition, peer-package bridges, or the later M5 Browser/Simulator/Laboratory slices and later clean-project/release qualification. M5-01 authorizes only the Editor assembly, Setup preview/create-only current-schema configuration authoring, and initial non-destructive Validator foundation.
 
 ## Minimal use
 

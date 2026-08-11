@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M4-R4 – Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout; Chronicle M4 complete
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 through R4 complete; final 100-case map `61 Complete / 39 Deferred / 0 Blocked`; fresh final Chronicle Editor `660 / 660`; M4 complete; M5 eligible for separate activation
+**Completed package checkpoint:** ESV-M4-R4 – Chronicle M4 complete; ESV-M5-01 Editor tooling/Setup/Validator foundation now active
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete at `e63d83f`; ESV-M5-01 active as Editor-only Setup/Validator foundation; incoming Chronicle floor `660 / 660`; registry remains `61 Complete / 39 Deferred / 0 Blocked`
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1 through R4 complete; final registry 61 Complete / 39 Deferred / 0 Blocked; fresh focused Chronicle Editor 660 / 660; M4 complete; M5 eligible for separate activation** |
+| Chronicle implementation | **M4 complete at `e63d83f`; ESV-M5-01 active; Editor assembly + Setup preview/create-only current-schema config + Validator foundation only; incoming `660 / 660`** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -156,3 +156,11 @@ ESV-M4-R4 closed the milestone with:
 - no unresolved M4-applicable evidence blocker.
 
 Chronicle M4 is **Complete**. M5 is now eligible for a separate activation checkpoint. Later Laboratory, clean-project, distribution, performance/stress, integration/adoption, and release obligations remain open where the registry says Deferred.
+
+## Chronicle M5 activation state
+
+ESV-M5-01 is active from clean M4 closeout baseline `e63d83f` under v1.44.0 / ESV-D-037.
+
+The first M5 slice is intentionally Editor-only and non-destructive by default. It establishes the tooling assembly, Setup preview/create-only current-schema configuration path, and initial Validator. Browser, simulation, support export, persistent-cache/cleanup work, and the 32-scenario Save Laboratory remain separately gated.
+
+The focused Chronicle regression floor carried into M5 is **660 / 660 passed, 0 failed**.

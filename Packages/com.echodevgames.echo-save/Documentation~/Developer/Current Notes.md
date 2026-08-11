@@ -6,8 +6,8 @@
 **Specification:** SFGSS-PKG-ECHOSAVE-001 v1.41.0
 **Completed checkpoint:** ESV-M4-R3 — Package-Document Migration and CAP-014 Reconciliation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — COMPLETE / M4 COMPLETE
-**Status:** ESV-M4-R1 through R4 complete; final row map 61 Complete / 39 Deferred / 0 Blocked; fresh final Chronicle Editor 660 / 660 green; M4 complete; M5 eligible for separate activation
+**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 active from clean baseline e63d83f; incoming Chronicle floor 660 / 660; M5-01 is Editor-only Setup/Validator foundation
 
 **Authority reconciliation:** Specification v1.41.0 activates `ESV-M4-R4` from clean post-R3-closeout baseline `e3d7a2e`, carrying the green `660 / 660` Chronicle Editor floor. R4 is documentation/evidence-only: it reconciles ESV-T-001 through ESV-T-100 row by row, marks Complete only where retained direct evidence exists, leaves later M5/release/adoption work explicitly not complete, synchronizes stale package/suite documentation, and reruns the focused suite at the actual closing total. Runtime/test-code changes are not authorized inside R4; any M4-applicable evidence gap requires a separate bounded repair checkpoint. M4 remains open and M5 locked until the committed R4 closeout proves the milestone cleanly.
 
@@ -745,3 +745,15 @@ No runtime or test-code file is changed by R4 reconciliation.
 **M5:** eligible for separate activation; not active.
 
 No R4 runtime or test-code repair was required. The 39 Deferred rows remain later-gate work and are not reclassified by M4 closeout.
+
+## ESV-M5-01 activation
+
+**Planning baseline:** `e63d83f`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.44.0 / ESV-D-037
+**Incoming focused Chronicle Editor floor:** **660 / 660 passed, 0 failed**
+
+Authorized now: Editor-only assembly boundary, Chronicle Setup preview, create-only schema-2 configuration asset authoring, and non-destructive Validator foundation.
+
+Not authorized now: runtime semantic/API changes, schema/provider/retention/recovery expansion, fixed slot templates, root-prefab mutation, Browser/Inspector/Migration Graph, simulation/recovery/support tools, persistent cache, Save Laboratory/direct-scene/sample content, scene travel, bridges, service locator, or DDOL.
+
+The M4 registry stays **61 Complete / 39 Deferred / 0 Blocked** until later M5/M6/M7 gates produce new direct evidence.

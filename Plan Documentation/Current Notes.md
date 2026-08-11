@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 complete — R4 final registry/document/test closeout complete; M5 eligible for separate activation
-**Current checkpoint:** ESV-M4-R4 — Final 100-Case Registry, Documentation Evidence Reconciliation, and M4 Closeout — **COMPLETE / M4 COMPLETE**
+**Current focus:** Chronicle M5 — M5-01 Editor tooling assembly, Setup preview, and Validator foundation active
+**Current checkpoint:** ESV-M5-01 — Editor Tooling Assembly, Setup Preview, and Validator Foundation — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -897,3 +897,17 @@ R4 has changed documentation/evidence only. No runtime or test-code change is au
 **Next milestone:** M5 is eligible for a separate activation checkpoint; it is not automatically active.
 
 The 39 Deferred registry rows remain explicit later-gate obligations. M4 completion does not waive M5 Laboratory/Setup, persistent-cache/fault-injection, clean-project/distribution, performance/stress, integration/adoption, or release qualification.
+
+## ESV-M5-01 Activation
+
+**Planning baseline:** `e63d83f` — `Close out ESV-M4-R4 and Chronicle M4`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.44.0 / ESV-D-037
+**Incoming focused Chronicle floor:** **660 / 660 passed, 0 failed**
+**M4:** Complete
+**M5:** Active through bounded checkpoint M5-01 only
+
+M5-01 establishes the Editor-only tooling boundary before broader authoring/inspection/simulation work. It owns the Editor asmdef, non-mutating Setup preview, create-only current-schema configuration authoring, and an initial non-destructive Validator for currently representable path/configuration/root/assembly truth.
+
+It does not authorize runtime save-semantic changes, configuration schema expansion, provider/retention/recovery authoring, Browser/Inspector/Simulator tooling, sandbox/Laboratory content, persistent cache, cleanup/destructive expansion, scene travel, peer bridges, or DDOL.
+
+The prior **61 Complete / 39 Deferred / 0 Blocked** registry map remains authoritative. Deferred rows stay Deferred until their exact later gate produces direct evidence.
