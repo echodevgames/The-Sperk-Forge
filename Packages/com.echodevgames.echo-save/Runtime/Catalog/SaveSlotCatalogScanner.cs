@@ -15,23 +15,43 @@ namespace EchoDevGames.EchoSave
         private const int MaximumParticipantCount = 4096;
 
         private readonly ISaveStorageBackend storageBackend;
-        private readonly ISaveSerializer serializer;
+        private readonly SavePackageDocumentReader packageDocumentReader;
         private readonly int maxScanEntries;
 
         internal SaveSlotCatalogScanner(
             ISaveStorageBackend storageBackend,
             ISaveSerializer serializer,
             int maxScanEntries)
+            : this(
+                storageBackend,
+                serializer,
+                maxScanEntries,
+                CreatePackageDocumentReader(
+                    serializer))
+        {
+        }
+
+        internal SaveSlotCatalogScanner(
+            ISaveStorageBackend storageBackend,
+            ISaveSerializer serializer,
+            int maxScanEntries,
+            SavePackageDocumentReader packageDocumentReader)
         {
             this.storageBackend =
                 storageBackend ??
                 throw new ArgumentNullException(
                     nameof(storageBackend));
 
-            this.serializer =
-                serializer ??
+            if (serializer == null)
+            {
                 throw new ArgumentNullException(
                     nameof(serializer));
+            }
+
+            this.packageDocumentReader =
+                packageDocumentReader ??
+                throw new ArgumentNullException(
+                    nameof(packageDocumentReader));
 
             if (maxScanEntries <= 0)
             {
@@ -142,6 +162,16 @@ namespace EchoDevGames.EchoSave
                     entries.ToArray()));
         }
 
+        private static SavePackageDocumentReader
+            CreatePackageDocumentReader(
+                ISaveSerializer serializer) =>
+            serializer == null
+                ? null
+                : new SavePackageDocumentReader(
+                    serializer,
+                    SavePackageDocumentMigrationRegistry
+                        .CreateProduction());
+
         private SaveSlotCatalogEntry ReadEntry(
             SaveSlotId slotId)
         {
@@ -187,10 +217,11 @@ namespace EchoDevGames.EchoSave
                     "The Chronicle slot head could not be read.");
             }
 
-            SaveSerializerResult headDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult headDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         headRead.Data),
+                    SaveDocumentKinds.HeadPointer,
                     out SaveHeadPointer head);
 
             if (!headDeserialize.Succeeded)
@@ -198,12 +229,10 @@ namespace EchoDevGames.EchoSave
                 return Degraded(
                     slotId,
                     default,
-                    headDeserialize.Status ==
-                        SaveSerializerStatus.UnsupportedDocumentVersion
+                    headDeserialize.IsUnsupported
                         ? SaveSlotHealth.UnsupportedHead
                         : SaveSlotHealth.InvalidHead,
-                    headDeserialize.Status ==
-                        SaveSerializerStatus.UnsupportedDocumentVersion
+                    headDeserialize.IsUnsupported
                         ? EchoSaveDiagnosticCodes.CatalogHeadUnsupported
                         : EchoSaveDiagnosticCodes.CatalogHeadInvalid,
                     "The Chronicle slot head is invalid or unsupported.");
@@ -289,10 +318,11 @@ namespace EchoDevGames.EchoSave
                     "The Chronicle current generation manifest could not be read.");
             }
 
-            SaveSerializerResult manifestDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult manifestDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         manifestRead.Data),
+                    SaveDocumentKinds.Manifest,
                     out SaveManifest manifest);
 
             if (!manifestDeserialize.Succeeded)
@@ -300,12 +330,10 @@ namespace EchoDevGames.EchoSave
                 return Degraded(
                     slotId,
                     generationId,
-                    manifestDeserialize.Status ==
-                        SaveSerializerStatus.UnsupportedDocumentVersion
+                    manifestDeserialize.IsUnsupported
                         ? SaveSlotHealth.UnsupportedManifest
                         : SaveSlotHealth.InvalidManifest,
-                    manifestDeserialize.Status ==
-                        SaveSerializerStatus.UnsupportedDocumentVersion
+                    manifestDeserialize.IsUnsupported
                         ? EchoSaveDiagnosticCodes.CatalogManifestUnsupported
                         : EchoSaveDiagnosticCodes.CatalogManifestInvalid,
                     "The Chronicle current generation manifest is invalid or unsupported.");

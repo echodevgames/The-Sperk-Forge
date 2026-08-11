@@ -18,6 +18,7 @@ namespace EchoDevGames.EchoSave
         private readonly IIntegrityProvider integrityProvider;
         private readonly SaveParticipantRegistry participantRegistry;
         private readonly SaveUnknownPayloadStore unknownPayloadStore;
+        private readonly SavePackageDocumentReader packageDocumentReader;
 
         internal SaveCurrentGenerationReader(
             ISaveStorageBackend storageBackend,
@@ -25,6 +26,24 @@ namespace EchoDevGames.EchoSave
             IIntegrityProvider integrityProvider,
             SaveParticipantRegistry participantRegistry,
             SaveUnknownPayloadStore unknownPayloadStore)
+            : this(
+                storageBackend,
+                serializer,
+                integrityProvider,
+                participantRegistry,
+                unknownPayloadStore,
+                CreatePackageDocumentReader(
+                    serializer))
+        {
+        }
+
+        internal SaveCurrentGenerationReader(
+            ISaveStorageBackend storageBackend,
+            ISaveSerializer serializer,
+            IIntegrityProvider integrityProvider,
+            SaveParticipantRegistry participantRegistry,
+            SaveUnknownPayloadStore unknownPayloadStore,
+            SavePackageDocumentReader packageDocumentReader)
         {
             this.storageBackend =
                 storageBackend;
@@ -40,6 +59,9 @@ namespace EchoDevGames.EchoSave
 
             this.unknownPayloadStore =
                 unknownPayloadStore;
+
+            this.packageDocumentReader =
+                packageDocumentReader;
         }
 
         internal SaveCurrentGenerationReadResult
@@ -51,6 +73,7 @@ namespace EchoDevGames.EchoSave
                 integrityProvider == null ||
                 participantRegistry == null ||
                 unknownPayloadStore == null ||
+                packageDocumentReader == null ||
                 !SaveSlotId.TryParse(
                     slotId.Value,
                     out SaveSlotId validatedSlot))
@@ -108,10 +131,11 @@ namespace EchoDevGames.EchoSave
                     default);
             }
 
-            SaveSerializerResult headDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult headDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         headRead.Data),
+                    SaveDocumentKinds.HeadPointer,
                     out SaveHeadPointer head);
 
             if (!headDeserialize.Succeeded)
@@ -192,10 +216,11 @@ namespace EchoDevGames.EchoSave
                     "manifest");
             }
 
-            SaveSerializerResult payloadDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult payloadDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         payloadRead.Data),
+                    SaveDocumentKinds.Payload,
                     out SavePayloadDocument payload);
 
             if (!payloadDeserialize.Succeeded)
@@ -206,10 +231,11 @@ namespace EchoDevGames.EchoSave
                     payloadDeserialize.Message);
             }
 
-            SaveSerializerResult manifestDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult manifestDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         manifestRead.Data),
+                    SaveDocumentKinds.Manifest,
                     out SaveManifest manifest);
 
             if (!manifestDeserialize.Succeeded)
@@ -349,6 +375,16 @@ namespace EchoDevGames.EchoSave
                 unknownEntries.Count,
                 validatedParticipants);
         }
+
+        private static SavePackageDocumentReader
+            CreatePackageDocumentReader(
+                ISaveSerializer serializer) =>
+            serializer == null
+                ? null
+                : new SavePackageDocumentReader(
+                    serializer,
+                    SavePackageDocumentMigrationRegistry
+                        .CreateProduction());
 
         private static SaveCurrentGenerationReadResult
             GenerationReadFailure(

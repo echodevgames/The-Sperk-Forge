@@ -11,7 +11,8 @@ namespace EchoDevGames.EchoSave
     ///
     /// It performs bounded provider-neutral reads only. It does not own
     /// recovery execution, head repair, catalog mutation, quarantine,
-    /// participant callbacks, migration, scene lifetime, or DDOL.
+    /// participant callbacks, migration registration, durable migration rewrites,
+    /// scene lifetime, or DDOL.
     /// </summary>
     internal sealed class SaveRecoveryPlanBuilder :
         ISaveRecoveryPlanBuilder
@@ -20,7 +21,7 @@ namespace EchoDevGames.EchoSave
             512;
 
         private readonly ISaveStorageBackend storage;
-        private readonly ISaveSerializer serializer;
+        private readonly SavePackageDocumentReader packageDocumentReader;
         private readonly IIntegrityProvider integrity;
         private readonly int discoveryLimit;
 
@@ -30,16 +31,39 @@ namespace EchoDevGames.EchoSave
             IIntegrityProvider integrity,
             int discoveryLimit =
                 DefaultDiscoveryLimit)
+            : this(
+                storage,
+                serializer,
+                integrity,
+                CreatePackageDocumentReader(
+                    serializer),
+                discoveryLimit)
+        {
+        }
+
+        internal SaveRecoveryPlanBuilder(
+            ISaveStorageBackend storage,
+            ISaveSerializer serializer,
+            IIntegrityProvider integrity,
+            SavePackageDocumentReader packageDocumentReader,
+            int discoveryLimit =
+                DefaultDiscoveryLimit)
         {
             this.storage =
                 storage ??
                 throw new ArgumentNullException(
                     nameof(storage));
 
-            this.serializer =
-                serializer ??
+            if (serializer == null)
+            {
                 throw new ArgumentNullException(
                     nameof(serializer));
+            }
+
+            this.packageDocumentReader =
+                packageDocumentReader ??
+                throw new ArgumentNullException(
+                    nameof(packageDocumentReader));
 
             this.integrity =
                 integrity ??
@@ -55,6 +79,16 @@ namespace EchoDevGames.EchoSave
             this.discoveryLimit =
                 discoveryLimit;
         }
+
+        private static SavePackageDocumentReader
+            CreatePackageDocumentReader(
+                ISaveSerializer serializer) =>
+            serializer == null
+                ? null
+                : new SavePackageDocumentReader(
+                    serializer,
+                    SavePackageDocumentMigrationRegistry
+                        .CreateProduction());
 
         public SaveRecoveryPlan Build(
             SaveSlotId slotId)
@@ -421,10 +455,11 @@ namespace EchoDevGames.EchoSave
                 return false;
             }
 
-            SaveSerializerResult deserialized =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult deserialized =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         read.Data),
+                    SaveDocumentKinds.HeadPointer,
                     out SaveHeadPointer head);
 
             if (!deserialized.Succeeded ||
@@ -519,16 +554,18 @@ namespace EchoDevGames.EchoSave
                     "One committed-generation document is missing or unreadable.");
             }
 
-            SaveSerializerResult manifestDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult manifestDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         manifestRead.Data),
+                    SaveDocumentKinds.Manifest,
                     out SaveManifest manifest);
 
-            SaveSerializerResult payloadDeserialize =
-                serializer.Deserialize(
+            SavePackageDocumentReadResult payloadDeserialize =
+                packageDocumentReader.ReadCurrent(
                     Encoding.UTF8.GetString(
                         payloadRead.Data),
+                    SaveDocumentKinds.Payload,
                     out SavePayloadDocument payload);
 
             if (!manifestDeserialize.Succeeded ||
