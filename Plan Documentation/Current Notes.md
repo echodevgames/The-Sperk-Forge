@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M4 Reconciliation R2 — slot-policy runtime configuration planning
-**Current checkpoint:** M4 Reconciliation R2 — Slot Policy Runtime Configuration — **next gate / not activated**
+**Current focus:** Chronicle M4 Reconciliation R2 — slot-policy runtime configuration
+**Current checkpoint:** ESV-M4-R2 — Slot Policy Runtime Configuration and CAP-002 Reconciliation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -774,10 +774,31 @@ R1 closed audit gaps A-01 and A-02 by composing the existing participant, catalo
 
 No R1 hotfix was required.
 
+## ESV-M4-R2 Activation
+
+R2 is **active / authorized**.
+
+Authority:
+- clean planning baseline: `176b240`;
+- Chronicle specification: **v1.37.0**;
+- decision: **ESV-D-034**;
+- incoming focused Chronicle floor: **618 / 618**.
+
+R2 owns:
+- `EchoSaveConfiguration` schema 2;
+- `SaveSlotPolicyMode`;
+- schema-versioned `SaveSlotPolicy`;
+- explicit schema-1 read-only compatibility mapping to historical capacity 64;
+- one resolved finite effective live-slot capacity;
+- create/duplicate capacity wiring;
+- CAP-002 tests ESV-T-015 through ESV-T-018.
+
+R2 does not own fixed-slot auto-provisioning, `SaveSlotTemplate` runtime identity, document migration, M5 tooling, runtime policy mutation, generic queues, scene travel, or DDOL.
+
 ## Next Action
 
-1. Plan and authorize R2 — Slot Policy Runtime Configuration.
-2. Preserve **618 / 618** as the incoming Chronicle focused regression floor.
-3. Keep R2 limited to CAP-002 runtime slot-policy/configuration repair.
-4. Do not implement package-document migration until R3.
-5. Do not activate M5 until R2, R3, and final registry/document reconciliation are complete.
+1. Implement only `ESV-M4-R2` against clean `176b240`.
+2. Preserve **618 / 618** as the incoming focused regression floor.
+3. Record Unity's actual discovered total after implementation.
+4. Close R2 before activating R3.
+5. Keep M5 locked.

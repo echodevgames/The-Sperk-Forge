@@ -376,3 +376,29 @@ Still open:
 - stale 100-case registry/document evidence mapping → final reconciliation.
 
 **M4 remains open. M5 remains locked.**
+
+
+# R2 activation update
+
+**R2 status:** ACTIVE / AUTHORIZED
+**Planning baseline:** `176b240`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.37.0
+**Decision:** ESV-D-034
+**Incoming focused floor:** **618 / 618**
+
+R2 owns audit blocker:
+- **A-03 — CAP-002 slot-policy runtime configuration**
+
+Approved repair:
+- configuration schema 2;
+- four explicit policy modes;
+- one finite resolved live-slot capacity;
+- schema-1 non-mutating compatibility mapping to historical capacity 64;
+- create/duplicate capacity wiring;
+- ESV-T-015 through ESV-T-018 focused evidence.
+
+Still open after R2:
+- **A-04 — package-document migration** → R3;
+- 100-case registry/document evidence mapping → final reconciliation.
+
+**M4 remains open. M5 remains locked.**

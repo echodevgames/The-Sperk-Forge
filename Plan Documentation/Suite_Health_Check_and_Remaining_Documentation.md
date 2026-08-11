@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M4-10 – Chronicle Destructive Slot Deletion Planning, Confirmed Trash, and Bounded Trash Retention Foundation
-**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 complete at `ab18361` with `618 / 618`; R2 slot-policy runtime configuration next but not active; R3 and final reconciliation remain; M5 locked
+**Current implementation state:** First Light complete/frozen; Chronicle ESV-M4-R1 complete; `ESV-M4-R2` slot-policy runtime configuration active at `176b240` with incoming `618 / 618`; R3/final reconciliation remain; M5 locked
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **ESV-M4-R1 complete at `ab18361` with 618 / 618; R2 next but not active; R3/final reconciliation remain before M4 close; M5 locked** |
+| Chronicle implementation | **ESV-M4-R1 complete; `ESV-M4-R2` active at `176b240` with incoming 618 / 618; R3/final reconciliation remain before M4 close; M5 locked** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -114,12 +114,17 @@ No such work is active merely because FL-M6-01 closed.
 
 ## Current stop point
 
-`ESV-M4-R1` is **complete** at implementation commit `ab18361` with **618 / 618** focused Chronicle Editor tests.
+`ESV-M4-R2` is **active / authorized** at clean baseline `176b240`.
 
-R1 closed the public runtime-composition audit gaps by exposing participant registration, catalog snapshot/refresh, slot create/select, prepared-load creation/apply, and same-scene convenience load through the primary Chronicle service while preserving established M3/M4 authorities.
+R2 resolves CAP-002 by replacing the historical hardcoded slot capacity with schema-versioned project configuration.
 
-The next gate is **R2 — Slot Policy Runtime Configuration**, but R2 is not active yet.
+Incoming focused Chronicle Editor floor: **618 / 618**.
 
-R3 package-document migration and final registry/document reconciliation remain mandatory before M4 can close.
+R2 does not activate M5 and does not own package-document migration.
+
+After R2 closeout:
+- R3 package-document migration remains mandatory;
+- final registry/document reconciliation remains mandatory;
+- only then may M4 close.
 
 **M5 remains locked.**
