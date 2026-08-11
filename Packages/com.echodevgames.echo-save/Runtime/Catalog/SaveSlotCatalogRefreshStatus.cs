@@ -8,6 +8,9 @@ namespace EchoDevGames.EchoSave
         SucceededWithDegradedSlots = 2,
         DiscoveryUnavailable = 3,
         DiscoveryFailed = 4,
-        ScanLimitExceeded = 5
+        ScanLimitExceeded = 5,
+        ServiceNotReady = 6,
+        AdmissionClosed = 7,
+        Busy = 8
     }
 }

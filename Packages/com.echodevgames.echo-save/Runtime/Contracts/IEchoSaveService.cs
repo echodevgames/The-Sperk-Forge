@@ -5,15 +5,37 @@ namespace EchoDevGames.EchoSave
     /// <summary>
     /// Primary package-local Chronicle service surface.
     ///
-    /// M4-10 adds two-step destructive slot deletion planning and confirmed
-    /// recoverable trash while preserving root-local admission, source
-    /// freshness, and truthful post-commit catalog/maintenance semantics.
+    /// M4-R1 composes the already-proven participant, catalog, slot-creation,
+    /// prepared-load, and apply foundations into one bounded consumer facade
+    /// while preserving M4 save/recovery/slot-operation semantics.
     /// </summary>
     public interface IEchoSaveService
     {
         EchoSaveServiceState State { get; }
 
         EchoSaveConfiguration Configuration { get; }
+
+        SaveParticipantRegistrationResult RegisterParticipant(
+            ISaveParticipant participant);
+
+        SaveSlotCatalogSnapshot GetCatalogSnapshot();
+
+        Awaitable<SaveSlotCatalogRefreshResult> RefreshCatalogAsync();
+
+        Awaitable<SaveSlotCreateResult> CreateSlotAsync(
+            SaveSlotCreateRequest request);
+
+        SaveActiveSlotSelectionResult SelectSlot(
+            SaveSlotId slotId);
+
+        Awaitable<PreparedLoadCreationResult> PrepareLoadAsync(
+            SaveLoadRequest request);
+
+        Awaitable<SavePreparedLoadApplyResult> ApplyPreparedLoadAsync(
+            PreparedSaveLoad handle);
+
+        Awaitable<SaveLoadResult> LoadAndApplyAsync(
+            SaveLoadRequest request);
 
         Awaitable<EchoSaveLifecycleResult> InitializeAsync();
 

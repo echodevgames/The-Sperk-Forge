@@ -6,6 +6,8 @@ namespace EchoDevGames.EchoSave
         Selected = 0,
         NoChange = 1,
         Cleared = 2,
-        Rejected = 3
+        Rejected = 3,
+        ServiceNotReady = 4,
+        AdmissionClosed = 5
     }
 }

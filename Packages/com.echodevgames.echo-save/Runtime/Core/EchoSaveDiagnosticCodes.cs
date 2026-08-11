@@ -655,5 +655,59 @@ namespace EchoDevGames.EchoSave
 
         internal const string RecoveryExecuteSucceeded =
             "ESV-REC-030";
+
+        internal const string PublicParticipantServiceNotReady =
+            "ESV-FACADE-001";
+
+        internal const string PublicParticipantAdmissionClosed =
+            "ESV-FACADE-002";
+
+        internal const string PublicCatalogServiceNotReady =
+            "ESV-FACADE-003";
+
+        internal const string PublicCatalogAdmissionClosed =
+            "ESV-FACADE-004";
+
+        internal const string PublicCatalogBusy =
+            "ESV-FACADE-005";
+
+        internal const string PublicSlotCreateServiceNotReady =
+            "ESV-FACADE-006";
+
+        internal const string PublicSlotCreateAdmissionClosed =
+            "ESV-FACADE-007";
+
+        internal const string PublicSlotCreateBusy =
+            "ESV-FACADE-008";
+
+        internal const string PublicSelectServiceNotReady =
+            "ESV-FACADE-009";
+
+        internal const string PublicSelectAdmissionClosed =
+            "ESV-FACADE-010";
+
+        internal const string PublicLoadInvalidRequest =
+            "ESV-FACADE-011";
+
+        internal const string PublicLoadServiceNotReady =
+            "ESV-FACADE-012";
+
+        internal const string PublicLoadAdmissionClosed =
+            "ESV-FACADE-013";
+
+        internal const string PublicLoadBusy =
+            "ESV-FACADE-014";
+
+        internal const string PublicLoadSourceUnavailable =
+            "ESV-FACADE-015";
+
+        internal const string PublicLoadSourceInvalid =
+            "ESV-FACADE-016";
+
+        internal const string PublicLoadPreparationFailed =
+            "ESV-FACADE-017";
+
+        internal const string PublicLoadApplyFailed =
+            "ESV-FACADE-018";
     }
 }

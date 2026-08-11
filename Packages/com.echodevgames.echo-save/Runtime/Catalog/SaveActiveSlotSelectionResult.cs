@@ -28,6 +28,8 @@ namespace EchoDevGames.EchoSave
         public string Message { get; }
 
         public bool Succeeded =>
-            Status != SaveActiveSlotSelectionStatus.Rejected;
+            Status == SaveActiveSlotSelectionStatus.Selected ||
+            Status == SaveActiveSlotSelectionStatus.NoChange ||
+            Status == SaveActiveSlotSelectionStatus.Cleared;
     }
 }
