@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.49.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.50.0
 **Completed checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — COMPLETE; no M5-04 checkpoint active
-**Status:** M4 complete; ESV-M5-01, M5-02, and M5-03 complete; implementation `9c3771c`; focused Chronicle Editor `735 / 735`; M5 remains open; no M5-04 slice active
+**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 active from clean M5-03 closeout baseline `ffff18f`; incoming focused Chronicle floor `735 / 735`; M5 remains open
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -895,3 +895,47 @@ Manual evidence:
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **ESV-M5-03 is Complete. M5 remains open. M5-04 is not activated.**
+
+
+## ESV-M5-04 activation
+
+**Clean planning baseline:** `ffff18f` — `Close out ESV-M5-03 browser inspector and migration graph`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.50.0 / ESV-D-040
+**Incoming focused Chronicle floor:** **735 / 735 passed, 0 failed**
+**Milestone:** M5 — Tooling and Laboratory
+
+M5-04 owns four bounded tooling surfaces:
+
+1. **Failure Simulator**
+   - sandbox-only corruption/interruption fixtures;
+   - may truncate, lock, orphan, age, alter supported test metadata, or create intentionally invalid sandbox records;
+   - must refuse any sandbox path that equals or nests into the production Chronicle root;
+   - must never target production save data.
+
+2. **Recovery Planner**
+   - read-only preview over existing Chronicle recovery-plan truth;
+   - may explain current/head diagnosis, verified candidate ordering, and why candidates are excluded;
+   - may not execute recovery, rewrite heads, quarantine, delete, restore, or otherwise mutate production state.
+
+3. **Bounded Test Data Generator**
+   - deterministic synthetic sandbox slot/generation fixtures;
+   - explicit maximum counts and byte bounds;
+   - no unbounded generation loops;
+   - no player-facing save UI and no production participant application.
+
+4. **Redacted Snapshot Exporter**
+   - explicit user action only;
+   - payload-free diagnostics/support snapshot;
+   - no participant payload contents;
+   - no full local filesystem paths by default;
+   - technical slot identity redacted/hashed in support mode;
+   - bounded output and deterministic field ordering where practical.
+
+M5-04 does **not** activate:
+- production recovery execution;
+- destructive cleanup/quarantine/permanent erase/restore-from-trash;
+- persistent `catalog.cache.json`;
+- direct-scene Save Laboratory or LAB-001 through LAB-032;
+- scene travel, peer-package bridges, service-locator behavior, or Chronicle-owned/project-wide DDOL.
+
+M5-05 remains inactive until M5-04 closes separately.

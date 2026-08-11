@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-03 – Chronicle Save Browser, Generation Inspector, and Migration Graph
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01, M5-02, and M5-03 complete; M5-03 implementation `9c3771c`; focused Chronicle Editor `735 / 735`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-04 not activated
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 sandbox QA/support tooling active from `ffff18f`; incoming focused Chronicle floor `735 / 735`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01, M5-02, and M5-03 complete; read-only Browser/Generation Inspector/Migration Graph proven; focused Chronicle `735 / 735`; M5 open; M5-04 inactive** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-03 complete; ESV-M5-04 active for sandbox Failure Simulator, preview-only Recovery Planner, bounded Test Data, and redacted support tooling; incoming focused floor `735 / 735`; M5 open** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -240,3 +240,15 @@ Failure simulation, recovery planning, support export, persistent cache/cleanup,
 M5 remains open. Failure Simulator, Recovery Planner, Test Data, support/privacy tooling, persistent cache/cleanup, and the Save Laboratory remain later separately activated gates.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+
+## Chronicle M5-04 activation state
+
+`ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling` is **Active / Authorized** from clean baseline `ffff18f`.
+
+The slice is intentionally divided by mutation boundary:
+- Failure Simulator/Test Data may mutate **sandbox-only** records.
+- Recovery Planner may inspect production or sandbox recovery truth but remains preview-only.
+- Redacted support export may read bounded diagnostic/manifest health truth but exports no participant payload contents and redacts filesystem/slot identity by default.
+
+M5-05 Save Laboratory remains inactive and separately gated.

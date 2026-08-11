@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-03 Save Browser, Generation Inspector, and Migration Graph complete; M5-04 not activated
-**Current checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph — **COMPLETE**; no M5-04 checkpoint active
+**Current focus:** Chronicle M5 — M5-04 Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling active
+**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1029,3 +1029,22 @@ The inspection boundary remained zero-write except for the deliberately separate
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **ESV-M5-03 is Complete. M5 remains open. M5-04 requires separate activation.**
+
+
+## ESV-M5-04 activation
+
+**Planning baseline:** `ffff18f`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.50.0 / ESV-D-040
+**Incoming focused Chronicle floor:** **735 / 735 passed, 0 failed**
+
+Authority locks:
+- Failure Simulator and Test Data Generator are sandbox-only.
+- Sandbox resolution must fail closed if it collides with or nests into the configured production Chronicle root.
+- Recovery Planner is descriptive/preview-only; it never executes recovery or changes a head.
+- Redacted Snapshot Exporter is explicit-action and payload-free.
+- Full local paths are omitted/redacted from support output by default.
+- Technical slot identity is redacted/hashed in support mode.
+- Tooling remains bounded by explicit record/count/byte limits.
+- No direct-scene Laboratory is activated by M5-04.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.

@@ -49,6 +49,9 @@ M5-01 now provides the package Editor-only Setup and Validator foundation. Setup
 
 **ESV-M5-03 is complete** at implementation commit `9c3771c`. Chronicle now includes a strictly read-only Save Browser, Generation Inspector, and Migration Graph over existing catalog/slot/generation/package-document/migration truth. Missing production roots are represented as empty without being created; generation inspection reads immutable manifest evidence without changing heads or generation bytes; the Migration Graph describes package-owned version/edge authority without executing migrations. The closing focused Chronicle Editor gate passed **735 / 735**, with **0 failed**.
 
+**ESV-M5-04 is now active** as the bounded QA/support tooling slice: Failure Simulator, Recovery Planner, bounded Test Data Generator, and Redacted Snapshot Exporter. Failure simulation and synthetic test data are **sandbox-only** and must refuse any path that resolves to the production Chronicle root. Recovery Planner remains preview-only and may not execute recovery or rewrite heads. Support export is explicit-action, payload-free, and redacts full local paths plus slot identity by default. Persistent catalog cache/cleanup and the direct-scene Save Laboratory remain later gates.
+
+
 It still does **not** include automatic recovery fallback, Failure Simulator/Recovery Planner/Test Data/support export, persistent catalog-cache optimization, cleanup/quarantine, permanent erase, public restore-from-trash, direct-scene Laboratory content, LAB-001 through LAB-032 execution, scene travel, peer bridges, or clean-project/release qualification. **M5 remains open and M5-04 is not active.**
 
 ## Minimal use
