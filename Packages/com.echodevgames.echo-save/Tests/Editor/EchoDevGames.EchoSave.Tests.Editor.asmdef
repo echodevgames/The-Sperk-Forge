@@ -2,7 +2,8 @@
   "name": "EchoDevGames.EchoSave.Tests.Editor",
   "rootNamespace": "EchoDevGames.EchoSave.Tests.Editor",
   "references": [
-    "EchoDevGames.EchoSave.Runtime"
+    "EchoDevGames.EchoSave.Runtime",
+    "EchoDevGames.EchoSave.Editor"
   ],
   "includePlatforms": [
     "Editor"
