@@ -3,13 +3,13 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.30.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.31.0
 **Completed checkpoint:** ESV-M4-08 — Explicit Recovery Execution, Stale-Plan Revalidation, Head Repointing, and Catalog Reconciliation Foundation
 **Completed milestone:** M3 — Participants and Loading
-**Current checkpoint:** None activated — ESV-M4-08 complete
-**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 complete; M4 remains active
+**Current checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation — active / authorized
+**Status:** M3 complete; ESV-M4-01 complete; ESV-M4-02 complete; ESV-M4-03 complete; ESV-M4-04 complete; ESV-M4-05 complete; ESV-M4-06 complete; ESV-M4-07 complete; ESV-M4-08 complete; ESV-M4-09 active; M4 remains active
 
-**Authority reconciliation:** Specification v1.30.0 records ESV-M4-08 complete at implementation commit `1985fb0` with final focused Chronicle Editor evidence `540 / 540`; no follow-on M4 checkpoint is activated.
+**Authority reconciliation:** Specification v1.31.0 retains ESV-M4-08 complete and activates bounded ESV-M4-09 at clean baseline `07bbd2b` under ESV-D-031 with carried focused regression floor `540 / 540`.
 
 ## ESV-M4-02 closeout
 
@@ -354,3 +354,51 @@ Still deferred:
 - scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
 
 No follow-on M4 checkpoint is active. The next implementation requires a bounded authorized Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.
+
+
+## ESV-M4-09 active boundary
+
+**Exact planning baseline:** `07bbd2b`.
+
+**Carried focused regression floor:** **540 / 540**.
+
+**Authority decision:** ESV-D-031.
+
+M4-09 owns:
+- public bounded slot rename and duplicate operations;
+- shared root-local mutation admission / immediate Busy rejection;
+- rename display-metadata validation;
+- rename with stable `SaveSlotId` and stable physical path;
+- new immutable generation for rename rather than in-place committed-file edit;
+- payload/state equivalence across rename;
+- expected-current-generation stale-source rejection;
+- post-rename existing retention maintenance;
+- duplicate capacity enforcement using M4-02 canonical-slot counting;
+- new duplicate slot/generation IDs with bounded collision handling;
+- duplicate source current-generation verification and provenance binding;
+- source revalidation before destination publication;
+- destination generation/head-last publication;
+- source immutability;
+- duplicate no-auto-select behavior;
+- post-publication catalog reconciliation and truthful partial-result reporting;
+- no participant callbacks for either operation.
+
+M4-09 maps registry proofs:
+- ESV-T-019 — Rename slot;
+- ESV-T-020 — Duplicate slot.
+
+M4-09 does **not** own:
+- prepare-delete / confirm-delete;
+- trash or trash retention;
+- quarantine / incomplete-generation cleanup;
+- persistent `catalog.cache.json`;
+- automatic/configured recovery fallback or recovery-on-load;
+- generic operation queues/capacity/overflow;
+- recovery cancellation overload;
+- automatic autosave timers/gameplay triggers;
+- permission-provider production wiring;
+- full configuration/Setup expansion;
+- document migration;
+- scene travel, peer bridges, service locator, or Chronicle-owned/project-wide DDOL.
+
+The next implementation must preserve the **540 / 540** focused regression floor.

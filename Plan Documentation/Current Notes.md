@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 10, 2026
-**Current focus:** Chronicle M4 — ESV-M4-08 complete; next bounded checkpoint planning
-**Current checkpoint:** None activated — ESV-M4-08 is **complete**
+**Current focus:** Chronicle M4 — ESV-M4-09 slot rename and full-state duplication
+**Current checkpoint:** ESV-M4-09 — Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation — **active / authorized**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -407,6 +407,50 @@ Still deferred:
 
 No follow-on M4 checkpoint is activated by this closeout. Further Chronicle implementation requires a new bounded Checkpoint Build Plan and must preserve the **540 / 540** focused regression floor.
 
+
+## Chronicle ESV-M4-09 Activation
+
+`ESV-M4-09 — Chronicle Slot Rename, Full-State Duplication, Stable Identity, and Catalog Reconciliation Foundation` is **active / authorized** at clean baseline `07bbd2b`.
+
+Authority decision: **ESV-D-031**.
+
+Carried focused regression floor: **540 / 540**.
+
+Authorized boundary:
+- public bounded rename and duplicate operations;
+- root-local mutation admission reuse;
+- Busy rejection with no rename/duplicate queues;
+- rename preserves stable `SaveSlotId` and physical path;
+- rename publishes metadata change as a new immutable generation rather than editing committed files in place;
+- rename keeps payload/state equivalent and invokes no participants;
+- rename reuses stale-source/head-last publication and post-publication retention/catalog truth;
+- duplicate requires a healthy fully verified source and available M4-02 slot capacity;
+- duplicate creates new package-generated slot and generation identities;
+- duplicate copies verified source state without participant capture;
+- duplicate revalidates source provenance before destination publication;
+- duplicate leaves source bytes untouched;
+- duplicate publishes destination generation/head last;
+- duplicate does not auto-select;
+- catalog failure after durable rename/duplicate publication reports partial truth without fabricated rollback.
+
+Primary registry targets:
+- ESV-T-019 — rename slot: ID/path unchanged;
+- ESV-T-020 — duplicate slot: new ID and equivalent payload/state.
+
+Still deferred:
+- prepare-delete/confirm-delete;
+- trash and trash retention;
+- quarantine/incomplete-generation cleanup;
+- persistent `catalog.cache.json`;
+- automatic/configured recovery fallback;
+- recovery-on-load;
+- generic operation queues/capacity/overflow;
+- recovery cancellation overload;
+- automatic autosave timers/gameplay triggers;
+- permission-provider production wiring;
+- full configuration/Setup expansion;
+- scene travel, peer bridges, service locator, DDOL.
+
 ## Suite Distribution Kit Standard
 
 Jesse approved one new suite-wide graduation rule after First Light FL-M6-01 closeout:
@@ -589,8 +633,8 @@ Those remain future release-qualification work if/when First Light returns to th
 Do not begin FL-M6-02 automatically. Do not add more First Light features merely because the Gallery can host more examples.
 
 ## Next Action
-1. Rehydrate exact `1985fb0`.
-2. Preserve the focused **540 / 540** Chronicle regression floor.
-3. Treat ESV-M4-08 explicit recovery execution and ESV-D-030 as complete.
-4. Do not begin further Chronicle runtime implementation until the next bounded M4 Checkpoint Build Plan is written and activated.
-5. Keep automatic/configured fallback, quarantine/cleanup, destructive slot operations, persistent catalog cache, generic queues, automatic autosave timers, permission-provider production wiring, full recovery/configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
+1. Rehydrate exact `07bbd2b`.
+2. Read the active ESV-M4-09 Checkpoint Build Plan completely.
+3. Preserve the focused **540 / 540** Chronicle regression floor.
+4. Implement only non-destructive slot rename and full-state duplication under ESV-D-031.
+5. Keep delete planning/trash, quarantine/cleanup, persistent catalog cache, automatic/configured recovery fallback, generic queues, automatic autosave timers, permission-provider production wiring, full configuration/Setup expansion, scene travel, peer bridges, service locator, and DDOL locked until separately authorized.
