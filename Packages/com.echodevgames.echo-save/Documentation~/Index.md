@@ -63,9 +63,12 @@
 
 ## Latest completed implementation checkpoint
 
-`ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and Redacted Support Tooling`
+`ESV-M5-06 — Minimal Direct-Scene Save Laboratory`
 
-Activation is committed at `df3c30b`; implementation is committed at `577dc01`; the closing focused Chronicle Editor gate passed **746 / 746**, with **0 failed** and **11** net-new focused tests over the `735 / 735` floor. Manual proof confirmed bounded deterministic sandbox generation/cleanup, exact-target Failure Simulator Preview/Apply/verified cleanup, preview-only Recovery Planner behavior with no Apply/Recover control, and explicit payload-free redacted JSON export with raw slot ID/local path/payload markers absent.
+Activation is committed at `d6f079a`; implementation is committed at `4bcfbf1`; adjacent project sample/showcase organization is committed at `b43e6bf`. The final focused Chronicle Editor gate passed **761 / 761**, with **0 failed** and **8** net-new focused tests over the `753 / 753` floor.
+
+The importable package-owned Laboratory proves real Chronicle create/select/save/load, prepared-load, rename, duplicate, delete Preview/Confirm, catalog, and ownership-reset behavior through a tiny `SPERK-001` state and crude sample-owned IMGUI controls. Package Manager import exposed and closed one sample-only `async void`/`Awaitable` compile defect before implementation commit. The scene now includes a basic camera/background for readable Game-view evidence.
+
 
 ## Final M4 reconciliation checkpoint
 
@@ -95,9 +98,11 @@ The next eligible package milestone is M5, but it requires its own authority/act
 
 Chronicle M4 remains **Complete**.
 
-`ESV-M5-01` through `ESV-M5-05` are **Complete**. M5 remains open. M5-06 Save Laboratory is not active and requires its own bounded authority/activation checkpoint.
+`ESV-M5-01` through `ESV-M5-06` are **Complete**. Chronicle **M5 — Tooling and Laboratory is Complete**.
 
-The current focused Chronicle Editor floor is **753 / 753**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-03 does not reclassify later Simulator/Laboratory, performance/stress, integration/adoption, or release rows.
+The closing focused Chronicle Editor gate is **761 / 761 passed, 0 failed**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** because later clean-project/distribution, performance/stress, integration/adoption, and release rows remain owned by later gates.
+
+M6 First Integration is the next eligible Chronicle milestone but is **not activated**.
 
 
 ## ESV-M5-05 completion
@@ -116,3 +121,22 @@ Final evidence:
 - repository clean and synchronized after implementation commit.
 
 M5 remains open. The full Chronicle Save Laboratory is **ESV-M5-06** and remains inactive until separately activated.
+
+## ESV-M5-06 completion
+
+`ESV-M5-06 — Minimal Direct-Scene Save Laboratory` is **Complete**.
+
+Final evidence:
+- activation `d6f079a`;
+- implementation `4bcfbf1`;
+- adjacent project organization `b43e6bf`;
+- focused Chronicle Editor **761 / 761 passed, 0 failed**;
+- **8** net-new focused tests;
+- **21 package files / 2341 insertions / 0 deletions**;
+- imported sample compile correction closed before implementation commit;
+- direct-scene `SPERK-001` Save -> unsaved mutation -> Load restoration proof complete;
+- prepared-load, rename, duplicate, delete Preview/Confirm, catalog, and ownership-reset proof complete;
+- LAB-001 through LAB-032 reconciled from retained automated/prerequisite/manual evidence;
+- Chronicle M5 complete.
+
+The later Chronicle Reference Showcase remains distinct from this engineering Laboratory and is deferred until Looking Glass and preferably Resonance are available.

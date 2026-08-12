@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.54.0
+**Specification version:** 1.55.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -16,11 +16,11 @@
 **Default local-storage root:** A configured child directory beneath `Application.persistentDataPath`
 **Default serializer:** Package-owned `UnityJsonSaveSerializer` using Unity `JsonUtility` for package envelopes and plain serializable DTOs, with explicit documented limitations and replaceable serializer providers
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 11, 2026
+**Last updated:** August 12, 2026
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 through ESV-M5-05 are complete. ESV-M5-06 is **Active / Authorized** from clean baseline `868b17f` under ESV-D-042. M5-06 is a deliberately minimal direct-scene engineering verification harness, not a consumer-facing save-menu example or UI framework. It may use crude sample-owned controls including IMGUI/`OnGUI`, one tiny deterministic Sperk-themed persisted participant, deterministic fixtures, and visible evidence readouts sufficient to reconcile LAB-001 through LAB-032. It may not create a Looking Glass or Resonance dependency, establish reusable player-facing save-menu architecture, or pre-build later Reference Showcase templates. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 and M5 are complete. ESV-M5-01 through ESV-M5-06 are complete; M5-06 implementation is committed at `4bcfbf1` with final focused Chronicle evidence `761 / 761`, and adjacent project sample/showcase organization is committed at `b43e6bf`. The Chronicle Save Laboratory remains a minimal importable package-owned engineering harness, not a consumer-facing save-menu framework or substitute for the later Reference Showcase. Looking Glass and Resonance remain non-dependencies. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** because clean-project/distribution, performance/stress, integration/adoption, and release rows remain later gates. M6 First Integration is not activated.
 
 ---
 
@@ -86,6 +86,7 @@
 | 1.52.0 | 2026-08-11 | Approved | Activated `ESV-M5-05` from clean M5-04 closeout baseline `1111b46` with incoming focused Chronicle floor `746 / 746`. Added ESV-D-041: close the Laboratory prerequisites before activating the Laboratory. M5-05 owns explicit source-bound exact-ID unknown-payload prune via new immutable-generation publication plus derived rebuildable `catalog.cache.json` that never supersedes head/manifest authority. Missing/corrupt/stale/incompatible cache rebuilds from bounded durable truth; cache write failure is maintenance-only. Earlier shorthand naming M5-05 as the Save Laboratory is superseded because LAB-016 and LAB-029 depend on these still-missing capabilities; full Save Laboratory moves to M5-06. | Jesse “Echo” Adams |
 | 1.53.0 | 2026-08-12 | Approved | Closed ESV-M5-05 under ESV-D-041: implementation `ad715c3`; focused Chronicle Editor `753 / 753`; exact-ID source/provenance-bound unknown-payload prune published a new immutable generation while preserving historical bytes, unnamed unknown transport, and known payloads; derived `catalog.cache.json` completed Missing/Rebuild/Valid/Stale/Rebuild/Valid proof and remains non-authoritative acceleration; owned proof fixture cleanup verified. M5 remains open; ESV-M5-06 Save Laboratory remains inactive. | Jesse “Echo” Adams |
 | 1.54.0 | 2026-08-12 | Approved | Activated `ESV-M5-06` from clean M5-05 closeout baseline `868b17f` under ESV-D-042. Locked the Save Laboratory as a minimal direct-scene engineering harness rather than a consumer save-menu demo. Authorized one tiny deterministic persisted proof participant, crude sample-owned controls/readouts, restrained Sperk/System Foundry comic-relief labels, deterministic LAB fixtures, and grouped LAB-001 through LAB-032 evidence. Explicitly prohibited Looking Glass/Resonance dependency, reusable player-facing save-menu architecture, and polished multi-format save examples; those remain deferred to the later Chronicle Reference Showcase. | Jesse “Echo” Adams |
+| 1.55.0 | 2026-08-12 | Approved | Closed `ESV-M5-06` and Chronicle M5 under ESV-D-042. Implementation `4bcfbf1` ships an importable minimal Chronicle Save Laboratory with one `SPERK-001` participant, crude sample-owned controls, isolated Laboratory storage, camera-backed Game-view evidence, and ownership-verified reset; Package Manager import exposed and closed a sample-only `async void`/`Awaitable` compile defect before commit. Final focused Chronicle Editor evidence is `761 / 761` with 8 net-new tests. Direct-scene proof covered create/select, save/load exact restoration, prepared load, rename, duplicate, delete Preview/Confirm, and reset. LAB-001 through LAB-032 are reconciled from retained automated/prerequisite/manual evidence. M6 First Integration remains inactive; polished save-menu examples remain deferred to the later Reference Showcase. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -4573,3 +4574,42 @@ The primary visual proof should be Save -> mutate values without saving -> Load 
 The later Chronicle Reference Showcase owns polished one-slot, fixed three-slot fantasy-adventure, configurable fixed-slot, broad manual-save browser, and similar player-facing examples after Looking Glass and preferably Resonance are available. M5-06 must not build those examples.
 
 Explicitly out of scope: Looking Glass dependency, Resonance dependency, reusable save-menu components, fake gameplay systems, production cleanup/quarantine, public restore-from-trash, permanent erase, automatic recovery fallback, generic queues, automatic autosave timers, and permission-provider production wiring.
+
+### 28.43 ESV-M5-06 closeout reconciliation
+
+**Status:** Complete.
+**Activation:** `d6f079a`.
+**Implementation:** `4bcfbf1`.
+**Adjacent project organization:** `b43e6bf`.
+**Focused Chronicle Editor:** **761 / 761 passed, 0 failed**.
+**Net-new focused tests:** **8**.
+**Final package implementation scope:** **21 files / 2341 insertions / 0 deletions**.
+
+M5-06 ships one Package Manager-importable `Chronicle Save Laboratory` beneath the package's `Samples~` distribution surface. The sample remains isolated engineering evidence and does not establish reusable save-menu architecture.
+
+Package-level tests first passed 761 / 761. Package Manager import then exposed a sample-only compile defect because `InitializeLaboratoryAsync()` was declared `async void` while `Start()` awaited it. The method was corrected to `async Awaitable`; the imported sample recompiled cleanly; the corrected source was synchronized into the distributable package; and the focused Chronicle gate remained 761 / 761.
+
+The direct-scene Laboratory retained real evidence for:
+- authoritative readiness and isolated Laboratory storage;
+- technical create/select and initial generation publication;
+- visible Save -> mutate without saving -> Load exact restoration;
+- one-use prepared-load apply after an explicit wait boundary;
+- display-name rename with stable technical slot identity;
+- full-state duplicate with a new technical slot identity;
+- zero-write delete Preview followed by confirmed live-catalog removal/active-selection clear;
+- ownership-marked Laboratory reset after shutdown with verified post-cleanup absence.
+
+LAB-001 through LAB-032 are reconciled from the union of:
+- retained M4/M5 focused automated evidence for established runtime/failure/migration/cancellation/retention/backend/packaging cases;
+- retained M5-05 manual/automated prerequisite evidence for LAB-016 exact unknown prune and LAB-029 derived catalog-cache rebuild/stale detection;
+- M5-06 direct-scene human evidence for the normal-operation, prepared-load, slot-management, and reset cases above.
+
+The Laboratory is intentionally not a thirty-two-screen demo. It may group evidence and reuse retained proof so long as the result remains tied to actual Chronicle state.
+
+A simple scene camera/background is part of the distributable sample only to make Game-view proof readable. It establishes no camera framework or gameplay dependency.
+
+The adjacent `b43e6bf` project organization commit keeps project-owned polished showcase content distinct from imported package sample content. That project reorganization is not part of the 21-file EchoSave implementation scope.
+
+**Milestone result:** no remaining M5 authority gap was found. Chronicle **M5 — Tooling and Laboratory is Complete**.
+
+**Next gate:** M6 — First Integration remains inactive and requires separate activation. The polished Chronicle Reference Showcase remains a later graduation stage after Looking Glass and preferably Resonance are available.

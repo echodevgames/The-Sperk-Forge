@@ -979,3 +979,48 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Repository committed/pushed clean at `ad715c3`.
 - The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 - **ESV-M5-05 is Complete. M5 remains open. M5-06 Save Laboratory is not activated.**
+
+### Added
+
+#### ESV-M5-06 — Minimal Direct-Scene Save Laboratory
+
+- Importable package-owned `Chronicle Save Laboratory` sample declared through `package.json`.
+- One isolated direct-scene laboratory using the dedicated `EchoSave-M5-06-Laboratory` storage root.
+- Tiny deterministic `SPERK-001` persisted participant with `Sperk Level`, `Galactic Rupees`, `Anvil Temperature`, `Has Forbidden Key`, and `Reality Damage`.
+- Sample-only IMGUI engineering controls for create/select/save/load, rename, duplicate, delete Preview/Confirm, prepared-load handling, catalog refresh, deterministic unsaved mutation, and ownership-verified Laboratory reset.
+- Evidence console/status readouts that report actual Chronicle results rather than cosmetic pass labels.
+- One simple scene-owned camera/background so the human-facing Game view does not show Unity's `Display 1 / No cameras rendering` overlay.
+- Eight focused M5-06 package/sample boundary tests.
+- No Chronicle Runtime source-file modification and no Looking Glass or Resonance dependency.
+
+### Fixed
+
+#### ESV-M5-06 Imported-Sample Compile Correction
+
+- Package Manager import exposed `CS4008: Cannot await 'void'` in the sample harness because `InitializeLaboratoryAsync()` was declared `async void`.
+- Corrected the sample-only method to `async Awaitable` and synchronized the corrected source into the distributable `Samples~` copy.
+- The correction changed no Chronicle Runtime API or behavior.
+
+### Verified
+
+#### ESV-M5-06 Closeout
+
+- Activation commit: `d6f079a`.
+- Implementation commit: `4bcfbf1`.
+- Adjacent project organization commit: `b43e6bf`.
+- Final Chronicle package implementation scope: **21 files**, **2341 insertions**, no deletions.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **761 / 761**, with **0 failed** after the imported-sample compile correction and final package-scene synchronization.
+- Incoming M5-06 floor was **753 / 753**; M5-06 adds **8** net-new focused Chronicle tests.
+- Direct-scene readiness proved `Service: Ready` and one authoritative Chronicle root with an initially empty healthy catalog.
+- LAB-003 create/select proof produced one healthy slot and a real initial immutable generation.
+- Save proof published a new verified generation/head for visible `SPERK-001` state.
+- Unsaved mutation changed the visible subject from the saved snapshot; `Load & Apply` restored the exact saved values and reported `RESULT: THE CHRONICLE REMEMBERS.`
+- LAB-006 prepared-load proof survived an explicit wait boundary, reapplied the bound generation, and consumed the one-use handle.
+- LAB-008 rename preserved technical slot identity while publishing the new display name through a verified immutable generation.
+- LAB-009 duplicate produced a second healthy technical slot with equivalent state and a distinct technical ID/generation.
+- Delete Preview was zero-write and source-bound; Confirm removed the selected duplicate from the live catalog, cleared active selection, and retained the original certified slot.
+- LAB-031 reset shut Chronicle down, removed only the ownership-marked `EchoSave-M5-06-Laboratory` root, and verified post-cleanup absence.
+- The full LAB-001 through LAB-032 matrix is reconciled from retained M4/M5 automated evidence, M5-05 prerequisite/manual evidence for LAB-016/LAB-029, and M5-06 direct-scene/manual evidence. M5-06 did not fabricate 32 separate polished workflows.
+- Package sample import, direct-scene human proof, camera-backed Game view, and ownership cleanup are complete.
+- Chronicle M5 is **Complete**. M6 First Integration remains inactive and requires separate authority/activation.
+- Polished player-facing save-menu examples remain deferred to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are available.

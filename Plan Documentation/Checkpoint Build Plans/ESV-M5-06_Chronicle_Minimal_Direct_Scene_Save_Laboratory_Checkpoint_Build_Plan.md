@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-06
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `868b17f` — `Close out ESV-M5-05 unknown prune and catalog cache prerequisites`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.54.0 / ESV-D-042
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.55.0 / ESV-D-042
 **Incoming focused Chronicle floor:** **753 / 753 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 
@@ -100,3 +100,65 @@ M5-06 does not implement Chronicle Reference Showcase, Looking Glass integration
 ## 13. Closeout
 
 M5-06 closes only when implementation is committed, Unity compile is clean, focused Chronicle Editor suite is green >= 753, the direct-scene Lab is reproducible, visible Save -> mutate -> Load proof passes, LAB-001 through LAB-032 are truthfully reconciled, Lab ownership/cleanup proof passes, documentation matches committed behavior, and the repository is clean. M5 may close afterward only if milestone reconciliation finds no remaining M5 authority gap.
+
+## 14. Closeout evidence
+
+**Activation:** `d6f079a`
+**Implementation:** `4bcfbf1`
+**Adjacent project organization:** `b43e6bf`
+**Final focused Chronicle Editor:** **761 / 761 passed, 0 failed**
+**Net-new focused tests:** **8**
+**Final Chronicle package scope:** **21 files / 2341 insertions / 0 deletions**
+
+### Automated/package gate
+
+The incoming `753 / 753` focused Chronicle floor advanced to **761 / 761** with eight new M5-06 tests. The final 761-test gate remained green after the Package Manager import correction and package-owned scene synchronization.
+
+### Import correction
+
+Initial Package Manager import surfaced a sample-only compile defect:
+`ChronicleSaveLaboratoryHarness.cs(66,13): CS4008: Cannot await 'void'`.
+
+The harness was correctly awaiting `InitializeLaboratoryAsync()`, but that sample-only method had been declared `async void`. It was corrected to `async Awaitable`, the imported sample was reimported, Unity compiled cleanly, and no Chronicle Runtime source/API change was required.
+
+### Direct-scene proof
+
+The Laboratory initialized directly with `Service: Ready`, one authoritative root, zero initial catalog slots, and isolated `EchoSave-M5-06-Laboratory` storage.
+
+Retained manual evidence proves:
+- LAB-003 create/select -> one healthy slot + initial immutable generation;
+- Save -> verified generation/head publication;
+- unsaved mutation -> visibly different live `SPERK-001` state while saved snapshot remained unchanged;
+- Load & Apply -> exact saved values restored, `RESULT: THE CHRONICLE REMEMBERS.`;
+- LAB-006 prepared load -> live bound handle, explicit wait boundary, successful apply, handle consumed;
+- LAB-008 rename -> display metadata changed while technical slot identity/path remained stable;
+- LAB-009 duplicate -> second healthy technical slot with distinct technical identity/generation;
+- delete Preview -> source-bound/expiring zero-write plan with two live slots still present;
+- LAB-011 Confirm -> duplicate removed from live catalog, active selection cleared, original slot preserved;
+- LAB-031 reset -> Chronicle shutdown, ownership-marker verification, exact Laboratory-root removal, post-cleanup absence.
+
+A simple scene-owned camera/background was added to remove Unity's `Display 1 / No cameras rendering` overlay from human Game-view evidence and synchronized back into the distributable `Samples~` scene.
+
+### LAB-001 through LAB-032 reconciliation
+
+The matrix closes from retained evidence rather than thirty-two polished UI flows:
+- M4/M5 automated tests retain evidence for established authority, duplicate-root, multi-participant, failure, corruption, migration, cancellation, queueing, retention, backend, and packaging cases;
+- M5-05 directly closed the previously missing LAB-016 unknown-prune and LAB-029 catalog-cache prerequisites;
+- M5-06 adds the direct-scene human integration evidence listed above;
+- the final focused Chronicle gate is **761 / 761**.
+
+No PASS is inferred from presentation alone; evidence remains tied to real Chronicle result/state.
+
+### Project organization
+
+The adjacent `b43e6bf` project commit separated retained polished First Light/UMBRA showcase content from imported package sample content. This commit is not part of the 21-file Chronicle package implementation scope.
+
+The Chronicle Laboratory remains a package-distributed engineering sample. A polished Chronicle Reference Showcase remains future work after Looking Glass and preferably Resonance. First Light's proper package sample restoration is a separate follow-up and is not silently replaced by UMBRA.
+
+### Milestone result
+
+ESV-M5-06 is **Complete**.
+
+No remaining M5 authority gap was found. Chronicle **M5 — Tooling and Laboratory is Complete**.
+
+M6 First Integration remains **not activated** and requires a separate authority/activation checkpoint.

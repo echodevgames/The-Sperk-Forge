@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.54.0
-**Completed checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
-**Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-06 — Minimal Direct-Scene Save Laboratory — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 active from clean M5-05 closeout baseline `868b17f`; incoming focused Chronicle floor `753 / 753`; M5 remains open
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.55.0
+**Completed checkpoint:** ESV-M5-06 — Minimal Direct-Scene Save Laboratory
+**Completed milestone:** M5 — Tooling and Laboratory
+**Current checkpoint:** None — ESV-M5-06 is complete; M6 First Integration is not activated
+**Status:** M4 complete; ESV-M5-01 through M5-06 complete; Chronicle M5 complete; final focused Chronicle gate `761 / 761`; implementation `4bcfbf1`; adjacent sample/showcase organization `b43e6bf`; M6 remains inactive
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -1128,3 +1128,58 @@ Suggested proof-state flavor includes primitive fields such as `Sperk Level`, `G
 The Laboratory is **not** a polished save menu, UI framework, fake game, or demonstration of every slot-policy presentation. Rich single-slot, three-slot fantasy-adventure, configurable fixed-slot, and broad multi-slot examples belong to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are packaged.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** until direct evidence supports later reconciliation.
+
+## ESV-M5-06 closeout
+
+**Activation:** `d6f079a`
+**Implementation:** `4bcfbf1`
+**Adjacent project organization:** `b43e6bf`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.55.0 / ESV-D-042
+**Final focused Chronicle Editor:** **761 / 761 passed, 0 failed**
+**Net-new focused tests:** **8**
+**Final Chronicle package scope:** **21 files / 2341 insertions / 0 deletions**
+
+### Import and compilation
+
+The package-level 761-test discovery includes eight M5-06 focused tests. Package Manager import then exposed one sample-only compile defect that package-level `Samples~` non-compilation could not reveal: `ChronicleSaveLaboratoryHarness.Start()` awaited `InitializeLaboratoryAsync()`, but that method was initially declared `async void`. The sample-only signature was corrected to `async Awaitable`, the imported sample was reimported, Unity compiled cleanly, and the focused Chronicle gate remained **761 / 761** afterward.
+
+### Human direct-scene proof
+
+The imported `Chronicle Save Laboratory` ran directly in Play Mode with:
+- `Service: Ready`;
+- one authoritative Chronicle root;
+- isolated `EchoSave-M5-06-Laboratory` storage;
+- initially `0` catalog slots;
+- tiny `SPERK-001` visible state;
+- a simple scene camera/background preventing Unity's no-camera overlay.
+
+Manual evidence then proved:
+1. create/select produced one healthy slot and initial generation;
+2. visible subject state was changed and saved;
+3. unsaved mutation changed the live values without changing the saved snapshot;
+4. `Load & Apply` restored the exact saved values and reported `RESULT: THE CHRONICLE REMEMBERS.`;
+5. prepared-load creation remained live across an explicit wait boundary, applied the bound generation, and consumed the handle;
+6. rename changed display metadata while preserving technical slot identity;
+7. duplicate produced a second healthy technical slot with a distinct technical ID;
+8. delete Preview remained zero-write and source-bound;
+9. delete Confirm removed the selected duplicate from the live catalog and cleared active selection while preserving the original slot;
+10. reset shut Chronicle down, removed only the ownership-marked Laboratory root, and verified post-cleanup absence.
+
+### LAB matrix reconciliation
+
+LAB-001 through LAB-032 close from combined retained evidence rather than thirty-two theatrical buttons:
+- existing M4/M5 focused tests cover the established runtime failure, migration, cancellation, retention, corruption, authority, and packaging cases;
+- M5-05 retained direct prerequisite evidence for LAB-016 exact unknown prune and LAB-029 derived cache rebuild/stale detection;
+- M5-06 adds direct human evidence for readiness, create/select, save/load, prepared load, rename, duplicate, delete Preview/Confirm, and reset/cleanup;
+- the focused Chronicle suite remained green at **761 / 761** after the final imported-sample correction.
+
+### Presentation boundary retained
+
+The Laboratory remains deliberately crude sample-owned engineering presentation. Looking Glass and Resonance remain non-dependencies. Rich player-facing one-slot, three-slot, fixed-slot, broad multi-slot, autosave/checkpoint, and similar save UX belongs to a later Chronicle Reference Showcase.
+
+### Gate state
+
+- ESV-M5-06: **Complete**.
+- Chronicle M5: **Complete**.
+- M6 First Integration: **Not activated**.
+- R4 registry: **61 Complete / 39 Deferred / 0 Blocked** pending later clean-project/distribution, performance/stress, integration/adoption, and release gates.

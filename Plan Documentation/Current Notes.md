@@ -3,9 +3,9 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-06 minimal direct-scene Save Laboratory active
-**Current checkpoint:** ESV-M5-06 — Minimal Direct-Scene Save Laboratory — **ACTIVE / AUTHORIZED**
+**Last reconciled:** August 12, 2026
+**Current focus:** Chronicle M5 complete; post-M5 suite/sample reconciliation
+**Current checkpoint:** None — ESV-M5-06 complete; Chronicle M6 not activated
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -20,7 +20,7 @@
 - A1 splash presentation/authoring is committed across `1b7ab84`, `d36b5cc`, `90e038c`, `9b24121`, and `4bdc264`.
 - Slice E Setup creation-time splash authoring is committed at `9e6df00`.
 - A1-E1 project-owned foundation resolution is authorized at `a70e478` and implemented at `e66b9fd`.
-- The permanent First Light Gallery is committed at `ccb1d59`; obsolete pre-gallery folder metadata is removed at `ad12b27`.
+- The earlier First Light Gallery structure was reorganized at `b43e6bf`: UMBRA remains project-owned First Light showcase content, while imported package samples live separately beneath `Assets/Samples`.
 - The final `EchoLaunchSetup` filtered EditMode gate passed **224 / 224**.
 - No post-A1 full-suite aggregate is claimed by this closeout. The retained FL-M5-07 full-suite baseline remains historical evidence and should be rerun at the next release-qualification gate.
 - SUITE-DIST-001 is complete at `c18eff6`; First Light `0.1.0` has a repository-owned Distribution Kit and Complete User Handout.
@@ -1132,3 +1132,26 @@ The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains op
 M5-06 is deliberately the smallest useful Chronicle direct-scene engineering Lab. One tiny Sperk-themed persisted participant, crude controls/readouts, deterministic fixtures, and a visible evidence console are enough. It must not establish production UI architecture or depend on Looking Glass/Resonance.
 
 The later Chronicle Reference Showcase owns polished examples of recognizable save-system formats after the suite presentation packages are available.
+
+## Chronicle ESV-M5-06 closeout and M5 completion
+
+- Activation: `d6f079a`.
+- Implementation: `4bcfbf1`.
+- Adjacent project organization: `b43e6bf`.
+- Final focused Chronicle Editor gate: **761 / 761 passed, 0 failed**.
+- M5-06 adds **8** net-new focused tests over the incoming **753 / 753** floor.
+- Final Chronicle package scope: **21 files / 2341 insertions / 0 deletions**.
+- The package now declares/imports `Chronicle Save Laboratory` through `Samples~`.
+- Initial sample import exposed one sample-only `CS4008 Cannot await 'void'` defect; `InitializeLaboratoryAsync()` was corrected from `async void` to `async Awaitable`, the imported sample was reimported, and the final 761-test gate remained green.
+- A basic camera/background was added to the Laboratory scene and synchronized into the package source so human Game-view proof no longer carries Unity's no-camera overlay.
+- Direct-scene evidence proved authoritative readiness, create/select, Save -> unsaved mutation -> Load exact restoration, prepared-load one-use behavior, rename, duplicate, delete Preview/Confirm, catalog reconciliation, and ownership-verified reset/cleanup.
+- `RESULT: THE CHRONICLE REMEMBERS.` was observed after both normal Load & Apply and prepared-load apply.
+- LAB-001 through LAB-032 are reconciled from retained M4/M5 automated evidence, M5-05 prerequisite/manual evidence, and the M5-06 direct-scene proof rather than 32 separate UI workflows.
+- **Chronicle M5 — Tooling and Laboratory is Complete.**
+- M6 First Integration is not activated.
+
+### Sample / Showcase separation follow-up
+
+The project now keeps imported package sample content separate from polished project-owned showcase content. UMBRA remains a First Light showcase and does not satisfy First Light's package-sample requirement. The proper First Light package sample is to be restored as `FirstLight_Boot_Splash_Laboratory` in a separate bounded follow-up; do not silently promote UMBRA into that role.
+
+For Chronicle, the current `Chronicle Save Laboratory` is intentionally the package sample/engineering harness. Rich player-facing Chronicle save-menu examples remain deferred to the later Reference Showcase after Looking Glass and preferably Resonance are available.

@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-05 – Chronicle Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 minimal direct-scene Save Laboratory active from `868b17f`; incoming focused Chronicle `753 / 753`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
+**Current implementation state:** First Light complete/frozen for current pass; Chronicle M4 and M5 complete; ESV-M5-06 implementation `4bcfbf1`; final focused Chronicle `761 / 761`; adjacent project sample/showcase organization `b43e6bf`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M6 not activated
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 minimal direct-scene Save Laboratory active; incoming focused Chronicle `753 / 753`; M5 open** |
+| Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -313,3 +313,36 @@ The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 ## Chronicle M5-06 activation state
 
 `ESV-M5-06 — Minimal Direct-Scene Save Laboratory` is **Active / Authorized** from clean baseline `868b17f`. The Lab is an engineering control panel, not a consumer save-menu showcase. Polished Chronicle save-format examples remain deferred to the later Reference Showcase after Looking Glass and preferably Resonance exist.
+
+## Chronicle M5-06 closeout / M5 completion
+
+`ESV-M5-06 — Minimal Direct-Scene Save Laboratory` is **Complete**.
+
+Evidence:
+- activation `d6f079a`;
+- implementation `4bcfbf1`;
+- adjacent project organization `b43e6bf`;
+- focused Chronicle Editor **761 / 761**, `0` failed;
+- **8** net-new focused tests;
+- **21 package files / 2341 insertions / 0 deletions**;
+- Package Manager import/reimport completed after closing the sample-only `async void` compile defect;
+- human direct-scene proof completed for create/select, Save -> unsaved mutation -> Load exact restoration, prepared load, rename, duplicate, delete Preview/Confirm, and ownership-verified Laboratory reset;
+- LAB-001 through LAB-032 reconciled from retained automated, prerequisite, and direct-scene evidence;
+- no Looking Glass or Resonance dependency;
+- no Chronicle Runtime source file changed by M5-06.
+
+Chronicle **M5 — Tooling and Laboratory is Complete**. M6 First Integration remains inactive and requires separate activation.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** because exact later clean-project/distribution, performance/stress, integration/adoption, and release cases remain deferred to their own gates.
+
+## Package sample / showcase organization
+
+The adjacent `b43e6bf` project commit separates retained project-owned showcase material from imported package samples. This is organizational project work, not EchoSave runtime authority.
+
+- UMBRA remains project-owned **First Light showcase** content.
+- The Chronicle Save Laboratory is package-distributed engineering/sample content and also exists as an imported project sample for human proof.
+- UMBRA does **not** replace First Light's package-sample obligation.
+- The proper First Light package sample should be restored separately as `FirstLight_Boot_Splash_Laboratory`.
+- Polished Chronicle save-format examples remain deferred to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are packaged.
+
+This follows the existing suite requirement that release-ready scene-visible packages retain an independently importable sample/Standalone Test Lab; polished combined/project showcases do not substitute for isolated package proof.

@@ -53,12 +53,12 @@ M5-01 now provides the package Editor-only Setup and Validator foundation. Setup
 
 **ESV-M5-05 is complete.** Chronicle now includes an explicit exact-ID unknown-payload prune workflow and a derived rebuildable `catalog.cache.json`. Prune is Preview/Confirm, source-generation/provenance bound, expiring, one-use, and publishes a new immutable generation without rewriting historical generations or deleting known/claimed participant data. The catalog cache remains acceleration only: bounded head/manifest truth is authoritative, missing/corrupt/stale/incompatible cache falls back to durable rebuild, and cache-publication failure cannot fabricate a catalog/save failure. The closing focused Chronicle Editor gate passed **753 / 753**, with **0 failed**. Manual prerequisite evidence completed LAB-016 exact unknown prune and LAB-029 `Missing -> Rebuild -> Valid -> Stale -> Rebuild -> Valid` cache proof.
 
-**ESV-M5-06 is now active** as the Chronicle Save Laboratory: a deliberately minimal direct-scene engineering verification harness. The Laboratory exists to make Chronicle's real runtime behavior visibly provable to a human through crude deterministic controls and evidence readouts. It is **not** a consumer-facing save-menu example, does not establish reusable UI architecture, does not demonstrate every supported slot-policy presentation, and must not create a dependency on the future Looking Glass (`EchoUI`) package. Rich player-facing save-system examples remain deferred to the later Chronicle Reference Showcase, ideally after Looking Glass and Resonance are available.
+**ESV-M5-06 is complete** at implementation commit `4bcfbf1`. Chronicle now ships an importable package-owned `Chronicle Save Laboratory`: a deliberately minimal direct-scene engineering verification harness with one tiny `SPERK-001` participant, crude IMGUI controls, deterministic evidence readouts, isolated Laboratory storage, and ownership-verified reset. The closing focused Chronicle Editor gate passed **761 / 761**, with **0 failed**. Manual direct-scene proof covered create/select, Save -> unsaved mutation -> Load restoration, prepared load, rename, duplicate, delete Preview/Confirm, catalog reconciliation, and reset/cleanup. Package Manager import also exposed and closed a sample-only `async void`/`Awaitable` compile defect before implementation commit.
 
 
 
 
-It still does **not** include automatic recovery fallback, cleanup/quarantine, permanent erase, public restore-from-trash, direct-scene Laboratory content, LAB-001 through LAB-032 full execution, scene travel, peer bridges, or clean-project/release qualification. **M5 remains open and M5-06 Save Laboratory is not active.**
+Chronicle M5 is now **Complete**. The package still does **not** include automatic recovery fallback, production cleanup/quarantine, permanent erase, public restore-from-trash, scene-travel ownership, peer bridges, or clean-project/release qualification. M6 First Integration remains inactive. Rich player-facing save-system examples remain deferred to the later Chronicle Reference Showcase, ideally after Looking Glass and Resonance are available.
 
 ## Minimal use
 
@@ -69,3 +69,17 @@ It still does **not** include automatic recovery fallback, cleanup/quarantine, p
 5. Call `ShutdownAsync()` when intentionally ending Chronicle authority.
 
 The consumer project owns scene-surviving object composition. `EchoSaveRoot` does not call `DontDestroyOnLoad` and does not own peer systems.
+
+## Chronicle Save Laboratory
+
+The package declares one Package Manager-importable engineering sample: **Chronicle Save Laboratory**.
+
+Its purpose is evidence, not production UI architecture:
+- direct-scene Chronicle initialization;
+- isolated Laboratory storage;
+- one tiny persisted `SPERK-001` subject;
+- visible create/save/load/prepared-load/rename/duplicate/delete/catalog/reset controls;
+- deterministic evidence text;
+- a basic scene camera/background for readable Game-view proof.
+
+The Laboratory deliberately has no Looking Glass or Resonance dependency. Consumer-facing save-menu templates belong to a later Reference Showcase rather than this sample.
