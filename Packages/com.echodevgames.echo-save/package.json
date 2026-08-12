@@ -4,6 +4,13 @@
   "displayName": "The Chronicle — Save Infrastructure",
   "description": "Provides a standalone, duplicate-safe save-service authority and the neutral lifecycle contracts that later Chronicle persistence milestones build upon.",
   "unity": "6000.0",
+  "samples": [
+    {
+      "displayName": "Chronicle Save Laboratory",
+      "description": "Minimal direct-scene engineering laboratory for visible Chronicle save, load, slot, prepared-load, catalog, and reset acceptance proof.",
+      "path": "Samples~/Chronicle Save Laboratory"
+    }
+  ],
   "author": {
     "name": "Jesse \"Echo\" Adams / EchoDevGames"
   }
