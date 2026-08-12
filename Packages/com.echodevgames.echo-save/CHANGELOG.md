@@ -947,3 +947,35 @@ All notable changes to The Chronicle — Save Infrastructure will be documented 
 - Repository committed/pushed clean at `577dc01`.
 - The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 - **ESV-M5-04 is Complete. M5 remains open. M5-05 is not activated.**
+
+
+### Added
+#### ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
+- Public/runtime exact-ID unknown-payload prune Preview/Confirm workflow on `IEchoSaveService`.
+- Immutable, expiring, one-use prune plans binding slot, source generation, source provenance, and exact requested opaque participant IDs.
+- Confirm-time source revalidation across current head/manifest/payload provenance plus rejection when a requested identity becomes claimed/known after Preview.
+- New immutable-generation publication for successful prune; committed historical generations are never edited in place.
+- Byte-preserving carry-forward of every unnamed stored payload entry.
+- Versioned derived `catalog.cache.json` with bounded durable scanner/head freshness validation.
+- Missing/corrupt/stale/incompatible cache fallback to durable head/manifest truth and explicit rebuild.
+- Catalog cache maintenance truth that cannot convert a successful durable catalog refresh into failure when cache publication fails.
+- Chronicle Catalog Cache Editor window with zero-write Preview and explicit Rebuild Catalog Cache.
+- Focused M5-05 prune/cache tests.
+
+### Verified
+#### ESV-M5-05 Closeout
+- Activation commit: `94c33a3`.
+- Implementation commit: `ad715c3`.
+- Final implementation scope: **33 files**, `4118` insertions, `3` deletions.
+- Focused `EchoDevGames.EchoSave.Tests.Editor` gate passed **753 / 753**, with **0 failed**.
+- Incoming M5-05 floor was **746 / 746**; M5-05 adds **7** net-new focused Chronicle tests.
+- Missing-root Catalog Cache Preview reported `Missing`, `0` durable slots, `0` cached entries, performed zero writes, and kept Rebuild disabled.
+- Owned-fixture cache proof reported `Missing` with **1 durable slot / 0 cached entries**, explicit Rebuild to `Valid` with **1 / 1** entries and matching durable/cache fingerprints, deliberate durable-head advancement without cache maintenance, `Stale` detection with differing fingerprints, and final explicit Rebuild back to `Valid` with matching fingerprints.
+- LAB-016 prerequisite prune Preview was zero-write, exact-ID, source-generation/provenance bound, expiring, and enabled Confirm only after a successful plan.
+- LAB-016 Confirm reported `Succeeded`, pruned exactly **1** named unknown entry, left **1** unknown entry, published a different new generation, preserved historical source manifest/payload bytes, preserved the unnamed unknown transport byte-for-byte, preserved the known payload, and published both generation and head successfully.
+- The disposable production fixture used **1 known + 2 unknown** payload entries and was ownership-marked.
+- Fixture cleanup reported success and verified post-cleanup production-root absence.
+- Temporary proof-helper source/meta, disposable configuration asset, and Unity solution noise were removed/restored before implementation commit.
+- Repository committed/pushed clean at `ad715c3`.
+- The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+- **ESV-M5-05 is Complete. M5 remains open. M5-06 Save Laboratory is not activated.**

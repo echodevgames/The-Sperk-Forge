@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-05 explicit unknown-payload prune and derived catalog cache/rebuild prerequisites active
-**Current checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites — **ACTIVE / AUTHORIZED**
+**Current focus:** Chronicle M5 — M5-05 prerequisite slice complete; M5-06 Save Laboratory not activated
+**Current checkpoint:** None active — ESV-M5-05 complete; ESV-M5-06 Save Laboratory not activated
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1102,3 +1102,22 @@ The corrected sequence is:
 - **M5-06:** Chronicle Save Laboratory + LAB-001 through LAB-032.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+
+## ESV-M5-05 closeout
+
+**Activation:** `94c33a3`
+**Implementation:** `ad715c3`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.53.0 / ESV-D-041
+**Focused Chronicle Editor:** **753 / 753 passed, 0 failed**
+**Implementation scope:** **33 files / 4118 insertions / 3 deletions**
+
+ESV-M5-05 is **Complete**.
+
+LAB-016 prerequisite evidence completed exact-ID unknown prune with zero-write Preview, source/provenance binding, one-entry prune, one remaining unknown, new immutable generation publication, historical-source byte immutability, unnamed-unknown byte preservation, known-payload preservation, and successful head publication.
+
+LAB-029 prerequisite evidence completed the derived cache chain `Missing -> Rebuild -> Valid -> Stale -> Rebuild -> Valid`, including a deliberate durable-head advance without cache maintenance and final matching durable/cache fingerprints.
+
+The ownership-marked production proof fixture was removed and post-cleanup absence was verified. Temporary proof tooling/disposable configuration/Unity solution noise were removed before implementation commit.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open. **ESV-M5-06 Save Laboratory is not activated.**

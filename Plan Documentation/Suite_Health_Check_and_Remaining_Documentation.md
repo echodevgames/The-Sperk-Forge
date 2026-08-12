@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M5-04 – Chronicle QA/Recovery Preview/Support Tooling
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 prune/cache prerequisites active from `1111b46`; incoming focused Chronicle floor `746 / 746`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
+**Completed package checkpoint:** ESV-M5-05 – Chronicle Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-05 complete; implementation `ad715c3`; focused Chronicle Editor `753 / 753`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-06 Save Laboratory not activated
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 active for explicit unknown prune + derived catalog-cache prerequisites; incoming focused Chronicle `746 / 746`; M5 open** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-05 complete; exact unknown-prune + derived catalog-cache prerequisites proven; focused Chronicle `753 / 753`; M5 open; M5-06 inactive** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -285,3 +285,26 @@ This sequence correction is required by the existing Laboratory acceptance matri
 M5-05 therefore closes those already-approved MVP prerequisites before scene/sample Laboratory work begins.
 
 The full Chronicle Save Laboratory is now **M5-06**, remains inactive, and still must prove LAB-001 through LAB-032 without touching production saves.
+
+
+## Chronicle M5-05 closeout state
+
+`ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites` is **Complete**.
+
+- activation `94c33a3`;
+- implementation `ad715c3`;
+- focused Chronicle Editor **753 / 753**, `0` failed;
+- **7** net-new focused tests over the `746 / 746` floor;
+- exact implementation scope **33 files / 4118 insertions / 3 deletions**;
+- LAB-016 prerequisite exact unknown-prune Preview/Confirm proof complete;
+- historical source generation remained byte-immutable;
+- unnamed unknown transport remained byte-for-byte preserved;
+- known payload remained preserved;
+- LAB-029 prerequisite cache proof completed `Missing -> Rebuild -> Valid -> Stale -> Rebuild -> Valid`;
+- owned proof-fixture cleanup and post-cleanup absence verified;
+- temporary proof state removed;
+- repository clean/synchronized after implementation commit.
+
+M5 remains open. The full direct-scene Chronicle Save Laboratory is **ESV-M5-06**, remains inactive, and requires separate activation before LAB-001 through LAB-032 execution.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.

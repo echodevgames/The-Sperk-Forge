@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.52.0
-**Completed checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.53.0
+**Completed checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites — ACTIVE / AUTHORIZED
-**Status:** M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 active from clean M5-04 closeout baseline `1111b46`; incoming focused Chronicle floor `746 / 746`; M5 remains open
+**Current checkpoint:** None active — ESV-M5-05 complete; ESV-M5-06 Save Laboratory not activated
+**Status:** M4 complete; ESV-M5-01 through M5-05 complete; implementation `ad715c3`; focused Chronicle Editor `753 / 753`; M5 remains open; M5-06 not activated
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -1040,3 +1040,65 @@ M5-05 does **not** authorize:
 - LAB-001 through LAB-032 execution.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** until later gates produce direct evidence.
+
+
+## ESV-M5-05 closeout
+
+**Activation:** `94c33a3`
+**Implementation:** `ad715c3`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.53.0 / ESV-D-041
+**Focused Chronicle Editor:** **753 / 753 passed, 0 failed**
+**Incoming floor:** **746 / 746**
+**Net-new focused tests:** **7**
+**Implementation scope:** **33 files / 4118 insertions / 3 deletions**
+
+### Automated result
+
+M5-05 compiled cleanly and the full focused Chronicle Editor assembly passed **753 / 753**.
+
+### LAB-029 prerequisite — derived catalog-cache proof
+
+Manual proof completed the full required chain:
+
+1. absent production root -> `Missing`, `0` durable slots, `0` cached entries, Preview zero-write, Rebuild disabled;
+2. ownership-marked disposable root with one technical slot -> `Missing`, `1` durable slot, `0` cached entries;
+3. explicit **Rebuild Catalog Cache** -> `Valid`, `1` durable slot, `1` cached entry, matching durable/cache fingerprints;
+4. proof helper advanced durable head through normal immutable-generation publication **without touching `catalog.cache.json`**;
+5. Preview -> `Stale`, `1` durable slot, `1` cached entry, durable/cache fingerprints differed;
+6. explicit Rebuild -> `Valid` again with matching fingerprints and `Last Rebuild: Succeeded = Yes`.
+
+This proves `catalog.cache.json` remains derived acceleration and stale cache does not supersede bounded head/manifest truth.
+
+### LAB-016 prerequisite — exact unknown-payload prune proof
+
+The owned disposable fixture contained exactly **1 known + 2 unknown** stored payload entries.
+
+Preview proved:
+- exact requested ID only;
+- slot/source generation bound;
+- source head/manifest/payload provenance bound;
+- expiration recorded;
+- **zero durable writes** before Confirm.
+
+Confirm proved:
+- `Status: Succeeded`;
+- `Pruned Count: 1`;
+- `Remaining Unknown Count: 1`;
+- new published generation differs from source: **YES**;
+- historical source manifest/payload bytes unchanged: **YES**;
+- named unknown removed: **YES**;
+- unnamed unknown transport preserved byte-for-byte: **YES**;
+- known payload preserved: **YES**;
+- generation published: **YES**;
+- head published: **YES**.
+
+### Cleanup
+
+The temporary ownership-marked production fixture was removed and post-cleanup absence was verified. Temporary proof tooling, disposable configuration state, and Unity solution noise were removed/restored before the implementation commit. Final repository state was committed and pushed clean at `ad715c3`.
+
+### Gate state
+
+- ESV-M5-05: **Complete**.
+- M5: **Open**.
+- ESV-M5-06 Save Laboratory: **Not activated**.
+- R4 registry: **61 Complete / 39 Deferred / 0 Blocked**.

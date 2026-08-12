@@ -4,9 +4,9 @@
 **Package ID:** `com.echodevgames.echo-save`
 **Milestone:** M5 — Tooling and Laboratory
 **Checkpoint:** ESV-M5-05
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `1111b46` — `Close out ESV-M5-04 QA recovery preview and support tooling`
-**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.52.0 / ESV-D-041
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.53.0 / ESV-D-041
 **Incoming focused Chronicle floor:** **746 / 746 passed, 0 failed**
 **Unity baseline:** 6000.3.8f1
 
@@ -227,3 +227,55 @@ M5-05 closes only when:
 - repository clean.
 
 After M5-05 closeout, **M5-06 Save Laboratory** becomes eligible for separate activation.
+
+
+## 9. Closeout record
+
+**Activation commit:** `94c33a3`
+**Implementation commit:** `ad715c3`
+**Final focused Chronicle Editor gate:** **753 / 753 passed, 0 failed**
+**Net-new focused tests:** **7**
+**Implementation scope:** **33 files / 4118 insertions / 3 deletions**
+
+### Automated closeout
+
+The incoming **746 / 746** floor remained green and the discovered focused Chronicle Editor suite closed at **753 / 753** with no failures.
+
+### LAB-029 prerequisite closeout
+
+The derived-cache manual chain passed:
+
+`Missing -> Rebuild -> Valid -> durable head advance without cache maintenance -> Stale -> Rebuild -> Valid`
+
+Evidence included:
+- missing-root Preview zero-write and Rebuild disabled;
+- existing owned root with one durable slot and no cache;
+- explicit cache publication only after durable catalog truth;
+- matching durable/cache fingerprints while Valid;
+- deliberate head change detected as Stale while cache stayed untouched;
+- explicit rebuild returned cache to Valid with matching fingerprints.
+
+### LAB-016 prerequisite closeout
+
+The disposable fixture contained one known and two unknown stored payload entries. Exact-ID prune Preview was zero-write and bound slot/source/provenance/expiry. Confirm succeeded and proved:
+- exactly one named unknown entry pruned;
+- one unnamed unknown remained;
+- new generation differed from source;
+- historical source manifest/payload bytes remained unchanged;
+- unnamed unknown transport remained byte-for-byte identical;
+- known payload remained;
+- generation publication succeeded;
+- head publication succeeded.
+
+### Cleanup closeout
+
+The ownership-marked production proof fixture was removed with post-cleanup absence verification. Temporary proof-helper source/meta, disposable configuration state, and Unity solution noise were removed/restored. The implementation was committed/pushed clean at `ad715c3`.
+
+### Final gate
+
+All M5-05 closeout conditions are satisfied.
+
+- **ESV-M5-05: Complete**
+- **M5: Open**
+- **ESV-M5-06 Save Laboratory: Not activated**
+- **R4 registry: 61 Complete / 39 Deferred / 0 Blocked**

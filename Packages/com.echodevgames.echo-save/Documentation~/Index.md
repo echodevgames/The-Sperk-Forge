@@ -95,6 +95,24 @@ The next eligible package milestone is M5, but it requires its own authority/act
 
 Chronicle M4 remains **Complete**.
 
-`ESV-M5-01` through `ESV-M5-04` are **Complete**. M5 remains open. M5-05 is not active and requires its own bounded authority/activation checkpoint.
+`ESV-M5-01` through `ESV-M5-05` are **Complete**. M5 remains open. M5-06 Save Laboratory is not active and requires its own bounded authority/activation checkpoint.
 
-The current focused Chronicle Editor floor is **746 / 746**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-03 does not reclassify later Simulator/Laboratory, performance/stress, integration/adoption, or release rows.
+The current focused Chronicle Editor floor is **753 / 753**. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**; M5-03 does not reclassify later Simulator/Laboratory, performance/stress, integration/adoption, or release rows.
+
+
+## ESV-M5-05 completion
+
+`ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites` is **Complete**.
+
+Final evidence:
+- activation `94c33a3`;
+- implementation `ad715c3`;
+- focused Chronicle Editor **753 / 753 passed, 0 failed**;
+- **7** net-new focused tests;
+- **33 files / 4118 insertions / 3 deletions**;
+- LAB-016 prerequisite exact unknown-prune Preview/Confirm proof complete;
+- LAB-029 prerequisite `Missing -> Rebuild -> Valid -> Stale -> Rebuild -> Valid` catalog-cache proof complete;
+- ownership-marked disposable fixture cleanup verified;
+- repository clean and synchronized after implementation commit.
+
+M5 remains open. The full Chronicle Save Laboratory is **ESV-M5-06** and remains inactive until separately activated.
