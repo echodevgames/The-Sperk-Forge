@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-05 prerequisite slice complete; M5-06 Save Laboratory not activated
-**Current checkpoint:** None active — ESV-M5-05 complete; ESV-M5-06 Save Laboratory not activated
+**Current focus:** Chronicle M5 — M5-06 minimal direct-scene Save Laboratory active
+**Current checkpoint:** ESV-M5-06 — Minimal Direct-Scene Save Laboratory — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1121,3 +1121,14 @@ LAB-029 prerequisite evidence completed the derived cache chain `Missing -> Rebu
 The ownership-marked production proof fixture was removed and post-cleanup absence was verified. Temporary proof tooling/disposable configuration/Unity solution noise were removed before implementation commit.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open. **ESV-M5-06 Save Laboratory is not activated.**
+
+
+## ESV-M5-06 activation
+
+**Planning baseline:** `868b17f`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.54.0 / ESV-D-042
+**Incoming focused Chronicle floor:** **753 / 753 passed, 0 failed**
+
+M5-06 is deliberately the smallest useful Chronicle direct-scene engineering Lab. One tiny Sperk-themed persisted participant, crude controls/readouts, deterministic fixtures, and a visible evidence console are enough. It must not establish production UI architecture or depend on Looking Glass/Resonance.
+
+The later Chronicle Reference Showcase owns polished examples of recognizable save-system formats after the suite presentation packages are available.

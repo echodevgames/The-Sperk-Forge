@@ -53,6 +53,9 @@ M5-01 now provides the package Editor-only Setup and Validator foundation. Setup
 
 **ESV-M5-05 is complete.** Chronicle now includes an explicit exact-ID unknown-payload prune workflow and a derived rebuildable `catalog.cache.json`. Prune is Preview/Confirm, source-generation/provenance bound, expiring, one-use, and publishes a new immutable generation without rewriting historical generations or deleting known/claimed participant data. The catalog cache remains acceleration only: bounded head/manifest truth is authoritative, missing/corrupt/stale/incompatible cache falls back to durable rebuild, and cache-publication failure cannot fabricate a catalog/save failure. The closing focused Chronicle Editor gate passed **753 / 753**, with **0 failed**. Manual prerequisite evidence completed LAB-016 exact unknown prune and LAB-029 `Missing -> Rebuild -> Valid -> Stale -> Rebuild -> Valid` cache proof.
 
+**ESV-M5-06 is now active** as the Chronicle Save Laboratory: a deliberately minimal direct-scene engineering verification harness. The Laboratory exists to make Chronicle's real runtime behavior visibly provable to a human through crude deterministic controls and evidence readouts. It is **not** a consumer-facing save-menu example, does not establish reusable UI architecture, does not demonstrate every supported slot-policy presentation, and must not create a dependency on the future Looking Glass (`EchoUI`) package. Rich player-facing save-system examples remain deferred to the later Chronicle Reference Showcase, ideally after Looking Glass and Resonance are available.
+
+
 
 
 It still does **not** include automatic recovery fallback, cleanup/quarantine, permanent erase, public restore-from-trash, direct-scene Laboratory content, LAB-001 through LAB-032 full execution, scene travel, peer bridges, or clean-project/release qualification. **M5 remains open and M5-06 Save Laboratory is not active.**

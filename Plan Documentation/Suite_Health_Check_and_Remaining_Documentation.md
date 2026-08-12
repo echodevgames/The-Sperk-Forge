@@ -2,7 +2,7 @@
 
 **Updated:** August 11, 2026
 **Completed package checkpoint:** ESV-M5-05 – Chronicle Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-05 complete; implementation `ad715c3`; focused Chronicle Editor `753 / 753`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-06 Save Laboratory not activated
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 minimal direct-scene Save Laboratory active from `868b17f`; incoming focused Chronicle `753 / 753`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-05 complete; exact unknown-prune + derived catalog-cache prerequisites proven; focused Chronicle `753 / 753`; M5 open; M5-06 inactive** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 minimal direct-scene Save Laboratory active; incoming focused Chronicle `753 / 753`; M5 open** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -308,3 +308,8 @@ The full Chronicle Save Laboratory is now **M5-06**, remains inactive, and still
 M5 remains open. The full direct-scene Chronicle Save Laboratory is **ESV-M5-06**, remains inactive, and requires separate activation before LAB-001 through LAB-032 execution.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+
+## Chronicle M5-06 activation state
+
+`ESV-M5-06 — Minimal Direct-Scene Save Laboratory` is **Active / Authorized** from clean baseline `868b17f`. The Lab is an engineering control panel, not a consumer save-menu showcase. Polished Chronicle save-format examples remain deferred to the later Reference Showcase after Looking Glass and preferably Resonance exist.

@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.53.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.54.0
 **Completed checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** None active — ESV-M5-05 complete; ESV-M5-06 Save Laboratory not activated
-**Status:** M4 complete; ESV-M5-01 through M5-05 complete; implementation `ad715c3`; focused Chronicle Editor `753 / 753`; M5 remains open; M5-06 not activated
+**Current checkpoint:** ESV-M5-06 — Minimal Direct-Scene Save Laboratory — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 through M5-05 complete; ESV-M5-06 active from clean M5-05 closeout baseline `868b17f`; incoming focused Chronicle floor `753 / 753`; M5 remains open
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -1102,3 +1102,29 @@ The temporary ownership-marked production fixture was removed and post-cleanup a
 - M5: **Open**.
 - ESV-M5-06 Save Laboratory: **Not activated**.
 - R4 registry: **61 Complete / 39 Deferred / 0 Blocked**.
+
+
+## ESV-M5-06 activation
+
+**Clean planning baseline:** `868b17f`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.54.0 / ESV-D-042
+**Incoming focused Chronicle floor:** **753 / 753 passed, 0 failed**
+
+The Save Laboratory is a **minimal direct-scene engineering verification harness**. Its job is to let a human press obvious controls and visibly prove real Chronicle behavior outside NUnit.
+
+Authority locks:
+- one isolated package-owned Lab scene;
+- one tiny deterministic persisted proof participant;
+- simple visible Save -> mutate unsaved -> Load proof;
+- minimal package-owned controls/readouts;
+- IMGUI/`OnGUI` is explicitly acceptable if it keeps presentation disposable;
+- restrained Systems Foundry/Sperk comic relief is allowed in sample-owned labels/status text;
+- LAB-001 through LAB-032 may be grouped behind a small set of engineering controls and deterministic fixtures;
+- production save data remains isolated from Laboratory state;
+- Looking Glass and Resonance are not dependencies.
+
+Suggested proof-state flavor includes primitive fields such as `Sperk Level`, `Galactic Rupees`, `Anvil Temperature`, `Has Forbidden Key`, and `Reality Damage`. Exact labels may change, but the state must remain tiny and obvious.
+
+The Laboratory is **not** a polished save menu, UI framework, fake game, or demonstration of every slot-policy presentation. Rich single-slot, three-slot fantasy-adventure, configurable fixed-slot, and broad multi-slot examples belong to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are packaged.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** until direct evidence supports later reconciliation.
