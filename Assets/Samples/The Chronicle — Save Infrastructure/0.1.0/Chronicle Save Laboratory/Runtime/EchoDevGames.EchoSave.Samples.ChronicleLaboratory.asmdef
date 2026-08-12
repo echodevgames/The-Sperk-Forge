@@ -1,0 +1,16 @@
+{
+  "name": "EchoDevGames.EchoSave.Samples.ChronicleLaboratory",
+  "rootNamespace": "EchoDevGames.EchoSave.Samples.ChronicleLaboratory",
+  "references": [
+    "EchoDevGames.EchoSave.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

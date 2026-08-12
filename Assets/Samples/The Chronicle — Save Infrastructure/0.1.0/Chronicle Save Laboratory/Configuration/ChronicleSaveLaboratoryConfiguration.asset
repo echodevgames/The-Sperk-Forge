@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5a3be862404fcc9bb66c4fd9cd4868, type: 3}
+  m_Name: ChronicleSaveLaboratoryConfiguration
+  m_EditorClassIdentifier: EchoDevGames.EchoSave.Runtime::EchoDevGames.EchoSave.EchoSaveConfiguration
+  schemaVersion: 3
+  storageRootDirectoryName: EchoSave-M5-06-Laboratory
+  slotPolicyMode: 2
+  fixedSlotCount: 4
+  configuredSlotLimit: 8
+  profileSafetyLimit: 8
+  maxTotalGenerations: 5
+  serializerProviderId: echodevgames.unity-json
+  storageProviderId: echodevgames.local-file
+  catalogScanLimit: 64
+  retentionDiscoveryLimit: 64
+  recoveryDiscoveryLimit: 64
+  recoveryPolicyMode: 0
+  fixedSlotTemplates: []
