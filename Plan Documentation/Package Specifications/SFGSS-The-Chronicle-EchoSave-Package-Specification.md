@@ -1,7 +1,7 @@
 # The Chronicle – Save Infrastructure Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOSAVE-001
-**Specification version:** 1.51.0
+**Specification version:** 1.52.0
 **Status:** Approved
 **Technical package name:** EchoSave
 **Public title:** The Chronicle – Save Infrastructure
@@ -20,7 +20,7 @@
 
 > “Let what must endure be recorded without chaining the game to the record.”
 
-> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 through ESV-M5-04 are complete. ESV-M5-04 closed at implementation `577dc01` under ESV-D-040 with focused Chronicle Editor `746 / 746`, bounded Test Data Preview/Generate/no-clobber/Cleanup proof, exact-target Failure Simulator Preview/Apply/verified Cleanup proof, preview-only Recovery Planner proof with no Apply/Recover control, and payload-free Redacted Snapshot export/privacy proof. Sandbox mutation remains isolated from production; Recovery Planner remains non-mutating; support export remains payload-free and redacted. Persistent cache/cleanup and direct-scene Save Laboratory work remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open; M5-05 requires separate activation.
+> **Approval rule:** This specification is approved as package authority. Chronicle M4 remains complete. ESV-M5-01 through ESV-M5-04 are complete. ESV-M5-05 is **Active / Authorized** from clean baseline `1111b46` under ESV-D-041. M5-05 closes two already-approved Laboratory/MVP prerequisites: exact plan-bound unknown-payload prune and a derived rebuildable `catalog.cache.json`. Prune may remove only explicitly named still-unknown entries by publishing a new immutable generation; it never rewrites history or removes known participant data. The catalog cache is acceleration only; heads/manifests remain authority and missing/corrupt/stale cache always falls back to bounded rebuild. The earlier shorthand that M5-05 would directly be the Save Laboratory is superseded because LAB-016 and LAB-029 require these capabilities first. The full Chronicle Save Laboratory moves to M5-06 and remains inactive. Production quarantine cleanup, trash restore, permanent erase, automatic recovery, generic queues, automatic autosave triggers, and permission-provider wiring remain separately gated. The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**. M5 remains open.
 
 ---
 
@@ -83,6 +83,7 @@
 | 1.49.0 | 2026-08-11 | Approved | Closed `ESV-M5-03` under ESV-D-039. Activation `e805ae3`; implementation `9c3771c`; focused Chronicle Editor `735 / 735`, `0` failed, adding `11` focused tests over the `724 / 724` floor. Recorded the exact implementation scope as `26 files` / `2419` insertions. Manual proof confirmed Browser missing-root/no-create `SucceededEmpty`, a valid current-only production Migration Graph with zero registered edges for envelope/manifest/payload/head at `1.0.0`, and Generation Inspector over one real disposable committed generation reported `CURRENT`, `Healthy`, `Committed`, manifest `1.0.0 -> 1.0.0`, no in-memory migration, and `0 participants / 238 bytes`. Temporary proof slot/root/seeder/configuration were removed and final repository verification was clean at `9c3771c`. M5 remains open; M5-04 is not activated. | Jesse “Echo” Adams |
 | 1.50.0 | 2026-08-11 | Approved | Activated `ESV-M5-04` from clean M5-03 closeout baseline `ffff18f` with incoming focused Chronicle floor `735 / 735`. Added ESV-D-040: Failure Simulator and bounded Test Data Generator are sandbox-only and must fail closed on production-root collisions; Recovery Planner is preview-only and may not execute recovery/head mutation; Redacted Snapshot Exporter is explicit-action, bounded, payload-free, omits/redacts full local paths, and redacts/hashes technical slot identity in support mode. Persistent cache/cleanup, destructive repair operations, direct-scene Save Laboratory work, and LAB-001 through LAB-032 remain separately gated. | Jesse “Echo” Adams |
 | 1.51.0 | 2026-08-11 | Approved | Closed `ESV-M5-04` under ESV-D-040. Activation `df3c30b`; implementation `577dc01`; focused Chronicle Editor `746 / 746`, `0` failed, adding `11` focused tests over the `735 / 735` floor. Recorded exact implementation scope as `31 files` / `3206` insertions. Manual proof confirmed bounded deterministic Test Data Preview/Generate/no-clobber/Cleanup; exact-target Failure Simulator `Truncate Manifest` Preview/Apply/verified Cleanup; preview-only Recovery Planner absent-root behavior with no Apply/Recover control; and explicit payload-free Redacted Snapshot JSON export with raw slot ID, full local path, and participant payload-content markers absent. A pre-commit compile correction replaced nonexistent `EffectiveTechnicalSlotCapacity` with existing `EffectiveCapacity`; the corrected source is what passed the closing gate and was committed. M5 remains open; M5-05 is not activated. | Jesse “Echo” Adams |
+| 1.52.0 | 2026-08-11 | Approved | Activated `ESV-M5-05` from clean M5-04 closeout baseline `1111b46` with incoming focused Chronicle floor `746 / 746`. Added ESV-D-041: close the Laboratory prerequisites before activating the Laboratory. M5-05 owns explicit source-bound exact-ID unknown-payload prune via new immutable-generation publication plus derived rebuildable `catalog.cache.json` that never supersedes head/manifest authority. Missing/corrupt/stale/incompatible cache rebuilds from bounded durable truth; cache write failure is maintenance-only. Earlier shorthand naming M5-05 as the Save Laboratory is superseded because LAB-016 and LAB-029 depend on these still-missing capabilities; full Save Laboratory moves to M5-06. | Jesse “Echo” Adams |
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Chronicle – Save Infrastructure
@@ -1944,6 +1945,7 @@ Project-specific migration tooling must:
 | ESV-D-038 | M5-02 completes the project-authoring side of Chronicle Setup through explicit schema evolution and safe repair previews. `EchoSaveConfiguration` may advance to schema 3 to represent the already-approved configuration domains (slot policy, retention, provider selection, limits, recovery policy, and optional fixed-slot authoring metadata), but a field may become user-authorable only when Runtime or Editor tooling consumes that value as real truth. Schema-1/schema-2 compatibility is read-only and deterministic; runtime never rewrites assets. Editor upgrades/repairs are selected, previewed, explicit, Undo/backup-safe where possible, and fail closed when target authority or data safety is ambiguous | Approved | M5-01 proved the safety shell but intentionally stopped at create-only schema-2 authoring. The next risk is editing/upgrading real project assets; one bounded authority must prevent convenience tooling from becoming silent migration or destructive repair | M5-02 may change Runtime configuration/policy types only as needed to make schema-3 authored values truthful, and may expand Setup/Validator tests. It may not change save document versions, participant contracts, `IEchoSaveService` operation semantics, immutable publication/recovery truth, scene/lifetime authority, or mutate production save data. Browser/Simulator/Laboratory remain later | No |
 | ESV-D-039 | M5-03 establishes a strictly read-only inspection layer: Save Browser, Generation Inspector, and Migration Graph. The Browser consumes actual Chronicle catalog/slot truth; the Inspector reads immutable generation/package-document evidence; the Graph reflects registered migration edges and reachable paths. Additive runtime DTO/query surfaces may expose already-owned truth without adding mutation authority. Unsupported-newer, missing migration, corrupt/incomplete, stale-head, and recovery-candidate states must remain explicit | Approved | M5-02 completed project authoring/repair. The next usability risk is observing durable save state without accidentally turning inspection into repair or recovery | M5-03 may add Editor windows/services/tests and narrow read-only runtime query models. It may not mutate save/project state, execute recovery, alter package document versions, change participant contracts, or activate simulator/laboratory work | No |
 | ESV-D-040 | M5-04 separates QA mutation from production truth: Failure Simulator and Test Data Generator may mutate only an isolated sandbox; Recovery Planner remains read-only/preview-only; Redacted Snapshot Exporter may emit bounded support diagnostics but no participant payload contents, full local filesystem paths, or raw technical slot identity by default | Approved | M5-03 made production state observable. The next risk is tooling that intentionally creates bad data or packages support evidence; those capabilities need explicit sandbox/privacy fences before Laboratory execution | M5-04 may add Editor tooling, sandbox profiles/fixtures, preview models, and payload-free support export. It may not target production save data with simulation/test generation, execute recovery, rewrite heads, permanently erase/quarantine/restore, introduce persistent catalog cache, or activate the Save Laboratory | No |
+| ESV-D-041 | M5-05 closes two pre-Laboratory MVP gaps before scene/sample proof: explicit unknown-payload prune is a plan-bound exact-ID destructive operation that publishes a new immutable generation, while `catalog.cache.json` is derived acceleration only and must be safely rebuildable from heads/manifests | Approved | LAB-016 requires explicit prune and LAB-029 requires catalog-cache rebuild. Activating the Laboratory before those capabilities exist would knowingly create an acceptance matrix that cannot close truthfully | M5-05 may add public/internal prune plan/result composition, source-bound confirmation, derived cache schema/read/write/rebuild coordination, Editor cache Preview/Rebuild tooling, and focused tests. It may not rewrite committed generations, prune claimed/known entries, treat cache as authority, add quarantine/incomplete cleanup, restore trash, permanently erase, activate automatic recovery, generic queues, automatic autosave triggers, permission-provider wiring, or add Save Laboratory scene/sample content. The full Laboratory becomes M5-06 | No |
 ### 27.2 Release-blocking questions
 
 None. Exact filesystem replacement/flush behavior, package dependency versions, performance budgets, and supported-platform matrix are implementation verification tasks, not unresolved authority decisions.
@@ -4413,3 +4415,113 @@ Pre-commit correction:
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **M5 remains open. M5-05 requires separate activation.**
+
+
+### 28.40 ESV-M5-05 Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites activation
+
+**Status:** Active / Authorized.
+
+**Milestone:** M5 — Tooling and Laboratory.
+
+**Clean planning baseline:** `1111b46` — `Close out ESV-M5-04 QA recovery preview and support tooling`.
+
+**Carried focused Chronicle regression floor:** **746 / 746 passed, 0 failed**.
+
+**Authority decision:** ESV-D-041.
+
+#### Sequencing correction
+
+Prior M5 documentation used shorthand that M5-05 would directly activate the Save Laboratory.
+
+That shorthand is superseded because the already-approved Laboratory matrix requires two capabilities that remain absent after M5-04:
+- **LAB-016:** explicitly prune one unknown entry;
+- **LAB-029:** rebuild `catalog.cache.json` and prove the slot list matches durable manifests.
+
+The corrected bounded sequence is:
+- **M5-05:** implement/prove these two prerequisites;
+- **M5-06:** activate the full direct-scene Chronicle Save Laboratory and reconcile LAB-001 through LAB-032.
+
+This is a checkpoint-order correction, not a change to package ownership or durability architecture.
+
+#### Explicit unknown-payload prune
+
+Unknown payload preservation remains the default.
+
+M5-05 may add a public/runtime prune workflow only under these rules:
+
+1. Preview/planning is read-only.
+2. A plan names exact opaque unknown participant IDs; wildcard/all-unknown pruning is not authorized.
+3. The plan binds:
+   - package/session authority;
+   - selected/target `SaveSlotId`;
+   - exact source current generation/provenance;
+   - exact requested unknown IDs;
+   - bounded expiry/one-use confirmation.
+4. Confirmation revalidates the source generation/provenance before any durable write.
+5. Every requested ID must still be unknown/unclaimed at confirmation time.
+6. Known/current participant IDs may never be removed through the unknown-prune surface.
+7. Unnamed unknown entries remain byte-for-byte preserved.
+8. Successful prune publishes a **new immutable generation** and then advances head using existing durable publication authority.
+9. No committed generation is edited in place.
+10. Stale, replayed, expired, ambiguous, or newly-claimed plans fail before publication.
+11. Mutation reuses existing root-local operation admission and does not create a generic queue.
+12. Result truth distinguishes no-op, rejected, publication failure, head failure, catalog/maintenance follow-up failure, and success.
+
+#### Derived `catalog.cache.json`
+
+`catalog.cache.json` is package-owned derived state, not durable slot authority.
+
+M5-05 cache rules:
+
+1. Durable heads/manifests always win.
+2. Missing cache is a normal cold-start condition.
+3. Corrupt/parse-failed cache is ignored and rebuilt.
+4. Unsupported/incompatible cache schema is ignored/rebuilt rather than blocking save access.
+5. Stale cache must be detected from bounded durable provenance/freshness evidence.
+6. A valid cache may accelerate catalog startup/listing only after validation.
+7. Rebuild derives entries from existing canonical slot discovery/head/current-manifest truth.
+8. Cache cannot convert a degraded/corrupt/missing durable slot into a healthy one.
+9. Cache write/replace happens only after live catalog truth exists.
+10. Cache write failure reports maintenance degradation but cannot fabricate rollback of a valid in-memory catalog or prior save operation.
+11. Partial/temp cache files never become sole authority.
+12. Cache size/count remains bounded by existing configuration discovery limits.
+13. Editor tooling may offer read-only Preview followed by explicit **Rebuild Catalog Cache**.
+14. Editor rebuild may replace only the derived cache file and may not alter slot/generation/head/payload documents.
+
+#### Required focused evidence
+
+At minimum:
+- prune Preview performs zero writes;
+- exact-ID plan carries source/provenance and requested IDs;
+- stale source rejects before publication;
+- newly claimed ID rejects before publication;
+- unnamed unknown entries remain byte-identical;
+- named unknown entry is absent only in the newly published generation;
+- historical source generation bytes are unchanged;
+- no-op/invalid/duplicate requested IDs are deterministic;
+- missing cache rebuilds correctly;
+- valid cache matches durable rebuild;
+- corrupt cache is ignored/rebuilt;
+- stale cache is invalidated by durable head/manifest change;
+- incompatible cache does not block catalog access;
+- cache-write failure leaves truthful live catalog intact;
+- explicit Editor rebuild Preview is zero-write;
+- explicit rebuild changes only `catalog.cache.json`;
+- LAB-016 and LAB-029 prerequisites have direct automated/manual evidence;
+- full focused Chronicle Editor suite remains green at actual discovered total and not below **746 / 746**.
+
+#### Explicitly out of scope
+
+M5-05 does not authorize:
+- direct-scene Save Laboratory content;
+- LAB-001 through LAB-032 execution as a complete matrix;
+- production quarantine/incomplete-generation cleanup;
+- public restore-from-trash;
+- permanent erase;
+- automatic/configured recovery fallback or recovery-on-load;
+- generic operation queues/capacity/overflow;
+- automatic timer/checkpoint autosave triggers;
+- permission-provider production facade wiring;
+- scene travel, peer bridges, service locator, or package-owned project-wide DDOL.
+
+M5 remains open after M5-05. **M5-06 is the full Chronicle Save Laboratory checkpoint and requires separate activation.**

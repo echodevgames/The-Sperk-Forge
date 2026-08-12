@@ -4,8 +4,8 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 11, 2026
-**Current focus:** Chronicle M5 — M5-04 Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling complete; M5-05 not activated
-**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — **COMPLETE**; no M5-05 checkpoint active
+**Current focus:** Chronicle M5 — M5-05 explicit unknown-payload prune and derived catalog cache/rebuild prerequisites active
+**Current checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites — **ACTIVE / AUTHORIZED**
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1071,3 +1071,34 @@ A pre-commit compile correction replaced the mistaken `SaveSlotPolicy.EffectiveT
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **ESV-M5-04 is Complete. M5 remains open. M5-05 requires separate activation.**
+
+
+## ESV-M5-05 activation
+
+**Planning baseline:** `1111b46`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.52.0 / ESV-D-041
+**Incoming focused Chronicle floor:** **746 / 746 passed, 0 failed**
+
+M5-05 is a prerequisite-completion slice, not the Laboratory itself.
+
+Authority locks:
+- unknown payload pruning requires an explicit source-bound Preview/plan and exact named unknown IDs;
+- Confirm must fail closed if source generation/provenance changes or a named ID becomes claimed/known;
+- successful prune creates a new immutable generation and preserves every unnamed unknown entry byte-for-byte;
+- committed historical generations are never edited;
+- `catalog.cache.json` is derived acceleration only and never durable slot authority;
+- missing/corrupt/stale/incompatible cache falls back to bounded head/manifest rebuild;
+- cache rebuild may replace only the cache;
+- cache write failure is reported as maintenance truth and cannot fabricate save/catalog rollback;
+- the Editor may expose Preview + explicit Rebuild Cache for LAB-029 preparation;
+- no production quarantine cleanup, trash restore, permanent erase, automatic recovery, or Laboratory scene is activated.
+
+### M5 sequence correction
+
+The earlier shorthand `M5-05 Save Laboratory` is superseded because the Laboratory acceptance matrix itself requires unimplemented LAB-016 unknown prune and LAB-029 catalog-cache rebuild.
+
+The corrected sequence is:
+- **M5-05:** prune/cache prerequisites;
+- **M5-06:** Chronicle Save Laboratory + LAB-001 through LAB-032.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.

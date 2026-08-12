@@ -3,11 +3,11 @@
 **Package:** `com.echodevgames.echo-save`
 **Public title:** The Chronicle — Save Infrastructure
 **Package version:** `0.1.0`
-**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.51.0
+**Specification:** SFGSS-PKG-ECHOSAVE-001 v1.52.0
 **Completed checkpoint:** ESV-M5-03 — Save Browser, Generation Inspector, and Migration Graph
 **Completed milestone:** M4 — Slots, Save Operations, Recovery, Reconciliation, and Package-Document Migration
-**Current checkpoint:** ESV-M5-04 — Failure Simulator, Recovery Planner, bounded Test Data, and support/privacy tooling — COMPLETE; no M5-05 checkpoint active
-**Status:** M4 complete; ESV-M5-01 through M5-04 complete; implementation `577dc01`; focused Chronicle Editor `746 / 746`; M5 remains open; no M5-05 slice active
+**Current checkpoint:** ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites — ACTIVE / AUTHORIZED
+**Status:** M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 active from clean M5-04 closeout baseline `1111b46`; incoming focused Chronicle floor `746 / 746`; M5 remains open
 
 **Authority reconciliation:** SFGSS-PKG-ECHOSAVE-001 v1.47.0 closes ESV-M5-02 under ESV-D-038. The checkpoint advances current authoring to schema 3 while retaining non-mutating schema-1/schema-2 compatibility, resolves one immutable runtime policy snapshot, extends Setup to explicit edit/upgrade plus selected root-reference repair, records `724 / 724` focused Chronicle Editor evidence and manual Preview/Apply/Undo/Validator proof, retains the R4 registry at `61 Complete / 39 Deferred / 0 Blocked`, and leaves M5 open with no M5-03 implementation activated.
 
@@ -981,3 +981,62 @@ Manual evidence:
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
 
 **ESV-M5-04 is Complete. M5 remains open. M5-05 is not activated.**
+
+
+## ESV-M5-05 activation
+
+**Clean planning baseline:** `1111b46` — `Close out ESV-M5-04 QA recovery preview and support tooling`
+**Authority:** SFGSS-PKG-ECHOSAVE-001 v1.52.0 / ESV-D-041
+**Incoming focused Chronicle floor:** **746 / 746 passed, 0 failed**
+**Milestone:** M5 — Tooling and Laboratory
+
+M5-05 closes two existing MVP/Laboratory prerequisites before the full Save Laboratory is activated:
+
+1. **Explicit unknown-payload prune**
+   - prune is destructive only to explicitly named opaque unknown participant IDs;
+   - no wildcard/all-unknown convenience operation;
+   - read-only Preview/plan first;
+   - plan binds package/session, slot, exact source generation/provenance, and exact requested unknown IDs;
+   - Confirm revalidates source/provenance and that every named ID is still unknown/unclaimed;
+   - successful prune publishes a new immutable generation using existing save durability/head-last authority;
+   - prior generations remain byte-immutable;
+   - known/current participant payloads are never removed by unknown prune;
+   - unknown IDs not named in the plan remain byte-for-byte preserved;
+   - stale/replayed/expired plans fail closed before publication;
+   - operation reuses root-local mutation admission and does not add a generic queue.
+
+2. **Derived persistent catalog cache**
+   - `catalog.cache.json` is package-owned but derived/rebuildable;
+   - heads/manifests remain the durable authority;
+   - missing cache is a cold start, not an error;
+   - corrupt, stale, incompatible, or internally inconsistent cache is ignored and rebuilt from bounded canonical discovery;
+   - valid cache may accelerate startup/listing only after its provenance/freshness checks pass;
+   - cache write/replace failure is maintenance truth and cannot invalidate an already-truthful live catalog;
+   - cache must never make a missing/corrupt slot look healthy;
+   - cache may be rebuilt explicitly from Editor tooling after Preview;
+   - rebuild may replace only the derived cache file, never generation/head/payload documents.
+
+### Sequencing correction
+
+Earlier M5 notes used shorthand that M5-05 would directly be the Save Laboratory. That shorthand is superseded.
+
+The specification's own Laboratory matrix requires:
+- **LAB-016** — explicitly prune one unknown entry;
+- **LAB-029** — rebuild catalog cache and match manifest truth.
+
+Those capabilities are not yet implemented at M5-04 closeout. Therefore the honest sequence is:
+- **M5-05:** unknown-prune + derived-cache prerequisites;
+- **M5-06:** full direct-scene Chronicle Save Laboratory and LAB-001 through LAB-032 evidence.
+
+M5-05 does **not** authorize:
+- quarantine/incomplete-generation production cleanup;
+- restore-from-trash public API;
+- permanent erase;
+- automatic recovery fallback/recovery-on-load;
+- generic operation queues;
+- automatic autosave timers;
+- permission-provider production wiring;
+- direct-scene Laboratory/sample scene content;
+- LAB-001 through LAB-032 execution.
+
+The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked** until later gates produce direct evidence.

@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M5-03 – Chronicle Save Browser, Generation Inspector, and Migration Graph
-**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-04 complete; M5-04 implementation `577dc01`; focused Chronicle Editor `746 / 746`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open; M5-05 not activated
+**Completed package checkpoint:** ESV-M5-04 – Chronicle QA/Recovery Preview/Support Tooling
+**Current implementation state:** First Light complete/frozen; Chronicle M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 prune/cache prerequisites active from `1111b46`; incoming focused Chronicle floor `746 / 746`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M5 open
 
 ## Current health
 
@@ -22,7 +22,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
-| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-04 complete; sandbox QA/support tooling proven; focused Chronicle `746 / 746`; M5 open; M5-05 inactive** |
+| Chronicle implementation | **M4 complete; ESV-M5-01 through M5-04 complete; ESV-M5-05 active for explicit unknown prune + derived catalog-cache prerequisites; incoming focused Chronicle `746 / 746`; M5 open** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | Not activated |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
@@ -251,7 +251,7 @@ The slice is intentionally divided by mutation boundary:
 - Recovery Planner may inspect production or sandbox recovery truth but remains preview-only.
 - Redacted support export may read bounded diagnostic/manifest health truth but exports no participant payload contents and redacts filesystem/slot identity by default.
 
-M5-05 Save Laboratory remains inactive and separately gated.
+The earlier shorthand that M5-05 would directly be Save Laboratory is superseded: M5-05 now closes LAB-016 unknown-prune and LAB-029 catalog-cache prerequisites; the full Save Laboratory moves to M5-06.
 
 
 ## Chronicle M5-04 closeout state
@@ -272,3 +272,16 @@ M5-05 Save Laboratory remains inactive and separately gated.
 M5 remains open. Persistent cache/cleanup and direct-scene Save Laboratory work remain separately gated. M5-05 is not active.
 
 The R4 registry remains **61 Complete / 39 Deferred / 0 Blocked**.
+
+
+## Chronicle M5-05 activation state
+
+`ESV-M5-05 — Explicit Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites` is **Active / Authorized** from clean baseline `1111b46`.
+
+This sequence correction is required by the existing Laboratory acceptance matrix:
+- LAB-016 cannot pass until explicit unknown-prune exists;
+- LAB-029 cannot pass until derived catalog-cache rebuild exists.
+
+M5-05 therefore closes those already-approved MVP prerequisites before scene/sample Laboratory work begins.
+
+The full Chronicle Save Laboratory is now **M5-06**, remains inactive, and still must prove LAB-001 through LAB-032 without touching production saves.
