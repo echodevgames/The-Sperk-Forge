@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoDevGames.EchoSave
@@ -44,6 +45,10 @@ namespace EchoDevGames.EchoSave
             DefaultDeletionPlanLifetime =
                 TimeSpan.FromMinutes(5);
 
+        internal static readonly TimeSpan
+            DefaultUnknownPrunePlanLifetime =
+                TimeSpan.FromMinutes(5);
+
         private EchoSaveConfiguration configuration;
         private EchoSaveRuntimePolicy runtimePolicy;
         private SaveSlotPolicy slotPolicy;
@@ -79,6 +84,9 @@ namespace EchoDevGames.EchoSave
 
         private SaveSlotDeletionCoordinator
             slotDeletionCoordinator;
+
+        private SaveUnknownPayloadPruneCoordinator
+            unknownPayloadPruneCoordinator;
 
         private PendingAutosaveRequest pendingAutosave;
         private long nextAutosaveTicketId;
@@ -246,6 +254,28 @@ namespace EchoDevGames.EchoSave
             await Awaitable.MainThreadAsync();
 
             return ConfirmDeleteSlotCore(
+                plan);
+        }
+
+        public async Awaitable<SaveUnknownPayloadPrunePlan>
+            PrepareUnknownPayloadPruneAsync(
+                SaveSlotId slotId,
+                IReadOnlyList<SaveParticipantId> participantIds)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return PrepareUnknownPayloadPruneCore(
+                slotId,
+                participantIds);
+        }
+
+        public async Awaitable<SaveUnknownPayloadPruneResult>
+            ConfirmUnknownPayloadPruneAsync(
+                SaveUnknownPayloadPrunePlan plan)
+        {
+            await Awaitable.MainThreadAsync();
+
+            return ConfirmUnknownPayloadPruneCore(
                 plan);
         }
 
@@ -604,6 +634,20 @@ namespace EchoDevGames.EchoSave
             ConfirmDeleteSlotSynchronouslyForTesting(
                 SaveDeletionPlan plan) =>
             ConfirmDeleteSlotCore(
+                plan);
+
+        internal SaveUnknownPayloadPrunePlan
+            PrepareUnknownPayloadPruneSynchronouslyForTesting(
+                SaveSlotId slotId,
+                IReadOnlyList<SaveParticipantId> participantIds) =>
+            PrepareUnknownPayloadPruneCore(
+                slotId,
+                participantIds);
+
+        internal SaveUnknownPayloadPruneResult
+            ConfirmUnknownPayloadPruneSynchronouslyForTesting(
+                SaveUnknownPayloadPrunePlan plan) =>
+            ConfirmUnknownPayloadPruneCore(
                 plan);
 
         internal int PendingAutosaveCountForTesting =>
@@ -1897,6 +1941,118 @@ namespace EchoDevGames.EchoSave
             }
         }
 
+        private SaveUnknownPayloadPrunePlan
+            PrepareUnknownPayloadPruneCore(
+                SaveSlotId slotId,
+                IReadOnlyList<SaveParticipantId> participantIds)
+        {
+            if (state !=
+                    EchoSaveServiceState.Ready ||
+                unknownPayloadPruneCoordinator == null)
+            {
+                return SaveUnknownPayloadPrunePlan.Failure(
+                    SaveUnknownPayloadPrunePlanStatus
+                        .ServiceNotReady,
+                    "ECHOSAVE-PRUNE-SERVICE",
+                    "The Chronicle must be Ready before unknown-payload prune Preview can be prepared.",
+                    slotId);
+            }
+
+            return unknownPayloadPruneCoordinator.Prepare(
+                slotId,
+                participantIds);
+        }
+
+        private SaveUnknownPayloadPruneResult
+            ConfirmUnknownPayloadPruneCore(
+                SaveUnknownPayloadPrunePlan plan)
+        {
+            if (state !=
+                EchoSaveServiceState.Ready)
+            {
+                bool admissionClosed =
+                    state ==
+                        EchoSaveServiceState.ShuttingDown ||
+                    state ==
+                        EchoSaveServiceState.Shutdown;
+
+                return SaveUnknownPayloadPruneResult.Failure(
+                    admissionClosed
+                        ? SaveUnknownPayloadPruneStatus
+                            .AdmissionClosed
+                        : SaveUnknownPayloadPruneStatus
+                            .ServiceNotReady,
+                    admissionClosed
+                        ? "ECHOSAVE-PRUNE-ADMISSION-CLOSED"
+                        : "ECHOSAVE-PRUNE-SERVICE",
+                    admissionClosed
+                        ? "The Chronicle is not accepting confirmed unknown-payload prune mutations after admission closed."
+                        : "The Chronicle must be Ready before confirmed unknown-payload prune can begin.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.SourceGenerationId);
+            }
+
+            if (unknownPayloadPruneCoordinator == null)
+            {
+                return SaveUnknownPayloadPruneResult.Failure(
+                    SaveUnknownPayloadPruneStatus
+                        .ServiceNotReady,
+                    "ECHOSAVE-PRUNE-SERVICE",
+                    "The Chronicle unknown-payload prune runtime is unavailable.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.SourceGenerationId);
+            }
+
+            SaveOperationAdmissionStatus admission =
+                saveOperationAdmission.TryAcquire(
+                    out SaveOperationAdmissionLease lease);
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Closed)
+            {
+                return SaveUnknownPayloadPruneResult.Failure(
+                    SaveUnknownPayloadPruneStatus
+                        .AdmissionClosed,
+                    "ECHOSAVE-PRUNE-ADMISSION-CLOSED",
+                    "The Chronicle is not accepting new mutating operations.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.SourceGenerationId);
+            }
+
+            if (admission ==
+                SaveOperationAdmissionStatus.Busy)
+            {
+                return SaveUnknownPayloadPruneResult.Failure(
+                    SaveUnknownPayloadPruneStatus.Busy,
+                    "ECHOSAVE-PRUNE-BUSY",
+                    "Another Chronicle mutating operation already owns the root-local admission lease. Unknown-payload prune was rejected as Busy and was not queued.",
+                    plan == null
+                        ? default
+                        : plan.SlotId,
+                    plan == null
+                        ? default
+                        : plan.SourceGenerationId);
+            }
+
+            using (lease)
+            {
+                return unknownPayloadPruneCoordinator.Confirm(
+                    plan);
+            }
+        }
+
         private SaveOperationResult SaveCore(
             SaveRequest request)
         {
@@ -2441,7 +2597,8 @@ namespace EchoDevGames.EchoSave
                 new SaveSlotCatalog(
                     storageBackend,
                     serializer,
-                    limits.CatalogScanLimit);
+                    limits.CatalogScanLimit,
+                    true);
 
             currentGenerationReader =
                 new SaveCurrentGenerationReader(
@@ -2499,6 +2656,21 @@ namespace EchoDevGames.EchoSave
                         storageBackend,
                         serializer,
                         limits.RetentionDiscoveryLimit);
+
+            unknownPayloadPruneCoordinator =
+                new SaveUnknownPayloadPruneCoordinator(
+                    slotCatalog,
+                    storageBackend,
+                    serializer,
+                    integrity,
+                    participantRegistry,
+                    unknownPayloadStore,
+                    publicationCoordinator,
+                    retentionCoordinator,
+                    retentionPolicy,
+                    Guid.NewGuid().ToString("N"),
+                    () => DateTimeOffset.UtcNow,
+                    DefaultUnknownPrunePlanLifetime);
 
             recoveryPlanBuilder =
                 new SaveRecoveryPlanBuilder(
@@ -2579,6 +2751,9 @@ namespace EchoDevGames.EchoSave
                 null;
 
             slotDeletionCoordinator =
+                null;
+
+            unknownPayloadPruneCoordinator =
                 null;
 
             technicalSlotCreationCoordinator =

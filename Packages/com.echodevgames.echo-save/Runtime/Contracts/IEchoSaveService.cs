@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoDevGames.EchoSave
@@ -63,6 +64,15 @@ namespace EchoDevGames.EchoSave
 
         Awaitable<SaveSlotDeleteResult> ConfirmDeleteSlotAsync(
             SaveDeletionPlan plan);
+
+        Awaitable<SaveUnknownPayloadPrunePlan>
+            PrepareUnknownPayloadPruneAsync(
+                SaveSlotId slotId,
+                IReadOnlyList<SaveParticipantId> participantIds);
+
+        Awaitable<SaveUnknownPayloadPruneResult>
+            ConfirmUnknownPayloadPruneAsync(
+                SaveUnknownPayloadPrunePlan plan);
 
         Awaitable<EchoSaveLifecycleResult> ShutdownAsync();
     }
