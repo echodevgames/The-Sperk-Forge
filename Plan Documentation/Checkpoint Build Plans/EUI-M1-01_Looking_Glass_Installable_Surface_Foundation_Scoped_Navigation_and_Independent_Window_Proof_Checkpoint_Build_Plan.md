@@ -178,3 +178,18 @@ After EUI-M1-01 is green and closed out, stop. Do not begin Motifs or the Builde
 - Manual direct-scene proof confirmed `main-menu -> settings -> Back -> main-menu` and independent `default-window` coexistence.
 - Implementation stat:  50 files changed, 5530 insertions(+), 14 deletions(-).
 - EUI-M1-01 is Complete. EUI-M1-02 is not activated.
+
+## EUI-M1-01 Final Recovery Reconciliation
+
+- Authority activation: `83d3f9e`.
+- Implementation: `e6b651f` (`50 files changed, 5530 insertions(+), 14 deletions(-)`).
+- Initial closeout commit: `4f94c3b`; the Green Path closeout generator encountered a documentation anchor mismatch after the implementation was safely pushed, so final reconciliation is intentionally adjacent rather than rewriting history.
+- Full EditMode regression: **1113 / 1113 passed, 0 failed**.
+- All seven required EUI-M1-01 focused tests passed.
+- Five-item manual Laboratory acceptance passed.
+- The authored Laboratory proved active/non-raycast organizational roots, exclusive `frontend` screen navigation, history Back, and independent-window coexistence.
+- The project Laboratory uses standard TMP UI labels. TMP Essential Resources are retained as project infrastructure; TMP Examples & Extras are not a Looking Glass sample requirement.
+- Test-result XML is evidence, not distributable sample content, and remains outside package `Samples~`.
+- Green Path lessons from this first execution are recorded for later workflow hardening; no new runtime capability is authorized by this reconciliation.
+
+**EUI-M1-01 is Complete. EUI-M1-02 remains not activated.**

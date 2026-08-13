@@ -58,3 +58,11 @@ In Play Mode:
 5. Toggle it again and the window closes without changing the current screen.
 
 Plain default Unity controls are correct. Do not polish this into the future showcase. Save the proof scene inside this imported sample folder; the Green Path closeout synchronizes the completed sample back to package-owned `Samples~`.
+
+## Project prerequisites and authoring notes
+
+- The Laboratory uses the project's normal modern Unity UI workflow, including TextMesh Pro labels when Unity creates TMP-backed controls.
+- If TMP-backed labels report missing resources, import **TMP Essential Resources** for the consuming project. **TMP Examples & Extras are not required.**
+- Organizational roots such as `Panel_WindowRoot` should remain active structural containers and should not block pointer input. A RectTransform-only root is ideal; if an Image is present, disable its Raycast Target unless the root is intentionally interactive.
+- Actual visible surfaces such as `Panel_MainMenu`, `Panel_SettingsMenu`, and `Panel_DefaultWindow` may use Images sized for their intended presentation/input area.
+- `UINavigationButton.Root Override` stays empty for this single-root Laboratory. `Navigate To` uses Target Surface Id, `Back` uses Target Scope Id, and `Toggle Surface` uses Target Surface Id.

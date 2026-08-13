@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 13, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass PKG-LEARN-008 complete and EUI-M1-01 activated
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass implementation not yet committed, with EUI-M1-01 active under Green Path from baseline `f57880a`
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M1-01 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M1-01 implemented at `e6b651f`, fully reconciled after Green Path closeout recovery
 
 ## Current health
 
@@ -23,7 +23,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — layered context, scoped screens, independent windows, stable IDs/registry, Motifs, primitives, Builder |
-| Looking Glass checkpoint | **EUI-M1-01 ACTIVE / AUTHORIZED** — first Green Path implementation |
+| Looking Glass checkpoint | **EUI-M1-01 COMPLETE** — activation `83d3f9e`; implementation `e6b651f`; full EditMode **1113 / 1113**; manual Laboratory **5 / 5** |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
@@ -361,3 +361,17 @@ The adjacent `b43e6bf` project commit separates retained project-owned showcase 
 - Polished Chronicle save-format examples remain deferred to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are packaged.
 
 This follows the existing suite requirement that release-ready scene-visible packages retain an independently importable sample/Standalone Test Lab; polished combined/project showcases do not substitute for isolated package proof.
+
+### Looking Glass EUI-M1-01 completion
+
+- `EchoUIRoot` provides bounded package-local authority and surface registration.
+- `UISurface` supports stable project-authored IDs and the initial `Screen` / `Window` roles used by the proof.
+- the `frontend` navigation scope proves `main-menu -> settings -> Back -> main-menu`;
+- `default-window` proves independent open/close coexistence without mutating the current frontend screen;
+- full EditMode regression evidence is **1113 / 1113 passed, 0 failed**;
+- five-item direct-scene manual acceptance passed;
+- the finished Laboratory is synchronized between imported project sample and package-owned `Samples~`;
+- normal TextMesh Pro UI labels are allowed; the repository carries TMP Essential Resources for the hand-authored project sample, while TMP Examples & Extras are not required;
+- Motifs, Builder tooling, external context/visibility rules, input-aware selection, and broader surface capabilities remain future work.
+
+**EUI-M1-02 is not activated.**

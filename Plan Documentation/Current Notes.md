@@ -1194,3 +1194,19 @@ The later Chronicle Reference Showcase owns polished examples of recognizable sa
 The project keeps imported package sample content separate from polished project-owned showcase content. UMBRA remains a First Light showcase and does not satisfy First Light's package-sample requirement. FL-M5-R1 completed the bounded follow-up and restored/hardened the package sample as `FirstLight_Boot_Splash_Laboratory`; UMBRA was never promoted into that role.
 
 For Chronicle, the current `Chronicle Save Laboratory` is intentionally the package sample/engineering harness. Rich player-facing Chronicle save-menu examples remain deferred to the later Reference Showcase after Looking Glass and preferably Resonance are available.
+
+## EUI-M1-01 closeout
+
+**Activation:** `83d3f9e`
+**Implementation:** `e6b651f`
+**Partial closeout:** `4f94c3b`
+**Full EditMode:** **1113 / 1113 passed, 0 failed**
+**Manual Laboratory:** **5 / 5 passed**
+
+Looking Glass now has its first installable surface/navigation foundation. The proof establishes package-local root authority, stable project-authored surface IDs, one exclusive `frontend` screen scope with history-based Back, and an independent `default-window` that can coexist without changing the active frontend screen.
+
+The hand-authored Laboratory is retained both as the imported project sample and package-owned `Samples~/LookingGlass_UI_Foundation_Laboratory/` content. Structural organizational roots are intentionally active and non-raycast; registered `UISurface` children own visibility. The Laboratory uses normal modern Unity UI authoring with TextMesh Pro labels and the project's TMP Essential Resources; TMP Examples & Extras are not part of the sample requirement.
+
+First Green Path execution exposed workflow hardening items: establish the incoming regression floor before implementation, prefer focused post-compile tests before the final full regression run, treat documentation-generator/anchor failures as fatal, sanitize Unity-authored YAML/meta whitespace before staging, keep exported test evidence outside distributable samples, and normalize evidence paths before CMD parsing. These are process lessons for subsequent Green Path kits; they do not reopen EUI-M1-01 runtime scope.
+
+**EUI-M1-01 is Complete. EUI-M1-02 is not activated.**
