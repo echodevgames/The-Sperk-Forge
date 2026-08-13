@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae684e58b784d9f9d0ac0f2ed708658, type: 3}
+  m_Name: LaboratoryImmediateSuccessStep
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Samples.StandaloneLab::EchoDevGames.EchoLaunch.Samples.StandaloneLab.LaboratoryImmediateSuccessStep
+  stepId: dd874e886a8a4c1297be1f3f30a7ec18
+  schemaVersion: 1
+  displayName: Immediate Success

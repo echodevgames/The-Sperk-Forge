@@ -9,9 +9,9 @@
   },
   "samples": [
     {
-      "displayName": "First Light Standalone Test Lab",
+      "displayName": "First Light Boot Splash Laboratory",
       "description": "Importable isolated laboratory for First Light startup, failure, duplicate-authority, splash, and direct-scene acceptance testing.",
-      "path": "Samples~/First Light Standalone Test Lab"
+      "path": "Samples~/FirstLight_Boot_Splash_Laboratory"
     }
   ],
   "author": {

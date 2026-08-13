@@ -12,10 +12,10 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
             "com.echodevgames.echo-launch";
 
         private const string SampleDisplayName =
-            "First Light Standalone Test Lab";
+            "First Light Boot Splash Laboratory";
 
         private const string SampleRelativePath =
-            "Samples~/First Light Standalone Test Lab";
+            "Samples~/FirstLight_Boot_Splash_Laboratory";
 
         private const string SampleAssemblyName =
             "EchoDevGames.EchoLaunch.Samples.StandaloneLab";

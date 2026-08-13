@@ -1,4 +1,4 @@
-# First Light Standalone Test Lab
+# First Light Boot Splash Laboratory
 
 This Unity Package Manager sample is the isolated acceptance laboratory for
 **First Light — Startup and Launch (`EchoLaunch`)**.

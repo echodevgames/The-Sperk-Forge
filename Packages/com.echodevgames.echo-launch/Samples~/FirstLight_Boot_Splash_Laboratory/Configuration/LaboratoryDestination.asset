@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15c457f5ce903cb4b92f6cf2d5e60ce4, type: 3}
-  m_Name: InvalidDestination
+  m_Name: LaboratoryDestination
   m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.LaunchDestination
-  destinationId: e29a66c4bf3d4fc1a8bbe8282f1e2576
+  destinationId: 65d9d1c104e645b89ac56fe8dbd86212
   schemaVersion: 1
-  displayName: Missing Laboratory Destination
+  displayName: First Light Laboratory Destination
   scenePath: "Assets/Samples/First Light \u2014 Startup and Launch/0.1.0/First Light
-    Standalone Test Lab/Scenes/Missing_Laboratory_Destination.unity"
+    Boot Splash Laboratory/Scenes/FirstLight_Destination_Lab.unity"

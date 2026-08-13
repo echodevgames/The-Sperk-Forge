@@ -71,6 +71,10 @@ namespace EchoDevGames.EchoLaunch
         private float pulseCycleSeconds =
             1f;
 
+        [SerializeField]
+        private SplashShakePreset shakePreset =
+            SplashShakePreset.None;
+
         /// <summary>
         /// Gets the stable diagnostic identity of this entry.
         /// </summary>
@@ -148,6 +152,12 @@ namespace EchoDevGames.EchoLaunch
             pulseCycleSeconds;
 
         /// <summary>
+        /// Gets the authored startup-only splash shake treatment.
+        /// </summary>
+        public SplashShakePreset ShakePreset =>
+            shakePreset;
+
+        /// <summary>
         /// Gets the authored fade/hold/fade duration before minimum-time
         /// expansion.
         /// </summary>
@@ -176,6 +186,9 @@ namespace EchoDevGames.EchoLaunch
             Enum.IsDefined(
                 typeof(SplashMotionStyle),
                 motionStyle) &&
+            Enum.IsDefined(
+                typeof(SplashShakePreset),
+                shakePreset) &&
             HasValidMotionDefinition;
 
         internal SplashEntry(
@@ -191,7 +204,9 @@ namespace EchoDevGames.EchoLaunch
             SplashMotionStyle authoredMotionStyle =
                 SplashMotionStyle.None,
             double authoredPulseMaximumScale = 1.05d,
-            double authoredPulseCycleSeconds = 1d)
+            double authoredPulseCycleSeconds = 1d,
+            SplashShakePreset authoredShakePreset =
+                SplashShakePreset.None)
         {
             entryId =
                 authoredEntryId;
@@ -258,6 +273,17 @@ namespace EchoDevGames.EchoLaunch
             pulseCycleSeconds =
                 ToSerializedPulseCycleSeconds(
                     authoredPulseCycleSeconds);
+
+            if (!Enum.IsDefined(
+                    typeof(SplashShakePreset),
+                    authoredShakePreset))
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(authoredShakePreset));
+            }
+
+            shakePreset =
+                authoredShakePreset;
         }
 
         public SplashEntry()

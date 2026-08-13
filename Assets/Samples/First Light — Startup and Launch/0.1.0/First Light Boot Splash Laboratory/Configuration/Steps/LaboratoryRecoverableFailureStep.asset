@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10001e6ebcd54655b351b6f4e587fd86, type: 3}
+  m_Name: LaboratoryRecoverableFailureStep
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Samples.StandaloneLab::EchoDevGames.EchoLaunch.Samples.StandaloneLab.LaboratoryRecoverableFailureStep
+  stepId: f9b09d7a701b430dbc66640fd6b2521b
+  schemaVersion: 1
+  displayName: Recoverable Failure

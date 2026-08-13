@@ -390,6 +390,11 @@ namespace EchoDevGames.EchoLaunch.Editor
                     .FindPropertyRelative(
                         "pulseCycleSeconds");
 
+            SerializedProperty shakeProperty =
+                entryProperty
+                    .FindPropertyRelative(
+                        "shakePreset");
+
             EditorGUILayout.PropertyField(
                 imageProperty,
                 new GUIContent(
@@ -452,6 +457,12 @@ namespace EchoDevGames.EchoLaunch.Editor
                     new GUIContent(
                         "Cycle Seconds"));
             }
+
+            EditorGUILayout.PropertyField(
+                shakeProperty,
+                new GUIContent(
+                    "Splash Shake",
+                    "Optional startup-only impact shake. Reduced Motion suppresses it completely."));
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(
@@ -548,6 +559,11 @@ namespace EchoDevGames.EchoLaunch.Editor
                 entryProperty,
                 "pulseCycleSeconds",
                 1f);
+
+            SetInt(
+                entryProperty,
+                "shakePreset",
+                (int)SplashShakePreset.None);
 
             entryProperty.isExpanded =
                 true;

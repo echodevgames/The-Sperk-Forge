@@ -147,3 +147,18 @@ Before commit:
 Stop after package sample identity/hierarchy hardening is committed, pushed, and documented.
 
 Do not begin Chronicle M6 or new First Light package work as part of this checkpoint.
+
+## Approved Scope Amendment - Splash Shake
+
+During FL-M5-R1 final sample verification, one bounded optional First Light presentation flourish was explicitly approved.
+
+- `SplashEntry` may author `SplashShakePreset.None`, `Subtle`, `Medium`, or `Nightmare`.
+- Shake affects only First Light's startup splash presentation surface, never the gameplay camera.
+- Shake is additive to the existing `SplashMotionStyle` setting, so Pulse and Splash Shake may be combined.
+- Reduced Motion suppresses Splash Shake completely.
+- `None = 0`, preserving all existing serialized entries without a schema bump.
+- The normal `SplashSequence` Inspector exposes Splash Shake beside the existing Motion/Pulse controls.
+- Setup-generated entries default to None and can be tuned on the resulting `SplashSequence` asset.
+- No Looking Glass, Accord, Resonance, feedback-system, camera-system, or input dependency is introduced.
+
+This amendment does not authorize a general-purpose screen-shake service or gameplay feedback architecture.

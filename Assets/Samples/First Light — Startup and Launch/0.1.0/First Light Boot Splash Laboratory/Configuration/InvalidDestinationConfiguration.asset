@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89bff4cb0c815084a9812a3c83c9710d, type: 3}
+  m_Name: InvalidDestinationConfiguration
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.EchoLaunchConfiguration
+  configurationId: a7599bfcc16e4f3689407f4b31d71673
+  schemaVersion: 4
+  startupSequence: {fileID: 11400000, guid: 2cb3da22013fe184d900c541d393c935, type: 2}
+  initialDestination: {fileID: 11400000, guid: 1c07892011b0d8f4098df4518d902e91, type: 2}
+  splashSequence: {fileID: 0}
+  useReducedMotionForSplash: 0

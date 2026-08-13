@@ -69,6 +69,14 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         [SerializeField]
         private Text splashLabelText;
 
+        private RectTransform splashShakeTarget;
+        private Vector2 splashShakeBasePosition;
+        private string splashShakeEntryId =
+            string.Empty;
+
+        private double splashShakeStartElapsedSeconds =
+            -1d;
+
         [Header("State Copy")]
         [SerializeField]
         private string authorityClaimedText =
@@ -440,6 +448,8 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
                         frame.ImageScale;
             }
 
+            ApplySplashShake(frame);
+
             SetText(
                 splashLabelText,
                 frame.DisplayLabel);
@@ -467,6 +477,7 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
         public void ClearSplash()
         {
             LastSplashFrame = null;
+            ResetSplashShake();
 
             if (splashRoot != null)
             {
@@ -507,6 +518,158 @@ namespace EchoDevGames.EchoLaunch.Presentation.UGUI
             {
                 SetStatusVisible(true);
             }
+        }
+
+        private void ApplySplashShake(
+            SplashPresentationFrame frame)
+        {
+            RectTransform target =
+                splashImage == null
+                    ? null
+                    : splashImage.rectTransform;
+
+            if (target == null &&
+                splashRoot != null)
+            {
+                target =
+                    splashRoot.transform as RectTransform;
+            }
+
+            if (target == null)
+            {
+                return;
+            }
+
+            bool entryChanged =
+                splashShakeTarget != target ||
+                !string.Equals(
+                    splashShakeEntryId,
+                    frame.EntryId,
+                    StringComparison.Ordinal);
+
+            if (entryChanged)
+            {
+                ResetSplashShake();
+                splashShakeTarget =
+                    target;
+                splashShakeBasePosition =
+                    target.anchoredPosition;
+                splashShakeEntryId =
+                    frame.EntryId;
+            }
+
+            if (frame.ReducedMotion ||
+                frame.ShakePreset ==
+                    SplashShakePreset.None)
+            {
+                target.anchoredPosition =
+                    splashShakeBasePosition;
+                return;
+            }
+
+            if (frame.Phase !=
+                SplashPlaybackPhase.Hold)
+            {
+                target.anchoredPosition =
+                    splashShakeBasePosition;
+                splashShakeStartElapsedSeconds =
+                    -1d;
+                return;
+            }
+
+            if (splashShakeStartElapsedSeconds < 0d ||
+                frame.ElapsedSeconds <
+                    splashShakeStartElapsedSeconds)
+            {
+                splashShakeStartElapsedSeconds =
+                    frame.ElapsedSeconds;
+            }
+
+            float amplitude;
+            float frequency;
+            float duration;
+
+            switch (frame.ShakePreset)
+            {
+                case SplashShakePreset.Subtle:
+                    amplitude = 3f;
+                    frequency = 24f;
+                    duration = 0.20f;
+                    break;
+
+                case SplashShakePreset.Medium:
+                    amplitude = 6f;
+                    frequency = 30f;
+                    duration = 0.30f;
+                    break;
+
+                case SplashShakePreset.Nightmare:
+                    amplitude = 20f;
+                    frequency = 42f;
+                    duration = 0.55f;
+                    break;
+
+                default:
+                    target.anchoredPosition =
+                        splashShakeBasePosition;
+                    return;
+            }
+
+            float elapsed =
+                Mathf.Max(
+                    0f,
+                    (float)(
+                        frame.ElapsedSeconds -
+                        splashShakeStartElapsedSeconds));
+            float normalized =
+                Mathf.Clamp01(
+                    elapsed / duration);
+            float envelope =
+                1f - normalized;
+            envelope *=
+                envelope;
+
+            if (envelope <= 0f)
+            {
+                target.anchoredPosition =
+                    splashShakeBasePosition;
+                return;
+            }
+
+            float phase =
+                elapsed *
+                frequency *
+                Mathf.PI *
+                2f;
+            Vector2 offset =
+                new Vector2(
+                    Mathf.Sin(phase),
+                    Mathf.Sin(
+                        phase * 1.618f +
+                        0.37f) * 0.72f) *
+                amplitude *
+                envelope;
+
+            target.anchoredPosition =
+                splashShakeBasePosition +
+                offset;
+        }
+
+        private void ResetSplashShake()
+        {
+            if (splashShakeTarget != null)
+            {
+                splashShakeTarget.anchoredPosition =
+                    splashShakeBasePosition;
+            }
+
+            splashShakeTarget = null;
+            splashShakeBasePosition =
+                Vector2.zero;
+            splashShakeEntryId =
+                string.Empty;
+            splashShakeStartElapsedSeconds =
+                -1d;
         }
 
         /// <summary>

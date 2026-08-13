@@ -176,6 +176,9 @@ namespace EchoDevGames.EchoLaunch
             ImageScale =
                 imageScale;
 
+            ShakePreset =
+                entry.ShakePreset;
+
             CanAdvanceNow =
                 canAdvanceNow;
 
@@ -257,6 +260,11 @@ namespace EchoDevGames.EchoLaunch
         }
 
         public float ImageScale
+        {
+            get;
+        }
+
+        public SplashShakePreset ShakePreset
         {
             get;
         }

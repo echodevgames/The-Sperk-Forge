@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41b90a7f179c9049abe5c954940cb96, type: 3}
+  m_Name: LaboratorySplashSequence
+  m_EditorClassIdentifier: EchoDevGames.EchoLaunch.Runtime::EchoDevGames.EchoLaunch.SplashSequence
+  sequenceId: 77407566774a4b78ab98d4992cb9c5ca
+  schemaVersion: 1
+  hasAuthoredPresentationSettings: 1
+  presentationSettings:
+    presentationMode: 1
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    allowUserAdvance: 1
+  entries:
+  - entryId: a3e752958fc64fc0a7bc071f99007be0
+    image: {fileID: 21300000, guid: 67389543436f7f842b0f5aaec1472881, type: 3}
+    preferredAudioClip: {fileID: 8300000, guid: c7ae57ab5d05e7b49894277665dd3d8b, type: 3}
+    displayLabel:
+    fadeInSeconds: 0.25
+    holdSeconds: 3
+    fadeOutSeconds: 0.25
+    minimumDisplaySeconds: 1
+    skipPolicy: 1
+    motionStyle: 0
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
+    shakePreset: 3
+  - entryId: 7841f2b85b774d269625ce6520cd8df9
+    image: {fileID: 21300000, guid: 20299f6b3b149854a8baabac7c8aeeb1, type: 3}
+    preferredAudioClip: {fileID: 8300000, guid: f0e3cc277b0938743aec12ac165d9dab, type: 3}
+    displayLabel: First Light Laboratory
+    fadeInSeconds: 0.25
+    holdSeconds: 1
+    fadeOutSeconds: 0.25
+    minimumDisplaySeconds: 5
+    skipPolicy: 1
+    motionStyle: 0
+    pulseMaximumScale: 1.05
+    pulseCycleSeconds: 1
+    shakePreset: 0

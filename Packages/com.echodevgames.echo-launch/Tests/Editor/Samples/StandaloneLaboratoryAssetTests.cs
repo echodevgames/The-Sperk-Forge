@@ -12,13 +12,13 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
             "com.echodevgames.echo-launch";
 
         private const string SampleRelativeRoot =
-            "Samples~/First Light Standalone Test Lab";
+            "Samples~/FirstLight_Boot_Splash_Laboratory";
 
         private const string ImportedDestinationScenePath =
-            "Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Standalone Test Lab/Scenes/FirstLight_Destination_Lab.unity";
+            "Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/Scenes/FirstLight_Destination_Lab.unity";
 
         private const string InvalidDestinationScenePath =
-            "Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Standalone Test Lab/Scenes/Missing_Laboratory_Destination.unity";
+            "Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/Scenes/Missing_Laboratory_Destination.unity";
 
         [Test]
         public void RequiredAuthoredAssetTreeExists()
