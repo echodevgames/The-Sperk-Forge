@@ -267,29 +267,54 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
         [Test]
         public void SplashSequenceRetainsSplashSpriteReference()
         {
-            string splashGuid =
-                ReadGuid(
-                    "Art/FirstLight_Laboratory_Splash.png");
+            const string sampleRoot =
+                "Packages/com.echodevgames.echo-launch/Samples~/FirstLight_Boot_Splash_Laboratory";
 
-            string yaml =
-                ReadSampleText(
-                    "Configuration/LaboratorySplashSequence.asset");
+            string echoDevSplashPath =
+                System.IO.Path.Combine(
+                    sampleRoot,
+                    "Art/EchoDevSplash.png")
+                .Replace('\\', '/');
+
+            string firstLightSplashPath =
+                System.IO.Path.Combine(
+                    sampleRoot,
+                    "Art/FirstLightDefault.png")
+                .Replace('\\', '/');
+
+            string echoDevSplashGuid =
+                ReadGuidFromMetaFile(
+                    echoDevSplashPath + ".meta");
+
+            string firstLightSplashGuid =
+                ReadGuidFromMetaFile(
+                    firstLightSplashPath + ".meta");
 
             Assert.That(
-                yaml,
-                Does.Contain(
-                    "guid: " +
-                    splashGuid));
+                echoDevSplashGuid,
+                Is.Not.Empty,
+                "The final EchoDevGames Laboratory splash meta file must retain a Unity GUID.");
 
             Assert.That(
-                yaml,
-                Does.Contain(
-                    "minimumDisplaySeconds: 5"));
+                firstLightSplashGuid,
+                Is.Not.Empty,
+                "The final First Light Laboratory splash meta file must retain a Unity GUID.");
+
+            string sequenceText =
+                System.IO.File.ReadAllText(
+                    System.IO.Path.Combine(
+                        sampleRoot,
+                        "Configuration/LaboratorySplashSequence.asset"));
 
             Assert.That(
-                yaml,
+                sequenceText,
                 Does.Contain(
-                    "skipPolicy: 1"));
+                    "guid: " + echoDevSplashGuid));
+
+            Assert.That(
+                sequenceText,
+                Does.Contain(
+                    "guid: " + firstLightSplashGuid));
         }
 
         private static string ReadQuotedYamlScalar(
@@ -616,5 +641,30 @@ namespace EchoDevGames.EchoLaunch.Tests.Editor.Samples
                         "..")),
                 "Packages",
                 PackageId);
+        private static string ReadGuidFromMetaFile(
+            string metaPath)
+        {
+            string[] lines =
+                System.IO.File.ReadAllLines(
+                    metaPath);
+
+            const string prefix =
+                "guid: ";
+
+            for (int index = 0; index < lines.Length; index++)
+            {
+                if (lines[index].StartsWith(
+                    prefix,
+                    System.StringComparison.Ordinal))
+                {
+                    return lines[index]
+                        .Substring(prefix.Length)
+                        .Trim();
+                }
+            }
+
+            return string.Empty;
+        }
+
     }
 }

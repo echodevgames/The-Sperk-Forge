@@ -1,0 +1,21 @@
+{
+  "name": "EchoDevGames.EchoUI.Tests.Editor",
+  "rootNamespace": "EchoDevGames.EchoUI.Tests.Editor",
+  "references": [
+    "EchoDevGames.EchoUI.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

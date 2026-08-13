@@ -1,0 +1,21 @@
+{
+  "name": "com.echodevgames.echo-ui",
+  "version": "0.1.0",
+  "displayName": "The Looking Glass — UI Framework",
+  "description": "Reusable uGUI surface registration, scoped navigation, independent windows, and UI authoring foundations for EchoDevGames projects.",
+  "unity": "6000.0",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Jesse \"Echo\" Adams / EchoDevGames"
+  },
+  "dependencies": {
+    "com.unity.ugui": "2.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "Looking Glass UI Foundation Laboratory",
+      "description": "Minimal hand-authored uGUI proof for scoped menu navigation, Back history, and an independent window.",
+      "path": "Samples~/LookingGlass_UI_Foundation_Laboratory"
+    }
+  ]
+}

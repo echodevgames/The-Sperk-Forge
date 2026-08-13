@@ -1,0 +1,16 @@
+{
+  "name": "EchoDevGames.EchoUI.Runtime",
+  "rootNamespace": "EchoDevGames.EchoUI",
+  "references": [
+    "Unity.ugui"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
