@@ -4,7 +4,7 @@ tags:
   - sfgss/decision-log
   - sfgss/navigation
 status: active
-updated: 2026-08-09
+updated: 2026-08-13
 ---
 
 # The Sperk’s Forge — Suite Architecture Decision Log
@@ -13,7 +13,7 @@ updated: 2026-08-09
 **Authority:** Index only; each ADR and its affected higher-authority documents remain authoritative
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Standard:** [[SFGSS-007_Architecture_Decision_Record_Standard|SFGSS-007]]
-**Next available suite ADR:** `SFGSS-ADR-007`
+**Next available suite ADR:** `SFGSS-ADR-008`
 
 > The log tells us which doors were chosen. The ADRs explain why, and the specifications define what lies beyond them.
 
@@ -27,6 +27,7 @@ updated: 2026-08-09
 | [[SFGSS-ADR-004_Just-in-Time_Package_Learning_Gate|SFGSS-ADR-004]] | Just-in-Time Package Learning Gate | 1.0.0 | Not applicable to runtime evidence | Package-local learning and implementation authorization | Package learning cadence changes or multi-package implementation makes the local gate impractical |
 | [[SFGSS-ADR-005_Package_Reference_Showcases_and_Suite_Showcase_Hub|SFGSS-ADR-005]] | Package Reference Showcases and the Suite Showcase Hub | 1.0.0 | Design approved; first implementation pending | Suite package demonstration, consumer proof, and portfolio/showcase architecture | Three package showcases reveal a better standard, the Suite Showcase Hub begins implementation, or beta workflow exposes a mismatch |
 | [[SFGSS-ADR-006_Persistence_Runtime_State_and_Object_Lifetime_Separation|SFGSS-ADR-006]] | Persistence, Runtime State, and Object Lifetime Separation | 1.0.0 | Design approved; Chronicle learning/implementation pending | Suite persistence and long-lived runtime composition | Chronicle implementation, Workshop composition, Game Shell integration, or any proposed global service locator/persistent-root package |
+| [[SFGSS-ADR-007_Green_Path_Self-Validating_Checkpoint_Execution|SFGSS-ADR-007]] | Green Path Self-Validating Checkpoint Execution | 1.0.0 | Workflow approved; first execution pending | Suite checkpoint automation and conversational handoffs | Three package adoptions, rollback verification failure, or helper complexity exceeds checkpoint value |
 
 ## Proposed suite ADRs
 

@@ -1,14 +1,14 @@
 # SFGSS-005 — Checkpoint Build Workflow and ChatGPT Collaboration Rules
 
-**Document ID:** SFGSS-005  
-**Version:** 1.4.0  
-**Status:** Approved workflow standard  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
-**Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible  
-**Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-ADR-004, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`  
-**Unity baseline:** Unity 6000.3.8f1  
-**Last updated:** August 4, 2026
+**Document ID:** SFGSS-005
+**Version:** 1.6.0
+**Status:** Approved workflow standard
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
+**Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible
+**Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-ADR-004, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`
+**Unity baseline:** Unity 6000.3.8f1
+**Last updated:** August 13, 2026
 
 > Build one proven span at a time. The Forge remembers what changed, why it changed, how it was tested, and where to stop.
 
@@ -21,6 +21,7 @@
 | 1.2.0 | August 4, 2026 | Approved | Added graph-roadmap navigation and mandatory package-by-package learning reviews before implementation authorization |
 | 1.3.0 | August 4, 2026 | Approved | Added permanent PKG-LEARN-001 through 028 IDs, review artifact naming, progressive source delivery, template/tracker use, and explicit teach-back completion records |
 | 1.4.0 | August 4, 2026 | Approved | Replaced the all-packages-first learning gate with a just-in-time package-local gate immediately before each package implementation |
+| 1.6.0 | August 13, 2026 | Approved | Added Learn → Declare → Authorize bidirectional JIT design intake and the Green Path self-validating checkpoint protocol; successful expected gates no longer require conversational approval between phases. |
 
 
 ---
@@ -210,6 +211,20 @@ A review is complete only after its sources, teach-back, remaining questions, an
 
 A review may be started early, but a paused early review is not complete and does not authorize implementation. Learning completion never changes SFGSS-004 evidence from `Not run`.
 
+## 5B. Learn → Declare → Authorize design intake
+
+A just-in-time review is bidirectional. It is not a lecture followed by a quiz.
+
+For each capability that materially shapes the package:
+
+1. **Learn** — identify only the relevant Unity mechanisms, established patterns, tradeoffs, accessibility concerns, failure modes, and ownership hazards.
+2. **Declare** — solicit Jesse's intended workflow, terminology, examples, preferences, and explicit “I want this” behavior. Established practice informs the decision but does not silently dictate it.
+3. **Authorize** — reconcile learned constraints with declared product intent, record approved decisions and unresolved questions, and authorize only the smallest useful implementation slice.
+
+The review separates source facts, external research, designer preference, approved package law, and deferred questions. Learning reviews are not exams; completion requires a usable mental model and demonstrated design participation, not memorization of APIs.
+
+A teach-back may be satisfied progressively through design discussion when Jesse accurately explains ownership, desired behavior, important exceptions, and the intended Laboratory proof in his own words.
+
 ## 6. Required Checkpoint Build Plan structure
 
 Every implementation plan uses the following sections. A section may say **Not applicable**, but it must explain why.
@@ -246,23 +261,19 @@ Provide one table with every file or asset to create, modify, move, or delete. I
 
 Give exact steps in dependency order. Separate code/file operations from Unity Editor operations.
 
-### 6.9 Visible code and learning rule
+### 6.9 Visible code, artifact delivery, and learning rule
 
-When a checkpoint authorizes scripts, the default delivery is **manual, visible, and educational**:
+Checkpoint implementation must remain understandable even when delivery is automated.
 
-1. Show the complete compile-ready contents of every new or changed code file in the conversation.
-2. State the exact repository path and whether the file is created, replaced, or modified.
-3. Explain the file's responsibility, authority boundary, collaborators, and reason for existing before presenting it.
-4. After the code, explain the important fields, methods, events, lifecycle callbacks, async/cancellation rules, failure paths, and extension seams.
-5. Explain why the selected design was chosen and briefly identify the most relevant rejected alternative when that choice is not obvious.
-6. Provide the exact Unity Editor setup and the expected Inspector or runtime state.
-7. Stop at a compile/test boundary so Jesse can enter the code, observe the result, and understand the evidence before the next step.
+1. Every generated implementation kit carries an exact file manifest and complete compile-ready source payload; no ellipses, hidden helper edits, or unstated changes are permitted.
+2. The assistant explains the responsibility, authority boundary, important lifecycle/failure behavior, and Unity setup for the checkpoint before or alongside the artifact.
+3. Small checkpoints may still use manual visible code entry when that is educationally useful, but manual retyping is no longer a suite requirement.
+4. Generated bundles, repository apply helpers, and self-validating Green Path kits are preferred when they reduce repetitive transcription or conversational latency without reducing evidence.
+5. Automation must never hide architecture. A user must be able to inspect the payload, file paths, tests, and resulting Git diff before or after execution.
+6. Unity compile/test and required manual behavior gates remain real evidence boundaries. Automation may verify evidence; it may not invent it.
+7. Any unexpected compile, test, repository, rollback, or manual-proof result stops the Green Path and returns to review.
 
-Complete code means no ellipses, hidden edits, omitted helper methods, or fragments that rely on unstated changes. Pseudocode may be used to teach a concept, but it never substitutes for the authorized compile-ready file.
-
-Jesse implements the code himself by default. Generated source files or direct repository edits may supplement the visible code only when he explicitly asks for them; they never replace showing and explaining the code.
-
-Do not create scripts merely to hold an empty namespace when an assembly definition already proves the skeleton.
+Pseudocode may teach a concept but never substitutes for authorized compile-ready implementation. Do not create scripts merely to hold an empty namespace when an assembly definition already proves the skeleton.
 
 ### 6.10 Unity Editor setup
 
@@ -413,6 +424,40 @@ Rollback must identify:
 
 ---
 
+## 11A. Green Path self-validating checkpoint protocol
+
+The default fast path for an already-authorized checkpoint is **Green Path**:
+
+```text
+Discuss / Learn / Declare / Authorize
+    ↓
+self-validating local execution kit
+    ↓
+expected green gates continue locally
+    ↓
+unexpected red gate stops immediately
+    ↓
+implementation evidence + Git commit
+    ↓
+documentation closeout + Git commit
+    ↓
+clean verified handoff
+```
+
+A Green Path kit may automate authority application, exact-scope staging, commits, pushes, evidence parsing, documentation reconciliation, and final verification when all of the following are true:
+
+- the checkpoint architecture and exact scope are already approved;
+- required repository baselines and expected dirty/clean states are machine-verifiable;
+- every mutation has a bounded ownership scope;
+- rollback is verified rather than assumed;
+- tests/manual proof remain explicit gates;
+- implementation and documentation retain distinct meaningful commit boundaries when appropriate;
+- no authority-level decision is being silently made by the helper.
+
+Successful expected gates do **not** require a ChatGPT round trip between phases. Return to review only when validation fails, repository state diverges, required manual proof fails, or a new fundamental/authority-changing decision appears.
+
+Green Path optimizes conversational latency, not rigor. Exact manifests, `git diff --check`, test evidence, rollback verification, clean-state checks, and truthful documentation remain mandatory.
+
 ## 12. Current Notes and documentation closeout
 
 During implementation, record provisional observations in `Current Notes.md` using the approved note labels.
@@ -477,10 +522,10 @@ During work, ChatGPT must:
 - Avoid inventing architecture merely to keep moving.
 - Provide exact Unity Editor setup when required.
 - Keep code compile-ready and within checkpoint scope.
-- Show every authorized code file completely in the chat before or alongside any generated artifact.
-- Teach the implementation in dependency order: purpose, architecture, complete file, important sections, Editor setup, expected behavior, and proof test.
+- Provide complete inspectable source payloads for every authorized code file; inline repetition of every file is optional when a downloadable Green Path artifact contains the exact complete source.
+- Teach the implementation in dependency order: purpose, architecture, file manifest, important source responsibilities, Editor setup, expected behavior, and proof test.
 - Define unfamiliar Unity/C# terms at first use and connect them to the package's ownership model.
-- Use bounded learning stops so Jesse can implement and compile the current span before receiving the next span.
+- Prefer one complete checkpoint execution kit over many conversational micro-approvals when the checkpoint can self-validate its expected gates.
 - Distinguish source-derived decisions from proposals or external research.
 - Avoid claiming tests, commits, pushes, or Unity behavior were observed when they were not.
 
@@ -607,10 +652,10 @@ Before writing code:
 
 ## 20. Approval
 
-**Decision:** Approved  
-**Approved by:** Jesse “Echo” Adams / EchoDevGames  
-**Date:** August 3, 2026  
-**Conditions:** SFGSS-005 governs implementation after the Full Suite Documentation Readiness Gate. A package specification or ADR remains required for architecture changes; a Checkpoint Build Plan cannot overrule higher authority. Code delivery follows the visible, complete, manual-entry learning workflow unless Jesse explicitly requests another delivery method.
+**Decision:** Approved
+**Approved by:** Jesse “Echo” Adams / EchoDevGames
+**Date:** August 3, 2026
+**Conditions:** SFGSS-005 governs checkpoint-controlled implementation. A package specification or ADR remains required for architecture changes; a Checkpoint Build Plan cannot overrule higher authority. Green Path artifact delivery is the preferred routine execution mode after Learn → Declare → Authorize, while unexpected or authority-changing results return to review.
 
 
 ---

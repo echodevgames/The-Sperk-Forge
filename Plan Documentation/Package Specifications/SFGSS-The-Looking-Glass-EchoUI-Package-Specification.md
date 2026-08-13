@@ -1,26 +1,26 @@
 # The Looking Glass – UI Framework Package Specification
 
-**Working document ID:** SFGSS-PKG-ECHOUI-001  
-**Specification version:** 1.0.1
-**Status:** Approved  
-**Technical package name:** EchoUI  
+**Working document ID:** SFGSS-PKG-ECHOUI-001
+**Specification version:** 1.1.0
+**Status:** Approved
+**Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
-**Package ID:** `com.echodevgames.echo-ui`  
-**Runtime namespace:** `EchoDevGames.EchoUI`  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Project boundary:** Independent solo project; not an Isekai Studios product  
+**Package ID:** `com.echodevgames.echo-ui`
+**Runtime namespace:** `EchoDevGames.EchoUI`
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Project boundary:** Independent solo project; not an Isekai Studios product
 **Planned repository:** `EchoDevGames/EchoUI`
-**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`  
-**Unity baseline:** Unity 6000.3.8f1  
-**Minimum supported Unity version:** Unity 6000.0  
-**Required Unity package:** Unity UI (`com.unity.ugui`) in the released version compatible with the supported Unity editor; exact version is verified and recorded at M1  
-**Default text path:** TextMeshPro-compatible uGUI text; exact Unity 6 assembly/package relationship is verified at M1 rather than guessed here  
-**Parent authority:** SFGSS-000 and SFGSS-001  
-**Last updated:** August 4, 2026
+**Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
+**Unity baseline:** Unity 6000.3.8f1
+**Minimum supported Unity version:** Unity 6000.0
+**Required Unity package:** Unity UI (`com.unity.ugui`) `2.0.0`, verified from the Unity 6000.3.8f1 project manifest during PKG-LEARN-008
+**Default text path:** uGUI-compatible project-owned text components; no separate text package dependency is required by EUI-M1-01
+**Parent authority:** SFGSS-000 and SFGSS-001
+**Last updated:** August 13, 2026
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is approved as the package authority. Runtime implementation remains intentionally deferred until all ten Foundation specifications and the cross-package consistency review are approved.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete and EUI-M1-01 is package-locally authorized under SFGSS-005 Green Path from baseline `f57880a`.
 
 ---
 
@@ -29,25 +29,26 @@
 | Version | Date | Status | Summary | Approved by |
 |---|---|---|---|---|
 | 0.1.0 | 2026-08-03 | Proposed | Initial complete specification based on SFGSS-000 v0.6.0, SFGSS-001 v1.1.0, and seven approved Foundation specifications | Pending |
-| 1.0.0 | 2026-08-03 | Approved | Approved the persistent root, UI layers, screen/modal lifecycle, HUD regions, notifications, prompts, focus/EventSystem coordination, view-presenter boundaries, themes, accessibility seams, diagnostics, tooling, and isolated UI Laboratory | Jesse “Echo” Adams |
+| 1.0.0 | 2026-08-03 | Approved | Approved the persistent root, UI layers, screen/modal lifecycle, HUD regions, notifications, prompts, focus/EventSystem coordination, view-presenter boundaries, motifs, accessibility seams, diagnostics, tooling, and isolated UI Laboratory | Jesse “Echo” Adams |
 | 1.0.1 | 2026-08-04 | Approved | Normalized registry metadata and formal title; added the SUITE-DOC-30 governing-authority, evidence, test-registry, and compatibility clarification without authorizing implementation. | Jesse “Echo” Adams |
+| 1.1.0 | 2026-08-13 | Approved | JIT architecture rebaseline: layered UI context, optional navigation scopes, independent windows, stable surface IDs/registry, hybrid Back/navigation, cascading visibility policy, input-aware default selection, Motif terminology, Lego-style primitives/Builder direction, project-owned lifetime/context authority, and EUI-M1-01 foundation activation. | Jesse “Echo” Adams |
 
 ---
 
 ## 1. Package Identity and One-Sentence Contract
 
 **Public title:** The Looking Glass – UI Framework
-**Technical identifier:** EchoUI  
-**Flavor line:** Reveal the game’s state without becoming the state itself.  
-**Plain-language subtitle:** Runtime screens, HUD regions, modals, notifications, prompts, focus, navigation, themes, and transition presentation.
+**Technical identifier:** EchoUI
+**Flavor line:** Reveal the game’s state without becoming the state itself.
+**Plain-language subtitle:** Runtime screens, HUD regions, modals, notifications, prompts, focus, navigation, motifs, and transition presentation.
 
 **One-sentence ownership contract:**
 
-> EchoUI owns reusable runtime UI presentation infrastructure, including its persistent layer root, screen history, modal ordering, HUD regions, notifications, prompts, focus/navigation coordination, view lifecycles, theme application, and UI-specific diagnostics; it does not own settings truth, save data, input-context authority, scene travel, pause/time policy, audio playback, gameplay rules, localization content, or the project-specific state displayed by its views.
+> EchoUI owns reusable runtime UI presentation infrastructure, including package-local UI authority, stable surface registration, optional navigation scopes/history, independent windows, HUD/overlay presentation, focus/navigation coordination, view lifecycles, Motif application, and UI-specific diagnostics; it does not own gameplay/pause/cinematic/loading truth, input mappings, settings truth, save data, scene travel, audio playback, gameplay rules, localization content, project lifetime composition, or the project-specific state displayed by its views.
 
 ### 1.1 Elevator summary
 
-The Looking Glass provides one coherent runtime surface for project-authored menus, screens, HUD modules, modal dialogs, notifications, tooltips, prompts, fades, and other interface presentation. It supplies a duplicate-safe root, named visual layers, deterministic operations, screen and modal histories, bounded queues, focus restoration, EventSystem coordination, replaceable transition drivers, project-owned themes, and explicit presenter/view contracts.
+The Looking Glass provides one coherent runtime surface for project-authored menus, screens, HUD modules, modal dialogs, notifications, tooltips, prompts, fades, and other interface presentation. It supplies a duplicate-safe root, named visual layers, deterministic operations, screen and modal histories, bounded queues, focus restoration, EventSystem coordination, replaceable transition drivers, project-owned motifs, and explicit presenter/view contracts.
 
 The package separates **presentation state** from **game truth**. A settings screen displays an EchoSettings draft but does not become the settings authority. A save-slot screen presents EchoSave metadata but does not write files. A loading overlay observes EchoSceneFlow progress but does not load scenes. A pause screen may request a Pulse scope through a bridge but never sets `Time.timeScale`. A button may request a project command, but it cannot be the only place where the rule exists.
 
@@ -92,7 +93,7 @@ Unity supplies Canvas, EventSystem, Selectable, GraphicRaycaster, layout, and an
 11. Pause screens can fight other time-scale/cursor owners.
 12. Notifications can grow without bounds or freeze under paused scaled time.
 13. Tooltips and prompts become embedded in gameplay scripts.
-14. Themes require editing every prefab.
+14. Motifs require editing every prefab.
 15. UI defects lack structured stack, focus, layer, and transition diagnostics.
 
 ### 2.2 Evidence from existing work
@@ -130,7 +131,7 @@ Unity supplies Canvas, EventSystem, Selectable, GraphicRaycaster, layout, and an
 
 - Provide one duplicate-safe UI authority with named ordered layers.
 - Support screen history, modal ordering, HUD regions, bounded notifications, prompts/tooltips, transitions, and debug presentation.
-- Keep production screens, presenters, themes, text, icons, and art project-owned.
+- Keep production screens, presenters, motifs, text, icons, and art project-owned.
 - Define deterministic Push, Replace, Reset, Back, Close, and restoration behavior.
 - Define modal blocking and safe out-of-order owner disposal.
 - Coordinate one adopted or root-owned uGUI EventSystem without owning gameplay input contexts.
@@ -138,7 +139,7 @@ Unity supplies Canvas, EventSystem, Selectable, GraphicRaycaster, layout, and an
 - Use replaceable unscaled-time transition drivers with deterministic failure recovery.
 - Provide bounded notifications with priority, coalescing, dismissal, and accessibility timing.
 - Provide named HUD regions and project-neutral prompt/tooltip contracts.
-- Provide project-owned theme tokens and accessibility presentation policies.
+- Provide project-owned motif tokens and accessibility presentation policies.
 - Remain diagnosable without Observatory.
 - Provide repeatable setup, repair, validation, and an isolated UI Laboratory.
 
@@ -159,7 +160,7 @@ Unity supplies Canvas, EventSystem, Selectable, GraphicRaycaster, layout, and an
 | User | Starting condition | Desired outcome |
 |---|---|---|
 | Novice installer | Clean Unity project | Generate a validated root and run the UI Laboratory |
-| UI designer | Project art/layouts | Create project-owned prefabs and themes without editing package code |
+| UI designer | Project art/layouts | Create project-owned prefabs and motifs without editing package code |
 | UI programmer | Needs reusable lifecycle | Open/close views with structured results and focus behavior |
 | Gameplay programmer | Domain services exist | Add presenters so UI requests actions without owning rules |
 | Accessibility designer | Needs adaptable UI | Apply text, motion, contrast, timing, and focus policies |
@@ -176,7 +177,7 @@ Unity supplies Canvas, EventSystem, Selectable, GraphicRaycaster, layout, and an
 - Back resolves modal-first, then screen policy, or returns Unhandled.
 - Hidden/blocked layers receive no normal interaction.
 - Notification/history bounds never grow unbounded.
-- Definitions/themes remain immutable during play.
+- Definitions/motifs remain immutable during play.
 - Transition failure cannot leave UI permanently blocked.
 - Missing/duplicate EventSystems are actionable.
 - Samples can be removed safely.
@@ -208,7 +209,7 @@ Solo developers, small teams, UI programmers/designers, gameplay programmers, ac
 | UC-010 | Register HUD widget | Presenter | Region exists | Widget attached under lease | MVP |
 | UC-011 | Show notification | Any service | Valid request | Bounded/coalesced queue behavior | MVP |
 | UC-012 | Show tooltip/prompt | Adapter | Valid content/anchor | Safe positioned transient UI | MVP |
-| UC-013 | Apply theme/accessibility | Project/Accord | Valid policy | Targets update without asset mutation | MVP/Bridge |
+| UC-013 | Apply motif/accessibility | Project/Accord | Valid policy | Targets update without asset mutation | MVP/Bridge |
 | UC-014 | Present loading | Passage bridge | Transition active | Progress/fade only; no load ownership | Bridge |
 | UC-015 | Present settings | Accord bridge | Draft exists | Silent bind and structured apply/confirm UI | Bridge |
 | UC-016 | Present rebind/glyphs | Will bridge | Session/device state exists | UI guides transaction and prompt fallback | Bridge |
@@ -242,7 +243,7 @@ Solo developers, small teams, UI programmers/designers, gameplay programmers, ac
 - UI transition execution/interruption.
 - EventSystem adoption/validation and focus coordination.
 - Default selection, focus memory/fallback, and back routing.
-- Theme/accessibility presentation application.
+- Motif/accessibility presentation application.
 - UI-specific diagnostics, setup, validation, repair, and samples.
 
 ### 5.2 The package does not own
@@ -324,7 +325,7 @@ Project assemblies, peer Echo packages in core, sample dependencies, mandatory D
 | CAP-008 | Tooltip and prompt services | Approved | Yes | Runtime |
 | CAP-009 | Focus/EventSystem coordinator | Approved | Yes | Runtime |
 | CAP-010 | Replaceable transition drivers | Approved | Yes | Runtime |
-| CAP-011 | Project theme tokens/targets | Approved | Yes | Runtime/Data |
+| CAP-011 | Project motif tokens/targets | Approved | Yes | Runtime/Data |
 | CAP-012 | Accessibility presentation policy | Approved | Yes | Runtime |
 | CAP-013 | Safe-area adapter | Approved | Yes | Runtime |
 | CAP-014 | Confirmation/modal conveniences | Approved | Yes | Runtime/Sample |
@@ -336,10 +337,14 @@ Project assemblies, peer Echo packages in core, sample dependencies, mandatory D
 | CAP-020 | Native screen-reader provider | Deferred | No | Provider |
 | CAP-021 | Virtualized lists/view pooling | Deferred | No | Runtime |
 | CAP-022 | Split-screen/world-space framework | Deferred | No | Runtime/Bridge |
+| CAP-023 | Independent window surfaces and optional navigation scopes | Approved | Yes | Runtime |
+| CAP-024 | Stable surface registry/discoverability | Approved | Yes | Runtime/Editor |
+| CAP-025 | Motif capture/apply/local-override authoring | Approved | Yes | Runtime/Data/Editor |
+| CAP-026 | Lego primitive library and batch UI Builder | Approved | Yes | Prefab/Editor |
 
 ### 7.2 MVP capability set
 
-One protected root, layer topology, screen/modal lifecycle, HUD regions, bounded notifications, one tooltip and prompt channel, EventSystem/focus/back coordination, unscaled transition drivers, project themes/accessibility/safe area, tooling, diagnostics, templates, and a standalone Lab.
+One protected root, layer topology, screen/modal lifecycle, HUD regions, bounded notifications, one tooltip and prompt channel, EventSystem/focus/back coordination, unscaled transition drivers, project motifs/accessibility/safe area, tooling, diagnostics, templates, and a standalone Lab.
 
 ### 7.3 Later capability set
 
@@ -366,23 +371,54 @@ UI Toolkit, native accessibility providers, virtualized lists, pooling, per-play
 
 | Layer | Contains | Must not contain |
 |---|---|---|
-| Definition/config | Config, layer/screen/modal/region definitions, themes, transition profiles | Active entries, focus, queues, subscriptions |
+| Definition/config | Config, layer/screen/modal/region definitions, motifs, transition profiles | Active entries, focus, queues, subscriptions |
 | Runtime behavior | Root, registries, navigators, services, transitions, focus, histories | Editor APIs, domain truth, persistence |
-| Presentation | uGUI views, theme targets, sample/bridge presenters | Gameplay/save/scene/input/audio authority |
+| Presentation | uGUI views, motif targets, sample/bridge presenters | Gameplay/save/scene/input/audio authority |
+
+### 8.1A JIT architecture rebaseline — surfaces, context, scopes, and Lego authoring
+
+The August 13, 2026 Learn → Declare → Authorize review replaces the earlier assumption that all ordinary UI participates in one global screen stack.
+
+**UI context is layered, not one giant mutually-exclusive enum.** Looking Glass may consume project-supplied facts such as Frontend/Gameplay context and independent conditions such as Paused, Cinematic, Loading, or Saving. It reacts to those facts through visibility/navigation policy; it does not decide that the game is paused or cinematic.
+
+**Surfaces are individually addressable.** Every authored surface uses a stable project-owned ID and a behavioral role. The initial roles are:
+
+- `Screen` — exclusive only within an authored navigation scope.
+- `Window` — independent and allowed to coexist with other windows/screens.
+- `HUD` — persistent/reactive presentation whose visibility may respond to context policy.
+- `Overlay` — additive temporary presentation above other surfaces.
+
+A navigation scope is optional. Within one scope, at most one `Screen` is active. Back uses navigation history by default, while explicit Navigate To, Return To Root, Resume/Close Scope, and project commands remain available. Independent windows are never globally closed merely because another surface opens.
+
+**Visibility policy cascades from context.** A HUD/window may declare policy such as hide while Paused or Cinematic. The package must not hardcode “Pause hides HUD.” Context values originate from project/controller/game-state adapters or a Laboratory helper.
+
+**Stable IDs enable discovery.** The runtime exposes a queryable surface registry so project-authored launchers, scrolling selectors, debugging tools, and future “menus for menus” can enumerate/toggle surfaces without hierarchy-path coupling.
+
+**Input-aware selection is separate from input ownership.** A surface may declare a default selected control. Future `Auto` selection policy distinguishes pointer presentation from keyboard/gamepad navigation so mouse users do not receive a visually selected button merely because the screen opened. Looking Glass consumes modality information or infers a safe fallback; it does not own input actions or require The Will.
+
+**Authoring vocabulary is intentionally plain.** Samples/tools use `Type_DescriptiveName`, for example `Canvas_MasterCanvas`, `Panel_MenuRoot`, `Panel_SettingsMenu`, `Button_DefaultButton`, `Slider_DefaultSlider`, and `Toggle_DefaultToggle`. This convention is an authoring/sample language, not a requirement that runtime stable IDs equal hierarchy names.
+
+**The package is a construction toolkit as well as runtime plumbing.** Later checkpoints provide standardized primitives, an Editor Builder for create/batch-create/name/parent/validate operations, and reusable **Motif** assets that capture/apply appearance (colors, Selectable states, sprites, typography, decorative treatment) without owning layout, navigation, domain commands, or game content. Local overrides must be preservable when Motifs are reapplied. Project-specific prefab variants remain free to share the same underlying Looking Glass behavior.
+
+The package-local root does not call `DontDestroyOnLoad` merely because long-lived UI is possible. Unity object lifetime and cross-package composition remain project-owned under SFGSS-ADR-006.
 
 ### 8.2 Component topology
 
 ```text
 EchoUIRoot
-├── UILayerRegistry
-│   ├── Screen
+├── UISurfaceRegistry
+│   ├── Screen (optional navigation scope)
+│   ├── Window (independent)
 │   ├── HUD
+│   └── Overlay
+├── UIContextState + VisibilityPolicy (context is externally supplied)
+├── UIScreenNavigator + Scope Registry + History
+├── UILayerRegistry
 │   ├── Modal
 │   ├── Notification
 │   ├── Tooltip + Prompt
 │   ├── Transition
 │   └── Debug
-├── UIScreenNavigator + Registry + Factory + History
 ├── UIModalService + Registry + Entries
 ├── UIHudRegionService
 ├── UINotificationService
@@ -390,7 +426,7 @@ EchoUIRoot
 ├── UIPromptService
 ├── UIFocusCoordinator + EventSystemAdapter
 ├── UITransitionCoordinator
-├── UIThemeService
+├── UIMotifService
 ├── UIAccessibilityService + SafeAreaAdapter
 └── EchoUIStatus + bounded history
 ```
@@ -401,21 +437,21 @@ Domain authority -> presenter/view model -> view. View interaction -> presenter 
 
 | Question | Decision |
 |---|---|
-| Persistent root? | Yes, standard path |
-| Lifetime | Application session |
-| Duplicate behavior | Reject before EventSystem/layer/subscription/focus side effects |
-| Initialization | Standalone explicit path or First Light bridge |
+| Persistent root? | Project-owned choice; EchoUI does not call `DontDestroyOnLoad` |
+| Lifetime | Valid while the project-owned authoritative root exists |
+| Duplicate behavior | Reject before surface-registry/navigation/EventSystem/layer/subscription/focus side effects |
+| Initialization | Standalone explicit/project composition; optional bridges may request startup later |
 | Shutdown | Reject new work, finish/cancel operations, complete awaiters, clear/release |
-| Direct-scene | Development initializer creates minimum authority only if absent |
-| Test seams | Clock, factories, transitions, EventSystem/focus/safe-area adapters |
+| Direct-scene | Development/Laboratory initializer may create minimum authority only if absent |
+| Test seams | Surface registry/navigation first; later clock, transitions, EventSystem/focus/safe-area adapters |
 
 ### 8.4 Layer topology
 
-Screen, HUD, Modal, Notification, Tooltip/Prompt, Transition, and Debug hosts are explicitly ordered. Only top screen/modal is normally interactive. Lower layers are gated through CanvasGroup/raycast/navigation policy. Runtime callers cannot arbitrarily reorder production layers.
+Screen, Window, HUD, Modal, Notification, Tooltip/Prompt, Transition, and Debug hosts may be explicitly ordered. Screen exclusivity applies only inside an authored navigation scope; independent windows and eligible HUD surfaces may remain interactive together. Modal/overlay policy may gate lower interaction through CanvasGroup/raycast/navigation policy. Runtime callers cannot arbitrarily reorder production layers.
 
 ### 8.5 Screen history
 
-`Push`, `ReplaceTop`, `Reset`, `CloseTop`, explicit owner close under policy, and `Back`. One mutating screen operation runs at a time. Equivalent requests coalesce or reject; the pending queue is bounded.
+Screen history is maintained per navigation scope. `NavigateTo`, `Replace`, `ReturnToRoot`, explicit close under policy, and history-based `Back` affect only the targeted scope. Independent Window/HUD/Overlay open state does not enter screen history. Later queued/animated mutations must remain bounded and non-conflicting per scope.
 
 ### 8.6 Modal model
 
@@ -435,13 +471,13 @@ Views own controls, visual state, lifecycle hooks, and user interaction events. 
 
 `IUITransitionDriver` returns fresh `Awaitable<UITransitionResult>` operations using unscaled time. Drivers are cancellable where possible and hard-bounded. Failure forces deterministic final visual/interactivity state so no view remains half-open or blocking.
 
-### 8.10 Notifications/prompts/themes
+### 8.10 Notifications/prompts/motifs
 
-Notifications are bounded, prioritized, coalesced, dismissible, and unscaled. One tooltip and one prompt channel are the default MVP. Themes are immutable project token assets applied to registered targets. Accessibility policy controls text scale, motion, contrast variant, focus indicator, and transient timing, with persistence owned by Accord/project.
+Notifications are bounded, prioritized, coalesced, dismissible, and unscaled. One tooltip and one prompt channel are the default MVP. Motifs are immutable project token assets applied to registered targets. Accessibility policy controls text scale, motion, contrast variant, focus indicator, and transient timing, with persistence owned by Accord/project.
 
 ### 8.11 Lifecycle
 
-Claim -> validate -> adopt/create layers -> adopt/create EventSystem -> initialize registries/factories/theme/accessibility -> Ready -> operate -> prune scene-owned registrations -> orderly shutdown.
+Claim package-local authority -> validate/register surfaces -> initialize scoped navigation -> Ready -> operate -> prune scene-owned registrations -> orderly shutdown. Later milestones may add layer/EventSystem/factory/Motif/accessibility initialization without changing project-owned lifetime composition.
 
 ### 8.12 Failure model
 
@@ -456,7 +492,7 @@ Claim -> validate -> adopt/create layers -> adopt/create EventSystem -> initiali
 | Modal owner loss | Exact-once cancellation result | EUI-MODAL-001 |
 | Invalid/lost focus | Fallback chain or no-focus | EUI-FOCUS-001/002 |
 | Notification overflow | Explicit drop/replace policy | EUI-NOTIFY-001 |
-| Theme/safe-area missing | Fallback/default | EUI-THEME-001 / EUI-SAFE-001 |
+| Motif/safe-area missing | Fallback/default | EUI-MOTIF-001 / EUI-SAFE-001 |
 | Presenter exception | Isolate/report; authority remains alive | EUI-VIEW-001 |
 ## 9. Runtime Data and State Model
 
@@ -470,7 +506,7 @@ Claim -> validate -> adopt/create layers -> adopt/create EventSystem -> initiali
 | `UIModalDefinition` | Modal identity, blocking, prefab/factory, result policy | Yes | No | Yes |
 | `UIHudRegionDefinition` | Named host and ordering policy | Yes | No | Yes |
 | `UITransitionProfile` | Open/close driver and timings | Yes | No | Yes/template |
-| `UIThemeDefinition` | Theme tokens/assets | Yes | No | Yes |
+| `UIMotifDefinition` | Motif tokens/assets | Yes | No | Yes |
 | `UIAccessibilityDefaults` | Default presentation policy | Yes | No | Yes |
 | `UINotificationPolicy` | Bounds/coalescing/overflow/timing | Yes | No | Yes |
 | `UITooltipPolicy` | Delay/placement/hide rules | Yes | No | Yes |
@@ -489,18 +525,18 @@ Claim -> validate -> adopt/create layers -> adopt/create EventSystem -> initiali
 | `UITooltipEntry` / `UIPromptEntry` | Transient services | Active item | Hide/replace | Not saved |
 | `UIFocusMemory` | Focus service | Entry lifetime | Entry release | Not saved |
 | `UITransitionOperation` | Coordinator | Operation | Terminal state | Not saved |
-| Theme/accessibility effective state | Theme/accessibility services | Session | Policy change | Persisted externally |
+| Motif/accessibility effective state | Motif/accessibility services | Session | Policy change | Persisted externally |
 | Diagnostic history | Root/status | Bounded session | Reset/shutdown | Export only |
 
 ### 9.3 Stable identifiers
 
 IDs are normalized stable value types or strings separate from display labels. They are nonempty, collision-checked, preserved across prefab/file renames, included in results/diagnostics, and supported by aliases/migration after public release. They never depend only on hierarchy paths, build indexes, or scene names.
 
-Suggested project naming is semantic, such as `screen.main-menu`, `modal.confirm`, `hud.status`, and `theme.default`, but the package does not impose genre vocabulary.
+Suggested project naming is semantic, such as `screen.main-menu`, `modal.confirm`, `hud.status`, and `motif.default`, but the package does not impose genre vocabulary.
 
 ### 9.4 ScriptableObject safety
 
-Definitions remain immutable during play. They never store active instances, focus targets, transition time, queue indexes, presenter subscriptions, current selected theme as mutable session truth, or changing scene-object references. Runtime models hold state keyed by definition/stable ID.
+Definitions remain immutable during play. They never store active instances, focus targets, transition time, queue indexes, presenter subscriptions, current selected motif as mutable session truth, or changing scene-object references. Runtime models hold state keyed by definition/stable ID.
 
 ### 9.5 View ownership scope
 
@@ -532,7 +568,7 @@ Any state -> Cancelling/Failed -> Releasing -> Completed exactly once
 
 ### 9.8 Serialization and migration
 
-Core does not persist navigation state. Configuration assets carry schema version and use explicit Editor migration. Theme/accessibility stable IDs may be persisted by Accord/project. Unknown IDs produce fallback/unavailable results without rewriting the external source.
+Core does not persist navigation state. Configuration assets carry schema version and use explicit Editor migration. Motif/accessibility stable IDs may be persisted by Accord/project. Unknown IDs produce fallback/unavailable results without rewriting the external source.
 
 ---
 
@@ -547,12 +583,12 @@ Exact syntax may be refined during M1/M2, but authority and behavior cannot chan
 | `EchoUIRoot` | MonoBehaviour | Claims authority and owns child services |
 | `IEchoUIService` | Interface | Public facade |
 | `EchoUIConfiguration` | ScriptableObject | Project policies and references |
-| Stable IDs | Value types | Layer/screen/modal/region/theme identity |
+| Stable IDs | Value types | Layer/screen/modal/region/motif identity |
 | Screen/modal definitions | ScriptableObjects | Project-authored lifecycle/factory policy |
 | Screen/modal/HUD/notification handles | Struct/leases | Runtime ownership/identity |
 | Screen/modal/notification/tooltip/prompt requests | Struct/classes | Validated operation input |
 | Screen/modal/back/transition results | Struct/enums | Structured terminal results |
-| `UIThemeDefinition` | ScriptableObject | Project theme tokens/assets |
+| `UIMotifDefinition` | ScriptableObject | Project motif tokens/assets |
 | `UIAccessibilityPresentationPolicy` | Serializable value | Effective presentation settings |
 | `EchoUIStatusSnapshot` | Immutable struct | Structured status |
 | `IUIScreenView` / `IUIModalView<T>` | Interfaces | View lifecycle/control contract |
@@ -560,7 +596,7 @@ Exact syntax may be refined during M1/M2, but authority and behavior cannot chan
 | `IUITransitionDriver` | Interface | Open/close transition execution |
 | `IUIEventSystemAdapter` | Interface | EventSystem selection/focus seam |
 | `IUIClock` | Interface | Unscaled timing seam |
-| `IUIThemeTarget` / `IUIAccessibilityTarget` | Interfaces | Apply effective presentation |
+| `IUIMotifTarget` / `IUIAccessibilityTarget` | Interfaces | Apply effective presentation |
 
 ### 10.2 Public operations
 
@@ -577,7 +613,7 @@ Exact syntax may be refined during M1/M2, but authority and behavior cannot chan
 | `EnqueueNotification` / `DismissNotification` | Manage bounded notifications | Valid request/handle | Handle/result | Main thread |
 | `ShowTooltip` / `HideTooltip` | Manage tooltip | Valid anchor/content | Handle/result | Main thread |
 | `SetPrompt` / `ClearPrompt` | Manage prompt | Ready | Handle/result | Main thread |
-| `ApplyTheme` / `ApplyAccessibility` | Apply effective presentation | Valid values/targets | Report/fallback | Main thread |
+| `ApplyMotif` / `ApplyAccessibility` | Apply effective presentation | Valid values/targets | Report/fallback | Main thread |
 | `RequestFocus` / `ClearFocus` | Set UI selection state | Interactive surface | Applied/deferred/fallback | Main thread/stale-safe |
 | `CaptureStatus` | Snapshot state | Any init/fault state | Immutable snapshot | Side-effect free |
 | `ResetRuntimeStateAsync` | Development/test reset | Allowed policy | Structured result | Main thread |
@@ -598,7 +634,7 @@ Operation kind, stable definition/ID, typed project wrapper/context seam, duplic
 | `HudRegionChanged` | After registration/visibility commit |
 | `NotificationChanged`, `TooltipChanged`, `PromptChanged` | After service truth changes |
 | `FocusChanged` | After EventSystem selection commit |
-| `ThemeChanged`, `AccessibilityChanged` | After application attempts finish |
+| `MotifChanged`, `AccessibilityChanged` | After application attempts finish |
 | `StatusChanged` | Meaningful health/state change only |
 
 Listeners are never required for the authoritative operation to finish.
@@ -617,9 +653,9 @@ Listeners are never required for the authoritative operation to finish.
 
 ### 10.6 Ergonomics
 
-**Novice:** setup tool, root prefab, screen definition, `OpenScreenAsync`.  
-**Programmer:** injected factories, clocks, transitions, EventSystem/focus adapters, typed presenters, narrow interfaces.  
-**Designer:** project prefabs, themes, focus targets, transitions, safe-area settings, and validation.
+**Novice:** setup tool, root prefab, screen definition, `OpenScreenAsync`.
+**Programmer:** injected factories, clocks, transitions, EventSystem/focus adapters, typed presenters, narrow interfaces.
+**Designer:** project prefabs, motifs, focus targets, transitions, safe-area settings, and validation.
 
 ---
 
@@ -633,23 +669,26 @@ Install -> open Looking Glass Setup -> create/select config -> choose root/Event
 
 | Operation | Creates/modifies | Repeat-safe | Protection |
 |---|---|---:|---|
-| Create config/root/EventSystem prefab/catalog/theme | New project-owned assets | Yes | Undo and report |
+| Create config/root/EventSystem prefab/catalog/motif | New project-owned assets | Yes | Undo and report |
 | Register screen/modal | Catalog entry/reference | Yes | Duplicate detection |
 | Import Lab/templates | Samples/project copies | Yes | Package Manager/sample semantics |
 | Repair root | Previewed deterministic missing components/references | Yes where safe | Undo + optional backup |
 | Migrate config | Versioned project asset changes | Idempotent | Backup/report |
 
-No operation silently overwrites project screens, themes, layouts, text, input modules, or EventSystems.
+No operation silently overwrites project screens, motifs, layouts, text, input modules, or EventSystems.
 
 ### 11.3 Windows and inspectors
 
 - Looking Glass Setup.
-- Configuration, Screen Catalog, Modal Catalog, and Theme inspectors.
+- Configuration, Screen Catalog, Modal Catalog, and Motif inspectors.
 - UI Validation window.
 - Runtime Stack inspector.
 - Focus Map visualizer.
 - Transition simulator.
 - Setup/migration report viewer.
+- Looking Glass Builder — create/batch-create/name/parent standardized primitives and screen/window roots.
+- Motif authoring tools — create, capture from selection, apply to selection/children, preview, and preserve explicit local overrides.
+- Surface Registry inspector — inspect stable IDs, roles, scopes, categories, open state, and select the authored object.
 
 ### 11.4 Validation registry
 
@@ -667,7 +706,7 @@ No operation silently overwrites project screens, themes, layouts, text, input m
 | EUI-VAL-013/014 | Raycaster/CanvasGroup missing | Error | Previewed safe fix |
 | EUI-VAL-015 | Notification bounds invalid | Error | No silent clamp |
 | EUI-VAL-016 | Transition timing/timeout invalid | Error | No |
-| EUI-VAL-017/018 | Theme fallback/sample dependency issue | Warning | No |
+| EUI-VAL-017/018 | Motif fallback/sample dependency issue | Warning | No |
 | EUI-VAL-019 | Safe-area config invalid | Warning | No |
 | EUI-VAL-020 | Runtime references UnityEditor | Blocker | No |
 | EUI-VAL-021 | Project asset under immutable package source | Error | Guidance only |
@@ -712,7 +751,7 @@ The UI Laboratory contains only EchoUI, declared Unity dependencies, and redistr
 
 ### 13.1 Laboratory purpose
 
-Prove root/layer lifecycle, screen and modal history, focus restoration, EventSystem behavior, HUD/transients, themes/accessibility, transition failures, bounds, direct entry, and shutdown without any other Echo package.
+Prove package-local authority, stable surface registration, exclusive scoped navigation, independent windows, context-driven visibility, focus/EventSystem behavior, later modal/HUD/transient services, Motifs/accessibility, transition failures, direct entry, and shutdown without any other Echo package. Early checkpoints use a deliberately simple Laboratory helper to inject context until project/controller adapters exist.
 
 ### 13.2 Laboratory contents
 
@@ -723,7 +762,7 @@ Prove root/layer lifecycle, screen and modal history, focus restoration, EventSy
 - HUD regions.
 - Notification stress controls.
 - Edge/corner tooltips and prompt fallbacks.
-- Two neutral themes.
+- Two neutral motifs.
 - Text scale/reduced motion/contrast/focus/timing controls.
 - Focus/current selected readout.
 - Delay/failure/cancel simulation.
@@ -741,7 +780,7 @@ Prove root/layer lifecycle, screen and modal history, focus restoration, EventSy
 | LAB-018/019 | Register/dispose/hide HUD | Correct region/lease state |
 | LAB-020-023 | Notification coalesce/overflow/unscaled/accessibility | Bounds and timing policy |
 | LAB-024-026 | Tooltip edges/anchor loss/prompt replacement | Safe placement and lifecycle |
-| LAB-027-030 | Theme/fallback/text scale/reduced motion | Project asset immutable and policy applied |
+| LAB-027-030 | Motif/fallback/text scale/reduced motion | Project asset immutable and policy applied |
 | LAB-031-033 | Open/close failure/cancel queued operation | Deterministic nonblocking terminal state |
 | LAB-034/035 | Missing/duplicate EventSystem | Actionable configured behavior |
 | LAB-036/037 | Safe-area change / scene travel | Correct anchors and persistent root cleanup |
@@ -758,7 +797,7 @@ First Light, Observatory, Accord, Passage, Pulse, Resonance, Will, and Chronicle
 
 ### 14.1 Ownership
 
-EchoUI owns framework presentation lifecycle, visibility/interactivity, focus/navigation, transitions, and theme/accessibility application. Project presenters own domain interpretation, commands, final copy, localization choices, and production styling.
+EchoUI owns framework presentation lifecycle, visibility/interactivity, focus/navigation, transitions, and motif/accessibility application. Project presenters own domain interpretation, commands, final copy, localization choices, and production styling.
 
 ### 14.2 Required view states
 
@@ -778,7 +817,7 @@ The MVP proves keyboard/controller/pointer navigation, focus indicators, scalabl
 
 ### 14.6 Customization and scaling
 
-Project owns prefabs, Canvas/layout choices, fonts/fallbacks, sprites/icons/materials, themes, transitions, focus visuals, and localized text. Setup validates CanvasScaler/reference resolution/anchors/safe-area choices but does not impose one universal resolution. Default templates use TMP-compatible text; production font assets remain project-owned.
+Project owns prefabs, Canvas/layout choices, fonts/fallbacks, sprites/icons/materials, motifs, transitions, focus visuals, and localized text. Setup validates CanvasScaler/reference resolution/anchors/safe-area choices but does not impose one universal resolution. Default templates use TMP-compatible text; production font assets remain project-owned.
 
 ---
 
@@ -786,17 +825,17 @@ Project owns prefabs, Canvas/layout choices, fonts/fallbacks, sprites/icons/mate
 
 ### 15.1 Standalone surfaces
 
-API/inspector/log for lifecycle, layers, screen/modal summary, focus/EventSystem, active transition, queue counts, theme/accessibility IDs, bounded history, and validation report.
+API/inspector/log for lifecycle, layers, screen/modal summary, focus/EventSystem, active transition, queue counts, motif/accessibility IDs, bounded history, and validation report.
 
 ### 15.2 Snapshot fields
 
-Package/schema, root/config/mode, layers and interaction gates, screen history/active ID, modal count/top ID, HUD counts, notification counts/drops/coalesces, tooltip/prompt active state, EventSystem/input module type where safe, selected target debug ID where safe, transition correlation/timing, theme/accessibility summary, last codes, and bounded operation metrics.
+Package/schema, root/config/mode, layers and interaction gates, screen history/active ID, modal count/top ID, HUD counts, notification counts/drops/coalesces, tooltip/prompt active state, EventSystem/input module type where safe, selected target debug ID where safe, transition correlation/timing, motif/accessibility summary, last codes, and bounded operation metrics.
 
 Public-safe output excludes rendered text, arbitrary view-model values, hierarchy/file paths, save/profile names, and user input.
 
 ### 15.3 Diagnostic codes
 
-`EUI-LIFE-*`, `EUI-CONFIG-*`, `EUI-LAYER-*`, `EUI-EVENT-*`, `EUI-SCREEN-*`, `EUI-MODAL-*`, `EUI-FOCUS-*`, `EUI-TRANS-*`, `EUI-NOTIFY-*`, `EUI-TOOLTIP-*`, `EUI-PROMPT-*`, `EUI-THEME-*`, `EUI-SAFE-*`, `EUI-VIEW-*`, and `EUI-QUEUE-*` are stable searchable families. Detailed meanings and remediation are documented in the package reference.
+`EUI-LIFE-*`, `EUI-CONFIG-*`, `EUI-LAYER-*`, `EUI-EVENT-*`, `EUI-SCREEN-*`, `EUI-MODAL-*`, `EUI-FOCUS-*`, `EUI-TRANS-*`, `EUI-NOTIFY-*`, `EUI-TOOLTIP-*`, `EUI-PROMPT-*`, `EUI-MOTIF-*`, `EUI-SAFE-*`, `EUI-VIEW-*`, and `EUI-QUEUE-*` are stable searchable families. Detailed meanings and remediation are documented in the package reference.
 
 ### 15.4 Observatory bridge
 
@@ -814,8 +853,8 @@ No per-frame focus spam. Equivalent warnings are throttled/coalesced. User-enter
 
 | State | Scope | Owner | Saved? |
 |---|---|---|---:|
-| Config/theme definitions | Project assets | Project/EchoUI types | Asset serialization |
-| Theme/accessibility selection | Global preference | Accord/project | Optional/expected |
+| Config/motif definitions | Project assets | Project/EchoUI types | Asset serialization |
+| Motif/accessibility selection | Global preference | Accord/project | Optional/expected |
 | Screen/modal/HUD/transient/focus state | Session | EchoUI | No by core |
 | Save-slot metadata displayed | Slot/profile | Chronicle | By Chronicle |
 
@@ -825,7 +864,7 @@ Without Accord/Chronicle, configuration defaults apply in memory and nothing is 
 
 ### 16.3 Preference bridge
 
-Accord may persist UI/text scale, contrast/theme variant, reduced motion, transient timing, focus indicator, and animation/flash settings. EchoUI validates/applies effective values; Accord owns draft/commit/rollback/storage/migration.
+Accord may persist UI/text scale, contrast/motif variant, reduced motion, transient timing, focus indicator, and animation/flash settings. EchoUI validates/applies effective values; Accord owns draft/commit/rollback/storage/migration.
 
 ### 16.4 Save bridge
 
@@ -833,7 +872,7 @@ A save presenter queries Chronicle and submits operations. EchoUI never reads/wr
 
 ### 16.5 Failure/recovery
 
-Unknown theme IDs fall back without rewriting external data. Newer preference schemas are preserved. Save failures are rendered from Chronicle results. Shutdown completes/cancels pending UI operations but does not persist transient state.
+Unknown motif IDs fall back without rewriting external data. Newer preference schemas are preserved. Save failures are rendered from Chronicle results. Shutdown completes/cancels pending UI operations but does not persist transient state.
 
 ---
 
@@ -1041,7 +1080,7 @@ Packages/com.echodevgames.echo-ui/
 │   │   ├── Quick Start.md
 │   │   ├── Screens and Modals.md
 │   │   ├── HUD Notifications and Prompts.md
-│   │   ├── Themes and Accessibility.md
+│   │   ├── Motifs and Accessibility.md
 │   │   ├── UI Laboratory.md
 │   │   └── Troubleshooting.md
 │   └── Developer/
@@ -1062,7 +1101,7 @@ Packages/com.echodevgames.echo-ui/
 │   ├── Prompts/
 │   ├── Focus/
 │   ├── Presentation/
-│   ├── Themes/
+│   ├── Motifs/
 │   ├── Accessibility/
 │   ├── Diagnostics/
 │   ├── Configuration/
@@ -1146,11 +1185,11 @@ Runtime/
 │   ├── IUIViewFactory.cs
 │   ├── IUIViewTransitionDriver.cs
 │   └── UGUI/
-├── Themes/
-│   ├── UITheme.cs
-│   ├── UIThemeToken.cs
-│   ├── UIThemeResolver.cs
-│   └── IThemeConsumer.cs
+├── Motifs/
+│   ├── UIMotif.cs
+│   ├── UIMotifToken.cs
+│   ├── UIMotifResolver.cs
+│   └── IMotifConsumer.cs
 ├── Accessibility/
 │   ├── UIAccessibilityPolicy.cs
 │   ├── UIAccessibilitySnapshot.cs
@@ -1228,7 +1267,7 @@ No broader platform, render pipeline, or Unity-minor compatibility is claimed un
 **Minor version:**
 
 - Backward-compatible screen/modal/HUD capabilities.
-- New optional presenters, focus policies, notification policies, theme tokens, or diagnostics.
+- New optional presenters, focus policies, notification policies, motif tokens, or diagnostics.
 - New optional bridge support.
 - New serialized fields with safe defaults.
 - Additional sample scenarios.
@@ -1253,12 +1292,12 @@ No broader platform, render pipeline, or Unity-minor compatibility is claimed un
 
 ### 21.4 GUID and asset compatibility
 
-- Public scripts, prefabs, default configurations, definitions, themes, samples, and asmdefs keep committed `.meta` files.
+- Public scripts, prefabs, default configurations, definitions, motifs, samples, and asmdefs keep committed `.meta` files.
 - File moves and renames retain GUIDs when identity survives.
 - Screen/modal definition stable IDs do not derive solely from display names or paths.
 - Duplicate ID validation blocks release.
 - An ID changed after release requires alias/migration support.
-- Package updates must not overwrite project-owned screens, themes, prefabs, or generated configuration.
+- Package updates must not overwrite project-owned screens, motifs, prefabs, or generated configuration.
 
 ### 21.5 Backend compatibility policy
 
@@ -1286,7 +1325,7 @@ uGUI is the first approved runtime backend. UI Toolkit support is deferred to a 
 - Registering HUD regions.
 - Notifications, prompts, and tooltips.
 - EventSystem policies and focus troubleshooting.
-- Theme creation and project-owned customization.
+- Motif creation and project-owned customization.
 - Accessibility policy and reduced-motion behavior.
 - Direct-scene initialization.
 - UI Laboratory guide.
@@ -1304,7 +1343,7 @@ uGUI is the first approved runtime backend. UI Toolkit support is deferred to a 
 - EventSystem and focus algorithm.
 - Transition cancellation/replacement semantics.
 - Stable ID and registry rules.
-- Theme and accessibility contracts.
+- Motif and accessibility contracts.
 - Extension interfaces and custom presenter examples.
 - Diagnostics provider contract.
 - Testing strategy and release workflow.
@@ -1369,9 +1408,9 @@ Diagrams explain ownership and timing; they do not replace normative prose and t
 
 | Layer | Scope | Examples | Required for MVP? |
 |---|---|---|---:|
-| EditMode unit | Definitions, stable IDs, validation, policies, bounded collections, focus selection rules | Registry collision, queue overflow, transition policy, theme fallback | Yes |
+| EditMode unit | Definitions, stable IDs, validation, policies, bounded collections, focus selection rules | Registry collision, queue overflow, transition policy, motif fallback | Yes |
 | PlayMode unit/integration | Root lifecycle, screen/modal operations, view transitions, EventSystem/focus, owner loss | Duplicate root, push/back, out-of-order modal close, stale handles | Yes |
-| Standalone Test Lab | User-visible isolated UI framework loop | Screens, HUD, modals, notifications, prompts, focus, themes, accessibility | Yes |
+| Standalone Test Lab | User-visible isolated UI framework loop | Screens, HUD, modals, notifications, prompts, focus, motifs, accessibility | Yes |
 | Bridge Integration Lab | One explicit peer connection | Pulse scope, Will context, Passage loading, Accord settings | When bridge ships |
 | Showcase | Combined presentation and portfolio polish | Multi-package shell | No |
 | Clean-project install | Packaging and dependency independence | Git/local/tarball install, sample import/removal | Yes |
@@ -1393,7 +1432,7 @@ Diagrams explain ownership and timing; they do not replace normative prose and t
 - EventSystem adoption, creation, conflict, and missing-system policies.
 - Focus defaults, fallback, restoration, containment, and device-mode changes.
 - Silent initialization and callback suppression.
-- Theme immutability, fallback, scaling, contrast, and reduced motion.
+- Motif immutability, fallback, scaling, contrast, and reduced motion.
 - Transition cancellation, stale completion, timeout, and exception isolation.
 - Scene unload, domain reload options, and application shutdown.
 - Redacted diagnostics and bounded histories.
@@ -1481,9 +1520,9 @@ At minimum, release evidence includes:
 | EUI-T-060 | Focus restoration | Push and back | Previously valid target restores; invalid target follows fallback | Yes | Not run |
 | EUI-T-061 | Pointer/controller switching | Alternate pointer and navigation input | Focus visuals/selection follow configured policy without jitter or unwanted stealing | Manual | Not run |
 | EUI-T-062 | Modal focus containment | Navigate while modal open | Selection cannot escape configured modal scope | Yes | Not run |
-| EUI-T-063 | Theme application | Assign project theme | Registered consumers receive resolved tokens without mutating theme asset | Yes | Not run |
-| EUI-T-064 | Missing theme token | Request absent token | Fallback/diagnostic applies without null crash | Yes | Not run |
-| EUI-T-065 | Runtime theme asset safety | Exercise views repeatedly | ScriptableObject theme remains unchanged after play/reset | Yes | Not run |
+| EUI-T-063 | Motif application | Assign project motif | Registered consumers receive resolved tokens without mutating motif asset | Yes | Not run |
+| EUI-T-064 | Missing motif token | Request absent token | Fallback/diagnostic applies without null crash | Yes | Not run |
+| EUI-T-065 | Runtime motif asset safety | Exercise views repeatedly | ScriptableObject motif remains unchanged after play/reset | Yes | Not run |
 | EUI-T-066 | Text scale policy | Apply larger effective scale | Participating views update and remain navigable/readable in Laboratory | Manual | Not run |
 | EUI-T-067 | Reduced motion | Enable reduced motion | Transitions complete immediately or through approved reduced variant | Yes | Not run |
 | EUI-T-068 | Transition cancellation | Replace/cancel during enter | Stale transition cannot complete newer operation; final state is deterministic | Yes | Not run |
@@ -1529,13 +1568,13 @@ Each release candidate records:
 - [x] Independence contract is explicit.
 - [x] MVP and deferred scope are separated.
 - [x] Persistent-root lifecycle and duplicate protection are defined.
-- [x] Screen, modal, HUD, notification, prompt, focus, theme, and transition contracts are defined.
+- [x] Screen, modal, HUD, notification, prompt, focus, motif, and transition contracts are defined.
 - [x] Public API direction and stable-ID rules are defined.
 - [x] Standalone Laboratory and test registry are designed.
 - [x] Required dependencies and backend boundary are explicit.
 - [x] No release-blocking architecture question remains.
 - [x] Specification is approved for future implementation.
-- [x] Foundation implementation remains locked until all ten specifications and consistency review are approved.
+- [x] Historical Foundation documentation/consistency gate is satisfied; current implementation is package-locally gated by JIT review + checkpoint authority.
 
 ### 24.2 Implementation gate
 
@@ -1547,7 +1586,7 @@ Each release candidate records:
 - [ ] Modal results complete exactly once.
 - [ ] Focus/EventSystem policies match specification.
 - [ ] Transitions have cancellation, stale-operation, and timeout protection.
-- [ ] Theme/accessibility assets remain immutable at runtime.
+- [ ] Motif/accessibility assets remain immutable at runtime.
 - [ ] Setup/repair operations are previewable, repeatable, and non-destructive.
 - [ ] Public API matches this specification or the specification/ADR was updated first.
 
@@ -1591,7 +1630,7 @@ Each release candidate records:
 
 ### 24.6 Definition of done
 
-The MVP is done when a clean project can install EchoUI alone, create or repair one protected root, register project-owned screens and a theme, push/back/replace/reset screens, open and resolve modals, display HUD regions, notifications, prompts, and tooltips, coordinate deterministic focus and EventSystem behavior, apply accessibility-aware transitions, inspect actionable diagnostics, and prove the full loop in an isolated Laboratory without any peer Echo package.
+The MVP is done when a clean project can install EchoUI alone, create or repair one protected root, register project-owned screens and a motif, push/back/replace/reset screens, open and resolve modals, display HUD regions, notifications, prompts, and tooltips, coordinate deterministic focus and EventSystem behavior, apply accessibility-aware transitions, inspect actionable diagnostics, and prove the full loop in an isolated Laboratory without any peer Echo package.
 
 ---
 
@@ -1639,7 +1678,7 @@ They must not:
 - Rewrite project UI scripts automatically without a narrowly approved converter.
 - Delete old prefabs/scenes.
 - Reparent arbitrary hierarchies silently.
-- Replace fonts, themes, navigation, or input modules without preview.
+- Replace fonts, motifs, navigation, or input modules without preview.
 - Treat a successful import as parity.
 
 ### 25.4 Adoption evidence
@@ -1669,7 +1708,7 @@ An integration claim requires:
 | EUI-R-006 | Modal awaiters leak or complete twice | Medium | High | Generational handles and exact-once terminal state tests | Owner loss/out-of-order close |
 | EUI-R-007 | Hidden uGUI/package-version drift | Medium | Medium | Verify exact Unity/package relationship at M1/M6; avoid guessed manifest values | Unity baseline changes |
 | EUI-R-008 | Canvas/layout performance regressions | Medium | Medium | Profile real Laboratory and project views; keep coordinator event-driven | Large HUD/menu adoption |
-| EUI-R-009 | Mutable shared theme/config assets | Medium | High | Runtime resolved snapshots; immutability tests | Play Mode contamination |
+| EUI-R-009 | Mutable shared motif/config assets | Medium | High | Runtime resolved snapshots; immutability tests | Play Mode contamination |
 | EUI-R-010 | Setup overwrites project content | Low | High | Dry run, create-safe defaults, backups, exact report, repeat tests | Repair/migration action |
 | EUI-R-011 | Sample becomes runtime dependency | Low | High | Separate assemblies and sample-removal gate | Runtime reference to sample |
 | EUI-R-012 | UI backend leaks into core contracts | Medium | Medium | Narrow presenter interfaces and documented uGUI-specific surface | UI Toolkit adapter work |
@@ -1698,15 +1737,29 @@ An integration claim requires:
 | EUI-D-006 | Modal entries use exact-once results and owned handles | Approved | Safe await/callback lifecycle and out-of-order cleanup | Stale handles need generation/identity validation | No |
 | EUI-D-007 | EventSystem policy is explicit and non-destructive | Approved | Avoids hidden duplicates and deleted project setup | Conflicts may block until user resolves them | No |
 | EUI-D-008 | Focus resolution is deterministic and event-driven | Approved | Reduces selection jitter and frame polling | Views must declare/default/fallback focus metadata | No |
-| EUI-D-009 | Project code owns final views, themes, copy, and domain presenters | Approved | Preserves project identity and package update safety | Package ships templates, not mandatory production art | No |
+| EUI-D-009 | Project code owns final views, motifs, copy, and domain presenters | Approved | Preserves project identity and package update safety | Package ships templates, not mandatory production art | No |
 | EUI-D-010 | Structural UI operations are serialized with bounded admission | Approved | Prevents transition races | Requests can be rejected/queued/coalesced explicitly | No |
 | EUI-D-011 | UI transitions use unscaled time and hard bounds | Approved | Works during pause and cannot hang forever | Transition drivers need cancellation/timeout contracts | No |
-| EUI-D-012 | Runtime theme/configuration assets remain immutable | Approved | Prevents Play Mode contamination | Runtime uses resolved state/snapshots | No |
+| EUI-D-012 | Runtime motif/configuration assets remain immutable | Approved | Prevents Play Mode contamination | Runtime uses resolved state/snapshots | No |
 | EUI-D-013 | Accessibility policy is effective runtime input, persistence remains external | Approved | Keeps Accord as preference authority | Standalone defaults and bridge/provider seams required | No |
 | EUI-D-014 | Notifications, prompts, histories, queues, and diagnostics are bounded | Approved | Prevents quiet resource growth | Overflow policies are configurable and observable | No |
 | EUI-D-015 | Peer integrations ship separately by default | Approved | Preserves standalone installation/removal | More explicit bridge artifacts and labs | No |
 | EUI-D-016 | UI Toolkit, native screen-reader providers, XR, and advanced virtualization are deferred | Approved | Protects MVP and avoids unproven multi-backend scope | Later work requires specification/ADR | No |
-| EUI-D-017 | First Light implementation remains locked after this approval | Approved | Foundation documentation-first gate is authoritative | EchoSave and Workshop specs plus consistency review come first | No |
+| EUI-D-017 | Historical Foundation implementation lock after initial specification | Superseded 2026-08-13 | The suite documentation gate and JIT package learning program have since passed | Replaced by package-local PKG-LEARN-008 + EUI-M1-01 activation | No |
+| EUI-D-018 | UI context is layered rather than one global mutually-exclusive UI enum | Approved | Frontend/gameplay context, pause/cinematic/loading conditions, navigation, HUD, and overlays may coexist | Visibility policy requires explicit inputs | No |
+| EUI-D-019 | One screen is active at a time only inside an authored navigation scope | Approved | Supports console-style menus without forbidding MMO-style windows | Scope identity becomes public configuration | No |
+| EUI-D-020 | Back uses history by default with explicit Navigate To / Return Root / scope actions | Approved | Predictable default plus designer control | Stale history must prune safely | No |
+| EUI-D-021 | Surface visibility reacts to cascading externally supplied context policy | Approved | HUD/windows can independently hide for Pause/Cinematic/etc. | Looking Glass must not become pause/game-state authority | No |
+| EUI-D-022 | Every surface has a stable project-authored ID independent of hierarchy path | Approved | Enables cross-system hooks and refactor-safe addressing | Duplicate/invalid IDs require validation | No |
+| EUI-D-023 | Default selection is optional and input-modality aware | Approved | Avoids mouse menus showing arbitrary selection while preserving controller/keyboard focus | Modality provider remains external/optional | No |
+| EUI-D-024 | Pause/cinematic/loading/input modality truth is external to Looking Glass | Approved | Preserves package independence and future Controller/Will authority | Laboratory supplies a simple local context driver | No |
+| EUI-D-025 | Independent window surfaces may coexist with screens and each other | Approved | Supports EverQuest/WoW/desktop-style interfaces | Window layout/persistence remains later/project-owned | No |
+| EUI-D-026 | Surface registry is queryable/discoverable by ID/role/scope/category/state | Approved | Enables generic selectors, tooling, and Menu-for-Menus interfaces | Registry may expose presentation metadata, not domain truth | No |
+| EUI-D-027 | Sample/editor hierarchy convention is `Type_DescriptiveName` | Approved | Scene hierarchy remains simple, searchable, and immediately readable | Runtime IDs remain separate | No |
+| EUI-D-028 | Standardized UI primitives behave as Lego pieces; visual prefab variants share behavior | Approved | Reuse without forcing one art style | Primitive behavior must remain focused | No |
+| EUI-D-029 | Motif is the front-facing reusable appearance recipe with capture/apply and local overrides | Approved | Reuse colors/states/sprites/typography across separately authored menus | Motif owns appearance only | No |
+| EUI-D-030 | Looking Glass Builder automates create/batch-create/name/parent/style/validate operations | Approved | Removes boilerplate while preserving hand-authored composition | Builder may not overwrite project content silently | No |
+| EUI-D-031 | Final screen composition and UI object lifetime are project/designer owned | Approved | Package supplies bricks and runtime plumbing rather than a mandatory game shell | Setup/Lab must remain explicit | No |
 
 ### 27.2 Release-blocking questions
 
@@ -1732,84 +1785,77 @@ None. Exact Unity UI/TMP dependency versions are verification tasks for M1, not 
 | Milestone | Outcome | Included capabilities | Required evidence |
 |---|---|---|---|
 | M0 - Specification | Approved package contract | All design sections, tests, risks, decisions | This approved document |
-| M1 - Skeleton | Installable repository/package anatomy | Manifest, asmdefs, docs shell, configuration types, root claim shell | Clean compile and duplicate-claim tests |
+| M1 - Surface Foundation | Installable package plus smallest useful UI behavior | Manifest/asmdefs/docs, package-local root claim, stable surface registry, one exclusive navigation scope, independent window | Clean compile, duplicate-claim, navigation, Back, and coexistence tests |
 | M2 - Runtime core | Smallest authoritative lifecycle | Root/layers, registries, screen history, modal results, operation serialization | EditMode/PlayMode tests |
-| M3 - Focus and presentation | Usable uGUI framework | EventSystem policy, focus, view lifecycle, transitions, theme/accessibility seams | Automated tests and profiler capture |
+| M3 - Focus and presentation | Usable uGUI framework | EventSystem policy, focus, view lifecycle, transitions, motif/accessibility seams | Automated tests and profiler capture |
 | M4 - Complete MVP surfaces | HUD, notifications, prompts, tooltips, diagnostics | Bounded queues/leases, status snapshots | Laboratory scenarios |
 | M5 - Tooling and Lab | Safe setup/repair/validation and standalone proof | Editor window, validators, simulators, sample | Repeatability and clean-project report |
 | M6 - First integration | One explicit bridge/project vertical slice | Project adapter and parity work | Integration Lab/parity/rollback report |
 | M7 - Release | Distribution-ready beta/stable candidate | Docs, license, notices, changelog, package artifact | External install and release gates |
 
-### 28.2 Foundation documentation gate
+### 28.2 Historical Foundation documentation gate — satisfied
 
-This approval completes the eighth of ten Foundation specifications. No EchoUI implementation milestone begins until:
-
-1. The Chronicle (`EchoSave`) specification is approved.
-2. The Workshop (`EchoGameStarter`) specification is approved.
-3. The Foundation cross-package consistency review is complete.
-4. Conflicts are reconciled into package specifications, SFGSS-000, or ADRs.
-5. Current Notes and roadmap explicitly open the implementation gate.
+The original v1.0.x specification correctly blocked implementation until the Foundation documentation program and cross-package consistency work completed. That suite gate has since been satisfied. Current implementation permission is package-local: PKG-LEARN-008 must be complete and an explicit Checkpoint Build Plan must be active under SFGSS-005. EUI-M1-01 meets those conditions as of August 13, 2026.
 
 ### 28.3 First recommended implementation checkpoint after the gate
 
-**EUI-M1-01 - Installable skeleton and duplicate-safe root claim**
+**EUI-M1-01 - Installable Surface Foundation, Scoped Navigation, and Independent Window Proof**
 
 Outcome:
 
-- Create package manifest and assembly boundaries.
-- Add documentation shell and package Current Notes.
-- Add minimal configuration and root claim state only.
-- Implement duplicate rejection before EventSystem/layer/registry side effects.
-- Add initial EditMode/PlayMode lifecycle tests.
-- Do not implement screen navigation yet.
+- Create the embedded package manifest, runtime/test assembly boundaries, documentation shell, and minimal UPM sample instructions.
+- Add a package-local `EchoUIRoot` authority that rejects duplicates before surface-registry/navigation side effects and does not claim project `DontDestroyOnLoad` composition.
+- Register stable project-authored surface IDs and distinguish `Screen`, `Window`, `HUD`, and `Overlay` roles.
+- Prove one exclusive `frontend` navigation scope: `main-menu -> settings -> Back -> main-menu`.
+- Prove one independent `default-window` can open/close without changing the active `frontend` screen.
+- Add a minimal uGUI navigation-button adapter so the Laboratory can wire real Buttons without another Echo package.
+- Keep context conditions, visibility-rule evaluation, input-modality focus behavior, Motifs, primitive prefab library, Builder, modal/HUD/transient services, and persistence outside this slice.
 
-Stop point: clean project compiles, one root claims, duplicate leaves no side effects, shutdown clears authority, documentation matches commit.
+Stop point: package compiles in Unity 6000.3.8f1 with uGUI 2.0.0, focused tests pass, direct-scene manual proof shows scoped navigation + Back + independent-window coexistence, duplicate authority remains side-effect-free, and documentation matches the committed state.
 
 ---
 
 ## 29. New-Conversation Handoff
 
 ```text
-We are continuing development of The Sperk’s Forge - EchoDevGames Game Systems Suite.
+We are continuing development of The Sperk’s Systems Foundry — EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.0.0 as
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.1.0 as
 the authority for UI presentation infrastructure, lifecycle, public API, data,
-tooling, Test Lab, and release gates. Follow SFGSS-005 when implementation
-checkpoints are available.
+tooling, Laboratory, and release gates. Follow SFGSS-005 v1.6.0 and the active
+Checkpoint Build Plan for Green Path execution.
 
 Current package: EchoUI
-Current specification version: 1.0.0
-Current milestone/checkpoint: Foundation documentation pass; implementation locked
+Current specification version: 1.1.0
+Current milestone/checkpoint: EUI-M1-01 active / authorized
 Current Unity version: 6000.3.8f1
-Current implementation status: Not started
+Current implementation status: Not started; first Green Path implementation authorized
 Known blockers: None
-Current Notes reviewed through: August 3, 2026
+Current Notes reviewed through: August 13, 2026
 
 Before writing code:
-1. Confirm whether all ten Foundation specifications and the cross-package
-   consistency review are approved. If not, do not implement.
+1. Confirm PKG-LEARN-008 is complete and the intended EUI checkpoint is explicitly active.
 2. Summarize EchoUI's authority and independence constraints.
-3. Preserve project-owned views, themes, data, and domain rules.
+3. Preserve project-owned views, Motifs, data, application context, object lifetime, and domain rules.
 4. Keep peer integrations behind explicit bridges or project adapters.
-5. Reject duplicates before EventSystem, layer, focus, registry, transition,
-   or subscription side effects.
-6. Continue using the Checkpoint Build Plan format.
+5. Reject duplicates before registry/navigation/EventSystem/layer/focus/transition/subscription side effects.
+6. Follow the active Checkpoint Build Plan and stop on any Green Path red gate.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
-| Package version | Specification v1.0.0; runtime package not started |
+| Package version | Specification v1.1.0; runtime package not started |
 | Completed checkpoint | FW-DOC-08 - The Looking Glass specification |
 | Files/assets created | Package specification and Foundation checkpoint documentation |
 | Tests passed | Specification structure/reconciliation audit only; implementation tests not run |
 | Tests failed | None |
 | Known issues | None blocking |
-| Decisions added | EUI-D-001 through EUI-D-017 |
-| Next Foundation checkpoint | FW-DOC-09 - Draft The Chronicle (`EchoSave`) |
-| Implementation permission | Locked |
+| Decisions added | EUI-D-001 through EUI-D-031; EUI-D-017 superseded |
+| Active implementation checkpoint | EUI-M1-01 - Installable Surface Foundation, Scoped Navigation, and Independent Window Proof |
+| Implementation permission | EUI-M1-01 ACTIVE / AUTHORIZED after PKG-LEARN-008 |
 
 ---
 
@@ -1823,7 +1869,7 @@ Before writing code:
 - [x] MVP is useful without becoming a complete game shell.
 - [x] Root, layers, screens, modals, focus, transitions, and failure behavior are specified.
 - [x] Configuration and runtime state are separated.
-- [x] Project-owned views/themes/content remain outside immutable package source.
+- [x] Project-owned views/motifs/content remain outside immutable package source.
 - [x] Standalone Laboratory is fully defined.
 - [x] Diagnostics work without Observatory.
 - [x] Optional integrations are explicit and removable.
@@ -1831,14 +1877,15 @@ Before writing code:
 - [x] Test and release gates are measurable.
 - [x] No Isekai Studios identity or ownership has been introduced.
 - [x] Jesse's standing approval to select the most effective long-term architecture has been applied.
-- [x] Foundation implementation remains locked.
+- [x] Historical Foundation gate is satisfied; EUI-M1-01 is package-locally active under PKG-LEARN-008 + SFGSS-005.
 
 ### 30.2 Approval record
 
-**Decision:** Approved  
-**Approved by:** Jesse “Echo” Adams  
-**Date:** August 3, 2026  
-**Conditions:** This approval authorizes the package architecture and documentation only. Runtime implementation begins only after all ten Foundation package specifications and the Foundation consistency review are approved.
+**Decision:** Approved / rebaselined
+**Approved by:** Jesse “Echo” Adams
+**Original approval date:** August 3, 2026
+**JIT rebaseline date:** August 13, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M1-01 implementation is explicitly authorized only within its Checkpoint Build Plan; later capabilities remain gated by their own checkpoints and JIT decisions.
 
 ---
 
@@ -1848,7 +1895,7 @@ A new collaborator can answer from this document:
 
 1. EchoUI owns presentation infrastructure, not game truth.
 2. It refuses settings, saves, input authority, pause, scene travel, audio, and gameplay ownership.
-3. Its MVP is one protected uGUI root with layered screens, modals, HUD, notifications, prompts, focus, themes, diagnostics, tooling, and an isolated Laboratory.
+3. Its MVP is one protected uGUI root with layered screens, modals, HUD, notifications, prompts, focus, motifs, diagnostics, tooling, and an isolated Laboratory.
 4. It installs and runs alone.
 5. Definitions/configuration stay immutable; registries, histories, operations, handles, focus, and queues are runtime state.
 6. Its public lifecycle, requests, results, events, and adapter seams are specified.
@@ -1865,8 +1912,8 @@ The Looking Glass specification is therefore complete and **Approved v1.0.0**. T
 
 ## SUITE-DOC-30 Consistency Addendum
 
-**Review status:** Passed  
-**Review date:** August 4, 2026  
+**Review status:** Passed
+**Review date:** August 4, 2026
 **Current governing authorities:** SFGSS-000 v0.20.0; SFGSS-001 v1.2.0; SFGSS-002 v1.1.0; SFGSS-003 v1.1.0; SFGSS-004 v1.2.0; SFGSS-005 v1.2.0; SFGSS-006 through SFGSS-010; SFGSS-ADR-001 through SFGSS-ADR-003; and the approved Foundation, Expansion, and Advanced integration matrices.
 
 The original parent-authority header remains approval provenance. This addendum records the standards that govern the specification after the full consistency review.

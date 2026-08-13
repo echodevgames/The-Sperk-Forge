@@ -9,7 +9,7 @@ updated: 2026-08-04
 # The Sperk’s Forge – Package Learning Review Catalog
 
 **Purpose:** Provide a plain-language bridge between the architectural specifications and later implementation.
-**Status:** Active just-in-time learning program; PKG-LEARN-009 is complete and ESV-M1-01 is active.
+**Status:** Active just-in-time Learn → Declare → Authorize program; PKG-LEARN-008 is complete and EUI-M1-01 is active.
 **Gate:** All 28 reviews must be complete before SUITE-DOC-33 may consider code authorization.
 **Tracker:** `Learning Reviews/PKG-LEARN-TRACKER.json`
 **Template:** [[Learning Reviews/PKG-LEARN-TEMPLATE|Package Learning Review Template]]
@@ -50,7 +50,7 @@ Earlier planning aliases such as `PKG-LEARN-F01`, `PKG-LEARN-E01`, and `PKG-LEAR
 | PKG-LEARN-005 | [[Package Specifications/SFGSS-The-Pulse-EchoGameState-Package-Specification|The Pulse (`EchoGameState`)]] | Not started | Owns high-level runtime state, temporary override scopes, nested pause reasons, time policy, and cursor coordination intent. | Opening a pause menu adds a pause scope; a confirmation modal adds another; closing them out of order does not unpause gameplay early. |
 | PKG-LEARN-006 | [[Package Specifications/SFGSS-Resonance-Jukebot-Package-Specification|Resonance (`Jukebot`)]] | Not started | Owns music, SFX, ambience, pooled voices, playback handles, concurrency, crossfades, and mixer routing. | Exploration music crossfades into danger music while a shield bash and ambience continue independently without duplicated tracks. |
 | PKG-LEARN-007 | [[Package Specifications/SFGSS-The-Will-EchoInput-Package-Specification|The Will (`EchoInput`)]] | Not started | Owns input contexts, reason-based locks, device detection, rebinding transactions, override data, and glyph resolution. | Opening inventory disables gameplay actions, enables UI navigation, and changes prompts from keyboard keys to controller glyphs. |
-| PKG-LEARN-008 | [[Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification|The Looking Glass (`EchoUI`)]] | Not started | Owns reusable screen, HUD, modal, notification, prompt, focus, navigation, theme, and UI lifecycle infrastructure. | A Main Menu opens Settings, a confirmation modal traps focus correctly, and returning restores the previously selected button. |
+| PKG-LEARN-008 | [[Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification|The Looking Glass (`EchoUI`)]] | **Complete** | Owns stable UI surfaces, scoped navigation, independent windows/HUD/overlays, focus/visibility presentation, Motifs, primitives, and authoring tooling without owning game/input/domain truth. | Main Menu → Settings → Back coexists with an independently toggled window; stable IDs later enable a project-authored Menu for Menus. |
 | PKG-LEARN-009 | [[Package Specifications/SFGSS-The-Chronicle-EchoSave-Package-Specification|The Chronicle (`EchoSave`)]] | **Complete** | Owns save slots, immutable generations, manifests, participant payload transport, migration, integrity, backup, and corruption recovery without becoming participant runtime truth or project-wide service composition. | An autosave is interrupted; the next launch rejects the incomplete generation and restores the most recent verified save. |
 | PKG-LEARN-010 | [[Package Specifications/SFGSS-The-Workshop-EchoGameStarter-Package-Specification|The Workshop (`EchoGameStarter`)]] | Not started | Owns Editor-time package selection, dry-run planning, installation coordination, project generation, repair, receipts, and removal guidance. | A new game-jam project selects Launch, UI, Input, Audio, and no game saves, previews every file, then generates a visible starter foundation. |
 
@@ -100,19 +100,19 @@ PKG-LEARN-001 is complete for First Light. PKG-LEARN-002 is paused until EchoDia
 
 | Wave | Complete | Total |
 |---|---:|---:|
-| Foundation | 2 | 10 |
+| Foundation | 3 | 10 |
 | Expansion | 0 | 13 |
 | Advanced | 0 | 5 |
-| **Total** | **2** | **28** |
+| **Total** | **3** | **28** |
 
 ## Current learning state
 
-- Complete: **PKG-LEARN-001 – First Light (`EchoLaunch`)** and **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
+- Complete: **PKG-LEARN-001 – First Light (`EchoLaunch`)**, **PKG-LEARN-008 – The Looking Glass (`EchoUI`)**, and **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
 - Paused: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
-- Active learning review: **None while ESV-M1-01 is being implemented**
-- Current initiative: **Game Shell / Front Door** — Chronicle → Accord → Resonance → Looking Glass, each remaining independently gated
-- Chronicle implementation checkpoint: **ESV-M1-01 active / authorized**
-- Next review trigger after Chronicle: selected deliberately from the initiative; current planned order is Accord, Resonance, then Looking Glass
+- Active learning review: **None; PKG-LEARN-008 is complete**
+- Current initiative: **Looking Glass foundation** — the UI package was intentionally pulled forward after Chronicle M5 so the project can begin assembling its reusable front door incrementally
+- Looking Glass implementation checkpoint: **EUI-M1-01 active / authorized under Green Path**
+- Next package review trigger: selected deliberately after EUI-M1-01; no unrelated package is unlocked by this review
 
 ## Navigation
 

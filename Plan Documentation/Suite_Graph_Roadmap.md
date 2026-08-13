@@ -326,3 +326,6 @@ flowchart LR
 - Active review: **PKG-LEARN-009 – The Chronicle (`EchoSave`)**
 - Tracker: `Learning Reviews/PKG-LEARN-TRACKER.json`
 - Chronicle implementation remains locked until PKG-LEARN-009 passes and Jesse explicitly activates ESV-M1-01.
+## 2026-08-13 Looking Glass activation
+
+`PKG-LEARN-008` is Complete. `EUI-M1-01` is the active package checkpoint under SFGSS-005 Green Path from baseline `f57880a`. This activation intentionally pulls Looking Glass foundation work forward after Chronicle M5 so project UI composition can begin incrementally; it does not create a hard dependency chain or unlock another package.

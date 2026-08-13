@@ -1,10 +1,11 @@
 # SFGSS-ADR-004 — Just-in-Time Package Learning Gate
 
-**Document ID:** SFGSS-ADR-004  
-**Status:** Accepted  
-**Decision date:** August 4, 2026  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Decision scope:** Package learning sequence and implementation authorization  
+**Document ID:** SFGSS-ADR-004
+**Status:** Accepted
+**Decision date:** August 4, 2026
+**Revised:** August 13, 2026
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Decision scope:** Package learning sequence and implementation authorization
 **Related authorities:** SFGSS-000, SFGSS-005, SFGSS-ADR-002, SFGSS-ADR-003, Full Suite Documentation Program Roadmap
 
 > Learn the tool when it is about to enter the hand.
@@ -13,7 +14,7 @@
 
 The full suite documentation program and its twenty-eight package foundations are complete. The original learning gate required all twenty-eight package reviews before any implementation could begin. After completing the First Light review and beginning The Observatory, Jesse determined that reviewing many packages long before their implementation would reduce retention and separate the lesson from its practical application.
 
-The learning purpose remains unchanged: Jesse must understand each package before manually entering its code. The sequencing changes from one large pre-code curriculum to a package-local, just-in-time gate.
+The learning purpose remains unchanged: Jesse must understand and actively shape each package immediately before implementation. The sequencing changes from one large pre-code curriculum to a package-local, just-in-time gate, and the review itself now combines education with explicit product-design intake.
 
 ## Decision
 
@@ -26,7 +27,9 @@ The learning purpose remains unchanged: Jesse must understand each package befor
 7. A completed review must be revisited before implementation when the package authority changed materially after the review.
 8. The graph roadmap, catalog, and tracker remain the navigation and status system for all twenty-eight reviews.
 9. Learning completion remains educational evidence only. It does not promote implementation tests, compatibility, performance, or release evidence beyond `Not run`.
-10. Visible complete code, manual entry, file-by-file explanation, Editor setup, validation, and stop points remain mandatory under SFGSS-005.
+10. Reviews use the Learn → Declare → Authorize model: relevant facts and tradeoffs are taught, Jesse declares intended workflow/behavior, and only the reconciled smallest slice is authorized.
+11. Learning is not an exam. Teach-back may occur progressively through design discussion and must demonstrate a usable mental model rather than API memorization.
+12. Complete inspectable source, Editor setup, validation, evidence, and stop points remain mandatory under SFGSS-005; manual retyping is not required when a Green Path artifact provides the exact source payload and self-validating gates.
 
 ## Supersession
 
@@ -54,12 +57,12 @@ SFGSS-ADR-003 remains accepted for the Graph Roadmap, package navigation, progre
 
 ## Review trigger
 
-Revisit if just-in-time reviews repeatedly interrupt implementation momentum, if a multi-package checkpoint requires several package reviews together, or if Jesse prefers a different teaching cadence.
+Revisit if just-in-time reviews repeatedly interrupt implementation momentum, if Learn → Declare → Authorize fails to capture meaningful designer input, if a multi-package checkpoint requires several package reviews together, or if Jesse prefers a different teaching cadence.
 
 ## Approval
 
-**Decision:** Accepted  
-**Approved by:** Jesse “Echo” Adams / EchoDevGames  
+**Decision:** Accepted
+**Approved by:** Jesse “Echo” Adams / EchoDevGames
 **Date:** August 4, 2026
 
 ## Graph Navigation

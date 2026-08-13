@@ -3,7 +3,7 @@ tags:
   - sfgss/learning
   - sfgss/navigation
 status: active
-updated: 2026-08-09
+updated: 2026-08-13
 ---
 
 # Package Learning Reviews
@@ -11,8 +11,8 @@ updated: 2026-08-09
 **Document role:** Learning-phase index and operating guide
 **Authority:** Navigation and educational workflow only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current progress:** 2 of 28 complete
-**Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`); PKG-LEARN-009 – The Chronicle (`EchoSave`)
+**Current progress:** 3 of 28 complete
+**Completed:** PKG-LEARN-001 – First Light (`EchoLaunch`); PKG-LEARN-008 – The Looking Glass (`EchoUI`); PKG-LEARN-009 – The Chronicle (`EchoSave`)
 **Active review:** None; PKG-LEARN-002 remains paused until EchoDiagnostics implementation
 
 ## Purpose
@@ -45,7 +45,8 @@ Each review records the exact sources used. At minimum:
 7. Important public concepts.
 8. Optional bridges and commit authority.
 9. Standalone Laboratory proof.
-10. Jesse’s teach-back and remaining questions.
+10. Jesse’s teach-back / designer declaration and remaining questions.
+11. Explicit Learn → Declare → Authorize result for the first implementation slice.
 
 ## File rule
 
@@ -65,7 +66,7 @@ Create a review file from `PKG-LEARN-TEMPLATE.md`. Do not create twenty-eight em
 
 ## Stop rule
 
-A review may use diagrams, examples, and tiny pseudocode for teaching. It must not authorize or supply production implementation code.
+A review may use diagrams, examples, and tiny pseudocode for teaching. The completed review may activate one separately bounded Checkpoint Build Plan, but the learning artifact itself does not substitute for that plan.
 
 
 ## Current gate mode
@@ -73,5 +74,6 @@ A review may use diagrams, examples, and tiny pseudocode for teaching. It must n
 - PKG-LEARN-001 is complete.
 - PKG-LEARN-002 remains paused until EchoDiagnostics implementation approaches.
 - PKG-LEARN-009 – The Chronicle (`EchoSave`) is complete.
-- `ESV-M1-01` is active / authorized after completed teach-back and Jesse's explicit activation.
-- Accord, Resonance, and Looking Glass remain planned members of the Game Shell initiative; their implementation remains independently gated by their own reviews.
+- PKG-LEARN-008 – The Looking Glass (`EchoUI`) is complete through Learn → Declare → Authorize.
+- `EUI-M1-01` is active / authorized under Green Path.
+- Other packages remain independently gated by their own reviews.

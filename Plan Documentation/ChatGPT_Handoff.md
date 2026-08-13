@@ -488,3 +488,14 @@ Update this file only when the handoff or ChatGPT collaboration workflow changes
 Do not update it for every checkpoint.
 
 Current package, checkpoint, commit, tests, blockers, and next action belong in `Current Notes.md`, checkpoint records, test reports, and Git history.
+## Looking Glass / Green Path handoff — 2026-08-13
+
+- Clean kickoff baseline: `f57880a`.
+- PKG-LEARN-008 — The Looking Glass (`EchoUI`) is complete through Learn → Declare → Authorize.
+- Looking Glass package authority: SFGSS-PKG-ECHOUI-001 v1.1.0.
+- EUI-M1-01 is ACTIVE / AUTHORIZED.
+- SFGSS-005 v1.6.0 and SFGSS-ADR-007 authorize Green Path self-validating checkpoint execution.
+- First proof: one exclusive `frontend` screen scope (`main-menu -> settings -> Back`) plus independent `default-window` coexistence.
+- Later authorized direction: layered external UI context, cascading visibility, input-aware default focus, Lego primitives, Motifs, Builder, stable Surface Registry, and project-authored Menu-for-Menus interfaces.
+- Looking Glass does not own Pause/Cinematic/Loading truth, input mappings, domain data/actions, or project DDOL composition.
+- Stop on unexpected compile/test/manual-proof/repository/rollback failure or any authority-changing discovery.

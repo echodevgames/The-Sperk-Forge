@@ -1,11 +1,11 @@
 {
   "documentId": "SFGSS-PKG-LEARN-TRACKER",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "status": "Active learning tracker",
-  "updated": "2026-08-09",
+  "updated": "2026-08-13",
   "authority": "Navigation and learning status only",
   "totalReviews": 28,
-  "completeReviews": 2,
+  "completeReviews": 3,
   "activeReview": null,
   "finalGate": "SUITE-DOC-33",
   "reviews": [
@@ -119,10 +119,11 @@
       "label": "The Looking Glass (`EchoUI`)",
       "specWikilink": "[[Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification|The Looking Glass (`EchoUI`)]]",
       "specPath": "Package Specifications/SFGSS-The-Looking-Glass-EchoUI-Package-Specification.md",
-      "purpose": "Owns reusable screen, HUD, modal, notification, prompt, focus, navigation, theme, and UI lifecycle infrastructure.",
-      "example": "A Main Menu opens Settings, a confirmation modal traps focus correctly, and returning restores the previously selected button.",
-      "status": "Not started",
-      "reviewPath": "Learning Reviews/PKG-LEARN-008_EchoUI_Learning_Review.md"
+      "purpose": "Owns reusable surface registration, scoped navigation, independent windows/HUD/overlays, focus/visibility presentation, Motifs, primitives, and UI authoring tooling without becoming game-state/input/domain authority.",
+      "example": "A Main Menu navigates to Settings and Back while an independent Inventory-style window can coexist; later a registry-driven Menu for Menus can toggle authored surfaces by stable ID.",
+      "status": "Complete",
+      "reviewPath": "Learning Reviews/PKG-LEARN-008_EchoUI_Learning_Review.md",
+      "completed": "2026-08-13"
     },
     {
       "sequence": 9,
@@ -411,8 +412,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "Complete PKG-LEARN-009 before ESV-M1-01; later package reviews remain just-in-time",
+  "nextReviewTrigger": "EUI-M1-01 is active after PKG-LEARN-008; later reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": null,
-  "implementationProgramStatus": "Chronicle learning active; implementation locked pending PKG-LEARN-009 and explicit ESV-M1-01 activation"
+  "activeImplementationCheckpoint": "EUI-M1-01",
+  "implementationProgramStatus": "Looking Glass PKG-LEARN-008 complete; EUI-M1-01 active under Green Path from clean baseline f57880a"
 }

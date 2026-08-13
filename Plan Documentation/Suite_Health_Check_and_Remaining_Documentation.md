@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 12, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 reconciliation complete
-**Current implementation state:** First Light FL-M5-R1 complete at `cea876e`, package sample restored/hardened and full EditMode `1106 / 1106`; Chronicle M4 and M5 complete at ESV-M5-06 implementation `4bcfbf1`, focused Chronicle `761 / 761`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; Chronicle M6 not activated
+**Updated:** August 13, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass PKG-LEARN-008 complete and EUI-M1-01 activated
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass implementation not yet committed, with EUI-M1-01 active under Green Path from baseline `f57880a`
 
 ## Current health
 
@@ -11,7 +11,7 @@
 | Suite Bible | Approved; no FL-M6-01 closeout authority change required |
 | Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
-| Learning workflow | Just-in-time package-local gate remains authoritative |
+| Learning workflow | **Learn → Declare → Authorize** just-in-time gate + **Green Path** self-validating execution |
 | First Light learning gate | Passed |
 | First Light package version | `0.1.0` |
 | First Light specification | SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 |
@@ -22,10 +22,11 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — layered context, scoped screens, independent windows, stable IDs/registry, Motifs, primitives, Builder |
+| Looking Glass checkpoint | **EUI-M1-01 ACTIVE / AUTHORIZED** — first Green Path implementation |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
-| Other package implementations | Not activated |
+| Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
 ## First Light graduation state

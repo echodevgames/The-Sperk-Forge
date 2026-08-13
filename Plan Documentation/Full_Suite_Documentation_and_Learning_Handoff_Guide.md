@@ -9,10 +9,10 @@ updated: 2026-08-04
 
 # The Sperk’s Forge – Full Suite Documentation and Learning Handoff Guide
 
-**Document role:** Approved collaborator and learning-phase guide  
-**Authority:** Navigation and guidance only; it does not override SFGSS-000, package authorities, standards, ADRs, or integration specifications  
-**Owner:** Jesse “Echo” Adams / EchoDevGames  
-**Approved checkpoint:** SUITE-DOC-32  
+**Document role:** Approved collaborator and learning-phase guide
+**Authority:** Navigation and guidance only; it does not override SFGSS-000, package authorities, standards, ADRs, or integration specifications
+**Owner:** Jesse “Echo” Adams / EchoDevGames
+**Approved checkpoint:** SUITE-DOC-32
 **Last updated:** August 4, 2026
 
 > Enter through the map, follow the authority trail, and leave chat history outside the load-bearing walls.
@@ -38,11 +38,11 @@ It provides:
 | Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
 | Cross-package reviews | Foundation, Expansion, Advanced, Standards/Package, and Full Suite passed |
-| Package learning reviews | 1 of 28 complete; remaining reviews are just-in-time |
+| Package learning reviews | 3 of 28 complete; First Light, Looking Glass, and Chronicle complete; remaining reviews are just-in-time |
 | Runtime implementation | Not started |
 | Empirical evidence | `Not run` unless an evidence record says otherwise |
 | Active phase after SUITE-DOC-32 | Initial implementation activation, then interleaved learning and implementation |
-| Completed learning review | PKG-LEARN-001 – First Light (`EchoLaunch`) |
+| Completed learning reviews | PKG-LEARN-001 First Light; PKG-LEARN-008 Looking Glass; PKG-LEARN-009 Chronicle |
 | Initial implementation gate | SUITE-DOC-33 |
 
 ## 3. Authority versus navigation
@@ -126,6 +126,12 @@ Package authority
 PKG-LEARN-001 is complete. PKG-LEARN-002 was introduced but is paused until EchoDiagnostics implementation approaches. A paused review does not count as complete.
 
 If a completed package authority changes materially before implementation, mark its review `Needs revisit` and refresh it before code proceeds.
+
+## 5B. Learn → Declare → Authorize and Green Path
+
+Beginning with PKG-LEARN-008, JIT reviews explicitly combine bounded technical learning with designer input. The reviewer teaches only the relevant design space, Jesse declares desired workflow/behavior, and the package authority records the reconciled decision before implementation.
+
+After authorization, routine successful checkpoint phases may advance through SFGSS-005 Green Path without conversational approval between every staging/test/Git step. Unexpected failures or authority-changing discoveries still return to review immediately.
 
 ## 6. Review states
 

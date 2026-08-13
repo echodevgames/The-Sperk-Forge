@@ -3,13 +3,35 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 12, 2026
-**Current focus:** Chronicle M5 complete; post-M5 suite/sample reconciliation
-**Current checkpoint:** None — ESV-M5-06 complete; Chronicle M6 not activated
+**Last reconciled:** August 13, 2026
+**Current focus:** The Looking Glass (`EchoUI`) foundation kickoff
+**Current checkpoint:** EUI-M1-01 — Installable Surface Foundation, Scoped Navigation, and Independent Window Proof — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass Kickoff — PKG-LEARN-008 / EUI-M1-01
+
+- Starting repository baseline: `f57880a` — First Light FL-M5-R1 sealed and working tree clean.
+- PKG-LEARN-008 is **Complete** through the new Learn → Declare → Authorize JIT model.
+- Looking Glass package authority advances to **SFGSS-PKG-ECHOUI-001 v1.1.0**.
+- SFGSS-005 advances to **v1.6.0** and SFGSS-ADR-007 accepts the Green Path self-validating checkpoint protocol.
+- Exact observed Unity baseline: **6000.3.8f1**; project manifest contains **uGUI 2.0.0** and Input System **1.18.0**.
+- EUI-M1-01 is the first Green Path package checkpoint and is explicitly active/authorized.
+- Looking Glass uses stable project-authored surface IDs and supports both exclusive `Screen` navigation scopes and independent `Window`/HUD/Overlay surfaces.
+- UI context is layered. Pause/Cinematic/Loading/Input-modality truth is supplied externally; the Laboratory may use a tiny sample-owned controller until real project adapters exist.
+- Default Back is history-based with explicit navigation/root/resume-style actions available to designers.
+- Future visibility policy cascades per surface instead of globally hardcoding “Pause hides HUD.”
+- Default selection will become input-modality aware without making Looking Glass depend on The Will or Controller packages.
+- Sample/editor hierarchy naming convention: **`Type_DescriptiveName`**, e.g. `Canvas_MasterCanvas`, `Panel_MenuRoot`, `Button_DefaultButton`.
+- Future package pillars are Runtime Context/Navigation, Lego Primitive Library, Motif System, and Editor Builder.
+- **Motif** is the approved front-facing term for reusable appearance recipes; Motifs own appearance only and later support capture/apply plus explicit local overrides.
+- A queryable Surface Registry is an approved future-facing contract so project UI can build selectors/window managers and, eventually, the inevitable `Panel_MenuForMenusMenu`.
+
+### EUI-M1-01 stop point
+
+The first implementation proves only: package-local root authority, stable surface registration, `main-menu -> settings -> Back -> main-menu` inside `frontend`, and an independent `default-window` that can coexist without changing the active screen. Context rules, input-aware selection, Motifs, primitive prefabs, Builder, modal/HUD/transient systems, and cross-package bridges remain outside this slice.
 
 ## Current State
 
