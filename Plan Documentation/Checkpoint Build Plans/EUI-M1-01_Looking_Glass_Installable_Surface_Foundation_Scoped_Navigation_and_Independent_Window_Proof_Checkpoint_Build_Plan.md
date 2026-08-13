@@ -3,7 +3,7 @@ tags:
   - sfgss/checkpoint
   - sfgss/package/looking-glass
   - sfgss/implementation
-status: active
+status: complete
 updated: 2026-08-13
 ---
 
@@ -12,7 +12,7 @@ updated: 2026-08-13
 **Package:** The Looking Glass (`EchoUI`)
 **Checkpoint:** EUI-M1-01
 **Milestone:** M1 — Surface Foundation
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.1.0
 **Workflow:** SFGSS-005 v1.6.0 + SFGSS-ADR-007 Green Path
 **Learning prerequisite:** PKG-LEARN-008 — **Complete**
@@ -169,3 +169,12 @@ After EUI-M1-01 is green and closed out, stop. Do not begin Motifs or the Builde
 ## 10. Next recommended checkpoint
 
 **EUI-M1-02 — External UI Context, Cascading Visibility Rules, and Input-Aware Selection Contract** is the likely next slice, but it is not activated by EUI-M1-01.
+
+## EUI-M1-01 Closeout Evidence
+
+- Implementation commit: `e6b651f`.
+- Exported EditMode result: **1113 / 1113 passed, 0 failed**.
+- All seven required EUI-M1-01 focused tests were present and passed.
+- Manual direct-scene proof confirmed `main-menu -> settings -> Back -> main-menu` and independent `default-window` coexistence.
+- Implementation stat:  50 files changed, 5530 insertions(+), 14 deletions(-).
+- EUI-M1-01 is Complete. EUI-M1-02 is not activated.
