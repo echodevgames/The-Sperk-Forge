@@ -4,8 +4,10 @@
 **Package ID:** `com.echodevgames.echo-launch`
 **Checkpoint:** FL-M5-R1
 **Type:** Bounded post-M5 reconciliation / package-sample identity hardening
-**Status:** ACTIVE / AUTHORIZED
+**Status:** COMPLETE
 **Planning baseline:** `785df73` — `Close out ESV-M5-06 minimal Chronicle Save Laboratory`
+**Activation commit:** `93182c5` — `Activate FL-M5-R1 First Light sample identity hardening`
+**Implementation commit:** `cea876e` — `Implement FL-M5-R1 sample identity hardening and splash shake`
 **Unity baseline:** 6000.3.8f1
 
 ## 1. Purpose
@@ -162,3 +164,34 @@ During FL-M5-R1 final sample verification, one bounded optional First Light pres
 - No Looking Glass, Accord, Resonance, feedback-system, camera-system, or input dependency is introduced.
 
 This amendment does not authorize a general-purpose screen-shake service or gameplay feedback architecture.
+
+
+## 11. Closeout
+
+FL-M5-R1 is **Complete**.
+
+Final evidence:
+
+- activation `93182c5`;
+- implementation `cea876e`;
+- implementation commit scope `174 files / 3703 insertions / 47 deletions`;
+- package source `Samples~/FirstLight_Boot_Splash_Laboratory/`;
+- Package Manager display name **First Light Boot Splash Laboratory**;
+- imported proof under Unity's normal `Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/` wrapper;
+- old live `First Light Standalone Test Lab` concrete identity absent from package sample/test scope;
+- package-folder GUID preserved through the rename;
+- serialized Laboratory destination paths corrected to the new imported sample identity;
+- final imported Laboratory synchronized back into package-owned `Samples~` with `78` files in parity;
+- EchoDevGames splash, revised First Light art, scene camera plumbing, and final authored splash sequence retained in the shipped sample;
+- `SplashShakePreset.None`, `Subtle`, `Medium`, and `Nightmare` implemented; `None = 0`; SplashSequence schema remains `1`;
+- Shake remains additive to Pulse, startup-local, and completely suppressed by Reduced Motion;
+- final visibility correction starts the shake on the fully-visible Hold phase and prefers the visible splash image transform;
+- fourteen stale sample-identity test failures were reconciled to the hardened package identity;
+- post-reconciliation full EditMode gate **1106 / 1106 passed, 0 failed**;
+- final manual `Nightmare` playback visibly worked as intended;
+- UMBRA remains separate project-owned First Light showcase content and does not replace the package sample;
+- no Looking Glass, Accord, Resonance, gameplay-camera, global feedback-service, or input dependency was introduced.
+
+The original no-Runtime/Editor-change exclusion in Sections 5 and 8 was superseded only by the explicitly approved Splash Shake amendment above. No broader presentation-system redesign or general screen-shake authority was authorized.
+
+**Stop point reached:** no further First Light feature implementation is active. Future clean-project, distribution-route, player-build, release, performance, or private-beta work requires separate activation.

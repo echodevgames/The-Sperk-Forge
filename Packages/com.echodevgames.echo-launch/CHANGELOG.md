@@ -6,6 +6,17 @@ The package follows Semantic Versioning once public compatibility commitments be
 
 ## [Unreleased]
 
+#### FL-M5-R1 - Package Sample Identity Hardening and Splash Shake Reconciliation
+- Renamed the concrete package sample identity from `First Light Standalone Test Lab` to Package Manager display name **First Light Boot Splash Laboratory** with canonical package path `Samples~/FirstLight_Boot_Splash_Laboratory/`; the conceptual engineering role remains the First Light Standalone Test Lab.
+- Preserved the package sample as a separately importable/removable engineering proof and kept UMBRA separate as project-owned First Light showcase content.
+- Repaired serialized Laboratory destination paths after the package-sample rename and reconciled the package/imported sample test expectations to the new concrete identity.
+- Synchronized the final imported Laboratory back into package-owned `Samples~`, including the EchoDevGames splash, revised First Light art, basic scene camera plumbing, and final authored splash sequence.
+- Added optional per-entry `SplashShakePreset` authoring with `None`, `Subtle`, `Medium`, and `Nightmare`; `None = 0` preserves existing serialized behavior without a SplashSequence schema bump.
+- Splash Shake is additive to existing None/Pulse motion, affects only the local startup splash presentation surface, and is completely suppressed by Reduced Motion.
+- Final visibility correction begins shake on the fully-visible Hold phase and prefers the visible splash image transform; `Nightmare` is the strongest bounded preset.
+- Added focused Splash Shake coverage and reconciled fourteen stale sample-identity tests. The post-reconciliation full EditMode gate returned **1106 / 1106 passed, 0 failed**; final manual `Nightmare` playback was visually confirmed.
+- FL-M5-R1 activation: `93182c5`; implementation: `cea876e` (`174 files`, `3703 insertions`, `47 deletions`).
+
 ### Added
 - Versioned repository Distribution Kit for First Light `0.1.0`, including `com.echodevgames.echo-launch-0.1.0.tgz`, complete user handout, distribution manifest, SHA-256 integrity record, and build record. Artifact availability does not yet claim external tarball-route qualification.
 - `Documentation~/User/Complete User Handout.md` as the detailed installation/setup/capability/troubleshooting/limitations/evidence reference distributed with the package kit.

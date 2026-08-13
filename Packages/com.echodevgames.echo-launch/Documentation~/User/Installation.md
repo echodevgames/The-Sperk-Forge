@@ -8,7 +8,7 @@ Package version:
 0.1.0
 ```
 
-First Light currently contains implemented Runtime, Presentation.UGUI, Editor tooling, tests, documentation, prefabs, and one separately importable Standalone Test Laboratory sample.
+First Light currently contains implemented Runtime, Presentation.UGUI, Editor tooling, tests, documentation, prefabs, and one separately importable Standalone Test Laboratory sample exposed in Package Manager as **First Light Boot Splash Laboratory**.
 
 The verified repository-development installation is an **embedded package**. A versioned `0.1.0` tarball is now prepared in the repository Distribution Kit for handoff/evaluation, but external clean-project tarball qualification and public registry support are not claimed yet.
 
@@ -96,17 +96,19 @@ Tools > Sperk's Forge > First Light > Setup
 
 Setup can preview/create a project-owned First Light foundation, reuse compatible project assets, or explicitly create an independent project-owned foundation. See [Quick Start](Quick%20Start.md).
 
-The package itself does not require the repository's `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/**` content. That Gallery is project-owned reference material in The Sperk's Forge development repository.
+The package itself does not require project-owned showcase content. UMBRA remains separate First Light showcase material in The Sperk's Forge development repository and is not part of the package sample.
 
 ## Standalone Test Laboratory
 
 Unity Package Manager exposes one sample:
 
 ```text
-First Light Standalone Test Lab
+First Light Boot Splash Laboratory
 ```
 
 Importing the sample does not automatically run Setup, Repair, Validator, Simulator, Play Mode, or modify Build Settings. Standard imported `Assets/Samples/**` content is excluded from automatic Setup candidate discovery unless explicitly selected.
+
+The canonical package source path is `Samples~/FirstLight_Boot_Splash_Laboratory/`. After Package Manager import, Unity places it beneath its normal `Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/` wrapper. Its conceptual role remains the First Light Standalone Test Lab.
 
 ## Removal Evidence
 
@@ -116,7 +118,7 @@ Project-owned content created by Setup lives under the consumer project's `Asset
 
 ## Not Yet Claimed as Supported
 
-The following routes/qualification steps are not claimed by the FL-M6-01 closeout:
+The following routes/qualification steps are not claimed by the FL-M5-R1 closeout:
 
 - Git URL installation
 - Git tag installation

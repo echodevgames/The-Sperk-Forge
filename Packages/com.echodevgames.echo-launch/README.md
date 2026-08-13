@@ -7,7 +7,7 @@ It coordinates ordered application initialization and final handoff without owni
 ## Package Status
 
 - Package version: `0.1.0`
-- Development stage: FL-M6-01 Production Reference Showcase complete; Setup/Repair/Validator/Direct Scene/Simulator/Laboratory plus A1 splash authoring and A1-E1 project-owned foundation resolution are implemented; in-repository First Light Gallery is complete/frozen; versioned `0.1.0` Distribution Kit is prepared as the handoff artifact while external tarball qualification remains pending
+- Development stage: FL-M5-R1 post-M5 reconciliation complete; Setup/Repair/Validator/Direct Scene/Simulator/Laboratory, A1 splash authoring, A1-E1 project-owned foundation resolution, hardened package-sample identity, and bounded Splash Shake are implemented; First Light is sealed/frozen for this pass while release-route qualification remains pending
 - Completed runtime slices:
   - `FL-M2-01` Authority Claim and Static Reset Core
   - `FL-M2-02` Neutral Launch-State Vocabulary
@@ -38,6 +38,7 @@ It coordinates ordered application initialization and final handoff without owni
   - `FL-M5-06` Launch Simulator and Deterministic Failure Injection
   - `FL-M5-07` Standalone Test Laboratory and Importable UPM Sample
   - `FL-M6-01` Production Reference Showcase, Splash Presentation/Authoring, and Project-Owned Foundation Resolution
+  - `FL-M5-R1` Package Sample Identity/Hierarchy Hardening and Splash Shake Reconciliation
 - Unity baseline: `6000.3.8f1`
 - Minimum declared Unity version: `6000.0`
 - uGUI dependency: `2.0.0`
@@ -571,9 +572,11 @@ Setup additionally supports creation-time authoring for a **new** SplashSequence
 - Splash Only / Splash + Status;
 - project-owned background;
 - Allow Advancement;
-- per-entry image, optional audio intent, label, timing, advancement, and None/Pulse motion.
+- per-entry image, optional audio intent, label, timing, advancement, None/Pulse motion, and optional `None / Subtle / Medium / Nightmare` Splash Shake.
 
 Setup never re-authors a reused SplashSequence.
+
+Splash Shake is additive to Pulse, targets only First Light's local startup splash presentation surface, and is completely suppressed by Reduced Motion. Existing entries preserve no-shake behavior because `None = 0`; SplashSequence schema remains `1`.
 
 Foundation resolution is explicit:
 
@@ -584,7 +587,7 @@ Create Project-Owned Setup
 
 `Reuse Compatible Assets` preserves the backward-compatible candidate-reuse behavior. `Create Project-Owned Setup` creates missing canonical Configuration, LaunchDestination, StartupSequence, optional SplashSequence, and RootPrefab targets beneath the requested Project Root instead of substituting compatible off-root candidates. Existing compatible requested targets remain authoritative; incompatible targets still block; the explicitly selected destination scene may be reused. The selected mode participates in request/plan fingerprints and stale-plan protection.
 
-The permanent suite repository examples live under `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/**`. They are project-owned examples, not package dependencies or defaults.
+Project-owned showcase content remains separate from package-distributed proof. UMBRA is retained beneath `Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/**` and is not a package dependency or substitute for the First Light Laboratory.
 
 ## First Light Setup Repair
 
@@ -740,10 +743,12 @@ They do not create Unity Console warnings or errors.
 First Light ships exactly one separately importable Unity Package Manager sample:
 
 ```text
-First Light Standalone Test Lab
+First Light Boot Splash Laboratory
 ```
 
 Import it through the package's **Samples** section in Unity Package Manager.
+
+The canonical package source path is `Samples~/FirstLight_Boot_Splash_Laboratory/`; the conceptual role remains the First Light Standalone Test Lab.
 
 The sample contains:
 
@@ -825,13 +830,15 @@ Final EchoLaunchSetup filtered gate: 224 / 224
 
 Focused A1 data/player/uGUI/Inspector/Setup slices were green during implementation. This closeout does **not** claim a new complete post-A1 EditMode or Runtime Play Mode aggregate. A fresh complete regression belongs to future release qualification.
 
-Reference Gallery acceptance additionally proved:
+Retained FL-M6-01 showcase acceptance additionally proved:
 
-- canonical First Light Boot → ordered splashes → MainMenu handoff;
+- canonical First Light Boot → ordered splashes → MainMenu handoff, now carried by the importable Boot Splash Laboratory after post-M5 organization;
 - independent UMBRA foundation creation through Create Project-Owned Setup;
 - three generated stable-ID splash entries with project-owned art/audio intent/timing/motion/advancement;
 - successful UMBRA runtime presentation;
 - identical second Apply `NoChanges`, no created paths, and unchanged Build Settings.
+
+FL-M5-R1 additionally hardened the package sample identity, synchronized the final imported/package Laboratory, added `SplashShakePreset` (`None`, `Subtle`, `Medium`, `Nightmare`), reconciled stale sample tests, and produced a green post-reconciliation full EditMode gate of `1106 / 1106`. `Nightmare` playback was manually confirmed after the bounded Hold-phase visibility correction.
 
 Manual FL-M5-03 acceptance created the project-owned First Light foundation,
 introduced only authorized current-schema drift, repaired five approved
@@ -891,7 +898,7 @@ It contains `com.echodevgames.echo-launch-0.1.0.tgz`, a complete user handout, d
 
 The tarball is an official handoff/evaluation artifact. It is **not yet a release-qualified tarball route**; external clean-project install, removal/reinstall, player-build, performance, tag/catalog, and private-beta evidence remain future explicit work.
 
-The First Light Gallery remains project-owned repository content and is not included in the UPM tarball.
+Project-owned First Light showcase content remains separate and is not included in the UPM tarball; UMBRA remains the retained First Light showcase example.
 
 ## Documentation
 
@@ -916,16 +923,16 @@ Available evidence includes:
 - FL-M6-01 H1 `5 / 5`, H2 `35 / 35`, and final `EchoLaunchSetup` `224 / 224` focused evidence;
 - public Setup creation/reuse/no-op behavior and explicit project-owned foundation resolution;
 - read-only Validator, Direct Scene, Launch Simulator, and Standalone Laboratory evidence;
-- permanent First Light Gallery with canonical First Light and independent UMBRA examples;
+- hardened/importable First Light Boot Splash Laboratory plus separate retained UMBRA showcase evidence;
 - UMBRA fresh Create → serialized three-entry sequence → runtime presentation → repeated `NoChanges` proof.
 
-Still `Not run` / not claimed by FL-M6-01:
+Still `Not run` / not claimed by FL-M5-R1:
 
 - Git URL installation
 - Git tag installation
 - Clean-project tarball installation qualification / public registry installation (the versioned tarball artifact is prepared, but route proof is still Not run)
 - Separate clean-project reproduction of the final A1/A1-E1 happy path
-- Fresh complete post-A1 EditMode and Runtime Play Mode aggregate
+- Fresh Runtime Play Mode aggregate after FL-M5-R1 (the full EditMode gate is `1106 / 1106`)
 - Player-build qualification
 - Performance measurements
 - Release tag/catalog/private-beta qualification

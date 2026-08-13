@@ -7,26 +7,43 @@
 **Current focus:** Chronicle M5 complete; post-M5 suite/sample reconciliation
 **Current checkpoint:** None — ESV-M5-06 complete; Chronicle M6 not activated
 
-> Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
+> Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
 ## Current State
 
 - First Light package version remains `0.1.0`.
-- First Light package specification remains **SFGSS-PKG-ECHOLAUNCH-001 v1.16.0**.
+- First Light package specification advances to **SFGSS-PKG-ECHOLAUNCH-001 v1.17.0** for FL-M5-R1 closeout.
 - FL-M5-07 Standalone Test Laboratory is complete at `710aec3` with retained automated evidence `809 / 809` and manual Laboratory evidence `12 / 12`.
 - FL-M6-01 Production Reference Showcase implementation and in-repository consumer proof are complete.
 - A1 splash presentation/authoring is committed across `1b7ab84`, `d36b5cc`, `90e038c`, `9b24121`, and `4bdc264`.
 - Slice E Setup creation-time splash authoring is committed at `9e6df00`.
 - A1-E1 project-owned foundation resolution is authorized at `a70e478` and implemented at `e66b9fd`.
-- The earlier First Light Gallery structure was reorganized at `b43e6bf`: UMBRA remains project-owned First Light showcase content, while imported package samples live separately beneath `Assets/Samples`.
+- The earlier First Light Gallery structure was reorganized at `b43e6bf`: UMBRA remains project-owned First Light showcase content, while imported package samples live separately beneath `Assets/Samples`. FL-M5-R1 then restored the concrete First Light package sample as `FirstLight_Boot_Splash_Laboratory`.
 - The final `EchoLaunchSetup` filtered EditMode gate passed **224 / 224**.
-- No post-A1 full-suite aggregate is claimed by this closeout. The retained FL-M5-07 full-suite baseline remains historical evidence and should be rerun at the next release-qualification gate.
+- FL-M5-R1 produced a fresh full EditMode rerun of **1106 / 1106 passed, 0 failed** after reconciling fourteen stale sample-identity tests. No new Runtime Play Mode aggregate is claimed by R1; FL-M5-07 runtime/full-suite evidence remains retained history.
 - SUITE-DIST-001 is complete at `c18eff6`; First Light `0.1.0` has a repository-owned Distribution Kit and Complete User Handout.
-- First Light remains frozen for this pass.
+- FL-M5-R1 is complete at implementation commit `cea876e`; First Light remains frozen for this pass.
 - Jesse selected The Chronicle (`EchoSave`) as the next active package learning review.
 - The next multi-package initiative is the **Game Shell / Front Door**: Chronicle → Accord → Resonance → Looking Glass, composed later with First Light while preserving standalone package ownership.
+
+## First Light FL-M5-R1 Closeout
+
+- Activation: `93182c5`.
+- Implementation: `cea876e` (`174 files / 3703 insertions / 47 deletions`).
+- Canonical package sample: `Samples~/FirstLight_Boot_Splash_Laboratory/`.
+- Package Manager display name: **First Light Boot Splash Laboratory**.
+- Imported project proof: `Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/`.
+- Package/imported Laboratory parity synchronized across `78` files.
+- Serialized destination paths and sample-test expectations use the new concrete identity.
+- Final shipped sample retains EchoDevGames splash, revised First Light art, basic camera plumbing, and authored Boot/Destination proof.
+- Optional Splash Shake presets are `None`, `Subtle`, `Medium`, `Nightmare`; `None = 0`; schema remains `1`; Reduced Motion disables the effect.
+- Shake is local to the startup splash presentation surface and never claims gameplay-camera/global feedback authority.
+- Post-reconciliation full EditMode gate: **1106 / 1106 passed, 0 failed**.
+- Final manual `Nightmare` playback was visible and successful.
+- UMBRA remains a separate project-owned First Light showcase and does not replace the package sample.
+- No additional First Light work is active.
 
 ## Active Suite Architecture — Persistence and Lifetime Separation
 
@@ -617,7 +634,7 @@ The complete First Light handout is also included in package documentation at:
 Packages/com.echodevgames.echo-launch/Documentation~/User/Complete User Handout.md
 ```
 
-## Permanent First Light Gallery
+## Historical FL-M6-01 Gallery Proof
 
 ```text
 Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
@@ -637,7 +654,7 @@ Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
         └── Scenes/
 ```
 
-The Gallery is project-owned consumer/showcase content. It is not package content, a UPM sample, a required dependency, or evidence that The Sperk’s Forge is an Isekai Studios product.
+This block records the historical FL-M6-01 Gallery proof before the later `b43e6bf`/FL-M5-R1 organization pass. Current organization separates the package-owned First Light Boot Splash Laboratory from UMBRA, which remains project-owned First Light showcase content. Showcase content is not package content, a UPM sample, a required dependency, or evidence that The Sperk’s Forge is an Isekai Studios product.
 
 ### First Light Example
 
@@ -1152,6 +1169,6 @@ The later Chronicle Reference Showcase owns polished examples of recognizable sa
 
 ### Sample / Showcase separation follow-up
 
-The project now keeps imported package sample content separate from polished project-owned showcase content. UMBRA remains a First Light showcase and does not satisfy First Light's package-sample requirement. The proper First Light package sample is to be restored as `FirstLight_Boot_Splash_Laboratory` in a separate bounded follow-up; do not silently promote UMBRA into that role.
+The project keeps imported package sample content separate from polished project-owned showcase content. UMBRA remains a First Light showcase and does not satisfy First Light's package-sample requirement. FL-M5-R1 completed the bounded follow-up and restored/hardened the package sample as `FirstLight_Boot_Splash_Laboratory`; UMBRA was never promoted into that role.
 
 For Chronicle, the current `Chronicle Save Laboratory` is intentionally the package sample/engineering harness. Rich player-facing Chronicle save-menu examples remain deferred to the later Reference Showcase after Looking Glass and preferably Resonance are available.

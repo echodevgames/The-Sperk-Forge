@@ -1,7 +1,7 @@
 # First Light – Startup and Launch Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOLAUNCH-001
-**Specification version:** 1.16.0
+**Specification version:** 1.17.0
 **Status:** Approved
 **Technical package name:** EchoLaunch
 **Public title:** First Light – Startup and Launch
@@ -13,12 +13,12 @@
 **Current Notes:** `Plan Documentation/Current Notes.md` until the package repository is created, then `Documentation~/Developer/Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 8, 2026
+**Last updated:** August 12, 2026
 
 > “Awaken the systems this project needs.”
 
 > **Approval rule:** This specification is the approved package authority. Runtime and Editor implementation proceed only through an active SFGSS-005 Checkpoint Build Plan. FL-M5-07 is complete at documentation closeout commit `710aec3`. Suite authority commit `8c3f3b3` adds the required Package Reference Showcase graduation stage through SFGSS-ADR-005. FL-M6-01 is authorized to create First Light's first project-owned Production Reference Showcase using the package's existing documented public consumer surfaces.
-FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata seam and the bounded H1/H2 consumer-conformance corrections. FL-M6-01-A1 now authorizes the Splash Presentation & Authoring Expansion proven useful by the real Reference Showcase: sequence-level Splash Only / Splash + Status presentation, project-owned background color, a neutral user-advance gate, per-entry None/Pulse motion, one wait-for-input advancement mode, default uGUI rendering support, and guided creation-time authoring in First Light Setup plus the normal SplashSequence Inspector. FL-M6-01-A1-E1 additionally authorizes an explicit Setup foundation-resolution choice so creation-time authoring can intentionally create an independent project-owned First Light foundation instead of silently reusing a compatible foundation elsewhere in the project. Existing schema-1 splash sequences remain valid without migration and preserve legacy-compatible defaults. EchoLaunch still owns no audio playback, save/persistence behavior, project input binding, EventSystem/input-module choice, general effects framework, menus, or normal scene flow.
+FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata seam and the bounded H1/H2 consumer-conformance corrections. FL-M6-01-A1 now authorizes the Splash Presentation & Authoring Expansion proven useful by the real Reference Showcase: sequence-level Splash Only / Splash + Status presentation, project-owned background color, a neutral user-advance gate, per-entry None/Pulse motion, one wait-for-input advancement mode, default uGUI rendering support, and guided creation-time authoring in First Light Setup plus the normal SplashSequence Inspector. FL-M6-01-A1-E1 additionally authorizes an explicit Setup foundation-resolution choice so creation-time authoring can intentionally create an independent project-owned First Light foundation instead of silently reusing a compatible foundation elsewhere in the project. Existing schema-1 splash sequences remain valid without migration and preserve legacy-compatible defaults. FL-M5-R1 later hardens the concrete package-sample identity as `FirstLight_Boot_Splash_Laboratory` / **First Light Boot Splash Laboratory** and authorizes bounded per-entry `SplashShakePreset` values `None`, `Subtle`, `Medium`, and `Nightmare`; `None = 0`, Reduced Motion suppresses shake, and no SplashSequence schema bump is required. EchoLaunch still owns no audio playback, save/persistence behavior, project input binding, EventSystem/input-module choice, gameplay-camera/global feedback authority, menus, or normal scene flow.
 
 ---
 
@@ -44,6 +44,7 @@ FL-M6-01 first authorized the optional `SplashEntry.PreferredAudioClip` metadata
 | 1.14.0 | 2026-08-08 | Approved | Adopted SFGSS-ADR-005 for First Light, defined the project-owned Production Reference Showcase and package graduation path, authorized FL-M6-01 to prove the normal Boot → project-owned image splashes → startup → destination experience through existing public consumer surfaces, and deferred clean-project reproduction and any convenience-generator changes to later authority | Jesse “Echo” Adams |
 | 1.15.0 | 2026-08-08 | Approved | Authorized FL-M6-01-A1 Splash Presentation & Authoring Expansion: Splash Only / Splash + Status, project-owned background color, neutral advancement policy, None/Pulse motion, wait-for-input advancement, Setup creation-time splash authoring, and matching Inspector semantics while preserving schema-1 compatibility and external audio/input/persistence ownership | Jesse “Echo” Adams |
 | 1.16.0 | 2026-08-08 | Approved | Authorized FL-M6-01-A1-E1 explicit Setup foundation resolution: preserve existing compatible-asset reuse as the default, add Create Project-Owned Setup for independent target-root creation, include the choice in request/plan freshness evidence, and guarantee that creation-time splash authoring is not silently discarded by off-root candidate reuse | Jesse “Echo” Adams |
+| 1.17.0 | 2026-08-12 | Approved | Recorded FL-M5-R1 package-sample identity/hierarchy hardening, canonicalized `Samples~/FirstLight_Boot_Splash_Laboratory/` / First Light Boot Splash Laboratory while preserving the Standalone Test Lab role, separated UMBRA showcase ownership, and authorized bounded per-entry None/Subtle/Medium/Nightmare Splash Shake with Reduced Motion suppression and no SplashSequence schema bump | Jesse “Echo” Adams |
 
 ---
 
@@ -1440,7 +1441,7 @@ FL-M5-07 implements this approved Laboratory as exactly one UPM sample declared
 in `package.json` and stored directly beneath:
 
 ```text
-Samples~/First Light Standalone Test Lab/
+Samples~/FirstLight_Boot_Splash_Laboratory/
 ```
 
 The distributed sample is the authored artifact. Unity Package Manager's normal
@@ -1448,6 +1449,8 @@ sample import copies that content into the consuming project's `Assets/Samples`
 area. First Light must not ship a second sample-authoring or sample-generation
 pipeline merely to recreate the same scenes, configurations, prefabs, or art
 after import.
+
+FL-M5-R1 hardens the concrete Package Manager display name to **First Light Boot Splash Laboratory** while preserving the conceptual **First Light Standalone Test Lab** role and all existing engineering acceptance intent. The current development-repository imported copy lives beneath Unity's generated `Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/` wrapper.
 
 The FL-M5-07 sample therefore obeys these additional implementation rules:
 
@@ -1556,6 +1559,10 @@ Rules:
 
 FL-M6-01 proves only the in-house Reference Showcase. Clean-project reproduction of this exact happy path is FL-M6-02.
 
+#### 13.4.2 Post-FL-M6-01 sample/showcase organization
+
+The First Light happy-path engineering proof now lives in the package-owned/importable **First Light Boot Splash Laboratory** rather than being maintained as a second package-like First Light project showcase. UMBRA remains separate project-owned First Light showcase content. The current repository retains UMBRA beneath `Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/**`; the suite-wide conceptual showcase hierarchy remains `Assets/Showcases/<Package>/<Showcase>/`. A showcase never substitutes for the package-owned sample requirement.
+
 ### 13.5 Optional distributed showcase and integration samples
 
 | Sample | Packages involved | Purpose | Why it is not standalone proof |
@@ -1600,6 +1607,7 @@ A minimal plain startup status and image splash presenter is part of the EchoLau
 - Default visuals must use readable contrast and scalable layout anchors.
 - Keyboard/controller skip input is project-configured; the core presenter must also expose a public skip-request method so it does not require EchoInput.
 - The package must not require audio cues to understand status.
+- Reduced Motion must suppress optional Splash Shake completely.
 
 ### 14.4 Visual customization
 
@@ -1609,7 +1617,28 @@ A minimal plain startup status and image splash presenter is part of the EchoLau
 - Runtime behavior binds through `ILaunchStatusPresenter`; replacing presentation must not require editing sequence-runner code.
 - Sample art is removable and not referenced by production defaults.
 
-### 14.5 Default package prefab templates
+### 14.5 Optional splash motion and shake authoring
+
+`SplashEntry` may combine its existing `SplashMotionStyle` with one bounded `SplashShakePreset`:
+
+```text
+None = 0
+Subtle = 1
+Medium = 2
+Nightmare = 3
+```
+
+Rules:
+
+- `None = 0` preserves existing serialized entries and requires no SplashSequence schema bump.
+- Splash Shake is startup-only presentation metadata and may be combined with Pulse.
+- The default uGUI presenter applies shake only to the local splash presentation surface; EchoLaunch does not claim the gameplay camera or a general feedback/shake service.
+- The visible burst begins on the fully-visible Hold phase rather than consuming its strongest envelope during Fade In.
+- Reduced Motion suppresses Splash Shake completely.
+- `Nightmare` is intentionally the strongest bounded designer preset, not a new global effects authority.
+
+
+### 14.6 Default package prefab templates
 
 EchoLaunch ships two stable package assets:
 
@@ -1917,7 +1946,7 @@ Packages/com.echodevgames.echo-launch/
 │   ├── Migration/
 │   └── EchoDevGames.EchoLaunch.Editor.asmdef
 ├── Samples~/
-│   └── First Light Standalone Test Lab/
+│   └── FirstLight_Boot_Splash_Laboratory/
 │       ├── README.md
 │       ├── Scenes/
 │       ├── Configuration/
@@ -2384,9 +2413,9 @@ The complete plan lives at `Checkpoint Build Plans/First_Light_M1_Package_Skelet
 
 ---
 
-## 28.4 Current Authorized Checkpoint — FL-M6-01
+## 28.4 Completed Historical Checkpoint — FL-M6-01
 
-**FL-M6-01 — First Light Production Reference Showcase** is the current implementation authorization.
+**FL-M6-01 — First Light Production Reference Showcase** was the implementation authorization for the completed showcase stage. It is retained here as historical authority; FL-M5-R1 is the later completed reconciliation recorded in Section 28.5.
 
 Authorized outcome:
 
@@ -2411,6 +2440,22 @@ Plan Documentation/Checkpoint Build Plans/FL-M6-01_First_Light_Production_Refere
 ```
 
 and is governed by SFGSS-005 and SFGSS-ADR-005.
+
+## 28.5 Completed Post-M5 Reconciliation — FL-M5-R1
+
+**FL-M5-R1 — First Light Package Sample Identity and Hierarchy Hardening** is complete.
+
+- Activation: `93182c5`.
+- Implementation: `cea876e`.
+- Concrete package sample: `Samples~/FirstLight_Boot_Splash_Laboratory/`.
+- Package Manager display name: **First Light Boot Splash Laboratory**.
+- Conceptual role remains the First Light Standalone Test Lab.
+- UMBRA remains separate project-owned First Light showcase content.
+- Bounded scope amendment added `SplashShakePreset.None`, `Subtle`, `Medium`, `Nightmare`; `None = 0`; Reduced Motion suppression; no gameplay-camera/global feedback authority; no SplashSequence schema bump.
+- Final package/imported Laboratory was synchronized after serialized-path/test reconciliation.
+- Post-reconciliation full EditMode gate: **1106 / 1106 passed, 0 failed**.
+- Final `Nightmare` runtime presentation was manually confirmed visible and working.
+- No additional First Light feature checkpoint is active.
 
 ## 29. New-Conversation Handoff
 
@@ -2445,24 +2490,25 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Package version | `0.1.0` embedded package implementation |
-| Package specification | SFGSS-PKG-ECHOLAUNCH-001 v1.14.0 |
-| Completed checkpoint | FL-M5-07 — Standalone Test Laboratory and Importable UPM Sample |
-| Active authorized checkpoint | FL-M6-01 — First Light Production Reference Showcase |
+| Package specification | SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 |
+| Completed checkpoint | FL-M5-R1 — package sample identity/hierarchy hardening and Splash Shake reconciliation |
+| Active authorized checkpoint | None — First Light is frozen after FL-M5-R1 |
 | Suite Reference Showcase authority | SFGSS-ADR-005 accepted at `8c3f3b3` |
 | FL-M5-07 documentation closeout | `710aec3` |
-| Last implementation commit | `f1665f7` |
+| Last implementation commit | `cea876e` |
 | Runtime tests passed | 503 Runtime Play Mode tests |
-| EditMode tests passed | 306 total |
+| EditMode tests passed | 1106 / 1106 full project EditMode gate after FL-M5-R1 reconciliation |
 | Total automated tests | 809 passed, 0 failed, 0 ignored |
 | Manual Standalone Laboratory | LAB-001 through LAB-012 passed (`12 / 12`) |
 | Compilation | 0 errors and 0 compiler warnings at FL-M5-07 closeout |
 | Setup repeatability evidence | `Succeeded`, `NoChanges`, `NoChanges` |
 | Repair repeatability evidence | `Succeeded`, `NoChanges`, `NoChanges` |
 | Healthy Setup/Repair fingerprint | `7eca14d6390a883417bb0b68cb54a0e2711a93803798d08e099d4cc21750516c` |
-| Reference Showcase target root | `Assets/EchoDevGames/SuiteShowcase/FirstLight` |
-| FL-M6-01 package code-change authority | Only additive `SplashEntry.PreferredAudioClip` metadata + focused tests; no playback implementation |
+| Package sample | `Samples~/FirstLight_Boot_Splash_Laboratory/` — First Light Boot Splash Laboratory |
+| Retained project-owned showcase | UMBRA under `Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/**` |
+| FL-M5-R1 bounded addition | `SplashShakePreset` None/Subtle/Medium/Nightmare; local startup presentation only; Reduced Motion suppression |
 | Evidence gaps after FL-M6-01 | Clean-project reproduction, supported package-route installs, player builds, performance, release packaging/versioning, private beta/external adoption |
-| Next action | Commit/push v1.14.0 + FL-M6-01 authority, then perform a fresh implementation drift audit before creating showcase assets |
+| Next action | No active First Light implementation; explicit reactivation required for clean-project/release qualification |
 
 ## 30. Approval
 
@@ -2491,7 +2537,7 @@ Before writing code:
 **Decision:** Approved
 **Approved by:** Jesse “Echo” Adams
 **Date:** August 3, 2026
-**Conditions or notes:** The package design remains approved. Specification v1.14.0 adopts the suite Package Reference Showcase graduation standard and authorizes FL-M6-01 project-owned showcase work plus exactly one additive `SplashEntry.PreferredAudioClip` metadata seam with focused tests. EchoLaunch still performs no audio playback. All other package Runtime/Editor changes, clean-project reproduction, release qualification, and a splash convenience generator remain outside FL-M6-01 authority unless separately approved.
+**Conditions or notes:** The package design remains approved. Specification v1.17.0 records the completed FL-M6-01 showcase/presentation authority plus FL-M5-R1 package-sample identity hardening and the bounded Splash Shake amendment. EchoLaunch still performs no audio playback, gameplay-camera shake, general feedback-service ownership, save/persistence, or normal scene-flow ownership. First Light is frozen after `cea876e`; clean-project reproduction and release qualification require separate future activation.
 
 ---
 

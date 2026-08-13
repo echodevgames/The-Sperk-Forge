@@ -5,18 +5,21 @@ First Light is the startup coordination package for The Sperk's Forge - EchoDevG
 ## Current Status
 
 - Package version: `0.1.0`
-- Development stage: **FL-M6-01 Production Reference Showcase complete; First Light implementation/Reference Gallery frozen for this pass**
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.16.0
+- Development stage: **FL-M5-R1 post-M5 reconciliation complete; First Light implementation/package sample sealed and frozen for this pass**
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.17.0
 - Unity baseline: `6000.3.8f1`
-- Latest completed checkpoint: `FL-M6-01` — First Light Production Reference Showcase
+- Latest completed checkpoint: `FL-M5-R1` — package sample identity/hierarchy hardening and Splash Shake reconciliation
 - Completed checkpoints:
   - `FL-M2-01` through `FL-M5-07`
   - `FL-M6-01` including H1, H2, A1, Slice E creation-time authoring, and A1-E1 project-owned foundation resolution
-- Permanent project-owned examples: `Assets/EchoDevGames/SuiteShowcase/First Light Gallery/First Light Example/**` and `UMBRA Example/**`
+  - `FL-M5-R1` bounded post-M5 package-sample identity/Splash-Shake reconciliation
+- Package-owned importable proof: `Samples~/FirstLight_Boot_Splash_Laboratory/**`; imported project proof: `Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/**`
+- Project-owned showcase proof remains separate: UMBRA under `Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/**`
 - Final Setup-focused evidence: `224 / 224`
+- FL-M5-R1 post-reconciliation full EditMode evidence: `1106 / 1106`, `0` failed
 - Retained FL-M5-07 full-suite evidence: `809 / 809` automated and `12 / 12` manual Laboratory
 - Distribution snapshot: repository-owned `Distributions/First Light/0.1.0/` kit with tarball + complete handout + manifest + SHA-256/build record; external tarball route proof remains pending.
-- Qualification boundary: clean-project reproduction, fresh full-suite regression, distribution-route support, player-build/release qualification, and private beta are not claimed by FL-M6-01.
+- Qualification boundary: FL-M5-R1 supplies a fresh full EditMode gate, but clean-project reproduction, fresh Runtime Play Mode regression, distribution-route support, player-build/release qualification, and private beta remain unclaimed.
 
 ## User Documentation
 
@@ -171,24 +174,25 @@ the observation to First Light runtime or Laboratory scene contents.
 
 FL-M6-01 completes First Light's in-repository Package Reference Showcase stage.
 
-The final project-owned Gallery lives at:
+The FL-M6-01 Gallery evidence remains valid historically. Post-M5 organization now separates the reusable package proof from polished project showcases:
 
 ```text
-Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
-├── First Light Example/
-│   └── First Light Splashs/
-└── UMBRA Example/
-    └── UMBRA Splashs/
+Package sample:
+  Packages/com.echodevgames.echo-launch/Samples~/FirstLight_Boot_Splash_Laboratory/
+Imported proof:
+  Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/
+Project-owned showcase:
+  Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/
 ```
 
-The canonical First Light Example proves the normal public Setup/Inspector/runtime Boot → splash → startup → destination path. The UMBRA Example proves independent creation through `Create Project-Owned Setup`, three-entry creation-time splash authoring, stable generated identities, stored audio intent, Pulse presentation, runtime playback, and identical second Apply `NoChanges` convergence.
+The First Light Boot Splash Laboratory now carries the normal public Boot → splash → startup → destination engineering proof and remains separately importable/removable. UMBRA remains independent project-owned consumer/showcase evidence and never substitutes for the package sample.
 
 FL-M6-01 resolved two real consumer defects through bounded conformance corrections:
 
 - H1: Editor-only generation of blank SplashEntry identities (`5 / 5` focused);
 - H2: Setup destination Build Settings conformance (`35 / 35` focused).
 
-A1 added Splash Only / Splash + Status, background, advancement, None/Pulse, wait-for-input advancement, Inspector authoring, and Setup creation-time authoring. A1-E1 added backward-compatible `Reuse Compatible Assets` plus explicit `Create Project-Owned Setup`.
+A1 added Splash Only / Splash + Status, background, advancement, None/Pulse, wait-for-input advancement, Inspector authoring, and Setup creation-time authoring. A1-E1 added backward-compatible `Reuse Compatible Assets` plus explicit `Create Project-Owned Setup`. FL-M5-R1 later added optional bounded `None / Subtle / Medium / Nightmare` Splash Shake without changing SplashSequence schema or transferring gameplay-camera authority.
 
 Final touched-surface Setup regression passed `224 / 224`. The retained FL-M5-07 full-suite baseline remains `809 / 809`; no post-A1 full-suite aggregate is claimed by this closeout.
 
@@ -369,4 +373,4 @@ First Light currently proves:
 - Stable validation diagnostics `ELAUNCH-VAL-001` through `ELAUNCH-VAL-015`, with `009` active for Direct Scene safety
 - Stable direct-entry diagnostics `ELAUNCH-DIRECT-001` through `ELAUNCH-DIRECT-003`
 
-FL-M6-01 is complete and the in-repository First Light Gallery is committed. First Light is frozen for this pass. Clean-project reproduction, fresh complete regression, distribution-route proof, player-build evidence, external adoption, release tagging/catalog work, and performance evidence remain outside this closeout and require explicit future activation.
+FL-M5-R1 is complete at `cea876e`; the concrete package-sample identity is hardened, package/imported Laboratory parity is synchronized, Splash Shake is proven, and the full post-reconciliation EditMode gate is `1106 / 1106`. First Light is frozen for this pass. Clean-project reproduction, distribution-route proof, player-build evidence, external adoption, release tagging/catalog work, and performance evidence remain outside this closeout and require explicit future activation.

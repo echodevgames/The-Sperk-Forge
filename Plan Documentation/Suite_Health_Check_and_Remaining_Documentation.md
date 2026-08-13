@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 11, 2026
-**Completed package checkpoint:** ESV-M5-05 – Chronicle Unknown-Payload Prune and Derived Catalog Cache/Rebuild Prerequisites
-**Current implementation state:** First Light complete/frozen for current pass; Chronicle M4 and M5 complete; ESV-M5-06 implementation `4bcfbf1`; final focused Chronicle `761 / 761`; adjacent project sample/showcase organization `b43e6bf`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; M6 not activated
+**Updated:** August 12, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 reconciliation complete
+**Current implementation state:** First Light FL-M5-R1 complete at `cea876e`, package sample restored/hardened and full EditMode `1106 / 1106`; Chronicle M4 and M5 complete at ESV-M5-06 implementation `4bcfbf1`, focused Chronicle `761 / 761`; registry remains `61 Complete / 39 Deferred / 0 Blocked`; Chronicle M6 not activated
 
 ## Current health
 
@@ -14,11 +14,12 @@
 | Learning workflow | Just-in-time package-local gate remains authoritative |
 | First Light learning gate | Passed |
 | First Light package version | `0.1.0` |
-| First Light specification | SFGSS-PKG-ECHOLAUNCH-001 v1.16.0 |
-| First Light Standalone Test Lab | Complete; retained `809 / 809` automated and `12 / 12` manual evidence |
+| First Light specification | SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 |
+| First Light package sample / Standalone Test Lab | **Complete** — `FirstLight_Boot_Splash_Laboratory`; final package/import parity synchronized |
 | First Light Package Reference Showcase | **Complete** |
 | Latest First Light Setup-focused gate | **224 / 224** |
-| Permanent First Light Gallery | **Complete** — First Light Example + UMBRA Example |
+| Latest First Light post-reconciliation EditMode gate | **1106 / 1106**, `0` failed |
+| First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Next package learning | **PKG-LEARN-009 – The Chronicle (`EchoSave`) complete** |
@@ -43,15 +44,18 @@ First Light is therefore **complete for its current in-repository implementation
 
 ## Permanent consumer proof
 
-The project now retains:
+The project now separates package proof from showcase proof:
 
 ```text
-Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
-├── First Light Example/
-└── UMBRA Example/
+Package source:
+  Packages/com.echodevgames.echo-launch/Samples~/FirstLight_Boot_Splash_Laboratory/
+Imported package proof:
+  Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/
+Project-owned First Light showcase:
+  Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/
 ```
 
-The Gallery demonstrates both the canonical EchoDevGames happy path and an independently-authored UMBRA consumer foundation. Additional future Gallery examples may be project-owned content exercises; they do not automatically authorize package changes.
+The Boot Splash Laboratory carries the canonical First Light engineering/happy-path proof and ships with the package. UMBRA remains independently-authored project showcase content. Additional future showcase examples may be project-owned content exercises; they do not automatically authorize package changes.
 
 ## Evidence carried forward
 
@@ -64,7 +68,17 @@ The Gallery demonstrates both the canonical EchoDevGames happy path and an indep
 - UMBRA runtime Boot presentation succeeded.
 - Identical second Apply returned `NoChanges`, created no paths, and preserved Build Settings.
 
-No post-A1 complete EditMode or Runtime Play Mode aggregate is invented here. Full-suite regression must be collected again when release qualification is activated.
+FL-M5-R1 post-M5 reconciliation additionally proved:
+- canonical package sample path `Samples~/FirstLight_Boot_Splash_Laboratory/`;
+- Package Manager identity **First Light Boot Splash Laboratory**;
+- final package/imported Laboratory parity;
+- serialized destination/test reconciliation after the rename;
+- optional `None / Subtle / Medium / Nightmare` Splash Shake with Reduced Motion suppression and no schema bump;
+- post-reconciliation full EditMode **1106 / 1106**, `0` failed;
+- manual visible `Nightmare` runtime proof;
+- implementation commit `cea876e`.
+
+FL-M5-R1 records the fresh full EditMode aggregate above. A fresh Runtime Play Mode/full release-qualification regression must still be collected when that later gate is activated.
 
 ## Active next-package work
 
@@ -107,7 +121,7 @@ The planned follow-on Game Shell sequence is Accord, Resonance, then Looking Gla
 
 ## First Light future return gates
 
-If First Light returns to active development, the next release-oriented work remains separate from FL-M6-01:
+If First Light returns to active development, the next release-oriented work remains separate from completed FL-M6-01 and FL-M5-R1:
 
 - clean-project reproduction of the proven happy path;
 - full current regression totals;
@@ -116,7 +130,7 @@ If First Light returns to active development, the next release-oriented work rem
 - release checklist/version/tag/catalog decisions;
 - private beta/external adoption.
 
-No such work is active merely because FL-M6-01 closed.
+No such work is active merely because FL-M6-01 and FL-M5-R1 closed.
 
 ## Current stop point
 
@@ -342,7 +356,7 @@ The adjacent `b43e6bf` project commit separates retained project-owned showcase 
 - UMBRA remains project-owned **First Light showcase** content.
 - The Chronicle Save Laboratory is package-distributed engineering/sample content and also exists as an imported project sample for human proof.
 - UMBRA does **not** replace First Light's package-sample obligation.
-- The proper First Light package sample should be restored separately as `FirstLight_Boot_Splash_Laboratory`.
+- FL-M5-R1 completed the separate follow-up and restored/hardened the First Light package sample as `FirstLight_Boot_Splash_Laboratory`; UMBRA remains a showcase only.
 - Polished Chronicle save-format examples remain deferred to the later Chronicle Reference Showcase after Looking Glass and preferably Resonance are packaged.
 
 This follows the existing suite requirement that release-ready scene-visible packages retain an independently importable sample/Standalone Test Lab; polished combined/project showcases do not substitute for isolated package proof.

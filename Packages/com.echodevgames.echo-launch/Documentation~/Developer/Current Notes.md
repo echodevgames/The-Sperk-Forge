@@ -4,14 +4,14 @@
 
 - Package: First Light - Startup and Launch (`EchoLaunch`)
 - Package version: `0.1.0`
-- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.16.0
+- Specification: SFGSS-PKG-ECHOLAUNCH-001 v1.17.0
 - Unity baseline: `6000.3.8f1`
-- Latest completed checkpoint: `FL-M6-01` — First Light Production Reference Showcase
-- Status: **Implementation and Reference Gallery pass complete/frozen; versioned 0.1.0 Distribution Kit being prepared as a handoff artifact, with tarball route qualification still pending**
+- Latest completed checkpoint: `FL-M5-R1` — package sample identity/hierarchy hardening and Splash Shake reconciliation
+- Status: **FL-M5-R1 complete; First Light package implementation/sample is sealed and frozen for this pass; release-route qualification remains separately gated**
 
 ## Implemented Boundary
 
-First Light now provides the approved startup authority, ordered startup execution, immutable launch reporting, startup-only presentation, image splashes, initial destination handoff, Setup preview/Apply/Repair, project Validator, Direct Scene development entry, Launch Simulator, one importable Standalone Test Laboratory, creation-time splash authoring, and explicit project-owned foundation resolution.
+First Light now provides the approved startup authority, ordered startup execution, immutable launch reporting, startup-only presentation, image splashes, initial destination handoff, Setup preview/Apply/Repair, project Validator, Direct Scene development entry, Launch Simulator, one importable Standalone Test Laboratory, creation-time splash authoring, explicit project-owned foundation resolution, and optional bounded per-entry Splash Shake.
 
 A1 additionally provides:
 
@@ -22,6 +22,7 @@ A1 additionally provides:
 - Automatic / Skippable After Minimum / Wait For Input After Minimum;
 - normal SplashSequence Inspector authoring;
 - Setup creation-time authoring for newly-created SplashSequence assets.
+- Splash Shake: `None`, `Subtle`, `Medium`, `Nightmare`; additive to Pulse and disabled by Reduced Motion.
 
 A1-E1 additionally provides:
 
@@ -41,25 +42,20 @@ The default preserves prior compatible-candidate reuse. Create Project-Owned Set
 - `PreferredAudioClip` is optional project-owned intent metadata only.
 - EchoLaunch owns no audio playback, save/persistence, project input binding, EventSystem/input-module choice, general effects framework, menus, or normal mid-game scene travel.
 
-## Final FL-M6-01 Gallery
+## Reconciled Sample / Showcase Organization
+
+The earlier FL-M6-01 Gallery proof remains historical evidence, but the repository now keeps package-distributed proof separate from polished project-owned showcase content.
+
+Current concrete First Light sample identity:
 
 ```text
-Assets/EchoDevGames/SuiteShowcase/First Light Gallery/
-├── First Light Example/
-│   └── First Light Splashs/
-└── UMBRA Example/
-    └── UMBRA Splashs/
+Packages/com.echodevgames.echo-launch/Samples~/FirstLight_Boot_Splash_Laboratory/
+Assets/Samples/First Light — Startup and Launch/0.1.0/First Light Boot Splash Laboratory/
 ```
 
-### First Light Example
+The Package Manager display name is **First Light Boot Splash Laboratory**. Its conceptual role remains the First Light Standalone Test Lab. The final imported copy is synchronized with the package-owned source and contains the EchoDevGames splash, revised First Light art, Boot/Destination Laboratory scenes, camera plumbing, and authored Splash Shake proof.
 
-Proves the normal public Boot → EchoDevGames splash → First Light splash → startup settlement → MainMenu destination happy path.
-
-### UMBRA Example
-
-Proves independent consumer authoring through Create Project-Owned Setup. The generated SplashSequence retained three stable-ID entries (`The Sperk`, `Isekai Studios`, `UMBRA`), project-owned visual/audio-intent references, authored timing/advancement, and Pulse on the Isekai entry. The experience played successfully. The identical second Apply returned `NoChanges` with no created paths.
-
-The Gallery is project-owned and remains outside the distributed package and Standalone Test Lab.
+UMBRA remains separate project-owned **First Light showcase** content. It is not a package sample and does not satisfy or replace First Light's independently importable Laboratory requirement. The current repository retains UMBRA beneath `Assets/EchoDevGames/SuiteShowcase/First Light/UMBRA Example/**`; future polished showcases remain organized by package conceptually under `Assets/Showcases/<Package>/<Showcase>/`.
 
 ## Retained Evidence
 
@@ -72,7 +68,9 @@ Final EchoLaunchSetup filtered gate:   224 / 224
 UMBRA repeated Apply:                 NoChanges
 ```
 
-No post-A1 complete EditMode or Runtime Play Mode total is claimed by this closeout. Collect fresh full-suite totals at the next release-qualification gate.
+FL-M6-01 did not claim a fresh complete aggregate. FL-M5-R1 later supplied a fresh full EditMode gate; a fresh Runtime Play Mode aggregate still remains deferred to release qualification.
+
+FL-M5-R1 later produced a fresh post-reconciliation full EditMode gate of **1106 / 1106 passed, 0 failed**. No new Runtime Play Mode aggregate is claimed by R1.
 
 ## Completed FL-M6-01 Commits
 
@@ -83,6 +81,21 @@ No post-A1 complete EditMode or Runtime Play Mode total is claimed by this close
 - `ad12b27` — remove obsolete First Light showcase folder metadata
 
 A1 implementation also includes the preceding committed presentation/data/Inspector slices.
+
+## FL-M5-R1 Closeout
+
+- Activation: `93182c5`.
+- Final implementation: `cea876e`.
+- Commit scope: `174 files`, `3703 insertions`, `47 deletions`.
+- Package sample path: `Samples~/FirstLight_Boot_Splash_Laboratory/`.
+- Package Manager display name: `First Light Boot Splash Laboratory`.
+- Old live sample identity is absent.
+- Serialized destination paths and sample-test expectations use the new imported sample identity.
+- Final package/imported Laboratory parity was synchronized across `78` files.
+- Splash Shake presets: `None`, `Subtle`, `Medium`, `Nightmare`; `None = 0`; no SplashSequence schema bump.
+- Shake begins on Hold, affects only the local splash presentation surface, and Reduced Motion suppresses it completely.
+- Post-reconciliation full EditMode gate: **1106 / 1106 passed, 0 failed**.
+- Final `Nightmare` runtime presentation was manually confirmed visible and working.
 
 ## Official Distribution Kit
 
@@ -108,13 +121,13 @@ The authoritative complete handout also lives in package documentation:
 Documentation~/User/Complete User Handout.md
 ```
 
-The kit is deliberately separated from the project-owned First Light Gallery. Gallery art/audio/scenes are not package dependencies and are not silently bundled into the UPM artifact.
+The kit is deliberately separated from project-owned First Light showcase content. UMBRA showcase art/audio/scenes are not package dependencies and are not silently bundled into the UPM artifact.
 
 **Qualification boundary:** artifact preparation is complete when the kit is built and retained. External clean-project tarball installation/removal/reinstall is still `Not run` until a later explicit release-qualification return.
 
 ## Release Boundary
 
-FL-M6-01 closes the Package Reference Showcase stage only.
+FL-M5-R1 closes the bounded post-M5 sample-identity/Splash-Shake reconciliation. The earlier FL-M6-01 Package Reference Showcase evidence remains retained history.
 
 Still not claimed by this closeout:
 
@@ -128,4 +141,4 @@ Still not claimed by this closeout:
 
 ## Next Action
 
-No additional First Light feature implementation is active. Finish and commit the versioned `0.1.0` Distribution Kit, then deliberately select the next suite package through its just-in-time learning/checkpoint workflow. Future First Light clean-project tarball/release work requires an explicit return to this package.
+No additional First Light feature implementation is active. FL-M5-R1 is complete at `cea876e`, the package sample is restored and synchronized, and First Light is sealed for this pass. Future clean-project, distribution-route, player-build, release, or private-beta work requires an explicit return to this package.
