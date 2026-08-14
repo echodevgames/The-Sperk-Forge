@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,18 +12,18 @@ updated: 2026-08-13
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** EUI-M1-02 – The Looking Glass (`EchoUI`) External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — ACTIVE / AUTHORIZED
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M1-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
 
 
-## Current frontier — August 13, 2026
+## Current frontier — August 14, 2026
 
-- **Looking Glass:** EUI-M1-01 complete/finally reconciled at `57a4fa4`; EUI-M1-02 is **ACTIVE / AUTHORIZED** under package specification v1.2.0.
+- **Looking Glass:** EUI-M1-02 is **COMPLETE** at implementation commit `1c0a46a` under package specification v1.2.0; final full EditMode **1130 / 1130**, focused EchoUI **24 / 24**, manual Laboratory **10 / 10**.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M1-02 is bounded to external active/inactive UI context, designer-ordered per-surface response, authored/local/runtime override resolution, and externally supplied input-aware selection. Motifs, Builder, preset tooling, MMO layout persistence, arbitrary context payloads, and peer bridges remain future work.
+- EUI-M1-02 completed the bounded external active/inactive UI context, designer-ordered per-surface response, transient override, and externally supplied input-aware selection slice. Motifs, Builder, preset/template tooling, broad primitive expansion, MMO layout persistence, arbitrary context payloads, and peer bridges remain future work; none is activated by this closeout.
 
 
 ## How to use this in Obsidian
@@ -338,3 +338,7 @@ flowchart LR
 ## 2026-08-13 Looking Glass activation
 
 `PKG-LEARN-008` is Complete. `EUI-M1-01` is the active package checkpoint under SFGSS-005 Green Path from baseline `f57880a`. This activation intentionally pulls Looking Glass foundation work forward after Chronicle M5 so project UI composition can begin incrementally; it does not create a hard dependency chain or unlock another package.
+
+
+## 2026-08-14 Looking Glass EUI-M1-02 closeout
+`EUI-M1-02` is Complete. Activation `f0b97ff`; implementation `1c0a46a`; incoming full EditMode `1113 / 1113`; focused EchoUI `24 / 24`; manual Laboratory `10 / 10`; final full EditMode `1130 / 1130`. Package authority remains v1.2.0 and no follow-on Looking Glass checkpoint is activated.

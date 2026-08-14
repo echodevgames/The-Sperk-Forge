@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 13, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M1-01 complete; EUI-M1-02 activated
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M1-01 fully reconciled at `57a4fa4`; EUI-M1-02 ACTIVE / AUTHORIZED, implementation not started at activation
+**Updated:** August 14, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M1-02 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M1-02 complete at implementation `1c0a46a`; no follow-on Looking Glass checkpoint activated
 
 ## Current health
 
@@ -24,8 +24,8 @@
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M1-02 revisit reconciled external context ordering, per-dimension responses, overrides, and input-aware selection |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.2.0 Approved** |
-| Looking Glass completed checkpoint | **EUI-M1-01 COMPLETE** — activation `83d3f9e`; implementation `e6b651f`; final recovery `57a4fa4`; full EditMode **1113 / 1113**; manual Laboratory **5 / 5** |
-| Looking Glass active checkpoint | **EUI-M1-02 ACTIVE / AUTHORIZED** — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract; implementation not started at activation |
+| Looking Glass completed checkpoint | **EUI-M1-02 COMPLETE** — activation `f0b97ff`; implementation `1c0a46a`; focused EchoUI **24 / 24**; manual Laboratory **10 / 10**; final full EditMode **1130 / 1130** |
+| Looking Glass active checkpoint | **None.** EUI-M1-02 is complete; no follow-on checkpoint activated by closeout. |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
@@ -364,6 +364,24 @@ The adjacent `b43e6bf` project commit separates retained project-owned showcase 
 
 This follows the existing suite requirement that release-ready scene-visible packages retain an independently importable sample/Standalone Test Lab; polished combined/project showcases do not substitute for isolated package proof.
 
+### Looking Glass EUI-M1-02 completion
+- activation `f0b97ff`; implementation `1c0a46a`;
+- incoming full EditMode floor **1113 / 1113**, `0` failed before Runtime edits;
+- focused EchoUI assembly **24 / 24**, `0` failed (**17 M1-02 + 7 retained M1-01**);
+- manual Laboratory **10 / 10 PASS**;
+- final synchronized full EditMode **1130 / 1130**, `0` failed, `0` skipped, `0` inconclusive;
+- package/imported Laboratory parity synchronized to the manually accepted scene;
+- project-defined active/inactive context IDs and simultaneous contexts;
+- designer-owned ordered per-surface response with independent visibility/interactability/selection resolution;
+- no-rule/no-dimension intervention semantics and local external-context opt-out;
+- transient runtime overrides without authored-definition mutation or persistence ownership;
+- externally supplied pointer/navigation modality with designer-selected default-selection behavior;
+- neutral close behavior without implicit selection-history restoration;
+- pause/cinematic/loading/input truth remains external and surfaces choose their own response;
+- zero hard runtime dependency on another Echo package;
+- package authority remains **SFGSS-PKG-ECHOUI-001 v1.2.0**; no contract revision/new ADR required;
+- no follow-on Looking Glass checkpoint activated.
+
 ### Looking Glass EUI-M1-01 completion
 
 - `EchoUIRoot` provides bounded package-local authority and surface registration.
@@ -376,4 +394,4 @@ This follows the existing suite requirement that release-ready scene-visible pac
 - normal TextMesh Pro UI labels are allowed; the repository carries TMP Essential Resources for the hand-authored project sample, while TMP Examples & Extras are not required;
 - At the EUI-M1-01 closeout boundary, Motifs, Builder tooling, external context/visibility rules, input-aware selection, and broader surface capabilities were future work. EUI-M1-02 now activates only the bounded external-context response and input-aware-selection subset; the remaining items stay future work.
 
-**Historical M1-01 closeout state:** EUI-M1-02 was not activated at `57a4fa4`. **Current state:** EUI-M1-02 is ACTIVE / AUTHORIZED under EchoUI specification v1.2.0.
+**Historical M1-01 closeout state:** EUI-M1-02 was not activated at `57a4fa4`. **Superseding state:** EUI-M1-02 is COMPLETE at implementation `1c0a46a` under EchoUI specification v1.2.0.

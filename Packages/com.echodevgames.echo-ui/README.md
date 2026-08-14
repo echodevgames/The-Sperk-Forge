@@ -14,7 +14,24 @@ The first implementation proves:
 - independent Window open/close/toggle behavior;
 - a thin uGUI `UINavigationButton` adapter.
 
-It intentionally does **not** yet implement context visibility rules, input-aware default focus, Motifs, primitive prefabs, the Looking Glass Builder, modals, notifications, or peer-package bridges.
+EUI-M1-01 intentionally stopped before external-context response and input-aware selection; those bounded capabilities are now supplied by EUI-M1-02. Motifs, broad primitive-prefab libraries, the Looking Glass Builder, richer modal/notification/HUD systems, persistence, and peer-package bridges remain future work.
+
+## EUI-M1-02 context and selection
+
+The second bounded implementation adds:
+
+- project-defined stable active/inactive UI context IDs;
+- multiple simultaneous contexts;
+- designer-ordered per-surface response rules;
+- independent visibility, interaction, and selection/focus response dimensions;
+- no-intervention behavior when no applicable rule supplies a dimension;
+- optional per-surface participation in external-context handling;
+- transient runtime overrides that do not mutate authored definitions or claim persistence;
+- externally supplied pointer versus navigation/controller modality;
+- per-surface selection-on-open policy, including pointer-unselected and configured default-selection behavior;
+- neutral temporary-surface close behavior without implicit historical selection restoration.
+
+Pause, cinematic, loading, and input modality remain external project/system truth. Looking Glass only decides how each surface responds to supplied truth.
 
 ## Hierarchy convention
 

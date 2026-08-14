@@ -3,15 +3,15 @@ tags:
   - sfgss/checkpoint
   - sfgss/wave/foundation
   - sfgss/ui
-status: active
+status: complete
 checkpoint: EUI-M1-02
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # EUI-M1-02 — The Looking Glass External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — Checkpoint Build Plan
 
 **Checkpoint:** `EUI-M1-02`
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Package:** The Looking Glass (`EchoUI`)
 **Package ID:** `com.echodevgames.echo-ui`
 **Package authority:** `SFGSS-PKG-ECHOUI-001` v1.2.0 Approved
@@ -313,4 +313,20 @@ Naming a follow-on slice does not activate it. The next checkpoint must pass its
 - Checkpoint authorization: **EUI-M1-02 ACTIVE / AUTHORIZED**
 - Starting implementation baseline: `57a4fa4`
 - Runtime implementation at activation: **Not started**
-- Activation Git commit: **the commit containing this ACTIVE / AUTHORIZED transition; record exact short hash at closeout**
+- Activation Git commit: `f0b97ff` (`f0b97ffa3e4c0aa5ddd82fe028176da4e2fefa20`)
+
+## Closeout record — August 14, 2026
+
+- Checkpoint status: **COMPLETE**.
+- Implementation commit: `1c0a46a` (`1c0a46aad8fe23c1a241bed04d4f864042fdd577`).
+- Incoming full EditMode regression before Runtime edits: **1113 / 1113 passed, 0 failed**.
+- Focused EchoUI proof after implementation/hotfix stabilization: **24 / 24 passed, 0 failed**, including **17 EUI-M1-02 focused tests** and **7 retained EUI-M1-01 foundation tests**.
+- Manual Laboratory acceptance: **10 / 10 PASS**.
+- Final synchronized full EditMode regression: **1130 / 1130 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Package/imported Laboratory parity: **Pass** against the manually approved scene before final regression.
+- Runtime peer-package independence: **Pass**.
+- M1-01 scoped-navigation + independent-window retention: **Pass**.
+- Implementation matched package authority v1.2.0; no authority correction/new ADR was required.
+- Laboratory proof convention refined without Runtime authority change: proof/debug controls occupy the top-right safe zone and stack downward; `Panel_DefaultWindow` remains a panel, while `Button_DefaultClose` is the legitimate configured selection target.
+- Green Path stop point satisfied.
+- **No follow-on Looking Glass checkpoint is activated.**

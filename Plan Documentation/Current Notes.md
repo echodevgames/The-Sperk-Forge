@@ -3,13 +3,28 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 13, 2026
-**Current focus:** The Looking Glass (`EchoUI`) external context + input-aware selection implementation
-**Current checkpoint:** EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — ACTIVE / AUTHORIZED
+**Last reconciled:** August 14, 2026
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M1-02 closeout complete; no follow-on checkpoint activated
+**Current checkpoint:** EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — COMPLETE
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M1-02 Final Closeout — August 14, 2026
+- Activation commit: `f0b97ff` (`f0b97ffa3e4c0aa5ddd82fe028176da4e2fefa20`).
+- Implementation commit: `1c0a46a` (`1c0a46aad8fe23c1a241bed04d4f864042fdd577`).
+- Incoming full EditMode floor was re-established before Runtime edits: **1113 / 1113 passed, 0 failed**.
+- Final focused EchoUI assembly proof: **24 / 24 passed, 0 failed**, comprising **17 EUI-M1-02 focused tests + 7 retained EUI-M1-01 foundation tests**.
+- Manual Looking Glass Laboratory acceptance: **10 / 10 PASS**.
+- Final synchronized full EditMode regression: **1130 / 1130 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Package/imported Laboratory parity was reconciled before the final regression; the package sample preserves the tested `Button_DefaultClose` default-selection target and top-right proof-console safe zone.
+- EUI-M1-02 proves project-defined active/inactive context IDs, simultaneous contexts, designer-authored ordered per-surface rules, per-dimension resolution, opt-out, transient runtime overrides, external input modality, pointer-unselected behavior, controller/default selection, neutral close selection, and retained M1-01 navigation/window behavior.
+- Pause/cinematic/loading and input modality remain external truth. A surface with no applicable pause rule remains unchanged; designers explicitly author hide/non-interactable behavior when desired.
+- Runtime retains **zero hard peer Echo package dependency** and introduces no persistence or project-wide lifetime authority.
+- The implementation matched **SFGSS-PKG-ECHOUI-001 v1.2.0**; no package-authority revision or new suite ADR was required at closeout.
+- EUI-M1-02 is **COMPLETE**. Motifs, Builder, reusable preset/template tooling, broad primitive-library expansion, richer window/focus systems, MMO layout persistence, arbitrary context payloads, peer bridges, and richer modal/HUD/transient systems remain future work.
+- **No follow-on Looking Glass checkpoint is activated by this closeout.**
 
 ## Looking Glass EUI-M1-02 JIT Reconciliation and Activation — August 13, 2026
 
