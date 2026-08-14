@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 14, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M1-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M1-02 complete at implementation `1c0a46a`; no follow-on Looking Glass checkpoint activated
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M1-02 complete; EUI-M2-01 activated
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-01 ACTIVE / AUTHORIZED from clean EUI-M1-02 closeout `c114ba2`; Runtime implementation not started at activation
 
 ## Current health
 
@@ -22,14 +22,25 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M1-02 revisit reconciled external context ordering, per-dimension responses, overrides, and input-aware selection |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.2.0 Approved** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-01 revisit reconciled project-defined layers, screen ownership/suspension, strict FIFO structural operations, and the screen-only M2 boundary |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.3.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M1-02 COMPLETE** — activation `f0b97ff`; implementation `1c0a46a`; focused EchoUI **24 / 24**; manual Laboratory **10 / 10**; final full EditMode **1130 / 1130** |
-| Looking Glass active checkpoint | **None.** EUI-M1-02 is complete; no follow-on checkpoint activated by closeout. |
+| Looking Glass active checkpoint | **EUI-M2-01 ACTIVE / AUTHORIZED** — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations; implementation not started at activation. |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
+
+## Looking Glass EUI-M2-01 activation health
+
+- Planning baseline: `c114ba2`, clean synchronized EUI-M1-02 closeout.
+- Incoming full EditMode floor: **1130 / 1130**.
+- Fixed seven-layer runtime count is superseded by project-defined ordered layer topology; starter definitions are convenience only.
+- Screen view ownership modes: RootOwned / SceneOwned / ExternalOwned.
+- Suspended-screen visual presence is designer-controlled; suspended Screens remain non-interactive within their navigation scope.
+- Structural screen operations are bounded and strict FIFO by submission order.
+- M2-01 excludes modal results, transitions, focus-history restoration, full EventSystem policy, HUD/transients, Motifs, Builder, persistence, and peer bridges.
+- No new suite ADR is required by this package-local refinement.
 
 ## First Light graduation state
 

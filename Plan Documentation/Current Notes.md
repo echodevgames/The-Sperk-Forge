@@ -4,12 +4,26 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 14, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M1-02 closeout complete; no follow-on checkpoint activated
-**Current checkpoint:** EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — COMPLETE
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current checkpoint:** EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M2-01 JIT Reconciliation and Activation — August 14, 2026
+- Incoming repository baseline: `c114ba2` — EUI-M1-02 final closeout, clean and synchronized.
+- Retained EUI-M1-02 proof: final full EditMode **1130 / 1130**, focused EchoUI **24 / 24**, manual Laboratory **10 / 10**.
+- PKG-LEARN-008 bounded EUI-M2-01 revisit is **Complete**.
+- Looking Glass package authority advances to **SFGSS-PKG-ECHOUI-001 v1.3.0**.
+- Active plan: **EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations**.
+- **EUI-M2-01 is explicitly ACTIVE / AUTHORIZED. Runtime implementation has not started at this activation record.**
+- Fixed seven-layer runtime law is superseded. Layer topology is stable-ID-addressed, project-authored, ordered, and variable-count; package starter layers are editable convenience only.
+- `RootOwned`, `SceneOwned`, and `ExternalOwned` are first-class screen ownership modes.
+- Designers choose suspended-screen visibility behavior, while Looking Glass guarantees suspended Screens are non-interactive within the active navigation scope.
+- Accepted Push/Replace/Reset/Back/Close structural requests execute one at a time in bounded strict FIFO submission order; overflow/rejection is explicit and partial history mutation is forbidden.
+- M2-01 is screen-only. Modal blocking/exact-once result lifecycle remains the intended EUI-M2-02 slice and is not activated here.
+- First implementation gate: re-establish the incoming full EditMode **1130 / 1130** floor before changing Runtime code.
 
 ## Looking Glass EUI-M1-02 Final Closeout — August 14, 2026
 - Activation commit: `f0b97ff` (`f0b97ffa3e4c0aa5ddd82fe028176da4e2fefa20`).

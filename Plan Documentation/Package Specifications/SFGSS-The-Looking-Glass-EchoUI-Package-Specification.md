@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.2.0
+**Specification version:** 1.3.0
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -16,11 +16,11 @@
 **Required Unity package:** Unity UI (`com.unity.ugui`) `2.0.0`, verified from the Unity 6000.3.8f1 project manifest during PKG-LEARN-008
 **Default text path:** uGUI-compatible project-owned text components; no separate text package dependency is required by EUI-M1-01
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 13, 2026
+**Last updated:** August 14, 2026
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete, including the bounded EUI-M1-02 JIT revisit. EUI-M1-01 is complete at repository baseline `57a4fa4`; EUI-M1-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from that baseline. Implementation permission extends only to the active EUI-M1-02 Checkpoint Build Plan.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M2-01 JIT revisit. EUI-M1-01 and EUI-M1-02 are complete; EUI-M2-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean closeout baseline `c114ba2`. Implementation permission extends only to the active EUI-M2-01 Checkpoint Build Plan.
 
 ---
 
@@ -33,6 +33,7 @@
 | 1.0.1 | 2026-08-04 | Approved | Normalized registry metadata and formal title; added the SUITE-DOC-30 governing-authority, evidence, test-registry, and compatibility clarification without authorizing implementation. | Jesse “Echo” Adams |
 | 1.1.0 | 2026-08-13 | Approved | JIT architecture rebaseline: layered UI context, optional navigation scopes, independent windows, stable surface IDs/registry, hybrid Back/navigation, cascading visibility policy, input-aware default selection, Motif terminology, Lego-style primitives/Builder direction, project-owned lifetime/context authority, and EUI-M1-01 foundation activation. | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-13 | Approved | EUI-M1-02 JIT reconciliation: designer-ordered per-surface external context responses, project-defined stable active/inactive context IDs, independent visibility/interactability/selection directives, no-intervention defaults, authored/local/runtime overrides, optional external participation, and externally supplied input-modality selection policy. Activates EUI-M1-02 while keeping presets, Motifs, Builder, MMO layout persistence, arbitrary context payloads, and peer bridges outside the slice. | Jesse “Echo” Adams |
+| 1.3.0 | 2026-08-14 | Approved | EUI-M2-01 JIT reconciliation: replaces the fixed seven-layer runtime assumption with project-defined ordered layer topology plus convenience starter defaults; confirms RootOwned/SceneOwned/ExternalOwned screen ownership; defines designer-controlled suspended-screen visibility with scope-enforced non-interaction; locks bounded strict FIFO screen mutation ordering; and activates the screen-lifecycle-only M2-01 slice while deferring modal exact-once results to M2-02. | Jesse “Echo” Adams |
 
 ---
 
@@ -317,7 +318,7 @@ Project assemblies, peer Echo packages in core, sample dependencies, mandatory D
 | ID | Capability | Status | MVP? | Surface |
 |---|---|---|---:|---|
 | CAP-001 | Duplicate-safe persistent root | Approved | Yes | Runtime |
-| CAP-002 | Seven named layer hosts | Approved | Yes | Runtime/Prefab |
+| CAP-002 | Project-defined named ordered layer hosts with package-supplied starter defaults | Approved | Yes | Runtime/Prefab |
 | CAP-003 | Stable-ID screen/modal registries | Approved | Yes | Runtime/Data |
 | CAP-004 | Push/Replace/Reset/Back screen history | Approved | Yes | Runtime |
 | CAP-005 | Blocking modal service with exact-once results | Approved | Yes | Runtime |
@@ -431,6 +432,20 @@ Visibility, interaction, and selection are separate concepts. A surface may rema
 
 **Preset/template direction is copy-in, not centralized live policy.** Future presets/templates may populate useful starting rules that become freely editable project configuration. EUI-M1-02 must not require a centralized policy subscription model, and actual preset/template authoring tooling is outside this checkpoint.
 
+### 8.1C EUI-M2-01 contract — project-defined layers, screen ownership, suspension, and serialized operations
+
+The August 14, 2026 bounded M2-01 revisit advances the proven surface/context foundation into an authoritative screen lifecycle without turning Looking Glass into a fixed menu shell.
+
+**Layer topology is project-defined, ordered, and stable-addressed.** The earlier fixed “seven named root layers” statement is superseded. Looking Glass may ship a recommended starter layer arrangement as convenience/template content, but runtime correctness must not depend on a fixed layer count or reserved project layer names. Projects/designers may add, remove, reorder, or substitute layer definitions in authored configuration. Layers use stable IDs separate from display labels/hierarchy names. The resolved production topology is validated at initialization and is not casually reordered by runtime callers.
+
+**Screen ownership is explicit.** `RootOwned`, `SceneOwned`, and `ExternalOwned` are all first-class lifecycle modes. Root-owned views may be created/released by Looking Glass from explicit project-authored definition/factory data. Scene-owned views are existing scene objects coordinated by Looking Glass without transferring destruction/lifetime ownership. External-owned views are explicitly supplied/registered by project code and remain externally lifetime-owned. All three still use Looking Glass screen history and lifecycle once admitted.
+
+**Suspension presentation is designer-controlled but scope interaction remains authoritative.** When a pushed screen suspends the previous top entry, the designer may choose to hide the suspended screen, keep it visible, or preserve its authored/effective visibility. Regardless of visibility choice, a suspended `Screen` in that navigation scope is not interactive while another screen is the active top entry. This preserves the invariant that exactly one eligible screen per scope is interactive without imposing one visual doctrine.
+
+**Screen structural mutations are serialized in strict submission order for M2-01.** Accepted Push/Navigate, Replace, Reset/Return-to-root, Back, and Close operations execute one at a time through a bounded FIFO admission path. M2-01 does not silently reorder, coalesce, replace, or drop accepted requests. When the bounded queue cannot admit work, the request is explicitly rejected without partial history/view mutation. Later optimization policies may be researched only behind a future declared contract.
+
+**M2-01 is screen-only.** Modal stack ownership, blocking, exact-once modal completion, and modal result awaiters remain approved M2 capabilities but are intentionally deferred to a separate `EUI-M2-02` checkpoint. Likewise focus-history restoration and transition-driver execution remain later slices.
+
 ### 8.2 Component topology
 
 ```text
@@ -476,7 +491,7 @@ Domain authority -> presenter/view model -> view. View interaction -> presenter 
 
 ### 8.4 Layer topology
 
-Screen, Window, HUD, Modal, Notification, Tooltip/Prompt, Transition, and Debug hosts may be explicitly ordered. Screen exclusivity applies only inside an authored navigation scope; independent windows and eligible HUD surfaces may remain interactive together. Modal/overlay policy may gate lower interaction through CanvasGroup/raycast/navigation policy. Runtime callers cannot arbitrarily reorder production layers.
+Project-authored layer definitions are stable-ID-addressed and explicitly ordered. Looking Glass may provide a recommended starter arrangement for common Screen/Window/HUD/Modal/Notification/Tooltip-Prompt/Transition/Debug-style uses, but those names and that count are convenience defaults rather than runtime law. Projects may add, remove, reorder, or substitute authored layer definitions before initialization. Screen exclusivity applies only inside an authored navigation scope; independent windows and eligible HUD surfaces may remain interactive together. Modal/overlay policy may later gate lower interaction through CanvasGroup/raycast/navigation policy. Runtime callers cannot arbitrarily reorder the resolved production topology.
 
 ### 8.5 Screen history
 
@@ -784,7 +799,7 @@ Prove package-local authority, stable surface registration, exclusive scoped nav
 
 ### 13.2 Laboratory contents
 
-- Root/config and all seven layers.
+- Root/config plus a project-authored ordered layer topology; the Laboratory may use package-recommended starter definitions, but the runtime does not require a fixed count.
 - Standalone EventSystem/input-module sample path.
 - Home, Gallery, Settings Shell, Long List, Empty, and Error screens.
 - Confirmation/choice modals.
@@ -1761,7 +1776,7 @@ An integration claim requires:
 | EUI-D-001 | EchoUI owns presentation infrastructure only | Approved | Prevents UI from becoming game authority | Domain operations require presenters/adapters | No |
 | EUI-D-002 | Use one duplicate-safe application-session root | Approved | Consistent layers, focus, navigation, and diagnostics | Root lifecycle must be rigorously tested | No |
 | EUI-D-003 | First backend is uGUI with TMP-compatible text | Approved | Matches suite baseline and practical runtime needs | UI Toolkit is deferred adapter/expansion | No |
-| EUI-D-004 | Use seven named root layers | Approved | Makes sorting, input blocking, and diagnostics explicit | Layer configuration becomes public package surface | No |
+| EUI-D-004 | Use seven named root layers | Superseded 2026-08-14 | Fixed count is unnecessarily restrictive for a designer-first toolkit | Replaced by EUI-D-042 project-defined ordered layer topology | No |
 | EUI-D-005 | Screen history supports Push, Replace, Reset, and Back | Approved | Covers common menu flow without game-specific rules | Structural operations must be serialized | No |
 | EUI-D-006 | Modal entries use exact-once results and owned handles | Approved | Safe await/callback lifecycle and out-of-order cleanup | Stale handles need generation/identity validation | No |
 | EUI-D-007 | EventSystem policy is explicit and non-destructive | Approved | Avoids hidden duplicates and deleted project setup | Conflicts may block until user resolves them | No |
@@ -1800,6 +1815,12 @@ An integration claim requires:
 | EUI-D-039 | Closing a temporary surface defaults to no selected control; prior selection is not implicitly restored | Approved | Neutral default avoids framework-imposed focus history | Restore-selection behavior requires a later explicit capability | No |
 | EUI-D-040 | EUI-M1-02 context IDs carry no arbitrary domain payload | Approved | Prevents UI context from becoming a generic cross-package data bus | Rich domain values remain with their owning systems/providers | No |
 | EUI-D-041 | Future presets/templates are editable copy-in starting points rather than mandatory live centralized policies | Approved | Fast setup and full designer control can share one architecture | Preset/template authoring tooling remains outside EUI-M1-02 | No |
+| EUI-D-042 | Layer topology is project-defined and ordered; any package starter layer set is editable convenience rather than a fixed runtime count | Approved | Designers need to add/remove/reorder layer definitions without fighting framework law | Layer IDs/config become stable authored data; runtime validates resolved topology and does not assume seven | No |
+| EUI-D-043 | RootOwned, SceneOwned, and ExternalOwned are first-class screen view ownership modes | Approved | Projects need prefab-spawned, scene-authored, and externally composed views without lifecycle confusion | Looking Glass coordinates screen lifecycle but destroys/releases only what its ownership mode permits | No |
+| EUI-D-044 | Suspended-screen visibility is designer-controlled, while suspended Screens are non-interactive within their navigation scope | Approved | Designers may want hidden, visible-behind, or authored-visibility presentations | Screen scope still guarantees one interactive top entry | No |
+| EUI-D-045 | M2-01 screen structural mutations use bounded strict FIFO execution in request submission order | Approved | Determinism is safer than racing Push/Replace/Back requests | Queue overflow/rejection is explicit; no silent M2-01 coalescing/reordering | No |
+| EUI-D-046 | Accepted screen-operation failure cannot partially mutate authoritative history or ownership state | Approved | Lifecycle authority must remain trustworthy under invalid IDs/factory loss/queue rejection | Operations require preflight/settlement and structured terminal results | No |
+| EUI-D-047 | EUI-M2-01 is screen-lifecycle-only; modal exact-once result lifecycle is deferred to EUI-M2-02 | Approved | Keeps the first Runtime Core slice small and independently provable | M2 remains open after M2-01; modal implementation is not authorized by M2-01 | No |
 
 ### 27.2 Release-blocking questions
 
@@ -1835,7 +1856,7 @@ None. Exact Unity UI/TMP dependency versions are verification tasks for M1, not 
 
 ### 28.2 Historical Foundation documentation gate — satisfied
 
-The original v1.0.x specification correctly blocked implementation until the Foundation documentation program and cross-package consistency work completed. That suite gate has since been satisfied. Current implementation permission is package-local: PKG-LEARN-008 must be complete and an explicit Checkpoint Build Plan must be active under SFGSS-005. EUI-M1-01 completed and was finally reconciled at `57a4fa4`. The bounded PKG-LEARN-008 EUI-M1-02 revisit is complete, this specification is reconciled to v1.2.0, and EUI-M1-02 is the active package-local checkpoint as of August 13, 2026.
+The original v1.0.x specification correctly blocked implementation until the Foundation documentation program and cross-package consistency work completed. That suite gate has since been satisfied. Current implementation permission is package-local: PKG-LEARN-008 must be complete and an explicit Checkpoint Build Plan must be active under SFGSS-005. EUI-M1-01 completed and was finally reconciled at `57a4fa4`; EUI-M1-02 completed at closeout `c114ba2` with final full EditMode **1130 / 1130**, focused EchoUI **24 / 24**, and manual Laboratory **10 / 10**. The bounded PKG-LEARN-008 EUI-M2-01 revisit is complete, this specification is reconciled to v1.3.0, and EUI-M2-01 is the active package-local checkpoint as of August 14, 2026.
 
 ### 28.3 First recommended implementation checkpoint after the gate
 
@@ -1853,9 +1874,9 @@ Outcome:
 
 Stop point: package compiles in Unity 6000.3.8f1 with uGUI 2.0.0, focused tests pass, direct-scene manual proof shows scoped navigation + Back + independent-window coexistence, duplicate authority remains side-effect-free, and documentation matches the committed state.
 
-### 28.4 Active implementation checkpoint — EUI-M1-02
+### 28.4 Completed implementation checkpoint — EUI-M1-02
 
-**EUI-M1-02 - External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract** is **ACTIVE / AUTHORIZED** from the clean EUI-M1-01 final-recovery baseline `57a4fa4`.
+**EUI-M1-02 - External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract** is **COMPLETE**. Activation `f0b97ff`; implementation `1c0a46a`; closeout `c114ba2`; final full EditMode **1130 / 1130**; focused EchoUI **24 / 24**; manual Laboratory **10 / 10**.
 
 Authorized outcome:
 
@@ -1871,7 +1892,28 @@ Authorized outcome:
 
 Explicitly excluded from EUI-M1-02: arbitrary context payloads; automatic input-device detection; focused-window arbitration; selection-history restoration; presets/template authoring tooling; Motifs; Builder; broad primitive-library expansion; draggable/resizable/persisted MMO window layouts; modal/notification/tooltip/prompt/full-HUD frameworks; peer-package bridges; Chronicle/Accord persistence; project-wide lifetime composition; and production showcase art.
 
-Stop point: the active EUI-M1-02 Checkpoint Build Plan is proven by focused automated tests, a full EditMode regression with zero failures, and direct Laboratory evidence, then the checkpoint closes before any excluded capability begins.
+Stop point: satisfied at `c114ba2`; EUI-M1-02 is closed and no excluded capability was activated by that closeout.
+
+### 28.5 Active implementation checkpoint — EUI-M2-01
+
+**EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations** is **ACTIVE / AUTHORIZED** from clean EUI-M1-02 closeout baseline `c114ba2`.
+
+Authorized outcome:
+- introduce project-defined stable layer IDs and authored ordered layer topology without a fixed runtime layer count;
+- preserve package-supplied starter layer arrangements as editable convenience only;
+- introduce explicit screen definitions/runtime entries sufficient for authoritative lifecycle;
+- support `RootOwned`, `SceneOwned`, and `ExternalOwned` view ownership;
+- support Push/Navigate, Replace, Reset/Return-to-root, Back, and Close as structured screen operations;
+- keep screen history authoritative per navigation scope;
+- make suspended-screen visibility designer-configurable while guaranteeing suspended Screens are non-interactive within their scope;
+- execute accepted screen structural mutations one at a time in bounded strict FIFO submission order;
+- reject overflow/invalid/factory/lost-view cases structurally without partial history or ownership mutation;
+- retain EUI-M1-01/M1-02 surface, independent-window, external-context, and selection behavior;
+- preserve zero hard peer Echo package dependency.
+
+Explicitly excluded from EUI-M2-01: modal stack/result implementation; exact-once modal awaiters; transition drivers/animation sequencing; general focus-history restoration; full EventSystem adoption policy; HUD region service; notifications; tooltips/prompts; Motifs; Builder; primitive warehouse expansion; persistence; peer bridges; project-wide lifetime composition; runtime arbitrary layer reordering; polished showcase art.
+
+Stop point: prove the active EUI-M2-01 Checkpoint Build Plan through an incoming **1130 / 1130** EditMode floor, focused automated lifecycle/queue tests, a final full regression with zero failures, and direct Laboratory evidence. Then stop before EUI-M2-02 or any M3 capability begins.
 
 ---
 
@@ -1881,31 +1923,32 @@ Stop point: the active EUI-M1-02 Checkpoint Build Plan is proven by focused auto
 We are continuing development of The Sperk’s Systems Foundry — EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.2.0 as
-the authority for UI presentation infrastructure and the EUI-M1-02 external-context/
-selection contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active
-EUI-M1-02 Checkpoint Build Plan for Green Path execution.
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.3.0 as
+the authority for UI presentation infrastructure and the EUI-M2-01 screen-lifecycle
+contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M2-01
+Checkpoint Build Plan for Green Path execution.
 
 Current package: EchoUI
-Current specification version: 1.2.0
-Current milestone/checkpoint: EUI-M1-02 ACTIVE / AUTHORIZED
+Current specification version: 1.3.0
+Current milestone/checkpoint: EUI-M2-01 ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation baseline: EUI-M1-01 complete/finally reconciled at 57a4fa4
-Current EUI-M1-02 implementation status: Not started at activation
-Incoming full EditMode floor: 1113 / 1113 passed, 0 failed at 57a4fa4
+Current implementation baseline: EUI-M1-02 final closeout c114ba2
+Current EUI-M2-01 implementation status: Not started at activation
+Incoming full EditMode floor: 1130 / 1130 passed, 0 failed at c114ba2
 Known blockers: None at activation
-Current Notes reviewed through: August 13, 2026
+Current Notes reviewed through: August 14, 2026
 
 Before writing code:
-1. Confirm the repository is clean and still at the authorized EUI-M1-02 activation baseline.
-2. Summarize EchoUI's authority and independence constraints.
-3. Implement only the active EUI-M1-02 plan: external active/inactive context IDs,
-   ordered per-surface response rules, bounded overrides, and input-aware selection.
-4. Preserve project-owned game state, input truth, views, object lifetime, and persistence.
-5. Keep peer integrations behind explicit bridges/project adapters.
-6. Stop on any Green Path red gate or authority-changing discovery.
-7. Do not opportunistically begin Motifs, Builder, presets tooling, MMO layout persistence,
-   or richer modal/HUD/transient systems.
+1. Confirm the repository is clean and still at the authorized EUI-M2-01 activation baseline.
+2. Re-establish the incoming full EditMode 1130 / 1130 floor.
+3. Implement only project-defined ordered layers, explicit screen ownership/lifecycle,
+   and bounded strict-FIFO screen operations from the active EUI-M2-01 plan.
+4. Preserve M1 surface/context/selection behavior and independent windows.
+5. Preserve project-owned game state, input truth, object lifetime, persistence, and final UI composition.
+6. Keep peer integrations behind explicit bridges/project adapters.
+7. Stop on any Green Path red gate or authority-changing discovery.
+8. Do not begin modal results, transitions, focus-history restoration, Motifs, Builder,
+   primitive-library expansion, HUD/transient services, or peer bridges.
 ```
 
 ### 29.1 Current status record
@@ -1913,13 +1956,13 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Runtime package version | `0.1.0` |
-| Package authority | SFGSS-PKG-ECHOUI-001 v1.2.0 Approved |
-| Completed implementation checkpoint | EUI-M1-01 - Installable Surface Foundation, Scoped Navigation, and Independent Window Proof |
+| Package authority | SFGSS-PKG-ECHOUI-001 v1.3.0 Approved |
+| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 |
 | EUI-M1-01 retained evidence | Activation `83d3f9e`; implementation `e6b651f`; final recovery `57a4fa4`; full EditMode **1113 / 1113**, 0 failed; manual Laboratory **5 / 5** |
-| Decisions | EUI-D-001 through EUI-D-041; EUI-D-017 superseded |
-| Active implementation checkpoint | EUI-M1-02 - External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract |
-| EUI-M1-02 implementation status | Not started at activation |
-| Implementation permission | **EUI-M1-02 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 JIT revisit + specification v1.2.0 reconciliation |
+| Decisions | EUI-D-001 through EUI-D-047; EUI-D-004 and EUI-D-017 superseded |
+| Active implementation checkpoint | EUI-M2-01 - Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations |
+| EUI-M1-02 retained evidence | Activation `f0b97ff`; implementation `1c0a46a`; closeout `c114ba2`; full EditMode **1130 / 1130**; focused EchoUI **24 / 24**; manual Laboratory **10 / 10** |
+| Implementation permission | **EUI-M2-01 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M2-01 JIT revisit + specification v1.3.0 reconciliation |
 | Other package frontier | First Light frozen after FL-M5-R1; Chronicle M6 remains not activated by this EchoUI checkpoint |
 
 ---
@@ -1943,16 +1986,19 @@ Before writing code:
 - [x] No Isekai Studios identity or ownership has been introduced.
 - [x] EUI-M1-01 is complete and reconciled at `57a4fa4`.
 - [x] PKG-LEARN-008 bounded EUI-M1-02 revisit is complete.
-- [x] EUI-M1-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
+- [x] EUI-M1-02 is complete at `c114ba2`.
+- [x] PKG-LEARN-008 bounded EUI-M2-01 revisit is complete.
+- [x] EUI-M2-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M1-02 reconciled and activated
+**Decision:** Approved / EUI-M2-01 reconciled and activated
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
 **EUI-M1-02 JIT reconciliation and explicit authorization date:** August 13, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M1-02 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to the clean `57a4fa4` baseline. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
+**EUI-M2-01 JIT reconciliation and explicit authorization date:** August 14, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M2-01 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to the clean `c114ba2` baseline and the incoming **1130 / 1130** EditMode floor is re-established. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 

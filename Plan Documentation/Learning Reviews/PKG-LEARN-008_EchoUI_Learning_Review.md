@@ -4,7 +4,7 @@ tags:
   - sfgss/wave/foundation
   - sfgss/ui
 status: complete
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # PKG-LEARN-008 – The Looking Glass (`EchoUI`) Learning Review
@@ -15,9 +15,9 @@ updated: 2026-08-13
 **Review status:** Complete
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
-**Completed:** 2026-08-13
-**Package authority version reviewed/reconciled:** 1.2.0
-**Implementation authorization:** `EUI-M1-02` ACTIVE / AUTHORIZED after the bounded EUI-M1-02 JIT revisit; EUI-M1-01 complete at `57a4fa4`
+**Completed:** 2026-08-14
+**Package authority version reviewed/reconciled:** 1.3.0
+**Implementation authorization:** `EUI-M2-01` ACTIVE / AUTHORIZED after the bounded EUI-M2-01 JIT revisit; EUI-M1-01 and EUI-M1-02 complete, latest closeout `c114ba2`
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,14 +25,14 @@ updated: 2026-08-13
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.2.0 Approved | Owns package behavior and the reconciled EUI-M1-02 context/selection contract |
+| Looking Glass package authority | v1.3.0 Approved | Owns package behavior, completed M1 context/selection contract, and reconciled EUI-M2-01 screen-lifecycle contract |
 | SFGSS-000 | v0.26.0 Approved | Owns suite authority, package independence, project composition, and persistence/lifetime boundaries |
 | SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
 | SFGSS-ADR-006 | Accepted | Keeps Unity object lifetime/project composition outside UI authority |
 | SFGSS-ADR-007 | Accepted | Owns Green Path self-validating execution |
 | Project manifest | Unity 6000.3.8f1; uGUI 2.0.0; Input System 1.18.0 | Verifies the actual current Unity dependency baseline |
-| Current Notes / Suite Health | 2026-08-13 intake | Supplies active handoff context only |
+| Current Notes / Suite Health | 2026-08-14 intake | Supplies active handoff context only |
 
 **External research boundary:** official Unity documentation was consulted only for the immediate focus/visibility mental model. `EventSystem.SetSelectedGameObject` changes the EventSystem-selected GameObject and sends deselect/select callbacks; CanvasGroup can affect child alpha/interactability/raycast blocking; Unity input modules translate pointer/navigation-style input into UI events. These mechanisms inform Looking Glass but do not grant it input/game-state authority.
 
@@ -199,8 +199,8 @@ The review was completed conversationally through concrete design examples. Jess
 | Source conflict unresolved | NO |
 
 **Decision:** Complete
-**Next implementation gate:** `EUI-M1-02` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below
-**Notes promoted to:** Looking Glass specification v1.2.0; active EUI-M1-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
+**Next implementation gate:** `EUI-M2-01` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below and the completed EUI-M1-02 proof
+**Notes promoted to:** Looking Glass specification v1.3.0; active EUI-M2-01 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
 
 ## 14. EUI-M1-02 bounded JIT revisit — August 13, 2026
 
@@ -246,3 +246,40 @@ The reconciled checkpoint is:
 **EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract**
 
 It authorizes the smallest runtime/test/Laboratory slice needed to prove the decisions above. Motifs, Builder, actual preset/template tooling, broad primitive libraries, modal/notification/tooltip/full-HUD systems, peer bridges, arbitrary context payloads, automatic input detection, persistence, and project-wide lifetime composition remain excluded.
+
+## 15. EUI-M2-01 bounded JIT revisit — August 14, 2026
+
+After EUI-M1-02 closed at `c114ba2` with final full EditMode **1130 / 1130**, focused EchoUI **24 / 24**, and manual Laboratory **10 / 10**, Jesse completed the bounded Runtime Core intake for the first M2 screen-lifecycle slice.
+
+### 15.1 Layer declaration
+- The earlier fixed “seven named root layers” assumption is too rigid for a designer-first UI toolkit and is superseded.
+- Looking Glass may provide a recommended starter layer arrangement as convenience/template content, but projects/designers may add, remove, reorder, or substitute authored layer definitions.
+- Runtime addresses layers by stable project-authored IDs and validates the resolved topology rather than branching on a hard-coded count or package-reserved layer names.
+- Runtime callers do not casually reorder the resolved production topology after initialization.
+
+### 15.2 Screen ownership declaration
+- `RootOwned`, `SceneOwned`, and `ExternalOwned` screen views are all first-class.
+- RootOwned allows Looking Glass to create/release an explicitly defined view.
+- SceneOwned coordinates an existing scene-authored view without taking destruction/lifetime ownership.
+- ExternalOwned coordinates an explicitly supplied project-owned instance while the external owner remains responsible for object lifetime.
+- All modes still participate in the same authoritative screen history/lifecycle after valid admission.
+
+### 15.3 Suspension declaration
+- Designers control how a suspended prior screen is presented: hidden, kept visible, or left at its authored/effective visibility.
+- This flexibility does not weaken screen-scope authority: a suspended Screen is non-interactive while another Screen is the active top entry in that scope.
+- The package therefore controls interaction eligibility while allowing the visual composition to remain a designer choice.
+
+### 15.4 Serialized operation declaration
+- The safe default for rapid structural requests is strict FIFO: accepted requests execute one at a time in the order Looking Glass receives them.
+- M2-01 does not silently reorder, coalesce, replace, or drop accepted screen operations.
+- Admission is bounded; overflow or invalid work is explicitly rejected without partial history/view mutation.
+- Future duplicate/coalescing/replacement policies may be added only through a later declared contract if real use proves them useful.
+
+### 15.5 Checkpoint boundary
+The reconciled checkpoint is:
+
+**EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations**
+
+It proves variable authored layer topology, screen definitions/entries, the three ownership modes, Push/Replace/Reset/Back/Close lifecycle semantics, suspension policy, and bounded strict-FIFO mutation ordering.
+
+Modal blocking/exact-once result lifecycle is deliberately deferred to **EUI-M2-02**. Transition drivers, general focus-history restoration, EventSystem adoption policy, HUD/transient services, Motifs, Builder, primitive-library expansion, persistence, and peer bridges also remain outside M2-01.
