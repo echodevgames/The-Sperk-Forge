@@ -16,8 +16,8 @@ updated: 2026-08-13
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
 **Completed:** 2026-08-13
-**Package authority version reviewed/reconciled:** 1.1.0
-**Implementation authorization:** `EUI-M1-01` active after Learn → Declare → Authorize
+**Package authority version reviewed/reconciled:** 1.2.0
+**Implementation authorization:** `EUI-M1-02` ACTIVE / AUTHORIZED after the bounded EUI-M1-02 JIT revisit; EUI-M1-01 complete at `57a4fa4`
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,7 +25,7 @@ updated: 2026-08-13
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.1.0 Approved | Owns package behavior and boundaries after JIT reconciliation |
+| Looking Glass package authority | v1.2.0 Approved | Owns package behavior and the reconciled EUI-M1-02 context/selection contract |
 | SFGSS-000 | v0.26.0 Approved | Owns suite authority, package independence, project composition, and persistence/lifetime boundaries |
 | SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
@@ -148,7 +148,7 @@ Definitions and Motifs remain authored assets/configuration. They must not becom
 
 The Laboratory initially uses a tiny sample-owned helper when it needs to simulate context. It does not pretend that helper is the future Controller/Pulse integration.
 
-**What the Laboratory does not prove yet:** Motifs, Builder, context visibility rules, input-aware default selection, modals, notifications, release readiness, Chronicle integration, or polished project UI.
+**EUI-M1-01 did not prove:** Motifs, Builder, context response rules, input-aware selection, modals, notifications, release readiness, Chronicle integration, or polished project UI. EUI-M1-02 now activates only the bounded context-response and input-aware-selection subset defined below.
 
 ## 11. Mental model diagram
 
@@ -182,7 +182,7 @@ The review was completed conversationally through concrete design examples. Jess
 
 ### Remaining questions or confusion
 
-- Exact context-provider and input-modality interfaces are intentionally deferred until their implementation checkpoint.
+- The behavior contract for external context and input-aware selection is resolved by the EUI-M1-02 bounded revisit. Exact type/member names remain Level-4 implementation details so long as they preserve the approved package contract.
 - Movable/resizable/persisted MMO window layouts are a desired later capability but not required by EUI-M1-01.
 - Motif schema, local-override representation, and Builder UX are deferred until real primitive authoring exposes the smallest useful contract.
 
@@ -199,5 +199,50 @@ The review was completed conversationally through concrete design examples. Jess
 | Source conflict unresolved | NO |
 
 **Decision:** Complete
-**Next implementation gate:** `EUI-M1-01` is explicitly activated for implementation
-**Notes promoted to:** Looking Glass specification v1.1.0; SFGSS-005 v1.6.0; SFGSS-ADR-004 revision; SFGSS-ADR-007; Current Notes; Suite Health; learning catalog/tracker
+**Next implementation gate:** `EUI-M1-02` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below
+**Notes promoted to:** Looking Glass specification v1.2.0; active EUI-M1-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
+
+## 14. EUI-M1-02 bounded JIT revisit — August 13, 2026
+
+After EUI-M1-01 closed at final recovery baseline `57a4fa4` with full EditMode **1113 / 1113 passed, 0 failed** and manual Laboratory **5 / 5**, Jesse completed a bounded follow-up intake specifically for the next context/selection slice.
+
+### 14.1 Designer-control declaration
+
+- Looking Glass should expose as much straightforward per-surface control as practical because UI materially shapes how a game feels and plays.
+- Fast paths should come from optional templates/premade panels/presets, not from removing configurability. Future presets are copy-in starting points that remain freely editable.
+- External-context behavior is authored per surface. A surface may opt out of automatic external-context response.
+- Visibility, interaction, and selection/focus are independent designer-controlled dimensions.
+
+### 14.2 External context declaration
+
+- Context IDs are stable and project-defined. Familiar names such as `pause`, `cinematic`, and `loading` are conventions rather than package-owned game states.
+- Project-specific or oddly named domain facts may be mapped into those UI-facing IDs by project composition or optional adapters.
+- Contexts are active/inactive for EUI-M1-02. They do not become arbitrary payload carriers for loading progress, dialogue data, save metadata, or other domain values.
+- Multiple contexts may be active simultaneously.
+- Each surface owns an ordered rule list; the designer controls precedence and may author different ordering for different surfaces/scenes/cases.
+- Resolution is per controlled dimension: the highest-priority applicable rule that explicitly supplies a dimension controls that dimension; lower applicable rules may still supply other dimensions.
+- No applicable value means no Looking Glass intervention for that dimension.
+
+### 14.3 Authored and runtime override declaration
+
+- Reusable designer-authored defaults are the base configuration.
+- Scene/local and individual instance overrides may refine those defaults without forcing duplicate full configurations.
+- Project runtime overrides may supersede effective authored behavior for flexible HUD/window experiences.
+- Runtime overrides must not mutate authored assets and are not durable persistence. EUI-M1-02 does not activate Chronicle/Accord integration or persisted MMO window layouts.
+
+### 14.4 Input-aware selection declaration
+
+- Input modality remains externally supplied truth. Looking Glass does not become the input detector and does not acquire a hard dependency on The Will, Vessel, Controller, or another Echo package.
+- When configured for controller/keyboard navigation, opening a surface may select its configured default control.
+- Pointer/mouse behavior may open unselected.
+- Designers may configure controller opening to remain unselected as well.
+- Closing a temporary surface defaults to no selected control. Automatic restoration of prior selection is not part of EUI-M1-02.
+- General focused-window arbitration, movable/resizable MMO windows, and persisted layout/focus histories remain later work.
+
+### 14.5 EUI-M1-02 authorization boundary
+
+The reconciled checkpoint is:
+
+**EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract**
+
+It authorizes the smallest runtime/test/Laboratory slice needed to prove the decisions above. Motifs, Builder, actual preset/template tooling, broad primitive libraries, modal/notification/tooltip/full-HUD systems, peer bridges, arbitrary context payloads, automatic input detection, persistence, and project-wide lifetime composition remain excluded.

@@ -4,12 +4,30 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 13, 2026
-**Current focus:** The Looking Glass (`EchoUI`) foundation kickoff
-**Current checkpoint:** EUI-M1-01 — Installable Surface Foundation, Scoped Navigation, and Independent Window Proof — ACTIVE / AUTHORIZED
+**Current focus:** The Looking Glass (`EchoUI`) external context + input-aware selection implementation
+**Current checkpoint:** EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M1-02 JIT Reconciliation and Activation — August 13, 2026
+
+- Incoming repository baseline: `57a4fa4` — EUI-M1-01 final recovery, working tree clean/synchronized at retained closeout.
+- Retained EUI-M1-01 proof: full EditMode **1113 / 1113 passed, 0 failed**; manual Laboratory **5 / 5**.
+- PKG-LEARN-008 bounded EUI-M1-02 revisit is **Complete**.
+- Looking Glass package authority advances to **SFGSS-PKG-ECHOUI-001 v1.2.0**.
+- Active plan: **EUI-M1-02 — External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract**.
+- **EUI-M1-02 is explicitly ACTIVE / AUTHORIZED.** Runtime implementation has not started at this activation record.
+- Context IDs are stable/project-defined and active/inactive only in this slice; Looking Glass consumes the truth without owning pause/cinematic/loading/gameplay state.
+- Multiple contexts may coexist. Designers own ordered per-surface precedence; resolution is per visibility/interactability/selection dimension, and unspecified values cause no intervention.
+- Surfaces may opt out of automatic external-context handling.
+- Effective behavior may resolve from authored defaults, local/instance overrides, and transient project runtime overrides. Runtime overrides are not persistence and must not mutate authored definitions.
+- Input modality remains external. Per-surface selection policy may choose controller default-selection or unselected behavior; pointer behavior may remain unselected.
+- Closing a temporary surface defaults to no selected control; implicit selection-history restoration is outside this slice.
+- Future presets/templates are approved as editable copy-in conveniences, but preset tooling, Motifs, Builder, broad primitive expansion, MMO layout persistence, arbitrary context payloads, peer bridges, and richer modal/HUD/transient systems remain excluded.
+- First implementation gate: re-establish the incoming full EditMode **1113 / 1113** floor before changing runtime code. Any mismatch, unexpected repository state, or authority-changing discovery is a Green Path stop.
+
 
 ## Looking Glass Kickoff — PKG-LEARN-008 / EUI-M1-01
 
@@ -1200,6 +1218,7 @@ For Chronicle, the current `Chronicle Save Laboratory` is intentionally the pack
 **Activation:** `83d3f9e`
 **Implementation:** `e6b651f`
 **Partial closeout:** `4f94c3b`
+**Final recovery:** `57a4fa4`
 **Full EditMode:** **1113 / 1113 passed, 0 failed**
 **Manual Laboratory:** **5 / 5 passed**
 
@@ -1209,4 +1228,4 @@ The hand-authored Laboratory is retained both as the imported project sample and
 
 First Green Path execution exposed workflow hardening items: establish the incoming regression floor before implementation, prefer focused post-compile tests before the final full regression run, treat documentation-generator/anchor failures as fatal, sanitize Unity-authored YAML/meta whitespace before staging, keep exported test evidence outside distributable samples, and normalize evidence paths before CMD parsing. These are process lessons for subsequent Green Path kits; they do not reopen EUI-M1-01 runtime scope.
 
-**EUI-M1-01 is Complete. EUI-M1-02 is not activated.**
+**Historical closeout state at `57a4fa4`: EUI-M1-01 was Complete and EUI-M1-02 was not yet activated. This status is superseded by the August 13, 2026 EUI-M1-02 activation record at the top of this document.**

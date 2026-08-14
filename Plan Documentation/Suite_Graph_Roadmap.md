@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-09
+updated: 2026-08-13
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,10 +12,19 @@ updated: 2026-08-09
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** PKG-LEARN-009 – The Chronicle (`EchoSave`); ESV-M1-01 scaffolded and locked
+**Current work item:** EUI-M1-02 – The Looking Glass (`EchoUI`) External UI Context, Ordered Surface Response Rules, and Input-Aware Selection Contract — ACTIVE / AUTHORIZED
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
+
+
+## Current frontier — August 13, 2026
+
+- **Looking Glass:** EUI-M1-01 complete/finally reconciled at `57a4fa4`; EUI-M1-02 is **ACTIVE / AUTHORIZED** under package specification v1.2.0.
+- **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
+- **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
+- EUI-M1-02 is bounded to external active/inactive UI context, designer-ordered per-surface response, authored/local/runtime override resolution, and externally supplied input-aware selection. Motifs, Builder, preset tooling, MMO layout persistence, arbitrary context payloads, and peer bridges remain future work.
+
 
 ## How to use this in Obsidian
 
