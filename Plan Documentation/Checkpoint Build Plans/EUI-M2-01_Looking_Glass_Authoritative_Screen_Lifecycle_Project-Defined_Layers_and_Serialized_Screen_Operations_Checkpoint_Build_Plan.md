@@ -3,14 +3,14 @@ tags:
   - sfgss/checkpoint
   - sfgss/wave/foundation
   - sfgss/ui
-status: active
+status: complete
 checkpoint: EUI-M2-01
 updated: 2026-08-14
 ---
 # EUI-M2-01 — The Looking Glass Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations — Checkpoint Build Plan
 
 **Checkpoint:** `EUI-M2-01`
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Package:** The Looking Glass (`EchoUI`)
 **Package ID:** `com.echodevgames.echo-ui`
 **Package authority:** `SFGSS-PKG-ECHOUI-001` v1.3.0 Approved
@@ -272,8 +272,24 @@ The intended next bounded Runtime Core slice is **EUI-M2-02 — Blocking Modal L
 - JIT learning/intake: **Complete**
 - Package declaration: **Complete**
 - Package authority reconciliation: **SFGSS-PKG-ECHOUI-001 v1.3.0**
-- Checkpoint authorization: **EUI-M2-01 ACTIVE / AUTHORIZED**
+- Checkpoint authorization: **EUI-M2-01 COMPLETE**
 - Starting implementation baseline: `c114ba2`
 - Incoming full EditMode floor: **1130 / 1130 passed, 0 failed**
 - Runtime implementation at activation: **Not started**
-- Activation Git commit: **pending authority/activation commit produced by the apply bundle**
+- Activation Git commit: `0c112628fd5f7361bee0e4ea6ff92b4effd39c2e`
+
+## Closeout record
+
+- Implementation Git commit: `8dc9c712884f0774d7f84720fb35f4b95f8152bc`.
+- Post-activation incoming regression re-established: **1130 / 1130 passed, 0 failed** before Runtime edits.
+- Focused EchoUI: **47 / 47 passed, 0 failed**.
+- EUI-M2-01 focused tests: **23 / 23 passed, 0 failed**.
+- Retained M1 focused tests: **24 / 24 passed, 0 failed**.
+- Final full EditMode: **1153 / 1153 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **10 / 10 PASS**.
+- Package/imported Laboratory parity retained after the scene-component wiring correction.
+- Project-defined ordered layers, all three ownership modes, Push/Replace/Reset/Back/Close, both suspension visibility styles, strict FIFO settlement, and retained M1 behavior were proven.
+- The suspension interaction hotfix corrected resume-baseline restoration without changing the authorized contract or relaxing tests.
+- Runtime retains zero hard peer Echo dependency.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.3.0**; no new ADR or authority revision was required.
+- **EUI-M2-01 is COMPLETE. Stop here. EUI-M2-02 remains unactivated follow-on direction.**

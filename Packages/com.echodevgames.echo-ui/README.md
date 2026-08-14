@@ -33,6 +33,24 @@ The second bounded implementation adds:
 
 Pause, cinematic, loading, and input modality remain external project/system truth. Looking Glass only decides how each surface responds to supplied truth.
 
+
+## EUI-M2-01 screen lifecycle runtime core
+
+The first Runtime Core slice adds:
+
+- stable project-defined layer IDs and variable ordered layer topology with no fixed runtime layer count;
+- immutable authored Screen definitions separated from mutable runtime entries/history;
+- explicit `RootOwned`, `SceneOwned`, and `ExternalOwned` Screen view ownership;
+- designer-controlled suspended-Screen visibility with scope-enforced noninteraction while another Screen is top;
+- deterministic Push/Navigate, Replace, Reset/Return-to-root, Back, and Close operations;
+- bounded strict-FIFO structural Screen mutation with explicit overflow/invalid rejection;
+- structured terminal operation results and preflight behavior that avoids partial history/ownership mutation;
+- safe RootOwned release without taking lifetime authority over SceneOwned or ExternalOwned views.
+
+The Laboratory proves custom layer order, both suspension visibility styles, all three ownership modes, Screen history operations, visible FIFO settlement order, and retained M1 context/selection/independent-window behavior.
+
+EUI-M2-01 does not implement modal exact-once results, transitions, general focus-history restoration, full EventSystem policy, HUD/transient services, Motifs, Builder tooling, primitive-library expansion, persistence, peer-package bridges, or project-wide lifetime composition. Those remain separately gated future work.
+
 ## Hierarchy convention
 
 Looking Glass samples and authoring tools use `Type_DescriptiveName`:

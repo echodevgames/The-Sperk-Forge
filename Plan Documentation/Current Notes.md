@@ -4,12 +4,28 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 14, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
-**Current checkpoint:** EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations — ACTIVE / AUTHORIZED
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
+**Current checkpoint:** EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations — COMPLETE
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M2-01 Final Closeout — August 14, 2026
+- Activation commit: `0c11262` (`0c112628fd5f7361bee0e4ea6ff92b4effd39c2e`).
+- Implementation commit: `8dc9c71` (`8dc9c712884f0774d7f84720fb35f4b95f8152bc`), **46 files / 6956 insertions / 216 deletions**.
+- Incoming post-activation full EditMode floor was re-established before Runtime edits: **1130 / 1130 passed, 0 failed**.
+- Focused EchoUI proof: **47 / 47 passed, 0 failed**, comprising **23 EUI-M2-01 tests + 24 retained M1 tests**.
+- Manual Looking Glass Laboratory acceptance: **10 / 10 PASS**.
+- Final synchronized full EditMode regression: **1153 / 1153 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- EUI-M2-01 implements project-defined stable ordered variable-count layers; immutable Screen definitions/runtime entries; RootOwned, SceneOwned, and ExternalOwned lifecycle; designer-controlled suspension visibility with scope-enforced noninteraction; deterministic Push/Replace/Reset/Back/Close; and bounded strict-FIFO structural operations.
+- RootOwned lifetime is package-controlled only for instances Looking Glass actually creates; SceneOwned and ExternalOwned views remain externally owned and are never destroyed by Looking Glass.
+- The suspension/resume interaction hotfix fixed restoration of the underlying interaction baseline after forced suspension without changing the contract.
+- Package/imported Laboratory parity was retained after correcting the sample scene component ownership wiring.
+- M1 independent Window, external-context, pointer/controller selection, and Back behavior remain green.
+- Runtime retains zero hard peer Echo package dependency and no persistence/project-wide lifetime authority.
+- The implementation matches **SFGSS-PKG-ECHOUI-001 v1.3.0**; no package-spec revision or new suite ADR is required.
+- **EUI-M2-01 is COMPLETE. EUI-M2-02 — Blocking Modal Lifecycle and Exact-Once Modal Results — remains named direction only and is NOT ACTIVATED.**
 
 ## Looking Glass EUI-M2-01 JIT Reconciliation and Activation — August 14, 2026
 - Incoming repository baseline: `c114ba2` — EUI-M1-02 final closeout, clean and synchronized.

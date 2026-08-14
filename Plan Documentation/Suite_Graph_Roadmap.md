@@ -12,7 +12,7 @@ updated: 2026-08-14
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M2-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M2-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,10 +20,10 @@ updated: 2026-08-14
 
 ## Current frontier — August 14, 2026
 
-- **Looking Glass:** EUI-M1-02 is **COMPLETE** at closeout `c114ba2`; EUI-M2-01 is **ACTIVE / AUTHORIZED** under package specification v1.3.0 from that clean baseline. Incoming retained proof is full EditMode **1130 / 1130**, focused EchoUI **24 / 24**, manual Laboratory **10 / 10**.
+- **Looking Glass:** EUI-M2-01 is **COMPLETE**. Activation `0c11262`; implementation `8dc9c71`; focused EchoUI **47 / 47**; manual Laboratory **10 / 10**; final full EditMode **1153 / 1153**. Package authority remains v1.3.0.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M2-01 activates only project-defined ordered layer topology, authoritative screen ownership/lifecycle, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO screen operations. Modal exact-once results remain EUI-M2-02; Motifs, Builder, primitive expansion, richer focus/transitions/HUD/transients, persistence, and peer bridges remain outside this slice.
+- EUI-M2-01 completed project-defined ordered layer topology, authoritative Screen ownership/lifecycle, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO Screen operations. EUI-M2-02 remains unactivated; Motifs, Builder, primitive expansion, richer focus/transitions/HUD/transients, persistence, and peer bridges remain future separately gated work.
 
 
 ## How to use this in Obsidian
@@ -342,3 +342,6 @@ flowchart LR
 
 ## 2026-08-14 Looking Glass EUI-M1-02 closeout
 `EUI-M1-02` is Complete. Activation `f0b97ff`; implementation `1c0a46a`; incoming full EditMode `1113 / 1113`; focused EchoUI `24 / 24`; manual Laboratory `10 / 10`; final full EditMode `1130 / 1130`. Package authority remains v1.2.0 and no follow-on Looking Glass checkpoint is activated.
+
+## 2026-08-14 Looking Glass EUI-M2-01 closeout
+`EUI-M2-01` is Complete. Activation `0c11262`; implementation `8dc9c71`; incoming full EditMode `1130 / 1130`; focused EchoUI `47 / 47` including `23 / 23` M2-01 tests; manual Laboratory `10 / 10`; final full EditMode `1153 / 1153`. Package authority remains v1.3.0 and EUI-M2-02 is not activated.
