@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoDevGames.EchoUI
@@ -25,6 +26,25 @@ namespace EchoDevGames.EchoUI
         [SerializeField]
         private bool startVisible;
 
+        [Header("External Context")]
+        [SerializeField]
+        private bool allowExternalContext = true;
+
+        [SerializeField]
+        private CanvasGroup interactionGroup;
+
+        [SerializeField]
+        private List<UISurfaceContextRule> contextRules =
+            new List<UISurfaceContextRule>();
+
+        [Header("Selection")]
+        [SerializeField]
+        private UISurfaceSelectionPolicy selectionPolicy =
+            new UISurfaceSelectionPolicy();
+
+        private UISurfaceRuntimeOverride runtimeOverride =
+            UISurfaceRuntimeOverride.None;
+
         public string SurfaceId =>
             surfaceId == null
                 ? string.Empty
@@ -49,6 +69,29 @@ namespace EchoDevGames.EchoUI
         public bool IsVisible =>
             gameObject.activeSelf;
 
+        public bool AllowExternalContext =>
+            allowExternalContext;
+
+        public IReadOnlyList<UISurfaceContextRule> ContextRules =>
+            contextRules;
+
+        public UISurfaceSelectionPolicy SelectionPolicy =>
+            selectionPolicy;
+
+        public UISurfaceRuntimeOverride RuntimeOverride =>
+            runtimeOverride;
+
+        public bool IsInteractable
+        {
+            get
+            {
+                CanvasGroup group =
+                    ResolveInteractionGroup();
+                return group == null ||
+                    group.interactable;
+            }
+        }
+
         internal void SetVisible(
             bool visible)
         {
@@ -56,6 +99,53 @@ namespace EchoDevGames.EchoUI
             {
                 gameObject.SetActive(visible);
             }
+        }
+
+        internal bool SetInteractable(
+            bool interactable)
+        {
+            CanvasGroup group =
+                ResolveInteractionGroup();
+            if (group == null)
+            {
+                return false;
+            }
+
+            group.interactable =
+                interactable;
+            return true;
+        }
+
+        internal UISurfaceContextResponse ResolveContextResponse(
+            UIContextState contextState)
+        {
+            return UISurfaceContextResolver.Resolve(
+                allowExternalContext
+                    ? contextRules
+                    : null,
+                allowExternalContext
+                    ? contextState
+                    : null,
+                runtimeOverride);
+        }
+
+        internal void SetRuntimeOverride(
+            UISurfaceRuntimeOverride value)
+        {
+            runtimeOverride = value;
+        }
+
+        internal void ClearRuntimeOverride()
+        {
+            runtimeOverride =
+                UISurfaceRuntimeOverride.None;
+        }
+
+        private CanvasGroup ResolveInteractionGroup()
+        {
+            return interactionGroup != null
+                ? interactionGroup
+                : GetComponent<CanvasGroup>();
         }
     }
 }
