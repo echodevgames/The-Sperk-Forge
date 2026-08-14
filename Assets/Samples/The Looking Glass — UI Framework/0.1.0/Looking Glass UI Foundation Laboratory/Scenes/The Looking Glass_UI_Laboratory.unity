@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -807,6 +807,7 @@ GameObject:
   - component: {fileID: 1492600578}
   - component: {fileID: 1492600580}
   - component: {fileID: 1492600579}
+  - component: {fileID: 900000000000000001}
   m_Layer: 5
   m_Name: Panel_MenuRoot
   m_TagString: Untagged
@@ -885,6 +886,7 @@ GameObject:
   - component: {fileID: 1557398671}
   - component: {fileID: 1557398670}
   - component: {fileID: 1557398672}
+  - component: {fileID: 900000000000000003}
   m_Layer: 5
   m_Name: Panel_MainMenu
   m_TagString: Untagged
@@ -1239,6 +1241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1623008569}
+  - component: {fileID: 900000000000000002}
   m_Layer: 5
   m_Name: Panel_WindowRoot
   m_TagString: Untagged
@@ -1827,6 +1830,7 @@ GameObject:
   - component: {fileID: 1829960220}
   - component: {fileID: 1829960219}
   - component: {fileID: 1829960221}
+  - component: {fileID: 900000000000000004}
   m_Layer: 5
   m_Name: Panel_SettingsMenu
   m_TagString: Untagged
@@ -2230,6 +2234,202 @@ MonoBehaviour:
   action: 1
   targetSurfaceId: 
   targetScopeId: frontend
+--- !u!114 &900000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492600577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0a3252eaaa487fbd0b73165217437b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: EchoDevGames.EchoUI.Runtime::EchoDevGames.EchoUI.UILayerHost
+  definition:
+    layerId: primary-ui
+    displayLabel: Primary UI
+    order: 20
+  contentRoot: {fileID: 1492600578}
+--- !u!114 &900000000000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623008568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0a3252eaaa487fbd0b73165217437b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: EchoDevGames.EchoUI.Runtime::EchoDevGames.EchoUI.UILayerHost
+  definition:
+    layerId: floating-lab
+    displayLabel: Floating Laboratory
+    order: 80
+  contentRoot: {fileID: 1623008569}
+--- !u!225 &900000000000000003
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557398668}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &900000000000000004
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829960217}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!1 &900000000000000010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900000000000000011}
+  - component: {fileID: 900000000000000012}
+  - component: {fileID: 900000000000000013}
+  m_Layer: 5
+  m_Name: Template_M2_RootOwnedScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &900000000000000011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000010}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &900000000000000012
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000010}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &900000000000000013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a605d3ff2de82947a7d1671ab122533, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: EchoDevGames.EchoUI.Runtime::EchoDevGames.EchoUI.UISurface
+  surfaceId: lab-root-owned
+  displayLabel: Laboratory RootOwned Screen
+  role: 0
+  navigationScopeId: frontend
+  startVisible: 0
+  allowExternalContext: 1
+  interactionGroup: {fileID: 900000000000000012}
+  contextRules: []
+  selectionPolicy:
+    pointerOpenBehavior: 0
+    navigationOpenBehavior: 0
+    defaultSelectionTarget: {fileID: 0}
+--- !u!1 &900000000000000020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900000000000000021}
+  - component: {fileID: 900000000000000022}
+  - component: {fileID: 900000000000000023}
+  m_Layer: 5
+  m_Name: External_M2_ProjectOwnedScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &900000000000000021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &900000000000000022
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000020}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &900000000000000023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000000000000020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a605d3ff2de82947a7d1671ab122533, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: EchoDevGames.EchoUI.Runtime::EchoDevGames.EchoUI.UISurface
+  surfaceId: lab-external-owned
+  displayLabel: Laboratory ExternalOwned Screen
+  role: 0
+  navigationScopeId: frontend
+  startVisible: 0
+  allowExternalContext: 1
+  interactionGroup: {fileID: 900000000000000022}
+  contextRules: []
+  selectionPolicy:
+    pointerOpenBehavior: 0
+    navigationOpenBehavior: 0
+    defaultSelectionTarget: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2237,4 +2437,6 @@ SceneRoots:
   - {fileID: 1982664986}
   - {fileID: 934186815}
   - {fileID: 1575597593}
+  - {fileID: 900000000000000011}
+  - {fileID: 900000000000000021}
   - {fileID: 1863084568}

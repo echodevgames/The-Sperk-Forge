@@ -45,6 +45,16 @@ namespace EchoDevGames.EchoUI
         private UISurfaceRuntimeOverride runtimeOverride =
             UISurfaceRuntimeOverride.None;
 
+        private bool screenSuspended;
+        private UIScreenSuspensionVisibility screenSuspensionVisibility =
+            UIScreenSuspensionVisibility.Preserve;
+
+        private bool hasRequestedVisibility;
+        private bool requestedVisibility;
+
+        private bool hasRequestedInteractability;
+        private bool requestedInteractability;
+
         public string SurfaceId =>
             surfaceId == null
                 ? string.Empty
@@ -68,6 +78,31 @@ namespace EchoDevGames.EchoUI
 
         public bool IsVisible =>
             gameObject.activeSelf;
+
+        internal bool RequestedVisibility =>
+            hasRequestedVisibility
+                ? requestedVisibility
+                : gameObject.activeSelf;
+
+        internal bool RequestedInteractability
+        {
+            get
+            {
+                if (hasRequestedInteractability)
+                {
+                    return requestedInteractability;
+                }
+
+                CanvasGroup group =
+                    ResolveInteractionGroup();
+
+                return group == null ||
+                    group.interactable;
+            }
+        }
+
+        internal bool IsScreenSuspended =>
+            screenSuspended;
 
         public bool AllowExternalContext =>
             allowExternalContext;
@@ -95,10 +130,12 @@ namespace EchoDevGames.EchoUI
         internal void SetVisible(
             bool visible)
         {
-            if (gameObject.activeSelf != visible)
-            {
-                gameObject.SetActive(visible);
-            }
+            requestedVisibility =
+                visible;
+            hasRequestedVisibility =
+                true;
+
+            ApplyLifecycleVisibilityOverlay();
         }
 
         internal bool SetInteractable(
@@ -111,9 +148,46 @@ namespace EchoDevGames.EchoUI
                 return false;
             }
 
-            group.interactable =
+            requestedInteractability =
                 interactable;
+            hasRequestedInteractability =
+                true;
+
+            ApplyLifecycleInteractionOverlay(
+                group);
             return true;
+        }
+
+        internal void SetScreenSuspended(
+            bool suspended,
+            UIScreenSuspensionVisibility visibility)
+        {
+            CanvasGroup group =
+                ResolveInteractionGroup();
+
+            if (suspended &&
+                !screenSuspended &&
+                group != null &&
+                !hasRequestedInteractability)
+            {
+                requestedInteractability =
+                    group.interactable;
+                hasRequestedInteractability =
+                    true;
+            }
+
+            screenSuspended =
+                suspended;
+            screenSuspensionVisibility =
+                visibility;
+
+            ApplyLifecycleVisibilityOverlay();
+
+            if (group != null)
+            {
+                ApplyLifecycleInteractionOverlay(
+                    group);
+            }
         }
 
         internal UISurfaceContextResponse ResolveContextResponse(
@@ -139,6 +213,55 @@ namespace EchoDevGames.EchoUI
         {
             runtimeOverride =
                 UISurfaceRuntimeOverride.None;
+        }
+
+        private void ApplyLifecycleVisibilityOverlay()
+        {
+            bool baseVisibility =
+                hasRequestedVisibility
+                    ? requestedVisibility
+                    : gameObject.activeSelf;
+
+            bool effective =
+                baseVisibility;
+
+            if (screenSuspended)
+            {
+                switch (screenSuspensionVisibility)
+                {
+                    case UIScreenSuspensionVisibility.Hidden:
+                        effective = false;
+                        break;
+
+                    case UIScreenSuspensionVisibility.Visible:
+                        effective = true;
+                        break;
+
+                    case UIScreenSuspensionVisibility.Preserve:
+                        effective = baseVisibility;
+                        break;
+                }
+            }
+
+            if (gameObject.activeSelf != effective)
+            {
+                gameObject.SetActive(
+                    effective);
+            }
+        }
+
+        private void ApplyLifecycleInteractionOverlay(
+            CanvasGroup group)
+        {
+            bool baseInteractable =
+                hasRequestedInteractability
+                    ? requestedInteractability
+                    : group.interactable;
+
+            group.interactable =
+                screenSuspended
+                    ? false
+                    : baseInteractable;
         }
 
         private CanvasGroup ResolveInteractionGroup()

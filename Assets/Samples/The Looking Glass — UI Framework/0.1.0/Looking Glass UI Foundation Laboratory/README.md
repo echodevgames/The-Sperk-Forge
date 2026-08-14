@@ -1,105 +1,309 @@
 # Looking Glass UI Foundation Laboratory
 
-This is the engineering proof sample for The Looking Glass. EUI-M1-01 proved scoped Screen navigation plus an independent Window. EUI-M1-02 extends that same scene only enough to prove externally supplied active/inactive UI context, designer-ordered per-surface response, independent visibility/interaction/selection dimensions, and externally supplied input-aware selection.
+This remains the deliberately plain engineering proof sample for **The Looking Glass (`EchoUI`)**. EUI-M1-01 proved scoped Screen navigation plus an independent Window. EUI-M1-02 added externally supplied active/inactive UI context, designer-ordered surface response, independent visibility/interaction/selection dimensions, and externally supplied input-aware selection.
 
-The sample intentionally remains plain. It is not the future polished Reference Showcase.
+**EUI-M2-01** extends the same Laboratory only enough to prove:
 
-## Existing hierarchy
+- project-defined, stable-ID, variable-count ordered UI layers;
+- authoritative Screen lifecycle and history;
+- `SceneOwned`, `RootOwned`, and `ExternalOwned` ownership semantics;
+- designer-controlled suspension visibility while suspended Screens remain non-interactable;
+- deterministic Push / Replace / Reset / Back / Close behavior;
+- structured strict-FIFO Screen operation settlement;
+- retained M1 Window/context/selection behavior.
+
+This sample is intentionally not Motifs, Builder, a polished menu kit, a primitive-prefab warehouse, a transition system, or a Reference Showcase.
+
+## Existing UI hierarchy
 
 ```text
-Canvas_MasterCanvas
-├─ Panel_MenuRoot
-│  ├─ Panel_MainMenu      [Screen: main-menu, scope: frontend]
+CanvasMasterCanvas                 [EchoUIRoot + Laboratory proof console]
+├─ Panel_MenuRoot                 [UILayerHost: primary-ui, order 20]
+│  ├─ Panel_MainMenu              [Screen: main-menu, scope: frontend]
 │  │  ├─ Button_Settings
 │  │  └─ Button_ToggleDefaultWindow
-│  └─ Panel_SettingsMenu  [Screen: settings, scope: frontend]
+│  └─ Panel_SettingsMenu          [Screen: settings, scope: frontend]
 │     └─ Button_Back
-└─ Panel_WindowRoot
-   └─ Panel_DefaultWindow [Window: default-window]
+└─ Panel_WindowRoot               [UILayerHost: floating-lab, order 80]
+   └─ Panel_DefaultWindow         [Window: default-window]
+      └─ Button_DefaultClose
+
+Template_M2_RootOwnedScreen       [inactive sample-owned RootOwned source template]
+External_M2_ProjectOwnedScreen    [inactive project-supplied ExternalOwned view]
 ```
 
-An EventSystem is present using the project's normal Unity UI path.
+The two M2 proof layer IDs are intentionally **not** package-reserved names. `primary-ui` and `floating-lab` prove that projects can author their own stable layer IDs and order. Looking Glass snapshots/validates them at lifecycle initialization; it does not rewrite the authoring data.
 
-## EUI-M1-02 authored proof configuration
+The top-right of the Game view remains the Foundry Laboratory proof/debug safe zone. The single proof console occupies that zone and grows downward.
 
-The scene deliberately uses ordinary `UISurface` Inspector data rather than a sample-only parallel policy system.
+## EUI-M2-01 proof definitions
 
-### `Panel_MainMenu`
+The Laboratory-owned driver creates bounded runtime `UIScreenDefinition` snapshots from the scene-authored proof pieces after the normal M1 surface foundation initializes:
 
-- no external-context rules;
-- pointer opening clears selection;
-- navigation opening may select `Button_Settings`.
+| Screen | Ownership | Layer | Suspension visibility |
+|---|---|---|---|
+| `main-menu` | SceneOwned | `primary-ui` | Visible |
+| `settings` | SceneOwned | `primary-ui` | Hidden |
+| `lab-root-owned` | RootOwned | `floating-lab` | Visible |
+| `lab-external-owned` | ExternalOwned | `floating-lab` | Hidden |
 
-This surface is used to prove that an active context with no applicable rule causes no Looking Glass intervention.
+`main-menu` and `settings` both carry a `CanvasGroup` so the Laboratory can visibly prove the M2 rule that a suspended Screen is non-interactable regardless of whether it remains visible.
 
-### `Panel_SettingsMenu`
+### RootOwned proof source
 
-- contains a `pause` rule that would request Hidden / NonInteractable;
-- **Allow External Context is disabled**, so that rule is intentionally ignored;
-- pointer and navigation opening are configured to remain unselected.
+`Template_M2_RootOwnedScreen` is an intentionally inactive sample source object outside the authoritative root hierarchy. It is supplied through the RootOwned definition's prefab/source slot only for this engineering proof. Looking Glass creates a runtime clone under `floating-lab`, registers it, and releases only that owned clone when its entry leaves history. The source template remains untouched.
 
-This surface proves that external-context participation is a local designer choice.
+This is intentionally not the beginning of the future package prefab/template warehouse.
 
-### `Panel_DefaultWindow`
+### ExternalOwned proof source
 
-`Panel_DefaultWindow` has a `CanvasGroup` for interaction proof and the following designer-authored ordered rules:
+`External_M2_ProjectOwnedScreen` also lives outside the authoritative root hierarchy. The Laboratory explicitly supplies/registers it after Screen lifecycle initialization. Looking Glass may activate/hide it while it participates in Screen history, but closing the Screen must leave the supplied GameObject alive because object lifetime remains external.
 
-1. `cinematic`
-   - Visibility: Hidden
-   - Interaction: No Change
-   - Selection: No Change
-2. `pause`
-   - Visibility: Visible
-   - Interaction: NonInteractable
-   - Selection: No Change
+## Laboratory-owned proof console
 
-Because resolution is per dimension, `pause + cinematic` resolves Hidden from the higher-priority cinematic rule while still resolving NonInteractable from the lower pause rule.
+Enter Play Mode. The top-right console now has two tabs:
 
-Selection policy:
+- **M2 Screen Lifecycle** for this checkpoint;
+- **M1 Retained Proof** for the previous context/selection/window contract.
 
-- Pointer open: Clear Selection
-- Navigation/controller open: Select Default
-- Default target: `Panel_DefaultWindow` itself for this identity/selection proof; the panel intentionally carries no `Button` or navigation-button adapter component
+The M2 tab displays:
 
-## Laboratory-owned simulation console
+- resolved authored layer order;
+- current `frontend` Screen;
+- history depth;
+- queue depth;
+- current ownership mode;
+- Main Menu / Settings visibility and interactability;
+- RootOwned source/runtime instance state;
+- ExternalOwned supplied-object state;
+- recent operation sequence IDs and terminal results;
+- observed rapid-operation settlement order.
 
-`LaboratoryUIContextDriver` is attached to the root Canvas and draws a small IMGUI proof console in Play Mode. It is **sample-owned simulation only**. Foundry Laboratory proof/debug consoles reserve the **top-right safe zone** and stack downward in rows from there so authored sample UI can be designed around a predictable non-overlap region.
+The helper owns no pause/cinematic truth, no input-device detection, no persistence, and no peer Echo package integration.
 
-It can:
+# EUI-M2-01 manual acceptance
 
-- toggle the example `pause` context;
-- toggle the example `cinematic` context;
-- supply Pointer or Navigation/Controller modality;
-- open/close/toggle `default-window`;
-- navigate to Settings and Back in the `frontend` scope;
-- prime `Button_Settings` as prior selection for the neutral-close proof;
-- display current context, visibility, interaction, screen, and EventSystem selection state.
+Record each item **PASS / FAIL**. Any failure stops checkpoint closeout.
 
-The helper does not detect devices, own pause/cinematic truth, persist anything, or reference another Echo package.
+## 1. Project-defined ordered layers
 
-## EUI-M1-02 manual acceptance
+Enter Play Mode and open **M2 Screen Lifecycle**.
 
-Enter Play Mode and use the proof console plus the existing uGUI controls.
+Expected console state includes:
 
-1. **No-rule means no intervention.** With Main Menu current, toggle `pause` ON. `default-window` responds according to its authored rule, while `main-menu` remains visible because it has no pause rule.
-2. **Designer order wins.** With `pause` ON, toggle `cinematic` ON. `default-window` becomes hidden because cinematic is authored above pause for Visibility.
-3. **Per-dimension cascade.** While both are active, inspect the console: `default-window` is Hidden and NonInteractable. Cinematic supplied Visibility; pause supplied Interaction.
-4. **External participation can be disabled.** Reset, navigate to Settings, then toggle `pause` ON. Settings remains visible even though it contains a pause Hide rule because Allow External Context is OFF.
-5. **Visibility and interaction are separate.** Reset, open `default-window`, then toggle `pause` ON. The window remains visible but reports `interactable=False`.
-6. **Pointer can open unselected.** Reset, choose Pointer, then Open Default Window. EventSystem selected should be `<none>`.
-7. **Navigation/controller can select the configured default.** Close the window, choose Navigation/Controller, then Open Default Window. EventSystem selected should be `Panel_DefaultWindow`.
-8. **Navigation/controller may also be designer-configured unselected.** Reset, choose Navigation/Controller, then Navigate Settings. EventSystem selected should remain `<none>`.
-9. **Close is neutral; no historical restoration.** Reset. Use the existing Main Menu, click `Prime Prior Selection: Button_Settings`, choose Navigation/Controller, Open Default Window, then Close Default Window. The selected object becomes `<none>` rather than restoring `Button_Settings`.
-10. **M1-01 remains intact.** Reset. Use Settings / Back to prove `main-menu -> settings -> Back -> main-menu`, then Toggle Default Window and confirm it coexists without replacing the current `frontend` screen.
+```text
+Resolved layers: #0 primary-ui (order 20) -> #1 floating-lab (order 80)
+M2 lifecycle initialized: True
+Proof readiness: READY
+```
 
-Record each item Pass/Fail. Any failure stops EUI-M1-02 closeout.
+PASS only if the non-default custom IDs resolve in the authored order. No fixed seven-layer topology is required.
+
+## 2. SceneOwned Push and Back
+
+Click:
+
+```text
+Reset Complete Laboratory Proof State
+Push Settings
+```
+
+Expected:
+
+```text
+Current frontend Screen: settings
+History depth: 2
+Current ownership: SceneOwned
+```
+
+Then click `Back: frontend`.
+
+Expected:
+
+```text
+Current frontend Screen: main-menu
+History depth: 1
+```
+
+Neither scene-authored Screen is destroyed.
+
+## 3. Suspension policy: prior Screen remains visible but non-interactable
+
+Reset, then click `Push Settings`.
+
+`main-menu` is authored with `SuspensionVisibility.Visible`.
+
+Expected while Settings is current:
+
+```text
+main-menu: visible=True, interactable=False
+settings: visible=True, interactable=True
+```
+
+Main Menu may remain visible, but it must not accept interaction while Settings owns the `frontend` scope.
+
+## 4. Suspension policy: prior Screen hides
+
+Leave Settings current from Check 3, then click `Push RootOwned`.
+
+`settings` is authored with `SuspensionVisibility.Hidden`.
+
+Expected:
+
+```text
+Current frontend Screen: lab-root-owned
+settings: visible=False, interactable=False
+RootOwned runtime instance: visible=True, ...
+```
+
+Click `Back: frontend` afterward to return to Settings, then Reset if desired.
+
+## 5. Replace does not grow history
+
+Reset, click `Push Settings` so history depth is 2, then click:
+
+```text
+Replace Top -> ExternalOwned
+```
+
+The operation log includes the measured depth transition.
+
+Expected:
+
+```text
+Replace ExternalOwned [depth 2 -> 2]
+Current frontend Screen: lab-external-owned
+History depth: 2
+```
+
+Replace changes the top entry without appending another history entry.
+
+## 6. Reset / Return-to-root clears prior history
+
+From any non-root state with history depth greater than 1, click:
+
+```text
+Reset -> Main Menu
+```
+
+Expected:
+
+```text
+Current frontend Screen: main-menu
+History depth: 1
+main-menu: visible=True, interactable=True
+```
+
+Prior Screen history is gone rather than merely hidden underneath.
+
+## 7. RootOwned create / close / release
+
+Reset, then click:
+
+```text
+Push RootOwned
+```
+
+Expected:
+
+```text
+Current ownership: RootOwned
+RootOwned template alive: YES
+RootOwned runtime instance: visible=True, ...
+```
+
+Then click:
+
+```text
+Close RootOwned
+```
+
+On the following frame expected:
+
+```text
+RootOwned template alive: YES
+RootOwned runtime instance: <released>
+Current frontend Screen: main-menu
+```
+
+Only the runtime instance owned by Looking Glass is released. SceneOwned Main Menu remains intact.
+
+## 8. ExternalOwned close preserves the supplied object
+
+Reset, then click:
+
+```text
+Push ExternalOwned
+```
+
+Expected:
+
+```text
+Current ownership: ExternalOwned
+ExternalOwned supplied object alive: YES
+ExternalOwned active: YES
+```
+
+Then click:
+
+```text
+Close ExternalOwned
+```
+
+Expected:
+
+```text
+ExternalOwned supplied object alive: YES
+ExternalOwned active: NO
+```
+
+Looking Glass may coordinate the view but must not destroy the externally owned object.
+
+## 9. Rapid structural operations settle in FIFO submission order
+
+Reset, then click:
+
+```text
+Run Rapid FIFO: Settings -> RootOwned -> Back
+```
+
+Expected `Observed` line shows three increasing operation sequence IDs in exactly this semantic order:
+
+```text
+Push Succeeded -> Push Succeeded -> Back Succeeded
+```
+
+The exact numeric sequence values depend on earlier operations, but they must increase left-to-right. Final state should be:
+
+```text
+Current frontend Screen: settings
+History depth: 2
+Queue depth: 0
+```
+
+The focused automated suite carries the delayed queue seam that proves accepted pending requests also settle FIFO across delayed processing. This manual check makes the public settlement sequence visible in the Laboratory.
+
+## 10. Retained M1 behavior still works
+
+Reset and switch to **M1 Retained Proof**.
+
+Perform this compact retained proof:
+
+1. Choose `Pointer`, open `default-window`: EventSystem selection is `<none>`.
+2. Close it, choose `Navigation / Controller`, open it: selection becomes `Button_DefaultClose`.
+3. With the window open, toggle `pause` ON: `default-window` remains visible and reports `interactable=False`; `main-menu` remains available because it has no pause interaction rule.
+4. Toggle pause OFF.
+5. Navigate Settings and Back: `main-menu -> settings -> Back -> main-menu` still behaves normally.
+6. Toggle/open the independent `default-window` and verify it does not replace the current `frontend` Screen.
+
+PASS only if the M2 lifecycle has not absorbed or regressed the M1 Window/context/selection behavior.
 
 ## Project prerequisites and authoring notes
 
-- The Laboratory uses the project's normal modern Unity UI workflow, including TextMesh Pro labels when Unity creates TMP-backed controls.
-- If TMP-backed labels report missing resources, import **TMP Essential Resources**. **TMP Examples & Extras are not required.**
-- Organizational roots such as `Panel_WindowRoot` remain active structural containers and should not block pointer input.
-- `Panel_DefaultWindow` is a surface panel, not a button; do not bake a `Button` or `UINavigationButton` component onto that panel merely to give the Laboratory a selection target.
-- Actual registered `UISurface` children own visibility.
-- Context IDs `pause` and `cinematic` are sample conventions only. Looking Glass does not claim those domain truths.
-- Do not turn this Laboratory into Motifs, Builder, a window-layout system, a peer-package bridge, or polished showcase content during EUI-M1-02.
+- Unity baseline: 6000.3.8f1.
+- The Laboratory uses the project's normal modern Unity UI workflow.
+- If TMP-backed labels report missing resources, import **TMP Essential Resources**. TMP Examples & Extras are not required.
+- Organizational roots stay active structural containers; actual `UISurface` children own surface visibility.
+- `pause` and `cinematic` remain sample conventions for externally supplied context truth only.
+- `primary-ui` and `floating-lab` are sample-authored layer IDs only, not reserved Looking Glass vocabulary.
+- Do not expand this Laboratory into blocking modals, transition choreography, focus-history restoration, HUD/transient systems, Motifs, Builder, primitive-library content, persistence, or peer-package bridges during EUI-M2-01.

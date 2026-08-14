@@ -41,6 +41,28 @@ namespace EchoDevGames.EchoUI
         private UIInputModality inputModality =
             UIInputModality.Pointer;
 
+        [Header("M2 Screen Lifecycle")]
+        [SerializeField]
+        private List<UILayerHost> screenLayerHosts =
+            new List<UILayerHost>();
+
+        [SerializeField]
+        private List<UIScreenDefinition> screenDefinitions =
+            new List<UIScreenDefinition>();
+
+        [SerializeField, Min(1)]
+        private int screenOperationCapacity = 32;
+
+        private readonly Dictionary<string, UISurface> externalScreenViews =
+            new Dictionary<string, UISurface>(
+                StringComparer.Ordinal);
+
+        private UILayerRegistry screenLayerRegistry;
+        private UIScreenNavigator screenNavigator;
+        private UIScreenOperationQueue screenOperationQueue;
+        private bool processingScreenOperations;
+        private long nextScreenOperationSequence;
+
         public static EchoUIRoot Active =>
             active;
 
@@ -53,6 +75,21 @@ namespace EchoDevGames.EchoUI
 
         public UIInputModality InputModality =>
             inputModality;
+
+        public bool IsScreenLifecycleInitialized =>
+            screenNavigator != null &&
+            screenNavigator.IsValid &&
+            screenOperationQueue != null;
+
+        public int ScreenOperationQueueDepth =>
+            screenOperationQueue == null
+                ? 0
+                : screenOperationQueue.Count;
+
+        public int ScreenLayerCount =>
+            screenLayerRegistry == null
+                ? 0
+                : screenLayerRegistry.Count;
 
         private void Awake()
         {
@@ -78,6 +115,25 @@ namespace EchoDevGames.EchoUI
 
             IsAuthoritative = false;
             IsInitialized = false;
+
+            if (screenOperationQueue != null)
+            {
+                screenOperationQueue.ClearRejected(
+                    "Looking Glass root was destroyed.");
+            }
+
+            if (screenNavigator != null)
+            {
+                screenNavigator.Shutdown();
+            }
+
+            screenOperationQueue = null;
+            screenNavigator = null;
+            screenLayerRegistry = null;
+            externalScreenViews.Clear();
+            processingScreenOperations = false;
+            nextScreenOperationSequence = 0;
+
             surfaces.Clear();
             currentScreenByScope.Clear();
             historyByScope.Clear();
@@ -218,6 +274,15 @@ namespace EchoDevGames.EchoUI
         public UISurfaceOperationResult NavigateTo(
             string surfaceId)
         {
+            if (IsScreenLifecycleInitialized &&
+                screenNavigator.HasDefinition(
+                    surfaceId))
+            {
+                return ToSurfaceOperationResult(
+                    PushScreen(
+                        surfaceId));
+            }
+
             UISurfaceOperationResult validation =
                 ResolveSurface(
                     surfaceId,
@@ -290,6 +355,15 @@ namespace EchoDevGames.EchoUI
         public UISurfaceOperationResult Back(
             string scopeId)
         {
+            if (IsScreenLifecycleInitialized &&
+                screenNavigator.HasScope(
+                    scopeId))
+            {
+                return ToSurfaceOperationResult(
+                    BackScreen(
+                        scopeId));
+            }
+
             if (!IsInitialized)
             {
                 return new UISurfaceOperationResult(
@@ -395,6 +469,17 @@ namespace EchoDevGames.EchoUI
                 return validation;
             }
 
+            if (surface.Role == UISurfaceRole.Screen &&
+                IsScreenLifecycleInitialized &&
+                screenNavigator.HasDefinition(
+                    surface.SurfaceId))
+            {
+                return ToSurfaceOperationResult(
+                    CloseScreen(
+                        surface.SurfaceId,
+                        surface.NavigationScopeId));
+            }
+
             DeactivateSurface(
                 surface);
             if (surface.Role == UISurfaceRole.Screen &&
@@ -430,6 +515,27 @@ namespace EchoDevGames.EchoUI
 
             if (surface.Role == UISurfaceRole.Screen)
             {
+                if (IsScreenLifecycleInitialized &&
+                    screenNavigator.HasDefinition(
+                        surface.SurfaceId))
+                {
+                    string current =
+                        GetCurrentScreenId(
+                            surface.NavigationScopeId);
+
+                    return string.Equals(
+                            current,
+                            surface.SurfaceId,
+                            StringComparison.Ordinal)
+                        ? ToSurfaceOperationResult(
+                            CloseScreen(
+                                surface.SurfaceId,
+                                surface.NavigationScopeId))
+                        : ToSurfaceOperationResult(
+                            PushScreen(
+                                surface.SurfaceId));
+                }
+
                 return surface.IsVisible
                     ? CloseSurface(surfaceId)
                     : NavigateTo(surfaceId);
@@ -460,11 +566,34 @@ namespace EchoDevGames.EchoUI
                 return string.Empty;
             }
 
+            string normalized =
+                scopeId.Trim();
+
+            if (IsScreenLifecycleInitialized &&
+                screenNavigator.HasScope(
+                    normalized))
+            {
+                return screenNavigator.GetCurrentScreenId(
+                    normalized);
+            }
+
             return currentScreenByScope.TryGetValue(
-                    scopeId.Trim(),
+                    normalized,
                     out string surfaceId)
                 ? surfaceId
                 : string.Empty;
+        }
+
+        public int GetScreenHistoryDepth(
+            string scopeId)
+        {
+            if (!IsScreenLifecycleInitialized)
+            {
+                return 0;
+            }
+
+            return screenNavigator.GetHistoryDepth(
+                scopeId);
         }
 
         public bool IsSurfaceVisible(
@@ -574,6 +703,656 @@ namespace EchoDevGames.EchoUI
                 "Transient surface runtime override cleared.");
         }
 
+        public UISurfaceOperationResult InitializeScreenLifecycle()
+        {
+            return InitializeScreenLifecycle(
+                screenLayerHosts,
+                screenDefinitions,
+                null,
+                screenOperationCapacity);
+        }
+
+        public UISurfaceOperationResult InitializeScreenLifecycle(
+            IEnumerable<UILayerHost> layerHosts,
+            IEnumerable<UIScreenDefinition> definitions,
+            IUIScreenFactory factory = null,
+            int queueCapacity = 32)
+        {
+            if (!IsAuthoritative)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotAuthoritative,
+                    message: "Only the authoritative Looking Glass root may initialize Screen lifecycle.");
+            }
+
+            if (!IsInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    message: "Looking Glass surface foundation must initialize before Screen lifecycle.");
+            }
+
+            if (IsScreenLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.AlreadyInitialized,
+                    message: "Looking Glass Screen lifecycle is already initialized.");
+            }
+
+            List<UILayerHost> layerSnapshot =
+                layerHosts == null
+                    ? null
+                    : new List<UILayerHost>(
+                        layerHosts);
+
+            List<UIScreenDefinition> definitionSnapshot =
+                definitions == null
+                    ? null
+                    : new List<UIScreenDefinition>(
+                        definitions);
+
+            if (!UILayerRegistry.TryCreate(
+                    layerSnapshot,
+                    out UILayerRegistry registry,
+                    out string layerError))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message: layerError);
+            }
+
+            if (definitionSnapshot != null)
+            {
+                HashSet<string> definedScreenIds =
+                    new HashSet<string>(
+                        StringComparer.Ordinal);
+
+                HashSet<string> definedScopes =
+                    new HashSet<string>(
+                        StringComparer.Ordinal);
+
+                for (int index = 0;
+                     index < definitionSnapshot.Count;
+                     index++)
+                {
+                    UIScreenDefinition definition =
+                        definitionSnapshot[index];
+
+                    if (definition == null)
+                    {
+                        continue;
+                    }
+
+                    definedScreenIds.Add(
+                        definition.ScreenId);
+
+                    definedScopes.Add(
+                        definition.NavigationScopeId);
+
+                    if (definition.OwnershipMode !=
+                            UIScreenOwnershipMode.SceneOwned)
+                    {
+                        continue;
+                    }
+
+                    UISurface sceneView =
+                        definition.SceneOwnedView;
+
+                    if (sceneView == null ||
+                        !surfaces.TryGetValue(
+                            sceneView.SurfaceId,
+                            out UISurface registeredSceneView) ||
+                        registeredSceneView != sceneView)
+                    {
+                        return new UISurfaceOperationResult(
+                            UISurfaceOperationStatus.InvalidDefinition,
+                            surfaceId: definition.ScreenId,
+                            scopeId: definition.NavigationScopeId,
+                            message:
+                                "SceneOwned Screen views must already belong to the authoritative Looking Glass surface registry.");
+                    }
+                }
+
+                foreach (UISurface registered in surfaces.Values)
+                {
+                    if (registered == null ||
+                        registered.Role != UISurfaceRole.Screen ||
+                        !definedScopes.Contains(
+                            registered.NavigationScopeId))
+                    {
+                        continue;
+                    }
+
+                    if (!definedScreenIds.Contains(
+                            registered.SurfaceId))
+                    {
+                        return new UISurfaceOperationResult(
+                            UISurfaceOperationStatus.InvalidDefinition,
+                            surfaceId: registered.SurfaceId,
+                            scopeId: registered.NavigationScopeId,
+                            message:
+                                "Every registered Screen in an M2-authoritative navigation scope requires an explicit Screen definition.");
+                    }
+                }
+            }
+
+            UIScreenNavigator navigator =
+                new UIScreenNavigator(
+                    definitionSnapshot,
+                    registry,
+                    factory,
+                    ResolveExternalScreenView,
+                    RegisterRuntimeScreenSurface,
+                    UnregisterRuntimeScreenSurface,
+                    ActivateScreenEntry,
+                    SuspendScreenEntry,
+                    ResumeScreenEntry,
+                    CloseScreenEntry,
+                    out string definitionError);
+
+            if (!string.IsNullOrWhiteSpace(
+                    definitionError) ||
+                !navigator.IsValid)
+            {
+                navigator.Shutdown();
+
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message: string.IsNullOrWhiteSpace(
+                        definitionError)
+                        ? "Looking Glass Screen lifecycle definition validation failed."
+                        : definitionError);
+            }
+
+            screenLayerRegistry =
+                registry;
+            screenNavigator =
+                navigator;
+            screenOperationQueue =
+                new UIScreenOperationQueue(
+                    queueCapacity < 1
+                        ? 1
+                        : queueCapacity);
+
+            nextScreenOperationSequence = 0;
+            processingScreenOperations = false;
+
+            if (definitionSnapshot != null)
+            {
+                for (int index = 0;
+                     index < definitionSnapshot.Count;
+                     index++)
+                {
+                    UIScreenDefinition definition =
+                        definitionSnapshot[index];
+
+                    if (definition == null ||
+                        definition.OwnershipMode !=
+                            UIScreenOwnershipMode.SceneOwned ||
+                        definition.SceneOwnedView == null ||
+                        !definition.SceneOwnedView.IsVisible)
+                    {
+                        continue;
+                    }
+
+                    UIScreenOperationRequest request =
+                        UIScreenOperationRequest.Reset(
+                            definition.ScreenId)
+                        .WithSequence(
+                            ++nextScreenOperationSequence);
+
+                    UIScreenOperationResult seed =
+                        screenNavigator.Execute(
+                            request);
+
+                    if (seed.Status !=
+                            UIScreenOperationStatus.Succeeded &&
+                        seed.Status !=
+                            UIScreenOperationStatus.NoChange)
+                    {
+                        screenNavigator.Shutdown();
+                        screenNavigator = null;
+                        screenOperationQueue = null;
+                        screenLayerRegistry = null;
+
+                        return new UISurfaceOperationResult(
+                            UISurfaceOperationStatus.InvalidDefinition,
+                            surfaceId: definition.ScreenId,
+                            scopeId: definition.NavigationScopeId,
+                            message:
+                                "Failed to establish initial Screen lifecycle state: " +
+                                seed.Message);
+                    }
+                }
+            }
+
+            return UISurfaceOperationResult.Success(
+                message: "Looking Glass Screen lifecycle initialized.");
+        }
+
+        public UISurfaceOperationResult RegisterExternalScreenView(
+            string screenId,
+            UISurface view)
+        {
+            if (!IsScreenLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    surfaceId: screenId,
+                    message: "Screen lifecycle must initialize before registering ExternalOwned views.");
+            }
+
+            if (!screenNavigator.TryGetDefinition(
+                    screenId,
+                    out UIScreenDefinition definition) ||
+                definition.OwnershipMode !=
+                    UIScreenOwnershipMode.ExternalOwned)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId: screenId,
+                    message: "Requested Screen is not an ExternalOwned definition.");
+            }
+
+            if (view == null)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId: definition.ScreenId,
+                    scopeId: definition.NavigationScopeId,
+                    message: "ExternalOwned Screen view is missing.");
+            }
+
+            if (!string.Equals(
+                    view.SurfaceId,
+                    definition.ScreenId,
+                    StringComparison.Ordinal) ||
+                !string.Equals(
+                    view.NavigationScopeId,
+                    definition.NavigationScopeId,
+                    StringComparison.Ordinal) ||
+                view.Role != UISurfaceRole.Screen)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId: definition.ScreenId,
+                    scopeId: definition.NavigationScopeId,
+                    message: "ExternalOwned Screen view identity/role does not match its definition.");
+            }
+
+            if (externalScreenViews.TryGetValue(
+                    definition.ScreenId,
+                    out UISurface existing) &&
+                existing != null &&
+                existing != view)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.DuplicateSurfaceId,
+                    surfaceId: definition.ScreenId,
+                    scopeId: definition.NavigationScopeId,
+                    message: "A different ExternalOwned view is already registered for this Screen.");
+            }
+
+            string registrationError =
+                RegisterRuntimeScreenSurface(
+                    view);
+
+            if (!string.IsNullOrWhiteSpace(
+                    registrationError))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.DuplicateSurfaceId,
+                    surfaceId: definition.ScreenId,
+                    scopeId: definition.NavigationScopeId,
+                    message: registrationError);
+            }
+
+            externalScreenViews[definition.ScreenId] =
+                view;
+
+            return UISurfaceOperationResult.Success(
+                definition.ScreenId,
+                definition.NavigationScopeId,
+                "ExternalOwned Screen view registered.");
+        }
+
+        public UISurfaceOperationResult UnregisterExternalScreenView(
+            string screenId)
+        {
+            if (!IsScreenLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    surfaceId: screenId,
+                    message: "Screen lifecycle is not initialized.");
+            }
+
+            string normalized =
+                screenId == null
+                    ? string.Empty
+                    : screenId.Trim();
+
+            if (!externalScreenViews.TryGetValue(
+                    normalized,
+                    out UISurface view))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.UnknownSurface,
+                    surfaceId: normalized,
+                    message: "No ExternalOwned Screen view is registered for this ID.");
+            }
+
+            externalScreenViews.Remove(
+                normalized);
+
+            if (view != null)
+            {
+                UnregisterRuntimeScreenSurface(
+                    view);
+            }
+
+            return UISurfaceOperationResult.Success(
+                normalized,
+                message: "ExternalOwned Screen view unregistered without destroying it.");
+        }
+
+        public UIScreenHandle PushScreen(
+            string screenId) =>
+            SubmitScreenOperation(
+                UIScreenOperationRequest.Push(
+                    screenId));
+
+        public UIScreenHandle ReplaceScreen(
+            string screenId) =>
+            SubmitScreenOperation(
+                UIScreenOperationRequest.Replace(
+                    screenId));
+
+        public UIScreenHandle ResetScreen(
+            string screenId) =>
+            SubmitScreenOperation(
+                UIScreenOperationRequest.Reset(
+                    screenId));
+
+        public UIScreenHandle BackScreen(
+            string scopeId) =>
+            SubmitScreenOperation(
+                UIScreenOperationRequest.Back(
+                    scopeId));
+
+        public UIScreenHandle CloseScreen(
+            string screenId,
+            string scopeId = "") =>
+            SubmitScreenOperation(
+                UIScreenOperationRequest.Close(
+                    screenId,
+                    scopeId));
+
+        public UIScreenHandle SubmitScreenOperation(
+            UIScreenOperationRequest request)
+        {
+            if (request == null)
+            {
+                UIScreenOperationRequest placeholder =
+                    UIScreenOperationRequest.Push(
+                        string.Empty)
+                    .WithSequence(
+                        ++nextScreenOperationSequence);
+
+                return UIScreenHandle.Rejected(
+                    placeholder,
+                    "Screen operation request is missing.");
+            }
+
+            UIScreenOperationRequest sequenced =
+                request.WithSequence(
+                    ++nextScreenOperationSequence);
+
+            if (!IsScreenLifecycleInitialized)
+            {
+                return UIScreenHandle.Rejected(
+                    sequenced,
+                    "Looking Glass Screen lifecycle is not initialized.");
+            }
+
+            if (!screenOperationQueue.TryEnqueue(
+                    sequenced,
+                    out UIScreenHandle handle))
+            {
+                return handle;
+            }
+
+            DrainScreenOperationQueue();
+
+            return handle;
+        }
+
+        public IReadOnlyList<UILayerHost> GetResolvedScreenLayerHosts()
+        {
+            if (screenLayerRegistry == null)
+            {
+                return Array.Empty<UILayerHost>();
+            }
+
+            return screenLayerRegistry.OrderedHosts;
+        }
+
+        private void DrainScreenOperationQueue()
+        {
+            if (processingScreenOperations ||
+                screenOperationQueue == null ||
+                screenNavigator == null)
+            {
+                return;
+            }
+
+            processingScreenOperations = true;
+
+            try
+            {
+                while (screenOperationQueue.TryProcessNext(
+                    screenNavigator.Execute,
+                    out _))
+                {
+                }
+            }
+            finally
+            {
+                processingScreenOperations = false;
+            }
+        }
+
+        private UISurface ResolveExternalScreenView(
+            string screenId)
+        {
+            string normalized =
+                screenId == null
+                    ? string.Empty
+                    : screenId.Trim();
+
+            return externalScreenViews.TryGetValue(
+                    normalized,
+                    out UISurface view)
+                ? view
+                : null;
+        }
+
+        private string RegisterRuntimeScreenSurface(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return "Runtime Screen surface is missing.";
+            }
+
+            string id =
+                surface.SurfaceId;
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return "Runtime Screen surface has an empty stable ID.";
+            }
+
+            if (surface.Role != UISurfaceRole.Screen)
+            {
+                return
+                    "Runtime Screen surface '" +
+                    id +
+                    "' is not configured with Screen role.";
+            }
+
+            if (surfaces.TryGetValue(
+                    id,
+                    out UISurface existing))
+            {
+                return existing == surface
+                    ? string.Empty
+                    : "A different registered surface already uses stable ID '" +
+                        id +
+                        "'.";
+            }
+
+            surfaces.Add(
+                id,
+                surface);
+
+            surface.SetVisible(false);
+
+            return string.Empty;
+        }
+
+        private void UnregisterRuntimeScreenSurface(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return;
+            }
+
+            if (surfaces.TryGetValue(
+                    surface.SurfaceId,
+                    out UISurface registered) &&
+                registered == surface)
+            {
+                surfaces.Remove(
+                    surface.SurfaceId);
+            }
+
+            responseApplicationStateBySurface.Remove(
+                surface);
+        }
+
+        private void ActivateScreenEntry(
+            UIScreenEntry entry)
+        {
+            if (entry == null ||
+                entry.View == null)
+            {
+                return;
+            }
+
+            entry.View.SetScreenSuspended(
+                false,
+                entry.Definition.SuspensionVisibility);
+
+            ActivateSurface(
+                entry.View);
+        }
+
+        private void SuspendScreenEntry(
+            UIScreenEntry entry)
+        {
+            if (entry == null ||
+                entry.View == null)
+            {
+                return;
+            }
+
+            selectionCoordinator.ClearSelectionForSurface(
+                entry.View);
+
+            entry.View.SetScreenSuspended(
+                true,
+                entry.Definition.SuspensionVisibility);
+
+            ApplyCurrentContext(
+                entry.View);
+        }
+
+        private void ResumeScreenEntry(
+            UIScreenEntry entry)
+        {
+            if (entry == null ||
+                entry.View == null)
+            {
+                return;
+            }
+
+            entry.View.SetScreenSuspended(
+                false,
+                entry.Definition.SuspensionVisibility);
+
+            ActivateSurface(
+                entry.View);
+        }
+
+        private void CloseScreenEntry(
+            UIScreenEntry entry)
+        {
+            if (entry == null ||
+                entry.View == null)
+            {
+                return;
+            }
+
+            entry.View.SetScreenSuspended(
+                false,
+                entry.Definition.SuspensionVisibility);
+
+            DeactivateSurface(
+                entry.View);
+        }
+
+        private UISurfaceOperationResult ToSurfaceOperationResult(
+            UIScreenHandle handle)
+        {
+            if (handle == null)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message: "Screen operation did not produce a handle.");
+            }
+
+            if (!handle.IsCompleted)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId: handle.Request.ScreenId,
+                    scopeId: handle.Request.ScopeId,
+                    message: "Screen operation did not settle synchronously.");
+            }
+
+            UIScreenOperationResult result =
+                handle.Result;
+
+            if (result.Status ==
+                    UIScreenOperationStatus.Succeeded ||
+                result.Status ==
+                    UIScreenOperationStatus.NoChange)
+            {
+                return UISurfaceOperationResult.Success(
+                    result.ScreenId,
+                    result.ScopeId,
+                    result.Message);
+            }
+
+            return new UISurfaceOperationResult(
+                UISurfaceOperationStatus.InvalidDefinition,
+                surfaceId: result.ScreenId,
+                scopeId: result.ScopeId,
+                message: result.Message);
+        }
+
         private void TryClaimAuthority()
         {
             if (active == null ||
@@ -659,7 +1438,7 @@ namespace EchoDevGames.EchoUI
             if (!state.VisibilityControlled)
             {
                 state.VisibilityBaseline =
-                    surface.IsVisible;
+                    surface.RequestedVisibility;
                 state.VisibilityControlled = true;
             }
 
@@ -697,7 +1476,7 @@ namespace EchoDevGames.EchoUI
             if (!state.InteractionControlled)
             {
                 state.InteractionBaseline =
-                    surface.IsInteractable;
+                    surface.RequestedInteractability;
             }
 
             bool applied =
@@ -751,10 +1530,11 @@ namespace EchoDevGames.EchoUI
                 return;
             }
 
-            if (currentScreenByScope.TryGetValue(
-                    surface.NavigationScopeId,
-                    out string currentId) &&
-                string.Equals(
+            string currentId =
+                GetCurrentScreenId(
+                    surface.NavigationScopeId);
+
+            if (string.Equals(
                     currentId,
                     surface.SurfaceId,
                     StringComparison.Ordinal))
