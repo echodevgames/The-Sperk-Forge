@@ -4,12 +4,28 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 14, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
-**Current checkpoint:** EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations — COMPLETE
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-02 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current checkpoint:** EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M2-02 JIT Reconciliation and Activation — August 14, 2026
+- Incoming repository baseline: `d5b9a73` — EUI-M2-01 final closeout, clean and synchronized.
+- Retained EUI-M2-01 proof: final full EditMode **1153 / 1153**, focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, manual Laboratory **10 / 10**.
+- Package authority advances to **SFGSS-PKG-ECHOUI-001 v1.4.0**.
+- Blocking modals may stack with top-only Looking Glass interaction and safe lower-entry handle cleanup.
+- Semantic modal completions use project-defined stable result IDs.
+- Each modal opening owns a fresh awaiter/handle generation; first valid terminal result wins exactly once.
+- Unexpected admitted owner/view loss or shutdown produces structural `Aborted` rather than semantic Cancel.
+- Modal ownership reuses RootOwned / SceneOwned / ExternalOwned lifetime rules.
+- Modal Back behavior is designer-authored: disabled or mapped to a configured stable result ID.
+- Looking Glass blocks lower Looking Glass UI interaction but does not own gameplay input, WASD/action maps, pause/time scale, or cursor policy.
+- While blocking modals are active, Screen mutation uses safe default `Reject` or explicit bounded `DeferUntilModalStackClears`; deferred work preserves FIFO.
+- Modal visuals/backdrops remain project-authored. Blur/transitions, full focus/EventSystem policy, HUD/transients, Motifs, Builder, primitive expansion, persistence, peer bridges, and project-wide lifetime composition remain outside this checkpoint.
+- **EUI-M2-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
+- Next gate: re-establish **1153 / 1153** full EditMode on the activation commit before Runtime edits.
 
 ## Looking Glass EUI-M2-01 Final Closeout — August 14, 2026
 - Activation commit: `0c11262` (`0c112628fd5f7361bee0e4ea6ff92b4effd39c2e`).

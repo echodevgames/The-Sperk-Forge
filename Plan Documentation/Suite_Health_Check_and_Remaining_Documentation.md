@@ -2,7 +2,7 @@
 
 **Updated:** August 14, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M2-01 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-01 COMPLETE at implementation `8dc9c71`; no follow-on Looking Glass checkpoint activated
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-01 complete and EUI-M2-02 ACTIVE / AUTHORIZED from closeout `d5b9a73`; Runtime implementation not started at activation
 
 ## Current health
 
@@ -22,10 +22,10 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-01 revisit reconciled project-defined layers, screen ownership/suspension, strict FIFO structural operations, and the screen-only M2 boundary |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.3.0 Approved** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-02 revisit reconciled stacked modal blocking, exact-once stable-ID results, ownership/abort semantics, UI/input authority, Back policy, and Reject/Defer Screen mutation |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.4.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M2-01 COMPLETE** — activation `0c11262`; implementation `8dc9c71`; focused EchoUI **47 / 47**; M2-01 focused **23 / 23**; manual Laboratory **10 / 10**; final full EditMode **1153 / 1153** |
-| Looking Glass active checkpoint | **None.** EUI-M2-02 is named follow-on direction only and is not activated. |
+| Looking Glass active checkpoint | **EUI-M2-02 ACTIVE / AUTHORIZED** — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking; Runtime implementation not started at activation. |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
@@ -45,6 +45,23 @@
 - M1 context, selection, Back, and independent Window behavior remains green.
 - Runtime has no peer Echo dependency; no package-spec revision or new suite ADR was required.
 - EUI-M2-02 and all modal results, transitions, richer focus/EventSystem policy, HUD/transients, Motifs, Builder, persistence, and peer bridges remain separately gated and inactive.
+
+
+## Looking Glass EUI-M2-02 activation health
+
+- Planning baseline: `d5b9a73`, clean synchronized EUI-M2-01 closeout.
+- Incoming full EditMode floor to re-establish before Runtime edits: **1153 / 1153**.
+- Blocking modals may stack; only the top eligible modal is Looking Glass-interactive.
+- Normal completion returns project-defined stable result IDs.
+- First valid terminal completion wins exactly once; stale later attempts cannot settle again.
+- Unexpected admitted owner/view loss or shutdown settles as structural `Aborted`, distinct from semantic Cancel.
+- RootOwned / SceneOwned / ExternalOwned modal ownership mirrors the proven Screen lifetime model.
+- Back is modal-first and designer-authored as disabled or mapped to a stable result ID.
+- Blocking applies to lower Looking Glass pointer/navigation/submit/Back interaction; gameplay input, pause/time, cursor, and project action maps remain external.
+- Screen mutation while blocked defaults to explicit Reject, with optional bounded FIFO DeferUntilModalStackClears.
+- Modal visuals/backdrops remain project-owned; no mandatory dim/blur style.
+- Full focus/EventSystem policy, transitions, HUD/transients, Motifs, Builder, primitive expansion, arbitrary modal domain payload transport, persistence, peer bridges, and project-wide lifetime composition remain inactive.
+- No new suite ADR is required by this package-local refinement.
 
 ## First Light graduation state
 

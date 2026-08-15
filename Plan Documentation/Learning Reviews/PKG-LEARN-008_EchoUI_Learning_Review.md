@@ -16,8 +16,8 @@ updated: 2026-08-14
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
 **Completed:** 2026-08-14
-**Package authority version reviewed/reconciled:** 1.3.0
-**Implementation authorization:** `EUI-M2-01` ACTIVE / AUTHORIZED after the bounded EUI-M2-01 JIT revisit; EUI-M1-01 and EUI-M1-02 complete, latest closeout `c114ba2`
+**Package authority version reviewed/reconciled:** 1.4.0
+**Implementation authorization:** `EUI-M2-02` ACTIVE / AUTHORIZED after the bounded EUI-M2-02 JIT revisit; EUI-M1-01, EUI-M1-02, and EUI-M2-01 complete, latest closeout `d5b9a73`
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,7 +25,7 @@ updated: 2026-08-14
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.3.0 Approved | Owns package behavior, completed M1 context/selection contract, and reconciled EUI-M2-01 screen-lifecycle contract |
+| Looking Glass package authority | v1.4.0 Approved | Owns package behavior, completed M1/M2-01 foundation, and reconciled EUI-M2-02 blocking-modal contract |
 | SFGSS-000 | v0.26.0 Approved | Owns suite authority, package independence, project composition, and persistence/lifetime boundaries |
 | SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
@@ -199,8 +199,8 @@ The review was completed conversationally through concrete design examples. Jess
 | Source conflict unresolved | NO |
 
 **Decision:** Complete
-**Next implementation gate:** `EUI-M2-01` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below and the completed EUI-M1-02 proof
-**Notes promoted to:** Looking Glass specification v1.3.0; active EUI-M2-01 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
+**Next implementation gate:** `EUI-M2-02` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below and the completed EUI-M2-01 proof
+**Notes promoted to:** Looking Glass specification v1.4.0; active EUI-M2-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
 
 ## 14. EUI-M1-02 bounded JIT revisit — August 13, 2026
 
@@ -283,3 +283,48 @@ The reconciled checkpoint is:
 It proves variable authored layer topology, screen definitions/entries, the three ownership modes, Push/Replace/Reset/Back/Close lifecycle semantics, suspension policy, and bounded strict-FIFO mutation ordering.
 
 Modal blocking/exact-once result lifecycle is deliberately deferred to **EUI-M2-02**. Transition drivers, general focus-history restoration, EventSystem adoption policy, HUD/transient services, Motifs, Builder, primitive-library expansion, persistence, and peer bridges also remain outside M2-01.
+
+## 16. EUI-M2-02 bounded JIT revisit — August 14, 2026
+
+After EUI-M2-01 closed at `d5b9a73` with final full EditMode **1153 / 1153**, focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, and manual Laboratory **10 / 10**, Jesse completed the bounded modal-lifecycle intake for the second M2 Runtime Core slice.
+
+### 16.1 Blocking stack declaration
+- Blocking modals may stack.
+- Only the top eligible modal receives normal Looking Glass interaction.
+- Lower modals remain live and handle-addressable; owner cleanup may remove a lower entry safely without disturbing the top modal.
+- Modal visuals/backdrops remain designer/project authored; Looking Glass guarantees lifecycle/blocking rather than one mandatory dim/blur presentation.
+
+### 16.2 Result and exact-once declaration
+- Normal modal completion uses project-defined stable result IDs rather than package-reserved yes/no/cancel vocabulary.
+- Each admitted modal opening receives a fresh awaiter and one runtime handle generation.
+- The first valid terminal completion wins and settles exactly once.
+- Later attempts are harmless structured stale/already-completed rejections.
+- Unexpected owner/view loss or shutdown after admission produces structural `Aborted`, not a fabricated semantic Cancel result.
+- Arbitrary typed domain payload transport is not required by EUI-M2-02.
+
+### 16.3 Ownership and Back declaration
+- Modal view lifetime reuses the M2-01 `RootOwned`, `SceneOwned`, and `ExternalOwned` rules.
+- Looking Glass releases only RootOwned instances it creates.
+- Back routes modal-first.
+- Each modal may disable Back dismissal or map Back to one designer-authored stable result ID.
+
+### 16.4 UI/input authority declaration
+- A blocking modal blocks lower Looking Glass pointer/raycast interaction and UI navigation/submit/Back routing.
+- Looking Glass does not disable project gameplay action maps, own WASD, pause the game, set time scale, or claim cursor/gameplay-input authority.
+- Projects and optional future Will/Pulse/Vessel bridges may observe modal blocking state and decide whether gameplay input continues.
+- The Laboratory may simulate an external project action continuing while lower uGUI is blocked.
+
+### 16.5 Screen mutation declaration
+- The simple default while a blocking modal stack is active is `Reject`: ordinary Screen structural mutations fail before changing history.
+- Advanced projects may opt into bounded `DeferUntilModalStackClears`.
+- Deferred Screen work remains FIFO by original submission order and executes only after the blocking modal stack becomes empty.
+- EUI-M2-02 does not permit silent Screen mutation underneath an active blocking modal.
+
+### 16.6 Checkpoint boundary
+The reconciled checkpoint is:
+
+**EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking**
+
+It proves modal definitions/entries/handles, stacked top-only interaction, the three ownership modes, project-defined stable result IDs, exact-once completion, structural Aborted outcomes, fresh awaiters, Back policy, bounded capacity, Screen mutation Reject/Defer behavior, external gameplay-input separation, and retained M1/M2-01 behavior.
+
+Full focus-history restoration/EventSystem adoption, transition drivers, generalized dim/blur effects, HUD/transient services, Motifs, Builder, primitive-library expansion, arbitrary modal domain payload transport, persistence, peer bridges, automatic gameplay-input switching, and project-wide lifetime composition remain outside EUI-M2-02.

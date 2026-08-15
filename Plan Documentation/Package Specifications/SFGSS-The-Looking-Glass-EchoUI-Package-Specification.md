@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.3.0
+**Specification version:** 1.4.0
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -20,7 +20,7 @@
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M2-01 JIT revisit. EUI-M1-01 and EUI-M1-02 are complete; EUI-M2-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean closeout baseline `c114ba2`. Implementation permission extends only to the active EUI-M2-01 Checkpoint Build Plan.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M2-02 JIT revisit. EUI-M1-01, EUI-M1-02, and EUI-M2-01 are complete; EUI-M2-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean closeout baseline `d5b9a73`. Implementation permission extends only to the active EUI-M2-02 Checkpoint Build Plan.
 
 ---
 
@@ -34,6 +34,7 @@
 | 1.1.0 | 2026-08-13 | Approved | JIT architecture rebaseline: layered UI context, optional navigation scopes, independent windows, stable surface IDs/registry, hybrid Back/navigation, cascading visibility policy, input-aware default selection, Motif terminology, Lego-style primitives/Builder direction, project-owned lifetime/context authority, and EUI-M1-01 foundation activation. | Jesse “Echo” Adams |
 | 1.2.0 | 2026-08-13 | Approved | EUI-M1-02 JIT reconciliation: designer-ordered per-surface external context responses, project-defined stable active/inactive context IDs, independent visibility/interactability/selection directives, no-intervention defaults, authored/local/runtime overrides, optional external participation, and externally supplied input-modality selection policy. Activates EUI-M1-02 while keeping presets, Motifs, Builder, MMO layout persistence, arbitrary context payloads, and peer bridges outside the slice. | Jesse “Echo” Adams |
 | 1.3.0 | 2026-08-14 | Approved | EUI-M2-01 JIT reconciliation: replaces the fixed seven-layer runtime assumption with project-defined ordered layer topology plus convenience starter defaults; confirms RootOwned/SceneOwned/ExternalOwned screen ownership; defines designer-controlled suspended-screen visibility with scope-enforced non-interaction; locks bounded strict FIFO screen mutation ordering; and activates the screen-lifecycle-only M2-01 slice while deferring modal exact-once results to M2-02. | Jesse “Echo” Adams |
+| 1.4.0 | 2026-08-14 | Approved | EUI-M2-02 JIT reconciliation: activates blocking modal lifecycle with stacked top-only interaction, project-defined stable result IDs, first-terminal-wins exact-once completion, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, fresh awaiters, designer-authored Back dismissal, UI-only blocking that does not own gameplay input, and configurable Reject/Defer screen-mutation behavior while a blocking modal stack is active. Visual backdrop styling, full focus restoration, transitions, HUD/transients, Motifs, Builder, persistence, and peer bridges remain later slices. | Jesse “Echo” Adams |
 
 ---
 
@@ -446,6 +447,32 @@ The August 14, 2026 bounded M2-01 revisit advances the proven surface/context fo
 
 **M2-01 is screen-only.** Modal stack ownership, blocking, exact-once modal completion, and modal result awaiters remain approved M2 capabilities but are intentionally deferred to a separate `EUI-M2-02` checkpoint. Likewise focus-history restoration and transition-driver execution remain later slices.
 
+### 8.1D EUI-M2-02 contract — blocking modal lifecycle, exact-once results, and UI/input boundary
+
+The August 14, 2026 bounded M2-02 revisit completes the second Runtime Core slice by adding authoritative blocking-modal lifecycle without turning Looking Glass into gameplay-input or pause authority.
+
+**Blocking modals may stack.** A blocking modal stack is ordered. Only the top eligible modal receives normal Looking Glass interaction. Lower modals remain live entries and may be targeted safely by their handles, including out-of-order owner cleanup, without stealing interaction from the top entry.
+
+**Semantic completion uses project-defined stable result IDs.** Looking Glass does not reserve game-specific meanings such as `yes`, `no`, `delete`, `easy`, or `hard`. A normal modal completion supplies a nonempty project-authored stable result ID. Result identity is separate from display text and survives prefab/hierarchy renames. EUI-M2-02 does not require arbitrary domain payload transport; richer typed payloads may be added only through a later declared contract if real use proves them necessary.
+
+**Exact-once means first terminal completion wins.** Each admitted modal opening owns one fresh completion channel. The first valid terminal action commits the result and settles its awaiter exactly once. Later confirm/cancel/Back/owner attempts on the same generation are harmless structured stale/already-completed rejections and never invoke completion a second time.
+
+**Structural loss is `Aborted`, not semantic Cancel.** Unexpected owner/view loss after admission, root shutdown, or equivalent lifecycle teardown settles the modal exactly once with a distinct structural `Aborted` outcome/reason. It must not fabricate a project semantic result ID such as `cancel`. Factory/validation failure before a modal becomes active returns an operation failure and leaves no live modal entry/awaiter leak.
+
+**Modal view ownership reuses the established M2 ownership model.** `RootOwned`, `SceneOwned`, and `ExternalOwned` are first-class modal view modes with the same lifetime boundary proven for Screens. Looking Glass creates/releases only RootOwned instances. SceneOwned and ExternalOwned GameObjects remain owned by their scene/project provider even when their modal entries complete or abort.
+
+**Every modal opening receives a fresh awaiter/handle generation.** Awaitables are never cached or reused. Handles identify one admitted modal generation so stale handles cannot complete a later reopening of the same definition ID.
+
+**Back/dismiss behavior is designer-authored.** A modal may disable Back/dismissal or map Back to one configured project-defined stable result ID. Back routes to the top blocking modal before ordinary Screen history. A disabled Back policy leaves the modal active and returns a structured Blocked/Unhandled-style result rather than silently closing it.
+
+**Looking Glass blocks Looking Glass UI, not gameplay input.** While a blocking modal is active, lower Looking Glass pointer/raycast interaction, UI navigation/submit, and ordinary UI Back routing are gated so clicks/navigation cannot leak through the modal. Looking Glass does not disable gameplay action maps, consume project WASD by authority, set pause/time scale, change cursor ownership, or decide whether the game simulation continues. Project code or optional future Will/Pulse/Vessel bridges may observe read-only modal blocking state and choose their own gameplay/input response. The standalone Laboratory may simulate an external gameplay action continuing while lower uGUI remains blocked.
+
+**Screen mutation while a blocking modal is active has an explicit simple/advanced policy.** The safe default is `Reject`: ordinary Screen structural requests are rejected before mutation with a structured `BlockedByModal`-style result. Designers/projects that need deferred behavior may choose a bounded `DeferUntilModalStackClears` policy. Deferred Screen requests retain strict FIFO submission order, execute only after the blocking modal stack becomes empty, and remain subject to the normal bounded Screen-operation admission rules. EUI-M2-02 does not authorize silent background Screen mutation underneath an active blocking modal.
+
+**Modal visuals remain designer/project owned.** Looking Glass guarantees lifecycle and interaction blocking, not one mandatory gray/dim/blur treatment. A project modal prefab may include its own backdrop and styling. Blur systems, animated transitions, generalized backdrop effects, and polished production art remain later work.
+
+**Checkpoint scope remains narrow.** EUI-M2-02 proves modal definitions/entries/handles, stacking, ownership, blocking, stable result IDs, exact-once settlement, structural Aborted outcomes, fresh awaiters, Back policy, bounded capacity, Screen mutation Reject/Defer behavior, and retained M1/M2-01 behavior. It does not implement full focus-history restoration/EventSystem adoption, transition drivers, HUD regions, notifications, prompts/tooltips, Motifs, Builder, primitive-library expansion, persistence, peer bridges, automatic gameplay-input switching, or project-wide lifetime composition.
+
 ### 8.2 Component topology
 
 ```text
@@ -499,7 +526,7 @@ Screen history is maintained per navigation scope. `NavigateTo`, `Replace`, `Ret
 
 ### 8.6 Modal model
 
-Modals render in ordered form but are keyed by runtime ID/owner handle so a lower modal may close safely out of order. Only the top eligible modal is interactive. Completion occurs exactly once on confirm, cancel, owner loss, replacement, failure, or shutdown.
+Blocking modals form one ordered runtime stack and are keyed by runtime generation/owner handle so a lower modal may be targeted safely out of order. Only the top eligible modal receives normal Looking Glass interaction. Normal completion returns one project-defined stable result ID; the first valid terminal completion wins exactly once. Unexpected post-admission owner/view loss or shutdown returns structural `Aborted` rather than fabricating semantic Cancel. Back behavior is definition-authored. Lower Looking Glass interaction is gated while the stack is active, but gameplay input/pause authority remains external.
 
 ### 8.7 Focus and EventSystem
 
@@ -533,7 +560,7 @@ Claim package-local authority -> validate/register surfaces -> initialize scoped
 | Missing screen/factory failure | No history mutation; clean partial instance | EUI-SCREEN-001/002 |
 | Duplicate request/queue full | Coalesce/reject | EUI-SCREEN-003 / EUI-QUEUE-001 |
 | Transition failure/timeout | Force safe final state | EUI-TRANS-001 |
-| Modal owner loss | Exact-once cancellation result | EUI-MODAL-001 |
+| Modal owner/view loss | Exact-once structural `Aborted` result; no fabricated semantic Cancel | EUI-MODAL-001 |
 | Invalid/lost focus | Fallback chain or no-focus | EUI-FOCUS-001/002 |
 | Notification overflow | Explicit drop/replace policy | EUI-NOTIFY-001 |
 | Motif/safe-area missing | Fallback/default | EUI-MOTIF-001 / EUI-SAFE-001 |
@@ -547,7 +574,7 @@ Claim package-local authority -> validate/register surfaces -> initialize scoped
 | `EchoUIConfiguration` | Root/layers, policies, limits, defaults, EventSystem policy | Yes | No | Yes |
 | `UILayerDefinition` | Layer ID, order, visibility/interactivity | Yes | No | Yes/template |
 | `UIScreenDefinition` | Screen identity, prefab/factory, focus/back/transition policy | Yes | No | Yes |
-| `UIModalDefinition` | Modal identity, blocking, prefab/factory, result policy | Yes | No | Yes |
+| `UIModalDefinition` | Modal identity, ownership/factory, Back result policy, Screen-mutation blocking policy | Yes | No | Yes |
 | `UIHudRegionDefinition` | Named host and ordering policy | Yes | No | Yes |
 | `UITransitionProfile` | Open/close driver and timings | Yes | No | Yes/template |
 | `UIMotifDefinition` | Motif tokens/assets | Yes | No | Yes |
@@ -635,7 +662,7 @@ Exact syntax may be refined during M1/M2, but authority and behavior cannot chan
 | `UIMotifDefinition` | ScriptableObject | Project motif tokens/assets |
 | `UIAccessibilityPresentationPolicy` | Serializable value | Effective presentation settings |
 | `EchoUIStatusSnapshot` | Immutable struct | Structured status |
-| `IUIScreenView` / `IUIModalView<T>` | Interfaces | View lifecycle/control contract |
+| `IUIScreenView` / `IUIModalView` | Interfaces | View lifecycle/control contract; modal semantic completion supplies stable result IDs |
 | `IUIScreenFactory` | Interface | Create/release screen instances |
 | `IUITransitionDriver` | Interface | Open/close transition execution |
 | `IUIEventSystemAdapter` | Interface | EventSystem selection/focus seam |
@@ -650,8 +677,9 @@ Exact syntax may be refined during M1/M2, but authority and behavior cannot chan
 | `OpenScreenAsync` | Push/replace/reset screen | Ready/valid definition | Fresh `Awaitable<UIScreenResult>` | Serialized mutation |
 | `CloseScreenAsync` | Close owned/target entry | Live handle/policy | Idempotent structured result | Serialized |
 | `GoBackAsync` | Route modal-first/back policy | Ready | Handled/Blocked/Unhandled/Failure | Main thread |
-| `ShowModalAsync<T>` | Show modal and await result | Valid view contract | Fresh `Awaitable<UIModalResult<T>>` | Main thread |
-| `TryCancelModal` | Owner cancellation | Live handle | Exact-once result | Main thread |
+| `ShowModalAsync` | Show modal and await result | Valid definition/view contract and capacity | Fresh `Awaitable<UIModalResult>` plus generation handle | Main thread |
+| `TryCompleteModal` | Complete one live modal generation | Live handle + valid project result ID | First terminal result wins exactly once | Main thread |
+| `TryAbortModal` | Structural owner/lifecycle abort | Live handle | Exact-once `Aborted` result with reason | Main thread |
 | `RegisterHudWidget` | Add widget to region | Valid region/view | Disposable handle | Main thread |
 | `SetHudVisibility` | Change region visibility | Valid region | Structured result | Main thread |
 | `EnqueueNotification` / `DismissNotification` | Manage bounded notifications | Valid request/handle | Handle/result | Main thread |
@@ -690,8 +718,8 @@ Listeners are never required for the authoritative operation to finish.
 - Transitions and transient timing use unscaled time.
 - Pre-admission cancellation causes no mutation.
 - Cancellable transitions receive cancellation; noncancellable drivers are hard-bounded and forced to a deterministic end state.
-- Modal awaiters complete exactly once.
-- Scene-owner loss and shutdown return explicit cancellation/failure.
+- Modal awaiters complete exactly once; the first valid terminal result wins and stale later attempts are rejected harmlessly.
+- Modal owner/view loss and shutdown after admission return explicit structural `Aborted` outcomes rather than project semantic Cancel.
 - Equivalent re-entry follows duplicate policy.
 - Awaitables are never cached/reused.
 
@@ -1532,16 +1560,16 @@ At minimum, release evidence includes:
 | EUI-T-028 | View entry failure | Presenter/view throws during enter | Operation fails, partial view cleans up, prior stable state remains or recovers | Yes | Not run |
 | EUI-T-029 | View exit failure | Presenter/view throws during exit | Operation reaches bounded terminal failure and root remains usable | Yes | Not run |
 | EUI-T-030 | Scene-owned screen unload | Unload scene containing registered/active view | Registration and active entry resolve according to owner-loss policy without dangling focus | Yes | Not run |
-| EUI-T-031 | Open modal | Open one modal | Modal layer blocks configured lower interaction and modal receives focus | Yes | Not run |
+| EUI-T-031 | Open blocking modal | Open one modal | Top modal becomes interactive; lower Looking Glass pointer/navigation interaction is blocked without changing gameplay-input authority | Yes | Not run |
 | EUI-T-032 | Nested modals | Open second modal | Top modal alone is interactive; lower modal remains registered | Yes | Not run |
-| EUI-T-033 | Close top modal | Complete top modal | Exact result delivered once; lower modal resumes and regains focus | Yes | Not run |
+| EUI-T-033 | Complete top modal | Complete top modal with project result ID | Exact stable result ID is delivered once; lower modal resumes eligibility | Yes | Not run |
 | EUI-T-034 | Close lower modal by handle | Dispose/complete lower modal out of order | Only targeted entry closes; top remains correct; stack/order stays valid | Yes | Not run |
-| EUI-T-035 | Repeated modal completion | Complete same modal twice | First result wins; later attempts return stale/already-completed result | Yes | Not run |
-| EUI-T-036 | Modal owner destroyed | Destroy modal view unexpectedly | Awaiter completes using declared owner-loss result and blocking clears safely | Yes | Not run |
+| EUI-T-035 | Repeated modal completion | Complete same modal twice / race completion paths | First terminal result wins; later attempts return stale/already-completed result and cannot settle again | Yes | Not run |
+| EUI-T-036 | Modal owner/view lost | Destroy admitted modal view unexpectedly | Awaiter completes exactly once as structural `Aborted`; no semantic Cancel ID is fabricated; blocking clears safely | Yes | Not run |
 | EUI-T-037 | Modal capacity | Open beyond configured active limit | Overflow request is rejected without disturbing existing modals | Yes | Not run |
 | EUI-T-038 | Modal queue overflow | Queue beyond configured limit | Deterministic overflow result and diagnostic; no memory growth | Yes | Not run |
-| EUI-T-039 | Non-dismissible modal back | Request Back | Request is rejected/ignored according to definition; focus stays contained | Yes | Not run |
-| EUI-T-040 | Root shutdown with modal | Shutdown with awaited modal | Awaiter completes/cancels exactly once with shutdown reason | Yes | Not run |
+| EUI-T-039 | Modal Back policy | Request Back on dismissible and non-dismissible definitions | Dismissible Back completes with configured stable result ID; disabled Back leaves modal active and returns blocked/unhandled result | Yes | Not run |
+| EUI-T-040 | Root shutdown with modal | Shutdown with awaited modal | Awaiter completes exactly once as structural `Aborted` with shutdown reason | Yes | Not run |
 | EUI-T-041 | HUD registration | Register HUD region | Region becomes addressable by stable ID with initial visibility policy | Yes | Not run |
 | EUI-T-042 | HUD visibility lease | Acquire and release visibility request | Effective visibility follows priority/policy and restores after release | Yes | Not run |
 | EUI-T-043 | HUD owner loss | Destroy registered HUD region | Registry removes it and reports unavailable without root failure | Yes | Not run |
@@ -1586,6 +1614,10 @@ At minimum, release evidence includes:
 | EUI-T-082 | Upgrade previous version | Upgrade supported prior package/configuration | Assets preserve GUIDs and migration/validation reports exact changes | Manual | Not run |
 | EUI-T-083 | Removal | Remove EchoUI after removing bridges/project references | Unrelated packages compile; project-owned data is not deleted | Manual | Not run |
 | EUI-T-084 | External project adoption | Integrate one screen/modal/HUD slice into real project | Parity checklist passes and original UI remains available for rollback | Manual | Not run |
+| EUI-T-085 | Blocking modal preserves external gameplay authority | Keep a Laboratory-owned external action source active while modal is open | External project action may continue; Looking Glass blocks only its lower UI interaction and does not switch gameplay input/pause state | Manual | Not run |
+| EUI-T-086 | Screen request rejected by modal | Use default Reject policy and submit Screen mutation while blocking modal is active | Request returns explicit modal-blocked result with no Screen history mutation | Yes | Not run |
+| EUI-T-087 | Screen request deferred by modal | Use DeferUntilModalStackClears and submit multiple Screen requests | Deferred requests remain bounded and settle in original FIFO order only after modal stack empties | Yes | Not run |
+| EUI-T-088 | Stale modal handle generation | Reopen same modal definition after prior completion and reuse old handle | Old handle cannot complete/abort the new generation | Yes | Not run |
 
 ### 23.5 Evidence records
 
@@ -1821,6 +1853,15 @@ An integration claim requires:
 | EUI-D-045 | M2-01 screen structural mutations use bounded strict FIFO execution in request submission order | Approved | Determinism is safer than racing Push/Replace/Back requests | Queue overflow/rejection is explicit; no silent M2-01 coalescing/reordering | No |
 | EUI-D-046 | Accepted screen-operation failure cannot partially mutate authoritative history or ownership state | Approved | Lifecycle authority must remain trustworthy under invalid IDs/factory loss/queue rejection | Operations require preflight/settlement and structured terminal results | No |
 | EUI-D-047 | EUI-M2-01 is screen-lifecycle-only; modal exact-once result lifecycle is deferred to EUI-M2-02 | Approved | Keeps the first Runtime Core slice small and independently provable | M2 remains open after M2-01; modal implementation is not authorized by M2-01 | No |
+| EUI-D-048 | Blocking modals may stack; only the top eligible modal receives normal Looking Glass interaction | Approved | Nested confirmations and owner-driven dialogs are legitimate while lower entries must remain safe | Lower entries stay addressable by generational handles and may be cleaned up out of order | No |
+| EUI-D-049 | Semantic modal completion uses project-defined stable result IDs | Approved | Keeps package vocabulary neutral and refactor-safe | Display labels and gameplay meanings remain project-owned; arbitrary typed payload transport is not required by M2-02 | No |
+| EUI-D-050 | First valid terminal modal completion wins exactly once | Approved | Prevents confirm/cancel/Back/owner races from double-calling consumers | Later attempts return stale/already-completed structured results | No |
+| EUI-D-051 | Unexpected post-admission modal owner/view loss and shutdown produce structural `Aborted`, distinct from semantic Cancel | Approved | Infrastructure teardown must not pretend the user chose a gameplay/UI answer | Semantic cancel remains a project-defined result ID; pre-active failures return operation failure | No |
+| EUI-D-052 | Modal ownership reuses RootOwned, SceneOwned, and ExternalOwned lifetime rules | Approved | One ownership model is easier to reason about and preserves project composition | Looking Glass destroys/releases only RootOwned modal instances | No |
+| EUI-D-053 | Blocking modal state gates Looking Glass UI interaction but never owns gameplay input/pause/time/cursor truth | Approved | Projects may intentionally keep WASD/gameplay behavior active while menu clicks/navigation are blocked | External systems/bridges may observe modal state and decide their own gameplay-input policy | No |
+| EUI-D-054 | Screen mutations during a blocking modal use explicit `Reject` default or bounded `DeferUntilModalStackClears` policy | Approved | Simple projects need a safe default while advanced flows sometimes need deterministic deferred navigation | No silent background Screen mutation; deferred work preserves FIFO and normal bounds | No |
+| EUI-D-055 | Modal Back behavior is designer-authored: disabled or complete with one configured stable result ID | Approved | Escape/Back semantics vary by confirmation severity and project UX | Back routes modal-first; disabled policy leaves modal active | No |
+| EUI-D-056 | Modal visuals/backdrops remain project-authored; M2-02 guarantees lifecycle/blocking rather than a mandatory dim/blur style | Approved | Designer control and package neutrality | Blur/transitions/general backdrop effects remain later work | No |
 
 ### 27.2 Release-blocking questions
 
@@ -1894,26 +1935,37 @@ Explicitly excluded from EUI-M1-02: arbitrary context payloads; automatic input-
 
 Stop point: satisfied at `c114ba2`; EUI-M1-02 is closed and no excluded capability was activated by that closeout.
 
-### 28.5 Active implementation checkpoint — EUI-M2-01
+### 28.5 Completed implementation checkpoint — EUI-M2-01
 
-**EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations** is **ACTIVE / AUTHORIZED** from clean EUI-M1-02 closeout baseline `c114ba2`.
+**EUI-M2-01 — Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations** is **COMPLETE** at closeout `d5b9a73`.
+
+Retained proof:
+- activation `0c11262`;
+- implementation `8dc9c71`;
+- focused EchoUI **47 / 47**;
+- EUI-M2-01 focused **23 / 23**;
+- manual Laboratory **10 / 10**;
+- final full EditMode **1153 / 1153**, 0 failed.
+
+### 28.6 Active implementation checkpoint — EUI-M2-02
+
+**EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking** is **ACTIVE / AUTHORIZED** from clean EUI-M2-01 closeout baseline `d5b9a73`.
 
 Authorized outcome:
-- introduce project-defined stable layer IDs and authored ordered layer topology without a fixed runtime layer count;
-- preserve package-supplied starter layer arrangements as editable convenience only;
-- introduce explicit screen definitions/runtime entries sufficient for authoritative lifecycle;
-- support `RootOwned`, `SceneOwned`, and `ExternalOwned` view ownership;
-- support Push/Navigate, Replace, Reset/Return-to-root, Back, and Close as structured screen operations;
-- keep screen history authoritative per navigation scope;
-- make suspended-screen visibility designer-configurable while guaranteeing suspended Screens are non-interactive within their scope;
-- execute accepted screen structural mutations one at a time in bounded strict FIFO submission order;
-- reject overflow/invalid/factory/lost-view cases structurally without partial history or ownership mutation;
-- retain EUI-M1-01/M1-02 surface, independent-window, external-context, and selection behavior;
-- preserve zero hard peer Echo package dependency.
+- stacked blocking modals with top-only Looking Glass interaction;
+- project-defined stable result IDs for semantic completion;
+- fresh awaiter/handle generation per admitted opening;
+- first-valid-terminal-wins exact-once settlement;
+- structural `Aborted` outcomes for unexpected post-admission lifecycle loss;
+- RootOwned / SceneOwned / ExternalOwned modal lifetime modes;
+- designer-authored modal Back policy;
+- lower Looking Glass UI blocking without gameplay-input/pause/time/cursor authority;
+- safe default Screen-mutation Reject plus bounded `DeferUntilModalStackClears`;
+- retained M1 and M2-01 behavior.
 
-Explicitly excluded from EUI-M2-01: modal stack/result implementation; exact-once modal awaiters; transition drivers/animation sequencing; general focus-history restoration; full EventSystem adoption policy; HUD region service; notifications; tooltips/prompts; Motifs; Builder; primitive warehouse expansion; persistence; peer bridges; project-wide lifetime composition; runtime arbitrary layer reordering; polished showcase art.
+Explicitly excluded from EUI-M2-02: full focus-history restoration/EventSystem adoption; transition drivers/animation sequencing; generalized dim/blur effects; HUD region service; notifications; tooltips/prompts; Motifs; Builder; primitive warehouse expansion; arbitrary modal domain payload transport; persistence; peer bridges; automatic gameplay-input/pause/time/cursor switching; project-wide lifetime composition; polished showcase art.
 
-Stop point: prove the active EUI-M2-01 Checkpoint Build Plan through an incoming **1130 / 1130** EditMode floor, focused automated lifecycle/queue tests, a final full regression with zero failures, and direct Laboratory evidence. Then stop before EUI-M2-02 or any M3 capability begins.
+Stop point: re-establish the incoming **1153 / 1153** EditMode floor on the activation commit before Runtime edits; then prove the active EUI-M2-02 Checkpoint Build Plan through focused automated modal lifecycle/blocking tests, final full regression, and direct Laboratory evidence. Stop before any M3 capability begins.
 
 ---
 
@@ -1923,32 +1975,33 @@ Stop point: prove the active EUI-M2-01 Checkpoint Build Plan through an incoming
 We are continuing development of The Sperk’s Systems Foundry — EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.3.0 as
-the authority for UI presentation infrastructure and the EUI-M2-01 screen-lifecycle
-contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M2-01
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.4.0 as
+the authority for UI presentation infrastructure and the EUI-M2-02 blocking-modal
+contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M2-02
 Checkpoint Build Plan for Green Path execution.
 
 Current package: EchoUI
-Current specification version: 1.3.0
-Current milestone/checkpoint: EUI-M2-01 ACTIVE / AUTHORIZED
+Current specification version: 1.4.0
+Current milestone/checkpoint: EUI-M2-02 ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation baseline: EUI-M1-02 final closeout c114ba2
-Current EUI-M2-01 implementation status: Not started at activation
-Incoming full EditMode floor: 1130 / 1130 passed, 0 failed at c114ba2
+Current implementation baseline: EUI-M2-01 final closeout d5b9a73
+Current EUI-M2-02 implementation status: Not started at activation
+Incoming full EditMode floor: 1153 / 1153 passed, 0 failed at d5b9a73
 Known blockers: None at activation
 Current Notes reviewed through: August 14, 2026
 
 Before writing code:
-1. Confirm the repository is clean and still at the authorized EUI-M2-01 activation baseline.
-2. Re-establish the incoming full EditMode 1130 / 1130 floor.
-3. Implement only project-defined ordered layers, explicit screen ownership/lifecycle,
-   and bounded strict-FIFO screen operations from the active EUI-M2-01 plan.
-4. Preserve M1 surface/context/selection behavior and independent windows.
-5. Preserve project-owned game state, input truth, object lifetime, persistence, and final UI composition.
+1. Confirm the repository is clean and still at the authorized EUI-M2-02 activation baseline.
+2. Re-establish the incoming full EditMode 1153 / 1153 floor.
+3. Implement only blocking modal lifecycle, stable result IDs, exact-once settlement,
+   ownership/abort semantics, Back policy, UI-only blocking, and bounded Reject/Defer
+   Screen-mutation behavior from the active EUI-M2-02 plan.
+4. Preserve M1 surface/context/selection behavior, independent windows, and M2-01 Screen lifecycle/FIFO behavior.
+5. Preserve project-owned game state, gameplay input truth, pause/time/cursor authority, object lifetime, persistence, and final UI composition.
 6. Keep peer integrations behind explicit bridges/project adapters.
 7. Stop on any Green Path red gate or authority-changing discovery.
-8. Do not begin modal results, transitions, focus-history restoration, Motifs, Builder,
-   primitive-library expansion, HUD/transient services, or peer bridges.
+8. Do not begin full focus/EventSystem policy, transitions, HUD/transient services,
+   Motifs, Builder, primitive-library expansion, persistence, or peer bridges.
 ```
 
 ### 29.1 Current status record
@@ -1956,13 +2009,14 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Runtime package version | `0.1.0` |
-| Package authority | SFGSS-PKG-ECHOUI-001 v1.3.0 Approved |
-| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 |
+| Package authority | SFGSS-PKG-ECHOUI-001 v1.4.0 Approved |
+| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 + EUI-M2-01 |
 | EUI-M1-01 retained evidence | Activation `83d3f9e`; implementation `e6b651f`; final recovery `57a4fa4`; full EditMode **1113 / 1113**, 0 failed; manual Laboratory **5 / 5** |
-| Decisions | EUI-D-001 through EUI-D-047; EUI-D-004 and EUI-D-017 superseded |
-| Active implementation checkpoint | EUI-M2-01 - Authoritative Screen Lifecycle, Project-Defined Layers, and Serialized Screen Operations |
+| Decisions | EUI-D-001 through EUI-D-056; EUI-D-004 and EUI-D-017 superseded |
+| Active implementation checkpoint | EUI-M2-02 - Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking |
 | EUI-M1-02 retained evidence | Activation `f0b97ff`; implementation `1c0a46a`; closeout `c114ba2`; full EditMode **1130 / 1130**; focused EchoUI **24 / 24**; manual Laboratory **10 / 10** |
-| Implementation permission | **EUI-M2-01 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M2-01 JIT revisit + specification v1.3.0 reconciliation |
+| EUI-M2-01 retained evidence | Activation `0c11262`; implementation `8dc9c71`; closeout `d5b9a73`; full EditMode **1153 / 1153**; focused EchoUI **47 / 47**; M2-01 focused **23 / 23**; manual Laboratory **10 / 10** |
+| Implementation permission | **EUI-M2-02 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M2-02 JIT revisit + specification v1.4.0 reconciliation |
 | Other package frontier | First Light frozen after FL-M5-R1; Chronicle M6 remains not activated by this EchoUI checkpoint |
 
 ---
@@ -1988,17 +2042,20 @@ Before writing code:
 - [x] PKG-LEARN-008 bounded EUI-M1-02 revisit is complete.
 - [x] EUI-M1-02 is complete at `c114ba2`.
 - [x] PKG-LEARN-008 bounded EUI-M2-01 revisit is complete.
-- [x] EUI-M2-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
+- [x] EUI-M2-01 is complete at closeout `d5b9a73`.
+- [x] PKG-LEARN-008 bounded EUI-M2-02 revisit is complete.
+- [x] EUI-M2-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M2-01 reconciled and activated
+**Decision:** Approved / EUI-M2-02 reconciled and activated
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
 **EUI-M1-02 JIT reconciliation and explicit authorization date:** August 13, 2026
 **EUI-M2-01 JIT reconciliation and explicit authorization date:** August 14, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M2-01 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to the clean `c114ba2` baseline and the incoming **1130 / 1130** EditMode floor is re-established. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
+**EUI-M2-02 JIT reconciliation and explicit authorization date:** August 14, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M2-02 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to the clean `d5b9a73` baseline and the incoming **1153 / 1153** EditMode floor is re-established. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 
