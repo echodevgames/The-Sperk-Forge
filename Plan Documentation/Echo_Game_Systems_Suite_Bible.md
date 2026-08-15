@@ -1,18 +1,20 @@
 # The Sperk’s Forge — EchoDevGames Game Systems Suite Bible
 
 **Document ID:** SFGSS-000
-**Version:** 0.26.0
+**Version:** 0.27.0
 **Status:** Approved lead architecture baseline; implementation program activated under checkpoint control
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Project boundary:** Independent solo project; not an Isekai Studios product
 **Current development baseline:** Unity 6000.3.8f1
-**Last updated:** August 9, 2026
+**Last updated:** August 15, 2026
 
 > “The Sperk guides our design journey. His almighty singularity lights the way.”
 
 > **v0.25.0 Distribution Kit standard:** Every independently distributed package now maintains a repository-owned, versioned Distribution Kit containing the exact package artifact, complete user handout, manifest, SHA-256 integrity record, and build record. Creating the kit does not by itself qualify an installation route; release/support claims remain governed by retained evidence under SFGSS-004 and final publishing/catalog authority under SFGSS-009.
 >
 > **v0.26.0 Persistence/lifetime separation:** Durable persistence, mutable runtime state, and Unity object lifetime are separate concerns. Package-owned state may expose persistence-capable snapshots without depending directly on The Chronicle. Cross-package persistence belongs in optional bridges/adapters, while long-lived Unity service composition remains project-owned and may not turn First Light, The Chronicle, or another package into a universal service locator.
+>
+> **v0.27.0 Unity-default Input Actions compatibility profile:** Suite projects may treat Unity's default `InputSystem_Actions` map/action shape as an additive minimum convention for optional package input adapters. Projects may add actions but should retain the baseline `Player` and `UI` action names when using this convention. The profile is a setup convenience, not input authority: packages must not hard-depend on a generated wrapper class, asset path, GUIDs, exact bindings, `PlayerInput` object, or The Will merely because the convention exists.
 
 ---
 
@@ -2203,8 +2205,8 @@ A package specification must state which scope each persistent-capable datum bel
 ## 14. UI, Input, and Accessibility Rules
 
 - Every interactive template must support mouse and keyboard navigation; controller support is required when the selected input configuration includes a controller.
-- A screen must define its default selected element and back/cancel behavior.
-- Opening a modal must not allow input to leak to gameplay.
+- A screen/surface should define its default selection/focus and Back/Cancel behavior where applicable, while legal no-focus remains allowed when deliberately authored.
+- Blocking UI must block the lower UI interactions its policy claims. It must not automatically claim gameplay-input, pause/time-scale, cursor, or simulation authority; those decisions remain project-owned.
 - Loading existing settings into controls must not produce click sounds, previews, or redundant writes.
 - Rebinding must provide conflict feedback and a cancellation path.
 - Feedback systems must respect reduced motion, screen shake, flash, rumble, and volume preferences.
@@ -2212,7 +2214,55 @@ A package specification must state which scope each persistent-capable datum bel
 - Packages should expose localization-friendly text references rather than hard-coded production text.
 - The project decides final art direction; package templates should be reskinnable.
 
----
+### 14.1 Unity-default Input Actions compatibility profile
+
+For projects that opt into the suite's standard Unity Input System compatibility profile, the Unity default generated `InputSystem_Actions` shape is the **minimum additive action vocabulary**. Projects may add maps/actions/bindings, but should not remove the baseline actions while claiming compatibility with this profile.
+
+Baseline action maps:
+
+- `Player`
+  - `Move`
+  - `Look`
+  - `Attack`
+  - `Interact`
+  - `Crouch`
+  - `Jump`
+  - `Previous`
+  - `Next`
+  - `Sprint`
+- `UI`
+  - `Navigate`
+  - `Submit`
+  - `Cancel`
+  - `Point`
+  - `Click`
+  - `RightClick`
+  - `MiddleClick`
+  - `ScrollWheel`
+  - `TrackedDevicePosition`
+  - `TrackedDeviceOrientation`
+
+Baseline control-scheme names:
+
+- `Keyboard&Mouse`
+- `Gamepad`
+- `Touch`
+- `Joystick`
+- `XR`
+
+This compatibility profile exists to reduce repetitive package/project setup. Optional package adapters may prefill or discover these map/action names when no project override is supplied.
+
+The profile does **not** require:
+
+- a generated C# wrapper named `InputSystem_Actions`;
+- a specific `.inputactions` asset path;
+- generated action/binding GUIDs;
+- exact project bindings or rebinding choices;
+- a particular `PlayerInput` component/object;
+- The Will (`EchoInput`) or another Echo package;
+- package ownership of enabling/disabling project action maps.
+
+Input remains project-owned. The Will remains the suite authority for reusable input infrastructure when used. Other packages consume input only through their own declared optional adapters/seams and must permit explicit project overrides.
 
 ## 15. Testing and Release Standard
 

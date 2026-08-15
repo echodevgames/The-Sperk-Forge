@@ -2,8 +2,8 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.4.1
-**Current checkpoint:** EUI-M2-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.5.0
+**Current checkpoint:** EUI-M3-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02 is now complete and adds the bounded blocking-Modal lifecycle on top of M2-01. Transitions, focus-history restoration, full EventSystem policy, HUD regions, notifications, prompts/tooltips, Motifs, Builder, primitive warehouse expansion, persistence, peer bridges, MMO layout persistence, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02 is complete and adds the bounded blocking-Modal lifecycle on top of M2-01. EUI-M3-01 is now ACTIVE / AUTHORIZED for explicit EventSystem coordination, policy-aware transient focus memory/restoration, top-Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection. Transitions, HUD/transients, Motifs/accessibility presentation, Builder, primitive/9-slice warehouse work, persistence, peer bridges, full Window LIFO/pinning/layout management, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -90,3 +90,23 @@ EUI-M2-02 is now complete and adds the bounded blocking-Modal lifecycle on top o
 - Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, or project-wide lifetime authority.
 - Implementation matched **SFGSS-PKG-ECHOUI-001 v1.4.1**; no package-authority revision or new suite ADR is required at closeout.
 - **EUI-M2-02 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
+
+
+## EUI-M3-01 declaration
+
+- **Planning baseline:** `0b7622c` — clean synchronized repository-hygiene boundary after EUI-M2-02 closeout `7f5ad40`.
+- **Authority:** SFGSS-PKG-ECHOUI-001 v1.5.0 under SFGSS-000 v0.27.0.
+- **Incoming full EditMode floor:** **1181 / 1181 passed, 0 failed**.
+- Retained EchoUI: **75 / 75**; focused M2-02: **28 / 28**; M2-02 Laboratory: **12 / 12 PASS**.
+- EventSystem modes are `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal`; external systems are never silently destroyed or disabled.
+- Multiple eligible active EventSystems produce degraded/blocking focus status rather than arbitrary adoption.
+- Focus memory is per live entry, with optional transient stable-surface root-session memory.
+- Reopen policy remains designer-controlled between fresh/default behavior and remember-this-session.
+- Restoration resolves explicit -> remembered -> authored default -> entry resolver -> global fallback -> legal no-focus.
+- Pointer/navigation focus behavior remains designer-controlled.
+- Blocking Modal focus is structurally contained to the top eligible Modal while lower-entry focus memory survives.
+- Independent Windows may keep distinct focus memory without activating the later Window manager.
+- Focus maintenance is event-driven by default with explicit project-callable revalidation; no universal per-frame scan is required.
+- Stale operation/generation focus requests cannot overwrite newer UI state.
+- Optional input adapters may default to SFGSS-000's Unity-default action-name compatibility profile. EchoUI core has no hard dependency on the generated `InputSystem_Actions` wrapper, exact bindings/GUIDs, The Will, or project action-map ownership.
+- **Runtime implementation has not started at activation.**

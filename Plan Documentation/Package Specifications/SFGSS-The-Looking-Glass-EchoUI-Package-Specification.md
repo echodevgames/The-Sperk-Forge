@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.4.1
+**Specification version:** 1.5.0
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -16,11 +16,11 @@
 **Required Unity package:** Unity UI (`com.unity.ugui`) `2.0.0`, verified from the Unity 6000.3.8f1 project manifest during PKG-LEARN-008
 **Default text path:** uGUI-compatible project-owned text components; no separate text package dependency is required by EUI-M1-01
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 14, 2026
+**Last updated:** August 15, 2026
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M2-02 JIT revisit. EUI-M1-01, EUI-M1-02, and EUI-M2-01 are complete; EUI-M2-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean closeout baseline `d5b9a73`. Implementation permission extends only to the active EUI-M2-02 Checkpoint Build Plan.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M3-01 JIT revisit. EUI-M1-01, EUI-M1-02, EUI-M2-01, and EUI-M2-02 are complete. EUI-M3-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean repository-hygiene baseline `0b7622c`. Implementation permission extends only to the active EUI-M3-01 Checkpoint Build Plan.
 
 ---
 
@@ -36,6 +36,7 @@
 | 1.3.0 | 2026-08-14 | Approved | EUI-M2-01 JIT reconciliation: replaces the fixed seven-layer runtime assumption with project-defined ordered layer topology plus convenience starter defaults; confirms RootOwned/SceneOwned/ExternalOwned screen ownership; defines designer-controlled suspended-screen visibility with scope-enforced non-interaction; locks bounded strict FIFO screen mutation ordering; and activates the screen-lifecycle-only M2-01 slice while deferring modal exact-once results to M2-02. | Jesse “Echo” Adams |
 | 1.4.0 | 2026-08-14 | Approved | EUI-M2-02 JIT reconciliation: activates blocking modal lifecycle with stacked top-only interaction, project-defined stable result IDs, first-terminal-wins exact-once completion, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, fresh awaiters, designer-authored Back dismissal, UI-only blocking that does not own gameplay input, and configurable Reject/Defer screen-mutation behavior while a blocking modal stack is active. Visual backdrop styling, full focus restoration, transitions, HUD/transients, Motifs, Builder, persistence, and peer bridges remain later slices. | Jesse “Echo” Adams |
 | 1.4.1 | 2026-08-14 | Approved | Post-activation clarification: blocking Modal semantics apply only to the blocking Modal lifecycle, not to independent Window surfaces. Independent Windows remain non-blocking/coexistent by default. Future Back/Escape window dismissal uses a separate most-recent-eligible (LIFO) history with authored/runtime pin exclusions; this is distinct from M2-01 FIFO operation execution and remains outside EUI-M2-02 implementation. | Jesse “Echo” Adams |
+| 1.5.0 | 2026-08-15 | Approved | EUI-M3-01 JIT reconciliation: explicit/non-destructive EventSystem coordination; per-entry focus memory with optional transient stable-surface session memory; policy-aware restoration/fallback/no-focus; pointer/navigation behavior; blocking-Modal focus containment; independent Window focus memory without a full Window manager; event-driven focus maintenance with explicit revalidation; stale-request protection; and optional use of the suite Unity-default input compatibility profile without transferring input ownership. Activates EUI-M3-01 while transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pinning/layout, persistence, peer bridges, Builder, and primitive/9-slice work remain separately gated. | Jesse “Echo” Adams |
 
 ---
 
@@ -535,9 +536,48 @@ Blocking modals form one ordered runtime stack and are keyed by runtime generati
 
 ### 8.7 Focus and EventSystem
 
-Configuration selects `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, or `RequireExternal`. EchoUI never silently destroys EventSystems. Multiple active systems yield actionable degraded/blocking status.
+EUI-M3-01 activates the full bounded focus/EventSystem coordination slice while preserving project input authority.
 
-Focus resolution: explicit target -> valid remembered target -> declared default -> entry resolver -> global fallback -> explicit no-focus. Focus requests carry operation IDs; stale requests cannot override newer UI state.
+**EventSystem coordination modes**
+
+Configuration selects one explicit mode:
+
+- `AdoptAssigned` — use exactly the EventSystem assigned by the project/designer;
+- `AdoptExisting` — deterministically adopt one eligible existing EventSystem only when the result is unambiguous;
+- `CreateIfMissing` — adopt an eligible existing EventSystem or create one only when none exists and creation is explicitly configured;
+- `RequireExternal` — require project-supplied EventSystem authority and never create one.
+
+EchoUI never silently destroys, disables, or steals an externally owned EventSystem. Multiple active eligible EventSystems produce actionable degraded/blocking focus status rather than an arbitrary winner.
+
+**Focus memory and restoration**
+
+Focus memory always exists per live UI runtime entry. A surface may additionally opt into transient root-session memory keyed by its stable surface ID so a later reopening can remember the last valid selected target during the current UI session. Reopening behavior is designer-selectable: fresh/default behavior remains available and session memory is never mandatory.
+
+No focus memory is durable persistence. It is cleared by the appropriate entry/session lifetime and is not written to Chronicle, Accord, disk, or authored assets by EchoUI.
+
+When a Screen resumes/Back exposes a prior entry, a blocking Modal completes, or an explicit focus request/revalidation occurs, Looking Glass resolves focus through the deterministic chain:
+
+`explicit target -> valid remembered target -> authored default -> entry resolver -> global fallback -> legal no-focus`
+
+Remembered/default targets that are destroyed, disabled, non-interactable, outside the eligible focus scope, or otherwise illegal are skipped rather than treated as corruption.
+
+Pointer/navigation behavior remains designer-controlled. Pointer-driven openings/interactions may intentionally resolve to no selected object. Looking Glass does not clear selection merely because a pointer moved by a trivial amount. Navigation/controller modality may establish a configured eligible target when policy requires one.
+
+**Blocking Modal containment**
+
+While a blocking Modal stack is active, EventSystem selection may not legally escape the top eligible Modal into lower Looking Glass UI. Lower entries retain their focus memory, and when the Modal completes the newly exposed entry may restore remembered focus according to its current policy.
+
+Independent Windows retain distinct focus memory without implying focused-window arbitration, z-order raising doctrine, most-recent-eligible Back/Escape history, pin/lock state, dragging/resizing, or persisted layout.
+
+**Event-driven maintenance**
+
+Focus coordination is event-driven by default. Relevant entry lifecycle, hierarchy/selection invalidation, modality changes, explicit focus requests, and explicit revalidation trigger work. Looking Glass exposes a bounded project-callable revalidation seam for highly dynamic interfaces. No per-frame full-scene selectable/EventSystem scan is required. A future opt-in tick/revalidation driver may be added only if profiling and a later checkpoint justify it.
+
+Focus requests carry operation/generation identity. A stale request cannot overwrite a newer UI state.
+
+**Optional suite input compatibility**
+
+EchoUI core does not require Unity Input System action ownership or a generated input wrapper. Optional project/adapter wiring may default to the suite's SFGSS-000 Unity-default `UI/Navigate`, `UI/Submit`, `UI/Cancel`, `UI/Point`, `UI/Click`, and related action-name profile when present. Projects may override this mapping, and Looking Glass does not enable/disable gameplay or UI action maps by authority.
 
 ### 8.8 View/presenter separation
 
@@ -599,7 +639,7 @@ Claim package-local authority -> validate/register surfaces -> initialize scoped
 | `UIHudWidgetEntry` | HUD service | Lease | Dispose/owner loss | Not saved |
 | `UINotificationEntry` | Notification service | Queue/display/history | Policy/reset | Not saved |
 | `UITooltipEntry` / `UIPromptEntry` | Transient services | Active item | Hide/replace | Not saved |
-| `UIFocusMemory` | Focus service | Entry lifetime | Entry release | Not saved |
+| `UIFocusMemory` | Focus service | Live entry plus optional root-session stable-surface cache | Entry release / session reset according to authored policy | Not saved |
 | `UITransitionOperation` | Coordinator | Operation | Terminal state | Not saved |
 | Motif/accessibility effective state | Motif/accessibility services | Session | Policy change | Persisted externally |
 | Diagnostic history | Root/status | Bounded session | Reset/shutdown | Export only |
@@ -1849,7 +1889,7 @@ An integration claim requires:
 | EUI-D-036 | A surface may opt out of automatic external-context handling | Approved | Designers need explicit escape hatches for always-on or manually controlled UI | Opt-out affects context response only, not registration/direct operations | No |
 | EUI-D-037 | Effective surface behavior resolves from authored defaults plus local/instance and transient project runtime overrides | Approved | Reuse should reduce authoring work without preventing case-specific behavior or future flexible HUD customization | Runtime overrides must not mutate authored assets and are not persistence | No |
 | EUI-D-038 | Input modality remains external; each surface owns its selection-on-open policy | Approved | Controller defaults and pointer-unselected behavior can coexist without EchoUI owning input | No hard dependency on The Will, Vessel, Controller, or Input System modality authority | No |
-| EUI-D-039 | Closing a temporary surface defaults to no selected control; prior selection is not implicitly restored | Approved | Neutral default avoids framework-imposed focus history | Restore-selection behavior requires a later explicit capability | No |
+| EUI-D-039 | Closing a temporary surface defaults to no selected control; prior selection is not implicitly restored | Superseded 2026-08-15 by EUI-D-061/EUI-D-062 | M1-02 intentionally deferred focus-history restoration; M3-01 now supplies the explicit capability while retaining fresh/no-focus as designer-selectable behavior | Historical checkpoint behavior remains valid for M1-02 | No |
 | EUI-D-040 | EUI-M1-02 context IDs carry no arbitrary domain payload | Approved | Prevents UI context from becoming a generic cross-package data bus | Rich domain values remain with their owning systems/providers | No |
 | EUI-D-041 | Future presets/templates are editable copy-in starting points rather than mandatory live centralized policies | Approved | Fast setup and full designer control can share one architecture | Preset/template authoring tooling remains outside EUI-M1-02 | No |
 | EUI-D-042 | Layer topology is project-defined and ordered; any package starter layer set is editable convenience rather than a fixed runtime count | Approved | Designers need to add/remove/reorder layer definitions without fighting framework law | Layer IDs/config become stable authored data; runtime validates resolved topology and does not assume seven | No |
@@ -1870,6 +1910,15 @@ An integration claim requires:
 | EUI-D-057 | Blocking Modal semantics apply only to the blocking Modal lifecycle; independent Window surfaces remain non-blocking/coexistent by default | Approved | Supports EverQuest/WoW/desktop-style multi-window UI without weakening confirmation/dialog blocking | Window controls may still choose their own raycast/interactivity policy | No |
 | EUI-D-058 | Screen-operation FIFO and Back/Escape dismissal order are separate concepts; future independent-window dismissal uses most-recent-eligible LIFO history | Approved | Accepted operations should execute deterministically while user-facing Back naturally unwinds the latest eligible surface | Does not change M2-01 FIFO execution contract | No |
 | EUI-D-059 | Future independent Windows may be excluded from automatic Back/Escape by authored defaults or runtime pin/lock state | Approved | Supports project defaults plus user-controlled pinned windows | Runtime pin state is transient; durable persistence remains separately gated | No |
+| EUI-D-060 | EventSystem coordination is explicit and non-destructive through AdoptAssigned, deterministic AdoptExisting, CreateIfMissing, and RequireExternal modes | Approved | Projects need predictable ownership without Looking Glass deleting or arbitrarily choosing external EventSystems | Multiple eligible active EventSystems produce degraded/blocking focus status | No |
+| EUI-D-061 | Focus memory is per live runtime entry with optional transient root-session memory keyed by stable surface ID | Approved | Natural resume/modal restoration and optional reopen memory can coexist without persistence | Designer may choose fresh reopen; session memory never mutates authored assets | No |
+| EUI-D-062 | Focus restoration uses explicit -> remembered -> authored default -> entry resolver -> global fallback -> legal no-focus | Approved | Restoration should be useful without preserving an obsolete M1-02 limitation or forcing a target | Invalid/ineligible targets fall through safely | No |
+| EUI-D-063 | Pointer/navigation focus behavior remains designer-controlled; trivial pointer movement does not force selection clearing | Approved | Mouse-like unselected UX and controller deterministic focus can coexist without jitter | Input modality remains external/project supplied | No |
+| EUI-D-064 | A blocking Modal structurally contains Looking Glass focus to the top eligible Modal while preserving lower-entry focus memory | Approved | Modal UI must prevent lower-UI focus leakage while permitting deterministic restoration | Gameplay input remains external/project-owned | No |
+| EUI-D-065 | Independent Windows may keep distinct focus memory without activating a full focused-window manager | Approved | MMO/desktop-style coexistence needs focus memory without prematurely coupling z-order, Back history, pins, or layout | Window LIFO/pin/drag/layout work remains later | No |
+| EUI-D-066 | Focus maintenance is event-driven by default with an explicit project-callable revalidation seam | Approved | Avoids universal per-frame scanning while supporting dynamic/touch-heavy UI that knows when its hierarchy changes | Future opt-in tick driver requires separate evidence/authorization | No |
+| EUI-D-067 | Focus requests carry operation/generation identity and stale requests cannot override newer UI state | Approved | Async/lifecycle ordering must not teleport selection backward in time | Diagnostics should expose rejected stale work | No |
+| EUI-D-068 | Optional package input adapters may default to the suite Unity-default Input Actions compatibility profile, but EchoUI core does not require the generated wrapper or own input maps | Approved | Standard baseline action names save project setup without creating a hidden peer/input dependency | Projects retain explicit override/adapters and may add actions | No |
 
 ### 27.2 Release-blocking questions
 
@@ -1955,25 +2004,44 @@ Retained proof:
 - manual Laboratory **10 / 10**;
 - final full EditMode **1153 / 1153**, 0 failed.
 
-### 28.6 Active implementation checkpoint — EUI-M2-02
+### 28.6 Completed implementation checkpoint — EUI-M2-02
 
-**EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking** is **ACTIVE / AUTHORIZED** from clean EUI-M2-01 closeout baseline `d5b9a73`.
+**EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking** is **COMPLETE**.
+
+Durable evidence:
+- activation `e2145ab`;
+- Modal/Window clarification `b6fc160`;
+- implementation `5ab34b3`;
+- closeout `7f5ad40`;
+- focused EUI-M2-02 **28 / 28 passed**;
+- EchoUI EditMode **75 / 75 passed**;
+- final Foundry EditMode **1181 / 1181 passed**;
+- manual Laboratory **12 / 12 PASS**;
+- retained M2-01 Screens and M1 proof tabs PASS.
+
+M2-02 established stacked blocking Modal lifecycle, project-defined stable result IDs, exact-once settlement, structural aborts, ownership modes, Back policy, UI-only blocking, and Screen Reject/Defer behavior. Blocking Modal semantics remain distinct from independent Window coexistence.
+
+### 28.7 Active implementation checkpoint — EUI-M3-01
+
+**EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment** is **ACTIVE / AUTHORIZED** from clean repository-hygiene baseline `0b7622c`.
 
 Authorized outcome:
-- stacked blocking modals with top-only Looking Glass interaction;
-- project-defined stable result IDs for semantic completion;
-- fresh awaiter/handle generation per admitted opening;
-- first-valid-terminal-wins exact-once settlement;
-- structural `Aborted` outcomes for unexpected post-admission lifecycle loss;
-- RootOwned / SceneOwned / ExternalOwned modal lifetime modes;
-- designer-authored modal Back policy;
-- lower Looking Glass UI blocking without gameplay-input/pause/time/cursor authority;
-- safe default Screen-mutation Reject plus bounded `DeferUntilModalStackClears`;
-- retained M1 and M2-01 behavior.
+- explicit `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal` EventSystem coordination;
+- non-destructive handling of external EventSystems and degraded/blocking status for ambiguous multiple-system states;
+- per-live-entry focus memory;
+- optional transient root-session stable-surface focus memory with designer-selectable fresh-vs-remembered reopen policy;
+- deterministic explicit/remembered/default/resolver/fallback/no-focus resolution;
+- Screen Back/resume and Modal-close focus restoration when policy allows;
+- designer-controlled pointer/navigation focus behavior;
+- structural top-Modal focus containment while retaining lower-entry memory;
+- independent Window focus memory without the later Window manager;
+- event-driven focus maintenance plus explicit bounded revalidation;
+- stale focus operation/generation rejection;
+- optional adapter use of the SFGSS-000 Unity-default Input Actions compatibility profile without hard Input System/generated-wrapper dependency or input-map ownership.
 
-Explicitly excluded from EUI-M2-02: full focus-history restoration/EventSystem adoption; transition drivers/animation sequencing; generalized dim/blur effects; HUD region service; notifications; tooltips/prompts; Motifs; Builder; primitive warehouse expansion; arbitrary modal domain payload transport; persistence; peer bridges; automatic gameplay-input/pause/time/cursor switching; project-wide lifetime composition; polished showcase art.
+Explicitly excluded from EUI-M3-01: transition drivers/animation sequencing; generalized dim/blur; Motifs/accessibility presentation implementation; HUD regions/notifications/tooltips/prompts; full Window LIFO/pin/drag-resize/layout management; persistence; peer bridges; Builder; primitive/9-slice warehouse work; automatic gameplay-input/UI-map switching; project-wide lifetime composition; polished showcase art.
 
-Stop point: re-establish the incoming **1153 / 1153** EditMode floor on the activation commit before Runtime edits; then prove the active EUI-M2-02 Checkpoint Build Plan through focused automated modal lifecycle/blocking tests, final full regression, and direct Laboratory evidence. Stop before any M3 capability begins.
+Stop point: re-establish the incoming **1181 / 1181** EditMode floor on the activation commit before Runtime edits; then prove the active EUI-M3-01 Checkpoint Build Plan through focused automated focus/EventSystem tests, final full regression, direct Laboratory evidence, and bounded performance evidence. Stop before transition/Motif/HUD/window-manager work begins.
 
 ---
 
@@ -1982,40 +2050,60 @@ Stop point: re-establish the incoming **1153 / 1153** EditMode floor on the acti
 ```text
 We are continuing development of The Sperk’s Systems Foundry — EchoDevGames Game Systems Suite.
 
-Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.4.1 as
-the authority for UI presentation infrastructure and the EUI-M2-02 blocking-modal
-contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M2-02
+Treat SFGSS-000 v0.27.0 as the authority for suite-wide boundaries, including
+the additive Unity-default Input Actions compatibility profile.
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.5.0 as
+the authority for UI presentation infrastructure and the EUI-M3-01 focus/EventSystem
+contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M3-01
 Checkpoint Build Plan for Green Path execution.
 
 Current package: EchoUI
-Current specification version: 1.4.0
-Current milestone/checkpoint: EUI-M2-02 ACTIVE / AUTHORIZED
+Current specification version: 1.5.0
+Current milestone/checkpoint: EUI-M3-01 ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation baseline: EUI-M2-01 final closeout d5b9a73
-Current EUI-M2-02 implementation status: Not started at activation
-Incoming full EditMode floor: 1153 / 1153 passed, 0 failed at d5b9a73
+Current implementation baseline: repository hygiene 0b7622c after EUI-M2-02 closeout 7f5ad40
+Current EUI-M3-01 implementation status: Not started at activation
+Incoming full EditMode floor: 1181 / 1181 passed, 0 failed
+Retained EchoUI: 75 / 75 passed
+Retained M2-02 focused: 28 / 28 passed
+Retained M2-02 Laboratory: 12 / 12 PASS
 Known blockers: None at activation
-Current Notes reviewed through: August 14, 2026
+Current Notes reviewed through: August 15, 2026
 
 Before writing code:
-1. Confirm the repository is clean and still at the authorized EUI-M2-02 activation baseline.
-2. Re-establish the incoming full EditMode 1153 / 1153 floor.
-3. Implement only blocking modal lifecycle, stable result IDs, exact-once settlement,
-   ownership/abort semantics, Back policy, UI-only blocking, and bounded Reject/Defer
-   Screen-mutation behavior from the active EUI-M2-02 plan.
-4. Preserve M1 surface/context/selection behavior, independent windows, and M2-01 Screen lifecycle/FIFO behavior.
-5. Preserve project-owned game state, gameplay input truth, pause/time/cursor authority, object lifetime, persistence, and final UI composition.
-6. Keep peer integrations behind explicit bridges/project adapters.
+1. Confirm the repository is clean and still at the authorized EUI-M3-01 activation baseline.
+2. Re-establish the incoming full EditMode 1181 / 1181 floor.
+3. Implement only explicit/non-destructive EventSystem coordination, focus memory/restoration,
+   top-Modal focus containment, independent-Window focus memory, event-driven revalidation,
+   and stale focus-request protection from the active EUI-M3-01 plan.
+4. Preserve M1/M2 Screen, Window, context, Modal, exact-once, and FIFO behavior.
+5. Preserve project-owned game state, gameplay input truth, action-map ownership, pause/time/cursor,
+   object lifetime, persistence, and final UI composition.
+6. Optional input adapters may default to SFGSS-000's Unity-default action-name profile but must
+   not hard-depend on the generated InputSystem_Actions wrapper or another Echo package.
 7. Stop on any Green Path red gate or authority-changing discovery.
-8. Do not begin full focus/EventSystem policy, transitions, HUD/transient services,
-   Motifs, Builder, primitive-library expansion, persistence, or peer bridges.
+8. Do not begin transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pins/
+   dragging/layout, persistence, Builder, primitive/9-slice work, peer bridges, or polished showcase art.
 ```
 
 ### 29.1 Current status record
 
 | Field | Current value |
 |---|---|
+| Runtime package version | `0.1.0` |
+| Package authority | SFGSS-PKG-ECHOUI-001 v1.5.0 Approved |
+| Suite authority relevant to input compatibility | SFGSS-000 v0.27.0 Approved |
+| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 + EUI-M2-01 + EUI-M2-02 |
+| EUI-M2-02 retained evidence | Activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; closeout `7f5ad40`; full EditMode **1181 / 1181**; EchoUI **75 / 75**; focused M2-02 **28 / 28**; manual Laboratory **12 / 12** |
+| Decisions | EUI-D-001 through EUI-D-068; EUI-D-004, EUI-D-017, and EUI-D-039 superseded |
+| Active implementation checkpoint | EUI-M3-01 - EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment |
+| EUI-M3-01 implementation status | Not started at activation |
+| Implementation permission | **EUI-M3-01 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M3-01 JIT revisit + specification v1.5.0 reconciliation |
+| Starting clean repository baseline | `0b7622c` |
+| Incoming full EditMode gate | **1181 / 1181 passed, 0 failed** must be re-established before Runtime edits |
+| Other package frontier | First Light frozen after FL-M5-R1; Chronicle M6 remains not activated by this EchoUI checkpoint |
+
+---|---|
 | Runtime package version | `0.1.0` |
 | Package authority | SFGSS-PKG-ECHOUI-001 v1.4.0 Approved |
 | Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 + EUI-M2-01 |
@@ -2036,34 +2124,29 @@ Before writing code:
 - [x] Package identity and plain responsibility are clear.
 - [x] Ownership and exclusions align with SFGSS-000.
 - [x] Independence proof is credible.
-- [x] MVP is useful without becoming a complete game shell.
-- [x] Root, surface, navigation, context, and selection boundaries are specified for the active slice.
 - [x] Configuration and runtime state are separated.
 - [x] Project-owned views/motifs/content remain outside immutable package source.
-- [x] Standalone Laboratory remains the engineering proof surface.
-- [x] Diagnostics work without Observatory.
-- [x] Optional integrations are explicit and removable.
-- [x] Performance, privacy, accessibility, compatibility, and migration boundaries are documented.
-- [x] Test and release gates are measurable.
-- [x] No Isekai Studios identity or ownership has been introduced.
-- [x] EUI-M1-01 is complete and reconciled at `57a4fa4`.
-- [x] PKG-LEARN-008 bounded EUI-M1-02 revisit is complete.
-- [x] EUI-M1-02 is complete at `c114ba2`.
-- [x] PKG-LEARN-008 bounded EUI-M2-01 revisit is complete.
-- [x] EUI-M2-01 is complete at closeout `d5b9a73`.
-- [x] PKG-LEARN-008 bounded EUI-M2-02 revisit is complete.
-- [x] EUI-M2-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
+- [x] EventSystem ownership is explicit and non-destructive.
+- [x] Focus memory/restoration is transient, policy-aware, and permits legal no-focus.
+- [x] Blocking Modal focus containment does not transfer gameplay-input authority.
+- [x] Independent Window focus memory does not activate the full Window manager.
+- [x] Focus maintenance is event-driven by default with explicit revalidation available.
+- [x] Optional Unity-default action-name conveniences do not create a generated-wrapper or peer-package dependency.
+- [x] EUI-M1-01, EUI-M1-02, EUI-M2-01, and EUI-M2-02 are complete.
+- [x] PKG-LEARN-008 bounded EUI-M3-01 revisit is complete.
+- [x] EUI-M3-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M2-02 reconciled and activated
+**Decision:** Approved / EUI-M3-01 reconciled and activated
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
 **EUI-M1-02 JIT reconciliation and explicit authorization date:** August 13, 2026
 **EUI-M2-01 JIT reconciliation and explicit authorization date:** August 14, 2026
 **EUI-M2-02 JIT reconciliation and explicit authorization date:** August 14, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M2-02 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to the clean `d5b9a73` baseline and the incoming **1153 / 1153** EditMode floor is re-established. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
+**EUI-M3-01 JIT reconciliation and explicit authorization date:** August 15, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M3-01 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to clean baseline `0b7622c` and the incoming **1181 / 1181** EditMode floor is re-established. The SFGSS-000 Unity-default input profile is an additive convenience only and does not transfer input authority or create a hard dependency. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 

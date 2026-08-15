@@ -4,7 +4,7 @@ tags:
   - sfgss/wave/foundation
   - sfgss/ui
 status: complete
-updated: 2026-08-14
+updated: 2026-08-15
 ---
 
 # PKG-LEARN-008 – The Looking Glass (`EchoUI`) Learning Review
@@ -15,9 +15,9 @@ updated: 2026-08-14
 **Review status:** Complete
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
-**Completed:** 2026-08-14
-**Package authority version reviewed/reconciled:** 1.4.0
-**Implementation authorization:** `EUI-M2-02` ACTIVE / AUTHORIZED after the bounded EUI-M2-02 JIT revisit; EUI-M1-01, EUI-M1-02, and EUI-M2-01 complete, latest closeout `d5b9a73`
+**Completed:** 2026-08-15
+**Package authority version reviewed/reconciled:** 1.5.0
+**Implementation authorization:** `EUI-M3-01` ACTIVE / AUTHORIZED after the bounded EUI-M3-01 JIT revisit; EUI-M1-01, EUI-M1-02, EUI-M2-01, and EUI-M2-02 complete; clean activation baseline `0b7622c`
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,8 +25,8 @@ updated: 2026-08-14
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.4.0 Approved | Owns package behavior, completed M1/M2-01 foundation, and reconciled EUI-M2-02 blocking-modal contract |
-| SFGSS-000 | v0.26.0 Approved | Owns suite authority, package independence, project composition, and persistence/lifetime boundaries |
+| Looking Glass package authority | v1.5.0 Approved | Owns completed M1/M2 Runtime Core plus the reconciled EUI-M3-01 focus/EventSystem contract |
+| SFGSS-000 | v0.27.0 Approved | Owns suite authority, package independence, project composition, persistence/lifetime boundaries, and the additive Unity-default Input Actions compatibility profile |
 | SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
 | SFGSS-ADR-006 | Accepted | Keeps Unity object lifetime/project composition outside UI authority |
@@ -341,3 +341,91 @@ After EUI-M2-02 activation and before any Runtime edit, Jesse clarified an EverQ
 - Designers may author Windows that never participate in automatic Back/Escape dismissal, and runtime users may later pin/lock eligible Windows out of that dismissal history.
 - Durable pin/layout persistence, dragging/resizing, focused-window arbitration, and the Window dismissal manager remain future separately gated capabilities.
 - EUI-M2-02 remains bounded to blocking Modal lifecycle and exact-once results; this clarification exists so its implementation does not accidentally consume or constrain the future independent-Window design space.
+
+
+## 17. EUI-M3-01 bounded JIT revisit — August 15, 2026
+
+### 17.1 EventSystem coordination declaration
+
+EUI-M3-01 activates explicit EventSystem coordination rather than automatic ownership.
+
+- `AdoptAssigned` uses exactly the designer/project-assigned EventSystem.
+- deterministic `AdoptExisting` adopts only an unambiguous eligible existing EventSystem.
+- `CreateIfMissing` may create only when explicitly configured and no eligible system exists.
+- `RequireExternal` never creates one.
+- Looking Glass never silently destroys, disables, or steals external EventSystems.
+- multiple eligible active EventSystems enter actionable degraded/blocking focus state instead of choosing an arbitrary winner.
+
+### 17.2 Focus memory and restoration declaration
+
+M1-02's neutral-close/no-history behavior was an intentionally bounded earlier checkpoint rule, not a permanent prohibition.
+
+M3-01 introduces:
+
+- per-live-runtime-entry focus memory;
+- optional transient root-session memory keyed by stable surface ID;
+- designer-selectable fresh reopen versus remember-this-session behavior;
+- Screen Back/resume and Modal-close restoration when current policy permits;
+- deterministic resolution through explicit target -> remembered target -> authored default -> entry resolver -> global fallback -> legal no-focus;
+- safe fallback when a remembered/default target is destroyed, disabled, non-interactable, or otherwise ineligible;
+- no durable persistence or authored-asset mutation.
+
+### 17.3 Modal containment and independent Window boundary
+
+Blocking Modal focus is structural: EventSystem selection cannot legally escape the top eligible blocking Modal into lower Looking Glass UI. Lower entries retain their own focus memory for deterministic restoration after the Modal completes.
+
+Independent Windows may retain distinct focus memory, but this does not activate:
+
+- focused-window/z-order arbitration;
+- most-recent-eligible Back/Escape LIFO history;
+- pin/lock state;
+- dragging/resizing;
+- persisted layout.
+
+Those remain later Window-management work.
+
+### 17.4 Event-driven maintenance and explicit revalidation
+
+Focus maintenance is event-driven by default. Entry lifecycle, selection/hierarchy invalidation, modality changes, explicit focus requests, and explicit revalidation trigger work.
+
+Projects with unusually dynamic UI may explicitly request focus revalidation when their UI state changes. M3-01 does not require a universal per-frame scan. A future opt-in tick driver remains possible only if later profiling/evidence justifies it.
+
+Focus requests carry operation/generation identity so stale requests cannot overwrite newer UI state.
+
+### 17.5 Suite Unity-default input compatibility profile
+
+Jesse declared the Unity default generated `InputSystem_Actions` shape as the suite's intended additive minimum compatibility template for future project/controller integrations.
+
+Baseline maps/actions:
+
+- `Player`: `Move`, `Look`, `Attack`, `Interact`, `Crouch`, `Jump`, `Previous`, `Next`, `Sprint`.
+- `UI`: `Navigate`, `Submit`, `Cancel`, `Point`, `Click`, `RightClick`, `MiddleClick`, `ScrollWheel`, `TrackedDevicePosition`, `TrackedDeviceOrientation`.
+- control-scheme names: `Keyboard&Mouse`, `Gamepad`, `Touch`, `Joystick`, `XR`.
+
+Projects may add actions but should retain this baseline when claiming the suite compatibility profile. The convention reduces repetitive setup and permits optional adapters to use known default names.
+
+It does **not** make `InputSystem_Actions`, its asset path, GUIDs, exact bindings, `PlayerInput`, The Will, or input-map enable/disable authority a dependency of Looking Glass or another package. Explicit project overrides remain valid.
+
+This suite-wide convenience is promoted into SFGSS-000 v0.27.0 alongside the M3-01 activation.
+
+### 17.6 EUI-M3-01 checkpoint boundary
+
+EUI-M3-01 is bounded to EventSystem coordination, focus memory/restoration, Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection.
+
+Explicitly deferred:
+
+- transition drivers/animation sequencing;
+- generalized dim/blur;
+- Motifs/accessibility presentation implementation;
+- HUD/transients;
+- full Window LIFO/pinning/drag-resize/layout management;
+- persistence;
+- peer bridges;
+- Builder;
+- primitive/9-slice warehouse work;
+- automatic gameplay-input/UI action-map ownership;
+- polished Reference Showcase art.
+
+Incoming retained floor before Runtime edits: full Foundry EditMode **1181 / 1181 passed, 0 failed**, EchoUI **75 / 75**, focused M2-02 **28 / 28**, manual M2-02 Laboratory **12 / 12 PASS**.
+
+Runtime implementation has **not started** at this activation record.

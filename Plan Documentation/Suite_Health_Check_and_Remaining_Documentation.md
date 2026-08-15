@@ -2,13 +2,13 @@
 
 **Updated:** August 15, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M2-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-02 complete at implementation `5ab34b3`; no follow-on Looking Glass checkpoint activated
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-02 complete at closeout `7f5ad40`; EUI-M3-01 ACTIVE / AUTHORIZED from baseline `0b7622c`; Runtime implementation not started at activation
 
 ## Current health
 
 | Area | Status |
 |---|---|
-| Suite Bible | Approved; no FL-M6-01 closeout authority change required |
+| Suite Bible | **SFGSS-000 v0.27.0 Approved** — adds the additive Unity-default Input Actions compatibility profile without transferring input authority |
 | Standards | SFGSS-001 through SFGSS-010 complete |
 | Package authorities | 28 of 28 approved |
 | Learning workflow | **Learn → Declare → Authorize** just-in-time gate + **Green Path** self-validating execution |
@@ -22,14 +22,30 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-02 revisit reconciled stacked modal blocking, exact-once stable-ID results, ownership/abort semantics, UI/input authority, Back policy, and Reject/Defer Screen mutation |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.4.1 Approved** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-01 revisit reconciles EventSystem coordination, transient focus memory/restoration, Modal containment, independent Window focus memory, explicit revalidation, stale-request protection, and optional suite input-profile defaults |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.5.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M2-02 COMPLETE** — activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; focused M2-02 **28 / 28**; EchoUI **75 / 75**; manual Laboratory **12 / 12**; final full EditMode **1181 / 1181** |
-| Looking Glass active checkpoint | **None.** No follow-on Looking Glass checkpoint is activated. |
+| Looking Glass active checkpoint | **EUI-M3-01 ACTIVE / AUTHORIZED** — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment; Runtime implementation not started at activation |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
+
+## Looking Glass EUI-M3-01 activation health
+
+- Planning baseline: `0b7622c`, clean synchronized repository-hygiene boundary after EUI-M2-02 closeout `7f5ad40`.
+- Incoming full EditMode floor to re-establish before Runtime edits: **1181 / 1181 passed, 0 failed**.
+- Retained EchoUI **75 / 75**; focused M2-02 **28 / 28**; manual M2-02 Laboratory **12 / 12 PASS**.
+- EventSystem policy: `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, or `RequireExternal`; never silently destroy/disable external systems.
+- Multiple eligible active EventSystems produce degraded/blocking focus status.
+- Focus memory is per entry with optional transient stable-surface session memory and designer-controlled fresh/remembered reopen behavior.
+- Restoration is policy-aware and may legally resolve to no focus.
+- Blocking Modals contain Looking Glass focus while lower-entry memory survives.
+- Independent Windows may retain distinct focus memory without activating the full Window manager.
+- Focus work is event-driven with explicit revalidation; no universal per-frame scan is required.
+- Optional input adapters may default to SFGSS-000 v0.27.0's Unity-default action-name profile without a generated-wrapper/peer-package dependency or action-map ownership.
+- Transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pinning/layout, persistence, Builder, primitive/9-slice work, peer bridges, and gameplay-input ownership remain inactive.
+- No new ADR is required beyond the approved SFGSS-000/package authority reconciliation.
 
 ## Looking Glass EUI-M2-01 completion health
 

@@ -4,12 +4,28 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 15, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
-**Current checkpoint:** EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking — COMPLETE
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current checkpoint:** EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M3-01 JIT Reconciliation and Activation — August 15, 2026
+
+- Incoming clean repository baseline: `0b7622c` — repository hygiene after EUI-M2-02 closeout `7f5ad40`.
+- Retained EUI-M2-02 proof: full EditMode **1181 / 1181**, EchoUI **75 / 75**, focused M2-02 **28 / 28**, manual Laboratory **12 / 12 PASS**, retained M2-01/M1 tabs PASS.
+- Suite authority advances to **SFGSS-000 v0.27.0** for an additive Unity-default Input Actions compatibility profile.
+- Looking Glass package authority advances to **SFGSS-PKG-ECHOUI-001 v1.5.0**.
+- Active plan: **EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment**.
+- **EUI-M3-01 is explicitly ACTIVE / AUTHORIZED. Runtime implementation has not started at this activation record.**
+- EventSystem coordination is explicit/non-destructive through `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal`; ambiguous multiple-system state degrades/blocks focus rather than guessing.
+- Focus memory is per live entry with optional transient root-session stable-surface memory and designer-selectable fresh-vs-remembered reopening.
+- Restoration resolves explicit -> remembered -> authored default -> entry resolver -> global fallback -> legal no-focus.
+- Blocking Modal focus remains contained to the top eligible Modal while lower-entry memory survives; independent Windows may keep distinct focus memory without activating the full Window manager.
+- Focus maintenance is event-driven by default with explicit revalidation for dynamic UI and stale-request protection.
+- The suite input compatibility profile treats the Unity default `Player` and `UI` action vocabulary as a minimum additive convention. Projects may add actions; packages may prefill known names, but no generated wrapper/path/GUID/exact-binding/peer-package dependency or action-map ownership is created.
+- First implementation gate: re-establish full EditMode **1181 / 1181** before any Runtime edit.
 
 ## Looking Glass EUI-M2-02 Final Closeout — August 15, 2026
 
