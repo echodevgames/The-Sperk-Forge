@@ -4,7 +4,7 @@ using UnityEngine;
 namespace EchoDevGames.EchoUI
 {
     /// <summary>
-    /// Per-surface input-aware selection policy.
+    /// Per-surface input-aware selection/focus policy.
     /// </summary>
     [Serializable]
     public sealed class UISurfaceSelectionPolicy
@@ -20,6 +20,13 @@ namespace EchoDevGames.EchoUI
         [SerializeField]
         private GameObject defaultSelectionTarget;
 
+        [SerializeField]
+        private UIFocusReopenBehavior reopenBehavior =
+            UIFocusReopenBehavior.Fresh;
+
+        [SerializeField]
+        private bool restoreFocusWhenReexposed = true;
+
         public UISurfaceSelectionPolicy()
         {
         }
@@ -28,10 +35,36 @@ namespace EchoDevGames.EchoUI
             UISelectionOpenBehavior pointerOpenBehavior,
             UISelectionOpenBehavior navigationOpenBehavior,
             GameObject defaultSelectionTarget)
+            : this(
+                pointerOpenBehavior,
+                navigationOpenBehavior,
+                defaultSelectionTarget,
+                UIFocusReopenBehavior.Fresh,
+                true)
         {
-            this.pointerOpenBehavior = pointerOpenBehavior;
-            this.navigationOpenBehavior = navigationOpenBehavior;
-            this.defaultSelectionTarget = defaultSelectionTarget;
+        }
+
+        public UISurfaceSelectionPolicy(
+            UISelectionOpenBehavior pointerOpenBehavior,
+            UISelectionOpenBehavior navigationOpenBehavior,
+            GameObject defaultSelectionTarget,
+            UIFocusReopenBehavior reopenBehavior,
+            bool restoreFocusWhenReexposed)
+        {
+            this.pointerOpenBehavior =
+                pointerOpenBehavior;
+
+            this.navigationOpenBehavior =
+                navigationOpenBehavior;
+
+            this.defaultSelectionTarget =
+                defaultSelectionTarget;
+
+            this.reopenBehavior =
+                reopenBehavior;
+
+            this.restoreFocusWhenReexposed =
+                restoreFocusWhenReexposed;
         }
 
         public UISelectionOpenBehavior PointerOpenBehavior =>
@@ -42,6 +75,12 @@ namespace EchoDevGames.EchoUI
 
         public GameObject DefaultSelectionTarget =>
             defaultSelectionTarget;
+
+        public UIFocusReopenBehavior ReopenBehavior =>
+            reopenBehavior;
+
+        public bool RestoreFocusWhenReexposed =>
+            restoreFocusWhenReexposed;
 
         public UISelectionOpenBehavior GetOpenBehavior(
             UIInputModality modality) =>

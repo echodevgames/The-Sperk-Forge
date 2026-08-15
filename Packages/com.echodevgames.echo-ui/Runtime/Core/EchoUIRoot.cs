@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace EchoDevGames.EchoUI
 {
@@ -33,6 +34,19 @@ namespace EchoDevGames.EchoUI
 
         private readonly UISelectionCoordinator selectionCoordinator =
             new UISelectionCoordinator();
+
+        [Header("M3 EventSystem + Focus")]
+        [SerializeField]
+        private UIEventSystemCoordinationMode eventSystemCoordinationMode =
+            UIEventSystemCoordinationMode.AdoptExisting;
+
+        [SerializeField]
+        private EventSystem assignedEventSystem;
+
+        [SerializeField]
+        private GameObject globalFocusFallback;
+
+        private UIEventSystemCoordinator eventSystemCoordinator;
 
         private readonly Dictionary<UISurface, SurfaceResponseApplicationState>
             responseApplicationStateBySurface =
@@ -98,6 +112,19 @@ namespace EchoDevGames.EchoUI
 
         public UIInputModality InputModality =>
             inputModality;
+
+        public UIEventSystemCoordinationStatus EventSystemCoordinationStatus =>
+            eventSystemCoordinator == null
+                ? UIEventSystemCoordinationStatus.Uninitialized
+                : eventSystemCoordinator.Status;
+
+        public bool IsFocusCoordinationReady =>
+            eventSystemCoordinator != null &&
+            eventSystemCoordinator.Status ==
+                UIEventSystemCoordinationStatus.Ready;
+
+        public long FocusGeneration =>
+            selectionCoordinator.Generation;
 
         public bool IsScreenLifecycleInitialized =>
             screenNavigator != null &&
@@ -209,6 +236,12 @@ namespace EchoDevGames.EchoUI
             historyByScope.Clear();
             responseApplicationStateBySurface.Clear();
             contextState.Clear();
+            selectionCoordinator.Reset();
+            if (eventSystemCoordinator != null)
+            {
+                eventSystemCoordinator.Shutdown();
+                eventSystemCoordinator = null;
+            }
         }
 
         [RuntimeInitializeOnLoadMethod(
@@ -336,6 +369,8 @@ namespace EchoDevGames.EchoUI
                 ApplyCurrentContext(
                     discovered[index]);
             }
+
+            InitializeFocusLifecycle();
 
             return UISurfaceOperationResult.Success(
                 message: "Looking Glass surface registry initialized.");
@@ -801,6 +836,107 @@ namespace EchoDevGames.EchoUI
             UIInputModality modality)
         {
             inputModality = modality;
+            selectionCoordinator.OnInputModalityChanged(
+                modality,
+                surfaces.Values);
+        }
+
+        public UISurfaceOperationResult InitializeFocusLifecycle()
+        {
+            return InitializeFocusLifecycle(
+                eventSystemCoordinationMode,
+                assignedEventSystem,
+                globalFocusFallback);
+        }
+
+        public UISurfaceOperationResult InitializeFocusLifecycle(
+            UIEventSystemCoordinationMode mode,
+            EventSystem assigned,
+            GameObject globalFallback = null)
+        {
+            if (!IsAuthoritative)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotAuthoritative,
+                    message: "Only the authoritative Looking Glass root may coordinate EventSystem focus.");
+            }
+            if (!IsInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    message: "Looking Glass surface foundation must initialize before focus coordination.");
+            }
+
+            if (eventSystemCoordinator != null)
+            {
+                eventSystemCoordinator.Shutdown();
+            }
+
+            eventSystemCoordinator =
+                new UIEventSystemCoordinator();
+
+            UIEventSystemCoordinationResult result =
+                eventSystemCoordinator.Coordinate(
+                    mode,
+                    assigned,
+                    transform);
+
+            selectionCoordinator.ConfigureEventSystem(
+                result.EventSystem,
+                coordinationConfigured: true);
+
+            selectionCoordinator.SetGlobalFallback(
+                globalFallback);
+
+            if (!result.Succeeded)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message: result.Message);
+            }
+
+            return UISurfaceOperationResult.Success(
+                message: result.Message);
+        }
+
+        public UIFocusRequestResult RequestFocus(
+            string surfaceId,
+            GameObject explicitTarget = null,
+            long expectedGeneration = -1)
+        {
+            UISurfaceOperationResult validation =
+                ResolveSurface(
+                    surfaceId,
+                    out UISurface surface);
+
+            if (!validation.Succeeded)
+            {
+                return UIFocusRequestResult.Unavailable(
+                    selectionCoordinator.Generation,
+                    validation.Message);
+            }
+
+            return selectionCoordinator.RequestFocus(
+                surface,
+                explicitTarget,
+                inputModality,
+                expectedGeneration);
+        }
+
+        public UIFocusRequestResult RevalidateFocus(
+            long expectedGeneration = -1)
+        {
+            UISurface topModal =
+                HasBlockingModal &&
+                modalService.TopEntry != null
+                    ? modalService.TopEntry.View
+                    : null;
+
+            return selectionCoordinator.Revalidate(
+                inputModality,
+                topModal,
+                surfaces.Values,
+                expectedGeneration);
         }
 
         public UISurfaceOperationResult SetSurfaceRuntimeOverride(
@@ -1729,6 +1865,18 @@ namespace EchoDevGames.EchoUI
         {
             ApplyModalInteractionBlocking();
 
+            UISurface topModal =
+                HasBlockingModal &&
+                modalService.TopEntry != null
+                    ? modalService.TopEntry.View
+                    : null;
+
+            selectionCoordinator.ApplyModalStackChanged(
+                topModal,
+                ActiveModalCount,
+                inputModality,
+                surfaces.Values);
+
             if (!shuttingDown &&
                 !HasBlockingModal)
             {
@@ -2020,7 +2168,7 @@ namespace EchoDevGames.EchoUI
                 return;
             }
 
-            selectionCoordinator.ClearSelectionForSurface(
+            selectionCoordinator.SuspendSurface(
                 entry.View);
 
             entry.View.SetScreenSuspended(
@@ -2145,7 +2293,7 @@ namespace EchoDevGames.EchoUI
         private void DeactivateSurface(
             UISurface surface)
         {
-            selectionCoordinator.ClearSelectionForSurface(
+            selectionCoordinator.CloseSurface(
                 surface);
             RecordDirectVisibilityIntent(
                 surface,

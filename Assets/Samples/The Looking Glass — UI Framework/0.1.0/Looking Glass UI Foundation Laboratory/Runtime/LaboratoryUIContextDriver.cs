@@ -10,8 +10,8 @@ namespace EchoDevGames.EchoUI.Samples
     /// <summary>
     /// Sample-owned Looking Glass proof console.
     /// M1 controls simulate external context/input truth.
-    /// M2 controls exercise the authoritative Screen lifecycle using scene-authored
-    /// layer hosts plus bounded sample-owned Screen definitions.
+    /// M2 controls exercise the authoritative Screen/Modal lifecycle using scene-authored
+    /// definitions. M3 controls add sample-owned EventSystem/focus proof infrastructure.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class LaboratoryUIContextDriver : MonoBehaviour
@@ -48,6 +48,13 @@ namespace EchoDevGames.EchoUI.Samples
         private UISurface rootOwnedModalTemplate;
         private UISurface externalModalView;
         private GameObject settingsButton;
+        private GameObject settingsBackButton;
+        private GameObject defaultWindowCloseButton;
+        private EventSystem sceneEventSystem;
+        private GameObject m3ExtraEventSystemObject;
+        private GameObject m3MainMenuAlternateTarget;
+        private GameObject m3SettingsAlternateTarget;
+        private GameObject m3WindowAlternateTarget;
         private Vector2 scroll;
         private int selectedTab;
         private bool m2InitializationAttempted;
@@ -70,6 +77,11 @@ namespace EchoDevGames.EchoUI.Samples
         private string deferredObserved = "<not run>";
         private string m2Message = "Waiting for Looking Glass surface initialization...";
         private string fifoObserved = "<not run>";
+        private string m3Message =
+            "M3 proof controls are sample-owned simulation infrastructure. Prepare a baseline, then run checks 1-12.";
+        private string m3Observed = "<not run>";
+        private string m3PerformanceEvidence = "<not run>";
+        private bool m3PerformanceRunning;
 
         private void Awake()
         {
@@ -136,13 +148,36 @@ namespace EchoDevGames.EchoUI.Samples
                 GetComponentsInChildren<UnityEngine.UI.Button>(true);
             for (int index = 0; index < buttons.Length; index++)
             {
+                string buttonName =
+                    buttons[index].gameObject.name;
+
                 if (string.Equals(
-                        buttons[index].gameObject.name,
+                        buttonName,
                         "Button_Settings",
+                        StringComparison.Ordinal) ||
+                    string.Equals(
+                        buttonName,
+                        "Button_SettingsOpen",
                         StringComparison.Ordinal))
                 {
-                    settingsButton = buttons[index].gameObject;
-                    break;
+                    settingsButton =
+                        buttons[index].gameObject;
+                }
+                else if (string.Equals(
+                             buttonName,
+                             "Button_Back",
+                             StringComparison.Ordinal))
+                {
+                    settingsBackButton =
+                        buttons[index].gameObject;
+                }
+                else if (string.Equals(
+                             buttonName,
+                             "Button_DefaultClose",
+                             StringComparison.Ordinal))
+                {
+                    defaultWindowCloseButton =
+                        buttons[index].gameObject;
                 }
             }
         }
@@ -161,6 +196,14 @@ namespace EchoDevGames.EchoUI.Samples
             }
 
             InitializeM2Proof();
+
+            sceneEventSystem =
+                ResolveEventSystem();
+
+            EnsureM3FocusTargets();
+
+            m3Message =
+                "M3 proof READY. Use Prepare M3 Baseline before a fresh acceptance run.";
         }
 
         private void OnGUI()
@@ -186,6 +229,7 @@ namespace EchoDevGames.EchoUI.Samples
                 selectedTab,
                 new[]
                 {
+                    "M3-01 Focus",
                     "M2-02 Modals",
                     "M2-01 Screens",
                     "M1 Retained"
@@ -205,9 +249,13 @@ namespace EchoDevGames.EchoUI.Samples
 
             if (selectedTab == 0)
             {
-                DrawM202ModalConsole();
+                DrawM301FocusConsole();
             }
             else if (selectedTab == 1)
+            {
+                DrawM202ModalConsole();
+            }
+            else if (selectedTab == 2)
             {
                 DrawM2Console();
             }
@@ -223,6 +271,1035 @@ namespace EchoDevGames.EchoUI.Samples
                 previousContentColor;
         }
 
+
+        private void DrawM301FocusConsole()
+        {
+            GUILayout.Label("EUI-M3-01: EventSystem coordination, focus memory/restoration, Modal focus containment, and explicit revalidation.");
+            GUILayout.Label("These controls are Laboratory proof infrastructure only. Looking Glass still does not own project input actions, gameplay state, or device detection.");
+            GUILayout.Space(8f);
+
+            DrawM301State();
+            GUILayout.Space(8f);
+
+            if (GUILayout.Button("Prepare M3 Baseline"))
+            {
+                PrepareM3Baseline();
+            }
+
+            GUILayout.Space(10f);
+            GUILayout.Label("1. AdoptAssigned");
+            if (GUILayout.Button("Run Check 1: Adopt Assigned Scene EventSystem"))
+            {
+                RunM3Check1();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("2. Distinct AdoptExisting / CreateIfMissing / RequireExternal rules");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("2A AdoptExisting"))
+            {
+                RunM3Check2AdoptExisting();
+            }
+            if (GUILayout.Button("2B CreateIfMissing"))
+            {
+                RunM3Check2CreateIfMissing();
+            }
+            if (GUILayout.Button("2C RequireExternal"))
+            {
+                RunM3Check2RequireExternal();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(8f);
+            GUILayout.Label("3. Multiple EventSystems degrade without deletion");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Run Check 3: Create Ambiguity"))
+            {
+                RunM3Check3();
+            }
+            if (GUILayout.Button("Cleanup / Restore One EventSystem"))
+            {
+                PrepareM3Baseline();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(8f);
+            GUILayout.Label("4. Blocking Modal remembers/restores lower focus");
+            if (GUILayout.Button("Run Check 4: Modal Restore"))
+            {
+                RunM3Check4();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("5. Screen Back restores prior Screen focus");
+            if (GUILayout.Button("Run Check 5: Screen Back Restore"))
+            {
+                RunM3Check5();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("6. Fresh reopen ignores old session focus");
+            if (GUILayout.Button("Run Check 6: Fresh Reopen"))
+            {
+                RunM3Check6();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("7. Remember-this-session reuses stable-surface focus");
+            if (GUILayout.Button("Run Check 7: Session Reopen"))
+            {
+                RunM3Check7();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("8. Invalid remembered target falls through");
+            if (GUILayout.Button("Run Check 8: Invalidate Remembered Target"))
+            {
+                RunM3Check8();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("9. Pointer policy may remain <none> without jitter");
+            if (!m3PerformanceRunning &&
+                GUILayout.Button("Run Check 9: Pointer <none> / 60-Frame Stability"))
+            {
+                StartCoroutine(
+                    RunM3Check9());
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("10. Navigation/controller policy establishes default");
+            if (GUILayout.Button("Run Check 10: Navigation Default"))
+            {
+                RunM3Check10();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("11. Blocking Modal focus cannot escape lower UI");
+            if (GUILayout.Button("Run Check 11: Modal Containment"))
+            {
+                RunM3Check11();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label("12. Explicit revalidation repairs invalid dynamic focus + retained smoke");
+            if (GUILayout.Button("Run Check 12: Revalidation + Smoke"))
+            {
+                RunM3Check12();
+            }
+
+            GUILayout.Space(12f);
+            GUILayout.Label("Bounded performance evidence");
+            if (!m3PerformanceRunning &&
+                GUILayout.Button("Run 180-Frame Idle Focus Probe"))
+            {
+                StartCoroutine(
+                    RunM3PerformanceProbe());
+            }
+
+            GUILayout.Label("Performance evidence: " + m3PerformanceEvidence);
+
+            GUILayout.Space(12f);
+            GUILayout.Label("Latest M3 observation");
+            GUILayout.TextArea(
+                m3Observed,
+                GUILayout.MinHeight(90f));
+        }
+
+        private void DrawM301State()
+        {
+            EventSystem current =
+                ResolveEventSystem();
+
+            GUILayout.Label("Focus coordination: " + root.EventSystemCoordinationStatus);
+            GUILayout.Label("Focus generation: " + root.FocusGeneration);
+            GUILayout.Label("Active EventSystems: " + CountActiveEventSystems());
+            GUILayout.Label("Resolved EventSystem: " + ObjectName(current));
+            GUILayout.Label("Selected object: " + SelectedName());
+            GUILayout.Label("Current frontend Screen: " + root.GetCurrentScreenId(FrontendScopeId));
+            GUILayout.Label("Active blocking Modals: " + root.ActiveModalCount);
+            GUILayout.Label(
+                "default-window reopen policy: " +
+                (defaultWindow != null && defaultWindow.SelectionPolicy != null
+                    ? defaultWindow.SelectionPolicy.ReopenBehavior.ToString()
+                    : "<missing>"));
+            GUILayout.Label("Status: " + m3Message);
+        }
+
+        private void PrepareM3Baseline()
+        {
+            if (root == null ||
+                !root.IsInitialized)
+            {
+                m3Message =
+                    "Cannot prepare M3 baseline because EchoUIRoot is not initialized.";
+                return;
+            }
+
+            if (!m2Ready)
+            {
+                InitializeM2Proof();
+            }
+
+            if (modalReady)
+            {
+                ResetModalProofState();
+            }
+
+            root.SetContextActive(
+                PauseContextId,
+                false);
+
+            root.SetContextActive(
+                CinematicContextId,
+                false);
+
+            CleanupM3ExtraEventSystems();
+            EnsureSceneEventSystemActive();
+
+            UISurfaceOperationResult coordination =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.AdoptExisting,
+                    null);
+
+            root.SetInputModality(
+                UIInputModality.Pointer);
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            if (root.IsScreenLifecycleInitialized)
+            {
+                root.ResetScreen(
+                    MainMenuId);
+            }
+
+            EnsureM3FocusTargets();
+            ClearSelection();
+
+            m3Message =
+                coordination.Succeeded
+                    ? "M3 baseline READY with one adopted scene EventSystem."
+                    : "M3 baseline coordination failed: " + coordination.Message;
+
+            m3Observed =
+                "Baseline: status=" + root.EventSystemCoordinationStatus +
+                ", EventSystems=" + CountActiveEventSystems() +
+                ", selected=" + SelectedName();
+        }
+
+        private void RunM3Check1()
+        {
+            PrepareM3Baseline();
+
+            UISurfaceOperationResult result =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.AdoptAssigned,
+                    sceneEventSystem);
+
+            m3Observed =
+                "CHECK 1 expected Ready + assigned scene EventSystem. Observed: " +
+                "status=" + root.EventSystemCoordinationStatus +
+                ", assignedAlive=" + YesNo(sceneEventSystem != null && sceneEventSystem.isActiveAndEnabled) +
+                ", EventSystems=" + CountActiveEventSystems() +
+                ", message=" + result.Message;
+        }
+
+        private void RunM3Check2AdoptExisting()
+        {
+            PrepareM3Baseline();
+
+            UISurfaceOperationResult result =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.AdoptExisting,
+                    null);
+
+            m3Observed =
+                "CHECK 2A expected Ready by adopting the one existing scene EventSystem. Observed: " +
+                "status=" + root.EventSystemCoordinationStatus +
+                ", EventSystems=" + CountActiveEventSystems() +
+                ", message=" + result.Message;
+        }
+
+        private void RunM3Check2CreateIfMissing()
+        {
+            PrepareM3Baseline();
+
+            if (sceneEventSystem != null)
+            {
+                sceneEventSystem.gameObject.SetActive(false);
+            }
+
+            CleanupRootCreatedEventSystem();
+
+            UISurfaceOperationResult result =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.CreateIfMissing,
+                    null);
+
+            EventSystem created =
+                FindRootCreatedEventSystem();
+
+            m3Observed =
+                "CHECK 2B expected Ready + one Looking Glass-created EventSystem because none existed. Observed: " +
+                "status=" + root.EventSystemCoordinationStatus +
+                ", created=" + ObjectName(created) +
+                ", activeEventSystems=" + CountActiveEventSystems() +
+                ", sceneEventSystemActive=" + YesNo(sceneEventSystem != null && sceneEventSystem.isActiveAndEnabled) +
+                ", message=" + result.Message +
+                ". Click Prepare M3 Baseline before the next check.";
+        }
+
+        private void RunM3Check2RequireExternal()
+        {
+            PrepareM3Baseline();
+
+            if (sceneEventSystem != null)
+            {
+                sceneEventSystem.gameObject.SetActive(false);
+            }
+
+            CleanupRootCreatedEventSystem();
+
+            UISurfaceOperationResult result =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.RequireExternal,
+                    null);
+
+            m3Observed =
+                "CHECK 2C expected Missing/degraded and zero created EventSystems. Observed: " +
+                "status=" + root.EventSystemCoordinationStatus +
+                ", activeEventSystems=" + CountActiveEventSystems() +
+                ", created=" + ObjectName(FindRootCreatedEventSystem()) +
+                ", operationSucceeded=" + result.Succeeded +
+                ", message=" + result.Message +
+                ". Click Prepare M3 Baseline before the next check.";
+        }
+
+        private void RunM3Check3()
+        {
+            PrepareM3Baseline();
+
+            m3ExtraEventSystemObject =
+                new GameObject(
+                    "M3 Laboratory Extra EventSystem");
+
+            m3ExtraEventSystemObject.AddComponent<EventSystem>();
+
+            UISurfaceOperationResult result =
+                root.InitializeFocusLifecycle(
+                    UIEventSystemCoordinationMode.AdoptExisting,
+                    null);
+
+            m3Observed =
+                "CHECK 3 expected Ambiguous/degraded, both EventSystems still alive, and no arbitrary adoption. Observed: " +
+                "status=" + root.EventSystemCoordinationStatus +
+                ", activeEventSystems=" + CountActiveEventSystems() +
+                ", sceneAlive=" + YesNo(sceneEventSystem != null) +
+                ", extraAlive=" + YesNo(m3ExtraEventSystemObject != null) +
+                ", operationSucceeded=" + result.Succeeded +
+                ", message=" + result.Message;
+        }
+
+        private void RunM3Check4()
+        {
+            PrepareM3Baseline();
+            EnsureM3ModalReady();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.ResetScreen(
+                MainMenuId);
+
+            UIFocusRequestResult prime =
+                root.RequestFocus(
+                    MainMenuId,
+                    m3MainMenuAlternateTarget,
+                    root.FocusGeneration);
+
+            string before =
+                SelectedName();
+
+            sceneModalHandle =
+                root.OpenModal(
+                    SceneModalId);
+
+            root.RequestFocus(
+                SceneModalId,
+                sceneModalView != null
+                    ? sceneModalView.gameObject
+                    : null,
+                root.FocusGeneration);
+
+            string during =
+                SelectedName();
+
+            UIModalCompletionAttemptResult completion =
+                root.CompleteModal(
+                    sceneModalHandle,
+                    ConfirmResultId);
+
+            string after =
+                SelectedName();
+
+            m3Observed =
+                "CHECK 4 expected lower focus remembered, Modal owns focus while open, then lower focus restored. " +
+                "Observed before=" + before +
+                ", during=" + during +
+                ", after=" + after +
+                ", prime=" + prime.Status +
+                ", completion=" + completion.Status +
+                ", expectedAfter=" + ObjectName(m3MainMenuAlternateTarget);
+        }
+
+        private void RunM3Check5()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.ResetScreen(
+                MainMenuId);
+
+            root.RequestFocus(
+                MainMenuId,
+                m3MainMenuAlternateTarget,
+                root.FocusGeneration);
+
+            string before =
+                SelectedName();
+
+            root.PushScreen(
+                SettingsId);
+
+            string settingsSelection =
+                SelectedName();
+
+            root.BackScreen(
+                FrontendScopeId);
+
+            string after =
+                SelectedName();
+
+            m3Observed =
+                "CHECK 5 expected Back to expose main-menu and restore its remembered target. " +
+                "Observed before=" + before +
+                ", settings=" + settingsSelection +
+                ", currentScreen=" + root.GetCurrentScreenId(FrontendScopeId) +
+                ", after=" + after +
+                ", expectedAfter=" + ObjectName(m3MainMenuAlternateTarget);
+        }
+
+        private void RunM3Check6()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.PushScreen(
+                SettingsId);
+
+            root.RequestFocus(
+                SettingsId,
+                m3SettingsAlternateTarget,
+                root.FocusGeneration);
+
+            string primed =
+                SelectedName();
+
+            root.BackScreen(
+                FrontendScopeId);
+
+            root.PushScreen(
+                SettingsId);
+
+            string reopened =
+                SelectedName();
+
+            m3Observed =
+                "CHECK 6 expected Fresh reopen to ignore the old alternate target and use Settings' authored opening policy. " +
+                "Observed primed=" + primed +
+                ", reopened=" + reopened +
+                ", oldAlternate=" + ObjectName(m3SettingsAlternateTarget) +
+                ", ignoredOldMemory=" + YesNo(
+                    !string.Equals(
+                        reopened,
+                        ObjectName(m3SettingsAlternateTarget),
+                        StringComparison.Ordinal));
+        }
+
+        private void RunM3Check7()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            root.RequestFocus(
+                DefaultWindowId,
+                m3WindowAlternateTarget,
+                root.FocusGeneration);
+
+            string primed =
+                SelectedName();
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            string reopened =
+                SelectedName();
+
+            bool restored =
+                string.Equals(
+                    reopened,
+                    ObjectName(m3WindowAlternateTarget),
+                    StringComparison.Ordinal);
+
+            m3Observed =
+                "CHECK 7 " + (restored ? "PASS" : "FAIL") +
+                " expected RememberThisSession to restore the alternate stable-surface target. " +
+                "Observed policy=" +
+                (defaultWindow != null && defaultWindow.SelectionPolicy != null
+                    ? defaultWindow.SelectionPolicy.ReopenBehavior.ToString()
+                    : "<missing>") +
+                ", primed=" + primed +
+                ", reopened=" + reopened +
+                ", expected=" + ObjectName(m3WindowAlternateTarget);
+        }
+
+        private void RunM3Check8()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            root.RequestFocus(
+                DefaultWindowId,
+                m3WindowAlternateTarget,
+                root.FocusGeneration);
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            if (m3WindowAlternateTarget != null)
+            {
+                m3WindowAlternateTarget.SetActive(false);
+            }
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            string reopened =
+                SelectedName();
+
+            if (m3WindowAlternateTarget != null)
+            {
+                m3WindowAlternateTarget.SetActive(true);
+            }
+
+            m3Observed =
+                "CHECK 8 expected invalid remembered target to fall through to Button_DefaultClose or legal <none>. " +
+                "Observed reopened=" + reopened +
+                ", authoredDefault=" + ObjectName(defaultWindowCloseButton);
+        }
+
+        private IEnumerator RunM3Check9()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Pointer);
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            string initial =
+                SelectedName();
+
+            long generationBefore =
+                root.FocusGeneration;
+
+            m3PerformanceRunning = true;
+
+            for (int frame = 0;
+                 frame < 60;
+                 frame++)
+            {
+                yield return null;
+            }
+
+            long generationAfter =
+                root.FocusGeneration;
+
+            string after =
+                SelectedName();
+
+            m3PerformanceRunning = false;
+
+            m3Observed =
+                "CHECK 9 expected pointer-opened default-window to remain <none> without idle focus jitter. " +
+                "Observed initial=" + initial +
+                ", after60Frames=" + after +
+                ", generation=" + generationBefore + " -> " + generationAfter +
+                ", stable=" + YesNo(
+                    string.Equals(initial, after, StringComparison.Ordinal) &&
+                    generationBefore == generationAfter);
+        }
+
+        private void RunM3Check10()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            m3Observed =
+                "CHECK 10 expected Navigation/controller policy to select Button_DefaultClose. " +
+                "Observed selected=" + SelectedName() +
+                ", expected=" + ObjectName(defaultWindowCloseButton);
+        }
+
+        private void RunM3Check11()
+        {
+            PrepareM3Baseline();
+            EnsureM3ModalReady();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.ResetScreen(
+                MainMenuId);
+
+            root.RequestFocus(
+                MainMenuId,
+                m3MainMenuAlternateTarget,
+                root.FocusGeneration);
+
+            sceneModalHandle =
+                root.OpenModal(
+                    SceneModalId);
+
+            root.RequestFocus(
+                SceneModalId,
+                sceneModalView != null
+                    ? sceneModalView.gameObject
+                    : null,
+                root.FocusGeneration);
+
+            string legalModalFocus =
+                SelectedName();
+
+            EventSystem eventSystem =
+                ResolveEventSystem();
+
+            if (eventSystem != null)
+            {
+                eventSystem.SetSelectedGameObject(
+                    m3MainMenuAlternateTarget);
+            }
+
+            string forcedIllegal =
+                SelectedName();
+
+            UIFocusRequestResult revalidation =
+                root.RevalidateFocus(
+                    root.FocusGeneration);
+
+            string repaired =
+                SelectedName();
+
+            m3Observed =
+                "CHECK 11 expected forced lower-UI focus to be repaired back inside the top Modal or to legal <none>. " +
+                "Observed legalModalFocus=" + legalModalFocus +
+                ", forcedLower=" + forcedIllegal +
+                ", repaired=" + repaired +
+                ", revalidation=" + revalidation.Status +
+                ", escapedLowerAfterRepair=" + YesNo(
+                    string.Equals(
+                        repaired,
+                        ObjectName(m3MainMenuAlternateTarget),
+                        StringComparison.Ordinal));
+        }
+
+        private void RunM3Check12()
+        {
+            PrepareM3Baseline();
+            EnsureM3ModalReady();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            root.RequestFocus(
+                DefaultWindowId,
+                m3WindowAlternateTarget,
+                root.FocusGeneration);
+
+            if (m3WindowAlternateTarget != null)
+            {
+                m3WindowAlternateTarget.SetActive(false);
+            }
+
+            UIFocusRequestResult repair =
+                root.RevalidateFocus(
+                    root.FocusGeneration);
+
+            string repaired =
+                SelectedName();
+
+            if (m3WindowAlternateTarget != null)
+            {
+                m3WindowAlternateTarget.SetActive(true);
+            }
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            UIScreenHandle push =
+                root.PushScreen(
+                    SettingsId);
+
+            UIScreenHandle back =
+                root.BackScreen(
+                    FrontendScopeId);
+
+            root.SetContextActive(
+                PauseContextId,
+                true);
+
+            bool pauseObserved =
+                root.IsContextActive(
+                    PauseContextId);
+
+            root.SetContextActive(
+                PauseContextId,
+                false);
+
+            UIModalHandle modal =
+                root.OpenModal(
+                    SceneModalId);
+
+            UIModalCompletionAttemptResult first =
+                root.CompleteModal(
+                    modal,
+                    ConfirmResultId);
+
+            UIModalCompletionAttemptResult second =
+                root.CompleteModal(
+                    modal,
+                    ConfirmResultId);
+
+            bool smoke =
+                push != null &&
+                push.Accepted &&
+                back != null &&
+                back.Accepted &&
+                pauseObserved &&
+                first.Status ==
+                    UIModalCompletionStatus.Succeeded &&
+                second.Status !=
+                    UIModalCompletionStatus.Succeeded &&
+                string.Equals(
+                    root.GetCurrentScreenId(
+                        FrontendScopeId),
+                    MainMenuId,
+                    StringComparison.Ordinal);
+
+            m3Observed =
+                "CHECK 12 retainedSmoke=" + (smoke ? "PASS" : "FAIL") +
+                ", repairedFocus=" + repaired +
+                ", expectedFallback=" + ObjectName(defaultWindowCloseButton) +
+                ", revalidation=" + repair.Status +
+                ", finalScreen=" + root.GetCurrentScreenId(FrontendScopeId) +
+                ". Details: pushAccepted=" + (push != null && push.Accepted) +
+                ", backAccepted=" + (back != null && back.Accepted) +
+                ", pauseObserved=" + pauseObserved +
+                ", firstModalCompletion=" + first.Status +
+                ", secondModalCompletion=" + second.Status;
+        }
+
+        private IEnumerator RunM3PerformanceProbe()
+        {
+            PrepareM3Baseline();
+
+            root.SetInputModality(
+                UIInputModality.Navigation);
+
+            root.OpenSurface(
+                DefaultWindowId);
+
+            long before =
+                root.FocusGeneration;
+
+            int startFrame =
+                Time.frameCount;
+
+            float startTime =
+                Time.realtimeSinceStartup;
+
+            m3PerformanceRunning = true;
+
+            for (int frame = 0;
+                 frame < 180;
+                 frame++)
+            {
+                yield return null;
+            }
+
+            long after =
+                root.FocusGeneration;
+
+            float elapsed =
+                Time.realtimeSinceStartup -
+                startTime;
+
+            float revalidationStart =
+                Time.realtimeSinceStartup;
+
+            UIFocusRequestResult explicitProbe =
+                root.RevalidateFocus(
+                    root.FocusGeneration);
+
+            float revalidationMilliseconds =
+                (Time.realtimeSinceStartup -
+                 revalidationStart) *
+                1000f;
+
+            m3PerformanceRunning = false;
+
+            m3PerformanceEvidence =
+                "Idle " + (Time.frameCount - startFrame) +
+                " frames / " + elapsed.ToString("0.000") +
+                "s: focus generation " + before + " -> " + after +
+                " (" + (before == after ? "STABLE" : "CHANGED") + "). " +
+                "Explicit revalidation=" + explicitProbe.Status +
+                ", synchronous sample timing=" +
+                revalidationMilliseconds.ToString("0.###") + " ms. " +
+                "Together with the focused no-Update/LateUpdate automated test, this is the bounded Laboratory evidence for event-driven idle behavior.";
+        }
+
+        private void EnsureM3ModalReady()
+        {
+            if (!modalReady)
+            {
+                InitializeModalProof(
+                    UIModalScreenMutationPolicy.Reject);
+            }
+            else
+            {
+                ResetModalProofState();
+            }
+        }
+
+        private void EnsureM3FocusTargets()
+        {
+            m3MainMenuAlternateTarget =
+                EnsureFocusTarget(
+                    mainMenu,
+                    m3MainMenuAlternateTarget,
+                    "M3_MainMenu_RememberedTarget");
+
+            m3SettingsAlternateTarget =
+                EnsureFocusTarget(
+                    settings,
+                    m3SettingsAlternateTarget,
+                    "M3_Settings_FreshTarget");
+
+            m3WindowAlternateTarget =
+                EnsureFocusTarget(
+                    defaultWindow,
+                    m3WindowAlternateTarget,
+                    "M3_DefaultWindow_SessionTarget");
+        }
+
+        private static GameObject EnsureFocusTarget(
+            UISurface surface,
+            GameObject existing,
+            string name)
+        {
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            if (surface == null)
+            {
+                return null;
+            }
+
+            Transform child =
+                surface.transform.Find(
+                    name);
+
+            if (child != null)
+            {
+                child.gameObject.SetActive(true);
+                return child.gameObject;
+            }
+
+            GameObject target =
+                new GameObject(
+                    name);
+
+            target.transform.SetParent(
+                surface.transform,
+                false);
+
+            return target;
+        }
+
+        private void CleanupM3ExtraEventSystems()
+        {
+            if (m3ExtraEventSystemObject != null)
+            {
+                m3ExtraEventSystemObject.SetActive(false);
+                Destroy(
+                    m3ExtraEventSystemObject);
+
+                m3ExtraEventSystemObject = null;
+            }
+
+            CleanupRootCreatedEventSystem();
+        }
+
+        private void CleanupRootCreatedEventSystem()
+        {
+            EventSystem created =
+                FindRootCreatedEventSystem();
+
+            if (created == null)
+            {
+                return;
+            }
+
+            created.gameObject.SetActive(false);
+            Destroy(
+                created.gameObject);
+        }
+
+        private EventSystem FindRootCreatedEventSystem()
+        {
+            EventSystem[] systems =
+                UnityEngine.Object.FindObjectsByType<EventSystem>(
+                    FindObjectsInactive.Exclude,
+                    FindObjectsSortMode.InstanceID);
+
+            for (int index = 0;
+                 index < systems.Length;
+                 index++)
+            {
+                EventSystem candidate =
+                    systems[index];
+
+                if (candidate == null ||
+                    !candidate.isActiveAndEnabled ||
+                    !string.Equals(
+                        candidate.gameObject.name,
+                        "EchoUI EventSystem",
+                        StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                if (root == null ||
+                    candidate.transform.IsChildOf(
+                        root.transform))
+                {
+                    return candidate;
+                }
+            }
+
+            return null;
+        }
+
+        private void EnsureSceneEventSystemActive()
+        {
+            if (sceneEventSystem == null)
+            {
+                EventSystem[] systems =
+                    UnityEngine.Object.FindObjectsByType<EventSystem>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.InstanceID);
+
+                for (int index = 0;
+                     index < systems.Length;
+                     index++)
+                {
+                    if (systems[index] == null ||
+                        string.Equals(
+                            systems[index].gameObject.name,
+                            "EchoUI EventSystem",
+                            StringComparison.Ordinal) ||
+                        string.Equals(
+                            systems[index].gameObject.name,
+                            "M3 Laboratory Extra EventSystem",
+                            StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    sceneEventSystem =
+                        systems[index];
+
+                    break;
+                }
+            }
+
+            if (sceneEventSystem != null)
+            {
+                sceneEventSystem.gameObject.SetActive(true);
+            }
+        }
+
+        private static int CountActiveEventSystems()
+        {
+            return UnityEngine.Object.FindObjectsByType<EventSystem>(
+                FindObjectsInactive.Exclude,
+                FindObjectsSortMode.InstanceID).Length;
+        }
+
+        private static string SelectedName()
+        {
+            EventSystem eventSystem =
+                ResolveEventSystem();
+
+            return eventSystem != null &&
+                   eventSystem.currentSelectedGameObject != null
+                ? eventSystem.currentSelectedGameObject.name
+                : "<none>";
+        }
+
+        private static string ObjectName(
+            UnityEngine.Object value)
+        {
+            return value != null
+                ? value.name
+                : "<none>";
+        }
 
         private void DrawM202ModalConsole()
         {
