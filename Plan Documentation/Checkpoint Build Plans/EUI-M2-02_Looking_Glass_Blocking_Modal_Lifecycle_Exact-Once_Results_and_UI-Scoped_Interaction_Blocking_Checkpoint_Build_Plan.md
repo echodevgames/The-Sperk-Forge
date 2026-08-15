@@ -14,7 +14,7 @@ updated: 2026-08-14
 **Status:** **ACTIVE / AUTHORIZED**
 **Package:** The Looking Glass (`EchoUI`)
 **Package ID:** `com.echodevgames.echo-ui`
-**Package authority:** `SFGSS-PKG-ECHOUI-001` v1.4.0 Approved
+**Package authority:** `SFGSS-PKG-ECHOUI-001` v1.4.1 Approved
 **Planning baseline:** `d5b9a733c0fb68fe91e2fa73185c61bbc8ff81e6`
 **Unity baseline:** 6000.3.8f1
 **Incoming full EditMode floor:** **1153 / 1153 passed, 0 failed**
@@ -150,7 +150,34 @@ Project code or optional future bridges may observe read-only modal blocking sta
 
 The Laboratory may use a tiny sample-owned external-action simulator to prove that program/gameplay-like behavior may continue while lower uGUI is blocked.
 
-### 2.8 Screen mutation while modal-blocked
+### 2.8 Modal vs independent Window boundary
+
+Blocking behavior in this checkpoint is specific to the blocking `Modal` lifecycle.
+
+It does not redefine ordinary `Window` surfaces as modal. Independent Windows remain non-blocking/coexistent by default and may remain open while:
+
+- other Windows are clicked or navigated;
+- a Screen remains present according to its own policy;
+- project-owned gameplay actions continue;
+- the player alternates between world interaction and UI interaction.
+
+Projects/designers retain control over the raycast/interactivity behavior of the actual controls they author.
+
+### 2.9 Future Window Back/Escape dismissal direction
+
+M2-01 strict FIFO is an **operation execution** rule. It is not the intended user-facing close order for a future multi-window manager.
+
+A later declared Window-management capability may maintain a separate **most-recent-eligible (LIFO)** dismissal history:
+
+- Back/Escape targets the most recently opened/raised eligible Window;
+- authored-default Windows may opt out of automatic dismissal;
+- runtime user pin/lock state may temporarily remove a Window from automatic dismissal;
+- unlocking returns that Window to eligibility under the later declared policy;
+- durable pin/layout persistence remains separately gated.
+
+EUI-M2-02 records this compatibility direction but does not implement Window dismissal history, pinning, dragging/resizing, focused-window arbitration, or layout persistence.
+
+### 2.10 Screen mutation while modal-blocked
 
 Designer/project policy supports two bounded modes:
 
@@ -169,7 +196,7 @@ Designer/project policy supports two bounded modes:
 
 No policy in EUI-M2-02 silently mutates Screen history underneath an active blocking modal.
 
-### 2.9 Visual presentation
+### 2.11 Visual presentation
 
 Modal visuals remain project/designer authored.
 
@@ -221,6 +248,7 @@ EUI-M2-02 does **not** authorize:
 - full EventSystem adoption policy;
 - general focus-history restoration;
 - generalized modal focus graph/containment system beyond the interaction blocking required here;
+- independent Window dismissal-history/pin-lock manager, dragging/resizing, or layout persistence;
 - transition drivers or animation sequencing;
 - generalized dim/blur/backdrop effects;
 - HUD region service;

@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.4.0
+**Specification version:** 1.4.1
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -35,6 +35,7 @@
 | 1.2.0 | 2026-08-13 | Approved | EUI-M1-02 JIT reconciliation: designer-ordered per-surface external context responses, project-defined stable active/inactive context IDs, independent visibility/interactability/selection directives, no-intervention defaults, authored/local/runtime overrides, optional external participation, and externally supplied input-modality selection policy. Activates EUI-M1-02 while keeping presets, Motifs, Builder, MMO layout persistence, arbitrary context payloads, and peer bridges outside the slice. | Jesse “Echo” Adams |
 | 1.3.0 | 2026-08-14 | Approved | EUI-M2-01 JIT reconciliation: replaces the fixed seven-layer runtime assumption with project-defined ordered layer topology plus convenience starter defaults; confirms RootOwned/SceneOwned/ExternalOwned screen ownership; defines designer-controlled suspended-screen visibility with scope-enforced non-interaction; locks bounded strict FIFO screen mutation ordering; and activates the screen-lifecycle-only M2-01 slice while deferring modal exact-once results to M2-02. | Jesse “Echo” Adams |
 | 1.4.0 | 2026-08-14 | Approved | EUI-M2-02 JIT reconciliation: activates blocking modal lifecycle with stacked top-only interaction, project-defined stable result IDs, first-terminal-wins exact-once completion, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, fresh awaiters, designer-authored Back dismissal, UI-only blocking that does not own gameplay input, and configurable Reject/Defer screen-mutation behavior while a blocking modal stack is active. Visual backdrop styling, full focus restoration, transitions, HUD/transients, Motifs, Builder, persistence, and peer bridges remain later slices. | Jesse “Echo” Adams |
+| 1.4.1 | 2026-08-14 | Approved | Post-activation clarification: blocking Modal semantics apply only to the blocking Modal lifecycle, not to independent Window surfaces. Independent Windows remain non-blocking/coexistent by default. Future Back/Escape window dismissal uses a separate most-recent-eligible (LIFO) history with authored/runtime pin exclusions; this is distinct from M2-01 FIFO operation execution and remains outside EUI-M2-02 implementation. | Jesse “Echo” Adams |
 
 ---
 
@@ -466,6 +467,10 @@ The August 14, 2026 bounded M2-02 revisit completes the second Runtime Core slic
 **Back/dismiss behavior is designer-authored.** A modal may disable Back/dismissal or map Back to one configured project-defined stable result ID. Back routes to the top blocking modal before ordinary Screen history. A disabled Back policy leaves the modal active and returns a structured Blocked/Unhandled-style result rather than silently closing it.
 
 **Looking Glass blocks Looking Glass UI, not gameplay input.** While a blocking modal is active, lower Looking Glass pointer/raycast interaction, UI navigation/submit, and ordinary UI Back routing are gated so clicks/navigation cannot leak through the modal. Looking Glass does not disable gameplay action maps, consume project WASD by authority, set pause/time scale, change cursor ownership, or decide whether the game simulation continues. Project code or optional future Will/Pulse/Vessel bridges may observe read-only modal blocking state and choose their own gameplay/input response. The standalone Laboratory may simulate an external gameplay action continuing while lower uGUI remains blocked.
+
+**Blocking Modal semantics are role-specific.** These guarantees apply only to entries admitted through the blocking `Modal` lifecycle. They do not convert every floating `Window` into a modal. Independent `Window` surfaces remain non-blocking by default, may coexist with Screens and peer Windows, and do not automatically suppress interaction with those peer Windows or with project-owned gameplay behavior. A project may therefore keep inventory, character, crafting, skill, quest, launcher/tool-palette, or similar windows open while the player continues interacting with other windows and the game world. Actual control raycast behavior remains project/designer authored.
+
+**Window dismissal history is separate from Screen-operation FIFO.** The M2-01 FIFO rule governs the order in which accepted structural operations execute. It does not mean Back/Escape should close UI in first-opened order. A future independent-window dismissal policy may maintain a separate **most-recent-eligible (LIFO)** history so Back/Escape closes the most recently opened/raised eligible Window first. Designers may exclude authored-default or runtime-pinned/locked Windows from automatic dismissal. Runtime pin state remains transient UI state; durable window-layout/pin persistence stays separately gated. EUI-M2-02 does not implement this future Window-manager capability.
 
 **Screen mutation while a blocking modal is active has an explicit simple/advanced policy.** The safe default is `Reject`: ordinary Screen structural requests are rejected before mutation with a structured `BlockedByModal`-style result. Designers/projects that need deferred behavior may choose a bounded `DeferUntilModalStackClears` policy. Deferred Screen requests retain strict FIFO submission order, execute only after the blocking modal stack becomes empty, and remain subject to the normal bounded Screen-operation admission rules. EUI-M2-02 does not authorize silent background Screen mutation underneath an active blocking modal.
 
@@ -1862,6 +1867,9 @@ An integration claim requires:
 | EUI-D-054 | Screen mutations during a blocking modal use explicit `Reject` default or bounded `DeferUntilModalStackClears` policy | Approved | Simple projects need a safe default while advanced flows sometimes need deterministic deferred navigation | No silent background Screen mutation; deferred work preserves FIFO and normal bounds | No |
 | EUI-D-055 | Modal Back behavior is designer-authored: disabled or complete with one configured stable result ID | Approved | Escape/Back semantics vary by confirmation severity and project UX | Back routes modal-first; disabled policy leaves modal active | No |
 | EUI-D-056 | Modal visuals/backdrops remain project-authored; M2-02 guarantees lifecycle/blocking rather than a mandatory dim/blur style | Approved | Designer control and package neutrality | Blur/transitions/general backdrop effects remain later work | No |
+| EUI-D-057 | Blocking Modal semantics apply only to the blocking Modal lifecycle; independent Window surfaces remain non-blocking/coexistent by default | Approved | Supports EverQuest/WoW/desktop-style multi-window UI without weakening confirmation/dialog blocking | Window controls may still choose their own raycast/interactivity policy | No |
+| EUI-D-058 | Screen-operation FIFO and Back/Escape dismissal order are separate concepts; future independent-window dismissal uses most-recent-eligible LIFO history | Approved | Accepted operations should execute deterministically while user-facing Back naturally unwinds the latest eligible surface | Does not change M2-01 FIFO execution contract | No |
+| EUI-D-059 | Future independent Windows may be excluded from automatic Back/Escape by authored defaults or runtime pin/lock state | Approved | Supports project defaults plus user-controlled pinned windows | Runtime pin state is transient; durable persistence remains separately gated | No |
 
 ### 27.2 Release-blocking questions
 
@@ -1975,7 +1983,7 @@ Stop point: re-establish the incoming **1153 / 1153** EditMode floor on the acti
 We are continuing development of The Sperk’s Systems Foundry — EchoDevGames Game Systems Suite.
 
 Treat SFGSS-000 as the authority for suite-wide boundaries and architecture.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.4.0 as
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.4.1 as
 the authority for UI presentation infrastructure and the EUI-M2-02 blocking-modal
 contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M2-02
 Checkpoint Build Plan for Green Path execution.

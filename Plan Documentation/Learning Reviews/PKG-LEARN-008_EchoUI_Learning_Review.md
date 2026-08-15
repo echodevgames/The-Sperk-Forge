@@ -200,7 +200,7 @@ The review was completed conversationally through concrete design examples. Jess
 
 **Decision:** Complete
 **Next implementation gate:** `EUI-M2-02` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below and the completed EUI-M2-01 proof
-**Notes promoted to:** Looking Glass specification v1.4.0; active EUI-M2-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
+**Notes promoted to:** Looking Glass specification v1.4.1; active EUI-M2-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
 
 ## 14. EUI-M1-02 bounded JIT revisit — August 13, 2026
 
@@ -328,3 +328,16 @@ The reconciled checkpoint is:
 It proves modal definitions/entries/handles, stacked top-only interaction, the three ownership modes, project-defined stable result IDs, exact-once completion, structural Aborted outcomes, fresh awaiters, Back policy, bounded capacity, Screen mutation Reject/Defer behavior, external gameplay-input separation, and retained M1/M2-01 behavior.
 
 Full focus-history restoration/EventSystem adoption, transition drivers, generalized dim/blur effects, HUD/transient services, Motifs, Builder, primitive-library expansion, arbitrary modal domain payload transport, persistence, peer bridges, automatic gameplay-input switching, and project-wide lifetime composition remain outside EUI-M2-02.
+
+### 16.7 Post-activation Modal/Window clarification
+
+After EUI-M2-02 activation and before any Runtime edit, Jesse clarified an EverQuest-style target that must remain compatible with the package architecture:
+
+- A blocking `Modal` is intentionally different from an independent `Window`.
+- Blocking Modal semantics gate lower Looking Glass UI, but ordinary inventory/character/crafting/skills/quest/tool-palette Windows should remain able to coexist and remain independently interactive.
+- Independent Windows may remain open while gameplay/world interaction continues according to project-authored input/raycast policy.
+- M2-01 FIFO is the order accepted structural operations execute. It is **not** the intended Back/Escape dismissal order for a future multi-window UI.
+- Future independent-window Back/Escape behavior should use a separate most-recent-eligible **LIFO** dismissal history.
+- Designers may author Windows that never participate in automatic Back/Escape dismissal, and runtime users may later pin/lock eligible Windows out of that dismissal history.
+- Durable pin/layout persistence, dragging/resizing, focused-window arbitration, and the Window dismissal manager remain future separately gated capabilities.
+- EUI-M2-02 remains bounded to blocking Modal lifecycle and exact-once results; this clarification exists so its implementation does not accidentally consume or constrain the future independent-Window design space.

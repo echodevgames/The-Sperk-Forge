@@ -2,7 +2,7 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.4.0
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.4.1
 **Current checkpoint:** EUI-M2-02 — ACTIVE / AUTHORIZED
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
@@ -56,7 +56,7 @@ Modal exact-once results remain EUI-M2-02. Transitions, focus-history restoratio
 ## EUI-M2-02 declaration
 
 - **Planning baseline:** `d5b9a73` — clean synchronized EUI-M2-01 final closeout.
-- **Authority:** SFGSS-PKG-ECHOUI-001 v1.4.0.
+- **Authority:** SFGSS-PKG-ECHOUI-001 v1.4.1.
 - **Incoming full EditMode floor to re-establish before Runtime edits:** **1153 / 1153 passed, 0 failed**.
 - Blocking modals may stack; only the top eligible modal receives normal Looking Glass interaction.
 - Normal completion uses project-defined stable result IDs; no package-reserved yes/no/cancel vocabulary.
@@ -65,6 +65,8 @@ Modal exact-once results remain EUI-M2-02. Transitions, focus-history restoratio
 - `RootOwned`, `SceneOwned`, and `ExternalOwned` are first-class modal ownership modes with the same lifetime boundary as Screens.
 - Back is designer-authored per modal: disabled or complete with one configured stable result ID.
 - Blocking modals gate lower Looking Glass pointer/navigation/submit/Back interaction only. Gameplay input, WASD/action maps, pause/time scale, and cursor authority remain external.
+- **Clarification:** blocking semantics apply only to the blocking `Modal` lifecycle. Independent `Window` surfaces remain non-blocking/coexistent by default and may stay open while peer Windows and gameplay remain usable according to project-authored input/raycast policy.
+- **Clarification:** M2-01 FIFO describes accepted operation execution order, not Back/Escape close order. Future independent-window Back/Escape behavior is reserved for a separate most-recent-eligible **LIFO** dismissal history, with authored/runtime pin/lock exclusions. That Window-manager capability is not implemented by EUI-M2-02.
 - Screen structural mutation policy while a blocking modal stack is active is designer/project controlled between safe default `Reject` and bounded FIFO `DeferUntilModalStackClears`.
 - Modal visual backdrop/style remains project-owned; generalized dim/blur/transitions remain later work.
 - EUI-M2-02 excludes full focus-history restoration/EventSystem adoption, transitions, HUD/transients, Motifs, Builder, primitive expansion, arbitrary modal domain payload transport, persistence, peer bridges, and project-wide lifetime composition.

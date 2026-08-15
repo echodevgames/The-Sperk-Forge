@@ -23,7 +23,7 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-02 revisit reconciled stacked modal blocking, exact-once stable-ID results, ownership/abort semantics, UI/input authority, Back policy, and Reject/Defer Screen mutation |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.4.0 Approved** |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.4.1 Approved** |
 | Looking Glass completed checkpoint | **EUI-M2-01 COMPLETE** — activation `0c11262`; implementation `8dc9c71`; focused EchoUI **47 / 47**; M2-01 focused **23 / 23**; manual Laboratory **10 / 10**; final full EditMode **1153 / 1153** |
 | Looking Glass active checkpoint | **EUI-M2-02 ACTIVE / AUTHORIZED** — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking; Runtime implementation not started at activation. |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
@@ -58,6 +58,8 @@
 - RootOwned / SceneOwned / ExternalOwned modal ownership mirrors the proven Screen lifetime model.
 - Back is modal-first and designer-authored as disabled or mapped to a stable result ID.
 - Blocking applies to lower Looking Glass pointer/navigation/submit/Back interaction; gameplay input, pause/time, cursor, and project action maps remain external.
+- Blocking Modal semantics are role-specific; independent Windows remain non-blocking/coexistent by default.
+- Future independent-window Back/Escape dismissal is explicitly separate from M2-01 FIFO execution and may use most-recent-eligible LIFO history with authored/runtime pin-lock exclusions; this remains outside M2-02 Runtime scope.
 - Screen mutation while blocked defaults to explicit Reject, with optional bounded FIFO DeferUntilModalStackClears.
 - Modal visuals/backdrops remain project-owned; no mandatory dim/blur style.
 - Full focus/EventSystem policy, transitions, HUD/transients, Motifs, Builder, primitive expansion, arbitrary modal domain payload transport, persistence, peer bridges, and project-wide lifetime composition remain inactive.

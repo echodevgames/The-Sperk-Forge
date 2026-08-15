@@ -14,7 +14,7 @@
 ## Looking Glass EUI-M2-02 JIT Reconciliation and Activation — August 14, 2026
 - Incoming repository baseline: `d5b9a73` — EUI-M2-01 final closeout, clean and synchronized.
 - Retained EUI-M2-01 proof: final full EditMode **1153 / 1153**, focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, manual Laboratory **10 / 10**.
-- Package authority advances to **SFGSS-PKG-ECHOUI-001 v1.4.0**.
+- Package authority advances to **SFGSS-PKG-ECHOUI-001 v1.4.1** after the adjacent post-activation modal/window clarification.
 - Blocking modals may stack with top-only Looking Glass interaction and safe lower-entry handle cleanup.
 - Semantic modal completions use project-defined stable result IDs.
 - Each modal opening owns a fresh awaiter/handle generation; first valid terminal result wins exactly once.
@@ -22,6 +22,8 @@
 - Modal ownership reuses RootOwned / SceneOwned / ExternalOwned lifetime rules.
 - Modal Back behavior is designer-authored: disabled or mapped to a configured stable result ID.
 - Looking Glass blocks lower Looking Glass UI interaction but does not own gameplay input, WASD/action maps, pause/time scale, or cursor policy.
+- Blocking Modal semantics are role-specific: independent `Window` surfaces remain non-blocking/coexistent by default and may stay open while peer Windows and gameplay remain usable.
+- Future independent-window Back/Escape behavior is explicitly separate from operation FIFO: it may use a most-recent-eligible **LIFO** dismissal history with authored/runtime pin/lock exclusions. That Window-manager behavior remains later work.
 - While blocking modals are active, Screen mutation uses safe default `Reject` or explicit bounded `DeferUntilModalStackClears`; deferred work preserves FIFO.
 - Modal visuals/backdrops remain project-authored. Blur/transitions, full focus/EventSystem policy, HUD/transients, Motifs, Builder, primitive expansion, persistence, peer bridges, and project-wide lifetime composition remain outside this checkpoint.
 - **EUI-M2-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**

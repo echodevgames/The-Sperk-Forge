@@ -20,10 +20,10 @@ updated: 2026-08-14
 
 ## Current frontier — August 14, 2026
 
-- **Looking Glass:** EUI-M2-01 is **COMPLETE** at closeout `d5b9a73`; EUI-M2-02 is **ACTIVE / AUTHORIZED** under package authority v1.4.0. Retained incoming proof is focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, manual Laboratory **10 / 10**, full EditMode **1153 / 1153**.
+- **Looking Glass:** EUI-M2-01 is **COMPLETE** at closeout `d5b9a73`; EUI-M2-02 is **ACTIVE / AUTHORIZED** under package authority v1.4.1. Retained incoming proof is focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, manual Laboratory **10 / 10**, full EditMode **1153 / 1153**.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M2-02 activates stacked blocking-modal lifecycle, project-defined stable result IDs, exact-once completion, structural Aborted outcomes, modal ownership, Back policy, UI-only interaction blocking, and explicit Reject/Defer Screen-mutation behavior. Motifs, Builder, primitive expansion, richer focus/transitions/HUD/transients, persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
+- EUI-M2-02 activates stacked blocking-modal lifecycle, project-defined stable result IDs, exact-once completion, structural Aborted outcomes, modal ownership, Back policy, UI-only interaction blocking, and explicit Reject/Defer Screen-mutation behavior. Blocking Modal semantics do not redefine independent Windows: future multi-window Back/Escape may use a separate most-recent-eligible LIFO dismissal history with authored/runtime pin exclusions. Motifs, Builder, primitive expansion, richer focus/transitions/HUD/transients, window-manager/pinning/layout persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
 
 
 ## How to use this in Obsidian
@@ -347,4 +347,7 @@ flowchart LR
 `EUI-M2-01` is Complete. Activation `0c11262`; implementation `8dc9c71`; incoming full EditMode `1130 / 1130`; focused EchoUI `47 / 47` including `23 / 23` M2-01 tests; manual Laboratory `10 / 10`; final full EditMode `1153 / 1153`. Package authority remains v1.3.0 and EUI-M2-02 is not activated.
 
 ## 2026-08-14 Looking Glass EUI-M2-02 activation
-`EUI-M2-02` is ACTIVE / AUTHORIZED from clean closeout `d5b9a73` under package authority v1.4.0. The slice is limited to blocking modal lifecycle, stable result IDs, exact-once settlement, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, designer-authored Back policy, UI-only blocking, and bounded Reject/Defer Screen-mutation behavior. Runtime edits remain locked until the incoming `1153 / 1153` EditMode floor is re-established on the activation commit.
+`EUI-M2-02` is ACTIVE / AUTHORIZED from clean closeout `d5b9a73` under package authority v1.4.1. The slice is limited to blocking modal lifecycle, stable result IDs, exact-once settlement, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, designer-authored Back policy, UI-only blocking, and bounded Reject/Defer Screen-mutation behavior. Runtime edits remain locked until the incoming `1153 / 1153` EditMode floor is re-established on the activation commit.
+
+## 2026-08-14 Looking Glass EUI-M2-02 modal/window clarification
+Blocking `Modal` lifecycle remains distinct from independent `Window` coexistence. Operation FIFO is retained for structural execution, while future Window Back/Escape behavior is reserved for a separate most-recent-eligible LIFO dismissal history with authored/runtime pin/lock exclusions. Authority is reconciled to v1.4.1 before Runtime implementation.
