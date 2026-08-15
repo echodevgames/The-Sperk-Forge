@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-14
+updated: 2026-08-15
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,15 +12,15 @@ updated: 2026-08-14
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M2-02 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M2-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
 
 
-## Current frontier — August 14, 2026
+## Current frontier — August 15, 2026
 
-- **Looking Glass:** EUI-M2-01 is **COMPLETE** at closeout `d5b9a73`; EUI-M2-02 is **ACTIVE / AUTHORIZED** under package authority v1.4.1. Retained incoming proof is focused EchoUI **47 / 47**, M2-01 focused **23 / 23**, manual Laboratory **10 / 10**, full EditMode **1153 / 1153**.
+- **Looking Glass:** EUI-M2-02 is **COMPLETE**. Activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; focused M2-02 **28 / 28**; EchoUI **75 / 75**; manual Laboratory **12 / 12**; final full EditMode **1181 / 1181**. Package authority remains v1.4.1 and no follow-on Looking Glass checkpoint is activated.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
 - EUI-M2-02 activates stacked blocking-modal lifecycle, project-defined stable result IDs, exact-once completion, structural Aborted outcomes, modal ownership, Back policy, UI-only interaction blocking, and explicit Reject/Defer Screen-mutation behavior. Blocking Modal semantics do not redefine independent Windows: future multi-window Back/Escape may use a separate most-recent-eligible LIFO dismissal history with authored/runtime pin exclusions. Motifs, Builder, primitive expansion, richer focus/transitions/HUD/transients, window-manager/pinning/layout persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
@@ -351,3 +351,7 @@ flowchart LR
 
 ## 2026-08-14 Looking Glass EUI-M2-02 modal/window clarification
 Blocking `Modal` lifecycle remains distinct from independent `Window` coexistence. Operation FIFO is retained for structural execution, while future Window Back/Escape behavior is reserved for a separate most-recent-eligible LIFO dismissal history with authored/runtime pin/lock exclusions. Authority is reconciled to v1.4.1 before Runtime implementation.
+
+## 2026-08-15 Looking Glass EUI-M2-02 closeout
+
+`EUI-M2-02` is Complete. Activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; incoming full EditMode `1153 / 1153`; focused M2-02 `28 / 28`; EchoUI `75 / 75`; manual Laboratory `12 / 12`; final full EditMode `1181 / 1181`. Blocking Modal and independent Window semantics remain separate. Package authority remains v1.4.1 and no follow-on Looking Glass checkpoint is activated.

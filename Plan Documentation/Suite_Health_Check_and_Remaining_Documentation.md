@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 14, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M2-01 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-01 complete and EUI-M2-02 ACTIVE / AUTHORIZED from closeout `d5b9a73`; Runtime implementation not started at activation
+**Updated:** August 15, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M2-02 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-02 complete at implementation `5ab34b3`; no follow-on Looking Glass checkpoint activated
 
 ## Current health
 
@@ -24,8 +24,8 @@
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M2-02 revisit reconciled stacked modal blocking, exact-once stable-ID results, ownership/abort semantics, UI/input authority, Back policy, and Reject/Defer Screen mutation |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.4.1 Approved** |
-| Looking Glass completed checkpoint | **EUI-M2-01 COMPLETE** — activation `0c11262`; implementation `8dc9c71`; focused EchoUI **47 / 47**; M2-01 focused **23 / 23**; manual Laboratory **10 / 10**; final full EditMode **1153 / 1153** |
-| Looking Glass active checkpoint | **EUI-M2-02 ACTIVE / AUTHORIZED** — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking; Runtime implementation not started at activation. |
+| Looking Glass completed checkpoint | **EUI-M2-02 COMPLETE** — activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; focused M2-02 **28 / 28**; EchoUI **75 / 75**; manual Laboratory **12 / 12**; final full EditMode **1181 / 1181** |
+| Looking Glass active checkpoint | **None.** No follow-on Looking Glass checkpoint is activated. |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
@@ -47,10 +47,15 @@
 - EUI-M2-02 and all modal results, transitions, richer focus/EventSystem policy, HUD/transients, Motifs, Builder, persistence, and peer bridges remain separately gated and inactive.
 
 
-## Looking Glass EUI-M2-02 activation health
+## Looking Glass EUI-M2-02 completion health
 
 - Planning baseline: `d5b9a73`, clean synchronized EUI-M2-01 closeout.
-- Incoming full EditMode floor to re-establish before Runtime edits: **1153 / 1153**.
+- Activation: `e2145ab`; Modal/Window clarification: `b6fc160`; implementation: `5ab34b3`.
+- Incoming full EditMode floor before Runtime edits: **1153 / 1153 passed, 0 failed**.
+- Focused EUI-M2-02 Modal lifecycle: **28 / 28 passed, 0 failed**.
+- Final EchoUI EditMode assembly: **75 / 75 passed, 0 failed**.
+- Final Foundry EditMode regression: **1181 / 1181 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**; retained M2-01 Screens tab **PASS**; retained M1 tab **PASS**.
 - Blocking modals may stack; only the top eligible modal is Looking Glass-interactive.
 - Normal completion returns project-defined stable result IDs.
 - First valid terminal completion wins exactly once; stale later attempts cannot settle again.
@@ -64,6 +69,8 @@
 - Modal visuals/backdrops remain project-owned; no mandatory dim/blur style.
 - Full focus/EventSystem policy, transitions, HUD/transients, Motifs, Builder, primitive expansion, arbitrary modal domain payload transport, persistence, peer bridges, and project-wide lifetime composition remain inactive.
 - No new suite ADR is required by this package-local refinement.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.4.1**.
+- **EUI-M2-02 is COMPLETE. No follow-on Looking Glass checkpoint is activated.**
 
 ## First Light graduation state
 

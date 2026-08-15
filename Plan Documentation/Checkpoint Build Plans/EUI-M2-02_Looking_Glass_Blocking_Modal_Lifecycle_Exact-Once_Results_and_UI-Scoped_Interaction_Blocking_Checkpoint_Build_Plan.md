@@ -3,15 +3,15 @@ tags:
   - sfgss/checkpoint
   - sfgss/wave/foundation
   - sfgss/ui
-status: active
+status: complete
 checkpoint: EUI-M2-02
-updated: 2026-08-14
+updated: 2026-08-15
 ---
 
 # EUI-M2-02 — The Looking Glass Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking — Checkpoint Build Plan
 
 **Checkpoint:** `EUI-M2-02`
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE**
 **Package:** The Looking Glass (`EchoUI`)
 **Package ID:** `com.echodevgames.echo-ui`
 **Package authority:** `SFGSS-PKG-ECHOUI-001` v1.4.1 Approved
@@ -412,15 +412,30 @@ Routine compile corrections, test maintenance, sample wiring fixes, and exact-co
 
 - JIT learning/intake: **Complete**
 - Package declaration: **Complete**
-- Package authority reconciliation: **SFGSS-PKG-ECHOUI-001 v1.4.0**
-- Checkpoint authorization: **EUI-M2-02 ACTIVE / AUTHORIZED**
+- Package authority reconciliation at final implementation boundary: **SFGSS-PKG-ECHOUI-001 v1.4.1**
+- Activation authorization: **EUI-M2-02 ACTIVE / AUTHORIZED**
 - Starting repository baseline: `d5b9a733c0fb68fe91e2fa73185c61bbc8ff81e6`
-- Retained full EditMode proof: **1153 / 1153 passed, 0 failed**
-- Retained focused EchoUI: **47 / 47 passed, 0 failed**
+- Activation Git commit: `e2145ab992542d5b3600429bdfe8a7ef419ce0a9`
+- Modal/Window clarification Git commit: `b6fc1601fb357f7ad09782a2b655154eb438ed56`
+- Retained full EditMode proof at activation: **1153 / 1153 passed, 0 failed**
+- Retained focused EchoUI at activation: **47 / 47 passed, 0 failed**
 - Retained EUI-M2-01 focused: **23 / 23 passed, 0 failed**
-- Retained manual Laboratory: **10 / 10 PASS**
+- Retained manual Laboratory at activation: **10 / 10 PASS**
 - Runtime implementation at activation: **Not started**
-- Activation Git commit: **pending authority/activation apply**
-- Next gate: **re-establish 1153 / 1153 on activation commit before Runtime edits**
 
-**Stop after activation. Do not begin Runtime implementation until the incoming gate is green.**
+## 12. Closeout record
+
+- Implementation Git commit: `5ab34b3c49a84cc9157b9bfdcef4b9defa1a16b6`.
+- Incoming full EditMode gate before Runtime edits: **1153 / 1153 passed, 0 failed**.
+- Focused EUI-M2-02 Modal lifecycle: **28 / 28 passed, 0 failed**.
+- Final EchoUI EditMode assembly: **75 / 75 passed, 0 failed**.
+- Final Foundry EditMode regression: **1181 / 1181 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**.
+- Retained M2-01 Screens tab: **PASS**.
+- Retained M1 tab: **PASS**.
+- RootOwned / SceneOwned / ExternalOwned Modal lifetime, exact-once stable-ID settlement, structural aborts, top-only stacking, Back policy, Screen Reject/Defer, and gameplay/input authority separation are proven.
+- Blocking Modal behavior remains distinct from independent Window coexistence; future Window most-recent-eligible LIFO/pin/layout work remains outside this checkpoint.
+- Package/imported Laboratory parity is synchronized to the accepted scene, including sample-owned readability/visual polish that does not become a Runtime default.
+- The compile correction and root-shutdown EditMode test-harness correction did not change the declared Runtime contract.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.4.1**; no new suite ADR is required.
+- **EUI-M2-02 is COMPLETE. No next Looking Glass checkpoint is activated.**

@@ -26,3 +26,11 @@
 - Bounded strict-FIFO structural Screen operation admission and settlement with explicit rejection rather than silent reorder/coalesce/drop.
 - Expanded Looking Glass Laboratory proof covering Screen ownership/lifetime, suspension policies, history semantics, custom layers, FIFO settlement, and retained M1 behavior.
 - Twenty-three focused EUI-M2-01 tests, bringing the focused EchoUI assembly to 47 / 47 and the final full EditMode floor to 1153 / 1153.
+- EUI-M2-02 deterministic stacked blocking Modal lifecycle with top-only Looking Glass interaction.
+- Project-defined stable Modal/result IDs, fresh per-opening handles, first-terminal-wins exact-once settlement, and structural `Aborted` outcomes.
+- `RootOwned`, `SceneOwned`, and `ExternalOwned` Modal lifetime behavior without stealing external object lifetime.
+- Designer-authored modal Back policy plus explicit Screen mutation `Reject` and bounded `DeferUntilModalStackClears` behavior.
+- Lower Looking Glass UI blocking without claiming gameplay-input, pause/time-scale, cursor, or simulation authority.
+- Explicit separation between blocking Modal behavior and independent coexistent Window behavior.
+- Twenty-eight focused EUI-M2-02 tests, bringing the EchoUI EditMode assembly to 75 / 75 and the final Foundry EditMode floor to 1181 / 1181.
+- Expanded Laboratory proof with 12 / 12 manual Modal acceptance plus retained M2-01 Screens and M1 behavior.

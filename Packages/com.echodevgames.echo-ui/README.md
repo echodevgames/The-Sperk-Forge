@@ -51,6 +51,26 @@ The Laboratory proves custom layer order, both suspension visibility styles, all
 
 EUI-M2-01 does not implement modal exact-once results, transitions, general focus-history restoration, full EventSystem policy, HUD/transient services, Motifs, Builder tooling, primitive-library expansion, persistence, peer-package bridges, or project-wide lifetime composition. Those remain separately gated future work.
 
+## EUI-M2-02 blocking modal runtime core
+
+The second Runtime Core slice adds:
+
+- deterministic stacked blocking Modals with top-only Looking Glass interaction;
+- project-defined stable Modal and result IDs;
+- fresh per-opening handles with first-terminal-wins exact-once settlement;
+- structural `Aborted` outcomes distinct from semantic project cancellation;
+- `RootOwned`, `SceneOwned`, and `ExternalOwned` Modal lifetime behavior;
+- designer-authored Back dismissal policy;
+- lower Looking Glass UI interaction blocking without claiming gameplay input, pause/time-scale, cursor, or simulation authority;
+- explicit Screen mutation `Reject` and bounded `DeferUntilModalStackClears` policies;
+- retained FIFO execution for accepted/deferred Screen structural work.
+
+Blocking Modal semantics do not redefine ordinary independent Windows. Coexistent inventory, character, crafting, quest, tool-palette, or similar Window surfaces remain a separate non-blocking design space. Future most-recent-eligible Window Back/Escape dismissal, pin/lock behavior, dragging/resizing, and layout persistence remain separately gated.
+
+The Laboratory proves the full Modal lifecycle in 12 manual checks while retaining the M2-01 Screen and M1 Window/context/selection contracts.
+
+EUI-M2-02 does not implement transitions, generalized dim/blur/backdrop services, full focus/EventSystem policy, HUD/transients, Motifs, Builder tooling, primitive-library expansion, arbitrary modal domain payload transport, persistence, peer-package bridges, or project-wide lifetime composition.
+
 ## Hierarchy convention
 
 Looking Glass samples and authoring tools use `Type_DescriptiveName`:

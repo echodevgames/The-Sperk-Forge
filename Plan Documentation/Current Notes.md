@@ -3,13 +3,33 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 14, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-02 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
-**Current checkpoint:** EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking — ACTIVE / AUTHORIZED
+**Last reconciled:** August 15, 2026
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M2-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
+**Current checkpoint:** EUI-M2-02 — Blocking Modal Lifecycle, Exact-Once Results, and UI-Scoped Interaction Blocking — COMPLETE
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M2-02 Final Closeout — August 15, 2026
+
+- Activation commit: `e2145ab` (`e2145ab992542d5b3600429bdfe8a7ef419ce0a9`).
+- Modal/Window clarification commit: `b6fc160` (`b6fc1601fb357f7ad09782a2b655154eb438ed56`).
+- Implementation commit: `5ab34b3` (`5ab34b3c49a84cc9157b9bfdcef4b9defa1a16b6`), **41 files / 7760 insertions / 401 deletions**.
+- Incoming full EditMode floor before Runtime edits: **1153 / 1153 passed, 0 failed**.
+- Focused EUI-M2-02 Modal lifecycle: **28 / 28 passed, 0 failed**.
+- Final EchoUI EditMode assembly: **75 / 75 passed, 0 failed**.
+- Final Foundry EditMode regression: **1181 / 1181 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**.
+- Retained M2-01 Screens tab: **PASS**.
+- Retained M1 tab: **PASS**.
+- EUI-M2-02 implements deterministic stacked blocking Modals, project-defined stable result IDs, fresh exact-once result generations, structural `Aborted`, RootOwned/SceneOwned/ExternalOwned lifetime, designer-authored Back policy, lower-UI blocking without gameplay authority, and explicit Screen `Reject` / bounded FIFO `DeferUntilModalStackClears`.
+- Blocking Modal behavior remains distinct from independent Window coexistence. Future most-recent-eligible Window Back/Escape, pin/lock, dragging/resizing, and layout persistence remain separately gated.
+- Package/imported Laboratory parity is synchronized to the manually accepted scene. Sample visual/readability polish remains sample-owned.
+- The compile-only out-parameter correction and the EditMode root-shutdown test-harness correction changed no authorized modal contract.
+- Runtime retains zero hard peer Echo package dependency and no persistence/project-wide lifetime authority.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.4.1**; no new suite ADR is required.
+- **EUI-M2-02 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
 
 ## Looking Glass EUI-M2-02 JIT Reconciliation and Activation — August 14, 2026
 - Incoming repository baseline: `d5b9a73` — EUI-M2-01 final closeout, clean and synchronized.

@@ -3,7 +3,7 @@
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.4.1
-**Current checkpoint:** EUI-M2-02 — ACTIVE / AUTHORIZED
+**Current checkpoint:** EUI-M2-02 — COMPLETE; no follow-on Looking Glass checkpoint activated
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-Modal exact-once results remain EUI-M2-02. Transitions, focus-history restoration, full EventSystem policy, HUD regions, notifications, prompts/tooltips, Motifs, Builder, primitive warehouse expansion, persistence, peer bridges, MMO layout persistence, and project-wide lifetime composition remain outside EUI-M2-01.
+EUI-M2-02 is now complete and adds the bounded blocking-Modal lifecycle on top of M2-01. Transitions, focus-history restoration, full EventSystem policy, HUD regions, notifications, prompts/tooltips, Motifs, Builder, primitive warehouse expansion, persistence, peer bridges, MMO layout persistence, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -70,4 +70,23 @@ Modal exact-once results remain EUI-M2-02. Transitions, focus-history restoratio
 - Screen structural mutation policy while a blocking modal stack is active is designer/project controlled between safe default `Reject` and bounded FIFO `DeferUntilModalStackClears`.
 - Modal visual backdrop/style remains project-owned; generalized dim/blur/transitions remain later work.
 - EUI-M2-02 excludes full focus-history restoration/EventSystem adoption, transitions, HUD/transients, Motifs, Builder, primitive expansion, arbitrary modal domain payload transport, persistence, peer bridges, and project-wide lifetime composition.
-- **Runtime implementation has not started at activation.**
+- **Runtime implementation was not started at activation; it is now complete at `5ab34b3`.**
+
+## EUI-M2-02 closeout
+
+- Activation: `e2145ab` (`e2145ab992542d5b3600429bdfe8a7ef419ce0a9`).
+- Modal/Window clarification: `b6fc160` (`b6fc1601fb357f7ad09782a2b655154eb438ed56`).
+- Implementation: `5ab34b3` (`5ab34b3c49a84cc9157b9bfdcef4b9defa1a16b6`), **41 files / 7760 insertions / 401 deletions**.
+- Incoming full EditMode floor before Runtime edits: **1153 / 1153 passed, 0 failed**.
+- Focused EUI-M2-02 Modal lifecycle: **28 / 28 passed, 0 failed**.
+- Final EchoUI EditMode assembly: **75 / 75 passed, 0 failed**.
+- Final Foundry EditMode regression: **1181 / 1181 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory acceptance: **12 / 12 PASS**.
+- Retained M2-01 Screens tab: **PASS**.
+- Retained M1 tab: **PASS**.
+- The compile-only `TryGetDefinition` out-parameter correction and EditMode root-shutdown test-harness correction changed no authorized modal contract.
+- Package/imported Laboratory parity is synchronized to the accepted scene/readability polish; those visual choices remain sample-owned rather than Runtime defaults.
+- Blocking Modal semantics remain distinct from independent Window coexistence; future Window LIFO/pin/layout work remains separately gated.
+- Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, or project-wide lifetime authority.
+- Implementation matched **SFGSS-PKG-ECHOUI-001 v1.4.1**; no package-authority revision or new suite ADR is required at closeout.
+- **EUI-M2-02 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
