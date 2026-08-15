@@ -4,12 +4,27 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 15, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
-**Current checkpoint:** None — EUI-M3-01 complete; next Looking Glass checkpoint not activated
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-02 — ACTIVE / AUTHORIZED; transition/view-lifecycle Runtime not started
+**Current checkpoint:** EUI-M3-02 — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
+
+## Looking Glass EUI-M3-02 JIT Reconciliation and Activation — August 15, 2026
+- Incoming clean repository baseline: `0c58240` — EUI-M3-01 final closeout.
+- Retained EUI-M3-01 proof: full EditMode **1205 / 1205**, EchoUI **99 / 99**, focused M3-01 **24 / 24**, manual Laboratory **12 / 12 PASS**, bounded focus performance PASS, retained M2-02/M2-01/M1 tabs PASS.
+- Suite authority remains **SFGSS-000 v0.27.0**; no suite boundary or ADR change is required.
+- Looking Glass package authority advances to **SFGSS-PKG-ECHOUI-001 v1.6.0**.
+- Active plan: **EUI-M3-02 — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery**.
+- **EUI-M3-02 is explicitly ACTIVE / AUTHORIZED. Runtime implementation has not started at this activation record.**
+- Transition settlement is part of admitted Screen/Modal/Window structural lifecycle, retaining existing serialization/exact-once authority.
+- Drivers remain presentation-only, fresh-operation, generation-bound, unscaled-time, best-effort cancellable, and hard-bounded.
+- Enter failure restores the prior stable UI and cleans the incoming entry; exit failure forces deterministic closed/released state.
+- Policy resolution is project/root default -> per-definition profile -> transient operation override. Immediate and CanvasGroup Fade are reference drivers; professional custom drivers remain first-class.
+- Reduced-motion substitution is supported as a seam without activating the broader Motif/accessibility service.
+- Durable future authoring is explicitly split into Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, Assembly Utilities, and later Builder/Composer. Those are ordinary editable project/prefab workflows and are not implemented by M3-02.
+- First implementation gate: re-establish full EditMode **1205 / 1205** before any Runtime edit.
 
 ## Looking Glass EUI-M3-01 Final Closeout — August 15, 2026
 - Activation commit: `292cb66` (`292cb66f216ecc130de67e977befccc10e104297`).

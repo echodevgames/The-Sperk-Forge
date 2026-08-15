@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.5.0
+**Specification version:** 1.6.0
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -20,7 +20,7 @@
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M3-01 JIT revisit. EUI-M1-01, EUI-M1-02, EUI-M2-01, and EUI-M2-02 are complete. EUI-M3-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean repository-hygiene baseline `0b7622c`. Implementation permission extends only to the active EUI-M3-01 Checkpoint Build Plan.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M3-02 JIT revisit. EUI-M1-01, EUI-M1-02, EUI-M2-01, EUI-M2-02, and EUI-M3-01 are complete. EUI-M3-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M3-01 closeout baseline `0c58240`. Implementation permission extends only to the active EUI-M3-02 Checkpoint Build Plan.
 
 ---
 
@@ -37,6 +37,7 @@
 | 1.4.0 | 2026-08-14 | Approved | EUI-M2-02 JIT reconciliation: activates blocking modal lifecycle with stacked top-only interaction, project-defined stable result IDs, first-terminal-wins exact-once completion, structural Aborted outcomes, RootOwned/SceneOwned/ExternalOwned modal ownership, fresh awaiters, designer-authored Back dismissal, UI-only blocking that does not own gameplay input, and configurable Reject/Defer screen-mutation behavior while a blocking modal stack is active. Visual backdrop styling, full focus restoration, transitions, HUD/transients, Motifs, Builder, persistence, and peer bridges remain later slices. | Jesse “Echo” Adams |
 | 1.4.1 | 2026-08-14 | Approved | Post-activation clarification: blocking Modal semantics apply only to the blocking Modal lifecycle, not to independent Window surfaces. Independent Windows remain non-blocking/coexistent by default. Future Back/Escape window dismissal uses a separate most-recent-eligible (LIFO) history with authored/runtime pin exclusions; this is distinct from M2-01 FIFO operation execution and remains outside EUI-M2-02 implementation. | Jesse “Echo” Adams |
 | 1.5.0 | 2026-08-15 | Approved | EUI-M3-01 JIT reconciliation: explicit/non-destructive EventSystem coordination; per-entry focus memory with optional transient stable-surface session memory; policy-aware restoration/fallback/no-focus; pointer/navigation behavior; blocking-Modal focus containment; independent Window focus memory without a full Window manager; event-driven focus maintenance with explicit revalidation; stale-request protection; and optional use of the suite Unity-default input compatibility profile without transferring input ownership. Activates EUI-M3-01 while transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pinning/layout, persistence, peer bridges, Builder, and primitive/9-slice work remain separately gated. | Jesse “Echo” Adams |
+| 1.6.0 | 2026-08-15 | Approved | EUI-M3-02 JIT reconciliation: authoritative view lifecycle now includes replaceable transition execution inside admitted structural operations; drivers remain presentation-only, fresh-operation, unscaled-time, hard-bounded, generation-protected, and cancellable where possible; enter failure restores prior stable UI while exit failure forces deterministic closed/released state; project/default, per-definition, and transient operation override layers are supported; Immediate and CanvasGroup Fade are the built-in reference drivers while professional custom drivers retain curve/easing/timing and reduced-motion substitution seams. Also explicitly separates the future Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, and Assembly Utilities from the later full Builder/Composer so snap-together UI authoring cannot disappear behind Builder scope. Activates EUI-M3-02 while Motifs/accessibility implementation, HUD/transients, full Window management, persistence, peer bridges, primitive/template implementation, Builder implementation, and polished showcase art remain later gated work. | Jesse “Echo” Adams |
 
 ---
 
@@ -346,6 +347,8 @@ Project assemblies, peer Echo packages in core, sample dependencies, mandatory D
 | CAP-024 | Stable surface registry/discoverability | Approved | Yes | Runtime/Editor |
 | CAP-025 | Motif capture/apply/local-override authoring | Approved | Yes | Runtime/Data/Editor |
 | CAP-026 | Lego primitive library and batch UI Builder | Approved | Yes | Prefab/Editor |
+| CAP-027 | Editable panel/menu template library plus project-extensible stable-ID template catalog | Approved | Yes | Prefab/Data/Editor |
+| CAP-028 | Lightweight UI assembly utilities independent of the full Builder/Composer | Approved | Yes | Editor |
 
 ### 7.2 MVP capability set
 
@@ -403,7 +406,15 @@ A navigation scope is optional. Within one scope, at most one `Screen` is active
 
 **Authoring vocabulary is intentionally plain.** Samples/tools use `Type_DescriptiveName`, for example `Canvas_MasterCanvas`, `Panel_MenuRoot`, `Panel_SettingsMenu`, `Button_DefaultButton`, `Slider_DefaultSlider`, and `Toggle_DefaultToggle`. This convention is an authoring/sample language, not a requirement that runtime stable IDs equal hierarchy names.
 
-**The package is a construction toolkit as well as runtime plumbing.** Later checkpoints provide standardized primitives, an Editor Builder for create/batch-create/name/parent/validate operations, and reusable **Motif** assets that capture/apply appearance (colors, Selectable states, sprites, typography, decorative treatment) without owning layout, navigation, domain commands, or game content. Local overrides must be preservable when Motifs are reapplied. Project-specific prefab variants remain free to share the same underlying Looking Glass behavior.
+**The package is a construction toolkit as well as runtime plumbing.** Its future authoring stack is explicitly layered rather than collapsed into one Builder feature:
+
+1. **Primitive Warehouse** — package-owned, focused reusable prefab families such as default/close buttons, sliders, toggles, tabs, fields, dropdowns, scroll pieces, separators, progress indicators, panel surfaces, and scalable 9-sliced borders/backgrounds. Parallel visual families may share the same behavior.
+2. **Panel/Menu Template Library** — ordinary editable prefab compositions assembled from primitives, including common menu, settings, pause, confirmation, inventory-style Window, character/journal/crafting, and list/detail starting points. Templates are copy-in/editable starting points, never opaque runtime objects.
+3. **Stable-ID Template Catalog** — package starter definitions plus project-extensible catalogs that may add, remove, replace, regroup, or override available primitives/templates without rewriting package Runtime.
+4. **Assembly Utilities** — lightweight Editor commands for create-from-template, add common groups, name/parent/validate, replace primitive families, and later apply Motifs. These utilities remain useful even if the full Builder is never opened.
+5. **Builder / Composer** — a later richer point-and-click authoring surface that consumes the same catalog and creates ordinary editable project objects rather than proprietary locked compositions.
+
+Reusable **Motif** assets remain a separate appearance system that capture/apply colors, Selectable states, sprites, typography, and decorative treatment without owning layout, navigation, domain commands, or game content. Local overrides must be preservable when Motifs are reapplied. Project-specific prefab variants remain free to share the same underlying Looking Glass behavior.
 
 The package-local root does not call `DontDestroyOnLoad` merely because long-lived UI is possible. Unity object lifetime and cross-package composition remain project-owned under SFGSS-ADR-006.
 
@@ -579,13 +590,39 @@ Focus requests carry operation/generation identity. A stale request cannot overw
 
 EchoUI core does not require Unity Input System action ownership or a generated input wrapper. Optional project/adapter wiring may default to the suite's SFGSS-000 Unity-default `UI/Navigate`, `UI/Submit`, `UI/Cancel`, `UI/Point`, `UI/Click`, and related action-name profile when present. Projects may override this mapping, and Looking Glass does not enable/disable gameplay or UI action maps by authority.
 
+### 8.7A EUI-M3-02 contract — authoritative view lifecycle and replaceable transition execution
+
+EUI-M3-02 activates the bounded transition/view-lifecycle slice while preserving all M3-01 focus and input-authority boundaries.
+
+**Transitions settle inside admitted structural operations.** Once a Screen, blocking Modal, or independent Window structural operation is admitted, its authored enter/exit transition is part of completing that operation. The authoritative lifecycle does not report a successful terminal structural state while its required transition is still unresolved. Existing bounded/FIFO mutation rules remain authoritative, so a later accepted structural mutation cannot race through the same lifecycle halfway through transition settlement.
+
+**Transition drivers own presentation only.** A driver may animate CanvasGroup alpha, scale, position, project materials/shaders, Animator state, or other project presentation details. It does not decide screen history, Modal semantic results, pause/time scale, input-map state, scene travel, settings/save truth, audio authority, gameplay rules, or project lifetime composition.
+
+**Every execution is fresh and generation-bound.** Transition work uses a fresh operation/result per execution. Reused/cached awaitables are forbidden. Each operation carries identity/generation so a stale completion, cancellation callback, exception, or delayed noncancellable driver cannot rewind newer authoritative UI state.
+
+**Cancellation is best-effort; safety is mandatory.** Drivers are cancellable where practical. When cancellation is unavailable or ignored, stale-generation rejection plus a hard safety bound prevents old work from blocking or mutating newer lifecycle truth indefinitely.
+
+**Failure recovery is asymmetric and deterministic.**
+- Enter/open failure aborts the incoming entry, releases any RootOwned partial instance, preserves/restores the prior known-stable UI state, and must not leave authoritative history half-mutated.
+- A blocking Modal that fails after admission settles through structural `Aborted` rather than fabricating a semantic Cancel result.
+- Exit/close failure forces the departing entry into its deterministic closed/released state and continues settlement so a broken fade-out cannot hold the UI hostage.
+- Root shutdown/view destruction always wins and leaves no transition-owned temporary state behind.
+
+**Transition policy resolves from layered authoring.** Effective transition behavior resolves from project/root default -> per-definition profile -> optional transient operation override. Runtime overrides are session state only and never mutate authored assets. A profile may independently describe enter and exit driver selection, timing/duration, optional curve/easing data, hard timeout/safety bounds, and reduced-motion substitution.
+
+**The seam is surface-general; M3-02 wiring is bounded.** The contract is designed so later HUD/Overlay/transient services may consume the same transition seam, but this checkpoint wires only lifecycle machinery that already exists: Screens, blocking Modals, and independent Windows. M3-02 does not activate HUD/notification/tooltip/prompt services.
+
+**Reference drivers stay small while the extension seam stays professional.** The package supplies deterministic `Immediate`/no-animation behavior and a simple unscaled `CanvasGroup` fade reference driver. Projects may provide Animator, tween-library, shader/dissolve, slide/scale, 3D, or other custom drivers without replacing Looking Glass lifecycle authority or adding a mandatory tween dependency.
+
+**Reduced motion is architecturally supported but not fully implemented here.** Transition policy must permit a later accessibility/Motif layer to substitute Immediate or another approved reduced-motion path. M3-02 does not itself implement the broader Motif/accessibility service.
+
 ### 8.8 View/presenter separation
 
 Views own controls, visual state, lifecycle hooks, and user interaction events. Presenters bind silently, interpret domain state, request domain commands, handle results, and unsubscribe. Views do not discover static managers or own persistence/game rules.
 
 ### 8.9 Transition model
 
-`IUITransitionDriver` returns fresh `Awaitable<UITransitionResult>` operations using unscaled time. Drivers are cancellable where possible and hard-bounded. Failure forces deterministic final visual/interactivity state so no view remains half-open or blocking.
+`IUITransitionDriver` returns a fresh `Awaitable<UITransitionResult>` for every execution and uses unscaled time. Effective policy resolves from project/root default -> per-definition `UITransitionProfile` -> optional transient operation override. Drivers are cancellable where possible, generation-bound, and hard-bounded. Immediate/no-animation and CanvasGroup fade are the package reference drivers; professional projects may supply Animator/tween/shader/slide/scale/custom drivers without transferring lifecycle authority or creating a mandatory tween dependency. Enter failure restores the prior known-stable UI and cleans the incoming entry; exit failure forces the departing entry to deterministic closed/released state; stale completion cannot mutate newer UI truth.
 
 ### 8.10 Notifications/prompts/motifs
 
@@ -621,7 +658,7 @@ Claim package-local authority -> validate/register surfaces -> initialize scoped
 | `UIScreenDefinition` | Screen identity, prefab/factory, focus/back/transition policy | Yes | No | Yes |
 | `UIModalDefinition` | Modal identity, ownership/factory, Back result policy, Screen-mutation blocking policy | Yes | No | Yes |
 | `UIHudRegionDefinition` | Named host and ordering policy | Yes | No | Yes |
-| `UITransitionProfile` | Open/close driver and timings | Yes | No | Yes/template |
+| `UITransitionProfile` | Enter/exit drivers, timings, optional curve/easing, hard bound, reduced-motion substitution | Yes | No | Yes/template |
 | `UIMotifDefinition` | Motif tokens/assets | Yes | No | Yes |
 | `UIAccessibilityDefaults` | Default presentation policy | Yes | No | Yes |
 | `UINotificationPolicy` | Bounds/coalescing/overflow/timing | Yes | No | Yes |
@@ -1919,6 +1956,16 @@ An integration claim requires:
 | EUI-D-066 | Focus maintenance is event-driven by default with an explicit project-callable revalidation seam | Approved | Avoids universal per-frame scanning while supporting dynamic/touch-heavy UI that knows when its hierarchy changes | Future opt-in tick driver requires separate evidence/authorization | No |
 | EUI-D-067 | Focus requests carry operation/generation identity and stale requests cannot override newer UI state | Approved | Async/lifecycle ordering must not teleport selection backward in time | Diagnostics should expose rejected stale work | No |
 | EUI-D-068 | Optional package input adapters may default to the suite Unity-default Input Actions compatibility profile, but EchoUI core does not require the generated wrapper or own input maps | Approved | Standard baseline action names save project setup without creating a hidden peer/input dependency | Projects retain explicit override/adapters and may add actions | No |
+| EUI-D-069 | Transition execution is part of the admitted structural UI operation and must settle before that operation reports terminal success | Approved | Prevents lifecycle truth from racing ahead of presentation and preserves serialized mutation semantics | Transition-aware operations remain bounded and deterministic | No |
+| EUI-D-070 | Transition drivers own presentation only and cannot own navigation history, Modal meaning, game state, persistence, scene, audio, or input-map truth | Approved | Replaceable presentation must not become a second authority layer | Projects can use rich custom drivers without transferring domain ownership | No |
+| EUI-D-071 | Every transition execution uses a fresh awaitable/result plus operation/generation identity; stale completion is harmless | Approved | Cached/reused async work and late callbacks can otherwise rewind UI state | Drivers and coordinator expose structured stale/cancel/timeout outcomes | No |
+| EUI-D-072 | Enter failure restores the prior stable UI and cleans the incoming entry; exit failure forces deterministic closed/released settlement | Approved | A failed open must not corrupt history and a failed close must not hold UI hostage | Recovery paths are asymmetric but deterministic and testable | No |
+| EUI-D-073 | Transition cancellation is best-effort, but stale-generation protection and a hard safety bound are mandatory even for noncancellable drivers | Approved | Third-party animation systems vary in cancellation support | Looking Glass remains usable without requiring perfect driver cancellation | No |
+| EUI-D-074 | Effective transition policy resolves project/root default -> per-definition profile -> transient operation override without mutating authored assets | Approved | Simple defaults and advanced case-specific behavior must coexist | Runtime overrides remain session-only and nonpersistent | No |
+| EUI-D-075 | The transition seam is surface-general, while EUI-M3-02 wires only Screens, blocking Modals, and independent Windows | Approved | Reuses one architecture without prematurely activating M4 transient/HUD services | Later surfaces may consume the seam through separately authorized checkpoints | No |
+| EUI-D-076 | Built-in transition drivers are Immediate and unscaled CanvasGroup Fade; custom professional drivers remain first-class without a mandatory tween dependency | Approved | Useful defaults should not cap advanced presentation | Profiles retain enter/exit timing, optional curve/easing, timeout, and substitution seams | No |
+| EUI-D-077 | Reduced-motion substitution is supported by transition policy now, while Motif/accessibility service implementation remains a separate checkpoint | Approved | Avoids a later transition rewrite without collapsing two M3 slices together | Accessibility policy may later choose Immediate/reduced variants | No |
+| EUI-D-078 | Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, and Assembly Utilities are durable authoring capabilities distinct from the later full Builder/Composer | Approved | Snap-together menu construction must not disappear into an ambiguous Builder backlog | Templates are ordinary editable prefab compositions; catalogs are project-extensible; Builder consumes the same underlying library | No |
 
 ### 27.2 Release-blocking questions
 
@@ -2021,27 +2068,51 @@ Durable evidence:
 
 M2-02 established stacked blocking Modal lifecycle, project-defined stable result IDs, exact-once settlement, structural aborts, ownership modes, Back policy, UI-only blocking, and Screen Reject/Defer behavior. Blocking Modal semantics remain distinct from independent Window coexistence.
 
-### 28.7 Active implementation checkpoint — EUI-M3-01
+### 28.7 Completed implementation checkpoint — EUI-M3-01
 
-**EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment** is **ACTIVE / AUTHORIZED** from clean repository-hygiene baseline `0b7622c`.
+**EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment** is **COMPLETE**.
+
+Durable evidence:
+- activation `292cb66`;
+- implementation `f08c926`;
+- closeout `0c58240`;
+- focused EUI-M3-01 **24 / 24 passed**;
+- EchoUI EditMode **99 / 99 passed**;
+- final Foundry EditMode **1205 / 1205 passed**;
+- manual Laboratory **12 / 12 PASS**;
+- bounded event-driven focus performance evidence PASS;
+- retained M2-02/M2-01/M1 tabs PASS;
+- package/imported Laboratory parity verified.
+
+M3-01 established explicit/non-destructive EventSystem coordination, transient live/session focus memory, deterministic restoration/fallback/no-focus, blocking-Modal containment, independent Window focus memory, event-driven revalidation, and stale-generation protection without transferring input authority.
+
+### 28.8 Active implementation checkpoint — EUI-M3-02
+
+**EUI-M3-02 — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery** is **ACTIVE / AUTHORIZED** from clean EUI-M3-01 closeout baseline `0c58240`.
 
 Authorized outcome:
-- explicit `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal` EventSystem coordination;
-- non-destructive handling of external EventSystems and degraded/blocking status for ambiguous multiple-system states;
-- per-live-entry focus memory;
-- optional transient root-session stable-surface focus memory with designer-selectable fresh-vs-remembered reopen policy;
-- deterministic explicit/remembered/default/resolver/fallback/no-focus resolution;
-- Screen Back/resume and Modal-close focus restoration when policy allows;
-- designer-controlled pointer/navigation focus behavior;
-- structural top-Modal focus containment while retaining lower-entry memory;
-- independent Window focus memory without the later Window manager;
-- event-driven focus maintenance plus explicit bounded revalidation;
-- stale focus operation/generation rejection;
-- optional adapter use of the SFGSS-000 Unity-default Input Actions compatibility profile without hard Input System/generated-wrapper dependency or input-map ownership.
+- transition execution becomes part of admitted Screen/Modal/Window structural lifecycle settlement;
+- replaceable presentation-only transition drivers with no domain/navigation/input/persistence authority;
+- fresh awaitable/result execution with operation/generation identity and stale-completion rejection;
+- unscaled-time execution, best-effort cancellation, and mandatory hard safety bounds;
+- deterministic enter rollback to the prior stable UI and deterministic exit force-close/release recovery;
+- structural Modal `Aborted` settlement for admitted open failures rather than fabricated semantic Cancel;
+- effective transition policy resolution through project/root default -> per-definition profile -> transient operation override;
+- independent enter/exit driver/timing data with optional curve/easing, timeout, and reduced-motion substitution seams;
+- package reference drivers limited to Immediate and CanvasGroup Fade while professional custom drivers remain first-class;
+- surface-general transition contracts wired only to existing Screen, blocking Modal, and independent Window lifecycle in this slice;
+- retained M3-01 focus/EventSystem behavior and existing M2 operation serialization/exact-once contracts.
 
-Explicitly excluded from EUI-M3-01: transition drivers/animation sequencing; generalized dim/blur; Motifs/accessibility presentation implementation; HUD regions/notifications/tooltips/prompts; full Window LIFO/pin/drag-resize/layout management; persistence; peer bridges; Builder; primitive/9-slice warehouse work; automatic gameplay-input/UI-map switching; project-wide lifetime composition; polished showcase art.
+Authoring promise recorded alongside this activation, but not implemented by M3-02:
+- a package-owned Primitive Warehouse including scalable 9-slice-capable primitive families;
+- ordinary editable Panel/Menu Templates assembled from those primitives;
+- a project-extensible stable-ID Template Catalog;
+- lightweight Assembly Utilities that remain useful without the later full Builder/Composer;
+- a later Builder/Composer that consumes the same library rather than replacing it.
 
-Stop point: re-establish the incoming **1181 / 1181** EditMode floor on the activation commit before Runtime edits; then prove the active EUI-M3-01 Checkpoint Build Plan through focused automated focus/EventSystem tests, final full regression, direct Laboratory evidence, and bounded performance evidence. Stop before transition/Motif/HUD/window-manager work begins.
+Explicitly excluded from EUI-M3-02 implementation: Motif/accessibility service implementation beyond reduced-motion transition substitution seams; generalized dim/blur; HUD regions/notifications/tooltips/prompts; full Window LIFO/pin/drag-resize/layout management; persistence; peer bridges; implementation of the Primitive Warehouse/Template Catalog/Assembly Utilities/Builder; automatic gameplay-input/UI-map switching; project-wide lifetime composition; polished showcase art.
+
+Stop point: re-establish the incoming **1205 / 1205** full EditMode floor on the EUI-M3-02 activation commit before any Runtime edit. Then prove the active EUI-M3-02 Checkpoint Build Plan through focused transition/lifecycle tests, retained full regression, direct Laboratory evidence, and bounded transition/performance evidence. Stop before Motif/accessibility service or M4 HUD/transient work begins.
 
 ---
 
@@ -2052,20 +2123,21 @@ We are continuing development of The Sperk’s Systems Foundry — EchoDevGames 
 
 Treat SFGSS-000 v0.27.0 as the authority for suite-wide boundaries, including
 the additive Unity-default Input Actions compatibility profile.
-Treat the approved The Looking Glass (EchoUI) Package Specification v1.5.0 as
-the authority for UI presentation infrastructure and the EUI-M3-01 focus/EventSystem
-contract. Follow SFGSS-005 v1.6.0, SFGSS-ADR-007, and the active EUI-M3-01
-Checkpoint Build Plan for Green Path execution.
+Treat the approved The Looking Glass (EchoUI) Package Specification v1.6.0 as
+the authority for UI presentation infrastructure, the completed EUI-M3-01
+focus/EventSystem contract, the durable Assembly Library promise, and the active
+EUI-M3-02 transition/view-lifecycle contract. Follow SFGSS-005 v1.6.0,
+SFGSS-ADR-007, and the active EUI-M3-02 Checkpoint Build Plan for Green Path execution.
 
 Current package: EchoUI
-Current specification version: 1.5.0
-Current milestone/checkpoint: EUI-M3-01 ACTIVE / AUTHORIZED
+Current specification version: 1.6.0
+Current milestone/checkpoint: EUI-M3-02 ACTIVE / AUTHORIZED
 Current Unity version: 6000.3.8f1
-Current implementation baseline: repository hygiene 0b7622c after EUI-M2-02 closeout 7f5ad40
-Current EUI-M3-01 implementation status: Not started at activation
-Incoming full EditMode floor: 1181 / 1181 passed, 0 failed
-Retained EchoUI: 75 / 75 passed
-Retained M2-02 focused: 28 / 28 passed
+Current implementation baseline: EUI-M3-01 closeout 0c58240
+Current EUI-M3-02 implementation status: Not started at activation
+Incoming full EditMode floor: 1205 / 1205 passed, 0 failed
+Retained EchoUI: 99 / 99 passed
+Retained focused M3-01: 24 / 24 passed
 Retained M2-02 Laboratory: 12 / 12 PASS
 Known blockers: None at activation
 Current Notes reviewed through: August 15, 2026
@@ -2091,16 +2163,16 @@ Before writing code:
 | Field | Current value |
 |---|---|
 | Runtime package version | `0.1.0` |
-| Package authority | SFGSS-PKG-ECHOUI-001 v1.5.0 Approved |
+| Package authority | SFGSS-PKG-ECHOUI-001 v1.6.0 Approved |
 | Suite authority relevant to input compatibility | SFGSS-000 v0.27.0 Approved |
-| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 + EUI-M2-01 + EUI-M2-02 |
+| Completed implementation checkpoints | EUI-M1-01 + EUI-M1-02 + EUI-M2-01 + EUI-M2-02 + EUI-M3-01 |
 | EUI-M2-02 retained evidence | Activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; closeout `7f5ad40`; full EditMode **1181 / 1181**; EchoUI **75 / 75**; focused M2-02 **28 / 28**; manual Laboratory **12 / 12** |
 | Decisions | EUI-D-001 through EUI-D-068; EUI-D-004, EUI-D-017, and EUI-D-039 superseded |
-| Active implementation checkpoint | EUI-M3-01 - EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment |
-| EUI-M3-01 implementation status | Not started at activation |
-| Implementation permission | **EUI-M3-01 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M3-01 JIT revisit + specification v1.5.0 reconciliation |
-| Starting clean repository baseline | `0b7622c` |
-| Incoming full EditMode gate | **1181 / 1181 passed, 0 failed** must be re-established before Runtime edits |
+| Active implementation checkpoint | EUI-M3-02 - View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery |
+| EUI-M3-01 retained evidence | Activation `292cb66`; implementation `f08c926`; closeout `0c58240`; focused M3-01 **24 / 24**; EchoUI **99 / 99**; full EditMode **1205 / 1205**; manual Laboratory **12 / 12**; performance PASS |
+| Implementation permission | **EUI-M3-02 ACTIVE / AUTHORIZED** after bounded PKG-LEARN-008 M3-02 JIT revisit + specification v1.6.0 reconciliation |
+| Starting clean repository baseline | `0c58240` |
+| Incoming full EditMode gate | **1205 / 1205 passed, 0 failed** must be re-established before Runtime edits |
 | Other package frontier | First Light frozen after FL-M5-R1; Chronicle M6 remains not activated by this EchoUI checkpoint |
 
 ---|---|
@@ -2132,13 +2204,17 @@ Before writing code:
 - [x] Independent Window focus memory does not activate the full Window manager.
 - [x] Focus maintenance is event-driven by default with explicit revalidation available.
 - [x] Optional Unity-default action-name conveniences do not create a generated-wrapper or peer-package dependency.
-- [x] EUI-M1-01, EUI-M1-02, EUI-M2-01, and EUI-M2-02 are complete.
-- [x] PKG-LEARN-008 bounded EUI-M3-01 revisit is complete.
-- [x] EUI-M3-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
+- [x] EUI-M1-01, EUI-M1-02, EUI-M2-01, EUI-M2-02, and EUI-M3-01 are complete.
+- [x] Transition execution preserves structural-operation authority, uses fresh generation-bound work, and has deterministic failure recovery.
+- [x] Immediate/CanvasGroup Fade reference drivers do not cap professional custom transition drivers or introduce a mandatory tween dependency.
+- [x] Reduced-motion substitution is architecturally available without prematurely implementing the Motif/accessibility service.
+- [x] Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, and Assembly Utilities are explicitly preserved as durable authoring capabilities distinct from the full Builder/Composer.
+- [x] PKG-LEARN-008 bounded EUI-M3-02 revisit is complete.
+- [x] EUI-M3-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M3-01 reconciled and activated
+**Decision:** Approved / EUI-M3-02 reconciled and activated
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
@@ -2146,7 +2222,8 @@ Before writing code:
 **EUI-M2-01 JIT reconciliation and explicit authorization date:** August 14, 2026
 **EUI-M2-02 JIT reconciliation and explicit authorization date:** August 14, 2026
 **EUI-M3-01 JIT reconciliation and explicit authorization date:** August 15, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M3-01 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until the authority/activation documentation commit is applied to clean baseline `0b7622c` and the incoming **1181 / 1181** EditMode floor is re-established. The SFGSS-000 Unity-default input profile is an additive convenience only and does not transfer input authority or create a hard dependency. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
+**EUI-M3-02 JIT reconciliation and explicit authorization date:** August 15, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M3-02 implementation is authorized only within its active Checkpoint Build Plan. Runtime implementation does not begin until this authority/activation documentation commit is applied to clean baseline `0c58240` and the incoming **1205 / 1205** EditMode floor is re-established. Transition drivers remain presentation-only, fresh/generation-bound, unscaled-time, hard-bounded, and replaceable. The Assembly Library promise is durable authority but its Primitive Warehouse/template/catalog/utility/Builder implementation remains outside M3-02. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 

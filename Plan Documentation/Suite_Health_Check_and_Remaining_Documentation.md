@@ -2,7 +2,7 @@
 
 **Updated:** August 15, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-01 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-01 complete at implementation `f08c926`; no follow-on Looking Glass checkpoint activated
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-01 complete; EUI-M3-02 ACTIVE / AUTHORIZED from closeout baseline `0c58240`; Runtime not started at activation
 
 ## Current health
 
@@ -22,14 +22,30 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-01 revisit reconciles EventSystem coordination, transient focus memory/restoration, Modal containment, independent Window focus memory, explicit revalidation, stale-request protection, and optional suite input-profile defaults |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.5.0 Approved** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-02 revisit reconciles transition/view lifecycle, professional replaceable-driver seams, deterministic recovery, reduced-motion substitution, and the durable Assembly Library authoring promise |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.6.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M3-01 COMPLETE** — activation `292cb66`; implementation `f08c926`; focused M3-01 **24 / 24**; EchoUI **99 / 99**; manual Laboratory **12 / 12**; performance **PASS**; final full EditMode **1205 / 1205** |
-| Looking Glass active checkpoint | **None** — EUI-M3-01 closed; next Looking Glass checkpoint not activated |
+| Looking Glass active checkpoint | **EUI-M3-02 ACTIVE / AUTHORIZED** — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery; Runtime not started |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
+
+## Looking Glass EUI-M3-02 activation health
+- Activation baseline: `0c58240` — clean EUI-M3-01 final closeout.
+- Incoming full EditMode floor: **1205 / 1205 passed, 0 failed**.
+- Retained EchoUI: **99 / 99**; focused M3-01: **24 / 24**; manual Laboratory: **12 / 12 PASS**; bounded focus performance PASS.
+- Package authority advances to **SFGSS-PKG-ECHOUI-001 v1.6.0**; suite authority remains **SFGSS-000 v0.27.0**.
+- Transition execution is part of admitted Screen/Modal/Window lifecycle settlement and cannot race structural authority.
+- Drivers are presentation-only, fresh/generation-bound, unscaled-time, best-effort cancellable, and hard-bounded.
+- Enter failure restores prior stable UI/cleans the incoming entry; exit failure forces deterministic closed/released settlement.
+- Effective transition policy resolves project/root default -> per-definition profile -> transient operation override.
+- Immediate and CanvasGroup Fade are reference drivers only; Animator/tween/shader/slide/scale/custom drivers remain supported without a mandatory tween dependency.
+- Reduced-motion substitution is an architectural seam only; broader Motif/accessibility service implementation remains inactive.
+- Durable authoring promise now explicitly separates Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, Assembly Utilities, and later Builder/Composer. None of those authoring systems is implemented by M3-02.
+- HUD/transients, full Window manager, persistence, peer bridges, gameplay-input ownership, project-wide lifetime composition, and polished showcase work remain inactive.
+- **EUI-M3-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
+- Next gate: re-establish **1205 / 1205** full EditMode on the activation commit before Runtime edits.
 
 ## Looking Glass EUI-M3-01 completion health
 - Activation: `292cb66`; implementation: `f08c926`.

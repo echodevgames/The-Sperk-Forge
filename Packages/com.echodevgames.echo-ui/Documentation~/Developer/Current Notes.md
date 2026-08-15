@@ -2,8 +2,8 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.5.0
-**Current checkpoint:** EUI-M3-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.6.0
+**Current checkpoint:** EUI-M3-02 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02 remains complete. EUI-M3-01 is also complete and adds explicit EventSystem coordination, policy-aware transient focus memory/restoration, top-Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection. Transitions, HUD/transients, Motifs/accessibility presentation, Builder, primitive/9-slice warehouse work, persistence, peer bridges, full Window LIFO/pinning/layout management, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02 and EUI-M3-01 remain complete. EUI-M3-02 is now ACTIVE / AUTHORIZED for authoritative view-lifecycle transition settlement, replaceable presentation-only drivers, fresh generation-bound operations, unscaled-time cancellation/timeout safety, deterministic enter/exit recovery, layered transition profiles/overrides, Immediate and CanvasGroup Fade reference drivers, and reduced-motion substitution seams. Motif/accessibility service implementation, HUD/transients, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -126,3 +126,24 @@ EUI-M2-02 remains complete. EUI-M3-01 is also complete and adds explicit EventSy
 - Runtime retains zero hard peer Echo dependency, no generated `InputSystem_Actions` wrapper dependency, and no gameplay-input/action-map ownership.
 - Implementation matched **SFGSS-PKG-ECHOUI-001 v1.5.0** under **SFGSS-000 v0.27.0**; no package-authority revision or new suite ADR is required at closeout.
 - **EUI-M3-01 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
+
+## EUI-M3-02 declaration
+
+- **Planning baseline:** `0c58240` — clean synchronized EUI-M3-01 final closeout.
+- **Authority:** SFGSS-PKG-ECHOUI-001 v1.6.0 under unchanged SFGSS-000 v0.27.0.
+- **Incoming full EditMode floor to re-establish before Runtime edits:** **1205 / 1205 passed, 0 failed**.
+- Retained EchoUI: **99 / 99**; focused M3-01: **24 / 24**; M3-01 Laboratory: **12 / 12 PASS**; bounded focus performance PASS.
+- Transition execution becomes part of admitted Screen/Modal/Window structural lifecycle settlement rather than an unrelated animation race.
+- Transition drivers are replaceable presentation-only collaborators and may not own navigation history, Modal semantic meaning, input maps, pause/time scale, scene travel, persistence, audio, gameplay, or project lifetime.
+- Every execution owns a fresh awaitable/result plus operation/generation identity. Stale completion cannot overwrite newer lifecycle truth.
+- Transition time is unscaled. Cancellation is best-effort, but stale-generation rejection and a hard safety bound are mandatory.
+- Enter failure cleans/aborts the incoming entry and restores the prior stable UI; an admitted blocking Modal open failure settles structurally as `Aborted`.
+- Exit failure forces deterministic closed/released settlement so a broken animation cannot strand the root.
+- Effective transition policy resolves project/root default -> per-definition profile -> transient operation override without mutating authored assets.
+- Profiles may independently describe enter/exit driver/timing, optional curve/easing data, timeout/safety bounds, and reduced-motion substitution.
+- Package reference drivers are Immediate and CanvasGroup Fade. Professional custom Animator/tween/shader/slide/scale/3D drivers remain first-class without a mandatory tween dependency.
+- The transition seam is surface-general, but M3-02 wires only Screen, blocking Modal, and independent Window lifecycle. M4 HUD/transient services are not activated.
+- Reduced-motion substitution is architecturally supported; broader Motif/accessibility implementation remains separately gated.
+- **Durable authoring promise:** Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, Assembly Utilities, and later Builder/Composer are separate package capabilities. Templates remain ordinary editable prefab compositions, and the lightweight utilities do not depend on the full Builder.
+- Primitive/9-slice/template/catalog/utility/Builder implementation is **not** part of M3-02.
+- **Runtime implementation has not started at activation.**

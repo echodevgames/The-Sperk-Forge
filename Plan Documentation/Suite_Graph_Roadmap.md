@@ -12,7 +12,7 @@ updated: 2026-08-15
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** No active Looking Glass checkpoint; EUI-M3-01 is COMPLETE
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M3-02 — ACTIVE / AUTHORIZED; Runtime not started
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,10 +20,10 @@ updated: 2026-08-15
 
 ## Current frontier — August 15, 2026
 
-- **Looking Glass:** EUI-M3-01 is **COMPLETE** at implementation `f08c926`. Package authority remains v1.5.0; final proof is focused M3-01 **24 / 24**, EchoUI **99 / 99**, manual Laboratory **12 / 12**, bounded performance **PASS**, and full EditMode **1205 / 1205**.
+- **Looking Glass:** EUI-M3-01 is **COMPLETE** at closeout `0c58240`; EUI-M3-02 is **ACTIVE / AUTHORIZED**. Package authority advances to v1.6.0. Retained proof entering M3-02 is focused M3-01 **24 / 24**, EchoUI **99 / 99**, manual Laboratory **12 / 12**, bounded performance **PASS**, and full EditMode **1205 / 1205**.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M3-01 now provides explicit/non-destructive EventSystem coordination, transient per-entry/session focus memory, policy-aware restoration, Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection. Optional adapters may use the suite Unity-default input action-name compatibility profile without transferring input ownership. Transitions, Motifs/accessibility presentation, HUD/transients, full Window LIFO/pinning/layout, Builder, primitive/9-slice expansion, persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
+- EUI-M3-01 provides the completed EventSystem/focus foundation. EUI-M3-02 now activates authoritative view-lifecycle transition settlement, replaceable fresh generation-bound drivers, deterministic enter/exit recovery, layered transition profiles/overrides, Immediate + CanvasGroup Fade references, professional custom-driver seams, and reduced-motion substitution support. Motif/accessibility service implementation, HUD/transients, full Window LIFO/pinning/layout, persistence, gameplay-input ownership, and peer bridges remain later work. Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, Assembly Utilities, and the later Builder/Composer are now explicit durable authoring capabilities but remain separately gated for implementation.
 
 
 ## How to use this in Obsidian
@@ -363,3 +363,7 @@ Blocking `Modal` lifecycle remains distinct from independent `Window` coexistenc
 ## 2026-08-15 Looking Glass EUI-M3-01 closeout
 
 `EUI-M3-01` is Complete. Activation `292cb66`; implementation `f08c926`; incoming full EditMode `1181 / 1181`; focused M3-01 `24 / 24`; EchoUI `99 / 99`; manual Laboratory `12 / 12`; bounded performance evidence PASS; final full EditMode `1205 / 1205`; retained M2-02/M2-01/M1 tabs PASS; package/imported Laboratory parity verified. Suite authority remains SFGSS-000 v0.27.0 and Looking Glass authority remains v1.5.0. No follow-on Looking Glass checkpoint is activated.
+
+## 2026-08-15 Looking Glass EUI-M3-02 activation
+
+`EUI-M3-02` is ACTIVE / AUTHORIZED from clean EUI-M3-01 closeout baseline `0c58240`. Suite authority remains SFGSS-000 v0.27.0 and Looking Glass authority advances to v1.6.0. Incoming retained proof is full EditMode `1205 / 1205`, EchoUI `99 / 99`, focused M3-01 `24 / 24`, manual Laboratory `12 / 12 PASS`, and bounded focus performance PASS. Runtime implementation has not started. The first gate is to re-establish `1205 / 1205` before Runtime edits. M3-02 owns the bounded Screen/Modal/Window transition/view-lifecycle slice; the separately promised Primitive Warehouse, editable template library/catalog, Assembly Utilities, and Builder/Composer remain future authoring work.
