@@ -15,12 +15,26 @@
 # [attr]unity-yaml        merge=unityyamlmerge text linguist-language=yaml linguist-generated
 
 # Unity source files
-*.cginc                 text
-*.compute               text linguist-language=hlsl
-*.cs                    text diff=csharp
-*.hlsl                  text linguist-language=hlsl
-*.raytrace              text linguist-language=hlsl
-*.shader                text
+*.cginc                 text eol=lf
+*.compute               text eol=lf linguist-language=hlsl
+*.cs                    text eol=lf diff=csharp
+*.hlsl                  text eol=lf linguist-language=hlsl
+*.raytrace              text eol=lf linguist-language=hlsl
+*.shader                text eol=lf
+
+# Foundry repository text / shell line-ending policy
+# Git attributes own line endings; repository-local core.autocrlf is set false
+# by the repository hygiene helper so Windows Git does not second-guess them.
+*.md                    text eol=lf
+*.txt                   text eol=lf
+*.xml                   text eol=lf
+*.json                  text eol=lf
+*.yml                   text eol=lf
+*.yaml                  text eol=lf
+*.cmd                   text eol=crlf
+*.bat                   text eol=crlf
+*.sln                   text eol=crlf
+*.slnx                  text eol=crlf
 
 # Unity JSON files
 *.asmdef                unity-json
@@ -31,9 +45,9 @@
 *.shadersubgraph        unity-json
 
 # Unity UI Toolkit files
-*.tss                   text diff=css linguist-language=css
-*.uss                   text diff=css linguist-language=css
-*.uxml                  text linguist-language=xml linguist-detectable
+*.tss                   text eol=lf diff=css linguist-language=css
+*.uss                   text eol=lf diff=css linguist-language=css
+*.uxml                  text eol=lf linguist-language=xml linguist-detectable
 
 # Unity YAML files
 *.anim                  unity-yaml
