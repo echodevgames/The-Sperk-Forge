@@ -4,13 +4,28 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 15, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
-**Current checkpoint:** EUI-M3-01 — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment — ACTIVE / AUTHORIZED
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-01 — COMPLETE; no follow-on Looking Glass checkpoint activated
+**Current checkpoint:** None — EUI-M3-01 complete; next Looking Glass checkpoint not activated
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
+## Looking Glass EUI-M3-01 Final Closeout — August 15, 2026
+- Activation commit: `292cb66` (`292cb66f216ecc130de67e977befccc10e104297`).
+- Implementation commit: `f08c926` (`f08c926478b47e11ab810c9898558ca1f8d0a930`), **31 files / 5956 insertions / 58 deletions**.
+- Incoming full EditMode floor was re-established before Runtime edits: **1181 / 1181 passed, 0 failed**.
+- Focused EUI-M3-01: **24 / 24 passed, 0 failed**.
+- Final EchoUI EditMode: **99 / 99 passed, 0 failed**.
+- Final Foundry EditMode: **1205 / 1205 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**; retained M2-02, M2-01, and M1 tabs **PASS**.
+- Bounded event-driven focus performance evidence: **PASS**.
+- Package/imported Laboratory parity: **VERIFIED**.
+- EUI-M3-01 implements the declared EventSystem coordination modes, ambiguity degradation, live/session focus memory, fresh/remembered reopen policy, deterministic restoration/fallback/no-focus, Modal containment, independent Window focus memory, explicit revalidation, and stale-generation protection.
+- Runtime retains zero hard peer Echo dependency and no generated `InputSystem_Actions` wrapper, gameplay-action-map, persistence, or project-wide lifetime authority.
+- The session-memory hotfix was a contract-conforming Runtime correction and required no authority change.
+- Suite authority remains **SFGSS-000 v0.27.0** and package authority remains **SFGSS-PKG-ECHOUI-001 v1.5.0**; no new suite ADR is required.
+- **EUI-M3-01 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
 ## Looking Glass EUI-M3-01 JIT Reconciliation and Activation — August 15, 2026
 
 - Incoming clean repository baseline: `0b7622c` — repository hygiene after EUI-M2-02 closeout `7f5ad40`.

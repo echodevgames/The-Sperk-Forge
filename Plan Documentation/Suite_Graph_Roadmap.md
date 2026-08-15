@@ -12,7 +12,7 @@ updated: 2026-08-15
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M3-01 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Current work item:** No active Looking Glass checkpoint; EUI-M3-01 is COMPLETE
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,10 +20,10 @@ updated: 2026-08-15
 
 ## Current frontier — August 15, 2026
 
-- **Looking Glass:** EUI-M2-02 is **COMPLETE** at closeout `7f5ad40`; EUI-M3-01 is **ACTIVE / AUTHORIZED** from repository-hygiene baseline `0b7622c`. Package authority is v1.5.0; retained proof is focused M2-02 **28 / 28**, EchoUI **75 / 75**, manual Laboratory **12 / 12**, full EditMode **1181 / 1181**.
+- **Looking Glass:** EUI-M3-01 is **COMPLETE** at implementation `f08c926`. Package authority remains v1.5.0; final proof is focused M3-01 **24 / 24**, EchoUI **99 / 99**, manual Laboratory **12 / 12**, bounded performance **PASS**, and full EditMode **1205 / 1205**.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M3-01 activates explicit/non-destructive EventSystem coordination, transient per-entry/session focus memory, policy-aware restoration, Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection. It may consume the suite Unity-default input action-name compatibility profile through optional adapters without owning input. Transitions, Motifs/accessibility presentation, HUD/transients, full Window LIFO/pinning/layout, Builder, primitive/9-slice expansion, persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
+- EUI-M3-01 now provides explicit/non-destructive EventSystem coordination, transient per-entry/session focus memory, policy-aware restoration, Modal focus containment, independent Window focus memory, event-driven revalidation, and stale-request protection. Optional adapters may use the suite Unity-default input action-name compatibility profile without transferring input ownership. Transitions, Motifs/accessibility presentation, HUD/transients, full Window LIFO/pinning/layout, Builder, primitive/9-slice expansion, persistence, gameplay-input ownership, and peer bridges remain future separately gated work.
 
 
 ## How to use this in Obsidian
@@ -359,3 +359,7 @@ Blocking `Modal` lifecycle remains distinct from independent `Window` coexistenc
 ## 2026-08-15 Looking Glass EUI-M3-01 activation
 
 `EUI-M3-01` is ACTIVE / AUTHORIZED from clean baseline `0b7622c`. Suite authority is SFGSS-000 v0.27.0 and Looking Glass authority is v1.5.0. Incoming retained proof is full EditMode `1181 / 1181`, EchoUI `75 / 75`, focused M2-02 `28 / 28`, and M2-02 Laboratory `12 / 12 PASS`. Runtime implementation has not started. The first gate is to re-establish `1181 / 1181` before Runtime edits.
+
+## 2026-08-15 Looking Glass EUI-M3-01 closeout
+
+`EUI-M3-01` is Complete. Activation `292cb66`; implementation `f08c926`; incoming full EditMode `1181 / 1181`; focused M3-01 `24 / 24`; EchoUI `99 / 99`; manual Laboratory `12 / 12`; bounded performance evidence PASS; final full EditMode `1205 / 1205`; retained M2-02/M2-01/M1 tabs PASS; package/imported Laboratory parity verified. Suite authority remains SFGSS-000 v0.27.0 and Looking Glass authority remains v1.5.0. No follow-on Looking Glass checkpoint is activated.

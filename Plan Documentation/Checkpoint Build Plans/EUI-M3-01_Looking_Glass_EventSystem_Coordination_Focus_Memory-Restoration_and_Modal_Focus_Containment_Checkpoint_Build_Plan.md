@@ -3,26 +3,28 @@ tags:
   - sfgss/checkpoint
   - sfgss/wave/foundation
   - sfgss/ui
-status: active
+status: complete
 checkpoint: EUI-M3-01
 updated: 2026-08-15
 ---
 
 # EUI-M3-01 — The Looking Glass EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment — Checkpoint Build Plan
 
-**Checkpoint:** `EUI-M3-01`  
-**Status:** **ACTIVE / AUTHORIZED**  
-**Package:** The Looking Glass (`EchoUI`)  
-**Package ID:** `com.echodevgames.echo-ui`  
-**Package authority:** `SFGSS-PKG-ECHOUI-001` v1.5.0 Approved  
-**Suite authority:** SFGSS-000 v0.27.0  
-**Workflow authority:** SFGSS-005 v1.6.0 + SFGSS-ADR-007 Green Path  
-**Learning gate:** PKG-LEARN-008 Complete, including bounded EUI-M3-01 revisit  
-**Starting repository baseline:** `0b7622cd0c61803eb53921b2b859898c814f1510` — repository hygiene after EUI-M2-02 closeout  
-**Incoming retained evidence:** full EditMode **1181 / 1181 passed, 0 failed**; EchoUI **75 / 75**; EUI-M2-02 focused **28 / 28**; M2-02 Laboratory **12 / 12 PASS**  
-**Unity baseline:** 6000.3.8f1  
-**uGUI:** 2.0.0  
+**Checkpoint:** `EUI-M3-01`
+**Status:** **COMPLETE**
+**Package:** The Looking Glass (`EchoUI`)
+**Package ID:** `com.echodevgames.echo-ui`
+**Package authority:** `SFGSS-PKG-ECHOUI-001` v1.5.0 Approved
+**Suite authority:** SFGSS-000 v0.27.0
+**Workflow authority:** SFGSS-005 v1.6.0 + SFGSS-ADR-007 Green Path
+**Learning gate:** PKG-LEARN-008 Complete, including bounded EUI-M3-01 revisit
+**Starting repository baseline:** `0b7622cd0c61803eb53921b2b859898c814f1510` — repository hygiene after EUI-M2-02 closeout
+**Incoming retained evidence:** full EditMode **1181 / 1181 passed, 0 failed**; EchoUI **75 / 75**; EUI-M2-02 focused **28 / 28**; M2-02 Laboratory **12 / 12 PASS**
+**Unity baseline:** 6000.3.8f1
+**uGUI:** 2.0.0
 **Runtime implementation at activation:** **Not started**
+**Activation commit:** `292cb66f216ecc130de67e977befccc10e104297`
+**Implementation commit:** `f08c926478b47e11ab810c9898558ca1f8d0a930`
 
 > This checkpoint turns Looking Glass selection into a real, policy-aware focus lifecycle without making Looking Glass the owner of project input, gameplay state, persistence, or the future MMO Window Manager.
 
@@ -371,6 +373,24 @@ EUI-M3-01 is complete only when:
 - Starting implementation baseline: `0b7622cd0c61803eb53921b2b859898c814f1510`
 - Incoming retained full EditMode: **1181 / 1181 passed, 0 failed**
 - Runtime implementation at activation: **Not started**
-- Activation Git commit: **the commit containing this ACTIVE / AUTHORIZED transition; record exact hash at closeout**
+- Activation Git commit: `292cb66f216ecc130de67e977befccc10e104297` (`292cb66`)
 
 **Stop after activation. Do not begin Runtime implementation until the incoming 1181 / 1181 gate is re-established on the activation commit.**
+
+## 12. Final closeout record
+
+- Activation: `292cb66` (`292cb66f216ecc130de67e977befccc10e104297`).
+- Implementation: `f08c926` (`f08c926478b47e11ab810c9898558ca1f8d0a930`).
+- Incoming activation regression re-established before Runtime edits: **1181 / 1181 passed, 0 failed**.
+- Focused EUI-M3-01 tests: **24 / 24 passed, 0 failed**.
+- EchoUI EditMode assembly: **99 / 99 passed, 0 failed**.
+- Full Foundry EditMode: **1205 / 1205 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**.
+- Bounded performance evidence: **PASS**; stable idle focus behavior plus explicit bounded revalidation were observed.
+- Retained M2-02, M2-01, and M1 Laboratory tabs: **PASS**.
+- Package/imported Laboratory parity: **VERIFIED**.
+- Runtime has no hard peer Echo dependency and no generated `InputSystem_Actions` wrapper dependency.
+- The implementation remains inside the declared EventSystem/focus scope. The session-memory hotfix repaired the authorized transient-session-memory behavior rather than changing package authority.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.5.0** under **SFGSS-000 v0.27.0**; no new suite ADR is required.
+- **EUI-M3-01 is COMPLETE. No follow-on Looking Glass checkpoint is activated by this closeout.**
+- Transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pinning/layout, persistence, Builder, primitive/9-slice work, peer bridges, and polished showcase work remain separately gated.

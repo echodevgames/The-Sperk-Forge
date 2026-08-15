@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
 **Updated:** August 15, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M2-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M2-02 complete at closeout `7f5ad40`; EUI-M3-01 ACTIVE / AUTHORIZED from baseline `0b7622c`; Runtime implementation not started at activation
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-01 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-01 complete at implementation `f08c926`; no follow-on Looking Glass checkpoint activated
 
 ## Current health
 
@@ -24,13 +24,27 @@
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-01 revisit reconciles EventSystem coordination, transient focus memory/restoration, Modal containment, independent Window focus memory, explicit revalidation, stale-request protection, and optional suite input-profile defaults |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.5.0 Approved** |
-| Looking Glass completed checkpoint | **EUI-M2-02 COMPLETE** — activation `e2145ab`; clarification `b6fc160`; implementation `5ab34b3`; focused M2-02 **28 / 28**; EchoUI **75 / 75**; manual Laboratory **12 / 12**; final full EditMode **1181 / 1181** |
-| Looking Glass active checkpoint | **EUI-M3-01 ACTIVE / AUTHORIZED** — EventSystem Coordination, Focus Memory/Restoration, and Modal Focus Containment; Runtime implementation not started at activation |
+| Looking Glass completed checkpoint | **EUI-M3-01 COMPLETE** — activation `292cb66`; implementation `f08c926`; focused M3-01 **24 / 24**; EchoUI **99 / 99**; manual Laboratory **12 / 12**; performance **PASS**; final full EditMode **1205 / 1205** |
+| Looking Glass active checkpoint | **None** — EUI-M3-01 closed; next Looking Glass checkpoint not activated |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
+## Looking Glass EUI-M3-01 completion health
+- Activation: `292cb66`; implementation: `f08c926`.
+- Incoming full EditMode floor was re-established before Runtime edits: **1181 / 1181 passed, 0 failed**.
+- Focused EUI-M3-01 EventSystem/focus lifecycle: **24 / 24 passed, 0 failed**.
+- Final EchoUI EditMode assembly: **99 / 99 passed, 0 failed**.
+- Final Foundry EditMode regression: **1205 / 1205 passed, 0 failed, 0 skipped, 0 inconclusive**.
+- Manual Laboratory: **12 / 12 PASS**; retained M2-02/M2-01/M1 tabs **PASS**.
+- Bounded performance evidence: **PASS**; idle focus remained stable without a universal per-frame focus loop and explicit revalidation remained bounded.
+- EventSystem adoption/creation/require-external and multiple-system ambiguity behavior are proven without destructive external ownership.
+- Live-entry and opt-in transient session memory, fresh reopening, invalid-target fallback, Screen Back restoration, Modal restoration/containment, independent Window memory, explicit revalidation, and stale-generation protection are proven.
+- Package/imported Laboratory parity: **VERIFIED**.
+- Runtime has no hard peer Echo dependency and no generated `InputSystem_Actions` wrapper dependency or gameplay action-map ownership.
+- Package authority remains **SFGSS-PKG-ECHOUI-001 v1.5.0** under **SFGSS-000 v0.27.0**; no new ADR is required.
+- **EUI-M3-01 is COMPLETE. No follow-on Looking Glass checkpoint is activated.**
 ## Looking Glass EUI-M3-01 activation health
 
 - Planning baseline: `0b7622c`, clean synchronized repository-hygiene boundary after EUI-M2-02 closeout `7f5ad40`.

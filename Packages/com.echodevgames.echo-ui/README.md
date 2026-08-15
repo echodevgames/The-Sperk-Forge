@@ -71,6 +71,25 @@ The Laboratory proves the full Modal lifecycle in 12 manual checks while retaini
 
 EUI-M2-02 does not implement transitions, generalized dim/blur/backdrop services, full focus/EventSystem policy, HUD/transients, Motifs, Builder tooling, primitive-library expansion, arbitrary modal domain payload transport, persistence, peer-package bridges, or project-wide lifetime composition.
 
+## EUI-M3-01 EventSystem and focus lifecycle
+
+The first Focus and Presentation slice adds:
+- explicit non-destructive EventSystem coordination through `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal`;
+- structured degraded behavior when multiple eligible EventSystems make adoption ambiguous;
+- per-live-entry focus memory plus optional transient root-session stable-surface memory;
+- designer-selectable fresh versus `RememberThisSession` reopening;
+- deterministic focus resolution through explicit target, remembered target, authored default, entry resolver, global fallback, or legal no-focus;
+- Screen Back/resume and Modal completion restoration where policy allows;
+- structural focus containment inside the top blocking Modal while lower-entry memory survives;
+- distinct independent Window focus memory without introducing z-order/LIFO/pin/layout management;
+- event-driven focus maintenance, explicit revalidation, and stale-generation protection.
+
+Input modality remains project-owned and externally supplied. Pointer policy may intentionally leave selection at `<none>`, while navigation/controller policy may establish an authored target. Looking Glass does not own gameplay action maps, device detection, pause/time-scale, cursor policy, or the generated `InputSystem_Actions` wrapper.
+
+The Laboratory proves the EventSystem/focus lifecycle in 12 manual checks, retains the M2/M1 proof tabs, and records bounded idle evidence that focus coordination does not require a universal per-frame scan.
+
+EUI-M3-01 does not implement transitions, Motifs/accessibility presentation, HUD/transients, the full independent-Window LIFO/pinning/drag/layout manager, persistence, Builder tooling, primitive/9-slice warehouse work, peer bridges, or polished Reference Showcase art. Those remain separately gated future work.
+
 ## Hierarchy convention
 
 Looking Glass samples and authoring tools use `Type_DescriptiveName`:

@@ -34,3 +34,9 @@
 - Explicit separation between blocking Modal behavior and independent coexistent Window behavior.
 - Twenty-eight focused EUI-M2-02 tests, bringing the EchoUI EditMode assembly to 75 / 75 and the final Foundry EditMode floor to 1181 / 1181.
 - Expanded Laboratory proof with 12 / 12 manual Modal acceptance plus retained M2-01 Screens and M1 behavior.
+- EUI-M3-01 explicit/non-destructive EventSystem coordination through `AdoptAssigned`, deterministic `AdoptExisting`, `CreateIfMissing`, and `RequireExternal`, including structured ambiguity/missing diagnostics.
+- Policy-aware focus lifecycle with per-live-entry memory, optional transient stable-surface session memory, designer-controlled fresh/reopen behavior, deterministic fallback, and legal no-focus.
+- Screen resume/Back and blocking-Modal focus restoration/containment while independent Windows retain distinct focus memory without enabling the future Window manager.
+- Event-driven focus maintenance with explicit revalidation and stale-generation rejection; no universal per-frame focus scan, peer Echo dependency, or generated `InputSystem_Actions` wrapper dependency.
+- Twenty-four focused EUI-M3-01 tests, bringing the EchoUI EditMode assembly to 99 / 99 and the final Foundry EditMode floor to 1205 / 1205.
+- Expanded Laboratory proof with 12 / 12 manual focus/EventSystem acceptance, bounded idle performance evidence, retained M2-02/M2-01/M1 smoke checks, and synchronized package/imported Laboratory parity.
