@@ -1,309 +1,455 @@
 # Looking Glass UI Foundation Laboratory
 
-This remains the deliberately plain engineering proof sample for **The Looking Glass (`EchoUI`)**. EUI-M1-01 proved scoped Screen navigation plus an independent Window. EUI-M1-02 added externally supplied active/inactive UI context, designer-ordered surface response, independent visibility/interaction/selection dimensions, and externally supplied input-aware selection.
+This is the engineering proof sample for **The Looking Glass**. It remains deliberately plain.
 
-**EUI-M2-01** extends the same Laboratory only enough to prove:
+- **EUI-M1-01** proved scoped Screen navigation and an independent Window.
+- **EUI-M1-02** proved external UI context, ordered per-surface response, and input-aware selection.
+- **EUI-M2-01** proved project-defined layers, authoritative Screen history/lifecycle, all three Screen ownership modes, suspension policy, and strict FIFO structural execution.
+- **EUI-M2-02** adds only the blocking Modal lifecycle proof: stacked top-only interaction, exact-once results, structural aborts, all three ownership modes, Back policy, UI-scoped interaction blocking, Screen Reject/Defer behavior, and explicit proof that gameplay/project behavior remains external.
 
-- project-defined, stable-ID, variable-count ordered UI layers;
-- authoritative Screen lifecycle and history;
-- `SceneOwned`, `RootOwned`, and `ExternalOwned` ownership semantics;
-- designer-controlled suspension visibility while suspended Screens remain non-interactable;
-- deterministic Push / Replace / Reset / Back / Close behavior;
-- structured strict-FIFO Screen operation settlement;
-- retained M1 Window/context/selection behavior.
+The sample is not a polished Reference Showcase, Motif system, Builder, general focus manager, transition system, HUD framework, or MMO window-layout manager.
 
-This sample is intentionally not Motifs, Builder, a polished menu kit, a primitive-prefab warehouse, a transition system, or a Reference Showcase.
-
-## Existing UI hierarchy
+## Proof hierarchy
 
 ```text
 CanvasMasterCanvas                 [EchoUIRoot + Laboratory proof console]
 ├─ Panel_MenuRoot                 [UILayerHost: primary-ui, order 20]
 │  ├─ Panel_MainMenu              [Screen: main-menu, scope: frontend]
-│  │  ├─ Button_Settings
-│  │  └─ Button_ToggleDefaultWindow
 │  └─ Panel_SettingsMenu          [Screen: settings, scope: frontend]
-│     └─ Button_Back
 └─ Panel_WindowRoot               [UILayerHost: floating-lab, order 80]
-   └─ Panel_DefaultWindow         [Window: default-window]
-      └─ Button_DefaultClose
+   ├─ Panel_DefaultWindow         [independent Window: default-window]
+   └─ Panel_M2_02_SceneConfirmModal
+                                  [SceneOwned Modal: lab-modal-confirm]
 
-Template_M2_RootOwnedScreen       [inactive sample-owned RootOwned source template]
-External_M2_ProjectOwnedScreen    [inactive project-supplied ExternalOwned view]
+Template_M2_RootOwnedScreen       [retained M2-01 Screen source]
+External_M2_ProjectOwnedScreen    [retained M2-01 Screen external view]
+Template_M2_02_RootOwnedModal     [inactive RootOwned Modal source]
+External_M2_02_ProjectOwnedModal  [inactive ExternalOwned Modal view]
 ```
 
-The two M2 proof layer IDs are intentionally **not** package-reserved names. `primary-ui` and `floating-lab` prove that projects can author their own stable layer IDs and order. Looking Glass snapshots/validates them at lifecycle initialization; it does not rewrite the authoring data.
+The top-right of the Game view remains the Laboratory/debug safe zone. The proof console grows downward from there.
 
-The top-right of the Game view remains the Foundry Laboratory proof/debug safe zone. The single proof console occupies that zone and grows downward.
+## M2-02 Modal definitions
 
-## EUI-M2-01 proof definitions
+The sample initializes three project-neutral stable-ID Modal definitions:
 
-The Laboratory-owned driver creates bounded runtime `UIScreenDefinition` snapshots from the scene-authored proof pieces after the normal M1 surface foundation initializes:
-
-| Screen | Ownership | Layer | Suspension visibility |
+| Modal ID | Ownership | Back policy | Purpose |
 |---|---|---|---|
-| `main-menu` | SceneOwned | `primary-ui` | Visible |
-| `settings` | SceneOwned | `primary-ui` | Hidden |
-| `lab-root-owned` | RootOwned | `floating-lab` | Visible |
-| `lab-external-owned` | ExternalOwned | `floating-lab` | Hidden |
+| `lab-modal-confirm` | SceneOwned | completes with `cancel` | normal confirmation / stable result / Back proof |
+| `lab-modal-root` | RootOwned | disabled | nested top-only / RootOwned lifetime proof |
+| `lab-modal-external` | ExternalOwned | completes with `cancel` | external owner-loss / lifetime proof |
 
-`main-menu` and `settings` both carry a `CanvasGroup` so the Laboratory can visibly prove the M2 rule that a suspended Screen is non-interactable regardless of whether it remains visible.
-
-### RootOwned proof source
-
-`Template_M2_RootOwnedScreen` is an intentionally inactive sample source object outside the authoritative root hierarchy. It is supplied through the RootOwned definition's prefab/source slot only for this engineering proof. Looking Glass creates a runtime clone under `floating-lab`, registers it, and releases only that owned clone when its entry leaves history. The source template remains untouched.
-
-This is intentionally not the beginning of the future package prefab/template warehouse.
-
-### ExternalOwned proof source
-
-`External_M2_ProjectOwnedScreen` also lives outside the authoritative root hierarchy. The Laboratory explicitly supplies/registers it after Screen lifecycle initialization. Looking Glass may activate/hide it while it participates in Screen history, but closing the Screen must leave the supplied GameObject alive because object lifetime remains external.
-
-## Laboratory-owned proof console
-
-Enter Play Mode. The top-right console now has two tabs:
-
-- **M2 Screen Lifecycle** for this checkpoint;
-- **M1 Retained Proof** for the previous context/selection/window contract.
-
-The M2 tab displays:
-
-- resolved authored layer order;
-- current `frontend` Screen;
-- history depth;
-- queue depth;
-- current ownership mode;
-- Main Menu / Settings visibility and interactability;
-- RootOwned source/runtime instance state;
-- ExternalOwned supplied-object state;
-- recent operation sequence IDs and terminal results;
-- observed rapid-operation settlement order.
-
-The helper owns no pause/cinematic truth, no input-device detection, no persistence, and no peer Echo package integration.
-
-# EUI-M2-01 manual acceptance
-
-Record each item **PASS / FAIL**. Any failure stops checkpoint closeout.
-
-## 1. Project-defined ordered layers
-
-Enter Play Mode and open **M2 Screen Lifecycle**.
-
-Expected console state includes:
+Semantic completion uses project-defined IDs such as:
 
 ```text
-Resolved layers: #0 primary-ui (order 20) -> #1 floating-lab (order 80)
-M2 lifecycle initialized: True
-Proof readiness: READY
+confirm
+cancel
 ```
 
-PASS only if the non-default custom IDs resolve in the authored order. No fixed seven-layer topology is required.
+`Aborted` remains a structural outcome and is never rewritten into semantic `cancel`.
 
-## 2. SceneOwned Push and Back
+## Choosing the Screen-mutation policy
 
-Click:
+EUI-M2-02 exposes two initialization policies. A Modal lifecycle is initialized once per root, so the Laboratory deliberately asks you to choose one when Play Mode starts.
+
+For checks **1-9, 11, and 12**, choose:
 
 ```text
-Reset Complete Laboratory Proof State
-Push Settings
+Initialize: Reject
+```
+
+For check **10**, leave Play Mode, re-enter Play Mode, and choose:
+
+```text
+Initialize: Defer
+```
+
+This is intentional proof of two project initialization choices, not a production runtime policy toggle.
+
+# EUI-M2-02 manual acceptance
+
+Record every item **PASS / FAIL**. Any failed item stops closeout.
+
+## 1. Open blocking Modal
+
+Enter Play Mode.
+
+On **M2-02 Modals**:
+
+```text
+Initialize: Reject
+Reset M2-02 Proof State
+Open Scene Confirm
 ```
 
 Expected:
 
 ```text
-Current frontend Screen: settings
-History depth: 2
-Current ownership: SceneOwned
+Active Modal count: 1
+Top Modal: lab-modal-confirm
+SceneOwned Modal: visible=True, interactable=True, blocksRaycasts=True
+main-menu: visible=True, interactable=False, blocksRaycasts=False
 ```
 
-Then click `Back: frontend`.
+Try clicking the ordinary Settings button underneath. The current `frontend` Screen must remain `main-menu`.
 
-Expected:
+The proof console itself is sample-owned IMGUI evidence tooling and intentionally remains usable.
+
+## 2. Stable result ID
+
+With `lab-modal-confirm` open, click:
 
 ```text
-Current frontend Screen: main-menu
-History depth: 1
+Complete: confirm
 ```
 
-Neither scene-authored Screen is destroyed.
-
-## 3. Suspension policy: prior Screen remains visible but non-interactable
-
-Reset, then click `Push Settings`.
-
-`main-menu` is authored with `SuspensionVisibility.Visible`.
-
-Expected while Settings is current:
+Expected terminal summary includes:
 
 ```text
-main-menu: visible=True, interactable=False
-settings: visible=True, interactable=True
+outcome=Completed
+resultId=confirm
 ```
 
-Main Menu may remain visible, but it must not accept interaction while Settings owns the `frontend` scope.
+The value is the exact project-authored stable ID.
 
-## 4. Suspension policy: prior Screen hides
+## 3. Exact once
 
-Leave Settings current from Check 3, then click `Push RootOwned`.
-
-`settings` is authored with `SuspensionVisibility.Hidden`.
-
-Expected:
+Immediately click:
 
 ```text
-Current frontend Screen: lab-root-owned
-settings: visible=False, interactable=False
-RootOwned runtime instance: visible=True, ...
+Complete Again: cancel
 ```
 
-Click `Back: frontend` afterward to return to Settings, then Reset if desired.
-
-## 5. Replace does not grow history
-
-Reset, click `Push Settings` so history depth is 2, then click:
+Expected attempt status:
 
 ```text
-Replace Top -> ExternalOwned
+AlreadyCompleted
 ```
 
-The operation log includes the measured depth transition.
-
-Expected:
+The terminal summary must still report:
 
 ```text
-Replace ExternalOwned [depth 2 -> 2]
-Current frontend Screen: lab-external-owned
-History depth: 2
+resultId=confirm
 ```
 
-Replace changes the top entry without appending another history entry.
+No second terminal result replaces the first.
 
-## 6. Reset / Return-to-root clears prior history
+## 4. Nested top-only interaction
 
-From any non-root state with history depth greater than 1, click:
+Reset, then:
 
 ```text
-Reset -> Main Menu
+Open Scene Confirm
+Open Root Modal (Back Disabled)
 ```
 
 Expected:
 
 ```text
-Current frontend Screen: main-menu
-History depth: 1
-main-menu: visible=True, interactable=True
+Active Modal count: 2
+Top Modal: lab-modal-root
+SceneOwned Modal: interactable=False, blocksRaycasts=False
+RootOwned Modal runtime: visible=True, interactable=True, blocksRaycasts=True
 ```
 
-Prior Screen history is gone rather than merely hidden underneath.
+Only the top Modal owns normal Looking Glass UI interaction.
 
-## 7. RootOwned create / close / release
+## 5. Out-of-order lower cleanup
 
-Reset, then click:
+Leave the two-Modals state from Check 4 and click:
 
 ```text
-Push RootOwned
+Abort Lower Scene Handle
 ```
 
 Expected:
 
 ```text
-Current ownership: RootOwned
-RootOwned template alive: YES
-RootOwned runtime instance: visible=True, ...
+Active Modal count: 1
+Top Modal: lab-modal-root
+RootOwned Modal runtime: ... interactable=True ...
 ```
 
-Then click:
+The lower generation may settle out of order without stealing or corrupting the top interaction frontier.
+
+Then click `Complete Root: confirm` to clean up.
+
+## 6. Back policy
+
+### Dismissible Modal
+
+Reset, click:
 
 ```text
-Close RootOwned
+Open Dismissible Scene
+Back on Top Modal
+```
+
+Expected terminal result:
+
+```text
+outcome=Completed
+resultId=cancel
+```
+
+### Non-dismissible Modal
+
+Reset, click:
+
+```text
+Open Non-dismissible Root
+Back on Top Modal
+```
+
+Expected attempt status:
+
+```text
+BackDisabled
+```
+
+The Modal remains active until you click `Complete Root: confirm` or Reset.
+
+## 7. Structural abort
+
+Reset, then:
+
+```text
+Open External Modal
+Simulate External Owner Loss
+```
+
+Expected terminal summary:
+
+```text
+outcome=Aborted
+abortReason=OwnerLost
+```
+
+It must **not** report semantic `cancel`.
+
+The external GameObject remains alive because Looking Glass does not own its lifetime.
+
+## 8. Ownership lifetime
+
+Use Reset between subchecks as needed.
+
+### SceneOwned
+
+```text
+Open Scene Confirm
+Complete: confirm
+```
+
+Expected afterward:
+
+```text
+SceneOwned Modal: <object still present / inactive>
+```
+
+The scene object is not destroyed.
+
+### RootOwned
+
+```text
+Open Root Modal (Back Disabled)
+Complete Root: confirm
 ```
 
 On the following frame expected:
 
 ```text
-RootOwned template alive: YES
-RootOwned runtime instance: <released>
+RootOwned Modal template alive: YES
+RootOwned Modal runtime: <released>
+```
+
+Only the Looking-Glass-owned runtime clone is released.
+
+### ExternalOwned
+
+If Check 7 unregistered the external view, Reset will re-register it.
+
+```text
+Open External Modal
+Complete External: confirm
+```
+
+Expected afterward:
+
+```text
+ExternalOwned Modal object alive: YES
+ExternalOwned Modal active: NO
+```
+
+The supplied object survives settlement.
+
+## 9. Screen Reject policy
+
+This check requires the Play Mode session initialized with:
+
+```text
+Initialize: Reject
+```
+
+Reset, open `Scene Confirm`, then click:
+
+```text
+Request Push Settings (expect BlockedByModal)
+```
+
+Expected:
+
+```text
+Screen mutation observed: ... BlockedByModal
+Current frontend Screen: main-menu
+History depth: 1
+```
+
+No Screen-history mutation occurs under the active Modal.
+
+## 10. Screen Defer policy / FIFO
+
+Exit Play Mode and re-enter.
+
+Choose:
+
+```text
+Initialize: Defer
+```
+
+Then:
+
+```text
+Reset M2-02 Proof State
+Open Scene Confirm
+Queue Deferred: Settings -> RootOwned Screen
+```
+
+Before settling the Modal, expected:
+
+```text
+Deferred Screen queue depth: 2
+... Push Pending -> ... Push Pending
 Current frontend Screen: main-menu
 ```
 
-Only the runtime instance owned by Looking Glass is released. SceneOwned Main Menu remains intact.
-
-## 8. ExternalOwned close preserves the supplied object
-
-Reset, then click:
+Now click:
 
 ```text
-Push ExternalOwned
+Complete: confirm
+```
+
+Expected after the Modal stack clears:
+
+```text
+Deferred Screen queue depth: 0
+first request:  Push Succeeded
+second request: Push Succeeded
+Current frontend Screen: lab-root-owned
+History depth: 3
+```
+
+The two accepted Screen requests execute only after the blocking stack is empty and preserve their original FIFO submission order.
+
+## 11. Gameplay / project-input separation
+
+In either policy session:
+
+```text
+Reset M2-02 Proof State
+Open Scene Confirm
+Trigger External Project Action (+1)
 ```
 
 Expected:
 
 ```text
-Current ownership: ExternalOwned
-ExternalOwned supplied object alive: YES
-ExternalOwned active: YES
+main-menu: interactable=False, blocksRaycasts=False
+External project action count: 1
 ```
 
-Then click:
+This sample button stands in for external project/gameplay behavior. It proves Looking Glass blocks lower Looking Glass UI without seizing pause, simulation, WASD/action-map, or project gameplay authority.
+
+## 12. Retained behavior
+
+### M2-01 Screens tab
+
+Reconfirm a compact subset:
+
+1. `Reset Complete Laboratory Proof State`
+2. `Push Settings`
+3. verify `main-menu` is visible but non-interactable while Settings is current;
+4. `Back: frontend` returns to Main Menu;
+5. `Push RootOwned` and `Close RootOwned` still create/release the runtime Screen instance.
+
+### M1 Retained tab
+
+Reconfirm:
+
+1. Pointer-opened `default-window` is unselected.
+2. Navigation/controller-opened `default-window` selects `Button_DefaultClose`.
+3. `pause` can leave the Window visible while making it non-interactable.
+4. Settings / Back still performs `main-menu -> settings -> main-menu`.
+5. The independent `default-window` coexists without replacing the current `frontend` Screen.
+
+PASS only if the Modal lifecycle has not absorbed or regressed the prior Screen/Window/context/selection contracts.
+
+## Notes
+
+- `lab-modal-*` IDs are sample conventions only.
+- The Laboratory does not detect devices or own gameplay input.
+- The Laboratory does not set pause/time scale or cursor policy.
+- The project-defined `primary-ui` / `floating-lab` layer IDs remain ordinary sample-authored IDs.
+- Blocking Modal semantics do **not** redefine independent Window behavior.
+- Future independent Window most-recent-eligible LIFO Back/Escape, pin/lock behavior, dragging/resizing, and layout persistence remain later work.
+- Visual polish, generalized dim/blur, transitions, Motifs, Builder, HUD/transients, persistence, peer-package bridges, and production showcase content remain outside EUI-M2-02.
+
+## EUI-M2-02 manual acceptance record — 2026-08-14
+
+The complete EUI-M2-02 Laboratory acceptance run passed:
+
+- Check 1 — Open blocking Modal: **PASS**
+- Check 2 — Stable result ID: **PASS**
+- Check 3 — Exact once: **PASS**
+- Check 4 — Nested top-only interaction: **PASS**
+- Check 5 — Out-of-order lower cleanup: **PASS**
+- Check 6 — Back policy: **PASS**
+- Check 7 — Structural abort: **PASS**
+- Check 8 — Ownership lifetime: **PASS**
+- Check 9 — Screen Reject policy: **PASS**
+- Check 10 — Screen Defer policy / FIFO: **PASS**
+- Check 11 — Gameplay / project-input separation: **PASS**
+- Check 12 — Retained behavior: **PASS**
+- Retained M2-01 Screens tab: **PASS**
+- Retained M1 tab: **PASS**
+
+Automated evidence immediately preceding the manual run:
+
+- focused EUI-M2-02 Modal lifecycle: **28 / 28 passed**
+- EchoUI EditMode assembly: **75 / 75 passed**
+- full Foundry EditMode regression: **1181 / 1181 passed**
+
+## Laboratory readability palette
+
+The Laboratory may use a small project/sample-owned visual palette to improve readability. These colors are **not Looking Glass Runtime defaults** and do not constrain consumer projects, future Motifs, or Builder tooling.
+
+Current sample palette direction:
 
 ```text
-Close ExternalOwned
+Glass / panel fill:       #0C0015, alpha 100
+Primary fluorescent text: #00CF87, alpha 255
+
+Button Normal:            #003D97, alpha 100
+Button Highlighted:       #0091CF, alpha 100
+Button Pressed:           #002A67, alpha 100
+Button Selected:          #0091CF, alpha 100
+Button Disabled:          #3A0005, alpha 100
+Button text:              #00CF87, alpha 255
 ```
 
-Expected:
+Authoring cautions:
 
-```text
-ExternalOwned supplied object alive: YES
-ExternalOwned active: NO
-```
-
-Looking Glass may coordinate the view but must not destroy the externally owned object.
-
-## 9. Rapid structural operations settle in FIFO submission order
-
-Reset, then click:
-
-```text
-Run Rapid FIFO: Settings -> RootOwned -> Back
-```
-
-Expected `Observed` line shows three increasing operation sequence IDs in exactly this semantic order:
-
-```text
-Push Succeeded -> Push Succeeded -> Back Succeeded
-```
-
-The exact numeric sequence values depend on earlier operations, but they must increase left-to-right. Final state should be:
-
-```text
-Current frontend Screen: settings
-History depth: 2
-Queue depth: 0
-```
-
-The focused automated suite carries the delayed queue seam that proves accepted pending requests also settle FIFO across delayed processing. This manual check makes the public settlement sequence visible in the Laboratory.
-
-## 10. Retained M1 behavior still works
-
-Reset and switch to **M1 Retained Proof**.
-
-Perform this compact retained proof:
-
-1. Choose `Pointer`, open `default-window`: EventSystem selection is `<none>`.
-2. Close it, choose `Navigation / Controller`, open it: selection becomes `Button_DefaultClose`.
-3. With the window open, toggle `pause` ON: `default-window` remains visible and reports `interactable=False`; `main-menu` remains available because it has no pause interaction rule.
-4. Toggle pause OFF.
-5. Navigate Settings and Back: `main-menu -> settings -> Back -> main-menu` still behaves normally.
-6. Toggle/open the independent `default-window` and verify it does not replace the current `frontend` Screen.
-
-PASS only if the M2 lifecycle has not absorbed or regressed the M1 Window/context/selection behavior.
-
-## Project prerequisites and authoring notes
-
-- Unity baseline: 6000.3.8f1.
-- The Laboratory uses the project's normal modern Unity UI workflow.
-- If TMP-backed labels report missing resources, import **TMP Essential Resources**. TMP Examples & Extras are not required.
-- Organizational roots stay active structural containers; actual `UISurface` children own surface visibility.
-- `pause` and `cinematic` remain sample conventions for externally supplied context truth only.
-- `primary-ui` and `floating-lab` are sample-authored layer IDs only, not reserved Looking Glass vocabulary.
-- Do not expand this Laboratory into blocking modals, transition choreography, focus-history restoration, HUD/transient systems, Motifs, Builder, primitive-library content, persistence, or peer-package bridges during EUI-M2-01.
+- labels and decorative border graphics should have **Raycast Target disabled**;
+- structural roots such as `Panel_MenuRoot` must not become accidental pointer blockers;
+- translucent parent and child fills visually accumulate, so author the desired glass opacity intentionally;
+- button target graphics should avoid unintended alpha multiplication between their base Graphic color and Color Tint state colors;
+- fluorescent borders should be authored as separate border graphics rather than relying on Unity's `Outline` effect over a translucent fill.

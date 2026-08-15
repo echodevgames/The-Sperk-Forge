@@ -36,6 +36,15 @@ namespace EchoDevGames.EchoUI
 
         internal static UIScreenHandle Rejected(
             UIScreenOperationRequest request,
+            string message) =>
+            Rejected(
+                request,
+                UIScreenOperationStatus.Rejected,
+                message);
+
+        internal static UIScreenHandle Rejected(
+            UIScreenOperationRequest request,
+            UIScreenOperationStatus status,
             string message)
         {
             UIScreenHandle handle =
@@ -45,7 +54,7 @@ namespace EchoDevGames.EchoUI
 
             handle.Complete(
                 new UIScreenOperationResult(
-                    UIScreenOperationStatus.Rejected,
+                    status,
                     request.Kind,
                     request.ScreenId,
                     request.ScopeId,

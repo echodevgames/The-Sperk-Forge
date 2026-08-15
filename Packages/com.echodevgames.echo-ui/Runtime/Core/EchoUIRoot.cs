@@ -63,6 +63,29 @@ namespace EchoDevGames.EchoUI
         private bool processingScreenOperations;
         private long nextScreenOperationSequence;
 
+        [Header("M2 Blocking Modal Lifecycle")]
+        [SerializeField]
+        private List<UIModalDefinition> modalDefinitions =
+            new List<UIModalDefinition>();
+
+        [SerializeField, Min(1)]
+        private int modalCapacity = 8;
+
+        [SerializeField]
+        private UIModalScreenMutationPolicy modalScreenMutationPolicy =
+            UIModalScreenMutationPolicy.Reject;
+
+        [SerializeField, Min(1)]
+        private int deferredScreenOperationCapacity = 16;
+
+        private readonly Dictionary<string, UISurface> externalModalViews =
+            new Dictionary<string, UISurface>(
+                StringComparer.Ordinal);
+
+        private UIModalService modalService;
+        private UIScreenOperationQueue deferredScreenOperationQueue;
+        private bool shuttingDown;
+
         public static EchoUIRoot Active =>
             active;
 
@@ -91,6 +114,30 @@ namespace EchoDevGames.EchoUI
                 ? 0
                 : screenLayerRegistry.Count;
 
+        public bool IsModalLifecycleInitialized =>
+            modalService != null &&
+            modalService.IsValid;
+
+        public bool HasBlockingModal =>
+            IsModalLifecycleInitialized &&
+            modalService.HasActiveModals;
+
+        public int ActiveModalCount =>
+            IsModalLifecycleInitialized
+                ? modalService.ActiveCount
+                : 0;
+
+        public int DeferredScreenOperationQueueDepth =>
+            deferredScreenOperationQueue == null
+                ? 0
+                : deferredScreenOperationQueue.Count;
+
+        public string TopModalId =>
+            IsModalLifecycleInitialized &&
+            modalService.TopEntry != null
+                ? modalService.TopEntry.ModalId.Value
+                : string.Empty;
+
         private void Awake()
         {
             TryClaimAuthority();
@@ -106,8 +153,15 @@ namespace EchoDevGames.EchoUI
             }
         }
 
+        private void LateUpdate()
+        {
+            RefreshModalLifecycle();
+        }
+
         private void OnDestroy()
         {
+            shuttingDown = true;
+
             if (active == this)
             {
                 active = null;
@@ -115,6 +169,18 @@ namespace EchoDevGames.EchoUI
 
             IsAuthoritative = false;
             IsInitialized = false;
+
+            if (modalService != null)
+            {
+                modalService.Shutdown(
+                    UIModalAbortReason.RootShutdown);
+            }
+
+            if (deferredScreenOperationQueue != null)
+            {
+                deferredScreenOperationQueue.ClearRejected(
+                    "Looking Glass root was destroyed.");
+            }
 
             if (screenOperationQueue != null)
             {
@@ -126,6 +192,10 @@ namespace EchoDevGames.EchoUI
             {
                 screenNavigator.Shutdown();
             }
+
+            modalService = null;
+            deferredScreenOperationQueue = null;
+            externalModalViews.Clear();
 
             screenOperationQueue = null;
             screenNavigator = null;
@@ -278,6 +348,15 @@ namespace EchoDevGames.EchoUI
                 screenNavigator.HasDefinition(
                     surfaceId))
             {
+                if (HasBlockingModal)
+                {
+                    return new UISurfaceOperationResult(
+                        UISurfaceOperationStatus.BlockedByModal,
+                        surfaceId: surfaceId,
+                        message:
+                            "Synchronous NavigateTo does not queue deferred Screen mutation behind a blocking Modal. Use the Screen handle API for explicit defer behavior.");
+                }
+
                 return ToSurfaceOperationResult(
                     PushScreen(
                         surfaceId));
@@ -355,6 +434,26 @@ namespace EchoDevGames.EchoUI
         public UISurfaceOperationResult Back(
             string scopeId)
         {
+            if (HasBlockingModal)
+            {
+                UIModalCompletionAttemptResult modalBack =
+                    modalService.HandleBack();
+
+                if (modalBack.Status ==
+                        UIModalCompletionStatus.Succeeded)
+                {
+                    return UISurfaceOperationResult.Success(
+                        scopeId: scopeId,
+                        message:
+                            "Back was handled by the top blocking Modal.");
+                }
+
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.BlockedByModal,
+                    scopeId: scopeId,
+                    message: modalBack.Message);
+            }
+
             if (IsScreenLifecycleInitialized &&
                 screenNavigator.HasScope(
                     scopeId))
@@ -449,6 +548,15 @@ namespace EchoDevGames.EchoUI
                 return NavigateTo(surfaceId);
             }
 
+            if (surface.Role == UISurfaceRole.Modal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.WrongSurfaceRole,
+                    surfaceId: surface.SurfaceId,
+                    message:
+                        "Blocking Modal surfaces must be opened through OpenModal.");
+            }
+
             ActivateSurface(
                 surface);
 
@@ -469,11 +577,30 @@ namespace EchoDevGames.EchoUI
                 return validation;
             }
 
+            if (surface.Role == UISurfaceRole.Modal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.WrongSurfaceRole,
+                    surfaceId: surface.SurfaceId,
+                    message:
+                        "Blocking Modal surfaces must settle through their modal handle.");
+            }
+
             if (surface.Role == UISurfaceRole.Screen &&
                 IsScreenLifecycleInitialized &&
                 screenNavigator.HasDefinition(
                     surface.SurfaceId))
             {
+                if (HasBlockingModal)
+                {
+                    return new UISurfaceOperationResult(
+                        UISurfaceOperationStatus.BlockedByModal,
+                        surfaceId: surface.SurfaceId,
+                        scopeId: surface.NavigationScopeId,
+                        message:
+                            "Synchronous CloseSurface does not queue deferred Screen mutation behind a blocking Modal. Use the Screen handle API for explicit defer behavior.");
+                }
+
                 return ToSurfaceOperationResult(
                     CloseScreen(
                         surface.SurfaceId,
@@ -513,12 +640,31 @@ namespace EchoDevGames.EchoUI
                 return validation;
             }
 
+            if (surface.Role == UISurfaceRole.Modal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.WrongSurfaceRole,
+                    surfaceId: surface.SurfaceId,
+                    message:
+                        "Blocking Modal surfaces do not use generic ToggleSurface.");
+            }
+
             if (surface.Role == UISurfaceRole.Screen)
             {
                 if (IsScreenLifecycleInitialized &&
                     screenNavigator.HasDefinition(
                         surface.SurfaceId))
                 {
+                    if (HasBlockingModal)
+                    {
+                        return new UISurfaceOperationResult(
+                            UISurfaceOperationStatus.BlockedByModal,
+                            surfaceId: surface.SurfaceId,
+                            scopeId: surface.NavigationScopeId,
+                            message:
+                                "Synchronous ToggleSurface does not queue deferred Screen mutation behind a blocking Modal. Use the Screen handle API for explicit defer behavior.");
+                    }
+
                     string current =
                         GetCurrentScreenId(
                             surface.NavigationScopeId);
@@ -930,6 +1076,379 @@ namespace EchoDevGames.EchoUI
                 message: "Looking Glass Screen lifecycle initialized.");
         }
 
+        public UISurfaceOperationResult InitializeModalLifecycle()
+        {
+            return InitializeModalLifecycle(
+                modalDefinitions,
+                null,
+                modalCapacity,
+                modalScreenMutationPolicy,
+                deferredScreenOperationCapacity);
+        }
+
+        public UISurfaceOperationResult InitializeModalLifecycle(
+            IEnumerable<UIModalDefinition> definitions,
+            IUIModalFactory factory = null,
+            int activeCapacity = 8,
+            UIModalScreenMutationPolicy screenMutationPolicy =
+                UIModalScreenMutationPolicy.Reject,
+            int deferredCapacity = 16)
+        {
+            if (!IsAuthoritative)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotAuthoritative,
+                    message:
+                        "Only the authoritative Looking Glass root may initialize blocking Modal lifecycle.");
+            }
+
+            if (!IsInitialized ||
+                !IsScreenLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    message:
+                        "Looking Glass surface and Screen lifecycle must initialize before blocking Modal lifecycle.");
+            }
+
+            if (IsModalLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.AlreadyInitialized,
+                    message:
+                        "Looking Glass blocking Modal lifecycle is already initialized.");
+            }
+
+            if (screenMutationPolicy !=
+                    UIModalScreenMutationPolicy.Reject &&
+                screenMutationPolicy !=
+                    UIModalScreenMutationPolicy.DeferUntilModalStackClears)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message:
+                        "Blocking Modal Screen-mutation policy is unsupported.");
+            }
+
+            List<UIModalDefinition> snapshot =
+                definitions == null
+                    ? null
+                    : new List<UIModalDefinition>(
+                        definitions);
+
+            if (snapshot != null)
+            {
+                for (int index = 0;
+                     index < snapshot.Count;
+                     index++)
+                {
+                    UIModalDefinition definition =
+                        snapshot[index];
+
+                    if (definition == null ||
+                        definition.OwnershipMode !=
+                            UIScreenOwnershipMode.SceneOwned)
+                    {
+                        continue;
+                    }
+
+                    UISurface sceneView =
+                        definition.SceneOwnedView;
+
+                    if (sceneView == null ||
+                        !surfaces.TryGetValue(
+                            sceneView.SurfaceId,
+                            out UISurface registered) ||
+                        registered != sceneView ||
+                        sceneView.Role != UISurfaceRole.Modal)
+                    {
+                        return new UISurfaceOperationResult(
+                            UISurfaceOperationStatus.InvalidDefinition,
+                            surfaceId:
+                                definition.ModalId.Value,
+                            message:
+                                "SceneOwned Modal views must already belong to the authoritative Looking Glass surface registry with Modal role.");
+                    }
+                }
+            }
+
+            UIModalService service =
+                new UIModalService(
+                    snapshot,
+                    screenLayerRegistry,
+                    factory,
+                    ResolveExternalModalView,
+                    RegisterRuntimeModalSurface,
+                    UnregisterRuntimeModalSurface,
+                    ActivateSurface,
+                    DeactivateSurface,
+                    OnModalStackChanged,
+                    activeCapacity,
+                    out string definitionError);
+
+            if (!string.IsNullOrWhiteSpace(
+                    definitionError) ||
+                !service.IsValid)
+            {
+                service.Shutdown(
+                    UIModalAbortReason.RootShutdown);
+
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message:
+                        string.IsNullOrWhiteSpace(
+                            definitionError)
+                            ? "Looking Glass blocking Modal definition validation failed."
+                            : definitionError);
+            }
+
+            modalService =
+                service;
+
+            modalScreenMutationPolicy =
+                screenMutationPolicy;
+
+            deferredScreenOperationQueue =
+                new UIScreenOperationQueue(
+                    deferredCapacity < 1
+                        ? 1
+                        : deferredCapacity);
+
+            if (snapshot != null)
+            {
+                for (int index = 0;
+                     index < snapshot.Count;
+                     index++)
+                {
+                    UIModalDefinition definition =
+                        snapshot[index];
+
+                    if (definition != null &&
+                        definition.OwnershipMode ==
+                            UIScreenOwnershipMode.SceneOwned &&
+                        definition.SceneOwnedView != null)
+                    {
+                        DeactivateSurface(
+                            definition.SceneOwnedView);
+                    }
+                }
+            }
+
+            OnModalStackChanged();
+
+            return UISurfaceOperationResult.Success(
+                message:
+                    "Looking Glass blocking Modal lifecycle initialized.");
+        }
+
+        public UISurfaceOperationResult RegisterExternalModalView(
+            string modalId,
+            UISurface view)
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    surfaceId: modalId,
+                    message:
+                        "Blocking Modal lifecycle must initialize before registering ExternalOwned views.");
+            }
+
+            if (!modalService.TryGetDefinition(
+                    modalId,
+                    out UIModalDefinition definition) ||
+                definition.OwnershipMode !=
+                    UIScreenOwnershipMode.ExternalOwned)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId: modalId,
+                    message:
+                        "Requested Modal is not an ExternalOwned definition.");
+            }
+
+            if (view == null ||
+                view.Role != UISurfaceRole.Modal ||
+                !string.Equals(
+                    view.SurfaceId,
+                    definition.ModalId.Value,
+                    StringComparison.Ordinal))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    surfaceId:
+                        definition.ModalId.Value,
+                    message:
+                        "ExternalOwned Modal view identity/role does not match its definition.");
+            }
+
+            string normalized =
+                definition.ModalId.Value;
+
+            if (externalModalViews.TryGetValue(
+                    normalized,
+                    out UISurface existing) &&
+                existing != null &&
+                existing != view)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.DuplicateSurfaceId,
+                    surfaceId: normalized,
+                    message:
+                        "A different ExternalOwned Modal view is already registered for this ID.");
+            }
+
+            string registrationError =
+                RegisterRuntimeModalSurface(
+                    view);
+
+            if (!string.IsNullOrWhiteSpace(
+                    registrationError))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.DuplicateSurfaceId,
+                    surfaceId: normalized,
+                    message:
+                        registrationError);
+            }
+
+            externalModalViews[normalized] =
+                view;
+
+            return UISurfaceOperationResult.Success(
+                normalized,
+                message:
+                    "ExternalOwned Modal view registered.");
+        }
+
+        public UISurfaceOperationResult UnregisterExternalModalView(
+            string modalId)
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    surfaceId: modalId,
+                    message:
+                        "Blocking Modal lifecycle is not initialized.");
+            }
+
+            string normalized =
+                modalId == null
+                    ? string.Empty
+                    : modalId.Trim();
+
+            if (!externalModalViews.TryGetValue(
+                    normalized,
+                    out UISurface view))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.UnknownSurface,
+                    surfaceId: normalized,
+                    message:
+                        "No ExternalOwned Modal view is registered for this ID.");
+            }
+
+            modalService.AbortByModalId(
+                normalized,
+                UIModalAbortReason.OwnerLost);
+
+            externalModalViews.Remove(
+                normalized);
+
+            if (view != null)
+            {
+                UnregisterRuntimeModalSurface(
+                    view);
+            }
+
+            return UISurfaceOperationResult.Success(
+                normalized,
+                message:
+                    "ExternalOwned Modal view unregistered without destroying it.");
+        }
+
+        public UIModalHandle OpenModal(
+            string modalId)
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return UIModalHandle.Rejected(
+                    new UIModalId(modalId),
+                    0,
+                    "Looking Glass blocking Modal lifecycle is not initialized.");
+            }
+
+            RefreshModalLifecycle();
+
+            return modalService.Open(
+                modalId);
+        }
+
+        public UIModalCompletionAttemptResult CompleteModal(
+            UIModalHandle handle,
+            string resultId)
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return new UIModalCompletionAttemptResult(
+                    UIModalCompletionStatus.NotFound,
+                    "Looking Glass blocking Modal lifecycle is not initialized.");
+            }
+
+            RefreshModalLifecycle();
+
+            return modalService.Complete(
+                handle,
+                resultId);
+        }
+
+        public UIModalCompletionAttemptResult AbortModal(
+            UIModalHandle handle,
+            UIModalAbortReason reason =
+                UIModalAbortReason.ExplicitAbort)
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return new UIModalCompletionAttemptResult(
+                    UIModalCompletionStatus.NotFound,
+                    "Looking Glass blocking Modal lifecycle is not initialized.");
+            }
+
+            RefreshModalLifecycle();
+
+            return modalService.Abort(
+                handle,
+                reason);
+        }
+
+        public UIModalCompletionAttemptResult HandleModalBack()
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return new UIModalCompletionAttemptResult(
+                    UIModalCompletionStatus.NotFound,
+                    "Looking Glass blocking Modal lifecycle is not initialized.");
+            }
+
+            RefreshModalLifecycle();
+
+            return modalService.HandleBack();
+        }
+
+        public void RefreshModalLifecycle()
+        {
+            if (!IsModalLifecycleInitialized)
+            {
+                return;
+            }
+
+            if (modalService.SweepLostViews())
+            {
+                RemoveDestroyedModalSurfaceRegistrations();
+            }
+        }
+
         public UISurfaceOperationResult RegisterExternalScreenView(
             string screenId,
             UISurface view)
@@ -1115,6 +1634,34 @@ namespace EchoDevGames.EchoUI
                     "Looking Glass Screen lifecycle is not initialized.");
             }
 
+            if (HasBlockingModal)
+            {
+                if (modalScreenMutationPolicy ==
+                        UIModalScreenMutationPolicy.Reject)
+                {
+                    return UIScreenHandle.Rejected(
+                        sequenced,
+                        UIScreenOperationStatus.BlockedByModal,
+                        "Screen operation was blocked by an active blocking Modal.");
+                }
+
+                if (deferredScreenOperationQueue == null)
+                {
+                    return UIScreenHandle.Rejected(
+                        sequenced,
+                        "Deferred Screen operation queue is unavailable.");
+                }
+
+                if (!deferredScreenOperationQueue.TryEnqueue(
+                        sequenced,
+                        out UIScreenHandle deferredHandle))
+                {
+                    return deferredHandle;
+                }
+
+                return deferredHandle;
+            }
+
             if (!screenOperationQueue.TryEnqueue(
                     sequenced,
                     out UIScreenHandle handle))
@@ -1160,6 +1707,211 @@ namespace EchoDevGames.EchoUI
             {
                 processingScreenOperations = false;
             }
+        }
+
+        private void DrainDeferredScreenOperationQueue()
+        {
+            if (HasBlockingModal ||
+                deferredScreenOperationQueue == null ||
+                screenNavigator == null)
+            {
+                return;
+            }
+
+            while (deferredScreenOperationQueue.TryProcessNext(
+                screenNavigator.Execute,
+                out _))
+            {
+            }
+        }
+
+        private void OnModalStackChanged()
+        {
+            ApplyModalInteractionBlocking();
+
+            if (!shuttingDown &&
+                !HasBlockingModal)
+            {
+                DrainDeferredScreenOperationQueue();
+            }
+        }
+
+        private void ApplyModalInteractionBlocking()
+        {
+            UISurface top =
+                HasBlockingModal &&
+                modalService.TopEntry != null
+                    ? modalService.TopEntry.View
+                    : null;
+
+            bool hasModal =
+                top != null;
+
+            foreach (UISurface surface in surfaces.Values)
+            {
+                if (surface == null)
+                {
+                    continue;
+                }
+
+                bool block =
+                    hasModal &&
+                    surface != top;
+
+                surface.SetModalInteractionBlocked(
+                    block);
+
+                if (block)
+                {
+                    selectionCoordinator.ClearSelectionForSurface(
+                        surface);
+                }
+            }
+        }
+
+        private void RemoveDestroyedModalSurfaceRegistrations()
+        {
+            List<string> deadSurfaceIds =
+                new List<string>();
+
+            foreach (KeyValuePair<string, UISurface> pair in surfaces)
+            {
+                if (pair.Value == null)
+                {
+                    deadSurfaceIds.Add(
+                        pair.Key);
+                }
+            }
+
+            for (int index = 0;
+                 index < deadSurfaceIds.Count;
+                 index++)
+            {
+                surfaces.Remove(
+                    deadSurfaceIds[index]);
+            }
+
+            List<string> deadExternalIds =
+                new List<string>();
+
+            foreach (KeyValuePair<string, UISurface> pair in externalModalViews)
+            {
+                if (pair.Value == null)
+                {
+                    deadExternalIds.Add(
+                        pair.Key);
+                }
+            }
+
+            for (int index = 0;
+                 index < deadExternalIds.Count;
+                 index++)
+            {
+                externalModalViews.Remove(
+                    deadExternalIds[index]);
+            }
+
+            List<UISurface> deadResponseSurfaces =
+                new List<UISurface>();
+
+            foreach (UISurface surface in
+                     responseApplicationStateBySurface.Keys)
+            {
+                if (surface == null)
+                {
+                    deadResponseSurfaces.Add(
+                        surface);
+                }
+            }
+
+            for (int index = 0;
+                 index < deadResponseSurfaces.Count;
+                 index++)
+            {
+                responseApplicationStateBySurface.Remove(
+                    deadResponseSurfaces[index]);
+            }
+        }
+
+        private UISurface ResolveExternalModalView(
+            string modalId)
+        {
+            string normalized =
+                modalId == null
+                    ? string.Empty
+                    : modalId.Trim();
+
+            return externalModalViews.TryGetValue(
+                    normalized,
+                    out UISurface view)
+                ? view
+                : null;
+        }
+
+        private string RegisterRuntimeModalSurface(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return "Runtime Modal surface is missing.";
+            }
+
+            string id =
+                surface.SurfaceId;
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return "Runtime Modal surface has an empty stable ID.";
+            }
+
+            if (surface.Role != UISurfaceRole.Modal)
+            {
+                return
+                    "Runtime Modal surface '" +
+                    id +
+                    "' is not configured with Modal role.";
+            }
+
+            if (surfaces.TryGetValue(
+                    id,
+                    out UISurface existing))
+            {
+                return existing == surface
+                    ? string.Empty
+                    : "A different registered surface already uses stable ID '" +
+                        id +
+                        "'.";
+            }
+
+            surfaces.Add(
+                id,
+                surface);
+
+            surface.SetVisible(
+                false);
+
+            return string.Empty;
+        }
+
+        private void UnregisterRuntimeModalSurface(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return;
+            }
+
+            if (surfaces.TryGetValue(
+                    surface.SurfaceId,
+                    out UISurface registered) &&
+                registered == surface)
+            {
+                surfaces.Remove(
+                    surface.SurfaceId);
+            }
+
+            responseApplicationStateBySurface.Remove(
+                surface);
         }
 
         private UISurface ResolveExternalScreenView(
@@ -1344,6 +2096,16 @@ namespace EchoDevGames.EchoUI
                     result.ScreenId,
                     result.ScopeId,
                     result.Message);
+            }
+
+            if (result.Status ==
+                    UIScreenOperationStatus.BlockedByModal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.BlockedByModal,
+                    surfaceId: result.ScreenId,
+                    scopeId: result.ScopeId,
+                    message: result.Message);
             }
 
             return new UISurfaceOperationResult(

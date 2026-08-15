@@ -49,6 +49,10 @@ namespace EchoDevGames.EchoUI
         private UIScreenSuspensionVisibility screenSuspensionVisibility =
             UIScreenSuspensionVisibility.Preserve;
 
+        private bool modalInteractionBlocked;
+        private bool hasModalBlocksRaycastsBaseline;
+        private bool modalBlocksRaycastsBaseline;
+
         private bool hasRequestedVisibility;
         private bool requestedVisibility;
 
@@ -103,6 +107,9 @@ namespace EchoDevGames.EchoUI
 
         internal bool IsScreenSuspended =>
             screenSuspended;
+
+        internal bool IsModalInteractionBlocked =>
+            modalInteractionBlocked;
 
         public bool AllowExternalContext =>
             allowExternalContext;
@@ -190,6 +197,45 @@ namespace EchoDevGames.EchoUI
             }
         }
 
+        internal bool SetModalInteractionBlocked(
+            bool blocked)
+        {
+            CanvasGroup group =
+                ResolveInteractionGroup();
+
+            if (group == null)
+            {
+                modalInteractionBlocked =
+                    blocked;
+                return false;
+            }
+
+            if (blocked &&
+                !modalInteractionBlocked)
+            {
+                if (!hasRequestedInteractability)
+                {
+                    requestedInteractability =
+                        group.interactable;
+                    hasRequestedInteractability =
+                        true;
+                }
+
+                modalBlocksRaycastsBaseline =
+                    group.blocksRaycasts;
+                hasModalBlocksRaycastsBaseline =
+                    true;
+            }
+
+            modalInteractionBlocked =
+                blocked;
+
+            ApplyLifecycleInteractionOverlay(
+                group);
+
+            return true;
+        }
+
         internal UISurfaceContextResponse ResolveContextResponse(
             UIContextState contextState)
         {
@@ -258,10 +304,28 @@ namespace EchoDevGames.EchoUI
                     ? requestedInteractability
                     : group.interactable;
 
+            bool lifecycleBlocked =
+                screenSuspended ||
+                modalInteractionBlocked;
+
             group.interactable =
-                screenSuspended
+                lifecycleBlocked
                     ? false
                     : baseInteractable;
+
+            if (modalInteractionBlocked)
+            {
+                group.blocksRaycasts =
+                    false;
+            }
+            else if (hasModalBlocksRaycastsBaseline)
+            {
+                group.blocksRaycasts =
+                    modalBlocksRaycastsBaseline;
+
+                hasModalBlocksRaycastsBaseline =
+                    false;
+            }
         }
 
         private CanvasGroup ResolveInteractionGroup()

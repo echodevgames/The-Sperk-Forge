@@ -26,6 +26,11 @@ namespace EchoDevGames.EchoUI.Samples
         private const string FloatingLayerId = "floating-lab";
         private const string PauseContextId = "pause";
         private const string CinematicContextId = "cinematic";
+        private const string SceneModalId = "lab-modal-confirm";
+        private const string RootModalId = "lab-modal-root";
+        private const string ExternalModalId = "lab-modal-external";
+        private const string ConfirmResultId = "confirm";
+        private const string CancelResultId = "cancel";
 
         [SerializeField]
         private EchoUIRoot rootOverride;
@@ -39,12 +44,30 @@ namespace EchoDevGames.EchoUI.Samples
         private UISurface defaultWindow;
         private UISurface rootOwnedTemplate;
         private UISurface externalOwnedView;
+        private UISurface sceneModalView;
+        private UISurface rootOwnedModalTemplate;
+        private UISurface externalModalView;
         private GameObject settingsButton;
         private Vector2 scroll;
         private int selectedTab;
         private bool m2InitializationAttempted;
         private bool m2Ready;
         private bool externalRegistered;
+        private bool modalReady;
+        private bool externalModalRegistered;
+        private UIModalScreenMutationPolicy activeModalScreenPolicy =
+            UIModalScreenMutationPolicy.Reject;
+        private UIModalHandle sceneModalHandle;
+        private UIModalHandle rootModalHandle;
+        private UIModalHandle externalModalHandle;
+        private UIScreenHandle modalScreenRequestA;
+        private UIScreenHandle modalScreenRequestB;
+        private int externalProjectActionCount;
+        private string modalMessage =
+            "Choose Reject or Defer initialization after M2 Screen lifecycle becomes READY.";
+        private string modalAttemptSummary = "<none>";
+        private string modalTerminalSummary = "<none>";
+        private string deferredObserved = "<not run>";
         private string m2Message = "Waiting for Looking Glass surface initialization...";
         private string fifoObserved = "<not run>";
 
@@ -70,6 +93,9 @@ namespace EchoDevGames.EchoUI.Samples
                     case DefaultWindowId:
                         defaultWindow = surface;
                         break;
+                    case SceneModalId:
+                        sceneModalView = surface;
+                        break;
                 }
             }
 
@@ -93,6 +119,16 @@ namespace EchoDevGames.EchoUI.Samples
                          !candidate.transform.IsChildOf(transform))
                 {
                     externalOwnedView = candidate;
+                }
+                else if (candidate.SurfaceId == RootModalId &&
+                         !candidate.transform.IsChildOf(transform))
+                {
+                    rootOwnedModalTemplate = candidate;
+                }
+                else if (candidate.SurfaceId == ExternalModalId &&
+                         !candidate.transform.IsChildOf(transform))
+                {
+                    externalModalView = candidate;
                 }
             }
 
@@ -129,6 +165,11 @@ namespace EchoDevGames.EchoUI.Samples
 
         private void OnGUI()
         {
+            Color previousContentColor =
+                GUI.contentColor;
+            GUI.contentColor =
+                new Color32(255, 45, 214, 255);
+
             const float width = 470f;
             const float margin = 20f;
             float height = Mathf.Min(Screen.height - (margin * 2f), 820f);
@@ -143,7 +184,12 @@ namespace EchoDevGames.EchoUI.Samples
 
             selectedTab = GUILayout.Toolbar(
                 selectedTab,
-                new[] { "M2 Screen Lifecycle", "M1 Retained Proof" });
+                new[]
+                {
+                    "M2-02 Modals",
+                    "M2-01 Screens",
+                    "M1 Retained"
+                });
 
             scroll = GUILayout.BeginScrollView(scroll);
 
@@ -152,10 +198,16 @@ namespace EchoDevGames.EchoUI.Samples
                 GUILayout.Label("EchoUIRoot not found. The proof console cannot run.");
                 GUILayout.EndScrollView();
                 GUILayout.EndArea();
+                GUI.contentColor =
+                    previousContentColor;
                 return;
             }
 
             if (selectedTab == 0)
+            {
+                DrawM202ModalConsole();
+            }
+            else if (selectedTab == 1)
             {
                 DrawM2Console();
             }
@@ -166,6 +218,640 @@ namespace EchoDevGames.EchoUI.Samples
 
             GUILayout.EndScrollView();
             GUILayout.EndArea();
+
+            GUI.contentColor =
+                previousContentColor;
+        }
+
+
+        private void DrawM202ModalConsole()
+        {
+            GUILayout.Label("EUI-M2-02: blocking Modal lifecycle, exact-once results, UI-scoped blocking, and explicit Screen mutation policy.");
+            GUILayout.Label("Independent Windows and gameplay input remain outside blocking-Modal ownership.");
+            GUILayout.Space(8f);
+
+            DrawM202State();
+            GUILayout.Space(8f);
+
+            if (!m2Ready)
+            {
+                GUILayout.Label("M2-01 Screen lifecycle must be READY first: " + m2Message);
+                return;
+            }
+
+            if (!modalReady)
+            {
+                GUILayout.Label("Initialize one policy per Play Mode session.");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Initialize: Reject"))
+                {
+                    InitializeModalProof(
+                        UIModalScreenMutationPolicy.Reject);
+                }
+                if (GUILayout.Button("Initialize: Defer"))
+                {
+                    InitializeModalProof(
+                        UIModalScreenMutationPolicy.DeferUntilModalStackClears);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Label("Use Reject for checks 1-9/11-12. Restart Play Mode and choose Defer for check 10.");
+                return;
+            }
+
+            GUILayout.Label("Open / complete / exact once");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Open Scene Confirm"))
+            {
+                sceneModalHandle =
+                    root.OpenModal(
+                        SceneModalId);
+                TrackModalHandle(
+                    "Open Scene Confirm",
+                    sceneModalHandle);
+            }
+            if (GUILayout.Button("Complete: confirm"))
+            {
+                CompleteTrackedModal(
+                    sceneModalHandle,
+                    ConfirmResultId,
+                    "Complete scene -> confirm");
+            }
+            if (GUILayout.Button("Complete Again: cancel"))
+            {
+                CompleteTrackedModal(
+                    sceneModalHandle,
+                    CancelResultId,
+                    "Repeat scene -> cancel");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6f);
+            GUILayout.Label("Nested top-only / out-of-order lower cleanup");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Open Root Modal (Back Disabled)"))
+            {
+                rootModalHandle =
+                    root.OpenModal(
+                        RootModalId);
+                TrackModalHandle(
+                    "Open Root Modal",
+                    rootModalHandle);
+            }
+            if (GUILayout.Button("Abort Lower Scene Handle"))
+            {
+                AbortTrackedModal(
+                    sceneModalHandle,
+                    UIModalAbortReason.ExplicitAbort,
+                    "Abort lower scene");
+            }
+            if (GUILayout.Button("Complete Root: confirm"))
+            {
+                CompleteTrackedModal(
+                    rootModalHandle,
+                    ConfirmResultId,
+                    "Complete root -> confirm");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6f);
+            GUILayout.Label("Back policy");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Back on Top Modal"))
+            {
+                UIModalCompletionAttemptResult result =
+                    root.HandleModalBack();
+                modalAttemptSummary =
+                    "Back: " +
+                    result.Status +
+                    " | " +
+                    result.Message;
+                CaptureCompletedHandleSummaries();
+            }
+            if (GUILayout.Button("Open Dismissible Scene"))
+            {
+                sceneModalHandle =
+                    root.OpenModal(
+                        SceneModalId);
+                TrackModalHandle(
+                    "Open dismissible Scene",
+                    sceneModalHandle);
+            }
+            if (GUILayout.Button("Open Non-dismissible Root"))
+            {
+                rootModalHandle =
+                    root.OpenModal(
+                        RootModalId);
+                TrackModalHandle(
+                    "Open non-dismissible Root",
+                    rootModalHandle);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6f);
+            GUILayout.Label("Structural abort / ExternalOwned");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Open External Modal"))
+            {
+                EnsureExternalModalRegistered();
+                externalModalHandle =
+                    root.OpenModal(
+                        ExternalModalId);
+                TrackModalHandle(
+                    "Open External Modal",
+                    externalModalHandle);
+            }
+            if (GUILayout.Button("Simulate External Owner Loss"))
+            {
+                UISurfaceOperationResult result =
+                    root.UnregisterExternalModalView(
+                        ExternalModalId);
+                externalModalRegistered = false;
+                modalAttemptSummary =
+                    "Owner loss: " +
+                    result.Status +
+                    " | " +
+                    result.Message;
+                CaptureCompletedHandleSummaries();
+            }
+            if (GUILayout.Button("Complete External: confirm"))
+            {
+                CompleteTrackedModal(
+                    externalModalHandle,
+                    ConfirmResultId,
+                    "Complete external -> confirm");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6f);
+            GUILayout.Label("Screen mutation while Modal is active");
+            if (activeModalScreenPolicy ==
+                UIModalScreenMutationPolicy.Reject)
+            {
+                if (GUILayout.Button("Request Push Settings (expect BlockedByModal)"))
+                {
+                    modalScreenRequestA =
+                        root.PushScreen(
+                            SettingsId);
+                    deferredObserved =
+                        ScreenHandleSettlement(
+                            modalScreenRequestA);
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Queue Deferred: Settings -> RootOwned Screen"))
+                {
+                    modalScreenRequestA =
+                        root.PushScreen(
+                            SettingsId);
+                    modalScreenRequestB =
+                        root.PushScreen(
+                            RootOwnedId);
+
+                    deferredObserved =
+                        "Before settle: " +
+                        ScreenHandleSettlement(
+                            modalScreenRequestA) +
+                        " -> " +
+                        ScreenHandleSettlement(
+                            modalScreenRequestB);
+                }
+            }
+            GUILayout.Label("Screen mutation observed: " + deferredObserved);
+
+            GUILayout.Space(6f);
+            GUILayout.Label("Project/gameplay separation simulator");
+            if (GUILayout.Button("Trigger External Project Action (+1)"))
+            {
+                externalProjectActionCount++;
+                modalMessage =
+                    "External project action executed. Looking Glass did not own/freeze it.";
+            }
+            GUILayout.Label("External project action count: " + externalProjectActionCount);
+
+            GUILayout.Space(8f);
+            if (GUILayout.Button("Reset M2-02 Proof State"))
+            {
+                ResetModalProofState();
+            }
+
+            GUILayout.Space(10f);
+            GUILayout.Label("Latest Modal attempt");
+            GUILayout.Label(modalAttemptSummary);
+            GUILayout.Label("Latest terminal result");
+            GUILayout.Label(modalTerminalSummary);
+        }
+
+        private void DrawM202State()
+        {
+            GUILayout.Label("M2 Screen lifecycle ready: " + m2Ready);
+            GUILayout.Label("Modal lifecycle initialized: " + root.IsModalLifecycleInitialized);
+            GUILayout.Label("Modal proof readiness: " + (modalReady ? "READY" : "NOT READY"));
+            GUILayout.Label("Modal policy: " + (modalReady ? activeModalScreenPolicy.ToString() : "<not selected>"));
+            GUILayout.Label("Status: " + modalMessage);
+            GUILayout.Label("Active Modal count: " + root.ActiveModalCount);
+            GUILayout.Label("Top Modal: " + (string.IsNullOrWhiteSpace(root.TopModalId) ? "<none>" : root.TopModalId));
+            GUILayout.Label("Deferred Screen queue depth: " + root.DeferredScreenOperationQueueDepth);
+            GUILayout.Label("Current frontend Screen: " + root.GetCurrentScreenId(FrontendScopeId));
+            GUILayout.Label("History depth: " + root.GetScreenHistoryDepth(FrontendScopeId));
+            GUILayout.Label("main-menu: " + SurfaceStateWithRaycast(mainMenu));
+            GUILayout.Label("default-window: " + SurfaceStateWithRaycast(defaultWindow));
+            GUILayout.Label("SceneOwned Modal: " + SurfaceStateWithRaycast(sceneModalView));
+            GUILayout.Label("RootOwned Modal template alive: " + YesNo(rootOwnedModalTemplate != null));
+            GUILayout.Label("RootOwned Modal runtime: " + RuntimeRootOwnedModalState());
+            GUILayout.Label("ExternalOwned Modal object alive: " + YesNo(externalModalView != null));
+            GUILayout.Label("ExternalOwned Modal active: " + YesNo(externalModalView != null && externalModalView.gameObject.activeSelf));
+            GUILayout.Label("ExternalOwned Modal registered: " + YesNo(externalModalRegistered));
+        }
+
+        private void InitializeModalProof(
+            UIModalScreenMutationPolicy policy)
+        {
+            if (modalReady ||
+                root == null ||
+                !m2Ready)
+            {
+                return;
+            }
+
+            if (sceneModalView == null ||
+                rootOwnedModalTemplate == null ||
+                externalModalView == null)
+            {
+                modalMessage =
+                    "Required M2-02 SceneOwned/RootOwned/ExternalOwned Modal proof views are missing.";
+                return;
+            }
+
+            List<UIModalDefinition> definitions =
+                new List<UIModalDefinition>
+                {
+                    new UIModalDefinition(
+                        SceneModalId,
+                        FloatingLayerId,
+                        UIScreenOwnershipMode.SceneOwned,
+                        sceneOwnedView: sceneModalView,
+                        backPolicy:
+                            new UIModalBackPolicy(
+                                UIModalBackBehavior.CompleteWithResultId,
+                                CancelResultId)),
+                    new UIModalDefinition(
+                        RootModalId,
+                        FloatingLayerId,
+                        UIScreenOwnershipMode.RootOwned,
+                        rootOwnedPrefab: rootOwnedModalTemplate.gameObject,
+                        backPolicy:
+                            new UIModalBackPolicy(
+                                UIModalBackBehavior.Disabled)),
+                    new UIModalDefinition(
+                        ExternalModalId,
+                        FloatingLayerId,
+                        UIScreenOwnershipMode.ExternalOwned,
+                        backPolicy:
+                            new UIModalBackPolicy(
+                                UIModalBackBehavior.CompleteWithResultId,
+                                CancelResultId))
+                };
+
+            UISurfaceOperationResult result =
+                root.InitializeModalLifecycle(
+                    definitions,
+                    null,
+                    8,
+                    policy,
+                    8);
+
+            if (!result.Succeeded)
+            {
+                modalMessage =
+                    "Modal lifecycle initialization failed: " +
+                    result.Status +
+                    " | " +
+                    result.Message;
+                return;
+            }
+
+            activeModalScreenPolicy =
+                policy;
+
+            UISurfaceOperationResult externalResult =
+                root.RegisterExternalModalView(
+                    ExternalModalId,
+                    externalModalView);
+
+            externalModalRegistered =
+                externalResult.Succeeded;
+
+            if (!externalModalRegistered)
+            {
+                modalMessage =
+                    "ExternalOwned Modal registration failed: " +
+                    externalResult.Status +
+                    " | " +
+                    externalResult.Message;
+                return;
+            }
+
+            modalReady = true;
+            modalMessage =
+                "READY. Modal lifecycle initialized with " +
+                policy +
+                ".";
+            ResetModalProofState();
+        }
+
+        private void EnsureExternalModalRegistered()
+        {
+            if (!modalReady ||
+                externalModalRegistered ||
+                externalModalView == null)
+            {
+                return;
+            }
+
+            UISurfaceOperationResult result =
+                root.RegisterExternalModalView(
+                    ExternalModalId,
+                    externalModalView);
+
+            externalModalRegistered =
+                result.Succeeded;
+
+            modalAttemptSummary =
+                "External Modal registration: " +
+                result.Status +
+                " | " +
+                result.Message;
+        }
+
+        private void CompleteTrackedModal(
+            UIModalHandle handle,
+            string resultId,
+            string label)
+        {
+            UIModalCompletionAttemptResult result =
+                root.CompleteModal(
+                    handle,
+                    resultId);
+
+            modalAttemptSummary =
+                label +
+                ": " +
+                result.Status +
+                " | " +
+                result.Message;
+
+            CaptureCompletedHandleSummaries();
+            RefreshDeferredObservation();
+        }
+
+        private void AbortTrackedModal(
+            UIModalHandle handle,
+            UIModalAbortReason reason,
+            string label)
+        {
+            UIModalCompletionAttemptResult result =
+                root.AbortModal(
+                    handle,
+                    reason);
+
+            modalAttemptSummary =
+                label +
+                ": " +
+                result.Status +
+                " | " +
+                result.Message;
+
+            CaptureCompletedHandleSummaries();
+            RefreshDeferredObservation();
+        }
+
+        private void TrackModalHandle(
+            string label,
+            UIModalHandle handle)
+        {
+            if (handle == null)
+            {
+                modalAttemptSummary =
+                    label + ": <no handle>";
+                return;
+            }
+
+            modalAttemptSummary =
+                label +
+                ": accepted=" +
+                handle.Accepted +
+                ", generation=" +
+                handle.Generation +
+                ", completed=" +
+                handle.IsCompleted;
+
+            CaptureCompletedHandleSummaries();
+        }
+
+        private void CaptureCompletedHandleSummaries()
+        {
+            UIModalHandle[] handles =
+            {
+                sceneModalHandle,
+                rootModalHandle,
+                externalModalHandle
+            };
+
+            for (int index = handles.Length - 1;
+                 index >= 0;
+                 index--)
+            {
+                UIModalHandle handle =
+                    handles[index];
+
+                if (handle == null ||
+                    !handle.IsCompleted)
+                {
+                    continue;
+                }
+
+                UIModalResult result =
+                    handle.Result;
+
+                modalTerminalSummary =
+                    result.ModalId.Value +
+                    " gen=" +
+                    result.Generation +
+                    " outcome=" +
+                    result.Outcome +
+                    (result.IsSemanticCompletion
+                        ? " resultId=" + result.ResultId.Value
+                        : " abortReason=" + result.AbortReason);
+
+                return;
+            }
+        }
+
+        private void RefreshDeferredObservation()
+        {
+            if (modalScreenRequestA == null &&
+                modalScreenRequestB == null)
+            {
+                return;
+            }
+
+            deferredObserved =
+                ScreenHandleSettlement(
+                    modalScreenRequestA) +
+                (modalScreenRequestB == null
+                    ? string.Empty
+                    : " -> " +
+                      ScreenHandleSettlement(
+                          modalScreenRequestB)) +
+                " | current=" +
+                root.GetCurrentScreenId(
+                    FrontendScopeId) +
+                " | depth=" +
+                root.GetScreenHistoryDepth(
+                    FrontendScopeId);
+        }
+
+        private static string ScreenHandleSettlement(
+            UIScreenHandle handle)
+        {
+            if (handle == null)
+            {
+                return "<none>";
+            }
+
+            if (!handle.IsCompleted)
+            {
+                return "seq=" +
+                       handle.Request.Sequence +
+                       " " +
+                       handle.Request.Kind +
+                       " Pending";
+            }
+
+            return "seq=" +
+                   handle.Request.Sequence +
+                   " " +
+                   handle.Request.Kind +
+                   " " +
+                   handle.Result.Status;
+        }
+
+        private string RuntimeRootOwnedModalState()
+        {
+            UISurface runtime =
+                FindRuntimeRootOwnedModalSurface();
+
+            return runtime == null
+                ? "<released>"
+                : SurfaceStateWithRaycast(
+                    runtime);
+        }
+
+        private UISurface FindRuntimeRootOwnedModalSurface()
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            UISurface[] candidates =
+                Resources.FindObjectsOfTypeAll<UISurface>();
+
+            for (int index = 0;
+                 index < candidates.Length;
+                 index++)
+            {
+                UISurface candidate =
+                    candidates[index];
+
+                if (candidate == null ||
+                    candidate == rootOwnedModalTemplate ||
+                    candidate.gameObject.scene != gameObject.scene ||
+                    candidate.SurfaceId != RootModalId)
+                {
+                    continue;
+                }
+
+                if (candidate.transform.IsChildOf(
+                        root.transform))
+                {
+                    return candidate;
+                }
+            }
+
+            return null;
+        }
+
+        private static string SurfaceStateWithRaycast(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return "<missing>";
+            }
+
+            CanvasGroup group =
+                surface.GetComponent<CanvasGroup>();
+
+            return SurfaceState(
+                       surface) +
+                   ", blocksRaycasts=" +
+                   (group == null
+                       ? "<no CanvasGroup>"
+                       : group.blocksRaycasts.ToString());
+        }
+
+        private void ResetModalProofState()
+        {
+            AbortIfLive(
+                sceneModalHandle);
+            AbortIfLive(
+                rootModalHandle);
+            AbortIfLive(
+                externalModalHandle);
+
+            sceneModalHandle = null;
+            rootModalHandle = null;
+            externalModalHandle = null;
+            modalScreenRequestA = null;
+            modalScreenRequestB = null;
+            deferredObserved = "<not run>";
+            modalAttemptSummary = "<none>";
+            modalTerminalSummary = "<none>";
+
+            EnsureExternalModalRegistered();
+
+            if (root.IsScreenLifecycleInitialized &&
+                !root.HasBlockingModal)
+            {
+                root.ResetScreen(
+                    MainMenuId);
+            }
+
+            root.CloseSurface(
+                DefaultWindowId);
+
+            externalProjectActionCount = 0;
+            modalMessage =
+                modalReady
+                    ? "READY. Proof state reset."
+                    : modalMessage;
+        }
+
+        private void AbortIfLive(
+            UIModalHandle handle)
+        {
+            if (handle == null ||
+                !handle.Accepted ||
+                handle.IsCompleted)
+            {
+                return;
+            }
+
+            root.AbortModal(
+                handle,
+                UIModalAbortReason.ExplicitAbort);
         }
 
         private void DrawM2Console()
@@ -690,6 +1376,11 @@ namespace EchoDevGames.EchoUI.Samples
 
         private void ResetProofState(bool clearOperationLog)
         {
+            if (modalReady)
+            {
+                ResetModalProofState();
+            }
+
             root.SetContextActive(PauseContextId, false);
             root.SetContextActive(CinematicContextId, false);
             root.SetInputModality(UIInputModality.Pointer);

@@ -8,6 +8,7 @@ namespace EchoDevGames.EchoUI
         Screen = 0,
         Window = 1,
         Hud = 2,
-        Overlay = 3
+        Overlay = 3,
+        Modal = 4
     }
 }

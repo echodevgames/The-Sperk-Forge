@@ -6,6 +6,7 @@ namespace EchoDevGames.EchoUI
         NoChange = 1,
         Rejected = 2,
         Invalid = 3,
-        Failed = 4
+        Failed = 4,
+        BlockedByModal = 5
     }
 }
