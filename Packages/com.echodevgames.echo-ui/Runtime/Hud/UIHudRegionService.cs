@@ -241,8 +241,7 @@ namespace EchoDevGames.EchoUI
             }
 
             string generationKey =
-                regionId.Value + "
-" + widgetId.Value;
+                regionId.Value + "|" + widgetId.Value;
 
             long generation =
                 NextGeneration(
