@@ -108,6 +108,15 @@ namespace EchoDevGames.EchoUI
 
         private UIModalService modalService;
         private UIScreenOperationQueue deferredScreenOperationQueue;
+
+        [Header("M4 HUD Regions")]
+        [SerializeField, Min(1)]
+        private int hudWidgetCapacity = 64;
+
+        [SerializeField, Min(1)]
+        private int hudVisibilityLeaseCapacity = 64;
+
+        private UIHudRegionService hudRegionService;
         private bool processingDeferredScreenOperations;
         private bool shuttingDown;
 
@@ -188,6 +197,25 @@ namespace EchoDevGames.EchoUI
                 ? modalService.TopEntry.ModalId.Value
                 : string.Empty;
 
+        public bool IsHudLifecycleInitialized =>
+            hudRegionService != null &&
+            hudRegionService.IsValid;
+
+        public int HudRegionCount =>
+            IsHudLifecycleInitialized
+                ? hudRegionService.RegionCount
+                : 0;
+
+        public int ActiveHudWidgetCount =>
+            IsHudLifecycleInitialized
+                ? hudRegionService.WidgetCount
+                : 0;
+
+        public int ActiveHudVisibilityLeaseCount =>
+            IsHudLifecycleInitialized
+                ? hudRegionService.VisibilityLeaseCount
+                : 0;
+
         private void Awake()
         {
             TryClaimAuthority();
@@ -206,6 +234,11 @@ namespace EchoDevGames.EchoUI
         private void LateUpdate()
         {
             RefreshModalLifecycle();
+
+            if (hudRegionService != null)
+            {
+                hudRegionService.RefreshDestroyedOwners();
+            }
         }
 
         private void OnDestroy()
@@ -230,6 +263,12 @@ namespace EchoDevGames.EchoUI
             {
                 modalService.Shutdown(
                     UIModalAbortReason.RootShutdown);
+            }
+
+            if (hudRegionService != null)
+            {
+                hudRegionService.Shutdown();
+                hudRegionService = null;
             }
 
             if (deferredScreenOperationQueue != null)
@@ -390,6 +429,17 @@ namespace EchoDevGames.EchoUI
                     discovered[index].StartVisible);
             }
 
+            string hudInitializationError =
+                InitializeHudLifecycle();
+
+            if (!string.IsNullOrWhiteSpace(
+                    hudInitializationError))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message: hudInitializationError);
+            }
+
             IsInitialized = true;
 
             for (int index = 0;
@@ -405,6 +455,103 @@ namespace EchoDevGames.EchoUI
 
             return UISurfaceOperationResult.Success(
                 message: "Looking Glass surface registry initialized.");
+        }
+
+        public UIHudWidgetHandle RegisterHudWidget(
+            string regionId,
+            string widgetId,
+            UISurface widget,
+            UnityEngine.Object owner = null,
+            int order = 0)
+        {
+            if (!IsHudLifecycleInitialized)
+            {
+                return UIHudWidgetHandle.Rejected(
+                    new UIHudRegionId(regionId),
+                    new UIHudWidgetId(widgetId),
+                    UIHudOperationStatus.Unavailable,
+                    "Looking Glass HUD lifecycle is not initialized.");
+            }
+
+            return hudRegionService.RegisterWidget(
+                new UIHudRegionId(regionId),
+                new UIHudWidgetId(widgetId),
+                widget,
+                owner,
+                order);
+        }
+
+        public UIHudVisibilityLease RequestHudVisibility(
+            string regionId,
+            string reasonId,
+            bool visible,
+            int priority = 0,
+            UnityEngine.Object owner = null)
+        {
+            if (!IsHudLifecycleInitialized)
+            {
+                return UIHudVisibilityLease.Rejected(
+                    new UIHudRegionId(regionId),
+                    reasonId,
+                    UIHudOperationStatus.Unavailable,
+                    "Looking Glass HUD lifecycle is not initialized.");
+            }
+
+            return hudRegionService.RequestVisibility(
+                new UIHudRegionId(regionId),
+                reasonId,
+                visible,
+                priority,
+                owner);
+        }
+
+        public bool TryGetHudRegionSnapshot(
+            string regionId,
+            out UIHudRegionSnapshot snapshot)
+        {
+            snapshot = default;
+
+            return IsHudLifecycleInitialized &&
+                hudRegionService.TryGetSnapshot(
+                    new UIHudRegionId(regionId),
+                    out snapshot);
+        }
+
+        private string InitializeHudLifecycle()
+        {
+            if (hudRegionService != null)
+            {
+                hudRegionService.Shutdown();
+            }
+
+            hudRegionService =
+                new UIHudRegionService(
+                    Mathf.Max(1, hudWidgetCapacity),
+                    Mathf.Max(1, hudVisibilityLeaseCapacity));
+
+            UIHudRegionHost[] hosts =
+                GetComponentsInChildren<UIHudRegionHost>(
+                    true);
+
+            for (int index = 0;
+                 index < hosts.Length;
+                 index++)
+            {
+                UIHudOperationResult result =
+                    hudRegionService.RegisterRegion(
+                        hosts[index],
+                        hosts[index],
+                        UIHudOwnershipMode.SceneOwned);
+
+                if (!result.Succeeded)
+                {
+                    hudRegionService.Shutdown();
+                    hudRegionService = null;
+                    return result.Message;
+                }
+            }
+
+            return string.Empty;
         }
 
         public UISurfaceOperationResult NavigateTo(
