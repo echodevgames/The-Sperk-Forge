@@ -40,3 +40,16 @@
 - Event-driven focus maintenance with explicit revalidation and stale-generation rejection; no universal per-frame focus scan, peer Echo dependency, or generated `InputSystem_Actions` wrapper dependency.
 - Twenty-four focused EUI-M3-01 tests, bringing the EchoUI EditMode assembly to 99 / 99 and the final Foundry EditMode floor to 1205 / 1205.
 - Expanded Laboratory proof with 12 / 12 manual focus/EventSystem acceptance, bounded idle performance evidence, retained M2-02/M2-01/M1 smoke checks, and synchronized package/imported Laboratory parity.
+
+
+## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+
+- Added replaceable authoritative enter/exit transition drivers for Screens, blocking Modals, and independent Windows.
+- Added deterministic transition failure, timeout, cancellation, and stale recovery.
+- Added root/default, definition-profile, and transient override policy layering.
+- Added reduced-motion Immediate substitution and unscaled CanvasGroup fade timing.
+- Preserved Modal exact-once terminal results and deferred Screen wait-through-exit semantics.
+- Corrected synchronous token-cancellation settlement racing fallback Unity `Awaitable` cancellation.
+- Added retained automated coverage and a 14-check Laboratory transition proof.
+- Final evidence: **1246 / 1246** full EditMode and **140 / 140** EchoUI Editor.
+- Implementation sealed at `c919238`; no next checkpoint activated.

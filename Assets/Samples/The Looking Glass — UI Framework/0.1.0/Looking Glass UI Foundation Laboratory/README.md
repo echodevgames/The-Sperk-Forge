@@ -936,3 +936,31 @@ Authoring cautions:
 - Retained M2-01 Screen tab smoke: **PASS**
 - Retained M1 foundation tab smoke: **PASS**
 - Post-hotfix automated floor: **24 / 24 focused, 99 / 99 EchoUI, 1205 / 1205 full EditMode**
+
+
+---
+
+## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+
+This later explicit record supersedes the pre-run `PENDING` acceptance template above.
+
+- Check 1 — Immediate Screen enter/exit: **PASS**
+- Check 2 — Definition-profile Screen fade: **PASS**
+- Check 3 — Transient independent Window fade: **PASS**
+- Check 4 — Modal fade + exact-once terminal result: **PASS**
+- Check 5 — Default/definition/transient policy layering: **PASS**
+- Check 6 — Enter failure rollback: **PASS**
+- Check 7 — Exit failure deterministic force-close: **PASS**
+- Check 8 — Hard timeout recovery/cleanup: **PASS**
+- Check 9 — Stale completion rejection: **PASS**
+- Check 10 — Reduced-motion Immediate substitution: **PASS**
+- Check 11 — Unscaled fade at `Time.timeScale = 0`: **PASS**
+- Check 12 — Retained focus behavior after transition: **PASS**
+- Check 13 — 180-frame idle coordinator quiescence: **PASS**
+- Check 14 — Retained M3-01/M2-02/M2-01/M1 tabs: **PASS**
+
+Final Check 9 observation:
+
+`CHECK 9 PASS stale completion rejection. first=Stale, second=Completed, finalAlpha=1.00, activeTransitions=0.`
+
+Final automated evidence: **1246 / 1246** full EditMode, **140 / 140** EchoUI Editor, **21 / 21** transition core, **10 / 10** Screen/Window lifecycle integration, and **10 / 10** Modal transition integration.

@@ -1358,3 +1358,19 @@ The hand-authored Laboratory is retained both as the imported project sample and
 First Green Path execution exposed workflow hardening items: establish the incoming regression floor before implementation, prefer focused post-compile tests before the final full regression run, treat documentation-generator/anchor failures as fatal, sanitize Unity-authored YAML/meta whitespace before staging, keep exported test evidence outside distributable samples, and normalize evidence paths before CMD parsing. These are process lessons for subsequent Green Path kits; they do not reopen EUI-M1-01 runtime scope.
 
 **Historical closeout state at `57a4fa4`: EUI-M1-01 was Complete and EUI-M1-02 was not yet activated. This status is superseded by the August 13, 2026 EUI-M1-02 activation record at the top of this document.**
+
+
+---
+
+## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+
+The Looking Glass EUI-M3-02 view-lifecycle and transition-driver checkpoint is complete and sealed.
+
+- Activation: `ee9d3ffa9c3b2ad4fc8136a70943122f852cca49`.
+- Implementation: `c919238`.
+- Full EditMode: **1246 / 1246 passed**.
+- EchoUI Editor: **140 / 140 passed**.
+- Manual Laboratory: **14 / 14 passed**.
+- Check 9 cancellation-race correction is retained by a focused core regression.
+- Working implementation was committed and pushed cleanly before this documentation closeout.
+- No next checkpoint is activated.

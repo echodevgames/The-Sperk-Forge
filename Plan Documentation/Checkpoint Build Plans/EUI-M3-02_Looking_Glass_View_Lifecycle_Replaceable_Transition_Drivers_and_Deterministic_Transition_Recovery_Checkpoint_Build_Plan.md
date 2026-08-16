@@ -263,3 +263,41 @@ Generated `.slnx` and recognized package-import metadata churn should be handled
 ## 15. Activation gate
 
 This plan is authorized only after its authority/activation commit lands on clean baseline `0c582405280d19caed4045d0072d8cf29d138e1e`. Immediately after activation: verify clean synchronized Git state, run full EditMode, require **1205 / 1205 passed, 0 failed**, and only then begin Runtime transition work. No follow-on checkpoint is activated by this plan.
+
+
+---
+
+## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+
+**Status:** Complete and sealed.
+
+**Activation commit:** `ee9d3ffa9c3b2ad4fc8136a70943122f852cca49`
+
+**Implementation commit:** `c919238` (`Implement EUI-M3-02 transition lifecycle and Laboratory proof`)
+
+**Unity baseline:** `6000.3.8f1`
+
+EUI-M3-02 delivered authoritative enter/exit settlement through replaceable transition drivers across Screens, independent Windows, and blocking Modals. The completed slice includes root/default, definition-profile, and transient policy layering; deterministic failure, timeout, cancellation, and stale recovery; reduced-motion substitution; unscaled presentation timing; exact-once Modal terminal claims through exit settlement; deferred Screen wait-through-exit behavior; and retained M3-01 focus authority.
+
+### Final automated evidence
+
+- Full Foundry EditMode: **1246 / 1246 passed**, 0 failed, 0 inconclusive, 0 skipped.
+- `EchoDevGames.EchoUI.Tests.Editor.dll`: **140 / 140 passed**.
+- `EchoUITransitionCoreTests`: **21 / 21 passed**.
+- `EchoUITransitionLifecycleIntegrationTests`: **10 / 10 passed**.
+- `EchoUIModalTransitionIntegrationTests`: **10 / 10 passed**.
+- Final evidence XML: `TestResults_20260816_144932.xml`.
+
+### Final Laboratory evidence
+
+The Looking Glass UI Foundation Laboratory passed checks **1-14**, covering Immediate Screen lifecycle, visible ExternalOwned Screen fades, transient independent Window fades, Modal exact-once completion through asynchronous exit, policy layering, enter rollback, failed-exit force-close, hard timeout recovery, stale supersession rejection, reduced-motion substitution, unscaled timing at `Time.timeScale = 0`, retained M3-01 focus, 180-frame idle quiescence, and retained M3-01/M2-02/M2-01/M1 smoke.
+
+Final formerly-red observation:
+
+`CHECK 9 PASS stale completion rejection. first=Stale, second=Completed, finalAlpha=1.00, activeTransitions=0.`
+
+### Laboratory-discovered Runtime correction
+
+Check 9 exposed a synchronous Unity `Awaitable` cancellation race. Token cancellation could settle and release an operation before fallback direct-awaitable cancellation executed. `UITransitionCoordinator` now records terminal settlement and performs direct `Awaitable.Cancel()` only when token-first cancellation did not already settle the operation. The retained regression `SupersedingTokenCancelledFadeDoesNotRecancelReleasedAwaitable` proves the exact slow-fade-to-Immediate supersession path.
+
+No next Looking Glass checkpoint is activated by this closeout.

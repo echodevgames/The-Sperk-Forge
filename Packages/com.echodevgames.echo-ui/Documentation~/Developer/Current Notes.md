@@ -147,3 +147,14 @@ EUI-M2-02 and EUI-M3-01 remain complete. EUI-M3-02 is now ACTIVE / AUTHORIZED fo
 - **Durable authoring promise:** Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, Assembly Utilities, and later Builder/Composer are separate package capabilities. Templates remain ordinary editable prefab compositions, and the lightweight utilities do not depend on the full Builder.
 - Primitive/9-slice/template/catalog/utility/Builder implementation is **not** part of M3-02.
 - **Runtime implementation has not started at activation.**
+
+
+---
+
+## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+
+EUI-M3-02 is implemented, automated-green, manually accepted, and sealed at implementation commit `c919238` from activation `ee9d3ffa9c3b2ad4fc8136a70943122f852cca49`.
+
+Final proof is **1246 / 1246** full EditMode, **140 / 140** EchoUI Editor, **21 / 21** transition core, **10 / 10** Screen/Window lifecycle integration, **10 / 10** Modal transition integration, and **14 / 14** Laboratory acceptance.
+
+The Laboratory-discovered synchronous cancellation race is corrected by guarding fallback direct-awaitable cancellation after token-first settlement. No further Runtime feature slice is authorized by this closeout, and no next Looking Glass checkpoint is active.
