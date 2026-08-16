@@ -15,6 +15,7 @@ namespace EchoDevGames.EchoUI
         UnknownSurface = 7,
         WrongSurfaceRole = 8,
         NoHistory = 9,
-        BlockedByModal = 10
+        BlockedByModal = 10,
+        TransitionFailed = 11
     }
 }

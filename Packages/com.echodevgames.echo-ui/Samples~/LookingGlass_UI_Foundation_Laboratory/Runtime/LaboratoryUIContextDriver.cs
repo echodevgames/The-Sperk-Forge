@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,7 +12,8 @@ namespace EchoDevGames.EchoUI.Samples
     /// Sample-owned Looking Glass proof console.
     /// M1 controls simulate external context/input truth.
     /// M2 controls exercise the authoritative Screen/Modal lifecycle using scene-authored
-    /// definitions. M3 controls add sample-owned EventSystem/focus proof infrastructure.
+    /// definitions. M3-01 adds sample-owned EventSystem/focus proof infrastructure.
+    /// M3-02 adds sample-owned transition/failure/performance proof infrastructure.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class LaboratoryUIContextDriver : MonoBehaviour
@@ -31,6 +33,95 @@ namespace EchoDevGames.EchoUI.Samples
         private const string ExternalModalId = "lab-modal-external";
         private const string ConfirmResultId = "confirm";
         private const string CancelResultId = "cancel";
+        private const string M302FailureDriverId = "lab-transition-failure";
+        private const string M302NeverDriverId = "lab-transition-never";
+
+
+        private sealed class LaboratoryFailureTransitionDriver :
+            IUITransitionDriver
+        {
+            public string DriverId =>
+                M302FailureDriverId;
+
+            public bool SupportsCancellation =>
+                true;
+
+            public Awaitable<UITransitionResult> ExecuteAsync(
+                UITransitionRequest request,
+                CancellationToken cancellationToken)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                throw new InvalidOperationException(
+                    "Laboratory-injected transition failure.");
+            }
+
+            public void ForceFinalState(
+                UITransitionRequest request)
+            {
+                ApplyTerminalAlpha(
+                    request);
+            }
+        }
+
+        private sealed class LaboratoryNeverTransitionDriver :
+            IUITransitionDriver
+        {
+            private readonly List<AwaitableCompletionSource<UITransitionResult>>
+                pending =
+                    new List<AwaitableCompletionSource<UITransitionResult>>();
+
+            public string DriverId =>
+                M302NeverDriverId;
+
+            public bool SupportsCancellation =>
+                false;
+
+            public Awaitable<UITransitionResult> ExecuteAsync(
+                UITransitionRequest request,
+                CancellationToken cancellationToken)
+            {
+                AwaitableCompletionSource<UITransitionResult> completion =
+                    new AwaitableCompletionSource<UITransitionResult>();
+
+                pending.Add(
+                    completion);
+
+                return completion.Awaitable;
+            }
+
+            public void ForceFinalState(
+                UITransitionRequest request)
+            {
+                ApplyTerminalAlpha(
+                    request);
+            }
+
+            public void Clear() =>
+                pending.Clear();
+        }
+
+        private static void ApplyTerminalAlpha(
+            UITransitionRequest request)
+        {
+            if (request == null ||
+                request.Surface == null)
+            {
+                return;
+            }
+
+            CanvasGroup group =
+                request.Surface.GetComponent<CanvasGroup>();
+
+            if (group != null)
+            {
+                group.alpha =
+                    request.Direction ==
+                        UITransitionDirection.Enter
+                        ? 1f
+                        : 0f;
+            }
+        }
 
         [SerializeField]
         private EchoUIRoot rootOverride;
@@ -82,6 +173,22 @@ namespace EchoDevGames.EchoUI.Samples
         private string m3Observed = "<not run>";
         private string m3PerformanceEvidence = "<not run>";
         private bool m3PerformanceRunning;
+        private LaboratoryFailureTransitionDriver m302FailureDriver;
+        private LaboratoryNeverTransitionDriver m302NeverDriver;
+        private UITransitionProfile m302FadeProfile;
+        private UITransitionProfile m302FailureProfile;
+        private UITransitionProfile m302TimeoutProfile;
+        private UITransitionProfile m302ImmediateProfile;
+        private UITransitionProfile m302SlowFadeProfile;
+        private UITransitionResult m302StaleFirstResult;
+        private bool m302StaleFirstDone;
+        private bool m302Busy;
+        private string m302Message =
+            "M3-02 proof infrastructure has not initialized yet.";
+        private string m302Observed =
+            "<not run>";
+        private string m302PerformanceEvidence =
+            "<not run>";
 
         private void Awake()
         {
@@ -195,6 +302,7 @@ namespace EchoDevGames.EchoUI.Samples
                 yield return null;
             }
 
+            InitializeM302ProofInfrastructure();
             InitializeM2Proof();
 
             sceneEventSystem =
@@ -204,6 +312,12 @@ namespace EchoDevGames.EchoUI.Samples
 
             m3Message =
                 "M3 proof READY. Use Prepare M3 Baseline before a fresh acceptance run.";
+
+            m302Message =
+                root != null &&
+                root.IsTransitionLifecycleInitialized
+                    ? "M3-02 proof READY. Click Prepare M3-02 Baseline before running checks."
+                    : "M3-02 transition lifecycle is not initialized.";
         }
 
         private void OnGUI()
@@ -229,6 +343,7 @@ namespace EchoDevGames.EchoUI.Samples
                 selectedTab,
                 new[]
                 {
+                    "M3-02 Transitions",
                     "M3-01 Focus",
                     "M2-02 Modals",
                     "M2-01 Screens",
@@ -249,13 +364,17 @@ namespace EchoDevGames.EchoUI.Samples
 
             if (selectedTab == 0)
             {
-                DrawM301FocusConsole();
+                DrawM302TransitionConsole();
             }
             else if (selectedTab == 1)
             {
-                DrawM202ModalConsole();
+                DrawM301FocusConsole();
             }
             else if (selectedTab == 2)
+            {
+                DrawM202ModalConsole();
+            }
+            else if (selectedTab == 3)
             {
                 DrawM2Console();
             }
@@ -269,6 +388,1571 @@ namespace EchoDevGames.EchoUI.Samples
 
             GUI.contentColor =
                 previousContentColor;
+        }
+
+
+        private void InitializeM302ProofInfrastructure()
+        {
+            if (root == null ||
+                m302FailureDriver != null)
+            {
+                return;
+            }
+
+            m302FadeProfile =
+                new UITransitionProfile(
+                    "lab-m3-02-fade",
+                    UITransitionDriverIds.CanvasGroupFade,
+                    UITransitionDriverIds.CanvasGroupFade,
+                    0.45f,
+                    0.35f,
+                    AnimationCurve.EaseInOut(
+                        0f,
+                        0f,
+                        1f,
+                        1f),
+                    AnimationCurve.EaseInOut(
+                        0f,
+                        0f,
+                        1f,
+                        1f),
+                    2f,
+                    UITransitionReducedMotionMode.UseReplacement,
+                    UITransitionDriverIds.Immediate);
+
+            m302ImmediateProfile =
+                new UITransitionProfile(
+                    "lab-m3-02-immediate",
+                    UITransitionDriverIds.Immediate,
+                    UITransitionDriverIds.Immediate,
+                    0f,
+                    0f,
+                    hardTimeoutSeconds: 1f,
+                    reducedMotionMode:
+                        UITransitionReducedMotionMode.UseReplacement,
+                    reducedMotionDriverId:
+                        UITransitionDriverIds.Immediate);
+
+            m302FailureProfile =
+                new UITransitionProfile(
+                    "lab-m3-02-failure",
+                    M302FailureDriverId,
+                    M302FailureDriverId,
+                    0f,
+                    0f,
+                    hardTimeoutSeconds: 0.5f,
+                    reducedMotionMode:
+                        UITransitionReducedMotionMode.UseReplacement,
+                    reducedMotionDriverId:
+                        UITransitionDriverIds.Immediate);
+
+            m302TimeoutProfile =
+                new UITransitionProfile(
+                    "lab-m3-02-timeout",
+                    M302NeverDriverId,
+                    M302NeverDriverId,
+                    0f,
+                    0f,
+                    hardTimeoutSeconds: 0.20f,
+                    reducedMotionMode:
+                        UITransitionReducedMotionMode.UseReplacement,
+                    reducedMotionDriverId:
+                        UITransitionDriverIds.Immediate);
+
+            m302SlowFadeProfile =
+                new UITransitionProfile(
+                    "lab-m3-02-slow-fade",
+                    UITransitionDriverIds.CanvasGroupFade,
+                    UITransitionDriverIds.CanvasGroupFade,
+                    1.25f,
+                    1.25f,
+                    AnimationCurve.Linear(
+                        0f,
+                        0f,
+                        1f,
+                        1f),
+                    AnimationCurve.Linear(
+                        0f,
+                        0f,
+                        1f,
+                        1f),
+                    3f,
+                    UITransitionReducedMotionMode.UseReplacement,
+                    UITransitionDriverIds.Immediate);
+
+            m302FailureDriver =
+                new LaboratoryFailureTransitionDriver();
+
+            m302NeverDriver =
+                new LaboratoryNeverTransitionDriver();
+
+            bool failureRegistered =
+                root.RegisterTransitionDriver(
+                    m302FailureDriver);
+
+            bool neverRegistered =
+                root.RegisterTransitionDriver(
+                    m302NeverDriver);
+
+            m302Message =
+                "M3-02 custom proof drivers: failure=" +
+                (failureRegistered ? "registered" : "already/unavailable") +
+                ", never=" +
+                (neverRegistered ? "registered" : "already/unavailable") +
+                ".";
+        }
+
+        private void DrawM302TransitionConsole()
+        {
+            GUILayout.Label(
+                "EUI-M3-02: authoritative view transitions, replaceable drivers, deterministic recovery, exact-once Modal exit, and reduced-motion substitution.");
+            GUILayout.Label(
+                "The console is sample-owned evidence tooling. Transition drivers own presentation only; gameplay, pause, input maps, cursor, audio, persistence, and scene travel remain project-owned.");
+            GUILayout.Space(8f);
+
+            DrawM302State();
+            GUILayout.Space(8f);
+
+            bool previousEnabled =
+                GUI.enabled;
+
+            GUI.enabled =
+                !m302Busy;
+
+            if (GUILayout.Button(
+                    "Prepare M3-02 Baseline"))
+            {
+                PrepareM302Baseline();
+            }
+
+            GUILayout.Space(10f);
+            GUILayout.Label(
+                "1. Immediate Screen enter/exit through the root default");
+            if (GUILayout.Button(
+                    "Run Check 1: Immediate RootOwned Screen"))
+            {
+                RunM302Check1();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "2. Definition-profile Screen CanvasGroup fade");
+            if (GUILayout.Button(
+                    "Run Check 2: Fade ExternalOwned Screen In + Out"))
+            {
+                RunM302Check2();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "3. Independent Window fade from a transient operation override");
+            if (GUILayout.Button(
+                    "Run Check 3: Fade Default Window In + Out"))
+            {
+                RunM302Check3();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "4. Blocking Modal fade + first-terminal-wins while exit is pending");
+            if (GUILayout.Button(
+                    "Run Check 4: External Modal Exact-Once Fade"))
+            {
+                RunM302Check4();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "5. Root default -> definition -> transient policy layering");
+            if (GUILayout.Button(
+                    "Run Check 5: Inspect Effective Policy Layers"))
+            {
+                RunM302Check5();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "6. Failed enter rolls back independent Window admission");
+            if (GUILayout.Button(
+                    "Run Check 6: Inject Enter Failure"))
+            {
+                RunM302Check6();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "7. Failed exit force-closes independent Window");
+            if (GUILayout.Button(
+                    "Run Check 7: Inject Exit Failure"))
+            {
+                RunM302Check7();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "8. Never-completing driver hits hard timeout and cleans up");
+            if (GUILayout.Button(
+                    "Run Check 8: Inject Hard Timeout"))
+            {
+                RunM302Check8();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "9. Superseded transition settles Stale and cannot rewind newer truth");
+            if (GUILayout.Button(
+                    "Run Check 9: Supersede Slow Fade"))
+            {
+                RunM302Check9();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "10. Reduced-motion substitution replaces fade with Immediate");
+            if (GUILayout.Button(
+                    "Run Check 10: Reduced Motion -> Immediate"))
+            {
+                RunM302Check10();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "11. CanvasGroup fade uses unscaled time while Time.timeScale = 0");
+            if (GUILayout.Button(
+                    "Run Check 11: Paused-Time Fade"))
+            {
+                RunM302Check11();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "12. M3-01 navigation focus remains valid after a transition");
+            if (GUILayout.Button(
+                    "Run Check 12: Focus After Window Fade"))
+            {
+                RunM302Check12();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "13. 180-frame idle transition-coordinator quiescence");
+            if (GUILayout.Button(
+                    "Run Check 13: Idle Transition Probe"))
+            {
+                StartCoroutine(
+                    RunM302Check13());
+            }
+
+            GUI.enabled =
+                previousEnabled;
+
+            GUILayout.Space(12f);
+            GUILayout.Label(
+                "14. Retained smoke: visit M3-01 Focus, M2-02 Modals, M2-01 Screens, and M1 Retained after checks 1-13.");
+            GUILayout.Label(
+                "No M3-02 check should change project gameplay/input ownership or activate the future Window manager.");
+
+            GUILayout.Space(12f);
+            GUILayout.Label(
+                "Latest M3-02 observation");
+            GUILayout.TextArea(
+                m302Observed,
+                GUILayout.MinHeight(110f));
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "Performance evidence: " +
+                m302PerformanceEvidence);
+        }
+
+        private void DrawM302State()
+        {
+            GUILayout.Label(
+                "Transition lifecycle initialized: " +
+                root.IsTransitionLifecycleInitialized);
+            GUILayout.Label(
+                "Active transitions: " +
+                root.ActiveTransitionCount);
+            GUILayout.Label(
+                "Reduced motion: " +
+                OnOff(
+                    root.ReducedMotionTransitions));
+            GUILayout.Label(
+                "Current frontend Screen: " +
+                root.GetCurrentScreenId(
+                    FrontendScopeId));
+            GUILayout.Label(
+                "Screen queue depth: " +
+                root.ScreenOperationQueueDepth);
+            GUILayout.Label(
+                "Deferred Screen queue depth: " +
+                root.DeferredScreenOperationQueueDepth);
+            GUILayout.Label(
+                "default-window: " +
+                SurfaceStateWithAlpha(
+                    defaultWindow));
+            GUILayout.Label(
+                "ExternalOwned Screen: " +
+                SurfaceStateWithAlpha(
+                    externalOwnedView));
+            GUILayout.Label(
+                "ExternalOwned Modal: " +
+                SurfaceStateWithAlpha(
+                    externalModalView));
+            GUILayout.Label(
+                "Status: " +
+                m302Message);
+            GUILayout.Label(
+                "Busy: " +
+                YesNo(
+                    m302Busy));
+        }
+
+        private async void PrepareM302Baseline()
+        {
+            if (m302Busy)
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                InitializeM302ProofInfrastructure();
+
+                if (!m2Ready)
+                {
+                    InitializeM2Proof();
+                }
+
+                if (!modalReady)
+                {
+                    InitializeModalProof(
+                        UIModalScreenMutationPolicy.Reject);
+                }
+
+                if (modalReady)
+                {
+                    ResetModalProofState();
+
+                    await WaitForM302ConditionAsync(
+                        () =>
+                            !root.HasBlockingModal,
+                        240);
+                }
+
+                EnsureExternalRegistered();
+                EnsureExternalModalRegistered();
+
+                root.SetReducedMotionTransitions(
+                    false);
+
+                root.SetContextActive(
+                    PauseContextId,
+                    false);
+
+                root.SetContextActive(
+                    CinematicContextId,
+                    false);
+
+                root.SetInputModality(
+                    UIInputModality.Pointer);
+
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                UIScreenHandle reset =
+                    root.ResetScreen(
+                        MainMenuId);
+
+                bool resetSettled =
+                    await WaitForM302ScreenHandleAsync(
+                        reset,
+                        240);
+
+                ClearSelection();
+                m302NeverDriver?.Clear();
+
+                m302Observed =
+                    "BASELINE " +
+                    (resetSettled ? "READY" : "PARTIAL") +
+                    ": current=" +
+                    root.GetCurrentScreenId(
+                        FrontendScopeId) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ", modalPolicy=" +
+                    (modalReady
+                        ? activeModalScreenPolicy.ToString()
+                        : "<not initialized>") +
+                    ", rootDefault=Immediate, ExternalOwned Screen definition=CanvasGroup Fade, transient Window profile=CanvasGroup Fade.";
+
+                m302Message =
+                    resetSettled
+                        ? "M3-02 baseline READY."
+                        : "M3-02 baseline reset did not settle inside the bounded wait.";
+            }
+            catch (Exception exception)
+            {
+                m302Observed =
+                    "BASELINE ERROR: " +
+                    exception.GetType().Name +
+                    " | " +
+                    exception.Message;
+                m302Message =
+                    "M3-02 baseline preparation failed.";
+            }
+            finally
+            {
+                Time.timeScale =
+                    1f;
+                root.SetReducedMotionTransitions(
+                    false);
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check1()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                UIScreenHandle reset =
+                    root.ResetScreen(
+                        MainMenuId);
+
+                await WaitForM302ScreenHandleAsync(
+                    reset,
+                    240);
+
+                UIScreenHandle push =
+                    root.PushScreen(
+                        RootOwnedId);
+
+                bool pushSettled =
+                    await WaitForM302ScreenHandleAsync(
+                        push,
+                        240);
+
+                UIScreenHandle back =
+                    root.BackScreen(
+                        FrontendScopeId);
+
+                bool backSettled =
+                    await WaitForM302ScreenHandleAsync(
+                        back,
+                        240);
+
+                bool pass =
+                    pushSettled &&
+                    backSettled &&
+                    push != null &&
+                    push.IsCompleted &&
+                    push.Result.Status ==
+                        UIScreenOperationStatus.Succeeded &&
+                    back != null &&
+                    back.IsCompleted &&
+                    back.Result.Status ==
+                        UIScreenOperationStatus.Succeeded &&
+                    string.Equals(
+                        root.GetCurrentScreenId(
+                            FrontendScopeId),
+                        MainMenuId,
+                        StringComparison.Ordinal) &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 1 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " root-default Immediate Screen lifecycle. push=" +
+                    ScreenHandleSettlement(
+                        push) +
+                    ", back=" +
+                    ScreenHandleSettlement(
+                        back) +
+                    ", final=" +
+                    root.GetCurrentScreenId(
+                        FrontendScopeId) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 1",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check2()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                EnsureExternalRegistered();
+
+                UIScreenHandle reset =
+                    root.ResetScreen(
+                        MainMenuId);
+
+                await WaitForM302ScreenHandleAsync(
+                    reset,
+                    240);
+
+                double started =
+                    Time.realtimeSinceStartupAsDouble;
+
+                UIScreenHandle push =
+                    root.PushScreen(
+                        ExternalOwnedId);
+
+                bool pushSettled =
+                    await WaitForM302ScreenHandleAsync(
+                        push,
+                        360);
+
+                double enterElapsed =
+                    Time.realtimeSinceStartupAsDouble -
+                    started;
+
+                await WaitM302FramesAsync(
+                    18);
+
+                started =
+                    Time.realtimeSinceStartupAsDouble;
+
+                UIScreenHandle back =
+                    root.BackScreen(
+                        FrontendScopeId);
+
+                bool backSettled =
+                    await WaitForM302ScreenHandleAsync(
+                        back,
+                        360);
+
+                double exitElapsed =
+                    Time.realtimeSinceStartupAsDouble -
+                    started;
+
+                bool pass =
+                    pushSettled &&
+                    backSettled &&
+                    push != null &&
+                    push.IsCompleted &&
+                    push.Result.Status ==
+                        UIScreenOperationStatus.Succeeded &&
+                    back != null &&
+                    back.IsCompleted &&
+                    back.Result.Status ==
+                        UIScreenOperationStatus.Succeeded &&
+                    enterElapsed >= 0.30d &&
+                    exitElapsed >= 0.20d &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 2 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " ExternalOwned Screen definition fade. enterElapsed=" +
+                    enterElapsed.ToString("0.000") +
+                    "s, exitElapsed=" +
+                    exitElapsed.ToString("0.000") +
+                    "s, externalAlpha=" +
+                    CanvasAlpha(
+                        externalOwnedView) +
+                    ", final=" +
+                    root.GetCurrentScreenId(
+                        FrontendScopeId) +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 2",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check3()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                UISurfaceOperationResult open =
+                    await root.OpenSurfaceAsync(
+                        DefaultWindowId,
+                        m302FadeProfile);
+
+                double openAlpha =
+                    NumericCanvasAlpha(
+                        defaultWindow);
+
+                await WaitM302FramesAsync(
+                    18);
+
+                UISurfaceOperationResult close =
+                    await root.CloseSurfaceAsync(
+                        DefaultWindowId,
+                        m302FadeProfile);
+
+                bool pass =
+                    open.Succeeded &&
+                    close.Succeeded &&
+                    openAlpha >= 0.99d &&
+                    defaultWindow != null &&
+                    !defaultWindow.IsVisible &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 3 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " transient Window fade. open=" +
+                    open.Status +
+                    ", close=" +
+                    close.Status +
+                    ", openAlpha=" +
+                    openAlpha.ToString("0.00") +
+                    ", finalVisible=" +
+                    YesNo(
+                        defaultWindow != null &&
+                        defaultWindow.IsVisible) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 3",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check4()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                if (!modalReady)
+                {
+                    InitializeModalProof(
+                        UIModalScreenMutationPolicy.Reject);
+                }
+
+                EnsureExternalModalRegistered();
+
+                UIModalHandle handle =
+                    root.OpenModal(
+                        ExternalModalId);
+
+                externalModalHandle =
+                    handle;
+
+                bool entered =
+                    await WaitForM302ConditionAsync(
+                        () =>
+                            handle == null ||
+                            handle.IsCompleted ||
+                            (externalModalView != null &&
+                             externalModalView.IsInteractable),
+                        360);
+
+                if (!entered ||
+                    handle == null ||
+                    handle.IsCompleted)
+                {
+                    m302Observed =
+                        "CHECK 4 FAIL ExternalOwned Modal did not reach interactive post-enter state. handle=" +
+                        ModalHandleSettlement(
+                            handle) +
+                        ".";
+                    return;
+                }
+
+                UIModalCompletionAttemptResult first =
+                    root.CompleteModal(
+                        handle,
+                        ConfirmResultId);
+
+                bool lowerBlockedDuringExit =
+                    mainMenu != null &&
+                    !mainMenu.IsInteractable;
+
+                bool pendingAfterClaim =
+                    !handle.IsCompleted;
+
+                UIModalCompletionAttemptResult second =
+                    root.CompleteModal(
+                        handle,
+                        CancelResultId);
+
+                bool settled =
+                    await WaitForM302ConditionAsync(
+                        () =>
+                            handle.IsCompleted,
+                        360);
+
+                bool pass =
+                    settled &&
+                    first.Status ==
+                        UIModalCompletionStatus.Succeeded &&
+                    second.Status ==
+                        UIModalCompletionStatus.AlreadyCompleted &&
+                    pendingAfterClaim &&
+                    lowerBlockedDuringExit &&
+                    handle.Result.Outcome ==
+                        UIModalOutcome.Completed &&
+                    handle.Result.ResultId.Value ==
+                        ConfirmResultId &&
+                    root.ActiveModalCount == 0 &&
+                    mainMenu != null &&
+                    mainMenu.IsInteractable;
+
+                m302Observed =
+                    "CHECK 4 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " Modal exact-once across fade exit. first=" +
+                    first.Status +
+                    ", second=" +
+                    second.Status +
+                    ", pendingAfterFirst=" +
+                    YesNo(
+                        pendingAfterClaim) +
+                    ", lowerBlockedDuringExit=" +
+                    YesNo(
+                        lowerBlockedDuringExit) +
+                    ", terminal=" +
+                    (handle.IsCompleted
+                        ? handle.Result.Outcome +
+                          "/" +
+                          handle.Result.ResultId.Value
+                        : "<pending>") +
+                    ", activeModals=" +
+                    root.ActiveModalCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 4",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private void RunM302Check5()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            UITransitionResolvedPolicy rootDefault =
+                root.ResolveTransitionPolicy(
+                    DefaultWindowId,
+                    UITransitionDirection.Enter);
+
+            UITransitionResolvedPolicy transient =
+                root.ResolveTransitionPolicy(
+                    DefaultWindowId,
+                    UITransitionDirection.Enter,
+                    m302FadeProfile);
+
+            bool pass =
+                rootDefault != null &&
+                transient != null &&
+                rootDefault.DriverId ==
+                    UITransitionDriverIds.Immediate &&
+                transient.DriverId ==
+                    UITransitionDriverIds.CanvasGroupFade &&
+                m302FadeProfile.EnterDriverId ==
+                    UITransitionDriverIds.CanvasGroupFade;
+
+            m302Observed =
+                "CHECK 5 " +
+                (pass ? "PASS" : "FAIL") +
+                " policy layers. root/default-window driver=" +
+                (rootDefault == null
+                    ? "<missing>"
+                    : rootDefault.DriverId) +
+                ", ExternalOwned Screen definition profile=" +
+                m302FadeProfile.ProfileId +
+                "/" +
+                m302FadeProfile.EnterDriverId +
+                ", transient/default-window driver=" +
+                (transient == null
+                    ? "<missing>"
+                    : transient.DriverId) +
+                ". Runtime override did not mutate authored sample assets.";
+        }
+
+        private async void RunM302Check6()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                UISurfaceOperationResult result =
+                    await root.OpenSurfaceAsync(
+                        DefaultWindowId,
+                        m302FailureProfile);
+
+                bool pass =
+                    !result.Succeeded &&
+                    result.Status ==
+                        UISurfaceOperationStatus.TransitionFailed &&
+                    defaultWindow != null &&
+                    !defaultWindow.IsVisible &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 6 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " enter failure rollback. result=" +
+                    result.Status +
+                    ", visibleAfter=" +
+                    YesNo(
+                        defaultWindow != null &&
+                        defaultWindow.IsVisible) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ", message=" +
+                    result.Message +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 6",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check7()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.OpenSurface(
+                    DefaultWindowId);
+
+                UISurfaceOperationResult result =
+                    await root.CloseSurfaceAsync(
+                        DefaultWindowId,
+                        m302FailureProfile);
+
+                bool pass =
+                    !result.Succeeded &&
+                    result.Status ==
+                        UISurfaceOperationStatus.TransitionFailed &&
+                    defaultWindow != null &&
+                    !defaultWindow.IsVisible &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 7 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " exit failure force-close. result=" +
+                    result.Status +
+                    ", visibleAfter=" +
+                    YesNo(
+                        defaultWindow != null &&
+                        defaultWindow.IsVisible) +
+                    ", alphaAfter=" +
+                    CanvasAlpha(
+                        defaultWindow) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 7",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check8()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                m302NeverDriver?.Clear();
+
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                double started =
+                    Time.realtimeSinceStartupAsDouble;
+
+                UISurfaceOperationResult result =
+                    await root.OpenSurfaceAsync(
+                        DefaultWindowId,
+                        m302TimeoutProfile);
+
+                double elapsed =
+                    Time.realtimeSinceStartupAsDouble -
+                    started;
+
+                bool pass =
+                    !result.Succeeded &&
+                    result.Status ==
+                        UISurfaceOperationStatus.TransitionFailed &&
+                    elapsed >= 0.15d &&
+                    defaultWindow != null &&
+                    !defaultWindow.IsVisible &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 8 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " hard timeout recovery. result=" +
+                    result.Status +
+                    ", elapsed=" +
+                    elapsed.ToString("0.000") +
+                    "s, visibleAfter=" +
+                    YesNo(
+                        defaultWindow != null &&
+                        defaultWindow.IsVisible) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ", message=" +
+                    result.Message +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 8",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check9()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.OpenSurface(
+                    DefaultWindowId);
+
+                m302StaleFirstDone =
+                    false;
+
+                BeginM302SlowTransition();
+
+                await Awaitable.NextFrameAsync();
+
+                UITransitionResult second =
+                    await root.RunSurfaceTransitionAsync(
+                        DefaultWindowId,
+                        UITransitionDirection.Enter,
+                        m302ImmediateProfile);
+
+                bool firstSettled =
+                    await WaitForM302ConditionAsync(
+                        () =>
+                            m302StaleFirstDone,
+                        240);
+
+                bool pass =
+                    firstSettled &&
+                    m302StaleFirstResult.Status ==
+                        UITransitionStatus.Stale &&
+                    second.Status ==
+                        UITransitionStatus.Completed &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 9 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " stale completion rejection. first=" +
+                    (firstSettled
+                        ? m302StaleFirstResult.Status.ToString()
+                        : "<pending>") +
+                    ", second=" +
+                    second.Status +
+                    ", finalAlpha=" +
+                    CanvasAlpha(
+                        defaultWindow) +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 9",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private async void BeginM302SlowTransition()
+        {
+            try
+            {
+                m302StaleFirstResult =
+                    await root.RunSurfaceTransitionAsync(
+                        DefaultWindowId,
+                        UITransitionDirection.Enter,
+                        m302SlowFadeProfile);
+            }
+            catch (Exception exception)
+            {
+                m302StaleFirstResult =
+                    new UITransitionResult(
+                        UITransitionStatus.Failed,
+                        default(UITransitionOperationId),
+                        0,
+                        DefaultWindowId,
+                        UITransitionDirection.Enter,
+                        UITransitionDriverIds.CanvasGroupFade,
+                        m302SlowFadeProfile == null
+                            ? string.Empty
+                            : m302SlowFadeProfile.ProfileId,
+                        0d,
+                        exception.Message);
+            }
+            finally
+            {
+                m302StaleFirstDone =
+                    true;
+            }
+        }
+
+        private async void RunM302Check10()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.OpenSurface(
+                    DefaultWindowId);
+
+                root.SetReducedMotionTransitions(
+                    true);
+
+                UITransitionResult result =
+                    await root.RunSurfaceTransitionAsync(
+                        DefaultWindowId,
+                        UITransitionDirection.Enter,
+                        m302FadeProfile);
+
+                bool pass =
+                    result.Succeeded &&
+                    result.DriverId ==
+                        UITransitionDriverIds.Immediate &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 10 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " reduced-motion substitution. requested=" +
+                    UITransitionDriverIds.CanvasGroupFade +
+                    ", effectiveDriver=" +
+                    result.DriverId +
+                    ", profile=" +
+                    result.ProfileId +
+                    ", elapsed=" +
+                    result.ElapsedSeconds.ToString("0.000") +
+                    "s.";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 10",
+                    exception);
+            }
+            finally
+            {
+                root.SetReducedMotionTransitions(
+                    false);
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check11()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            float previousTimeScale =
+                Time.timeScale;
+
+            try
+            {
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                Time.timeScale =
+                    0f;
+
+                double started =
+                    Time.realtimeSinceStartupAsDouble;
+
+                UISurfaceOperationResult open =
+                    await root.OpenSurfaceAsync(
+                        DefaultWindowId,
+                        m302FadeProfile);
+
+                double openElapsed =
+                    Time.realtimeSinceStartupAsDouble -
+                    started;
+
+                UISurfaceOperationResult close =
+                    await root.CloseSurfaceAsync(
+                        DefaultWindowId,
+                        m302FadeProfile);
+
+                bool pass =
+                    open.Succeeded &&
+                    close.Succeeded &&
+                    openElapsed >= 0.30d &&
+                    Time.timeScale == 0f &&
+                    root.ActiveTransitionCount == 0;
+
+                m302Observed =
+                    "CHECK 11 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " unscaled fade while Time.timeScale=0. open=" +
+                    open.Status +
+                    ", close=" +
+                    close.Status +
+                    ", realtimeOpenElapsed=" +
+                    openElapsed.ToString("0.000") +
+                    "s, timeScaleDuring=" +
+                    Time.timeScale.ToString("0.0") +
+                    ", activeTransitions=" +
+                    root.ActiveTransitionCount +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 11",
+                    exception);
+            }
+            finally
+            {
+                Time.timeScale =
+                    previousTimeScale;
+                m302Busy = false;
+            }
+        }
+
+        private async void RunM302Check12()
+        {
+            if (!CanRunM302Check())
+            {
+                return;
+            }
+
+            m302Busy = true;
+
+            try
+            {
+                root.CloseSurface(
+                    DefaultWindowId);
+
+                root.SetInputModality(
+                    UIInputModality.Navigation);
+
+                ClearSelection();
+
+                UISurfaceOperationResult open =
+                    await root.OpenSurfaceAsync(
+                        DefaultWindowId,
+                        m302FadeProfile);
+
+                string selected =
+                    SelectedName();
+
+                bool pass =
+                    open.Succeeded &&
+                    string.Equals(
+                        selected,
+                        ObjectName(
+                            defaultWindowCloseButton),
+                        StringComparison.Ordinal);
+
+                await root.CloseSurfaceAsync(
+                    DefaultWindowId,
+                    m302FadeProfile);
+
+                m302Observed =
+                    "CHECK 12 " +
+                    (pass ? "PASS" : "FAIL") +
+                    " retained M3-01 focus after transition. open=" +
+                    open.Status +
+                    ", selectedAfterEnter=" +
+                    selected +
+                    ", expected=" +
+                    ObjectName(
+                        defaultWindowCloseButton) +
+                    ", focusGeneration=" +
+                    root.FocusGeneration +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM302Exception(
+                    "CHECK 12",
+                    exception);
+            }
+            finally
+            {
+                m302Busy = false;
+            }
+        }
+
+        private IEnumerator RunM302Check13()
+        {
+            if (!CanRunM302Check())
+            {
+                yield break;
+            }
+
+            m302Busy = true;
+
+            int activeStart =
+                root.ActiveTransitionCount;
+            int queueStart =
+                root.ScreenOperationQueueDepth;
+            int deferredStart =
+                root.DeferredScreenOperationQueueDepth;
+            long focusStart =
+                root.FocusGeneration;
+            int maxActive =
+                activeStart;
+            int maxQueue =
+                queueStart;
+            int maxDeferred =
+                deferredStart;
+            double started =
+                Time.realtimeSinceStartupAsDouble;
+
+            const int frames =
+                180;
+
+            for (int frame = 0;
+                 frame < frames;
+                 frame++)
+            {
+                maxActive =
+                    Mathf.Max(
+                        maxActive,
+                        root.ActiveTransitionCount);
+
+                maxQueue =
+                    Mathf.Max(
+                        maxQueue,
+                        root.ScreenOperationQueueDepth);
+
+                maxDeferred =
+                    Mathf.Max(
+                        maxDeferred,
+                        root.DeferredScreenOperationQueueDepth);
+
+                yield return null;
+            }
+
+            double elapsed =
+                Time.realtimeSinceStartupAsDouble -
+                started;
+
+            bool pass =
+                activeStart == 0 &&
+                queueStart == 0 &&
+                deferredStart == 0 &&
+                maxActive == 0 &&
+                maxQueue == 0 &&
+                maxDeferred == 0 &&
+                root.ActiveTransitionCount == 0 &&
+                root.ScreenOperationQueueDepth == 0 &&
+                root.DeferredScreenOperationQueueDepth == 0;
+
+            m302PerformanceEvidence =
+                (pass ? "PASS" : "FAIL") +
+                " 180 idle frames / " +
+                elapsed.ToString("0.000") +
+                "s, active max=" +
+                maxActive +
+                ", screenQueue max=" +
+                maxQueue +
+                ", deferredQueue max=" +
+                maxDeferred +
+                ", focusGeneration " +
+                focusStart +
+                " -> " +
+                root.FocusGeneration +
+                ".";
+
+            m302Observed =
+                "CHECK 13 " +
+                m302PerformanceEvidence;
+
+            m302Busy = false;
+        }
+
+        private bool CanRunM302Check()
+        {
+            if (m302Busy)
+            {
+                return false;
+            }
+
+            if (root == null ||
+                !root.IsInitialized ||
+                !root.IsTransitionLifecycleInitialized ||
+                !m2Ready ||
+                m302FadeProfile == null)
+            {
+                m302Observed =
+                    "M3-02 proof is not ready. Click Prepare M3-02 Baseline first.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private static async Awaitable<bool> WaitForM302ScreenHandleAsync(
+            UIScreenHandle handle,
+            int frameLimit)
+        {
+            if (handle == null)
+            {
+                return false;
+            }
+
+            for (int frame = 0;
+                 frame < frameLimit;
+                 frame++)
+            {
+                if (handle.IsCompleted)
+                {
+                    return true;
+                }
+
+                await Awaitable.NextFrameAsync();
+            }
+
+            return handle.IsCompleted;
+        }
+
+        private static async Awaitable<bool> WaitForM302ConditionAsync(
+            Func<bool> predicate,
+            int frameLimit)
+        {
+            if (predicate == null)
+            {
+                return false;
+            }
+
+            for (int frame = 0;
+                 frame < frameLimit;
+                 frame++)
+            {
+                if (predicate())
+                {
+                    return true;
+                }
+
+                await Awaitable.NextFrameAsync();
+            }
+
+            return predicate();
+        }
+
+        private static async Awaitable WaitM302FramesAsync(
+            int frameCount)
+        {
+            for (int frame = 0;
+                 frame < frameCount;
+                 frame++)
+            {
+                await Awaitable.NextFrameAsync();
+            }
+        }
+
+        private void SetM302Exception(
+            string check,
+            Exception exception)
+        {
+            Debug.LogException(
+                exception,
+                this);
+
+            m302Observed =
+                check +
+                " ERROR: " +
+                exception.GetType().Name +
+                " | " +
+                exception.Message +
+                " | Full stack trace logged to the Unity Console.";
+        }
+
+        private static string ModalHandleSettlement(
+            UIModalHandle handle)
+        {
+            if (handle == null)
+            {
+                return "<no handle>";
+            }
+
+            if (!handle.IsCompleted)
+            {
+                return "accepted=" +
+                    handle.Accepted +
+                    ", pending gen=" +
+                    handle.Generation;
+            }
+
+            return "accepted=" +
+                handle.Accepted +
+                ", outcome=" +
+                handle.Result.Outcome +
+                (handle.Result.IsSemanticCompletion
+                    ? ", resultId=" +
+                      handle.Result.ResultId.Value
+                    : ", abort=" +
+                      handle.Result.AbortReason);
+        }
+
+        private static string SurfaceStateWithAlpha(
+            UISurface surface)
+        {
+            return SurfaceState(
+                       surface) +
+                   ", alpha=" +
+                   CanvasAlpha(
+                       surface);
+        }
+
+        private static string CanvasAlpha(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return "<missing>";
+            }
+
+            CanvasGroup group =
+                surface.GetComponent<CanvasGroup>();
+
+            return group == null
+                ? "<no CanvasGroup>"
+                : group.alpha.ToString("0.00");
+        }
+
+        private static double NumericCanvasAlpha(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return -1d;
+            }
+
+            CanvasGroup group =
+                surface.GetComponent<CanvasGroup>();
+
+            return group == null
+                ? -1d
+                : group.alpha;
         }
 
 
@@ -1587,7 +3271,8 @@ namespace EchoDevGames.EchoUI.Samples
                         backPolicy:
                             new UIModalBackPolicy(
                                 UIModalBackBehavior.CompleteWithResultId,
-                                CancelResultId))
+                                CancelResultId),
+                        transitionProfile: m302FadeProfile)
                 };
 
             UISurfaceOperationResult result =
@@ -2220,7 +3905,8 @@ namespace EchoDevGames.EchoUI.Samples
                         UIScreenOwnershipMode.ExternalOwned,
                         UIScreenSuspensionVisibility.Hidden,
                         displayLabel: "Laboratory ExternalOwned",
-                        allowClose: true)
+                        allowClose: true,
+                        transitionProfile: m302FadeProfile)
                 };
 
             UISurfaceOperationResult result =

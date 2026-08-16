@@ -42,6 +42,10 @@ namespace EchoDevGames.EchoUI
         private UISurfaceSelectionPolicy selectionPolicy =
             new UISurfaceSelectionPolicy();
 
+        [Header("M3 View Transitions")]
+        [SerializeField]
+        private UITransitionProfile transitionProfile;
+
         private UISurfaceRuntimeOverride runtimeOverride =
             UISurfaceRuntimeOverride.None;
 
@@ -119,6 +123,12 @@ namespace EchoDevGames.EchoUI
 
         public UISurfaceSelectionPolicy SelectionPolicy =>
             selectionPolicy;
+
+        public UITransitionProfile TransitionProfile =>
+            transitionProfile;
+
+        internal CanvasGroup TransitionCanvasGroup =>
+            ResolveInteractionGroup();
 
         public UISurfaceRuntimeOverride RuntimeOverride =>
             runtimeOverride;

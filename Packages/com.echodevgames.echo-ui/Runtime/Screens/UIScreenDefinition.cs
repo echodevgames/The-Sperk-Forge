@@ -38,6 +38,9 @@ namespace EchoDevGames.EchoUI
         [SerializeField]
         private UISurface sceneOwnedView;
 
+        [SerializeField]
+        private UITransitionProfile transitionProfile;
+
         public UIScreenDefinition()
         {
         }
@@ -51,7 +54,8 @@ namespace EchoDevGames.EchoUI
             GameObject rootOwnedPrefab = null,
             UISurface sceneOwnedView = null,
             string displayLabel = "",
-            bool allowClose = true)
+            bool allowClose = true,
+            UITransitionProfile transitionProfile = null)
         {
             this.screenId = screenId ?? string.Empty;
             this.navigationScopeId = navigationScopeId ?? string.Empty;
@@ -62,6 +66,7 @@ namespace EchoDevGames.EchoUI
             this.rootOwnedPrefab = rootOwnedPrefab;
             this.sceneOwnedView = sceneOwnedView;
             this.displayLabel = displayLabel ?? string.Empty;
+            this.transitionProfile = transitionProfile == null ? null : transitionProfile.Snapshot();
         }
 
         public string ScreenId =>
@@ -97,6 +102,9 @@ namespace EchoDevGames.EchoUI
         public UISurface SceneOwnedView =>
             sceneOwnedView;
 
+        public UITransitionProfile TransitionProfile =>
+            transitionProfile;
+
         internal UIScreenDefinition Snapshot() =>
             new UIScreenDefinition(
                 ScreenId,
@@ -107,6 +115,7 @@ namespace EchoDevGames.EchoUI
                 RootOwnedPrefab,
                 SceneOwnedView,
                 DisplayLabel,
-                AllowClose);
+                AllowClose,
+                transitionProfile == null ? null : transitionProfile.Snapshot());
     }
 }

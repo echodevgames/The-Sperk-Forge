@@ -6,6 +6,7 @@ namespace EchoDevGames.EchoUI
         ExplicitAbort = 1,
         OwnerLost = 2,
         ViewLost = 3,
-        RootShutdown = 4
+        RootShutdown = 4,
+        TransitionFailed = 5
     }
 }

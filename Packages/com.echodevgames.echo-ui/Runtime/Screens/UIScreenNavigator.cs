@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EchoDevGames.EchoUI
 {
@@ -24,6 +25,8 @@ namespace EchoDevGames.EchoUI
         private readonly Action<UIScreenEntry> suspendEntry;
         private readonly Action<UIScreenEntry> resumeEntry;
         private readonly Action<UIScreenEntry> closeEntry;
+        private Func<UIScreenEntry, UITransitionDirection, Awaitable<UITransitionResult>>
+            transitionExecutor;
 
         public UIScreenNavigator(
             IEnumerable<UIScreenDefinition> definitions,
@@ -69,6 +72,13 @@ namespace EchoDevGames.EchoUI
             definitions.Count;
 
         public bool IsValid { get; private set; }
+
+        public void SetTransitionExecutor(
+            Func<UIScreenEntry, UITransitionDirection, Awaitable<UITransitionResult>>
+                executor)
+        {
+            transitionExecutor = executor;
+        }
 
         public bool TryGetDefinition(
             string screenId,
@@ -209,6 +219,872 @@ namespace EchoDevGames.EchoUI
                         request.Sequence,
                         "Unsupported Screen operation kind.");
             }
+        }
+
+
+        public async Awaitable<UIScreenOperationResult> ExecuteAsync(
+            UIScreenOperationRequest request)
+        {
+            if (transitionExecutor == null)
+            {
+                return Execute(
+                    request);
+            }
+
+            if (request == null)
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Invalid,
+                    UIScreenOperationKind.Push,
+                    message:
+                        "Screen operation request is missing.");
+            }
+
+            if (!IsValid)
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Failed,
+                    request.Kind,
+                    request.ScreenId,
+                    request.ScopeId,
+                    request.Sequence,
+                    "Screen navigator is not valid.");
+            }
+
+            switch (request.Kind)
+            {
+                case UIScreenOperationKind.Push:
+                    return await PushAsync(
+                        request);
+
+                case UIScreenOperationKind.Replace:
+                    return await ReplaceAsync(
+                        request);
+
+                case UIScreenOperationKind.Reset:
+                    return await ResetAsync(
+                        request);
+
+                case UIScreenOperationKind.Back:
+                    return await BackAsync(
+                        request);
+
+                case UIScreenOperationKind.Close:
+                    return await CloseAsync(
+                        request);
+
+                default:
+                    return new UIScreenOperationResult(
+                        UIScreenOperationStatus.Invalid,
+                        request.Kind,
+                        request.ScreenId,
+                        request.ScopeId,
+                        request.Sequence,
+                        "Unsupported Screen operation kind.");
+            }
+        }
+
+        private async Awaitable<UIScreenOperationResult> PushAsync(
+            UIScreenOperationRequest request)
+        {
+            if (!TryResolveDefinition(
+                    request.ScreenId,
+                    request,
+                    out UIScreenDefinition definition,
+                    out UIScreenOperationResult failure))
+            {
+                return failure;
+            }
+
+            List<UIScreenEntry> history =
+                GetOrCreateHistory(
+                    definition.NavigationScopeId);
+
+            UIScreenEntry current =
+                history.Count == 0
+                    ? null
+                    : history[history.Count - 1];
+
+            if (current != null &&
+                string.Equals(
+                    current.ScreenId,
+                    definition.ScreenId,
+                    StringComparison.Ordinal))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    request.Sequence,
+                    "Requested Screen is already current.");
+            }
+
+            if (ContainsScreen(
+                    history,
+                    definition.ScreenId))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Invalid,
+                    request.Kind,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    request.Sequence,
+                    "Push cannot duplicate an existing Screen entry in the same scope history.");
+            }
+
+            if (!TryPrepareEntry(
+                    definition,
+                    request,
+                    out UIScreenEntry target,
+                    out failure))
+            {
+                return failure;
+            }
+
+            target.IsActive = true;
+            target.IsSuspended = false;
+
+            activateEntry?.Invoke(
+                target);
+
+            UITransitionResult enter =
+                await RunTransitionAsync(
+                    target,
+                    UITransitionDirection.Enter);
+
+            if (!enter.Succeeded)
+            {
+                ReleaseEntry(
+                    target,
+                    hideExternalOrScene: true);
+
+                RestoreStableEntryAfterFailedEnter(
+                    current);
+
+                return TransitionFailure(
+                    request,
+                    target.ScreenId,
+                    target.NavigationScopeId,
+                    "Screen Push enter transition failed",
+                    enter);
+            }
+
+            UITransitionResult exit =
+                current == null
+                    ? default
+                    : await RunTransitionAsync(
+                        current,
+                        UITransitionDirection.Exit);
+
+            if (current != null)
+            {
+                current.IsActive = false;
+                current.IsSuspended = true;
+
+                suspendEntry?.Invoke(
+                    current);
+            }
+
+            history.Add(
+                target);
+
+            return UIScreenOperationResult.Success(
+                request,
+                target.ScreenId,
+                target.NavigationScopeId,
+                AppendExitDiagnostic(
+                    "Screen Push completed.",
+                    exit,
+                    current != null));
+        }
+
+        private async Awaitable<UIScreenOperationResult> ReplaceAsync(
+            UIScreenOperationRequest request)
+        {
+            if (!TryResolveDefinition(
+                    request.ScreenId,
+                    request,
+                    out UIScreenDefinition definition,
+                    out UIScreenOperationResult failure))
+            {
+                return failure;
+            }
+
+            List<UIScreenEntry> history =
+                GetOrCreateHistory(
+                    definition.NavigationScopeId);
+
+            UIScreenEntry current =
+                history.Count == 0
+                    ? null
+                    : history[history.Count - 1];
+
+            if (current != null &&
+                string.Equals(
+                    current.ScreenId,
+                    definition.ScreenId,
+                    StringComparison.Ordinal))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    request.Sequence,
+                    "Requested Screen is already current.");
+            }
+
+            if (ContainsScreen(
+                    history,
+                    definition.ScreenId))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Invalid,
+                    request.Kind,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    request.Sequence,
+                    "Replace cannot duplicate an existing Screen entry in the same scope history.");
+            }
+
+            if (!TryPrepareEntry(
+                    definition,
+                    request,
+                    out UIScreenEntry target,
+                    out failure))
+            {
+                return failure;
+            }
+
+            target.IsActive = true;
+            target.IsSuspended = false;
+
+            activateEntry?.Invoke(
+                target);
+
+            UITransitionResult enter =
+                await RunTransitionAsync(
+                    target,
+                    UITransitionDirection.Enter);
+
+            if (!enter.Succeeded)
+            {
+                ReleaseEntry(
+                    target,
+                    hideExternalOrScene: true);
+
+                RestoreStableEntryAfterFailedEnter(
+                    current);
+
+                return TransitionFailure(
+                    request,
+                    target.ScreenId,
+                    target.NavigationScopeId,
+                    "Screen Replace enter transition failed",
+                    enter);
+            }
+
+            UITransitionResult exit =
+                current == null
+                    ? default
+                    : await RunTransitionAsync(
+                        current,
+                        UITransitionDirection.Exit);
+
+            if (current != null)
+            {
+                history.RemoveAt(
+                    history.Count - 1);
+
+                ReleaseEntry(
+                    current,
+                    hideExternalOrScene: true);
+            }
+
+            history.Add(
+                target);
+
+            return UIScreenOperationResult.Success(
+                request,
+                target.ScreenId,
+                target.NavigationScopeId,
+                AppendExitDiagnostic(
+                    "Screen Replace completed.",
+                    exit,
+                    current != null));
+        }
+
+        private async Awaitable<UIScreenOperationResult> ResetAsync(
+            UIScreenOperationRequest request)
+        {
+            if (!TryResolveDefinition(
+                    request.ScreenId,
+                    request,
+                    out UIScreenDefinition definition,
+                    out UIScreenOperationResult failure))
+            {
+                return failure;
+            }
+
+            List<UIScreenEntry> history =
+                GetOrCreateHistory(
+                    definition.NavigationScopeId);
+
+            if (history.Count == 1 &&
+                string.Equals(
+                    history[0].ScreenId,
+                    definition.ScreenId,
+                    StringComparison.Ordinal))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    request.Sequence,
+                    "Scope is already reset to the requested root Screen.");
+            }
+
+            UIScreenEntry current =
+                history.Count == 0
+                    ? null
+                    : history[history.Count - 1];
+
+            int existingIndex =
+                FindEntryIndex(
+                    history,
+                    definition.ScreenId);
+
+            UIScreenEntry target =
+                existingIndex >= 0
+                    ? history[existingIndex]
+                    : null;
+
+            bool targetAlreadyInHistory =
+                target != null &&
+                target.View != null;
+
+            if (!targetAlreadyInHistory &&
+                !TryPrepareEntry(
+                    definition,
+                    request,
+                    out target,
+                    out failure))
+            {
+                return failure;
+            }
+
+            target.IsActive = true;
+            target.IsSuspended = false;
+
+            if (targetAlreadyInHistory)
+            {
+                resumeEntry?.Invoke(
+                    target);
+            }
+            else
+            {
+                activateEntry?.Invoke(
+                    target);
+            }
+
+            UITransitionResult enter =
+                await RunTransitionAsync(
+                    target,
+                    UITransitionDirection.Enter);
+
+            if (!enter.Succeeded)
+            {
+                if (targetAlreadyInHistory)
+                {
+                    target.IsActive = false;
+                    target.IsSuspended = true;
+
+                    suspendEntry?.Invoke(
+                        target);
+                }
+                else
+                {
+                    ReleaseEntry(
+                        target,
+                        hideExternalOrScene: true);
+                }
+
+                RestoreStableEntryAfterFailedEnter(
+                    current);
+
+                return TransitionFailure(
+                    request,
+                    definition.ScreenId,
+                    definition.NavigationScopeId,
+                    "Screen Reset enter transition failed",
+                    enter);
+            }
+
+            UITransitionResult exit =
+                current == null ||
+                ReferenceEquals(
+                    current,
+                    target)
+                    ? default
+                    : await RunTransitionAsync(
+                        current,
+                        UITransitionDirection.Exit);
+
+            List<UIScreenEntry> previous =
+                new List<UIScreenEntry>(
+                    history);
+
+            history.Clear();
+
+            for (int index = previous.Count - 1;
+                 index >= 0;
+                 index--)
+            {
+                UIScreenEntry entry =
+                    previous[index];
+
+                if (ReferenceEquals(
+                        entry,
+                        target))
+                {
+                    continue;
+                }
+
+                ReleaseEntry(
+                    entry,
+                    hideExternalOrScene: true);
+            }
+
+            target.IsActive = true;
+            target.IsSuspended = false;
+
+            history.Add(
+                target);
+
+            return UIScreenOperationResult.Success(
+                request,
+                target.ScreenId,
+                target.NavigationScopeId,
+                AppendExitDiagnostic(
+                    "Screen scope Reset completed.",
+                    exit,
+                    current != null &&
+                    !ReferenceEquals(
+                        current,
+                        target)));
+        }
+
+        private async Awaitable<UIScreenOperationResult> BackAsync(
+            UIScreenOperationRequest request)
+        {
+            string scopeId =
+                Normalize(
+                    request.ScopeId);
+
+            if (string.IsNullOrWhiteSpace(
+                    scopeId))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Invalid,
+                    request.Kind,
+                    scopeId: scopeId,
+                    sequence: request.Sequence,
+                    message:
+                        "Back requires a navigation scope ID.");
+            }
+
+            if (!historyByScope.TryGetValue(
+                    scopeId,
+                    out List<UIScreenEntry> history) ||
+                history.Count <= 1)
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    scopeId: scopeId,
+                    sequence: request.Sequence,
+                    message:
+                        "No previous Screen is available in this scope.");
+            }
+
+            int previousIndex =
+                FindPreviousValidIndex(
+                    history);
+
+            if (previousIndex < 0)
+            {
+                PruneInvalidBelowCurrent(
+                    history);
+
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    scopeId: scopeId,
+                    sequence: request.Sequence,
+                    message:
+                        "No valid previous Screen remains in this scope.");
+            }
+
+            UIScreenEntry current =
+                history[history.Count - 1];
+
+            UIScreenEntry previous =
+                history[previousIndex];
+
+            previous.IsActive = true;
+            previous.IsSuspended = false;
+
+            resumeEntry?.Invoke(
+                previous);
+
+            UITransitionResult enter =
+                await RunTransitionAsync(
+                    previous,
+                    UITransitionDirection.Enter);
+
+            if (!enter.Succeeded)
+            {
+                previous.IsActive = false;
+                previous.IsSuspended = true;
+
+                suspendEntry?.Invoke(
+                    previous);
+
+                RestoreStableEntryAfterFailedEnter(
+                    current);
+
+                return TransitionFailure(
+                    request,
+                    previous.ScreenId,
+                    scopeId,
+                    "Screen Back restore transition failed",
+                    enter);
+            }
+
+            UITransitionResult exit =
+                await RunTransitionAsync(
+                    current,
+                    UITransitionDirection.Exit);
+
+            List<UIScreenEntry> removed =
+                new List<UIScreenEntry>();
+
+            for (int index = history.Count - 1;
+                 index > previousIndex;
+                 index--)
+            {
+                removed.Add(
+                    history[index]);
+
+                history.RemoveAt(
+                    index);
+            }
+
+            for (int index = 0;
+                 index < removed.Count;
+                 index++)
+            {
+                ReleaseEntry(
+                    removed[index],
+                    hideExternalOrScene: true);
+            }
+
+            previous.IsActive = true;
+            previous.IsSuspended = false;
+
+            return UIScreenOperationResult.Success(
+                request,
+                previous.ScreenId,
+                scopeId,
+                AppendExitDiagnostic(
+                    "Back restored the previous valid Screen.",
+                    exit,
+                    true));
+        }
+
+        private async Awaitable<UIScreenOperationResult> CloseAsync(
+            UIScreenOperationRequest request)
+        {
+            UIScreenEntry current;
+
+            string scopeId =
+                Normalize(
+                    request.ScopeId);
+
+            if (!string.IsNullOrWhiteSpace(
+                    scopeId))
+            {
+                current =
+                    GetCurrentEntry(
+                        scopeId);
+            }
+            else
+            {
+                if (!TryResolveDefinition(
+                        request.ScreenId,
+                        request,
+                        out UIScreenDefinition definition,
+                        out UIScreenOperationResult failure))
+                {
+                    return failure;
+                }
+
+                scopeId =
+                    definition.NavigationScopeId;
+
+                current =
+                    GetCurrentEntry(
+                        scopeId);
+            }
+
+            if (current == null)
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.NoChange,
+                    request.Kind,
+                    request.ScreenId,
+                    scopeId,
+                    request.Sequence,
+                    "No current Screen exists in the requested scope.");
+            }
+
+            if (!current.Definition.AllowClose)
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Rejected,
+                    request.Kind,
+                    current.ScreenId,
+                    scopeId,
+                    request.Sequence,
+                    "Current Screen definition does not allow explicit Close.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(
+                    request.ScreenId) &&
+                !string.Equals(
+                    current.ScreenId,
+                    request.ScreenId,
+                    StringComparison.Ordinal))
+            {
+                return new UIScreenOperationResult(
+                    UIScreenOperationStatus.Invalid,
+                    request.Kind,
+                    request.ScreenId,
+                    scopeId,
+                    request.Sequence,
+                    "Close may only target the current Screen in this checkpoint.");
+            }
+
+            List<UIScreenEntry> history =
+                historyByScope[scopeId];
+
+            int previousIndex =
+                FindPreviousValidIndex(
+                    history);
+
+            UIScreenEntry previous =
+                previousIndex >= 0
+                    ? history[previousIndex]
+                    : null;
+
+            if (previous != null)
+            {
+                previous.IsActive = true;
+                previous.IsSuspended = false;
+
+                resumeEntry?.Invoke(
+                    previous);
+
+                UITransitionResult enter =
+                    await RunTransitionAsync(
+                        previous,
+                        UITransitionDirection.Enter);
+
+                if (!enter.Succeeded)
+                {
+                    previous.IsActive = false;
+                    previous.IsSuspended = true;
+
+                    suspendEntry?.Invoke(
+                        previous);
+
+                    RestoreStableEntryAfterFailedEnter(
+                        current);
+
+                    return TransitionFailure(
+                        request,
+                        previous.ScreenId,
+                        scopeId,
+                        "Screen Close restore transition failed",
+                        enter);
+                }
+            }
+
+            UITransitionResult exit =
+                await RunTransitionAsync(
+                    current,
+                    UITransitionDirection.Exit);
+
+            history.RemoveAt(
+                history.Count - 1);
+
+            ReleaseEntry(
+                current,
+                hideExternalOrScene: true);
+
+            if (previous != null)
+            {
+                while (history.Count - 1 >
+                       previousIndex)
+                {
+                    UIScreenEntry invalid =
+                        history[history.Count - 1];
+
+                    history.RemoveAt(
+                        history.Count - 1);
+
+                    if (!ReferenceEquals(
+                            invalid,
+                            previous))
+                    {
+                        ReleaseEntry(
+                            invalid,
+                            hideExternalOrScene: false);
+                    }
+                }
+
+                previous.IsActive = true;
+                previous.IsSuspended = false;
+            }
+            else
+            {
+                history.Clear();
+            }
+
+            return UIScreenOperationResult.Success(
+                request,
+                current.ScreenId,
+                scopeId,
+                AppendExitDiagnostic(
+                    "Current Screen closed.",
+                    exit,
+                    true));
+        }
+
+        private async Awaitable<UITransitionResult> RunTransitionAsync(
+            UIScreenEntry entry,
+            UITransitionDirection direction)
+        {
+            if (transitionExecutor == null ||
+                entry == null ||
+                entry.View == null)
+            {
+                return new UITransitionResult(
+                    UITransitionStatus.Unavailable,
+                    default,
+                    0,
+                    entry == null
+                        ? string.Empty
+                        : entry.ScreenId,
+                    direction,
+                    string.Empty,
+                    string.Empty,
+                    0d,
+                    "Screen transition executor or live entry is unavailable.");
+            }
+
+            return await transitionExecutor(
+                entry,
+                direction);
+        }
+
+        private void RestoreStableEntryAfterFailedEnter(
+            UIScreenEntry stable)
+        {
+            if (stable == null ||
+                stable.View == null)
+            {
+                return;
+            }
+
+            stable.IsActive = true;
+            stable.IsSuspended = false;
+
+            resumeEntry?.Invoke(
+                stable);
+        }
+
+        private static UIScreenOperationResult TransitionFailure(
+            UIScreenOperationRequest request,
+            string screenId,
+            string scopeId,
+            string prefix,
+            UITransitionResult transition)
+        {
+            return new UIScreenOperationResult(
+                UIScreenOperationStatus.Failed,
+                request.Kind,
+                screenId,
+                scopeId,
+                request.Sequence,
+                prefix +
+                ": " +
+                transition.Status +
+                (string.IsNullOrWhiteSpace(
+                    transition.Message)
+                    ? string.Empty
+                    : " - " +
+                        transition.Message));
+        }
+
+        private static string AppendExitDiagnostic(
+            string successMessage,
+            UITransitionResult exit,
+            bool hadExit)
+        {
+            if (!hadExit ||
+                exit.Succeeded)
+            {
+                return successMessage;
+            }
+
+            return successMessage +
+                " Exit transition settled as " +
+                exit.Status +
+                "; deterministic lifecycle state still committed.";
+        }
+
+        private static int FindEntryIndex(
+            List<UIScreenEntry> history,
+            string screenId)
+        {
+            if (history == null ||
+                string.IsNullOrWhiteSpace(
+                    screenId))
+            {
+                return -1;
+            }
+
+            for (int index = history.Count - 1;
+                 index >= 0;
+                 index--)
+            {
+                UIScreenEntry entry =
+                    history[index];
+
+                if (entry != null &&
+                    string.Equals(
+                        entry.ScreenId,
+                        screenId,
+                        StringComparison.Ordinal))
+                {
+                    return index;
+                }
+            }
+
+            return -1;
         }
 
         public void Shutdown()

@@ -55,6 +55,29 @@ namespace EchoDevGames.EchoUI
             return true;
         }
 
+        public bool TryDequeue(
+            out UIScreenHandle handle)
+        {
+            if (pending.Count == 0)
+            {
+                handle = null;
+                return false;
+            }
+
+            handle =
+                pending.Dequeue();
+
+            return true;
+        }
+
+        public void Complete(
+            UIScreenHandle handle,
+            UIScreenOperationResult result)
+        {
+            handle?.Complete(
+                result);
+        }
+
         public bool TryProcessNext(
             Func<UIScreenOperationRequest, UIScreenOperationResult> executor,
             out UIScreenHandle settledHandle)

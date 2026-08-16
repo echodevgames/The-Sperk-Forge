@@ -7,7 +7,8 @@ namespace EchoDevGames.EchoUI
         StaleHandle = 2,
         InvalidResult = 3,
         NotFound = 4,
-        BackDisabled = 5
+        BackDisabled = 5,
+        NotReady = 6
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EchoDevGames.EchoUI
 {
@@ -25,6 +26,12 @@ namespace EchoDevGames.EchoUI
         private readonly Action<UISurface> deactivateSurface;
         private readonly Action stackChanged;
         private readonly int capacity;
+
+        private Func<UIModalEntry, UITransitionDirection, Awaitable<UITransitionResult>>
+            transitionExecutor;
+        private Func<string, bool> cancelTransition;
+        private Action<UISurface> prepareEnterSurface;
+        private Action<UISurface> completeEnterSurface;
 
         private long nextGeneration;
 
@@ -91,6 +98,40 @@ namespace EchoDevGames.EchoUI
             stack.Count == 0
                 ? null
                 : stack[stack.Count - 1];
+
+        internal UIModalEntry TopInteractiveEntry
+        {
+            get
+            {
+                UIModalEntry top =
+                    TopEntry;
+
+                return top != null &&
+                    top.AcceptsInteraction
+                        ? top
+                        : null;
+            }
+        }
+
+        internal void ConfigureTransitionLifecycle(
+            Func<UIModalEntry, UITransitionDirection, Awaitable<UITransitionResult>>
+                executor,
+            Func<string, bool> cancel,
+            Action<UISurface> prepareEnter,
+            Action<UISurface> completeEnter)
+        {
+            transitionExecutor =
+                executor;
+
+            cancelTransition =
+                cancel;
+
+            prepareEnterSurface =
+                prepareEnter;
+
+            completeEnterSurface =
+                completeEnter;
+        }
 
         public bool TryGetDefinition(
             string modalId,
@@ -169,10 +210,36 @@ namespace EchoDevGames.EchoUI
             stack.Add(
                 entry);
 
-            activateSurface?.Invoke(
-                entry.View);
+            if (transitionExecutor == null)
+            {
+                entry.IsInteractive = true;
+
+                activateSurface?.Invoke(
+                    entry.View);
+
+                stackChanged?.Invoke();
+
+                return entry.Handle;
+            }
+
+            entry.IsEntering = true;
+            entry.IsInteractive = false;
+
+            if (prepareEnterSurface != null)
+            {
+                prepareEnterSurface(
+                    entry.View);
+            }
+            else
+            {
+                activateSurface?.Invoke(
+                    entry.View);
+            }
 
             stackChanged?.Invoke();
+
+            BeginEnterTransition(
+                entry);
 
             return entry.Handle;
         }
@@ -191,7 +258,7 @@ namespace EchoDevGames.EchoUI
                     "Semantic modal completion requires a nonempty project-defined result ID.");
             }
 
-            return Settle(
+            return ClaimTerminal(
                 handle,
                 new UIModalResult(
                     UIModalOutcome.Completed,
@@ -202,7 +269,8 @@ namespace EchoDevGames.EchoUI
                         ? 0
                         : handle.Generation,
                     normalizedResult),
-                UIModalAbortReason.None);
+                UIModalAbortReason.None,
+                requireInteractive: true);
         }
 
         public UIModalCompletionAttemptResult Abort(
@@ -215,7 +283,7 @@ namespace EchoDevGames.EchoUI
                     UIModalAbortReason.ExplicitAbort;
             }
 
-            return Settle(
+            return ClaimTerminal(
                 handle,
                 new UIModalResult(
                     UIModalOutcome.Aborted,
@@ -226,7 +294,8 @@ namespace EchoDevGames.EchoUI
                         ? 0
                         : handle.Generation,
                     abortReason: reason),
-                reason);
+                reason,
+                requireInteractive: false);
         }
 
         public UIModalCompletionAttemptResult HandleBack()
@@ -312,15 +381,26 @@ namespace EchoDevGames.EchoUI
                 stack.RemoveAt(
                     index);
 
-                entry.Handle.TryComplete(
-                    new UIModalResult(
-                        UIModalOutcome.Aborted,
-                        entry.ModalId,
-                        entry.Generation,
-                        abortReason:
-                            UIModalAbortReason.ViewLost,
-                        message:
-                            "Modal view was lost after admission."));
+                cancelTransition?.Invoke(
+                    entry.ModalId.Value);
+
+                if (entry.HasTerminalClaim)
+                {
+                    entry.Handle.TryComplete(
+                        entry.ClaimedResult);
+                }
+                else
+                {
+                    entry.Handle.TryComplete(
+                        new UIModalResult(
+                            UIModalOutcome.Aborted,
+                            entry.ModalId,
+                            entry.Generation,
+                            abortReason:
+                                UIModalAbortReason.ViewLost,
+                            message:
+                                "Modal view was lost after admission."));
+                }
 
                 changed = true;
             }
@@ -347,14 +427,25 @@ namespace EchoDevGames.EchoUI
                 stack.RemoveAt(
                     index);
 
-                entry.Handle.TryComplete(
-                    new UIModalResult(
-                        UIModalOutcome.Aborted,
-                        entry.ModalId,
-                        entry.Generation,
-                        abortReason: reason,
-                        message:
-                            "Modal lifecycle shut down before semantic completion."));
+                cancelTransition?.Invoke(
+                    entry.ModalId.Value);
+
+                if (entry.HasTerminalClaim)
+                {
+                    entry.Handle.TryComplete(
+                        entry.ClaimedResult);
+                }
+                else
+                {
+                    entry.Handle.TryComplete(
+                        new UIModalResult(
+                            UIModalOutcome.Aborted,
+                            entry.ModalId,
+                            entry.Generation,
+                            abortReason: reason,
+                            message:
+                                "Modal lifecycle shut down before semantic completion."));
+                }
 
                 ReleaseEntry(
                     entry);
@@ -616,10 +707,11 @@ namespace EchoDevGames.EchoUI
             return true;
         }
 
-        private UIModalCompletionAttemptResult Settle(
+        private UIModalCompletionAttemptResult ClaimTerminal(
             UIModalHandle handle,
             UIModalResult result,
-            UIModalAbortReason abortReason)
+            UIModalAbortReason abortReason,
+            bool requireInteractive)
         {
             if (handle == null)
             {
@@ -660,6 +752,21 @@ namespace EchoDevGames.EchoUI
                     "The Modal handle is stale.");
             }
 
+            if (entry.HasTerminalClaim)
+            {
+                return new UIModalCompletionAttemptResult(
+                    UIModalCompletionStatus.AlreadyCompleted,
+                    "This Modal generation already has a first terminal claim.");
+            }
+
+            if (requireInteractive &&
+                !entry.AcceptsInteraction)
+            {
+                return new UIModalCompletionAttemptResult(
+                    UIModalCompletionStatus.NotReady,
+                    "Semantic Modal completion is unavailable until enter transition settlement establishes an interactive top Modal.");
+            }
+
             if (result.Outcome ==
                     UIModalOutcome.Aborted &&
                 abortReason == UIModalAbortReason.None)
@@ -673,25 +780,233 @@ namespace EchoDevGames.EchoUI
                             UIModalAbortReason.ExplicitAbort);
             }
 
-            if (!entry.Handle.TryComplete(
-                    result))
+            entry.HasTerminalClaim = true;
+            entry.ClaimedResult = result;
+            entry.IsEntering = false;
+            entry.IsInteractive = false;
+            entry.IsClosing = true;
+
+            stackChanged?.Invoke();
+
+            if (transitionExecutor == null ||
+                entry.View == null)
             {
+                FinalizeClaimedSettlement(
+                    entry);
+
                 return new UIModalCompletionAttemptResult(
-                    UIModalCompletionStatus.AlreadyCompleted,
-                    "This Modal generation already settled.");
+                    UIModalCompletionStatus.Succeeded,
+                    "Modal generation settled exactly once.");
             }
 
-            stack.RemoveAt(
-                index);
+            BeginExitTransition(
+                entry);
+
+            return new UIModalCompletionAttemptResult(
+                UIModalCompletionStatus.Succeeded,
+                "Modal first terminal result was claimed exactly once; structural release waits for exit transition settlement.");
+        }
+
+        private async void BeginEnterTransition(
+            UIModalEntry entry)
+        {
+            if (!IsLiveEntry(
+                    entry) ||
+                transitionExecutor == null)
+            {
+                return;
+            }
+
+            UITransitionResult transition;
+
+            try
+            {
+                transition =
+                    await transitionExecutor(
+                        entry,
+                        UITransitionDirection.Enter);
+            }
+            catch (Exception exception)
+            {
+                transition =
+                    new UITransitionResult(
+                        UITransitionStatus.Failed,
+                        default,
+                        0,
+                        entry.ModalId.Value,
+                        UITransitionDirection.Enter,
+                        string.Empty,
+                        string.Empty,
+                        0d,
+                        exception.Message);
+            }
+
+            if (!IsLiveEntry(
+                    entry))
+            {
+                return;
+            }
+
+            if (entry.HasTerminalClaim ||
+                entry.IsClosing)
+            {
+                return;
+            }
+
+            entry.IsEntering = false;
+
+            if (!transition.Succeeded)
+            {
+                RemoveEntry(
+                    entry);
+
+                entry.Handle.TryComplete(
+                    new UIModalResult(
+                        UIModalOutcome.Aborted,
+                        entry.ModalId,
+                        entry.Generation,
+                        abortReason:
+                            UIModalAbortReason.TransitionFailed,
+                        message:
+                            BuildTransitionMessage(
+                                "Modal enter transition failed",
+                                transition)));
+
+                ReleaseEntry(
+                    entry);
+
+                stackChanged?.Invoke();
+                return;
+            }
+
+            entry.IsInteractive = true;
+
+            stackChanged?.Invoke();
+
+            completeEnterSurface?.Invoke(
+                entry.View);
+        }
+
+        private async void BeginExitTransition(
+            UIModalEntry entry)
+        {
+            if (!IsLiveEntry(
+                    entry))
+            {
+                return;
+            }
+
+            if (transitionExecutor != null &&
+                entry.View != null)
+            {
+                try
+                {
+                    await transitionExecutor(
+                        entry,
+                        UITransitionDirection.Exit);
+                }
+                catch
+                {
+                    // Exit presentation can fail, time out, cancel, or throw.
+                    // The exact-once claimed result remains authoritative and
+                    // deterministic structural release still wins.
+                }
+            }
+
+            if (!IsLiveEntry(
+                    entry))
+            {
+                return;
+            }
+
+            FinalizeClaimedSettlement(
+                entry);
+        }
+
+        private void FinalizeClaimedSettlement(
+            UIModalEntry entry)
+        {
+            if (!IsLiveEntry(
+                    entry))
+            {
+                return;
+            }
+
+            RemoveEntry(
+                entry);
 
             ReleaseEntry(
                 entry);
 
-            stackChanged?.Invoke();
+            entry.Handle.TryComplete(
+                entry.ClaimedResult);
 
-            return new UIModalCompletionAttemptResult(
-                UIModalCompletionStatus.Succeeded,
-                "Modal generation settled exactly once.");
+            stackChanged?.Invoke();
+        }
+
+        private void RemoveEntry(
+            UIModalEntry entry)
+        {
+            if (entry == null)
+            {
+                return;
+            }
+
+            int index =
+                FindEntryIndex(
+                    entry.ModalId,
+                    entry.Generation,
+                    requireGeneration: true);
+
+            if (index >= 0 &&
+                ReferenceEquals(
+                    stack[index],
+                    entry))
+            {
+                stack.RemoveAt(
+                    index);
+            }
+        }
+
+        private bool IsLiveEntry(
+            UIModalEntry entry)
+        {
+            if (entry == null)
+            {
+                return false;
+            }
+
+            int index =
+                FindEntryIndex(
+                    entry.ModalId,
+                    entry.Generation,
+                    requireGeneration: true);
+
+            return index >= 0 &&
+                ReferenceEquals(
+                    stack[index],
+                    entry);
+        }
+
+        private static string BuildTransitionMessage(
+            string prefix,
+            UITransitionResult transition)
+        {
+            string normalized =
+                string.IsNullOrWhiteSpace(
+                    prefix)
+                    ? "Modal transition failed"
+                    : prefix.Trim();
+
+            return normalized +
+                " (" +
+                transition.Status +
+                ")" +
+                (string.IsNullOrWhiteSpace(
+                    transition.Message)
+                    ? "."
+                    : ": " +
+                        transition.Message);
         }
 
         private void ReleaseEntry(

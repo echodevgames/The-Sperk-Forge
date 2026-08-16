@@ -5,10 +5,11 @@ This is the engineering proof sample for **The Looking Glass**. It remains delib
 - **EUI-M1-01** proved scoped Screen navigation and an independent Window.
 - **EUI-M1-02** proved external UI context, ordered per-surface response, and input-aware selection.
 - **EUI-M2-01** proved project-defined layers, authoritative Screen history/lifecycle, all three Screen ownership modes, suspension policy, and strict FIFO structural execution.
-- **EUI-M2-02** proves the blocking Modal lifecycle: stacked top-only interaction, exact-once results, structural aborts, all three ownership modes, Back policy, UI-scoped interaction blocking, Screen Reject/Defer behavior, and explicit proof that gameplay/project behavior remains external.
-- **EUI-M3-01** adds explicit/non-destructive EventSystem coordination, live/session focus memory, deterministic restoration/fallback, blocking-Modal focus containment, explicit revalidation, and event-driven idle behavior.
+- **EUI-M2-02** proved blocking Modal lifecycle, exact-once results, structural aborts, ownership modes, Back policy, UI-scoped blocking, and Screen Reject/Defer behavior.
+- **EUI-M3-01** proved EventSystem coordination, focus memory/restoration, Modal focus containment, explicit revalidation, and event-driven idle behavior.
+- **EUI-M3-02** adds authoritative enter/exit settlement through replaceable transition drivers, deterministic failure/timeout/stale recovery, reduced-motion substitution, and transition-aware Screen, Modal, and independent Window lifecycle.
 
-The sample is not a polished Reference Showcase, Motif system, Builder, transition system, HUD framework, gameplay-input owner, or MMO window-layout manager.
+The sample is not a polished Reference Showcase, Motif system, Builder, HUD framework, full Window manager, persistence layer, gameplay-input owner, or universal animation system.
 
 ## Proof hierarchy
 
@@ -29,6 +30,270 @@ External_M2_02_ProjectOwnedModal  [inactive ExternalOwned Modal view]
 ```
 
 The top-right of the Game view remains the Laboratory/debug safe zone. The proof console grows downward from there.
+
+# EUI-M3-02 manual acceptance
+
+The **M3-02 Transitions** tab is the dedicated proof surface for the transition/view-lifecycle checkpoint. The visible fades are deliberately plain so lifecycle truth is easy to observe.
+
+The package still owns **structural UI lifecycle**, not project gameplay state. A transition driver may animate the view, but it does not own gameplay movement, project action maps, time scale, cursor policy, audio, scene travel, save/settings truth, or application lifetime.
+
+Automated evidence immediately preceding this Laboratory phase:
+
+- transition kernel: **20 / 20 passed**
+- Screen + independent Window lifecycle integration: **10 / 10 passed**
+- blocking Modal transition integration: **10 / 10 passed**
+- EchoUI EditMode assembly: **139 / 139 passed**
+- full Foundry EditMode regression: **1245 / 1245 passed**
+
+Before a fresh run:
+
+1. open `The Looking Glass_UI_Laboratory`;
+2. enter Play Mode;
+3. select **M3-02 Transitions**;
+4. click `Prepare M3-02 Baseline`;
+5. verify:
+   - transition lifecycle is initialized;
+   - active transitions = `0`;
+   - current frontend Screen = `main-menu`;
+   - reduced motion = `OFF`;
+   - Screen and deferred queues are `0`.
+
+Run checks **1-13** in order. The proof console disables its M3-02 action buttons while an asynchronous proof is in flight.
+
+## M3-02 Check 1 — root-default Immediate Screen lifecycle
+
+Click:
+
+`Run Check 1: Immediate RootOwned Screen`
+
+The existing RootOwned laboratory Screen has no definition transition override, so it inherits the root/project default.
+
+PASS when the RootOwned Screen pushes and backs successfully, final Screen is `main-menu`, and active transitions return to `0`. The operation should appear immediate.
+
+## M3-02 Check 2 — definition-profile Screen fade
+
+Click:
+
+`Run Check 2: Fade ExternalOwned Screen In + Out`
+
+The retained `lab-external-owned` Screen definition is the M3-02 definition-profile proof target.
+
+PASS when:
+
+- the ExternalOwned Screen visibly fades in;
+- it remains project-owned rather than being destroyed by Looking Glass;
+- Back visibly fades it out;
+- both structural handles settle `Succeeded`;
+- the final Screen is `main-menu`;
+- active transitions return to `0`.
+
+The console reports measured realtime enter/exit duration.
+
+## M3-02 Check 3 — transient Window override
+
+Click:
+
+`Run Check 3: Fade Default Window In + Out`
+
+`default-window` retains its ordinary authored data. The Laboratory supplies the fade as a **transient operation override**.
+
+PASS when the Window visibly fades in and out, both operations succeed, final visibility is false, and active transitions return to `0`.
+
+## M3-02 Check 4 — Modal fade + exact once through exit
+
+Click:
+
+`Run Check 4: External Modal Exact-Once Fade`
+
+The ExternalOwned Modal uses the M3-02 definition fade profile.
+
+The helper waits for enter settlement, then:
+
+1. claims semantic result `confirm`;
+2. immediately attempts a second semantic result `cancel` while the exit fade is still pending;
+3. observes lower UI interaction during the closing interval;
+4. waits for structural Modal release.
+
+PASS when:
+
+- first completion = `Succeeded`;
+- second completion = `AlreadyCompleted`;
+- the handle is still pending immediately after the first terminal claim;
+- lower UI remains blocked during the exit transition;
+- the final result is still `Completed / confirm`;
+- Modal count returns to `0`;
+- lower UI becomes interactable after structural release.
+
+This is the manual proof of **first valid terminal completion wins** across an asynchronous exit.
+
+## M3-02 Check 5 — policy layering
+
+Click:
+
+`Run Check 5: Inspect Effective Policy Layers`
+
+PASS when the console reports:
+
+- root/default independent-surface driver = `immediate`;
+- ExternalOwned Screen definition profile = `lab-m3-02-fade / canvas-group-fade`;
+- transient `default-window` override = `canvas-group-fade`.
+
+The transient probe must not rewrite authored sample assets.
+
+## M3-02 Check 6 — failed enter rollback
+
+Click:
+
+`Run Check 6: Inject Enter Failure`
+
+A sample-only driver throws during independent Window admission.
+
+PASS when:
+
+- the structural result is `TransitionFailed`;
+- `default-window` is not left visible/half-open;
+- active transitions return to `0`.
+
+## M3-02 Check 7 — failed exit force-close
+
+Click:
+
+`Run Check 7: Inject Exit Failure`
+
+The helper opens `default-window`, then injects failure during its transition-aware close.
+
+PASS when the close reports `TransitionFailed` **but the Window is still deterministically closed** and active transitions return to `0`.
+
+Presentation failure is not allowed to hold structural UI hostage.
+
+## M3-02 Check 8 — hard timeout recovery
+
+Click:
+
+`Run Check 8: Inject Hard Timeout`
+
+A sample-only driver returns fresh async work that never completes normally. Its profile uses a short Laboratory hard bound.
+
+PASS when:
+
+- the operation settles `TransitionFailed` with timeout diagnostics;
+- elapsed realtime is approximately the authored hard bound or greater;
+- `default-window` is rolled back closed;
+- active transitions return to `0`.
+
+## M3-02 Check 9 — stale/superseded transition rejection
+
+Click:
+
+`Run Check 9: Supersede Slow Fade`
+
+The helper starts a slow fade on `default-window`, then immediately starts a newer Immediate transition for the same surface.
+
+PASS when:
+
+- the older result settles `Stale`;
+- the newer result settles `Completed`;
+- final presentation reflects the newer lifecycle truth;
+- active transitions return to `0`.
+
+A stale completion must never rewind newer authority.
+
+## M3-02 Check 10 — reduced-motion substitution
+
+Click:
+
+`Run Check 10: Reduced Motion -> Immediate`
+
+The helper temporarily enables Looking Glass reduced-motion transition substitution, then requests the ordinary fade profile.
+
+PASS when the result reports effective driver:
+
+`immediate`
+
+rather than:
+
+`canvas-group-fade`
+
+The helper turns reduced motion back off afterward. This proves the substitution seam only; the broader Motif/accessibility service is still outside M3-02.
+
+## M3-02 Check 11 — unscaled transition time
+
+Click:
+
+`Run Check 11: Paused-Time Fade`
+
+The Laboratory temporarily sets:
+
+`Time.timeScale = 0`
+
+and opens/closes `default-window` using the CanvasGroup Fade profile.
+
+PASS when both operations complete visibly and successfully while time scale remains zero during the proof. The console reports realtime elapsed duration. The helper restores the previous project time scale afterward.
+
+This demonstrates unscaled transition timing **without transferring pause authority to Looking Glass**.
+
+## M3-02 Check 12 — retained M3-01 focus behavior
+
+Click:
+
+`Run Check 12: Focus After Window Fade`
+
+The helper switches the existing M3-01 input-modality simulation to Navigation, opens `default-window` through a fade, and observes selection after enter settlement.
+
+PASS when selected focus is:
+
+`Button_DefaultClose`
+
+The transition layer must not replace M3-01 focus authority.
+
+## M3-02 Check 13 — idle transition quiescence
+
+Click:
+
+`Run Check 13: Idle Transition Probe`
+
+Do not interact for the 180-frame probe.
+
+PASS when:
+
+- active transition count starts at `0`, never rises, and ends at `0`;
+- Screen queue depth starts at `0`, never rises, and ends at `0`;
+- deferred Screen queue depth starts at `0`, never rises, and ends at `0`.
+
+This is paired with automated code-level proof that Looking Glass does not introduce a universal per-frame transition scene scan.
+
+## M3-02 Check 14 — retained tabs
+
+After checks 1-13, briefly visit:
+
+- **M3-01 Focus**
+- **M2-02 Modals**
+- **M2-01 Screens**
+- **M1 Retained**
+
+PASS when their existing proof controls remain present and their ordinary retained smoke behavior still works.
+
+For the M2-02 Defer/FIFO-specific manual case, retain its existing rule: restart Play Mode and initialize the Modal lifecycle with `Defer` when explicitly running that retained test.
+
+# EUI-M3-02 acceptance record
+
+Leave this record unmodified until the manual run is actually complete.
+
+- Check 1 — Immediate Screen enter/exit: **PENDING**
+- Check 2 — Definition-profile Screen fade: **PENDING**
+- Check 3 — Transient independent Window fade: **PENDING**
+- Check 4 — Modal fade + exact-once terminal result: **PENDING**
+- Check 5 — Default/definition/transient policy layering: **PENDING**
+- Check 6 — Enter failure rollback: **PENDING**
+- Check 7 — Exit failure deterministic force-close: **PENDING**
+- Check 8 — Hard timeout recovery/cleanup: **PENDING**
+- Check 9 — Stale completion rejection: **PENDING**
+- Check 10 — Reduced-motion Immediate substitution: **PENDING**
+- Check 11 — Unscaled fade at `Time.timeScale = 0`: **PENDING**
+- Check 12 — Retained focus behavior after transition: **PENDING**
+- Check 13 — 180-frame idle coordinator quiescence: **PENDING**
+- Check 14 — Retained M3-01/M2-02/M2-01/M1 tabs: **PENDING**
+
 
 # EUI-M3-01 manual acceptance
 
@@ -56,8 +321,6 @@ Click:
 
 PASS when the observation reports `Ready`, the assigned scene EventSystem remains alive, and Looking Glass reports that it adopted the explicitly assigned EventSystem.
 
-[CHECK 1] expected Ready + assigned scene EventSystem. Observed: status=Ready, assignedAlive=YES, EventSystems=1, message=Looking Glass adopted the explicitly assigned EventSystem
-
 ## M3-01 Check 2 — distinct EventSystem coordination modes
 
 Run all three buttons separately:
@@ -74,15 +337,6 @@ Expected:
 
 Click `Prepare M3 Baseline` after 2B/2C to restore the authored scene EventSystem.
 
-[Check 2]
-CHECK 2C expected Missing/degraded and zero created EventSystems. Observed: status=Missing, activeEventSystems=0, created=EchoUI EventSystem, operationSucceeded=False, message=RequireExternal found no active eligible EventSystem and will not create one.. Click Prepare M3 Baseline before the next check
-
-
-[Check 2]2
-CHECK 2A expected Ready by adopting the one existing scene EventSystem. Observed: status=Ready, EventSystems=1, message=Looking Glass adopted the unambiguous existing EventSystem.
-CHECK 2B expected Ready + one Looking Glass-created EventSystem because none existed. Observed: status=Ready, created=EchoUI EventSystem, activeEventSystems=1, sceneEventSystemActive=NO, message=Looking Glass created a root-owned EventSystem because CreateIfMissing was explicitly configured.. Click Prepare M3 Baseline before the next check.
-CHECK 2C expected Missing/degraded and zero created EventSystems. Observed: status=Missing, activeEventSystems=0, created=<none>, operationSucceeded=False, message=RequireExternal found no active eligible EventSystem and will not create one.. Click Prepare M3 Baseline before the next check.
-
 ## M3-01 Check 3 — ambiguous multiple EventSystems
 
 Click:
@@ -96,14 +350,9 @@ PASS when:
 - both the scene EventSystem and the Laboratory-created extra EventSystem remain alive;
 - Looking Glass does not silently choose or delete one.
 
-[Check 3]
-CHECK 3 expected Ambiguous/degraded, both EventSystems still alive, and no arbitrary adoption. Observed: status=Ambiguous, activeEventSystems=2, sceneAlive=YES, extraAlive=YES, operationSucceeded=False, message=Multiple active eligible EventSystems were found. Looking Glass will not choose an arbitrary winner
-
 Then click:
 
 `Cleanup / Restore One EventSystem`
-[Check 3 Cont]
-Baseline: status=Ready, EventSystems=1, selected=<none>
 
 ## M3-01 Check 4 — Modal close restores lower remembered focus
 
@@ -120,16 +369,6 @@ PASS when the observation shows:
 - `after=M3_MainMenu_RememberedTarget`;
 - the Modal completion succeeded.
 
-CHECK 4 expected lower focus remembered,
-Modal owns focus while open,
-then lower focus restored.
-Observed before=M3_MainMenu_RememberedTarget,
-during=Panel_M2_02_SceneConfirmModal,
-after=M3_MainMenu_RememberedTarget,
-prime=Succeeded, completion=Succeeded,
-
-
-
 ## M3-01 Check 5 — Screen Back restoration
 
 Click:
@@ -137,11 +376,6 @@ Click:
 `Run Check 5: Screen Back Restore`
 
 PASS when Settings is pushed over Main Menu, Back returns to `main-menu`, and the final selected object is `M3_MainMenu_RememberedTarget`.
-
-[Check 5]
-CHECK 5 expected Back to expose main-menu and restore its remembered target. Observed before=M3_MainMenu_RememberedTarget, settings=<none>, currentScreen=main-menu, after=M3_MainMenu_RememberedTarget, expectedAfter=M3_MainMenu_RememberedTarget
-
-
 
 ## M3-01 Check 6 — Fresh reopen ignores old memory
 
@@ -152,11 +386,6 @@ Click:
 Settings is deliberately authored `Fresh`.
 
 PASS when the first focus is `M3_Settings_FreshTarget`, then reopening Settings does **not** restore that old alternate target. The reopened state follows Settings' ordinary authored opening policy instead.
-[Check 6]
-CHECK 5 expected Back to expose main-menu and restore its remembered target. Observed before=M3_MainMenu_RememberedTarget, settings=<none>, currentScreen=main-menu, after=M3_MainMenu_RememberedTarget, expectedAfter=M3_MainMenu_RememberedTarget
-
-[Check 6]2
-CHECK 6 expected Fresh reopen to ignore the old alternate target and use Settings' authored opening policy. Observed primed=M3_Settings_FreshTarget, reopened=<none>, oldAlternate=M3_Settings_FreshTarget, ignoredOldMemory=YES
 
 ## M3-01 Check 7 — RememberThisSession reopen
 
@@ -170,12 +399,6 @@ Click:
 
 PASS when the helper focuses `M3_DefaultWindow_SessionTarget`, closes the Window, reopens it, and the same target is restored.
 
-[Check 7]
-CHECK 7 expected RememberThisSession to restore the alternate stable-surface target. Observed primed=M3_DefaultWindow_SessionTarget, reopened=Button_DefaultClose, expected=M3_DefaultWindow_SessionTarget
-
-
-[Check 7]2
-CHECK 7 PASS expected RememberThisSession to restore the alternate stable-surface target. Observed policy=RememberThisSession, primed=M3_DefaultWindow_SessionTarget, reopened=M3_DefaultWindow_SessionTarget, expected=M3_DefaultWindow_SessionTarget
 ## M3-01 Check 8 — invalid remembered target fallback
 
 Click:
@@ -184,13 +407,8 @@ Click:
 
 The helper stores the session target, closes the Window, disables that remembered target, then reopens the Window.
 
-PASS when the invalid target is skipped and focus falls through to `Button_DefaultClose`. A legal `<none>` remains structurally allowed in policies that author no fallback, but the current Laboratory authors `Button_DefaultClose`.
-[Check 8]
-CHECK 8 expected invalid remembered target to fall through to Button_DefaultClose or legal <none>. Observed reopened=Button_DefaultClose, authoredDefault=Button_DefaultClose
+PASS when the invalid target is skipped and focus falls through to `Button_DefaultClose` or another legal authored no-focus outcome. With the current Laboratory authoring the expected fallback is `Button_DefaultClose`.
 
-
-[Check 8]2
-CHECK 8 expected invalid remembered target to fall through to Button_DefaultClose or legal <none>. Observed reopened=Button_DefaultClose, authoredDefault=Button_DefaultClose
 ## M3-01 Check 9 — pointer no-focus / no jitter
 
 Click:
@@ -204,8 +422,6 @@ PASS when:
 - focus generation remains unchanged for that idle period.
 
 This proves the sample does not invent focus merely because time passes.
-[Check 9]
-CHECK 9 expected pointer-opened default-window to remain <none> without idle focus jitter. Observed initial=<none>, after60Frames=<none>, generation=144 -> 144, stable=YES
 
 ## M3-01 Check 10 — navigation establishes default
 
@@ -214,10 +430,6 @@ Click:
 `Run Check 10: Navigation Default`
 
 PASS when navigation/controller modality opens `default-window` with `Button_DefaultClose` selected.
-
-
-[Check 10]
-CHECK 10 expected Navigation/controller policy to select Button_DefaultClose. Observed selected=Button_DefaultClose, expected=Button_DefaultClose
 
 ## M3-01 Check 11 — blocking Modal containment
 
@@ -228,9 +440,6 @@ Click:
 The helper first establishes legal Modal focus, then deliberately forces EventSystem selection into lower Main Menu UI and calls explicit focus revalidation.
 
 PASS when the lower target does not remain selected after repair. The repaired result may restore the Modal's remembered target or resolve to legal `<none>`.
-
-[Check 11]
-CHECK 11 expected forced lower-UI focus to be repaired back inside the top Modal or to legal <none>. Observed legalModalFocus=Panel_M2_02_SceneConfirmModal, forcedLower=M3_MainMenu_RememberedTarget, repaired=Panel_M2_02_SceneConfirmModal, revalidation=Succeeded, escapedLowerAfterRepair=NO
 
 ## M3-01 Check 12 — explicit dynamic revalidation + retained smoke
 
@@ -249,17 +458,11 @@ The helper:
 PASS when:
 
 - repaired focus is `Button_DefaultClose`;
+- revalidation succeeds/no-ops safely as appropriate;
 - `retainedSmoke=PASS`;
 - final frontend Screen is `main-menu`.
 
 Afterward, briefly visit **M2-02 Modals**, **M2-01 Screens**, and **M1 Retained** and confirm their existing proof controls still look/behave normal.
-
-[Check12]
-CHECK 12 expected explicit revalidation to repair disabled dynamic focus, then retained Screen/context/Modal smoke to remain healthy. Observed repairedFocus=Button_DefaultClose, expectedFallback=Button_DefaultClose, revalidation=Succeeded, pushAccepted=True, backAccepted=True, pauseObserved=True, firstModalCompletion=Succeeded
-
-[Check12]2
-CHECK 12 retainedSmoke=PASS, repairedFocus=Button_DefaultClose, expectedFallback=Button_DefaultClose, revalidation=Succeeded, finalScreen=main-menu. Details: pushAccepted=True, backAccepted=True, pauseObserved=True, firstModalCompletion=Succeeded, secondModalCompletion=AlreadyCompleted
-
 
 # EUI-M3-01 bounded performance evidence
 
@@ -727,6 +930,7 @@ Authoring cautions:
 - fluorescent borders should be authored as separate border graphics rather than relying on Unity's `Outline` effect over a translucent fill.
 
 ## EUI-M3-01 implementation-seal evidence
+
 - EUI-M3-01 manual acceptance: **12 / 12 PASS**
 - Retained M2-02 Modal tab smoke: **PASS**
 - Retained M2-01 Screen tab smoke: **PASS**

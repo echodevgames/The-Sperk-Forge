@@ -55,6 +55,16 @@ namespace EchoDevGames.EchoUI
         private UIInputModality inputModality =
             UIInputModality.Pointer;
 
+        [Header("M3 View Transitions")]
+        [SerializeField]
+        private UITransitionProfile defaultTransitionProfile =
+            UITransitionProfile.CreateDefault();
+
+        [SerializeField]
+        private bool reducedMotionTransitions;
+
+        private UITransitionCoordinator transitionCoordinator;
+
         [Header("M2 Screen Lifecycle")]
         [SerializeField]
         private List<UILayerHost> screenLayerHosts =
@@ -98,6 +108,7 @@ namespace EchoDevGames.EchoUI
 
         private UIModalService modalService;
         private UIScreenOperationQueue deferredScreenOperationQueue;
+        private bool processingDeferredScreenOperations;
         private bool shuttingDown;
 
         public static EchoUIRoot Active =>
@@ -125,6 +136,18 @@ namespace EchoDevGames.EchoUI
 
         public long FocusGeneration =>
             selectionCoordinator.Generation;
+
+        public bool IsTransitionLifecycleInitialized =>
+            transitionCoordinator != null &&
+            transitionCoordinator.IsValid;
+
+        public int ActiveTransitionCount =>
+            transitionCoordinator == null
+                ? 0
+                : transitionCoordinator.ActiveCount;
+
+        public bool ReducedMotionTransitions =>
+            reducedMotionTransitions;
 
         public bool IsScreenLifecycleInitialized =>
             screenNavigator != null &&
@@ -197,6 +220,12 @@ namespace EchoDevGames.EchoUI
             IsAuthoritative = false;
             IsInitialized = false;
 
+            if (transitionCoordinator != null)
+            {
+                transitionCoordinator.Shutdown();
+                transitionCoordinator = null;
+            }
+
             if (modalService != null)
             {
                 modalService.Shutdown(
@@ -229,6 +258,7 @@ namespace EchoDevGames.EchoUI
             screenLayerRegistry = null;
             externalScreenViews.Clear();
             processingScreenOperations = false;
+            processingDeferredScreenOperations = false;
             nextScreenOperationSequence = 0;
 
             surfaces.Clear();
@@ -371,6 +401,7 @@ namespace EchoDevGames.EchoUI
             }
 
             InitializeFocusLifecycle();
+            InitializeTransitionLifecycle();
 
             return UISurfaceOperationResult.Success(
                 message: "Looking Glass surface registry initialized.");
@@ -738,6 +769,137 @@ namespace EchoDevGames.EchoUI
                 message: "Independent surface toggled.");
         }
 
+
+        public async Awaitable<UISurfaceOperationResult> OpenSurfaceAsync(
+            string surfaceId,
+            UITransitionProfile transientOverride = null)
+        {
+            UISurfaceOperationResult validation =
+                ResolveSurface(
+                    surfaceId,
+                    out UISurface surface);
+
+            if (!validation.Succeeded)
+            {
+                return validation;
+            }
+
+            if (surface.Role == UISurfaceRole.Modal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.WrongSurfaceRole,
+                    surfaceId: surface.SurfaceId,
+                    message:
+                        "Blocking Modal surfaces must be opened through the Modal lifecycle.");
+            }
+
+            if (surface.Role == UISurfaceRole.Screen &&
+                IsScreenLifecycleInitialized &&
+                screenNavigator.HasDefinition(
+                    surface.SurfaceId))
+            {
+                return await WaitForScreenHandleAsync(
+                    PushScreen(
+                        surface.SurfaceId));
+            }
+
+            ActivateSurface(
+                surface);
+
+            UITransitionResult transition =
+                await RunSurfaceTransitionAsync(
+                    surface.SurfaceId,
+                    UITransitionDirection.Enter,
+                    transientOverride);
+
+            if (!transition.Succeeded)
+            {
+                DeactivateSurface(
+                    surface);
+
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.TransitionFailed,
+                    surface.SurfaceId,
+                    surface.NavigationScopeId,
+                    "Independent surface enter transition failed: " +
+                    transition.Status +
+                    (string.IsNullOrWhiteSpace(
+                        transition.Message)
+                        ? string.Empty
+                        : " - " +
+                            transition.Message));
+            }
+
+            return UISurfaceOperationResult.Success(
+                surface.SurfaceId,
+                surface.NavigationScopeId,
+                "Independent surface opened after enter transition settlement.");
+        }
+
+        public async Awaitable<UISurfaceOperationResult> CloseSurfaceAsync(
+            string surfaceId,
+            UITransitionProfile transientOverride = null)
+        {
+            UISurfaceOperationResult validation =
+                ResolveSurface(
+                    surfaceId,
+                    out UISurface surface);
+
+            if (!validation.Succeeded)
+            {
+                return validation;
+            }
+
+            if (surface.Role == UISurfaceRole.Modal)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.WrongSurfaceRole,
+                    surfaceId: surface.SurfaceId,
+                    message:
+                        "Blocking Modal surfaces must settle through the Modal lifecycle.");
+            }
+
+            if (surface.Role == UISurfaceRole.Screen &&
+                IsScreenLifecycleInitialized &&
+                screenNavigator.HasDefinition(
+                    surface.SurfaceId))
+            {
+                return await WaitForScreenHandleAsync(
+                    CloseScreen(
+                        surface.SurfaceId,
+                        surface.NavigationScopeId));
+            }
+
+            UITransitionResult transition =
+                await RunSurfaceTransitionAsync(
+                    surface.SurfaceId,
+                    UITransitionDirection.Exit,
+                    transientOverride);
+
+            DeactivateSurface(
+                surface);
+
+            if (!transition.Succeeded)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.TransitionFailed,
+                    surface.SurfaceId,
+                    surface.NavigationScopeId,
+                    "Independent surface closed deterministically after exit transition settled as " +
+                    transition.Status +
+                    (string.IsNullOrWhiteSpace(
+                        transition.Message)
+                        ? string.Empty
+                        : " - " +
+                            transition.Message));
+            }
+
+            return UISurfaceOperationResult.Success(
+                surface.SurfaceId,
+                surface.NavigationScopeId,
+                "Independent surface closed after exit transition settlement.");
+        }
+
         public string GetCurrentScreenId(
             string scopeId)
         {
@@ -928,8 +1090,8 @@ namespace EchoDevGames.EchoUI
         {
             UISurface topModal =
                 HasBlockingModal &&
-                modalService.TopEntry != null
-                    ? modalService.TopEntry.View
+                modalService.TopInteractiveEntry != null
+                    ? modalService.TopInteractiveEntry.View
                     : null;
 
             return selectionCoordinator.Revalidate(
@@ -937,6 +1099,120 @@ namespace EchoDevGames.EchoUI
                 topModal,
                 surfaces.Values,
                 expectedGeneration);
+        }
+
+        public UISurfaceOperationResult InitializeTransitionLifecycle()
+        {
+            if (!IsAuthoritative)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotAuthoritative,
+                    message: "Only the authoritative Looking Glass root may coordinate transitions.");
+            }
+
+            if (!IsInitialized)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.NotInitialized,
+                    message: "Looking Glass surface foundation must initialize before transition coordination.");
+            }
+
+            if (transitionCoordinator != null)
+            {
+                transitionCoordinator.Shutdown();
+            }
+
+            transitionCoordinator =
+                new UITransitionCoordinator(
+                    defaultTransitionProfile);
+
+            return UISurfaceOperationResult.Success(
+                message: "Looking Glass transition lifecycle initialized.");
+        }
+
+        public void SetReducedMotionTransitions(
+            bool enabled)
+        {
+            reducedMotionTransitions = enabled;
+        }
+
+        public bool RegisterTransitionDriver(
+            IUITransitionDriver driver)
+        {
+            return transitionCoordinator != null &&
+                transitionCoordinator.RegisterDriver(driver);
+        }
+
+        public bool UnregisterTransitionDriver(
+            string driverId)
+        {
+            return transitionCoordinator != null &&
+                transitionCoordinator.UnregisterDriver(driverId);
+        }
+
+        public UITransitionResolvedPolicy ResolveTransitionPolicy(
+            string surfaceId,
+            UITransitionDirection direction,
+            UITransitionProfile transientOverride = null)
+        {
+            UISurfaceOperationResult validation =
+                ResolveSurface(
+                    surfaceId,
+                    out UISurface surface);
+
+            if (!validation.Succeeded ||
+                transitionCoordinator == null)
+            {
+                return null;
+            }
+
+            return transitionCoordinator.ResolvePolicy(
+                direction,
+                surface.TransitionProfile,
+                transientOverride,
+                reducedMotionTransitions);
+        }
+
+        public async Awaitable<UITransitionResult> RunSurfaceTransitionAsync(
+            string surfaceId,
+            UITransitionDirection direction,
+            UITransitionProfile transientOverride = null)
+        {
+            UISurfaceOperationResult validation =
+                ResolveSurface(
+                    surfaceId,
+                    out UISurface surface);
+
+            if (!validation.Succeeded ||
+                transitionCoordinator == null)
+            {
+                return new UITransitionResult(
+                    UITransitionStatus.Unavailable,
+                    default,
+                    0,
+                    surfaceId,
+                    direction,
+                    string.Empty,
+                    string.Empty,
+                    0d,
+                    validation.Succeeded
+                        ? "Looking Glass transition lifecycle is not initialized."
+                        : validation.Message);
+            }
+
+            return await transitionCoordinator.ExecuteAsync(
+                surface,
+                direction,
+                surface.TransitionProfile,
+                transientOverride,
+                reducedMotionTransitions);
+        }
+
+        public bool CancelSurfaceTransition(
+            string surfaceId)
+        {
+            return transitionCoordinator != null &&
+                transitionCoordinator.CancelSurface(surfaceId);
         }
 
         public UISurfaceOperationResult SetSurfaceRuntimeOverride(
@@ -1131,6 +1407,9 @@ namespace EchoDevGames.EchoUI
                     ResumeScreenEntry,
                     CloseScreenEntry,
                     out string definitionError);
+
+            navigator.SetTransitionExecutor(
+                ExecuteScreenEntryTransitionAsync);
 
             if (!string.IsNullOrWhiteSpace(
                     definitionError) ||
@@ -1337,6 +1616,12 @@ namespace EchoDevGames.EchoUI
                             ? "Looking Glass blocking Modal definition validation failed."
                             : definitionError);
             }
+
+            service.ConfigureTransitionLifecycle(
+                ExecuteModalEntryTransitionAsync,
+                CancelSurfaceTransition,
+                PrepareModalSurfaceEnter,
+                CompleteModalSurfaceEnter);
 
             modalService =
                 service;
@@ -1820,7 +2105,7 @@ namespace EchoDevGames.EchoUI
             return screenLayerRegistry.OrderedHosts;
         }
 
-        private void DrainScreenOperationQueue()
+        private async void DrainScreenOperationQueue()
         {
             if (processingScreenOperations ||
                 screenOperationQueue == null ||
@@ -1833,10 +2118,32 @@ namespace EchoDevGames.EchoUI
 
             try
             {
-                while (screenOperationQueue.TryProcessNext(
-                    screenNavigator.Execute,
-                    out _))
+                while (screenOperationQueue.TryDequeue(
+                    out UIScreenHandle handle))
                 {
+                    UIScreenOperationResult result;
+
+                    try
+                    {
+                        result =
+                            await screenNavigator.ExecuteAsync(
+                                handle.Request);
+                    }
+                    catch (Exception exception)
+                    {
+                        result =
+                            new UIScreenOperationResult(
+                                UIScreenOperationStatus.Failed,
+                                handle.Request.Kind,
+                                handle.Request.ScreenId,
+                                handle.Request.ScopeId,
+                                handle.Request.Sequence,
+                                exception.Message);
+                    }
+
+                    screenOperationQueue.Complete(
+                        handle,
+                        result);
                 }
             }
             finally
@@ -1845,19 +2152,52 @@ namespace EchoDevGames.EchoUI
             }
         }
 
-        private void DrainDeferredScreenOperationQueue()
+        private async void DrainDeferredScreenOperationQueue()
         {
-            if (HasBlockingModal ||
+            if (processingDeferredScreenOperations ||
+                HasBlockingModal ||
                 deferredScreenOperationQueue == null ||
                 screenNavigator == null)
             {
                 return;
             }
 
-            while (deferredScreenOperationQueue.TryProcessNext(
-                screenNavigator.Execute,
-                out _))
+            processingDeferredScreenOperations = true;
+
+            try
             {
+                while (!HasBlockingModal &&
+                    deferredScreenOperationQueue.TryDequeue(
+                        out UIScreenHandle handle))
+                {
+                    UIScreenOperationResult result;
+
+                    try
+                    {
+                        result =
+                            await screenNavigator.ExecuteAsync(
+                                handle.Request);
+                    }
+                    catch (Exception exception)
+                    {
+                        result =
+                            new UIScreenOperationResult(
+                                UIScreenOperationStatus.Failed,
+                                handle.Request.Kind,
+                                handle.Request.ScreenId,
+                                handle.Request.ScopeId,
+                                handle.Request.Sequence,
+                                exception.Message);
+                    }
+
+                    deferredScreenOperationQueue.Complete(
+                        handle,
+                        result);
+                }
+            }
+            finally
+            {
+                processingDeferredScreenOperations = false;
             }
         }
 
@@ -1867,8 +2207,8 @@ namespace EchoDevGames.EchoUI
 
             UISurface topModal =
                 HasBlockingModal &&
-                modalService.TopEntry != null
-                    ? modalService.TopEntry.View
+                modalService.TopInteractiveEntry != null
+                    ? modalService.TopInteractiveEntry.View
                     : null;
 
             selectionCoordinator.ApplyModalStackChanged(
@@ -1888,12 +2228,12 @@ namespace EchoDevGames.EchoUI
         {
             UISurface top =
                 HasBlockingModal &&
-                modalService.TopEntry != null
-                    ? modalService.TopEntry.View
+                modalService.TopInteractiveEntry != null
+                    ? modalService.TopInteractiveEntry.View
                     : null;
 
             bool hasModal =
-                top != null;
+                HasBlockingModal;
 
             foreach (UISurface surface in surfaces.Values)
             {
@@ -2213,6 +2553,87 @@ namespace EchoDevGames.EchoUI
                 entry.View);
         }
 
+
+        private async Awaitable<UITransitionResult> ExecuteModalEntryTransitionAsync(
+            UIModalEntry entry,
+            UITransitionDirection direction)
+        {
+            if (entry == null ||
+                entry.View == null ||
+                transitionCoordinator == null)
+            {
+                return new UITransitionResult(
+                    UITransitionStatus.Unavailable,
+                    default,
+                    0,
+                    entry == null
+                        ? string.Empty
+                        : entry.ModalId.Value,
+                    direction,
+                    string.Empty,
+                    string.Empty,
+                    0d,
+                    "Modal transition entry or coordinator is unavailable.");
+            }
+
+            return await transitionCoordinator.ExecuteAsync(
+                entry.View,
+                direction,
+                entry.Definition.TransitionProfile,
+                transientOverride: null,
+                reducedMotion: reducedMotionTransitions);
+        }
+
+        private async Awaitable<UITransitionResult> ExecuteScreenEntryTransitionAsync(
+            UIScreenEntry entry,
+            UITransitionDirection direction)
+        {
+            if (entry == null ||
+                entry.View == null ||
+                transitionCoordinator == null)
+            {
+                return new UITransitionResult(
+                    UITransitionStatus.Unavailable,
+                    default,
+                    0,
+                    entry == null
+                        ? string.Empty
+                        : entry.ScreenId,
+                    direction,
+                    string.Empty,
+                    string.Empty,
+                    0d,
+                    "Screen transition entry or coordinator is unavailable.");
+            }
+
+            return await transitionCoordinator.ExecuteAsync(
+                entry.View,
+                direction,
+                entry.Definition.TransitionProfile,
+                transientOverride: null,
+                reducedMotion: reducedMotionTransitions);
+        }
+
+        private async Awaitable<UISurfaceOperationResult> WaitForScreenHandleAsync(
+            UIScreenHandle handle)
+        {
+            if (handle == null)
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message:
+                        "Screen operation did not produce a handle.");
+            }
+
+            while (!handle.IsCompleted)
+            {
+                await Awaitable.NextFrameAsync();
+            }
+
+            return ToSurfaceOperationResult(
+                handle);
+        }
+
         private UISurfaceOperationResult ToSurfaceOperationResult(
             UIScreenHandle handle)
         {
@@ -2274,6 +2695,50 @@ namespace EchoDevGames.EchoUI
             }
 
             IsAuthoritative = false;
+        }
+
+        private void PrepareModalSurfaceEnter(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return;
+            }
+
+            RecordDirectVisibilityIntent(
+                surface,
+                true);
+
+            surface.SetVisible(
+                true);
+
+            UISurfaceContextResponse response =
+                surface.ResolveContextResponse(
+                    contextState);
+
+            ApplyResolvedVisibility(
+                surface,
+                response.Visibility);
+
+            ApplyResolvedInteraction(
+                surface,
+                response.Interaction);
+        }
+
+        private void CompleteModalSurfaceEnter(
+            UISurface surface)
+        {
+            if (surface == null)
+            {
+                return;
+            }
+
+            selectionCoordinator.ApplyOpenSelection(
+                surface,
+                inputModality);
+
+            ApplyCurrentContext(
+                surface);
         }
 
         private void ActivateSurface(

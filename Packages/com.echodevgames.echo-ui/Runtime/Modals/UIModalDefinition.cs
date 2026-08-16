@@ -29,6 +29,9 @@ namespace EchoDevGames.EchoUI
         private UIModalBackPolicy backPolicy =
             new UIModalBackPolicy();
 
+        [SerializeField]
+        private UITransitionProfile transitionProfile;
+
         public UIModalDefinition()
         {
         }
@@ -39,7 +42,8 @@ namespace EchoDevGames.EchoUI
             UIScreenOwnershipMode ownershipMode,
             GameObject rootOwnedPrefab = null,
             UISurface sceneOwnedView = null,
-            UIModalBackPolicy backPolicy = null)
+            UIModalBackPolicy backPolicy = null,
+            UITransitionProfile transitionProfile = null)
         {
             this.modalId = modalId ?? string.Empty;
             this.targetLayerId = targetLayerId ?? string.Empty;
@@ -50,6 +54,7 @@ namespace EchoDevGames.EchoUI
                 backPolicy == null
                     ? new UIModalBackPolicy()
                     : backPolicy;
+            this.transitionProfile = transitionProfile == null ? null : transitionProfile.Snapshot();
         }
 
         public UIModalId ModalId =>
@@ -70,6 +75,9 @@ namespace EchoDevGames.EchoUI
         public UIModalBackPolicy BackPolicy =>
             backPolicy ?? new UIModalBackPolicy();
 
+        public UITransitionProfile TransitionProfile =>
+            transitionProfile;
+
         internal UIModalDefinition Snapshot() =>
             new UIModalDefinition(
                 ModalId.Value,
@@ -77,6 +85,7 @@ namespace EchoDevGames.EchoUI
                 ownershipMode,
                 rootOwnedPrefab,
                 sceneOwnedView,
-                BackPolicy.Snapshot());
+                BackPolicy.Snapshot(),
+                transitionProfile == null ? null : transitionProfile.Snapshot());
     }
 }

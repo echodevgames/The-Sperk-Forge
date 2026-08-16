@@ -15,6 +15,11 @@ namespace EchoDevGames.EchoUI
             View = view;
             LookingGlassOwnsView = lookingGlassOwnsView;
             Handle = handle;
+            IsEntering = false;
+            IsInteractive = false;
+            IsClosing = false;
+            HasTerminalClaim = false;
+            ClaimedResult = default;
         }
 
         public UIModalDefinition Definition { get; }
@@ -30,5 +35,21 @@ namespace EchoDevGames.EchoUI
 
         public long Generation =>
             Handle.Generation;
+
+        internal bool IsEntering { get; set; }
+
+        internal bool IsInteractive { get; set; }
+
+        internal bool IsClosing { get; set; }
+
+        internal bool HasTerminalClaim { get; set; }
+
+        internal UIModalResult ClaimedResult { get; set; }
+
+        internal bool AcceptsInteraction =>
+            IsInteractive &&
+            !IsEntering &&
+            !IsClosing &&
+            !HasTerminalClaim;
     }
 }
