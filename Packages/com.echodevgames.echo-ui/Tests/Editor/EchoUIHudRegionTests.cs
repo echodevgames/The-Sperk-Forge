@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -152,7 +153,10 @@ namespace EchoDevGames.EchoUI.Tests.Editor
         {
             UIHudRegionHost host = CreateRegion("hud.status", true, 4);
             service.RegionChanged += _ => throw new System.InvalidOperationException("observer");
-            LogAssert.Expect(LogType.Exception, "InvalidOperationException: observer");
+            LogAssert.Expect(
+                LogType.Exception,
+                new Regex(
+                    "InvalidOperationException: observer"));
             UIHudOperationResult result = service.RegisterRegion(host);
             Assert.That(result.Succeeded, Is.True);
             Assert.That(service.RegionCount, Is.EqualTo(1));
