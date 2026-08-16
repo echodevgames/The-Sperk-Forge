@@ -1,8 +1,8 @@
 {
   "documentId": "SFGSS-PKG-LEARN-TRACKER",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "status": "Active learning tracker",
-  "updated": "2026-08-13",
+  "updated": "2026-08-16",
   "authority": "Navigation and learning status only",
   "totalReviews": 28,
   "completeReviews": 3,
@@ -412,8 +412,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "EUI-M1-01 is active after PKG-LEARN-008; later reviews remain just-in-time",
+  "nextReviewTrigger": "EUI-M4-01 is active after completed PKG-LEARN-008; later package reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": "EUI-M1-01",
-  "implementationProgramStatus": "Looking Glass PKG-LEARN-008 complete; EUI-M1-01 active under Green Path from clean baseline f57880a"
+  "activeImplementationCheckpoint": "EUI-M4-01",
+  "implementationProgramStatus": "Looking Glass EUI-M3-02 complete at 0affb7d; EUI-M4-01 active under Green Path for named HUD regions and widget leases"
 }

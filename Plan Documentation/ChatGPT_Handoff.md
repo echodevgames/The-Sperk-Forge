@@ -506,3 +506,13 @@ Current package, checkpoint, commit, tests, blockers, and next action belong in 
 ## EUI-M3-02 FINAL CLOSEOUT COMPLETE
 
 Fresh-chat frontier update: The Looking Glass EUI-M3-02 view-lifecycle and transition-driver checkpoint is complete. Activation `ee9d3ffa`; implementation `c919238`; final full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14**. The Laboratory-discovered synchronous cancellation race was corrected with a completion-state guard and exact focused regression. No next Looking Glass checkpoint is activated. Prefer this later explicit closeout over older roadmap or Current Notes status prose.
+
+
+## EUI-M4-01 activation capsule — August 16, 2026
+
+- Baseline: `0affb7de757f8acdd35175457f70d00c657b85c3`.
+- EUI-M3-02 complete; retained proof full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, Laboratory **14 / 14**.
+- Active: **EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority**.
+- Authority: **SFGSS-PKG-ECHOUI-001 v1.7.0**.
+- First gate: re-establish **1246 / 1246** before Runtime edits.
+- Continue Green Path without micro-approvals; return only for red gates, authority changes, or manual Unity proof.

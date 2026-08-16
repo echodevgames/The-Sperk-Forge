@@ -3,9 +3,9 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 15, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M3-02 — ACTIVE / AUTHORIZED; transition/view-lifecycle Runtime not started
-**Current checkpoint:** EUI-M3-02 — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery — ACTIVE / AUTHORIZED
+**Last reconciled:** August 16, 2026
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; named HUD-region Runtime not started
+**Current checkpoint:** EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
@@ -1374,3 +1374,15 @@ The Looking Glass EUI-M3-02 view-lifecycle and transition-driver checkpoint is c
 - Check 9 cancellation-race correction is retained by a focused core regression.
 - Working implementation was committed and pushed cleanly before this documentation closeout.
 - No next checkpoint is activated.
+
+
+## Looking Glass EUI-M4-01 JIT Reconciliation and Activation — August 16, 2026
+
+- Incoming baseline: `0affb7d` EUI-M3-02 final closeout.
+- Retained proof: full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, transition core **21 / 21**, Screen/Window **10 / 10**, Modal transitions **10 / 10**, Laboratory **14 / 14**.
+- Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.7.0**; suite authority remains **SFGSS-000 v0.27.0**.
+- **EUI-M4-01 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
+- Authorized: stable named HUD regions, bounded widget registration, generation-safe widget and visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof.
+- HUD remains presentation-only and cannot own domain truth, gameplay input, pause/time scale, cursor, persistence, or project lifetime composition.
+- Notifications, prompts, tooltips, Motifs/accessibility, full Window management, Primitive/Template/Assembly/Builder authoring, bridges, integration, and release remain inactive.
+- First gate: re-establish **1246 / 1246** full EditMode.

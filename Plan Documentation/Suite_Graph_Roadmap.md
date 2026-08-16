@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-15
+updated: 2026-08-16
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,7 +12,7 @@ updated: 2026-08-15
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M3-02 — ACTIVE / AUTHORIZED; Runtime not started
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; named HUD-region Runtime not started
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -367,3 +367,8 @@ Blocking `Modal` lifecycle remains distinct from independent `Window` coexistenc
 ## 2026-08-15 Looking Glass EUI-M3-02 activation
 
 `EUI-M3-02` is ACTIVE / AUTHORIZED from clean EUI-M3-01 closeout baseline `0c58240`. Suite authority remains SFGSS-000 v0.27.0 and Looking Glass authority advances to v1.6.0. Incoming retained proof is full EditMode `1205 / 1205`, EchoUI `99 / 99`, focused M3-01 `24 / 24`, manual Laboratory `12 / 12 PASS`, and bounded focus performance PASS. Runtime implementation has not started. The first gate is to re-establish `1205 / 1205` before Runtime edits. M3-02 owns the bounded Screen/Modal/Window transition/view-lifecycle slice; the separately promised Primitive Warehouse, editable template library/catalog, Assembly Utilities, and Builder/Composer remain future authoring work.
+
+
+## 2026-08-16 Looking Glass EUI-M3-02 closeout and EUI-M4-01 activation
+
+EUI-M3-02 is complete at closeout `0affb7d` with implementation `c919238`, full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, and Laboratory **14 / 14**. EUI-M4-01 is ACTIVE / AUTHORIZED for stable named HUD regions, generation-safe widget leases, deterministic visibility leases, bounded ownership cleanup, status, tests, and Laboratory proof. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, authoring-library/Builder, bridge, integration, and release work remain gated.

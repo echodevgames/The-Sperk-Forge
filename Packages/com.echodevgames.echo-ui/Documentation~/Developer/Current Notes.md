@@ -2,8 +2,8 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.6.0
-**Current checkpoint:** EUI-M3-02 — ACTIVE / AUTHORIZED; Runtime implementation not started at activation
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.7.0
+**Current checkpoint:** EUI-M4-01 — ACTIVE / AUTHORIZED; named HUD-region Runtime implementation not started at activation
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -158,3 +158,16 @@ EUI-M3-02 is implemented, automated-green, manually accepted, and sealed at impl
 Final proof is **1246 / 1246** full EditMode, **140 / 140** EchoUI Editor, **21 / 21** transition core, **10 / 10** Screen/Window lifecycle integration, **10 / 10** Modal transition integration, and **14 / 14** Laboratory acceptance.
 
 The Laboratory-discovered synchronous cancellation race is corrected by guarding fallback direct-awaitable cancellation after token-first settlement. No further Runtime feature slice is authorized by this closeout, and no next Looking Glass checkpoint is active.
+
+
+## EUI-M4-01 declaration
+
+- Baseline `0affb7d`; authority SFGSS-PKG-ECHOUI-001 v1.7.0 under unchanged SFGSS-000 v0.27.0.
+- Incoming proof: full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, Laboratory **14 / 14**.
+- Named HUD regions use stable project-defined IDs and bounded registration.
+- Widget and visibility ownership use fresh generation-safe idempotent leases.
+- Effective visibility resolves deterministically without one caller erasing another caller's live reason.
+- HUD remains presentation-only and independent of Screen history, Modal stack, Window state, gameplay input, pause/time scale, cursor, persistence, and domain truth.
+- Owner loss and shutdown clean only matching live generations.
+- Notifications, prompts, tooltips, Motifs/accessibility, full Window management, authoring libraries/Builder, bridges, integration, and release remain excluded.
+- **EUI-M4-01 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**

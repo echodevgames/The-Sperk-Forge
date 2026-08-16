@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 15, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-01 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-01 complete; EUI-M3-02 ACTIVE / AUTHORIZED from closeout baseline `0c58240`; Runtime not started at activation
+**Updated:** August 16, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-02 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-02 complete; EUI-M4-01 ACTIVE / AUTHORIZED from closeout baseline `0affb7d`; named HUD-region Runtime not started
 
 ## Current health
 
@@ -23,9 +23,9 @@
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-02 revisit reconciles transition/view lifecycle, professional replaceable-driver seams, deterministic recovery, reduced-motion substitution, and the durable Assembly Library authoring promise |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.6.0 Approved** |
-| Looking Glass completed checkpoint | **EUI-M3-01 COMPLETE** — activation `292cb66`; implementation `f08c926`; focused M3-01 **24 / 24**; EchoUI **99 / 99**; manual Laboratory **12 / 12**; performance **PASS**; final full EditMode **1205 / 1205** |
-| Looking Glass active checkpoint | **EUI-M3-02 ACTIVE / AUTHORIZED** — View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery; Runtime not started |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.7.0 Approved** |
+| Looking Glass completed checkpoint | **EUI-M3-02 COMPLETE** — activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; EchoUI **140 / 140**; Laboratory **14 / 14**; final full EditMode **1246 / 1246** |
+| Looking Glass active checkpoint | **EUI-M4-01 ACTIVE / AUTHORIZED** — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority; Runtime not started |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
@@ -482,3 +482,8 @@ This follows the existing suite requirement that release-ready scene-visible pac
 - At the EUI-M1-01 closeout boundary, Motifs, Builder tooling, external context/visibility rules, input-aware selection, and broader surface capabilities were future work. EUI-M1-02 now activates only the bounded external-context response and input-aware-selection subset; the remaining items stay future work.
 
 **Historical M1-01 closeout state:** EUI-M1-02 was not activated at `57a4fa4`. **Superseding state:** EUI-M1-02 is COMPLETE at implementation `1c0a46a` under EchoUI specification v1.2.0.
+
+
+## Looking Glass current frontier — August 16, 2026
+
+EUI-M3-02 is complete at `0affb7d`. EUI-M4-01 is ACTIVE / AUTHORIZED for named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss cleanup, status/events, tests, and Laboratory proof. Adjacent M4 transients and later package capabilities remain separately gated.
