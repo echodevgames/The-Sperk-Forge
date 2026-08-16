@@ -12,18 +12,19 @@ updated: 2026-08-16
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; named HUD-region Runtime not started
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; Runtime/tests green at `e47d43b`; Laboratory/manual proof pending
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
 
 
-## Current frontier — August 15, 2026
+## Current frontier — August 16, 2026
 
-- **Looking Glass:** EUI-M3-01 is **COMPLETE** at closeout `0c58240`; EUI-M3-02 is **ACTIVE / AUTHORIZED**. Package authority advances to v1.6.0. Retained proof entering M3-02 is focused M3-01 **24 / 24**, EchoUI **99 / 99**, manual Laboratory **12 / 12**, bounded performance **PASS**, and full EditMode **1205 / 1205**.
+- **Looking Glass:** EUI-M3-02 is **COMPLETE** at closeout `0affb7d`. EUI-M4-01 is **ACTIVE / AUTHORIZED** under package authority v1.7.0. Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through live `main` `e47d43b`.
+- The requested focused/full automated gate is user-confirmed green after `e47d43b`; exact post-M4 totals remain to be recorded at closeout. The exact resume phase is EUI-M4-01 Laboratory/manual proof, followed by implementation sealing and documentation closeout.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M3-01 provides the completed EventSystem/focus foundation. EUI-M3-02 now activates authoritative view-lifecycle transition settlement, replaceable fresh generation-bound drivers, deterministic enter/exit recovery, layered transition profiles/overrides, Immediate + CanvasGroup Fade references, professional custom-driver seams, and reduced-motion substitution support. Motif/accessibility service implementation, HUD/transients, full Window LIFO/pinning/layout, persistence, gameplay-input ownership, and peer bridges remain later work. Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, Assembly Utilities, and the later Builder/Composer are now explicit durable authoring capabilities but remain separately gated for implementation.
+- EUI-M4-01 is limited to named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof. EUI-M4-02 notifications and every later capability remain separately gated and inactive.
 
 
 ## How to use this in Obsidian

@@ -17,6 +17,8 @@ updated: 2026-08-04
 
 > Enter through the map, follow the authority trail, and leave chat history outside the load-bearing walls.
 
+> **Historical guide:** This document preserves the August 4 pre-code/initial-activation handoff. Its Runtime and FL-M1-01 status statements are historical, not live. Current rehydration is governed by `ChatGPT_Handoff.md`, live Git history, Suite Graph, Suite Health, and root/package Current Notes.
+
 ## 1. Purpose
 
 This guide lets Jesse, a fresh ChatGPT conversation, or another collaborator recover the complete pre-code state of **The Sperk’s Forge – EchoDevGames Game Systems Suite** without reading an old conversation transcript.
@@ -30,7 +32,7 @@ It provides:
 - A reusable fresh-conversation handoff prompt.
 - The stop conditions that prevent documentation from quietly becoming code authorization.
 
-## 2. Current suite state
+## 2. Historical suite state at approval
 
 | Area | State |
 |---|---|
@@ -230,7 +232,7 @@ Learning completion never authorizes an entire milestone or another package.
 
 ---
 
-## SUITE-DOC-33 Activation Addendum
+## Historical SUITE-DOC-33 Activation Addendum
 
 SUITE-DOC-33 passed with advisory on August 4, 2026.
 

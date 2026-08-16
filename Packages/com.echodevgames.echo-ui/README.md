@@ -90,6 +90,18 @@ The Laboratory proves the EventSystem/focus lifecycle in 12 manual checks, retai
 
 EUI-M3-01 does not implement transitions, Motifs/accessibility presentation, HUD/transients, the full independent-Window LIFO/pinning/drag/layout manager, persistence, Builder tooling, primitive/9-slice warehouse work, peer bridges, or polished Reference Showcase art. Those remain separately gated future work.
 
+## EUI-M3-02 transition lifecycle
+
+The completed M3-02 slice adds authoritative transition settlement for Screens, blocking Modals, and independent Windows through replaceable presentation-only drivers. It includes fresh generation-bound operations, unscaled hard-bounded timing, cancellation/stale protection, deterministic enter rollback and exit force-close recovery, root/default + definition + transient policy layers, Immediate/CanvasGroup Fade references, reduced-motion substitution seams, and retained focus/exact-once behavior.
+
+Final retained evidence is **1246 / 1246** full EditMode, **140 / 140** EchoUI Editor, and **14 / 14** Laboratory at closeout `0affb7d`.
+
+## EUI-M4-01 named HUD regions — active
+
+The active M4-01 slice adds project-defined named HUD regions, bounded widget registration, fresh generation-safe widget and visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, and focused tests without entering Screen history or owning gameplay/domain truth.
+
+Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through `e47d43b`; the requested automated gate is user-confirmed green. Laboratory/manual proof and closeout remain pending. EUI-M4-02 notifications and all adjacent capabilities are not activated.
+
 ## Hierarchy convention
 
 Looking Glass samples and authoring tools use `Type_DescriptiveName`:

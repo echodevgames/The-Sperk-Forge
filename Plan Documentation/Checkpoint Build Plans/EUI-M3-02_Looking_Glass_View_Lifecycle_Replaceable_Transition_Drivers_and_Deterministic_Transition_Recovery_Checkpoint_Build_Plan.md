@@ -1,16 +1,17 @@
 ---
 id: EUI-M3-02
 package: EchoUI
-status: active
+status: complete
 authority: SFGSS-PKG-ECHOUI-001 v1.6.0
 suite_authority: SFGSS-000 v0.27.0
 activation_baseline: 0c582405280d19caed4045d0072d8cf29d138e1e
+closeout_commit: 0affb7de757f8acdd35175457f70d00c657b85c3
 date: 2026-08-15
 ---
 
 # EUI-M3-02 — Looking Glass View Lifecycle, Replaceable Transition Drivers, and Deterministic Transition Recovery — Checkpoint Build Plan
 
-**Status:** **ACTIVE / AUTHORIZED**
+**Status:** **COMPLETE / CLOSED**
 **Package:** The Looking Glass (`EchoUI`)
 **Technical package:** `com.echodevgames.echo-ui`
 **Package authority:** **SFGSS-PKG-ECHOUI-001 v1.6.0**
@@ -275,6 +276,8 @@ This plan is authorized only after its authority/activation commit lands on clea
 
 **Implementation commit:** `c919238` (`Implement EUI-M3-02 transition lifecycle and Laboratory proof`)
 
+**Closeout commit:** `0affb7d` (`Close out EUI-M3-02 transition lifecycle`)
+
 **Unity baseline:** `6000.3.8f1`
 
 EUI-M3-02 delivered authoritative enter/exit settlement through replaceable transition drivers across Screens, independent Windows, and blocking Modals. The completed slice includes root/default, definition-profile, and transient policy layering; deterministic failure, timeout, cancellation, and stale recovery; reduced-motion substitution; unscaled presentation timing; exact-once Modal terminal claims through exit settlement; deferred Screen wait-through-exit behavior; and retained M3-01 focus authority.
@@ -300,4 +303,4 @@ Final formerly-red observation:
 
 Check 9 exposed a synchronous Unity `Awaitable` cancellation race. Token cancellation could settle and release an operation before fallback direct-awaitable cancellation executed. `UITransitionCoordinator` now records terminal settlement and performs direct `Awaitable.Cancel()` only when token-first cancellation did not already settle the operation. The retained regression `SupersedingTokenCancelledFadeDoesNotRecancelReleasedAwaitable` proves the exact slow-fade-to-Immediate supersession path.
 
-No next Looking Glass checkpoint is activated by this closeout.
+This closeout did not itself activate a follow-on checkpoint. EUI-M4-01 was activated later by its own separate authority commit `ce30ac6`.

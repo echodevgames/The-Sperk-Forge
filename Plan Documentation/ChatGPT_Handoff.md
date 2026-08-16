@@ -1,12 +1,12 @@
 # The Sperk’s Forge — ChatGPT Continuation and Repository Rehydration Protocol
 
 **Document ID:** SFGSS-HANDOFF-001
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Status:** Approved working protocol
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Repository:** The Sperk’s Forge
 **Current Unity baseline:** Unity 6000.3.8f1
-**Last updated:** August 5, 2026
+**Last updated:** August 16, 2026
 
 > This file tells a fresh ChatGPT conversation how to rebuild the working context from the repository without depending on an old transcript.
 
@@ -31,7 +31,7 @@ Current implementation state belongs in:
 - `Plan Documentation/Current Notes.md`
 - The active package’s `Documentation~/Developer/Current Notes.md`
 - The latest checkpoint completion record
-- Git history and user-provided Git evidence
+- Live Git history and repository evidence; user-provided evidence is the fallback when direct access is unavailable
 
 ---
 
@@ -76,7 +76,7 @@ A fresh conversation must read in this order before writing code:
 9. The latest completed checkpoint record
 10. The active Checkpoint Build Plan, when one exists
 11. Relevant runtime, editor, and test files
-12. Recent Git evidence supplied by Jesse
+12. Live branch head and recent Git history; use Jesse-supplied evidence only when direct repository access is unavailable
 
 Do not read every package specification unless multiple packages are genuinely in scope.
 
@@ -86,7 +86,7 @@ Do not read every package specification unless multiple packages are genuinely i
 
 ### 4.1 When repository browsing is available
 
-Provide this file or its repository path and ask ChatGPT to read the repository documents in the required order.
+Ask ChatGPT to inspect the live target branch directly. It must verify the branch head and recent commits, then read the repository documents in the required order. Do not request broad source archives, pasted Git status, or duplicate uploads for files the connector can read.
 
 ### 4.2 When repository browsing is unavailable
 
@@ -114,7 +114,7 @@ It should name the missing file or evidence needed and wait for Jesse to provide
 
 ## 5. Mandatory First Response
 
-Before writing code, generating bundles, changing documents, or proposing a new checkpoint, the fresh conversation must report:
+Before writing code, generating bundles, changing documents, or proposing a new checkpoint, the fresh conversation must report the following once, concisely. If the state is coherent, it should name the exact resume phase and continue the established slice loop instead of proposing a replacement roadmap:
 
 ```text
 Authorities read:
@@ -164,7 +164,7 @@ Use this authority order:
 
 Use Plan Documentation/ChatGPT_Handoff.md as the workflow and conversation-rehydration protocol.
 
-Determine the active package, current checkpoint, last completed checkpoint, latest implementation state, test state, blockers, and next authorized action from the repository documents and the Git evidence I provide.
+Determine the active package, current checkpoint, last completed checkpoint, latest implementation state, test state, blockers, and exact resume phase from the live repository. Use evidence I provide only for local Unity results or information the repository cannot expose.
 
 Before doing any work, report:
 - Authorities read
@@ -191,7 +191,7 @@ Use Command Prompt, Notepad++, Unity, and GitHub Desktop workflows. Do not use P
 
 Do not claim compilation, tests, commits, pushes, clean Git state, or Unity results without evidence.
 
-When I say “go,” continue from the next authorized checkpoint or phase. Do not redesign the roadmap unless an authoritative conflict requires it.
+When I say “go,” continue only from the bounded slice or phase you have just presented. When I say “green,” treat the requested gate as passed and advance only inside the already-declared active plan. Do not activate adjacent work or redesign the roadmap unless an authoritative conflict requires it.
 ```
 
 ---
@@ -488,31 +488,20 @@ Update this file only when the handoff or ChatGPT collaboration workflow changes
 Do not update it for every checkpoint.
 
 Current package, checkpoint, commit, tests, blockers, and next action belong in `Current Notes.md`, checkpoint records, test reports, and Git history.
-## Looking Glass / Green Path handoff — 2026-08-13
-
-- Clean kickoff baseline: `f57880a`.
-- PKG-LEARN-008 — The Looking Glass (`EchoUI`) is complete through Learn → Declare → Authorize.
-- Looking Glass package authority: SFGSS-PKG-ECHOUI-001 v1.1.0.
-- EUI-M1-01 is ACTIVE / AUTHORIZED.
-- SFGSS-005 v1.6.0 and SFGSS-ADR-007 authorize Green Path self-validating checkpoint execution.
-- First proof: one exclusive `frontend` screen scope (`main-menu -> settings -> Back`) plus independent `default-window` coexistence.
-- Later authorized direction: layered external UI context, cascading visibility, input-aware default focus, Lego primitives, Motifs, Builder, stable Surface Registry, and project-authored Menu-for-Menus interfaces.
-- Looking Glass does not own Pause/Cinematic/Loading truth, input mappings, domain data/actions, or project DDOL composition.
-- Stop on unexpected compile/test/manual-proof/repository/rollback failure or any authority-changing discovery.
-
 
 ---
 
-## EUI-M3-02 FINAL CLOSEOUT COMPLETE
+## 13. Connected-repository rehydration and resume contract
 
-Fresh-chat frontier update: The Looking Glass EUI-M3-02 view-lifecycle and transition-driver checkpoint is complete. Activation `ee9d3ffa`; implementation `c919238`; final full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14**. The Laboratory-discovered synchronous cancellation race was corrected with a completion-state guard and exact focused regression. No next Looking Glass checkpoint is activated. Prefer this later explicit closeout over older roadmap or Current Notes status prose.
+This section is permanent process authority, not a current checkpoint capsule.
 
-
-## EUI-M4-01 activation capsule — August 16, 2026
-
-- Baseline: `0affb7de757f8acdd35175457f70d00c657b85c3`.
-- EUI-M3-02 complete; retained proof full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, Laboratory **14 / 14**.
-- Active: **EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority**.
-- Authority: **SFGSS-PKG-ECHOUI-001 v1.7.0**.
-- First gate: re-establish **1246 / 1246** before Runtime edits.
-- Continue Green Path without micro-approvals; return only for red gates, authority changes, or manual Unity proof.
+1. Verify the live target branch head and recent commits.
+2. Read root Current Notes, the active package Current Notes, active package authority, active Checkpoint Build Plan, and relevant Runtime/tests.
+3. Treat portable context exports and chat memory as orientation only; they cannot override newer repository evidence.
+4. Resolve status-only contradictions from the newest committed implementation/closeout evidence. Pause only when the conflict changes authority, ownership, dependencies, serialized compatibility, public contracts, or irreversible direction.
+5. Report one exact resume phase: authority/activation, implementation, automated proof/correction, Laboratory/manual proof, or documentation closeout.
+6. Resume the established loop: present slice → `go` → implement → test/correct → push → manual proof → closeout → present next slice.
+7. `green` confirms only the gate just requested. It never silently authorizes a new checkpoint or adjacent feature.
+8. When direct repository access exists, do not require source archives or pasted Git status for paths and history the connector can read.
+9. Before any remote write, announce its exact bounded phase and file scope, verify the branch head, and update without force from that exact parent.
+10. Keep activation, implementation, and closeout commits distinct.

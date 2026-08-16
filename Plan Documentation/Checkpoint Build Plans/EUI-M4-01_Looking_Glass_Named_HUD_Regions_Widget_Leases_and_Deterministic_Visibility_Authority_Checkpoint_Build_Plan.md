@@ -3,6 +3,7 @@
 **Package:** The Looking Glass (`EchoUI`)
 **Milestone:** M4 — Complete MVP Surfaces
 **Status:** ACTIVE / AUTHORIZED
+**Current phase:** Runtime and automated proof green through `e47d43b`; Laboratory/manual proof pending
 **Activation baseline:** `0affb7de757f8acdd35175457f70d00c657b85c3`
 **Suite authority:** SFGSS-000 v0.27.0
 **Package authority:** SFGSS-PKG-ECHOUI-001 v1.7.0
@@ -153,4 +154,17 @@ EUI-M4-01 completes only after automated and manual proof, retained regression, 
 
 ## 18. Handoff
 
-EUI-M4-01 is ACTIVE / AUTHORIZED from `0affb7d`. First gate: re-establish **1246 / 1246** full EditMode. Follow Green Path and interrupt only for an unexpected red gate, authority-changing decision, or required manual Unity proof.
+EUI-M4-01 is ACTIVE / AUTHORIZED from `0affb7d`. Activation `ce30ac6`, Runtime/tests `df9e2be`, and bounded corrections through `e47d43b` are complete. The requested focused/full automated gate is user-confirmed green. Resume at the Laboratory/manual-proof slice; then seal implementation and reconcile closeout documentation. EUI-M4-02 remains inactive.
+
+## 19. Implementation phase evidence — August 16, 2026
+
+- Activation commit: `ce30ac6`.
+- The incoming gate exposed an M3 transition timing regression; bounded test-only stabilization: `dbdf6bd`.
+- Runtime and focused Editor tests: `df9e2be`.
+- HUD-key compile correction: `81f9625`.
+- Test LogAssert import correction: `3992bbc`.
+- Observer-exception assertion correction: `e47d43b`.
+- Jesse confirmed the requested focused/full automated gate green after `e47d43b`.
+- Exact post-M4 NUnit totals are not yet committed; retained `1246 / 1246` evidence belongs to the pre-M4 floor.
+- Remaining active scope: EUI-M4-01 Laboratory/manual acceptance, retained smoke/parity, implementation sealing, and documentation closeout.
+- Stop before EUI-M4-02 or any adjacent capability.

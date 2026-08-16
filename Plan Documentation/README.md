@@ -10,6 +10,8 @@ The Markdown files in this folder are committed to Git and opened directly in Ob
 
 ### Continuing an existing work session
 
+When direct repository access is available, verify the live target branch head and recent commits first. Do not request source archives or pasted Git status for paths/history the connector can read. Portable context exports and chat memory are orientation only.
+
 Read:
 
 1. `ChatGPT_Handoff.md`
@@ -29,7 +31,7 @@ Use:
 That file contains:
 
 - Authority order
-- Required upload set
+- Connector-first state recovery and offline upload fallback
 - Repository reading order
 - Mandatory first-response fields
 - The copy-and-paste opening prompt
@@ -38,7 +40,7 @@ That file contains:
 - Git and test evidence requirements
 - Conversation rotation guidance
 
-Do not rely on the old conversation transcript as the only source of project truth.
+Do not rely on the old conversation transcript or a portable context snapshot as the only source of project truth. Rehydration must end with one exact resume phase and return to the visible slice loop: present → `go` → implement → test/correct → push → manual proof → closeout → present next slice. `green` confirms only the requested gate.
 
 ---
 

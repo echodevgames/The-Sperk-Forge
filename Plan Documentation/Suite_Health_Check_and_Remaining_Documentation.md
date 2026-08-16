@@ -2,7 +2,7 @@
 
 **Updated:** August 16, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-02 complete; EUI-M4-01 ACTIVE / AUTHORIZED from closeout baseline `0affb7d`; named HUD-region Runtime not started
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-02 complete; EUI-M4-01 ACTIVE / AUTHORIZED with Runtime/tests green at `e47d43b`; Laboratory/manual proof pending
 
 ## Current health
 
@@ -22,16 +22,27 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded EUI-M3-02 revisit reconciles transition/view lifecycle, professional replaceable-driver seams, deterministic recovery, reduced-motion substitution, and the durable Assembly Library authoring promise |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded JIT revisits now cover the active EUI-M4-01 HUD-region/widget/visibility contract under package authority v1.7.0 |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.7.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M3-02 COMPLETE** — activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; EchoUI **140 / 140**; Laboratory **14 / 14**; final full EditMode **1246 / 1246** |
-| Looking Glass active checkpoint | **EUI-M4-01 ACTIVE / AUTHORIZED** — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority; Runtime not started |
+| Looking Glass active checkpoint | **EUI-M4-01 ACTIVE / AUTHORIZED** — activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; automated gate user-confirmed green; Laboratory/manual proof and closeout pending |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
-## Looking Glass EUI-M3-02 activation health
+## Current Looking Glass EUI-M4-01 implementation health
+
+- Clean authority baseline: EUI-M3-02 closeout `0affb7d`.
+- Activation: `ce30ac6`.
+- Retained-floor timing stabilization: `dbdf6bd`.
+- Runtime and focused tests: `df9e2be`.
+- Bounded corrections: `81f9625`, `3992bbc`, `e47d43b`.
+- Requested focused/full automated gate: **user-confirmed green** after `e47d43b`; exact post-M4 counts are pending repository evidence at closeout.
+- Remaining proof: EUI-M4-01 Laboratory/manual acceptance, retained smoke/parity, implementation seal, and documentation closeout.
+- EUI-M4-02 and adjacent features remain inactive.
+
+## Historical Looking Glass EUI-M3-02 activation health
 - Activation baseline: `0c58240` — clean EUI-M3-01 final closeout.
 - Incoming full EditMode floor: **1205 / 1205 passed, 0 failed**.
 - Retained EchoUI: **99 / 99**; focused M3-01: **24 / 24**; manual Laboratory: **12 / 12 PASS**; bounded focus performance PASS.

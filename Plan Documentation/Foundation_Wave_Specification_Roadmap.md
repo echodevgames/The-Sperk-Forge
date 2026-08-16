@@ -10,6 +10,8 @@
 
 > Draw every load-bearing line before the Forge gets hot.
 
+> **Historical record:** This roadmap preserves the August 3 Foundation documentation/initial-activation state. Its “active” checkpoint statements are historical and must not be used for current rehydration. Use `Suite_Graph_Roadmap.md`, `Suite_Health_Check_and_Remaining_Documentation.md`, root/package Current Notes, and live Git history for current implementation state.
+
 ---
 
 ## 1. Purpose
@@ -188,7 +190,7 @@ The expected first implementation checkpoint after this gate is **First Light M1
 
 ---
 
-## 9. Current Status
+## 9. Historical Status at August 3, 2026
 
 | Metric | Current value |
 |---|---|
@@ -252,7 +254,7 @@ SFGSS-ADR-002 preserves this roadmap as the completed Foundation documentation r
 
 ---
 
-## 13. SUITE-DOC-33 Result
+## 13. Historical SUITE-DOC-33 Result
 
 **Decision:** Passed with advisory.
 

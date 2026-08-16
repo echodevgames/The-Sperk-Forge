@@ -1,14 +1,14 @@
 # SFGSS-005 — Checkpoint Build Workflow and ChatGPT Collaboration Rules
 
 **Document ID:** SFGSS-005
-**Version:** 1.6.0
+**Version:** 1.7.0
 **Status:** Approved workflow standard
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Project boundary:** Independent solo project; not an Isekai Studios product
 **Parent authority:** SFGSS-000 — The Sperk’s Forge Game Systems Suite Bible
 **Related standards:** SFGSS-001, SFGSS-ADR-002, SFGSS-ADR-003, SFGSS-ADR-004, approved package specifications, accepted ADRs, integration specifications, and repository `Current Notes.md`
 **Unity baseline:** Unity 6000.3.8f1
-**Last updated:** August 13, 2026
+**Last updated:** August 16, 2026
 
 > Build one proven span at a time. The Forge remembers what changed, why it changed, how it was tested, and where to stop.
 
@@ -22,6 +22,7 @@
 | 1.3.0 | August 4, 2026 | Approved | Added permanent PKG-LEARN-001 through 028 IDs, review artifact naming, progressive source delivery, template/tracker use, and explicit teach-back completion records |
 | 1.4.0 | August 4, 2026 | Approved | Replaced the all-packages-first learning gate with a just-in-time package-local gate immediately before each package implementation |
 | 1.6.0 | August 13, 2026 | Approved | Added Learn → Declare → Authorize bidirectional JIT design intake and the Green Path self-validating checkpoint protocol; successful expected gates no longer require conversational approval between phases. |
+| 1.7.0 | August 16, 2026 | Approved | Clarified connected-repository rehydration, bounded remote-write rules, the slice execution loop, and the exact meaning of `green` and `go`. |
 
 
 ---
@@ -457,6 +458,31 @@ A Green Path kit may automate authority application, exact-scope staging, commit
 Successful expected gates do **not** require a ChatGPT round trip between phases. Return to review only when validation fails, repository state diverges, required manual proof fails, or a new fundamental/authority-changing decision appears.
 
 Green Path optimizes conversational latency, not rigor. Exact manifests, `git diff --check`, test evidence, rollback verification, clean-state checks, and truthful documentation remain mandatory.
+
+## 11B. Connected-repository slice loop and shorthand
+
+When ChatGPT has direct read/write access to the repository, the default working loop is:
+
+1. Present the next bounded slice, its authority, proof gate, and stop point.
+2. Jesse confirms the slice or says `go`.
+3. Implement only that slice.
+4. Compile/test it, make bounded corrections inside the declared contract, and repeat until green.
+5. Commit and push the implementation boundary.
+6. Run required Laboratory/manual proof.
+7. Reconcile and push closeout documentation.
+8. Present the next slice; do not activate or implement it invisibly.
+
+Connected repository access replaces routine source archives, broad uploads, pasted Git status, and manual file shuttling when the connector can read the required paths directly. Before any remote write, ChatGPT must state the exact phase and file scope, re-read the target branch head, preserve unrelated changes, and use a non-forced update from the verified parent.
+
+Shorthand has narrow meaning:
+
+- `green` confirms the gate that was just requested. It may advance only to the next phase already declared by the active Checkpoint Build Plan; it does not authorize an adjacent capability, a new checkpoint, or an authority change.
+- `go` authorizes the next bounded slice or phase only after ChatGPT has presented its scope, proof, and stop point.
+- A checkpoint boundary is a concise check-in, not a reason to invent a new roadmap or restart completed work.
+
+Rehydration begins from live repository evidence: target branch head and recent commits, root and package Current Notes, the active Checkpoint Build Plan, the active package authority, and relevant implementation/tests. Portable context files and chat history are orientation aids only. The response must identify one exact resume phase and then continue the established slice loop.
+
+Activation, implementation, and closeout remain separate commits. Stop immediately on a red validation gate, unexpected repository scope, rollback failure, missing required manual proof, or a change to ownership, dependencies, serialized compatibility, public contracts, or higher authority.
 
 ## 12. Current Notes and documentation closeout
 

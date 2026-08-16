@@ -16,8 +16,8 @@ updated: 2026-08-15
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
 **Completed:** 2026-08-15
-**Package authority version reviewed/reconciled:** 1.5.0
-**Implementation authorization:** `EUI-M3-02` ACTIVE / AUTHORIZED after the bounded EUI-M3-02 JIT revisit; EUI-M1-01, EUI-M1-02, EUI-M2-01, EUI-M2-02, and EUI-M3-01 complete; clean activation baseline `0c58240`
+**Package authority version reviewed/reconciled:** 1.7.0
+**Implementation authorization:** `EUI-M4-01` ACTIVE / AUTHORIZED after the bounded EUI-M4-01 JIT revisit; EUI-M1 through EUI-M3-02 complete; clean activation baseline `0affb7d`; Runtime/tests green through `e47d43b`; Laboratory/manual proof pending
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,14 +25,14 @@ updated: 2026-08-15
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.6.0 Approved | Owns completed M1/M2/M3-01 Runtime Core, the EUI-M3-02 transition/view-lifecycle contract, and the durable Assembly Library authoring promise |
+| Looking Glass package authority | v1.7.0 Approved | Owns completed M1-M3 Runtime Core, the active EUI-M4-01 named HUD-region/widget/visibility contract, and the durable Assembly Library authoring promise |
 | SFGSS-000 | v0.27.0 Approved | Owns suite authority, package independence, project composition, persistence/lifetime boundaries, and the additive Unity-default Input Actions compatibility profile |
 | SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
 | SFGSS-ADR-006 | Accepted | Keeps Unity object lifetime/project composition outside UI authority |
 | SFGSS-ADR-007 | Accepted | Owns Green Path self-validating execution |
 | Project manifest | Unity 6000.3.8f1; uGUI 2.0.0; Input System 1.18.0 | Verifies the actual current Unity dependency baseline |
-| Current Notes / Suite Health | 2026-08-14 intake | Supplies active handoff context only |
+| Current Notes / Suite Health | 2026-08-16 reconciliation | Supplies active handoff context only |
 
 **External research boundary:** official Unity documentation was consulted only for the immediate focus/visibility mental model. `EventSystem.SetSelectedGameObject` changes the EventSystem-selected GameObject and sends deselect/select callbacks; CanvasGroup can affect child alpha/interactability/raycast blocking; Unity input modules translate pointer/navigation-style input into UI events. These mechanisms inform Looking Glass but do not grant it input/game-state authority.
 
@@ -499,3 +499,22 @@ EUI-M3-02 is bounded to view lifecycle transition settlement; transition profile
 Explicitly deferred: Motif/accessibility service implementation; generalized dim/blur; HUD/notification/tooltip/prompt services; full Window LIFO/pin/drag-resize/layout management; persistence; peer bridges; implementation of Primitive Warehouse, Panel/Menu Templates, Template Catalog, Assembly Utilities, or Builder/Composer; automatic gameplay-input/UI action-map ownership; project-wide lifetime composition; polished Reference Showcase art.
 
 Incoming retained floor before Runtime edits: full Foundry EditMode **1205 / 1205 passed, 0 failed**, EchoUI **99 / 99**, focused EUI-M3-01 **24 / 24**, manual EUI-M3-01 Laboratory **12 / 12 PASS**, bounded focus performance PASS.
+
+## 19. EUI-M4-01 bounded JIT revisit — August 16, 2026
+
+### 19.1 Learned boundary
+
+HUD regions are persistent/reactive presentation addresses, not owners of health, objectives, save state, dialogue truth, diagnostics truth, gameplay input, pause, time scale, cursor, persistence, or project lifetime composition.
+
+### 19.2 Declared contract
+
+- Designers author stable named region IDs, ordering, and bounded capacity.
+- Widget registrations and visibility requests use fresh generation-safe idempotent leases.
+- Effective visibility combines authored baseline, existing external-context response, and all live reason/owner leases; one release cannot erase another live request.
+- Owner loss and shutdown clean only the matching generation.
+- HUD mutations remain independent of Screen history, blocking Modal order, and independent Window state.
+- Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, authoring libraries, Builder, bridges, integration, and release remain excluded.
+
+### 19.3 Authorization and current proof phase
+
+EUI-M4-01 is ACTIVE / AUTHORIZED from closeout baseline `0affb7d` under package authority v1.7.0. Activation landed at `ce30ac6`; Runtime and focused tests at `df9e2be`; bounded compile/test corrections run through `e47d43b`. Jesse confirmed the requested focused/full automated gate green. The remaining authorized phase is Laboratory/manual proof and closeout; EUI-M4-02 is not activated.

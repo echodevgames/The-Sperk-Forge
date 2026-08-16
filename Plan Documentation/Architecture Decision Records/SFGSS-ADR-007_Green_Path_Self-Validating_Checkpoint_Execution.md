@@ -1,12 +1,12 @@
 # SFGSS-ADR-007 — Green Path Self-Validating Checkpoint Execution
 
 **Document ID:** SFGSS-ADR-007
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Status:** Accepted
 **Decision date:** August 13, 2026
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Decision scope:** Checkpoint execution automation, evidence, Git boundaries, and conversational handoffs
-**Related authorities:** SFGSS-000, SFGSS-005 v1.6.0, SFGSS-ADR-004
+**Related authorities:** SFGSS-000, SFGSS-005 v1.7.0, SFGSS-ADR-004
 
 > Keep the proof. Remove the toll booths.
 
@@ -30,6 +30,14 @@ The desired change is **not** fewer tests, fewer commits, weaker documentation, 
 10. A Green Path helper may commit/push only after machine-verifiable gates pass. It must report the resulting hashes and final repository state.
 11. Automation never fabricates Unity evidence. Required compile, automated-test, player, Inspector, and manual visual proof remain explicit gates.
 12. Routine bounded implementation details, test maintenance, documentation closeout, and compile corrections remain pre-approved when they do not change authority. Fundamental package ownership, dependency, serialized-compatibility, or public-contract changes return to Jesse.
+
+## Connected-repository clarification — August 16, 2026
+
+- Green Path remains visible and slice-bounded: ask/confirm the slice, implement it, test and correct it, push the implementation boundary, prove it manually when required, close it out, then present the next slice.
+- Direct repository access may replace manual source uploads and Git-status shuttling. It does not replace Unity evidence that only Jesse's local Editor can produce.
+- Before a remote write, ChatGPT announces the exact phase and scope, verifies the branch head, and advances it without force from that exact parent.
+- `green` confirms only the requested gate. `go` advances only a slice or phase already presented. Neither phrase silently activates an adjacent checkpoint.
+- Authority, implementation, and closeout remain distinct evidence boundaries.
 
 ## Consequences
 
