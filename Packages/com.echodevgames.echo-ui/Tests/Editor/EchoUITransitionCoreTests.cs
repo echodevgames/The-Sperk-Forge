@@ -347,8 +347,10 @@ namespace EchoDevGames.EchoUI.Tests.Editor
                             UITransitionDirection.Enter,
                             slowFade);
 
-                    await Awaitable.NextFrameAsync();
-
+                    // ExecuteAsync runs synchronously through the fade driver's
+                    // first cancellable NextFrameAsync. Supersede immediately so
+                    // EditMode runner stalls cannot let the wall-clock fade finish
+                    // before this cancellation-race regression reaches its subject.
                     UITransitionResult second =
                         await coordinator.ExecuteAsync(
                             surface,
