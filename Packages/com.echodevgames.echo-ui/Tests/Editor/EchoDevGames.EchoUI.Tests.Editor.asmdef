@@ -2,7 +2,8 @@
   "name": "EchoDevGames.EchoUI.Tests.Editor",
   "rootNamespace": "EchoDevGames.EchoUI.Tests.Editor",
   "references": [
-    "EchoDevGames.EchoUI.Runtime"
+    "EchoDevGames.EchoUI.Runtime",
+    "Unity.ugui"
   ],
   "includePlatforms": [
     "Editor"
