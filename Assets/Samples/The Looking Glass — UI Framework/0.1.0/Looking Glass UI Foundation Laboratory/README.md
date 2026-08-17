@@ -7,9 +7,10 @@ This is the engineering proof sample for **The Looking Glass**. It remains delib
 - **EUI-M2-01** proved project-defined layers, authoritative Screen history/lifecycle, all three Screen ownership modes, suspension policy, and strict FIFO structural execution.
 - **EUI-M2-02** proved blocking Modal lifecycle, exact-once results, structural aborts, ownership modes, Back policy, UI-scoped blocking, and Screen Reject/Defer behavior.
 - **EUI-M3-01** proved EventSystem coordination, focus memory/restoration, Modal focus containment, explicit revalidation, and event-driven idle behavior.
-- **EUI-M3-02** adds authoritative enter/exit settlement through replaceable transition drivers, deterministic failure/timeout/stale recovery, reduced-motion substitution, and transition-aware Screen, Modal, and independent Window lifecycle.
+- **EUI-M3-02** proved authoritative enter/exit settlement through replaceable transition drivers, deterministic failure/timeout/stale recovery, reduced-motion substitution, and transition-aware Screen, Modal, and independent Window lifecycle.
+- **EUI-M4-01** adds project-defined named HUD regions, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss cleanup, bounded admission, and idle proof.
 
-The sample is not a polished Reference Showcase, Motif system, Builder, HUD framework, full Window manager, persistence layer, gameplay-input owner, or universal animation system.
+The sample is not a polished Reference Showcase, notification/prompt/tooltip service, Motif system, Builder, full Window manager, persistence layer, gameplay-input owner, or universal animation system.
 
 ## Proof hierarchy
 
@@ -18,10 +19,16 @@ CanvasMasterCanvas                 [EchoUIRoot + Laboratory proof console]
 ├─ Panel_MenuRoot                 [UILayerHost: primary-ui, order 20]
 │  ├─ Panel_MainMenu              [Screen: main-menu, scope: frontend]
 │  └─ Panel_SettingsMenu          [Screen: settings, scope: frontend]
-└─ Panel_WindowRoot               [UILayerHost: floating-lab, order 80]
-   ├─ Panel_DefaultWindow         [independent Window: default-window]
-   └─ Panel_M2_02_SceneConfirmModal
-                                  [SceneOwned Modal: lab-modal-confirm]
+├─ Panel_WindowRoot               [UILayerHost: floating-lab, order 80]
+│  ├─ Panel_DefaultWindow         [independent Window: default-window]
+│  └─ Panel_M2_02_SceneConfirmModal
+│                                 [SceneOwned Modal: lab-modal-confirm]
+├─ Panel_M4_StatusHudRegion       [UIHudRegionHost: hud.status, capacity 4]
+│  ├─ Widget_M4_Health            [Hud: hud.status.health]
+│  ├─ Widget_M4_Objective         [Hud: hud.status.objective]
+│  └─ Widget_M4_StaleProbe        [inactive stale-generation probe]
+└─ Panel_M4_UtilityHudRegion      [UIHudRegionHost: hud.utility, capacity 1]
+   └─ Widget_M4_Signal            [Hud: hud.utility.signal]
 
 Template_M2_RootOwnedScreen       [retained M2-01 Screen source]
 External_M2_ProjectOwnedScreen    [retained M2-01 Screen external view]
@@ -30,6 +37,102 @@ External_M2_02_ProjectOwnedModal  [inactive ExternalOwned Modal view]
 ```
 
 The top-right of the Game view remains the Laboratory/debug safe zone. The proof console grows downward from there.
+
+# EUI-M4-01 manual acceptance
+
+The **M4-01 HUD** tab is the dedicated proof surface for named HUD regions, bounded widget registration, visibility leases, owner-loss cleanup, and idle behavior. The deliberately plain cyan/blue hud.status widgets appear at top-left; the magenta hud.utility widget appears at bottom-left. The top-right proof console remains separate.
+
+Looking Glass owns only HUD presentation infrastructure. The sample does not calculate health/objectives, own gameplay input, change pause/time scale, persist HUD state, or enter Screen/Modal/Window ordering.
+
+The requested focused/full automated gate is user-confirmed green through implementation baseline e47d43b. Exact post-M4 NUnit totals remain pending closeout evidence and must not be replaced with the retained pre-M4 **1246 / 1246** floor.
+
+Before a fresh run:
+
+1. open The Looking Glass_UI_Laboratory;
+2. enter Play Mode;
+3. select **M4-01 HUD**;
+4. click Prepare M4-01 Baseline;
+5. verify:
+   - HUD lifecycle initialized = True;
+   - regions/widgets/visibility leases = 2 / 3 / 0;
+   - hud.status = visible, widgets 2, leases 0;
+   - hud.utility = visible, widgets 1, leases 0;
+   - the two top-left status bars and one bottom-left utility bar are visible.
+
+Run checks **1-5** in order. The proof console disables M4-01 action buttons while an asynchronous check is in flight.
+
+## M4-01 Check 1 — named regions and multiple widgets
+
+Click:
+
+Run Check 1: Named Regions + Multiple Widgets
+
+PASS when the console reports:
+
+- exactly two SceneOwned named regions;
+- hud.status contains two widgets;
+- hud.utility contains one widget;
+- both regions are effectively visible.
+
+## M4-01 Check 2 — overlapping visibility and out-of-order release
+
+Click:
+
+Run Check 2: Overlapping Visibility Leases
+
+Watch the top-left hud.status region:
+
+1. a priority-10 hide lease makes the region disappear;
+2. a priority-20 show lease makes it reappear;
+3. the older hide lease releases first and the region stays visible;
+4. the show lease releases and authored visible baseline remains.
+
+PASS when both releases are Completed, lease count returns to 0, effective visibility is restored, and Screen/Modal/Window state is unchanged.
+
+## M4-01 Check 3 — owner loss and stale generation
+
+Click:
+
+Run Check 3: Owner Loss + Stale Handle
+
+The sample registers a probe widget and a high-priority owner-bound hide lease, destroys both owners, waits for cleanup, re-registers the same widget ID as a newer generation, and releases the old handle.
+
+PASS when:
+
+- owner loss returns hud.status to two baseline widgets, zero leases, and visible;
+- the replacement widget admission succeeds;
+- the old handle settles Stale;
+- releasing the replacement returns the baseline without removing another widget.
+
+## M4-01 Check 4 — duplicate and capacity rejection
+
+Click:
+
+Run Check 4: Duplicate + Capacity
+
+PASS when duplicate hud.status.health admission returns Duplicate, an extra widget in capacity-one hud.utility returns CapacityExceeded, and region/widget snapshots do not mutate.
+
+## M4-01 Check 5 — 180-frame idle quiescence
+
+Click:
+
+Run Check 5: Idle HUD Probe
+
+Do not interact until the proof finishes.
+
+PASS when region, widget, visibility-lease, transition, and both region snapshot values remain unchanged for 180 frames; Screen/Modal/Window state must also remain unchanged.
+
+## M4-01 Check 6 — retained smoke
+
+After checks 1-5 pass, visit:
+
+- **M3-02 Transitions**
+- **M3-01 Focus**
+- **M2-02 Modals**
+- **M2-01 Screens**
+- **M1 Retained**
+
+Run one representative happy-path check on each tab and confirm the previously accepted behavior remains intact. EUI-M4-01 must not alter Screen history, Modal order/exact-once behavior, independent Window state, focus/EventSystem policy, transition settlement, context response, or project-owned gameplay truth.
 
 # EUI-M3-02 manual acceptance
 

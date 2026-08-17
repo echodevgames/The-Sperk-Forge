@@ -14,6 +14,7 @@ namespace EchoDevGames.EchoUI.Samples
     /// M2 controls exercise the authoritative Screen/Modal lifecycle using scene-authored
     /// definitions. M3-01 adds sample-owned EventSystem/focus proof infrastructure.
     /// M3-02 adds sample-owned transition/failure/performance proof infrastructure.
+    /// M4-01 adds sample-owned named HUD-region, widget-lease, visibility, and owner-loss proof.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class LaboratoryUIContextDriver : MonoBehaviour
@@ -35,6 +36,12 @@ namespace EchoDevGames.EchoUI.Samples
         private const string CancelResultId = "cancel";
         private const string M302FailureDriverId = "lab-transition-failure";
         private const string M302NeverDriverId = "lab-transition-never";
+        private const string M401StatusRegionId = "hud.status";
+        private const string M401UtilityRegionId = "hud.utility";
+        private const string M401HealthWidgetId = "hud.status.health";
+        private const string M401ObjectiveWidgetId = "hud.status.objective";
+        private const string M401UtilityWidgetId = "hud.utility.signal";
+        private const string M401StaleWidgetId = "hud.status.stale-probe";
 
 
         private sealed class LaboratoryFailureTransitionDriver :
@@ -189,6 +196,30 @@ namespace EchoDevGames.EchoUI.Samples
             "<not run>";
         private string m302PerformanceEvidence =
             "<not run>";
+        private UIHudRegionHost m401StatusRegion;
+        private UIHudRegionHost m401UtilityRegion;
+        private UISurface m401HealthWidget;
+        private UISurface m401ObjectiveWidget;
+        private UISurface m401UtilityWidget;
+        private UISurface m401StaleWidget;
+        private UIHudWidgetHandle m401HealthHandle;
+        private UIHudWidgetHandle m401ObjectiveHandle;
+        private UIHudWidgetHandle m401UtilityHandle;
+        private UIHudWidgetHandle m401ProbeHandle;
+        private UIHudWidgetHandle m401ReplacementHandle;
+        private UIHudVisibilityLease m401HideLease;
+        private UIHudVisibilityLease m401ShowLease;
+        private UIHudVisibilityLease m401OwnerHideLease;
+        private GameObject m401ProbeOwner;
+        private GameObject m401ReplacementOwner;
+        private GameObject m401VisibilityOwner;
+        private bool m401Busy;
+        private string m401Message =
+            "M4-01 HUD proof infrastructure has not initialized yet.";
+        private string m401Observed =
+            "<not run>";
+        private string m401PerformanceEvidence =
+            "<not run>";
 
         private void Awake()
         {
@@ -215,6 +246,33 @@ namespace EchoDevGames.EchoUI.Samples
                     case SceneModalId:
                         sceneModalView = surface;
                         break;
+                    case M401HealthWidgetId:
+                        m401HealthWidget = surface;
+                        break;
+                    case M401ObjectiveWidgetId:
+                        m401ObjectiveWidget = surface;
+                        break;
+                    case M401UtilityWidgetId:
+                        m401UtilityWidget = surface;
+                        break;
+                    case M401StaleWidgetId:
+                        m401StaleWidget = surface;
+                        break;
+                }
+            }
+
+            UIHudRegionHost[] hudRegions =
+                GetComponentsInChildren<UIHudRegionHost>(true);
+            for (int index = 0; index < hudRegions.Length; index++)
+            {
+                UIHudRegionHost region = hudRegions[index];
+                if (region.RegionId.Value == M401StatusRegionId)
+                {
+                    m401StatusRegion = region;
+                }
+                else if (region.RegionId.Value == M401UtilityRegionId)
+                {
+                    m401UtilityRegion = region;
                 }
             }
 
@@ -302,6 +360,7 @@ namespace EchoDevGames.EchoUI.Samples
                 yield return null;
             }
 
+            InitializeM401ProofInfrastructure();
             InitializeM302ProofInfrastructure();
             InitializeM2Proof();
 
@@ -343,6 +402,7 @@ namespace EchoDevGames.EchoUI.Samples
                 selectedTab,
                 new[]
                 {
+                    "M4-01 HUD",
                     "M3-02 Transitions",
                     "M3-01 Focus",
                     "M2-02 Modals",
@@ -364,17 +424,21 @@ namespace EchoDevGames.EchoUI.Samples
 
             if (selectedTab == 0)
             {
-                DrawM302TransitionConsole();
+                DrawM401HudConsole();
             }
             else if (selectedTab == 1)
             {
-                DrawM301FocusConsole();
+                DrawM302TransitionConsole();
             }
             else if (selectedTab == 2)
             {
-                DrawM202ModalConsole();
+                DrawM301FocusConsole();
             }
             else if (selectedTab == 3)
+            {
+                DrawM202ModalConsole();
+            }
+            else if (selectedTab == 4)
             {
                 DrawM2Console();
             }
@@ -390,6 +454,941 @@ namespace EchoDevGames.EchoUI.Samples
                 previousContentColor;
         }
 
+
+        private void InitializeM401ProofInfrastructure()
+        {
+            if (root == null ||
+                !root.IsInitialized ||
+                !root.IsHudLifecycleInitialized)
+            {
+                m401Message =
+                    "M4-01 HUD lifecycle is not initialized.";
+                return;
+            }
+
+            if (m401StatusRegion == null ||
+                m401UtilityRegion == null ||
+                m401HealthWidget == null ||
+                m401ObjectiveWidget == null ||
+                m401UtilityWidget == null ||
+                m401StaleWidget == null)
+            {
+                m401Message =
+                    "Required M4-01 scene-authored regions/widgets are missing.";
+                return;
+            }
+
+            bool baselineReady =
+                EnsureM401BaselineWidgets();
+
+            m401Message =
+                baselineReady
+                    ? "M4-01 HUD proof READY. Click Prepare M4-01 Baseline before a fresh acceptance run."
+                    : "M4-01 baseline widget registration failed. Inspect the latest observation.";
+        }
+
+        private void DrawM401HudConsole()
+        {
+            GUILayout.Label(
+                "EUI-M4-01: named HUD regions, generation-safe widget/visibility leases, deterministic visibility, and owner-loss cleanup.");
+            GUILayout.Label(
+                "The cyan/blue panels at top-left are hud.status widgets; the magenta panel at bottom-left is hud.utility. HUD remains presentation-only.");
+            GUILayout.Space(8f);
+
+            DrawM401State();
+            GUILayout.Space(8f);
+
+            bool previousEnabled =
+                GUI.enabled;
+
+            GUI.enabled =
+                !m401Busy;
+
+            if (GUILayout.Button(
+                    "Prepare M4-01 Baseline"))
+            {
+                PrepareM401Baseline();
+            }
+
+            GUILayout.Space(10f);
+            GUILayout.Label(
+                "1. Discover two named regions and three registered widgets");
+            if (GUILayout.Button(
+                    "Run Check 1: Named Regions + Multiple Widgets"))
+            {
+                RunM401Check1();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "2. Hide then override-show hud.status; release the older hide lease first");
+            if (GUILayout.Button(
+                    "Run Check 2: Overlapping Visibility Leases"))
+            {
+                RunM401Check2();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "3. Destroy widget/visibility owners, re-register, then prove the old handle is stale");
+            if (GUILayout.Button(
+                    "Run Check 3: Owner Loss + Stale Handle"))
+            {
+                RunM401Check3();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "4. Duplicate widget and full-region admission reject without mutation");
+            if (GUILayout.Button(
+                    "Run Check 4: Duplicate + Capacity"))
+            {
+                RunM401Check4();
+            }
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "5. 180-frame idle HUD-state quiescence");
+            if (GUILayout.Button(
+                    "Run Check 5: Idle HUD Probe"))
+            {
+                StartCoroutine(
+                    RunM401Check5());
+            }
+
+            GUI.enabled =
+                previousEnabled;
+
+            GUILayout.Space(12f);
+            GUILayout.Label(
+                "6. Retained smoke: visit M3-02 Transitions, M3-01 Focus, M2-02 Modals, M2-01 Screens, and M1 Retained.");
+            GUILayout.Label(
+                "No M4-01 check may change Screen history, Modal order, Window state, gameplay input, pause/time scale, persistence, or domain truth.");
+
+            GUILayout.Space(12f);
+            GUILayout.Label(
+                "Latest M4-01 observation");
+            GUILayout.TextArea(
+                m401Observed,
+                GUILayout.MinHeight(120f));
+
+            GUILayout.Space(8f);
+            GUILayout.Label(
+                "Performance evidence: " +
+                m401PerformanceEvidence);
+        }
+
+        private void DrawM401State()
+        {
+            GUILayout.Label(
+                "HUD lifecycle initialized: " +
+                root.IsHudLifecycleInitialized);
+            GUILayout.Label(
+                "Regions/widgets/visibility leases: " +
+                root.HudRegionCount +
+                " / " +
+                root.ActiveHudWidgetCount +
+                " / " +
+                root.ActiveHudVisibilityLeaseCount);
+            GUILayout.Label(
+                "hud.status: " +
+                M401SnapshotSummary(
+                    M401StatusRegionId));
+            GUILayout.Label(
+                "hud.utility: " +
+                M401SnapshotSummary(
+                    M401UtilityRegionId));
+            GUILayout.Label(
+                "Status: " +
+                m401Message);
+            GUILayout.Label(
+                "Busy: " +
+                YesNo(
+                    m401Busy));
+        }
+
+        private async void PrepareM401Baseline()
+        {
+            if (m401Busy)
+            {
+                return;
+            }
+
+            m401Busy = true;
+
+            try
+            {
+                ReleaseM401TemporaryState();
+                await WaitM401FramesAsync(3);
+
+                bool ready =
+                    EnsureM401BaselineWidgets();
+
+                bool statusFound =
+                    root.TryGetHudRegionSnapshot(
+                        M401StatusRegionId,
+                        out UIHudRegionSnapshot status);
+                bool utilityFound =
+                    root.TryGetHudRegionSnapshot(
+                        M401UtilityRegionId,
+                        out UIHudRegionSnapshot utility);
+
+                bool passed =
+                    ready &&
+                    statusFound &&
+                    utilityFound &&
+                    status.WidgetCount == 2 &&
+                    utility.WidgetCount == 1 &&
+                    status.VisibilityLeaseCount == 0 &&
+                    utility.VisibilityLeaseCount == 0 &&
+                    status.EffectiveVisibility &&
+                    utility.EffectiveVisibility;
+
+                m401Observed =
+                    (passed
+                        ? "M4-01 BASELINE READY"
+                        : "M4-01 BASELINE NOT READY") +
+                    ". regions=" +
+                    root.HudRegionCount +
+                    ", widgets=" +
+                    root.ActiveHudWidgetCount +
+                    ", leases=" +
+                    root.ActiveHudVisibilityLeaseCount +
+                    ", status=" +
+                    M401SnapshotSummary(
+                        M401StatusRegionId) +
+                    ", utility=" +
+                    M401SnapshotSummary(
+                        M401UtilityRegionId) +
+                    ".";
+
+                m401Message =
+                    passed
+                        ? "M4-01 baseline READY."
+                        : "M4-01 baseline did not resolve the expected authored state.";
+            }
+            catch (Exception exception)
+            {
+                SetM401Exception(
+                    "Prepare baseline",
+                    exception);
+            }
+            finally
+            {
+                m401Busy = false;
+            }
+        }
+
+        private void RunM401Check1()
+        {
+            if (!CanRunM401Check())
+            {
+                return;
+            }
+
+            bool statusFound =
+                root.TryGetHudRegionSnapshot(
+                    M401StatusRegionId,
+                    out UIHudRegionSnapshot status);
+            bool utilityFound =
+                root.TryGetHudRegionSnapshot(
+                    M401UtilityRegionId,
+                    out UIHudRegionSnapshot utility);
+
+            bool passed =
+                root.HudRegionCount == 2 &&
+                root.ActiveHudWidgetCount == 3 &&
+                statusFound &&
+                utilityFound &&
+                status.WidgetCount == 2 &&
+                utility.WidgetCount == 1 &&
+                status.OwnershipMode ==
+                    UIHudOwnershipMode.SceneOwned &&
+                utility.OwnershipMode ==
+                    UIHudOwnershipMode.SceneOwned &&
+                status.EffectiveVisibility &&
+                utility.EffectiveVisibility;
+
+            m401Observed =
+                (passed ? "CHECK 1 PASS" : "CHECK 1 FAIL") +
+                " named regions + multiple widgets. status=" +
+                M401SnapshotSummary(
+                    M401StatusRegionId) +
+                ", utility=" +
+                M401SnapshotSummary(
+                    M401UtilityRegionId) +
+                ".";
+        }
+
+        private async void RunM401Check2()
+        {
+            if (!CanRunM401Check())
+            {
+                return;
+            }
+
+            m401Busy = true;
+
+            string screenBefore =
+                root.GetCurrentScreenId(
+                    FrontendScopeId);
+            int modalBefore =
+                root.ActiveModalCount;
+            bool windowBefore =
+                defaultWindow != null &&
+                defaultWindow.gameObject.activeSelf;
+
+            try
+            {
+                ReleaseM401VisibilityLease(
+                    ref m401HideLease);
+                ReleaseM401VisibilityLease(
+                    ref m401ShowLease);
+
+                m401HideLease =
+                    root.RequestHudVisibility(
+                        M401StatusRegionId,
+                        "lab.cinematic-hide",
+                        false,
+                        priority: 10);
+
+                bool hidden =
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot afterHide) &&
+                    !afterHide.EffectiveVisibility &&
+                    afterHide.VisibilityLeaseCount == 1;
+
+                await WaitM401FramesAsync(45);
+
+                m401ShowLease =
+                    root.RequestHudVisibility(
+                        M401StatusRegionId,
+                        "lab.accessibility-show",
+                        true,
+                        priority: 20);
+
+                bool shownByWinner =
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot afterShow) &&
+                    afterShow.EffectiveVisibility &&
+                    afterShow.VisibilityLeaseCount == 2;
+
+                await WaitM401FramesAsync(45);
+
+                UIHudOperationResult hideRelease =
+                    m401HideLease.Release();
+                m401HideLease = null;
+
+                bool stayedVisible =
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot afterOlderRelease) &&
+                    afterOlderRelease.EffectiveVisibility &&
+                    afterOlderRelease.VisibilityLeaseCount == 1;
+
+                await WaitM401FramesAsync(30);
+
+                UIHudOperationResult showRelease =
+                    m401ShowLease.Release();
+                m401ShowLease = null;
+
+                bool restoredBaseline =
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot afterFinalRelease) &&
+                    afterFinalRelease.EffectiveVisibility &&
+                    afterFinalRelease.VisibilityLeaseCount == 0;
+
+                bool structuralUnchanged =
+                    M401StructuralStateMatches(
+                        screenBefore,
+                        modalBefore,
+                        windowBefore);
+
+                bool passed =
+                    m401HideLease == null &&
+                    m401ShowLease == null &&
+                    hidden &&
+                    shownByWinner &&
+                    hideRelease.Succeeded &&
+                    stayedVisible &&
+                    showRelease.Succeeded &&
+                    restoredBaseline &&
+                    structuralUnchanged;
+
+                m401Observed =
+                    (passed ? "CHECK 2 PASS" : "CHECK 2 FAIL") +
+                    " overlapping visibility/out-of-order release. hidden=" +
+                    YesNo(
+                        hidden) +
+                    ", higherShow=" +
+                    YesNo(
+                        shownByWinner) +
+                    ", olderHideRelease=" +
+                    hideRelease.Status +
+                    ", stayedVisible=" +
+                    YesNo(
+                        stayedVisible) +
+                    ", finalShowRelease=" +
+                    showRelease.Status +
+                    ", baselineVisible=" +
+                    YesNo(
+                        restoredBaseline) +
+                    ", structuralUnchanged=" +
+                    YesNo(
+                        structuralUnchanged) +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM401Exception(
+                    "Check 2",
+                    exception);
+            }
+            finally
+            {
+                m401Busy = false;
+            }
+        }
+
+        private async void RunM401Check3()
+        {
+            if (!CanRunM401Check())
+            {
+                return;
+            }
+
+            m401Busy = true;
+
+            try
+            {
+                ReleaseM401ProbeState();
+
+                m401ProbeOwner =
+                    new GameObject(
+                        "M4_01_OldWidgetOwner");
+                m401ProbeHandle =
+                    root.RegisterHudWidget(
+                        M401StatusRegionId,
+                        M401StaleWidgetId,
+                        m401StaleWidget,
+                        m401ProbeOwner,
+                        order: 99);
+
+                m401VisibilityOwner =
+                    new GameObject(
+                        "M4_01_VisibilityOwner");
+                m401OwnerHideLease =
+                    root.RequestHudVisibility(
+                        M401StatusRegionId,
+                        "lab.owner-loss-hide",
+                        false,
+                        priority: 100,
+                        owner: m401VisibilityOwner);
+
+                bool admitted =
+                    m401ProbeHandle.Accepted &&
+                    m401OwnerHideLease.Accepted &&
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot admittedSnapshot) &&
+                    admittedSnapshot.WidgetCount == 3 &&
+                    admittedSnapshot.VisibilityLeaseCount == 1 &&
+                    !admittedSnapshot.EffectiveVisibility;
+
+                Destroy(
+                    m401ProbeOwner);
+                Destroy(
+                    m401VisibilityOwner);
+                m401ProbeOwner = null;
+                m401VisibilityOwner = null;
+
+                await WaitM401FramesAsync(5);
+
+                bool ownerLossCleaned =
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot cleanedSnapshot) &&
+                    cleanedSnapshot.WidgetCount == 2 &&
+                    cleanedSnapshot.VisibilityLeaseCount == 0 &&
+                    cleanedSnapshot.EffectiveVisibility;
+
+                m401ReplacementOwner =
+                    new GameObject(
+                        "M4_01_ReplacementWidgetOwner");
+                m401ReplacementHandle =
+                    root.RegisterHudWidget(
+                        M401StatusRegionId,
+                        M401StaleWidgetId,
+                        m401StaleWidget,
+                        m401ReplacementOwner,
+                        order: 99);
+
+                UIHudOperationResult staleRelease =
+                    m401ProbeHandle.Release();
+                m401ProbeHandle = null;
+                m401OwnerHideLease = null;
+
+                bool replacementSurvived =
+                    m401ReplacementHandle.Accepted &&
+                    staleRelease.Status ==
+                        UIHudOperationStatus.Stale &&
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot afterStaleRelease) &&
+                    afterStaleRelease.WidgetCount == 3;
+
+                UIHudOperationResult replacementRelease =
+                    m401ReplacementHandle.Release();
+                m401ReplacementHandle = null;
+
+                Destroy(
+                    m401ReplacementOwner);
+                m401ReplacementOwner = null;
+
+                bool finalBaseline =
+                    replacementRelease.Succeeded &&
+                    TryGetM401Status(
+                        out UIHudRegionSnapshot finalSnapshot) &&
+                    finalSnapshot.WidgetCount == 2 &&
+                    finalSnapshot.VisibilityLeaseCount == 0 &&
+                    finalSnapshot.EffectiveVisibility;
+
+                bool passed =
+                    admitted &&
+                    ownerLossCleaned &&
+                    replacementSurvived &&
+                    finalBaseline;
+
+                m401Observed =
+                    (passed ? "CHECK 3 PASS" : "CHECK 3 FAIL") +
+                    " owner loss + stale generation. admitted=" +
+                    YesNo(
+                        admitted) +
+                    ", ownerLossCleaned=" +
+                    YesNo(
+                        ownerLossCleaned) +
+                    ", staleRelease=" +
+                    staleRelease.Status +
+                    ", replacementSurvived=" +
+                    YesNo(
+                        replacementSurvived) +
+                    ", finalBaseline=" +
+                    YesNo(
+                        finalBaseline) +
+                    ".";
+            }
+            catch (Exception exception)
+            {
+                SetM401Exception(
+                    "Check 3",
+                    exception);
+            }
+            finally
+            {
+                m401Busy = false;
+            }
+        }
+
+        private void RunM401Check4()
+        {
+            if (!CanRunM401Check())
+            {
+                return;
+            }
+
+            int widgetsBefore =
+                root.ActiveHudWidgetCount;
+
+            UIHudWidgetHandle duplicate =
+                root.RegisterHudWidget(
+                    M401StatusRegionId,
+                    M401HealthWidgetId,
+                    m401HealthWidget,
+                    order: 0);
+
+            UIHudWidgetHandle overflow =
+                root.RegisterHudWidget(
+                    M401UtilityRegionId,
+                    M401StaleWidgetId,
+                    m401StaleWidget,
+                    order: 100);
+
+            bool snapshotsStable =
+                TryGetM401Status(
+                    out UIHudRegionSnapshot status) &&
+                root.TryGetHudRegionSnapshot(
+                    M401UtilityRegionId,
+                    out UIHudRegionSnapshot utility) &&
+                status.WidgetCount == 2 &&
+                utility.WidgetCount == 1 &&
+                root.ActiveHudWidgetCount ==
+                    widgetsBefore;
+
+            bool passed =
+                !duplicate.Accepted &&
+                duplicate.LastResult.Status ==
+                    UIHudOperationStatus.Duplicate &&
+                !overflow.Accepted &&
+                overflow.LastResult.Status ==
+                    UIHudOperationStatus.CapacityExceeded &&
+                snapshotsStable;
+
+            m401Observed =
+                (passed ? "CHECK 4 PASS" : "CHECK 4 FAIL") +
+                " rejection without mutation. duplicate=" +
+                duplicate.LastResult.Status +
+                ", overflow=" +
+                overflow.LastResult.Status +
+                ", widgets=" +
+                root.ActiveHudWidgetCount +
+                ", snapshotsStable=" +
+                YesNo(
+                    snapshotsStable) +
+                ".";
+        }
+
+        private IEnumerator RunM401Check5()
+        {
+            if (!CanRunM401Check())
+            {
+                yield break;
+            }
+
+            m401Busy = true;
+
+            int regionsBefore =
+                root.HudRegionCount;
+            int widgetsBefore =
+                root.ActiveHudWidgetCount;
+            int leasesBefore =
+                root.ActiveHudVisibilityLeaseCount;
+            int transitionsBefore =
+                root.ActiveTransitionCount;
+            string screenBefore =
+                root.GetCurrentScreenId(
+                    FrontendScopeId);
+            int modalBefore =
+                root.ActiveModalCount;
+            bool windowBefore =
+                defaultWindow != null &&
+                defaultWindow.gameObject.activeSelf;
+
+            bool statusBeforeFound =
+                TryGetM401Status(
+                    out UIHudRegionSnapshot statusBefore);
+            bool utilityBeforeFound =
+                root.TryGetHudRegionSnapshot(
+                    M401UtilityRegionId,
+                    out UIHudRegionSnapshot utilityBefore);
+
+            const int sampleFrames = 180;
+            for (int frame = 0;
+                 frame < sampleFrames;
+                 frame++)
+            {
+                yield return null;
+            }
+
+            bool statusAfterFound =
+                TryGetM401Status(
+                    out UIHudRegionSnapshot statusAfter);
+            bool utilityAfterFound =
+                root.TryGetHudRegionSnapshot(
+                    M401UtilityRegionId,
+                    out UIHudRegionSnapshot utilityAfter);
+
+            bool snapshotsStable =
+                statusBeforeFound &&
+                statusAfterFound &&
+                utilityBeforeFound &&
+                utilityAfterFound &&
+                M401SnapshotsEqual(
+                    statusBefore,
+                    statusAfter) &&
+                M401SnapshotsEqual(
+                    utilityBefore,
+                    utilityAfter);
+
+            bool countsStable =
+                root.HudRegionCount ==
+                    regionsBefore &&
+                root.ActiveHudWidgetCount ==
+                    widgetsBefore &&
+                root.ActiveHudVisibilityLeaseCount ==
+                    leasesBefore &&
+                root.ActiveTransitionCount ==
+                    transitionsBefore;
+
+            bool structuralUnchanged =
+                M401StructuralStateMatches(
+                    screenBefore,
+                    modalBefore,
+                    windowBefore);
+
+            bool passed =
+                snapshotsStable &&
+                countsStable &&
+                structuralUnchanged;
+
+            m401PerformanceEvidence =
+                (passed ? "PASS" : "FAIL") +
+                " 180 idle frames. regions=" +
+                regionsBefore +
+                "->" +
+                root.HudRegionCount +
+                ", widgets=" +
+                widgetsBefore +
+                "->" +
+                root.ActiveHudWidgetCount +
+                ", leases=" +
+                leasesBefore +
+                "->" +
+                root.ActiveHudVisibilityLeaseCount +
+                ", transitions=" +
+                transitionsBefore +
+                "->" +
+                root.ActiveTransitionCount +
+                ", snapshotsStable=" +
+                YesNo(
+                    snapshotsStable) +
+                ", structuralUnchanged=" +
+                YesNo(
+                    structuralUnchanged) +
+                ".";
+
+            m401Observed =
+                (passed ? "CHECK 5 PASS. " : "CHECK 5 FAIL. ") +
+                m401PerformanceEvidence;
+
+            m401Busy = false;
+        }
+
+        private bool CanRunM401Check()
+        {
+            if (m401Busy)
+            {
+                return false;
+            }
+
+            if (root == null ||
+                !root.IsInitialized ||
+                !root.IsHudLifecycleInitialized ||
+                !EnsureM401BaselineWidgets())
+            {
+                m401Observed =
+                    "M4-01 proof is not ready. Click Prepare M4-01 Baseline first.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool EnsureM401BaselineWidgets()
+        {
+            if (root == null ||
+                !root.IsHudLifecycleInitialized ||
+                m401HealthWidget == null ||
+                m401ObjectiveWidget == null ||
+                m401UtilityWidget == null)
+            {
+                return false;
+            }
+
+            if (m401HealthHandle == null ||
+                !m401HealthHandle.Accepted ||
+                m401HealthHandle.IsReleased)
+            {
+                m401HealthHandle =
+                    root.RegisterHudWidget(
+                        M401StatusRegionId,
+                        M401HealthWidgetId,
+                        m401HealthWidget,
+                        order: 0);
+            }
+
+            if (m401ObjectiveHandle == null ||
+                !m401ObjectiveHandle.Accepted ||
+                m401ObjectiveHandle.IsReleased)
+            {
+                m401ObjectiveHandle =
+                    root.RegisterHudWidget(
+                        M401StatusRegionId,
+                        M401ObjectiveWidgetId,
+                        m401ObjectiveWidget,
+                        order: 10);
+            }
+
+            if (m401UtilityHandle == null ||
+                !m401UtilityHandle.Accepted ||
+                m401UtilityHandle.IsReleased)
+            {
+                m401UtilityHandle =
+                    root.RegisterHudWidget(
+                        M401UtilityRegionId,
+                        M401UtilityWidgetId,
+                        m401UtilityWidget,
+                        order: 0);
+            }
+
+            bool statusFound =
+                TryGetM401Status(
+                    out UIHudRegionSnapshot status);
+            bool utilityFound =
+                root.TryGetHudRegionSnapshot(
+                    M401UtilityRegionId,
+                    out UIHudRegionSnapshot utility);
+
+            return m401HealthHandle.Accepted &&
+                m401ObjectiveHandle.Accepted &&
+                m401UtilityHandle.Accepted &&
+                statusFound &&
+                utilityFound &&
+                status.WidgetCount == 2 &&
+                utility.WidgetCount == 1;
+        }
+
+        private void ReleaseM401TemporaryState()
+        {
+            ReleaseM401VisibilityLease(
+                ref m401HideLease);
+            ReleaseM401VisibilityLease(
+                ref m401ShowLease);
+            ReleaseM401ProbeState();
+        }
+
+        private void ReleaseM401ProbeState()
+        {
+            ReleaseM401VisibilityLease(
+                ref m401OwnerHideLease);
+            ReleaseM401WidgetHandle(
+                ref m401ProbeHandle);
+            ReleaseM401WidgetHandle(
+                ref m401ReplacementHandle);
+
+            DestroyM401Owner(
+                ref m401ProbeOwner);
+            DestroyM401Owner(
+                ref m401ReplacementOwner);
+            DestroyM401Owner(
+                ref m401VisibilityOwner);
+        }
+
+        private static void ReleaseM401VisibilityLease(
+            ref UIHudVisibilityLease lease)
+        {
+            if (lease != null &&
+                !lease.IsReleased)
+            {
+                lease.Release();
+            }
+
+            lease = null;
+        }
+
+        private static void ReleaseM401WidgetHandle(
+            ref UIHudWidgetHandle handle)
+        {
+            if (handle != null &&
+                !handle.IsReleased)
+            {
+                handle.Release();
+            }
+
+            handle = null;
+        }
+
+        private void DestroyM401Owner(
+            ref GameObject owner)
+        {
+            if (owner != null)
+            {
+                Destroy(
+                    owner);
+            }
+
+            owner = null;
+        }
+
+        private bool TryGetM401Status(
+            out UIHudRegionSnapshot snapshot) =>
+            root.TryGetHudRegionSnapshot(
+                M401StatusRegionId,
+                out snapshot);
+
+        private string M401SnapshotSummary(
+            string regionId)
+        {
+            if (!root.TryGetHudRegionSnapshot(
+                    regionId,
+                    out UIHudRegionSnapshot snapshot))
+            {
+                return "<missing>";
+            }
+
+            return "generation=" +
+                   snapshot.Generation +
+                   ", visible=" +
+                   YesNo(
+                       snapshot.EffectiveVisibility) +
+                   ", widgets=" +
+                   snapshot.WidgetCount +
+                   ", leases=" +
+                   snapshot.VisibilityLeaseCount +
+                   ", ownership=" +
+                   snapshot.OwnershipMode;
+        }
+
+        private bool M401StructuralStateMatches(
+            string screenId,
+            int modalCount,
+            bool windowOpen) =>
+            string.Equals(
+                root.GetCurrentScreenId(
+                    FrontendScopeId),
+                screenId,
+                StringComparison.Ordinal) &&
+            root.ActiveModalCount ==
+                modalCount &&
+            (defaultWindow != null &&
+             defaultWindow.gameObject.activeSelf) ==
+                windowOpen;
+
+        private static bool M401SnapshotsEqual(
+            UIHudRegionSnapshot first,
+            UIHudRegionSnapshot second) =>
+            first.RegionId.Equals(
+                second.RegionId) &&
+            first.Generation ==
+                second.Generation &&
+            first.EffectiveVisibility ==
+                second.EffectiveVisibility &&
+            first.WidgetCount ==
+                second.WidgetCount &&
+            first.VisibilityLeaseCount ==
+                second.VisibilityLeaseCount &&
+            first.OwnershipMode ==
+                second.OwnershipMode;
+
+        private static async Awaitable WaitM401FramesAsync(
+            int frameCount)
+        {
+            for (int frame = 0;
+                 frame < frameCount;
+                 frame++)
+            {
+                await Awaitable.NextFrameAsync();
+            }
+        }
+
+        private void SetM401Exception(
+            string check,
+            Exception exception)
+        {
+            m401Observed =
+                check +
+                " EXCEPTION: " +
+                exception.GetType().Name +
+                " - " +
+                exception.Message;
+            m401Message =
+                "M4-01 proof encountered an exception.";
+        }
 
         private void InitializeM302ProofInfrastructure()
         {
