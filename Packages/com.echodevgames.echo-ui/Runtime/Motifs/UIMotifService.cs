@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoDevGames.EchoUI
@@ -44,12 +45,16 @@ namespace EchoDevGames.EchoUI
             UIMotifId requestedMotifId = default,
             UIMotifId effectiveMotifId = default,
             long revision = 0,
+            int appliedTargetCount = 0,
+            int failedTargetCount = 0,
             string message = "")
         {
             Status = status;
             RequestedMotifId = requestedMotifId;
             EffectiveMotifId = effectiveMotifId;
             Revision = revision;
+            AppliedTargetCount = appliedTargetCount;
+            FailedTargetCount = failedTargetCount;
             Message = message ?? string.Empty;
         }
 
@@ -57,6 +62,8 @@ namespace EchoDevGames.EchoUI
         public UIMotifId RequestedMotifId { get; }
         public UIMotifId EffectiveMotifId { get; }
         public long Revision { get; }
+        public int AppliedTargetCount { get; }
+        public int FailedTargetCount { get; }
         public string Message { get; }
         public bool Succeeded =>
             Status == UIMotifSwitchStatus.Applied ||
@@ -71,10 +78,36 @@ namespace EchoDevGames.EchoUI
     public sealed class UIMotifService
     {
         private readonly UIMotifCatalogSnapshot catalog;
+        private readonly List<TargetRegistration> targets =
+            new List<TargetRegistration>();
         private UIMotifSnapshot effectiveMotif;
         private bool mutationInProgress;
         private bool shutdown;
         private long revision;
+        private long nextRegistrationGeneration;
+
+        private sealed class TargetRegistration
+        {
+            public TargetRegistration(
+                IUIMotifTarget target,
+                UnityEngine.Object owner,
+                long generation,
+                UIMotifRegistrationHandle handle)
+            {
+                Target = target;
+                Owner = owner;
+                Generation = generation;
+                Handle = handle;
+            }
+
+            public IUIMotifTarget Target { get; }
+            public UnityEngine.Object Owner { get; }
+            public long Generation { get; }
+            public UIMotifRegistrationHandle Handle { get; }
+            public bool IsLost =>
+                UIMotifUnityObjectUtility.IsDestroyed(Target) ||
+                (!ReferenceEquals(Owner, null) && Owner == null);
+        }
 
         public UIMotifService(UIMotifCatalogSnapshot catalog)
         {
@@ -97,12 +130,69 @@ namespace EchoDevGames.EchoUI
             effectiveMotif == null ? default : effectiveMotif.MotifId;
         public UIMotifSnapshot EffectiveMotif => effectiveMotif;
         public long Revision => revision;
+        public int RegisteredTargetCount => targets.Count;
 
         /// <summary>
         /// Publishes identifier-only committed session truth. No token values,
         /// history buffer, or presentation payload are exposed.
         /// </summary>
         public event Action<UIMotifServiceSnapshot> Changed;
+
+        public UIMotifRegistrationHandle RegisterTarget(
+            IUIMotifTarget target,
+            UnityEngine.Object owner = null)
+        {
+            long generation = ++nextRegistrationGeneration;
+            if (shutdown)
+                return RejectedRegistration(UIMotifRegistrationStatus.Shutdown, generation);
+
+            if (!IsValid || mutationInProgress)
+                return RejectedRegistration(UIMotifRegistrationStatus.Unavailable, generation);
+
+            if (target == null || UIMotifUnityObjectUtility.IsDestroyed(target))
+                return RejectedRegistration(UIMotifRegistrationStatus.InvalidTarget, generation);
+
+            if (!ReferenceEquals(owner, null) && owner == null)
+                return RejectedRegistration(UIMotifRegistrationStatus.InvalidTarget, generation);
+
+            UIMotifTargetApplyResult applyResult;
+            mutationInProgress = true;
+            try
+            {
+                applyResult = ApplyTarget(target, effectiveMotif);
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+            UIMotifRegistrationStatus status = applyResult.Succeeded
+                ? UIMotifRegistrationStatus.Registered
+                : UIMotifRegistrationStatus.RegisteredWithApplyFailure;
+            UIMotifRegistrationResult registrationResult =
+                new UIMotifRegistrationResult(status, generation, applyResult);
+            UIMotifRegistrationHandle handle =
+                new UIMotifRegistrationHandle(this, generation, registrationResult);
+            targets.Add(new TargetRegistration(target, owner, generation, handle));
+            return handle;
+        }
+
+        public int RefreshDestroyedTargets()
+        {
+            if (shutdown || !IsValid || mutationInProgress)
+                return 0;
+
+            int removed = 0;
+            for (int i = targets.Count - 1; i >= 0; i--)
+            {
+                if (!targets[i].IsLost)
+                    continue;
+
+                targets.RemoveAt(i);
+                removed++;
+            }
+
+            return removed;
+        }
 
         public UIMotifServiceSnapshot GetSnapshot() =>
             new UIMotifServiceSnapshot(
@@ -154,6 +244,7 @@ namespace EchoDevGames.EchoUI
             shutdown = true;
             IsValid = false;
             effectiveMotif = null;
+            targets.Clear();
             revision++;
             mutationInProgress = true;
             try
@@ -188,18 +279,112 @@ namespace EchoDevGames.EchoUI
             mutationInProgress = true;
             try
             {
+                ApplyTargets(
+                    snapshot,
+                    out int appliedTargetCount,
+                    out int failedTargetCount);
                 Publish();
+
+                return new UIMotifSwitchResult(
+                    appliedStatus,
+                    requestedMotifId,
+                    EffectiveMotifId,
+                    revision,
+                    appliedTargetCount,
+                    failedTargetCount);
             }
             finally
             {
                 mutationInProgress = false;
             }
+        }
 
-            return new UIMotifSwitchResult(
-                appliedStatus,
-                requestedMotifId,
-                EffectiveMotifId,
-                revision);
+        internal UIMotifRegistrationReleaseResult Release(
+            UIMotifRegistrationHandle handle)
+        {
+            if (shutdown)
+                return new UIMotifRegistrationReleaseResult(
+                    UIMotifRegistrationReleaseStatus.Shutdown,
+                    handle == null ? 0 : handle.Generation);
+
+            if (!IsValid || mutationInProgress || handle == null)
+                return new UIMotifRegistrationReleaseResult(
+                    UIMotifRegistrationReleaseStatus.Unavailable,
+                    handle == null ? 0 : handle.Generation);
+
+            for (int i = 0; i < targets.Count; i++)
+            {
+                TargetRegistration registration = targets[i];
+                if (registration.Generation != handle.Generation ||
+                    !ReferenceEquals(registration.Handle, handle))
+                {
+                    continue;
+                }
+
+                targets.RemoveAt(i);
+                return new UIMotifRegistrationReleaseResult(
+                    UIMotifRegistrationReleaseStatus.Released,
+                    handle.Generation);
+            }
+
+            return new UIMotifRegistrationReleaseResult(
+                UIMotifRegistrationReleaseStatus.Stale,
+                handle.Generation);
+        }
+
+        private UIMotifRegistrationHandle RejectedRegistration(
+            UIMotifRegistrationStatus status,
+            long generation)
+        {
+            UIMotifRegistrationResult result =
+                new UIMotifRegistrationResult(status, generation);
+            return new UIMotifRegistrationHandle(null, generation, result);
+        }
+
+        private void ApplyTargets(
+            UIMotifSnapshot snapshot,
+            out int appliedCount,
+            out int failedCount)
+        {
+            appliedCount = 0;
+            failedCount = 0;
+            int index = 0;
+            while (index < targets.Count)
+            {
+                TargetRegistration registration = targets[index];
+                if (registration.IsLost)
+                {
+                    targets.RemoveAt(index);
+                    continue;
+                }
+
+                UIMotifTargetApplyResult result =
+                    ApplyTarget(registration.Target, snapshot);
+                if (result.Succeeded)
+                    appliedCount++;
+                else
+                    failedCount++;
+
+                index++;
+            }
+        }
+
+        private static UIMotifTargetApplyResult ApplyTarget(
+            IUIMotifTarget target,
+            UIMotifSnapshot snapshot)
+        {
+            try
+            {
+                return target.ApplyMotif(snapshot);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                return new UIMotifTargetApplyResult(
+                    UIMotifTargetApplyStatus.Failed,
+                    failedBindingCount: 1,
+                    message: exception.Message);
+            }
         }
 
         private UIMotifSwitchResult Failure(
@@ -211,7 +396,9 @@ namespace EchoDevGames.EchoUI
                 requestedMotifId,
                 EffectiveMotifId,
                 revision,
-                message);
+                appliedTargetCount: 0,
+                failedTargetCount: 0,
+                message: message);
 
         private void Publish()
         {
