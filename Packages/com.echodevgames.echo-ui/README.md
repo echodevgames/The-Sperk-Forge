@@ -96,11 +96,19 @@ The completed M3-02 slice adds authoritative transition settlement for Screens, 
 
 Final retained evidence is **1246 / 1246** full EditMode, **140 / 140** EchoUI Editor, and **14 / 14** Laboratory at closeout `0affb7d`.
 
-## EUI-M4-01 named HUD regions — active
+## EUI-M4-01 named HUD regions — complete
 
-The active M4-01 slice adds project-defined named HUD regions, bounded widget registration, fresh generation-safe widget and visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, and focused tests without entering Screen history or owning gameplay/domain truth.
+The completed M4-01 slice adds project-defined named HUD regions, bounded widget registration, fresh generation-safe widget and visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, and focused tests without entering Screen history or owning gameplay/domain truth.
 
-Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through `e47d43b`; the requested automated gate is user-confirmed green. Laboratory/manual proof and closeout remain pending. EUI-M4-02 notifications and all adjacent capabilities are not activated.
+Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through `e47d43b`; Laboratory implementation is `29573ef`; closeout is `5e7ad92`. Manual HUD Laboratory is **5 / 5 PASS**, retained smoke is green, and package/imported parity is verified.
+
+## EUI-M4-02 bounded notifications — active
+
+The active M4-02 slice adds project-defined independently bounded notification channels; priority/FIFO pending promotion without visible preemption; fresh-generation coalescing; deterministic pending-overflow policies; unscaled automatic and manual lifetime; generation-safe dismissal; owner/presentation loss, reset, and shutdown settlement; structured status/events; and a replaceable project presenter seam.
+
+Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`. The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive.
+
+The mirrored Laboratory supplies three authored channels, a deliberately plain sample-owned presenter, six M4-02 checks, and all retained tabs. Unity manual acceptance and retained smoke are the exact remaining gate; final closeout is not yet claimed. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain separately gated.
 
 ## Hierarchy convention
 

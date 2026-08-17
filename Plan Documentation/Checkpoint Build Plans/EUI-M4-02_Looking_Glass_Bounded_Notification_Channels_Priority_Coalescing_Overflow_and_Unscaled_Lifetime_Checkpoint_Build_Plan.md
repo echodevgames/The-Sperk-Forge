@@ -2,7 +2,7 @@
 
 **Package:** The Looking Glass (`EchoUI`)
 **Milestone:** M4 — Complete MVP Surfaces
-**Status:** ACTIVE / AUTHORIZED
+**Status:** ACTIVE / LABORATORY IMPLEMENTED — MANUAL ACCEPTANCE PENDING
 **Activation baseline:** `5e7ad9211a66ba3dc9f26c4a268febe4ba9c9d3d`
 **Suite authority:** SFGSS-000 v0.27.0
 **Package authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
@@ -179,4 +179,6 @@ Prompt and tooltip work remains a named package capability, but this activation 
 
 ## 18. Handoff
 
-EUI-M4-02 is ACTIVE / AUTHORIZED from `5e7ad92` under package authority v1.8.0. Runtime implementation has not started. First gate: run EchoUI Editor and full Foundry EditMode on the activation commit and record exact post-M4 totals before any Runtime edit. Follow the visible slice loop and stop for an unexpected red gate, authority-changing decision, or required manual Unity proof.
+EUI-M4-02 is ACTIVE / AUTHORIZED from `5e7ad92` under package authority v1.8.0. Runtime, root integration, presenter seam, and automated proof are implemented through `d93d0bd`. The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Final accepted automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive.
+
+The mirrored M4-02 Laboratory now supplies three authored channels, a sample-owned plain presenter, checks 1-6, and all retained tabs. Resume only the required Unity manual acceptance and retained smoke. After user-confirmed green, reconcile closeout documentation, commit/push the closeout, and stop. Do not begin prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, or release work.

@@ -3,7 +3,7 @@
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
-**Current checkpoint:** EUI-M4-02 — ACTIVE / AUTHORIZED; notification Runtime implementation not started
+**Current checkpoint:** EUI-M4-02 — Runtime/presenter automated-green; Laboratory implementation ready for manual acceptance
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -199,5 +199,8 @@ The Laboratory-discovered synchronous cancellation race is corrected by guarding
 - Automatic lifetime uses unscaled monotonic time; manual lifetime requires explicit/structural dismissal.
 - Notifications remain transient presentation and cannot own durable history, localization/audio/analytics, gameplay/domain truth, input, pause/time scale, cursor, persistence, or project lifetime.
 - Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain excluded.
-- **EUI-M4-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
-- **First gate:** run EchoUI Editor and full Foundry EditMode on the activation commit and record exact totals before Runtime edits.
+- **Activation baseline:** full Foundry EditMode **1258 / 1258**; EchoUI Editor **152 / 152**; zero failed before Runtime edits.
+- **Implemented through `d93d0bd`:** contracts, bounded channel state, admission/promotion, coalescing, overflow, unscaled/manual lifetime, cleanup, status/events, root integration, and the replaceable presenter seam.
+- **Final accepted automated evidence:** full Foundry EditMode **1383 / 1383**; EchoUI Editor **277 / 277**; aggregate notification fixtures **125 / 125**; presenter fixture **17 / 17**; zero failed/skipped/inconclusive.
+- **Current Laboratory slice:** mirrored three-channel scene configuration, sample-owned plain presenter, checks 1-6, retained tabs, and package/imported parity.
+- **Exact resume phase:** run the M4-02 Unity Laboratory checks 1-6 and retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke. Closeout remains pending that user-confirmed manual evidence.

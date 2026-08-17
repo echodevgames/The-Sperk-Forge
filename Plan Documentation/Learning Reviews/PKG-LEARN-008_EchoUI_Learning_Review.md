@@ -4,7 +4,7 @@ tags:
   - sfgss/wave/foundation
   - sfgss/ui
 status: complete
-updated: 2026-08-15
+updated: 2026-08-17
 ---
 
 # PKG-LEARN-008 – The Looking Glass (`EchoUI`) Learning Review
@@ -16,8 +16,8 @@ updated: 2026-08-15
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
 **Completed:** 2026-08-15
-**Package authority version reviewed/reconciled:** 1.7.0
-**Implementation authorization:** `EUI-M4-01` ACTIVE / AUTHORIZED after the bounded EUI-M4-01 JIT revisit; EUI-M1 through EUI-M3-02 complete; clean activation baseline `0affb7d`; Runtime/tests green through `e47d43b`; Laboratory/manual proof pending
+**Package authority version reviewed/reconciled:** 1.8.0
+**Implementation authorization:** `EUI-M4-02` ACTIVE / AUTHORIZED after the bounded notification JIT revisit; EUI-M1 through EUI-M4-01 complete; Runtime/root/presenter automated-green through `d93d0bd`; mirrored Laboratory implemented; manual acceptance pending
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -571,3 +571,11 @@ It proves project-defined channels, bounded visible/pending capacity, determinis
 Prompts, tooltips, Motifs/accessibility implementation, safe-area placement, full Window management, persistence, localization/audio/analytics, domain authority, peer bridges, authoring libraries/Builder, integration, and release remain outside EUI-M4-02.
 
 Exact post-M4 automated counts were not captured during EUI-M4-01. The first EUI-M4-02 gate is therefore to run EchoUI Editor and full Foundry EditMode on the activation commit and record the exact current baseline before any Runtime edit.
+
+### 20.7 Implementation evidence and exact resume phase
+
+- Activation baseline before Runtime edits: full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**, zero failed.
+- Runtime/root/presenter implementation is accepted through `d93d0bd`.
+- Final automated evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, zero failed/skipped/inconclusive.
+- The mirrored Laboratory implements three authored channels, a sample-owned plain presenter, six bounded checks, and all retained tabs.
+- Exact resume phase: Unity manual M4-02 checks 1-6 plus retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke. Final closeout is not yet claimed.

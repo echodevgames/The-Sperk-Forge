@@ -9,13 +9,15 @@ This is the engineering proof sample for **The Looking Glass**. It remains delib
 - **EUI-M3-01** proved EventSystem coordination, focus memory/restoration, Modal focus containment, explicit revalidation, and event-driven idle behavior.
 - **EUI-M3-02** proved authoritative enter/exit settlement through replaceable transition drivers, deterministic failure/timeout/stale recovery, reduced-motion substitution, and transition-aware Screen, Modal, and independent Window lifecycle.
 - **EUI-M4-01** adds project-defined named HUD regions, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss cleanup, bounded admission, and idle proof.
+- **EUI-M4-02** adds project-defined bounded notification channels, deterministic priority/FIFO promotion, coalescing, overflow policies, unscaled/manual lifetime, owner/presentation-loss cleanup, and a replaceable sample-owned presenter.
 
-The sample is not a polished Reference Showcase, notification/prompt/tooltip service, Motif system, Builder, full Window manager, persistence layer, gameplay-input owner, or universal animation system.
+The sample is not a polished Reference Showcase, production notification visual system, prompt/tooltip service, Motif system, Builder, full Window manager, persistence layer, gameplay-input owner, or universal animation system.
 
 ## Proof hierarchy
 
 ```text
 CanvasMasterCanvas                 [EchoUIRoot + Laboratory proof console]
+│                                  [adds sample notification presenter at runtime]
 ├─ Panel_MenuRoot                 [UILayerHost: primary-ui, order 20]
 │  ├─ Panel_MainMenu              [Screen: main-menu, scope: frontend]
 │  └─ Panel_SettingsMenu          [Screen: settings, scope: frontend]
@@ -36,7 +38,133 @@ Template_M2_02_RootOwnedModal     [inactive RootOwned Modal source]
 External_M2_02_ProjectOwnedModal  [inactive ExternalOwned Modal view]
 ```
 
-The top-right of the Game view remains the Laboratory/debug safe zone. The proof console grows downward from there.
+The top-right of the Game view remains the Laboratory/debug safe zone. The proof console grows downward from there. M4-02's plain current-notification cards render at bottom-center.
+
+# EUI-M4-02 manual acceptance
+
+The **M4-02 Notifications** tab is the dedicated proof surface for bounded notification lifecycle and the replaceable project presentation seam. The sample dynamically attaches a deliberately plain `LaboratoryNotificationPresenter` to the root and renders current visible entries at bottom-center.
+
+The sample authors three independent channels:
+
+- `notification.primary`: visible `2`, pending `3`, `RejectNewest`;
+- `notification.secondary`: visible `1`, pending `2`, `DropOldestPending`;
+- `notification.priority`: visible `1`, pending `2`, `ReplaceLowestPriorityPending`.
+
+The presenter retains only the latest bounded read model for each channel. It is reference proof, not package-owned production art, localization, audio, analytics, persistence, or gameplay/domain authority.
+
+Automated evidence immediately preceding this Laboratory phase:
+
+- full Foundry EditMode: **1383 / 1383 passed**;
+- EchoUI EditMode assembly: **277 / 277 passed**;
+- aggregate notification fixtures: **125 / 125 passed**;
+- notification presenter fixture: **17 / 17 passed**;
+- failures, skipped, and inconclusive: **0**;
+- accepted implementation/hotfix remote baseline: `d93d0bd`.
+
+Before a fresh run:
+
+1. open `The Looking Glass_UI_Laboratory`;
+2. enter Play Mode;
+3. select **M4-02 Notifications**;
+4. click **Prepare M4-02 Baseline**;
+5. verify:
+   - notification lifecycle initialized = `True`;
+   - channels / visible / pending = `3 / 0 / 0`;
+   - all three channel summaries show their authored bounds and policies;
+   - presenter channels / visible = `3 / 0`.
+
+Run checks **1-6** in order. The proof console disables M4-02 actions while an asynchronous check is running. The plain cyan, magenta, and amber cards are sample-owned visible-entry proof and include manual dismissal buttons.
+
+## M4-02 Check 1 — channels, priority/FIFO, and no preemption
+
+Click:
+
+`Run Check 1: Channels + Priority/FIFO`
+
+PASS when:
+
+- both primary visible slots remain authoritative after higher-priority pending admissions;
+- equal-priority pending generations promote in admission FIFO order;
+- the lower-priority pending generation remains pending;
+- the secondary channel remains independently visible;
+- Screen/Modal/Window/HUD/transition truth is unchanged.
+
+## M4-02 Check 2 — visible/pending coalescing and lifetime restart
+
+Click:
+
+`Run Check 2: Coalescing + Lifetime Restart`
+
+PASS when:
+
+- visible and pending matching keys each produce a fresh `Coalesced` generation;
+- both prior generations settle `Superseded`;
+- dismissing the old visible handle reports `Stale`;
+- the pending replacement promotes after its blocker dismisses;
+- the visible replacement survives beyond the prior generation's remaining time and then settles `Expired`;
+- structural UI truth remains unchanged.
+
+## M4-02 Check 3 — all overflow policies
+
+Click:
+
+`Run Check 3: Overflow Policies`
+
+PASS when:
+
+- `notification.primary` rejects the newest full-channel admission with `CapacityExceeded`;
+- `notification.secondary` admits the replacement and settles the oldest pending generation `OverflowEvicted`;
+- `notification.priority` admits a strictly higher-priority replacement, settles the lowest pending generation `OverflowEvicted`, and rejects an equal-lowest candidate with `InsufficientPriority`;
+- all visible/pending bounds remain exact and unrelated structural truth does not change.
+
+## M4-02 Check 4 — unscaled automatic and manual lifetime
+
+Click:
+
+`Run Check 4: Paused Automatic + Manual`
+
+The sample temporarily sets `Time.timeScale` to zero and restores the exact prior value in a `finally` path.
+
+PASS when the automatic notification settles `Expired` using unscaled time, the manual notification remains visible, explicit dismissal succeeds, time scale restores, and structural UI truth remains unchanged.
+
+## M4-02 Check 5 — loss, stale generation, and reset
+
+Click:
+
+`Run Check 5: Loss + Stale + Reset`
+
+PASS when:
+
+- owner destruction settles only the matching generation `OwnerLost` and promotes pending work;
+- destroying a Unity presentation settles only that generation `PresentationLost`;
+- a superseded handle dismisses as `Stale` while its replacement survives;
+- reset settles exactly three live generations as `Reset`;
+- a fresh post-reset generation is newer and can dismiss cleanly;
+- final visible/pending/presenter state returns to zero without structural mutation.
+
+## M4-02 Check 6 — 180-frame idle quiescence
+
+Click:
+
+`Run Check 6: Idle Notification Probe`
+
+Do not interact until the proof finishes.
+
+PASS when channel count, visible/pending counts, all three diagnostic snapshots, presenter-visible count, presenter apply count, and Screen/Modal/Window/HUD/transition truth remain unchanged for 180 frames.
+
+## M4-02 Check 7 — retained smoke
+
+After checks 1-6 pass, visit:
+
+- **M4-01 HUD**
+- **M3-02 Transitions**
+- **M3-01 Focus**
+- **M2-02 Modals**
+- **M2-01 Screens**
+- **M1 Retained**
+
+Run one representative happy-path check on each retained tab. EUI-M4-02 must not alter prior structural, focus, transition, context, HUD, gameplay, persistence, or project-domain authority.
+
 
 # EUI-M4-01 manual acceptance
 
@@ -147,7 +275,7 @@ Jesse confirmed the complete requested gate green.
 - Requested focused/full automated gate: user-confirmed green after `e47d43b`; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
 - Package/imported README, driver, and scene parity: verified at implementation seal `29573ef`.
 
-EUI-M4-01 is complete. EUI-M4-02 remains inactive.
+EUI-M4-01 is complete. EUI-M4-02 is active/authorized and its automated runtime/presenter gate is green; M4-02 Laboratory acceptance remains in progress.
 
 # EUI-M3-02 manual acceptance
 

@@ -3,13 +3,13 @@ tags:
   - sfgss/learning
   - sfgss/packages
 status: active
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # The Sperk’s Forge – Package Learning Review Catalog
 
 **Purpose:** Provide a plain-language bridge between the architectural specifications and later implementation.
-**Status:** Active just-in-time Learn → Declare → Authorize program; PKG-LEARN-008 is complete and EUI-M4-01 is active with automated proof green and Laboratory/manual proof pending.
+**Status:** Active just-in-time Learn → Declare → Authorize program; PKG-LEARN-008 is complete and EUI-M4-02 is Runtime/presenter automated-green with Laboratory manual acceptance pending.
 **Gate:** Reviews occur just in time before a package's first implementation and receive bounded revisits when a later checkpoint introduces materially new architecture. One completed review authorizes only its separately declared checkpoint.
 **Tracker:** `Learning Reviews/PKG-LEARN-TRACKER.json`
 **Template:** [[Learning Reviews/PKG-LEARN-TEMPLATE|Package Learning Review Template]]
@@ -111,8 +111,8 @@ PKG-LEARN-001 is complete for First Light. PKG-LEARN-002 is paused until EchoDia
 - Paused: **PKG-LEARN-002 – The Observatory (`EchoDiagnostics`)**
 - Active learning review: **None; PKG-LEARN-008 is complete**
 - Current initiative: **Looking Glass foundation** — the UI package was intentionally pulled forward after Chronicle M5 so the project can begin assembling its reusable front door incrementally
-- Looking Glass implementation checkpoint: **EUI-M4-01 active / authorized under Green Path**; activation `ce30ac6`, Runtime/tests `df9e2be`, corrections through `e47d43b`, automated gate green, Laboratory/manual proof pending
-- Next package review trigger: selected deliberately after EUI-M4-01; no unrelated package is unlocked by this review
+- Looking Glass implementation checkpoint: **EUI-M4-02 active / authorized under Green Path**; activation `fd8256f`, Runtime/root/presenter implementation through `d93d0bd`, full automated gate **1383 / 1383**, mirrored Laboratory implemented, manual acceptance pending
+- Next package review trigger: selected deliberately after EUI-M4-02 closeout; no unrelated package is unlocked by this review
 
 ## Navigation
 

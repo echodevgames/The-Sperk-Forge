@@ -196,6 +196,8 @@ namespace EchoDevGames.EchoUI.Samples
             "<not run>";
         private string m302PerformanceEvidence =
             "<not run>";
+        private LaboratoryNotificationPresenter m402Presenter;
+        private LaboratoryNotificationProof m402Proof;
         private UIHudRegionHost m401StatusRegion;
         private UIHudRegionHost m401UtilityRegion;
         private UISurface m401HealthWidget;
@@ -360,6 +362,7 @@ namespace EchoDevGames.EchoUI.Samples
                 yield return null;
             }
 
+            InitializeM402ProofInfrastructure();
             InitializeM401ProofInfrastructure();
             InitializeM302ProofInfrastructure();
             InitializeM2Proof();
@@ -402,6 +405,7 @@ namespace EchoDevGames.EchoUI.Samples
                 selectedTab,
                 new[]
                 {
+                    "M4-02 Notifications",
                     "M4-01 HUD",
                     "M3-02 Transitions",
                     "M3-01 Focus",
@@ -424,21 +428,33 @@ namespace EchoDevGames.EchoUI.Samples
 
             if (selectedTab == 0)
             {
-                DrawM401HudConsole();
+                if (m402Proof == null)
+                {
+                    GUILayout.Label(
+                        "M4-02 notification proof infrastructure is unavailable.");
+                }
+                else
+                {
+                    m402Proof.DrawConsole();
+                }
             }
             else if (selectedTab == 1)
             {
-                DrawM302TransitionConsole();
+                DrawM401HudConsole();
             }
             else if (selectedTab == 2)
             {
-                DrawM301FocusConsole();
+                DrawM302TransitionConsole();
             }
             else if (selectedTab == 3)
             {
-                DrawM202ModalConsole();
+                DrawM301FocusConsole();
             }
             else if (selectedTab == 4)
+            {
+                DrawM202ModalConsole();
+            }
+            else if (selectedTab == 5)
             {
                 DrawM2Console();
             }
@@ -452,6 +468,42 @@ namespace EchoDevGames.EchoUI.Samples
 
             GUI.contentColor =
                 previousContentColor;
+        }
+
+        private void OnDestroy()
+        {
+            if (m402Proof != null)
+            {
+                m402Proof.Dispose();
+                m402Proof = null;
+            }
+        }
+
+        private void InitializeM402ProofInfrastructure()
+        {
+            if (root == null ||
+                !root.IsInitialized ||
+                !root.IsNotificationLifecycleInitialized)
+            {
+                return;
+            }
+
+            m402Presenter =
+                GetComponent<LaboratoryNotificationPresenter>();
+
+            if (m402Presenter == null)
+            {
+                m402Presenter =
+                    gameObject.AddComponent<
+                        LaboratoryNotificationPresenter>();
+            }
+
+            m402Proof =
+                new LaboratoryNotificationProof(
+                    root,
+                    m402Presenter);
+
+            m402Proof.Initialize();
         }
 
 

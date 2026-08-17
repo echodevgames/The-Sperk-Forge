@@ -1386,6 +1386,22 @@ MonoBehaviour:
   deferredScreenOperationCapacity: 16
   hudWidgetCapacity: 8
   hudVisibilityLeaseCapacity: 8
+  notificationChannelDefinitions:
+  - channelId: notification.primary
+    visibleCapacity: 2
+    pendingCapacity: 3
+    defaultLifetimeSeconds: 1.5
+    overflowPolicy: 0
+  - channelId: notification.secondary
+    visibleCapacity: 1
+    pendingCapacity: 2
+    defaultLifetimeSeconds: 1.25
+    overflowPolicy: 1
+  - channelId: notification.priority
+    visibleCapacity: 1
+    pendingCapacity: 2
+    defaultLifetimeSeconds: 1.25
+    overflowPolicy: 2
 --- !u!114 &1575597595
 MonoBehaviour:
   m_ObjectHideFlags: 0

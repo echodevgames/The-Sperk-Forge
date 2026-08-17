@@ -63,4 +63,17 @@
 - Added the mirrored Laboratory proof at `29573ef`.
 - The requested focused/full automated gate is user-confirmed green; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
 - Manual HUD Laboratory **5 / 5 PASS**, retained M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green, and package/imported parity verified.
-- EUI-M4-01 is complete. EUI-M4-02 is not activated.
+- EUI-M4-01 is complete. Its historical stop point did not activate EUI-M4-02; the later EUI-M4-02 section supersedes that status.
+
+## EUI-M4-02 ACTIVE — LABORATORY ACCEPTANCE PENDING
+
+- Added project-defined stable notification channels with independent visible/pending bounds.
+- Added deterministic higher-priority/FIFO-tie pending promotion without visible preemption.
+- Added channel-scoped fresh-generation coalescing, stale-handle safety, and visible lifetime restart.
+- Added `RejectNewest`, `DropOldestPending`, and strict-outrank `ReplaceLowestPriorityPending` overflow policies.
+- Added unscaled automatic lifetime, manual lifetime/dismissal, owner/presentation-loss cleanup, reset/shutdown settlement, status snapshots/events, root integration, and a replaceable presenter seam.
+- Runtime/root/presenter implementation is accepted through `d93d0bd`.
+- Activation baseline: full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**.
+- Final automated evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, zero failed/skipped/inconclusive.
+- Added mirrored Laboratory configuration, a sample-owned plain reference presenter, and six bounded manual checks while retaining all prior tabs.
+- Unity manual acceptance, retained smoke, and final documentation closeout remain pending.

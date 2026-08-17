@@ -20,7 +20,7 @@
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-02 JIT revisit. EUI-M1 through EUI-M4-01 are complete. EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M4-01 closeout baseline `5e7ad92`; Runtime implementation has not started.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-02 JIT revisit. EUI-M1 through EUI-M4-01 are complete. EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M4-01 closeout baseline `5e7ad92`; Runtime/root/presenter implementation is automated-green through `d93d0bd`, and Laboratory manual acceptance remains pending.
 
 ---
 
@@ -2143,7 +2143,7 @@ The slice owns project-defined stable channels, independent visible/pending boun
 
 Default overflow is `RejectNewest`; authored alternatives are `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending`. Notifications remain transient presentation and cannot own durable history, localization/audio/analytics, gameplay/domain truth, input, pause/time scale, cursor, persistence, or project lifetime composition.
 
-Exact post-M4 NUnit totals were not captured during EUI-M4-01, so the first gate records the current EchoUI/full EditMode baseline before Runtime edits. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
+The activation baseline was recorded before Runtime edits at full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Runtime/root/presenter implementation is accepted through `d93d0bd`. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive. The mirrored Laboratory now implements three authored channels, a sample-owned plain presenter, six bounded checks, and retained tabs; Unity manual acceptance and retained smoke remain pending. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
 
 ---
 
@@ -2167,12 +2167,13 @@ Completed:
 - retained prior-tab smoke green; package/imported parity verified
 
 Active phase:
-- EUI-M4-02 JIT reconciliation and activation
-- Runtime implementation has not started
-- first gate is exact EchoUI Editor and full Foundry EditMode baseline capture
-  on the activation commit before Runtime edits
+- EUI-M4-02 Runtime/root/presenter implementation accepted through d93d0bd
+- final automated gate: 1383 / 1383 full Foundry EditMode; 277 / 277 EchoUI
+- mirrored M4-02 Laboratory implemented with three channels and checks 1-6
+- Unity manual checks 1-6 and retained prior-tab smoke are pending
 
-Resume only the EUI-M4-02 baseline-test gate. Do not begin prompts, tooltips,
+Resume only the EUI-M4-02 Unity Laboratory acceptance and retained smoke. After
+user-confirmed green, reconcile and publish final closeout documentation. Do not begin prompts, tooltips,
 Motifs/accessibility, safe area, full Window management, persistence, bridges,
 authoring libraries/Builder, integration, or release work.
 ```
@@ -2184,13 +2185,13 @@ authoring libraries/Builder, integration, or release work.
 | Runtime package version | `0.1.0` |
 | Package authority | SFGSS-PKG-ECHOUI-001 v1.8.0 Approved |
 | Suite authority | SFGSS-000 v0.27.0 Approved |
-| Completed implementation checkpoints | EUI-M1-01 through EUI-M4-01 |
+| Completed implementation checkpoints | EUI-M1-01 through EUI-M4-01; EUI-M4-02 Runtime/root/presenter automated implementation complete, checkpoint not yet closed |
 | EUI-M3-02 retained evidence | Activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14** |
 | EUI-M4-01 completion evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
 | Active implementation checkpoint | EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime |
-| Active phase | JIT reconciliation/activation complete; Runtime implementation not started |
-| Missing numeric evidence | Exact post-M4 NUnit totals were not captured; `1246 / 1246` remains the pre-M4 floor |
-| Exact resume phase | Run EchoUI Editor and full Foundry EditMode on the activation commit; record exact totals before Runtime edits |
+| Active phase | Mirrored M4-02 Laboratory implemented; Unity manual acceptance and retained smoke pending |
+| EUI-M4-02 automated evidence | Activation baseline **1258 / 1258** full and **152 / 152** EchoUI; final **1383 / 1383** full, **277 / 277** EchoUI, **125 / 125** notification, **17 / 17** presenter; zero failed/skipped/inconclusive |
+| Exact resume phase | Run M4-02 Laboratory checks 1-6 and retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke; then reconcile closeout |
 | Excluded next work | Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive |
 
 ---
@@ -2218,7 +2219,7 @@ authoring libraries/Builder, integration, or release work.
 - [x] PKG-LEARN-008 bounded EUI-M4-02 notification revisit is complete.
 - [x] EUI-M3-02 is complete and closed at `0affb7d`.
 - [x] EUI-M4-01 is COMPLETE / CLOSED with automated gate green, manual HUD Laboratory 5 / 5 PASS, retained smoke green, and package/imported parity verified.
-- [x] EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan; Runtime implementation has not started.
+- [x] EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan; Runtime/root/presenter implementation is automated-green through `d93d0bd`, with Laboratory manual acceptance pending.
 
 ### 30.2 Approval record
 
@@ -2233,7 +2234,7 @@ authoring libraries/Builder, integration, or release work.
 **EUI-M3-02 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M4-01 JIT reconciliation and explicit authorization date:** August 16, 2026
 **EUI-M4-02 JIT reconciliation and explicit authorization date:** August 17, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef`. EUI-M4-02 is authorized only within its active Checkpoint Build Plan from baseline `5e7ad92`; Runtime edits remain locked until the exact current EchoUI/full EditMode baseline is recorded. Retained `1246 / 1246` is pre-M4 evidence and must not be relabeled. The Assembly Library promise remains durable authority, but Primitive Warehouse/template/catalog/utility/Builder implementation remains outside EUI-M4-02. Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, integration, and release remain inactive. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
+**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef`. EUI-M4-02 is authorized only within its active Checkpoint Build Plan from baseline `5e7ad92`; its activation baseline and final automated evidence are recorded above, Runtime/root/presenter implementation is accepted through `d93d0bd`, and manual Laboratory acceptance remains required before closeout. The Assembly Library promise remains durable authority, but Primitive Warehouse/template/catalog/utility/Builder implementation remains outside EUI-M4-02. Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, integration, and release remain inactive. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 
@@ -2285,6 +2286,5 @@ The original parent-authority header remains approval provenance. This addendum 
 - [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
 - [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
-
 
 

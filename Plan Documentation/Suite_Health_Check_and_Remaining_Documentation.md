@@ -2,7 +2,7 @@
 
 **Updated:** August 17, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M4-01 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M4-01 complete; EUI-M4-02 ACTIVE / AUTHORIZED with notification Runtime not started
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M4-01 complete; EUI-M4-02 Runtime/presenter automated-green with Laboratory manual acceptance pending
 
 ## Current health
 
@@ -25,20 +25,21 @@
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded JIT revisits now cover the active EUI-M4-02 notification-channel contract under package authority v1.8.0 |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.8.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M4-01 COMPLETE / CLOSED** — documentation closeout `5e7ad92`; implementation/Laboratory seal `29573ef`; automated gate green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
-| Looking Glass active checkpoint | **EUI-M4-02 ACTIVE / AUTHORIZED** — bounded notification channels, priority, coalescing, overflow, and unscaled lifetime; Runtime not started |
+| Looking Glass active checkpoint | **EUI-M4-02 ACTIVE / AUTHORIZED** — Runtime/presenter automated-green through `d93d0bd`; mirrored Laboratory implemented; manual checks and retained smoke pending |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
-## Current Looking Glass EUI-M4-02 activation health
+## Current Looking Glass EUI-M4-02 implementation health
 
 - Clean activation baseline: EUI-M4-01 documentation closeout `5e7ad92`.
 - Package authority: **SFGSS-PKG-ECHOUI-001 v1.8.0** under unchanged **SFGSS-000 v0.27.0**.
 - Authorized: project-defined stable channels; independent visible/pending bounds; priority/FIFO promotion; no visible preemption; opt-in fresh-generation coalescing; deterministic pending overflow; unscaled/manual lifetime; owner/reset/shutdown settlement; status/events; tests; and Laboratory proof.
-- Exact post-M4 NUnit totals were not captured. Retained `1246 / 1246` remains pre-M4 history.
-- First gate: record exact EchoUI Editor and full Foundry EditMode totals on the activation commit before Runtime edits.
-- Runtime implementation has not started.
+- Activation baseline before Runtime edits: full Foundry EditMode **1258 / 1258**; EchoUI Editor **152 / 152**; zero failed.
+- Runtime/root/presenter implementation is accepted through `d93d0bd`.
+- Final accepted automated evidence: full Foundry EditMode **1383 / 1383**; EchoUI Editor **277 / 277**; aggregate notification fixtures **125 / 125**; presenter fixture **17 / 17**; zero failed/skipped/inconclusive.
+- The mirrored Laboratory now has three authored channels, a sample-owned plain presenter, checks 1-6, and retained tabs. Manual M4-02 acceptance and retained smoke remain pending.
 - Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
 
 ## Historical Looking Glass EUI-M4-01 completion health
@@ -509,4 +510,4 @@ This follows the existing suite requirement that release-ready scene-visible pac
 
 ## Looking Glass current frontier — August 17, 2026
 
-EUI-M4-01 is complete at documentation closeout `5e7ad92`. EUI-M4-02 is ACTIVE / AUTHORIZED for bounded notification channels, deterministic priority/FIFO promotion, non-preemptive visibility, opt-in coalescing, pending overflow, unscaled/manual lifetime, owner cleanup, status/events, tests, and Laboratory proof. Runtime has not started; the exact current automated baseline must be recorded first. Adjacent M4 transients and later package capabilities remain separately gated.
+EUI-M4-01 is complete at documentation closeout `5e7ad92`. EUI-M4-02 is ACTIVE / AUTHORIZED for bounded notification channels, deterministic priority/FIFO promotion, non-preemptive visibility, opt-in coalescing, pending overflow, unscaled/manual lifetime, owner cleanup, status/events, tests, and Laboratory proof. Runtime/root/presenter implementation is automated-green through `d93d0bd`; full Foundry EditMode is **1383 / 1383** and EchoUI Editor is **277 / 277**. The mirrored Laboratory is implemented; manual checks 1-6 and retained smoke are the exact resume phase. Adjacent M4 transients and later package capabilities remain separately gated.
