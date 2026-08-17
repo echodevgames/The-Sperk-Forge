@@ -54,11 +54,13 @@
 - Final evidence: **1246 / 1246** full EditMode and **140 / 140** EchoUI Editor.
 - Implementation sealed at `c919238`; no next checkpoint activated.
 
-## EUI-M4-01 ACTIVE — AUTOMATED GREEN, LABORATORY PENDING
+## EUI-M4-01 FINAL CLOSEOUT COMPLETE
 
 - Added stable project-defined named HUD regions with deterministic lookup, ordering, and bounded capacity.
 - Added generation-safe widget registration leases and reason/owner visibility leases with idempotent disposal and stale-handle protection.
 - Added deterministic effective visibility, owner-loss/shutdown cleanup, listener isolation, status snapshots, and events while preserving Screen/Modal/Window independence.
 - Added focused Editor coverage. Runtime/tests landed at `df9e2be`; bounded corrections run through `e47d43b`.
-- The requested focused/full automated gate is user-confirmed green; exact post-M4 NUnit totals remain to be captured at closeout.
-- EUI-M4-01 Laboratory/manual acceptance and documentation closeout are pending. EUI-M4-02 is not activated.
+- Added the mirrored Laboratory proof at `29573ef`.
+- The requested focused/full automated gate is user-confirmed green; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
+- Manual HUD Laboratory **5 / 5 PASS**, retained M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green, and package/imported parity verified.
+- EUI-M4-01 is complete. EUI-M4-02 is not activated.

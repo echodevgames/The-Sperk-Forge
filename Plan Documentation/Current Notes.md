@@ -3,23 +3,25 @@
 **Document role:** Living development capture page
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Last reconciled:** August 16, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; Runtime and automated proof green at `e47d43b`; Laboratory/manual proof pending
-**Current checkpoint:** EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority — ACTIVE / AUTHORIZED; implementation phase complete, Laboratory pending
+**Last reconciled:** August 17, 2026
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-01 — COMPLETE / CLOSED; implementation and Laboratory sealed at `29573ef`
+**Current checkpoint:** None active; EUI-M4-02 is named direction only and remains unactivated
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
-## Current resume phase — Looking Glass EUI-M4-01 automated green, Laboratory pending — August 16, 2026
+## Current resume phase — Looking Glass EUI-M4-01 final closeout — August 17, 2026
 
-- Live `main` reconciliation baseline: `e47d43b87b4af95cfb7156500caf538be664a71c`.
-- Activation: `ce30ac6` — named HUD regions, widget leases, deterministic visibility authority, and the EUI-M4-01 plan.
-- The retained pre-Runtime floor exposed an EUI-M3 transition timing regression; the bounded test-only stabilization landed at `dbdf6bd`, after which the incoming gate returned green.
-- Runtime and focused Editor tests: `df9e2be`.
-- Bounded compile/test corrections: `81f9625` (HUD key compile correction), `3992bbc` (LogAssert import), and `e47d43b` (observer-exception expectation).
-- Jesse confirmed the requested focused/full automated gate green after `e47d43b`. Exact post-M4 NUnit totals are not yet recorded in the repository and must be captured at closeout; the retained `1246 / 1246` XML is pre-M4 evidence and must not be relabeled.
-- **Exact resume phase:** extend and run the EUI-M4-01 Laboratory/manual proof, make only bounded corrections inside the active plan, then seal implementation and reconcile closeout documentation.
+- Closeout parent and implementation/Laboratory seal: `29573efc7fb589c86cbb35eba588c366b24edd2d`.
+- Activation: `ce30ac6`; retained-floor timing stabilization: `dbdf6bd`; Runtime/tests: `df9e2be`; bounded corrections: `81f9625`, `3992bbc`, and `e47d43b`.
+- Jesse confirmed the requested focused/full automated gate green after `e47d43b`. Exact post-M4 NUnit totals were not captured in repository evidence; retained `1246 / 1246` remains the pre-M4 floor and is not relabeled.
+- Manual HUD Laboratory: **5 / 5 PASS** — named regions/multiple widgets; overlapping visibility with out-of-order release; owner-loss plus stale-generation safety; duplicate/capacity rejection without mutation; and 180-frame idle quiescence.
+- Check 5 retained regions `2 -> 2`, widgets `3 -> 3`, leases `0 -> 0`, transitions `0 -> 0`, stable snapshots, and unchanged Screen/Modal/Window state.
+- Jesse's final `green` confirms the requested retained M3-02/M3-01/M2-02/M2-01/M1 smoke gate; exact per-tab observation strings were not separately supplied.
+- Package/imported Laboratory README, driver, and scene parity: **VERIFIED**.
+- **EUI-M4-01 is COMPLETE / CLOSED.** No Looking Glass checkpoint is active.
+- **Exact resume phase:** stop at the closed checkpoint. Present EUI-M4-02 as a bounded activation proposal only when Jesse asks to continue; do not implement it under this closeout.
 - EUI-M4-02 remains named direction only and is **not activated**. No notification, prompt, tooltip, Motif/accessibility, Window-management, authoring-library, Builder, bridge, integration, or release slice is authorized.
 
 ## Looking Glass EUI-M3-02 JIT Reconciliation and Activation — August 15, 2026

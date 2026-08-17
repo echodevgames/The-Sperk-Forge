@@ -12,19 +12,20 @@ updated: 2026-08-16
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-01 — ACTIVE / AUTHORIZED; Runtime/tests green at `e47d43b`; Laboratory/manual proof pending
+**Current work item:** None active for The Looking Glass; EUI-M4-01 is COMPLETE / CLOSED at implementation/Laboratory seal `29573ef`
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
 
 
-## Current frontier — August 16, 2026
+## Current frontier — August 17, 2026
 
-- **Looking Glass:** EUI-M3-02 is **COMPLETE** at closeout `0affb7d`. EUI-M4-01 is **ACTIVE / AUTHORIZED** under package authority v1.7.0. Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through live `main` `e47d43b`.
-- The requested focused/full automated gate is user-confirmed green after `e47d43b`; exact post-M4 totals remain to be recorded at closeout. The exact resume phase is EUI-M4-01 Laboratory/manual proof, followed by implementation sealing and documentation closeout.
+- **Looking Glass:** EUI-M4-01 is **COMPLETE / CLOSED** under package authority v1.7.0. Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through `e47d43b`; implementation/Laboratory seal is `29573ef`.
+- The requested focused/full automated gate is user-confirmed green. Exact post-M4 NUnit totals were not captured; retained `1246 / 1246` remains the pre-M4 floor.
+- Manual HUD Laboratory is **5 / 5 PASS**; retained M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green; package/imported parity is verified.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- EUI-M4-01 is limited to named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof. EUI-M4-02 notifications and every later capability remain separately gated and inactive.
+- No Looking Glass checkpoint is active. EUI-M4-02 notifications and every later capability remain separately gated and inactive.
 
 
 ## How to use this in Obsidian
@@ -372,4 +373,8 @@ Blocking `Modal` lifecycle remains distinct from independent `Window` coexistenc
 
 ## 2026-08-16 Looking Glass EUI-M3-02 closeout and EUI-M4-01 activation
 
-EUI-M3-02 is complete at closeout `0affb7d` with implementation `c919238`, full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, and Laboratory **14 / 14**. EUI-M4-01 is ACTIVE / AUTHORIZED for stable named HUD regions, generation-safe widget leases, deterministic visibility leases, bounded ownership cleanup, status, tests, and Laboratory proof. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, authoring-library/Builder, bridge, integration, and release work remain gated.
+EUI-M3-02 is complete at closeout `0affb7d` with implementation `c919238`, full EditMode **1246 / 1246**, EchoUI Editor **140 / 140**, and Laboratory **14 / 14**. EUI-M4-01 was activated for stable named HUD regions, generation-safe widget leases, deterministic visibility leases, bounded ownership cleanup, status, tests, and Laboratory proof.
+
+## 2026-08-17 Looking Glass EUI-M4-01 closeout
+
+EUI-M4-01 is Complete. Activation `ce30ac6`; Runtime/tests `df9e2be`; bounded corrections `dbdf6bd`, `81f9625`, `3992bbc`, and `e47d43b`; implementation/Laboratory seal `29573ef`. The requested automated gate is user-confirmed green, exact post-M4 NUnit totals were not captured, manual HUD Laboratory is **5 / 5 PASS**, retained prior-tab smoke is green, and package/imported parity is verified. EUI-M4-02 and all adjacent work remain gated.

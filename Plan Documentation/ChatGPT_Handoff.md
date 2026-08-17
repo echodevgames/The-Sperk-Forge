@@ -6,7 +6,7 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Repository:** The Sperk’s Forge
 **Current Unity baseline:** Unity 6000.3.8f1
-**Last updated:** August 16, 2026
+**Last updated:** August 17, 2026
 
 > This file tells a fresh ChatGPT conversation how to rebuild the working context from the repository without depending on an old transcript.
 

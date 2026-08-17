@@ -44,7 +44,7 @@ The **M4-01 HUD** tab is the dedicated proof surface for named HUD regions, boun
 
 Looking Glass owns only HUD presentation infrastructure. The sample does not calculate health/objectives, own gameplay input, change pause/time scale, persist HUD state, or enter Screen/Modal/Window ordering.
 
-The requested focused/full automated gate is user-confirmed green through implementation baseline e47d43b. Exact post-M4 NUnit totals remain pending closeout evidence and must not be replaced with the retained pre-M4 **1246 / 1246** floor.
+The requested focused/full automated gate is user-confirmed green through implementation baseline `e47d43b`. Exact post-M4 NUnit totals were not captured; the retained pre-M4 **1246 / 1246** floor must not be relabeled.
 
 Before a fresh run:
 
@@ -133,6 +133,21 @@ After checks 1-5 pass, visit:
 - **M1 Retained**
 
 Run one representative happy-path check on each tab and confirm the previously accepted behavior remains intact. EUI-M4-01 must not alter Screen history, Modal order/exact-once behavior, independent Window state, focus/EventSystem policy, transition settlement, context response, or project-owned gameplay truth.
+
+## EUI-M4-01 accepted evidence — August 17, 2026
+
+Jesse confirmed the complete requested gate green.
+
+- Check 1 PASS: `hud.status` generation 1, visible, two widgets, zero leases, SceneOwned; `hud.utility` generation 1, visible, one widget, zero leases, SceneOwned.
+- Check 2 PASS: hide/show overlap resolved deterministically; older hide release `Completed`; region stayed visible; final show release `Completed`; authored visibility and structural state restored.
+- Check 3 PASS: owner loss cleaned matching generations; old release returned `Stale`; replacement survived; final baseline restored.
+- Check 4 PASS: duplicate returned `Duplicate`; overflow returned `CapacityExceeded`; widget count remained three and snapshots did not mutate.
+- Check 5 PASS: 180 idle frames retained regions `2 -> 2`, widgets `3 -> 3`, leases `0 -> 0`, transitions `0 -> 0`, stable snapshots, and unchanged Screen/Modal/Window state.
+- Retained M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab observation strings were not separately supplied.
+- Requested focused/full automated gate: user-confirmed green after `e47d43b`; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
+- Package/imported README, driver, and scene parity: verified at implementation seal `29573ef`.
+
+EUI-M4-01 is complete. EUI-M4-02 remains inactive.
 
 # EUI-M3-02 manual acceptance
 

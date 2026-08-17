@@ -2,8 +2,9 @@
 
 **Package:** The Looking Glass (`EchoUI`)
 **Milestone:** M4 — Complete MVP Surfaces
-**Status:** ACTIVE / AUTHORIZED
-**Current phase:** Runtime and automated proof green through `e47d43b`; Laboratory/manual proof pending
+**Status:** COMPLETE / CLOSED
+**Current phase:** Runtime, automated gate, Laboratory acceptance, retained smoke, parity, and closeout reconciliation complete
+**Implementation/Laboratory seal:** `29573efc7fb589c86cbb35eba588c366b24edd2d`
 **Activation baseline:** `0affb7de757f8acdd35175457f70d00c657b85c3`
 **Suite authority:** SFGSS-000 v0.27.0
 **Package authority:** SFGSS-PKG-ECHOUI-001 v1.7.0
@@ -154,9 +155,9 @@ EUI-M4-01 completes only after automated and manual proof, retained regression, 
 
 ## 18. Handoff
 
-EUI-M4-01 is ACTIVE / AUTHORIZED from `0affb7d`. Activation `ce30ac6`, Runtime/tests `df9e2be`, and bounded corrections through `e47d43b` are complete. The requested focused/full automated gate is user-confirmed green. Resume at the Laboratory/manual-proof slice; then seal implementation and reconcile closeout documentation. EUI-M4-02 remains inactive.
+EUI-M4-01 is **COMPLETE / CLOSED**. Activation `ce30ac6`, Runtime/tests `df9e2be`, bounded corrections through `e47d43b`, and the Laboratory implementation seal `29573ef` are complete. The requested focused/full automated gate and the complete manual Laboratory gate are user-confirmed green. No Looking Glass successor is active; EUI-M4-02 remains named direction only.
 
-## 19. Implementation phase evidence — August 16, 2026
+## 19. Final evidence — August 17, 2026
 
 - Activation commit: `ce30ac6`.
 - The incoming gate exposed an M3 transition timing regression; bounded test-only stabilization: `dbdf6bd`.
@@ -164,7 +165,13 @@ EUI-M4-01 is ACTIVE / AUTHORIZED from `0affb7d`. Activation `ce30ac6`, Runtime/t
 - HUD-key compile correction: `81f9625`.
 - Test LogAssert import correction: `3992bbc`.
 - Observer-exception assertion correction: `e47d43b`.
-- Jesse confirmed the requested focused/full automated gate green after `e47d43b`.
-- Exact post-M4 NUnit totals are not yet committed; retained `1246 / 1246` evidence belongs to the pre-M4 floor.
-- Remaining active scope: EUI-M4-01 Laboratory/manual acceptance, retained smoke/parity, implementation sealing, and documentation closeout.
-- Stop before EUI-M4-02 or any adjacent capability.
+- Laboratory README/driver/scene seal in package and imported mirrors: `29573ef`.
+- Jesse confirmed the requested focused/full automated gate green after `e47d43b`. Exact post-M4 NUnit totals were not captured in repository evidence; retained `1246 / 1246` remains explicitly the pre-M4 floor.
+- Manual Check 1 PASS: two SceneOwned named regions; `hud.status` generation 1, visible, two widgets, zero leases; `hud.utility` generation 1, visible, one widget, zero leases.
+- Manual Check 2 PASS: priority hide/show overlap, older hide released first, final authored visibility restored, and Screen/Modal/Window state unchanged.
+- Manual Check 3 PASS: owner-loss cleanup, stale-generation rejection, replacement survival, and final baseline restoration.
+- Manual Check 4 PASS: duplicate admission returned `Duplicate`; capacity overflow returned `CapacityExceeded`; widget count and snapshots stayed unchanged.
+- Manual Check 5 PASS: 180 idle frames held regions `2 -> 2`, widgets `3 -> 3`, leases `0 -> 0`, transitions `0 -> 0`, stable snapshots, and unchanged structural state.
+- Jesse's final `green` confirms the requested retained M3-02/M3-01/M2-02/M2-01/M1 smoke gate. Exact per-tab observation strings were not separately supplied.
+- Package/imported Laboratory README, driver, and scene parity: **VERIFIED**.
+- No authority revision or suite ADR was required. EUI-M4-02 and every adjacent capability remain inactive.

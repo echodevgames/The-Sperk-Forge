@@ -3,7 +3,7 @@
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.7.0
-**Current checkpoint:** EUI-M4-01 — ACTIVE / AUTHORIZED; Runtime/tests green through `e47d43b`; Laboratory/manual proof pending
+**Current checkpoint:** None active; EUI-M4-01 is COMPLETE / CLOSED at implementation/Laboratory seal `29573ef`
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02, EUI-M3-01, and EUI-M3-02 are complete. EUI-M4-01 is ACTIVE / AUTHORIZED for named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof. Motif/accessibility, notifications/prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02, EUI-M3-01, EUI-M3-02, and EUI-M4-01 are complete. EUI-M4-01 supplies named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof. Motif/accessibility, notifications/prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -170,15 +170,19 @@ The Laboratory-discovered synchronous cancellation race is corrected by guarding
 - HUD remains presentation-only and independent of Screen history, Modal stack, Window state, gameplay input, pause/time scale, cursor, persistence, and domain truth.
 - Owner loss and shutdown clean only matching live generations.
 - Notifications, prompts, tooltips, Motifs/accessibility, full Window management, authoring libraries/Builder, bridges, integration, and release remain excluded.
-- **EUI-M4-01 is ACTIVE / AUTHORIZED. Runtime/tests are green through `e47d43b`; Laboratory/manual proof and closeout remain pending.**
+- **EUI-M4-01 is COMPLETE / CLOSED. No successor checkpoint is active.**
 
-## EUI-M4-01 implementation phase
+## EUI-M4-01 FINAL CLOSEOUT COMPLETE
 
 - Activation: `ce30ac6`.
 - Retained-floor timing stabilization: `dbdf6bd`.
 - Runtime and focused tests: `df9e2be`.
 - Bounded compile/test corrections: `81f9625`, `3992bbc`, `e47d43b`.
-- Jesse confirmed the requested focused/full automated gate green after `e47d43b`.
-- Exact post-M4 NUnit totals are not yet committed; `1246 / 1246` is the retained pre-M4 floor.
-- **Exact resume phase:** EUI-M4-01 Laboratory/manual proof, retained smoke/parity, implementation seal, and documentation closeout.
-- EUI-M4-02 remains inactive.
+- Laboratory implementation seal: `29573ef`.
+- The requested focused/full automated gate is user-confirmed green. Exact post-M4 NUnit totals were not captured; `1246 / 1246` remains the retained pre-M4 floor.
+- Manual HUD Laboratory: **5 / 5 PASS**, including two named SceneOwned regions and three widgets, overlapping out-of-order visibility releases, owner-loss/stale-generation safety, duplicate/capacity rejection without mutation, and 180-frame idle quiescence.
+- Jesse's final `green` confirms retained M3-02/M3-01/M2-02/M2-01/M1 smoke; exact per-tab observation strings were not separately supplied.
+- Package/imported Laboratory README, driver, and scene parity: **VERIFIED**.
+- Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, domain-truth, or project-lifetime authority.
+- Package authority remains SFGSS-PKG-ECHOUI-001 v1.7.0 under SFGSS-000 v0.27.0; no new ADR is required.
+- **Exact resume phase:** stop at completed EUI-M4-01. EUI-M4-02 remains inactive and requires its own visible activation slice.

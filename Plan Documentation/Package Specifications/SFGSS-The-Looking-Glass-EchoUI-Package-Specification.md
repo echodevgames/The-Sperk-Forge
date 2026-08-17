@@ -16,11 +16,11 @@
 **Required Unity package:** Unity UI (`com.unity.ugui`) `2.0.0`, verified from the Unity 6000.3.8f1 project manifest during PKG-LEARN-008
 **Default text path:** uGUI-compatible project-owned text components; no separate text package dependency is required by EUI-M1-01
 **Parent authority:** SFGSS-000 and SFGSS-001
-**Last updated:** August 16, 2026
+**Last updated:** August 17, 2026
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-01 JIT revisit. EUI-M1 through EUI-M3-02 are complete. EUI-M4-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M3-02 closeout baseline `0affb7d`; Runtime/tests are green through `e47d43b`, and implementation permission now extends only to EUI-M4-01 Laboratory/manual proof and closeout.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-01 JIT revisit. EUI-M1 through EUI-M4-01 are complete. No Looking Glass checkpoint is active; EUI-M4-02 and adjacent capabilities require their own visible activation slice under SFGSS-005.
 
 ---
 
@@ -2117,42 +2117,49 @@ Historical stop point satisfied at closeout `0affb7d`. The completed checkpoint 
 
 ---
 
-### 28.9 Active implementation checkpoint — EUI-M4-01
+### 28.9 Completed implementation checkpoint — EUI-M4-01
 
-**EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority** is **ACTIVE / AUTHORIZED** from clean EUI-M3-02 closeout baseline `0affb7d`.
+**EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority** is **COMPLETE / CLOSED**.
 
-The slice owns stable named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, structured status/events, focused tests, and Laboratory proof. Activation landed at `ce30ac6`; Runtime/tests at `df9e2be`; bounded corrections run through `e47d43b`. The automated gate is user-confirmed green; Laboratory/manual proof and closeout remain pending. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, peer bridges, Primitive/Template/Assembly/Builder authoring, integration, and release remain inactive.
+Durable evidence:
+- activation `ce30ac6`;
+- retained-floor timing stabilization `dbdf6bd`;
+- Runtime/tests `df9e2be`;
+- bounded corrections `81f9625`, `3992bbc`, and `e47d43b`;
+- implementation/Laboratory seal `29573ef`;
+- requested focused/full automated gate user-confirmed green, with exact post-M4 NUnit totals not captured and retained `1246 / 1246` preserved as the pre-M4 floor;
+- manual HUD Laboratory **5 / 5 PASS**;
+- retained M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green;
+- package/imported Laboratory parity verified.
+
+The completed slice supplies stable named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, and structured status/events without changing Screen/Modal/Window authority or claiming gameplay truth. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, peer bridges, Primitive/Template/Assembly/Builder authoring, integration, and release remain inactive.
 
 ---
 
 ## 29. New-Conversation Handoff
 
 ```text
-Continue The Sperk's Forge from live main e47d43b.
+Continue The Sperk's Forge from the latest live main and verify the branch head.
 
 Authority:
 - SFGSS-000 v0.27.0
 - The Looking Glass package specification v1.7.0
 - SFGSS-005 v1.7.0 and SFGSS-ADR-007 v1.1.0
-- Active plan: EUI-M4-01
 
 Completed:
-- EUI-M1 through EUI-M3-02
-- EUI-M3-02 closeout 0affb7d with 1246 / 1246 full EditMode,
-  140 / 140 EchoUI Editor, and 14 / 14 Laboratory
-
-Active phase:
+- EUI-M1 through EUI-M4-01
 - EUI-M4-01 activation ce30ac6
 - Runtime/tests df9e2be
 - bounded corrections dbdf6bd, 81f9625, 3992bbc, e47d43b
-- requested focused/full automated gate user-confirmed green
-- exact post-M4 totals pending closeout evidence
-- Laboratory/manual proof pending
+- implementation/Laboratory seal 29573ef
+- automated gate user-confirmed green; exact post-M4 totals not captured
+- manual HUD Laboratory 5 / 5 PASS
+- retained prior-tab smoke user-confirmed green
+- package/imported Laboratory parity verified
 
-Resume only the EUI-M4-01 Laboratory/manual-proof slice, then seal the
-implementation and reconcile closeout documentation. Do not activate EUI-M4-02
-or adjacent capabilities. Use the visible slice loop and the narrow green/go
-semantics in SFGSS-005.
+No Looking Glass checkpoint is active. Stop at the completed EUI-M4-01
+boundary. Present EUI-M4-02 as a bounded activation proposal only when Jesse
+asks to continue; do not implement it under the closed plan.
 ```
 
 ### 29.1 Current status record
@@ -2162,11 +2169,12 @@ semantics in SFGSS-005.
 | Runtime package version | `0.1.0` |
 | Package authority | SFGSS-PKG-ECHOUI-001 v1.7.0 Approved |
 | Suite authority | SFGSS-000 v0.27.0 Approved |
-| Completed implementation checkpoints | EUI-M1-01 through EUI-M3-02 |
+| Completed implementation checkpoints | EUI-M1-01 through EUI-M4-01 |
 | EUI-M3-02 retained evidence | Activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14** |
-| Active implementation checkpoint | EUI-M4-01 — Named HUD Regions, Widget Leases, and Deterministic Visibility Authority |
-| EUI-M4-01 implementation evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections `dbdf6bd`, `81f9625`, `3992bbc`, `e47d43b`; automated gate user-confirmed green |
-| Exact resume phase | EUI-M4-01 Laboratory/manual proof, then implementation seal and documentation closeout |
+| Active implementation checkpoint | None |
+| EUI-M4-01 completion evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections `dbdf6bd`, `81f9625`, `3992bbc`, `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate user-confirmed green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
+| Missing numeric evidence | Exact post-M4 NUnit totals were not captured; `1246 / 1246` remains the pre-M4 floor |
+| Exact resume phase | Stop at completed EUI-M4-01; next work requires a separate visible activation |
 | Excluded next work | EUI-M4-02 and all adjacent M4/later capabilities remain inactive |
 
 ---
@@ -2193,11 +2201,11 @@ semantics in SFGSS-005.
 - [x] Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, and Assembly Utilities are explicitly preserved as durable authoring capabilities distinct from the full Builder/Composer.
 - [x] PKG-LEARN-008 bounded EUI-M4-01 revisit is complete.
 - [x] EUI-M3-02 is complete and closed at `0affb7d`.
-- [x] EUI-M4-01 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan; Runtime/tests are green and Laboratory/manual proof remains pending.
+- [x] EUI-M4-01 is COMPLETE / CLOSED with automated gate green, manual HUD Laboratory 5 / 5 PASS, retained smoke green, and package/imported parity verified.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M4-01 reconciled and active
+**Decision:** Approved / EUI-M4-01 complete; no active successor
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
@@ -2207,7 +2215,7 @@ semantics in SFGSS-005.
 **EUI-M3-01 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M3-02 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M4-01 JIT reconciliation and explicit authorization date:** August 16, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M3-02 is complete at `0affb7d`. EUI-M4-01 implementation is authorized only within its active Checkpoint Build Plan; Runtime/tests are green through `e47d43b`, and the remaining authorized work is Laboratory/manual proof plus closeout. The Assembly Library promise remains durable authority but its Primitive Warehouse/template/catalog/utility/Builder implementation remains outside EUI-M4-01. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts beyond this declared slice, or suite authority stops the Green Path and returns to the owning authority.
+**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef` with the requested automated and manual gates user-confirmed green. Exact post-M4 NUnit totals were not captured and must not be inferred from the retained `1246 / 1246` pre-M4 floor. The Assembly Library promise remains durable authority, but its Primitive Warehouse/template/catalog/utility/Builder implementation remains outside completed EUI-M4-01. EUI-M4-02 and any other successor require a separate visible activation. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 

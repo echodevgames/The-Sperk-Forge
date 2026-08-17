@@ -1,8 +1,8 @@
 # The Sperk’s Forge – Suite Health Check and Remaining Documentation
 
-**Updated:** August 16, 2026
-**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M3-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M3-02 complete; EUI-M4-01 ACTIVE / AUTHORIZED with Runtime/tests green at `e47d43b`; Laboratory/manual proof pending
+**Updated:** August 17, 2026
+**Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M4-01 complete
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M4-01 COMPLETE / CLOSED; no Looking Glass successor active
 
 ## Current health
 
@@ -24,23 +24,25 @@
 | Release qualification/private beta | Not run |
 | Looking Glass learning | **PKG-LEARN-008 Complete** — bounded JIT revisits now cover the active EUI-M4-01 HUD-region/widget/visibility contract under package authority v1.7.0 |
 | Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.7.0 Approved** |
-| Looking Glass completed checkpoint | **EUI-M3-02 COMPLETE** — activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; EchoUI **140 / 140**; Laboratory **14 / 14**; final full EditMode **1246 / 1246** |
-| Looking Glass active checkpoint | **EUI-M4-01 ACTIVE / AUTHORIZED** — activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; automated gate user-confirmed green; Laboratory/manual proof and closeout pending |
+| Looking Glass completed checkpoint | **EUI-M4-01 COMPLETE / CLOSED** — activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
+| Looking Glass active checkpoint | **None** — EUI-M4-02 remains named direction only and inactive |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
-## Current Looking Glass EUI-M4-01 implementation health
+## Current Looking Glass EUI-M4-01 completion health
 
 - Clean authority baseline: EUI-M3-02 closeout `0affb7d`.
 - Activation: `ce30ac6`.
 - Retained-floor timing stabilization: `dbdf6bd`.
 - Runtime and focused tests: `df9e2be`.
 - Bounded corrections: `81f9625`, `3992bbc`, `e47d43b`.
-- Requested focused/full automated gate: **user-confirmed green** after `e47d43b`; exact post-M4 counts are pending repository evidence at closeout.
-- Remaining proof: EUI-M4-01 Laboratory/manual acceptance, retained smoke/parity, implementation seal, and documentation closeout.
-- EUI-M4-02 and adjacent features remain inactive.
+- Implementation/Laboratory seal: `29573ef`.
+- Requested focused/full automated gate: **user-confirmed green** after `e47d43b`; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
+- Manual HUD Laboratory: **5 / 5 PASS**; 180-frame idle proof stable; retained prior-tab smoke user-confirmed green.
+- Package/imported Laboratory parity: **VERIFIED**.
+- EUI-M4-01 is **COMPLETE / CLOSED**. EUI-M4-02 and adjacent features remain inactive.
 
 ## Historical Looking Glass EUI-M3-02 activation health
 - Activation baseline: `0c58240` — clean EUI-M3-01 final closeout.
@@ -495,6 +497,6 @@ This follows the existing suite requirement that release-ready scene-visible pac
 **Historical M1-01 closeout state:** EUI-M1-02 was not activated at `57a4fa4`. **Superseding state:** EUI-M1-02 is COMPLETE at implementation `1c0a46a` under EchoUI specification v1.2.0.
 
 
-## Looking Glass current frontier — August 16, 2026
+## Looking Glass current frontier — August 17, 2026
 
-EUI-M3-02 is complete at `0affb7d`. EUI-M4-01 is ACTIVE / AUTHORIZED for named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss cleanup, status/events, tests, and Laboratory proof. Adjacent M4 transients and later package capabilities remain separately gated.
+EUI-M4-01 is complete at implementation/Laboratory seal `29573ef`. Named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss cleanup, status/events, tests, and Laboratory proof are closed. No Looking Glass checkpoint is active; adjacent M4 transients and later package capabilities remain separately gated.
