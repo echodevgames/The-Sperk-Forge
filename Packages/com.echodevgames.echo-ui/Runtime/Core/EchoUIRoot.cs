@@ -117,6 +117,18 @@ namespace EchoDevGames.EchoUI
         private int hudVisibilityLeaseCapacity = 64;
 
         private UIHudRegionService hudRegionService;
+
+        [Header("M4 Notification Channels")]
+        [SerializeField]
+        private List<UINotificationChannelDefinition>
+            notificationChannelDefinitions =
+                new List<UINotificationChannelDefinition>
+                {
+                    new UINotificationChannelDefinition(
+                        "notification.default")
+                };
+
+        private UINotificationService notificationService;
         private bool processingDeferredScreenOperations;
         private bool shuttingDown;
 
@@ -216,6 +228,28 @@ namespace EchoDevGames.EchoUI
                 ? hudRegionService.VisibilityLeaseCount
                 : 0;
 
+        public bool IsNotificationLifecycleInitialized =>
+            notificationService != null &&
+            notificationService.IsValid;
+
+        public int NotificationChannelCount =>
+            IsNotificationLifecycleInitialized
+                ? notificationService.ChannelCount
+                : 0;
+
+        public int VisibleNotificationCount =>
+            IsNotificationLifecycleInitialized
+                ? notificationService.VisibleCount
+                : 0;
+
+        public int PendingNotificationCount =>
+            IsNotificationLifecycleInitialized
+                ? notificationService.PendingCount
+                : 0;
+
+        public event Action<UINotificationChannelSnapshot>
+            NotificationChannelChanged;
+
         private void Awake()
         {
             TryClaimAuthority();
@@ -238,6 +272,12 @@ namespace EchoDevGames.EchoUI
             if (hudRegionService != null)
             {
                 hudRegionService.RefreshDestroyedOwners();
+            }
+
+            if (notificationService != null)
+            {
+                notificationService.RefreshDestroyedOwners();
+                notificationService.Tick();
             }
         }
 
@@ -270,6 +310,14 @@ namespace EchoDevGames.EchoUI
                 hudRegionService.Shutdown();
                 hudRegionService = null;
             }
+
+            if (notificationService != null)
+            {
+                notificationService.Shutdown();
+                notificationService = null;
+            }
+
+            NotificationChannelChanged = null;
 
             if (deferredScreenOperationQueue != null)
             {
@@ -403,6 +451,20 @@ namespace EchoDevGames.EchoUI
                     id);
             }
 
+            UINotificationService pendingNotificationService =
+                new UINotificationService(
+                    notificationChannelDefinitions,
+                    out string notificationValidationError);
+
+            if (!string.IsNullOrWhiteSpace(
+                    notificationValidationError))
+            {
+                return new UISurfaceOperationResult(
+                    UISurfaceOperationStatus.InvalidDefinition,
+                    message:
+                        notificationValidationError);
+            }
+
             surfaces.Clear();
             currentScreenByScope.Clear();
             historyByScope.Clear();
@@ -435,10 +497,23 @@ namespace EchoDevGames.EchoUI
             if (!string.IsNullOrWhiteSpace(
                     hudInitializationError))
             {
+                pendingNotificationService.Shutdown();
+
                 return new UISurfaceOperationResult(
                     UISurfaceOperationStatus.InvalidDefinition,
                     message: hudInitializationError);
             }
+
+            if (notificationService != null)
+            {
+                notificationService.Shutdown();
+            }
+
+            notificationService =
+                pendingNotificationService;
+
+            notificationService.ChannelChanged +=
+                PublishNotificationChannelChanged;
 
             IsInitialized = true;
 
@@ -517,6 +592,81 @@ namespace EchoDevGames.EchoUI
                     out snapshot);
         }
 
+        public UINotificationHandle AdmitNotification(
+            UINotificationRequest request)
+        {
+            if (!IsNotificationLifecycleInitialized)
+            {
+                return RejectNotification(
+                    request,
+                    "Looking Glass notification lifecycle is not initialized.");
+            }
+
+            return notificationService.Admit(request);
+        }
+
+        public UINotificationOperationResult DismissNotification(
+            UINotificationHandle handle)
+        {
+            if (!IsNotificationLifecycleInitialized)
+            {
+                return new UINotificationOperationResult(
+                    UINotificationOperationStatus.Unavailable,
+                    handle == null
+                        ? default
+                        : handle.ChannelId,
+                    handle == null
+                        ? 0
+                        : handle.Generation,
+                    "Looking Glass notification lifecycle is not initialized.");
+            }
+
+            return notificationService.Dismiss(handle);
+        }
+
+        public int ResetNotifications()
+        {
+            return IsNotificationLifecycleInitialized
+                ? notificationService.Reset()
+                : 0;
+        }
+
+        public bool TryGetNotificationChannelDefinition(
+            string channelId,
+            out UINotificationChannelDefinition definition)
+        {
+            definition = null;
+
+            return IsNotificationLifecycleInitialized &&
+                notificationService.TryGetDefinition(
+                    channelId,
+                    out definition);
+        }
+
+        public bool TryGetNotificationChannelSnapshot(
+            string channelId,
+            out UINotificationChannelSnapshot snapshot)
+        {
+            snapshot = default;
+
+            return IsNotificationLifecycleInitialized &&
+                notificationService.TryGetSnapshot(
+                    channelId,
+                    out snapshot);
+        }
+
+        public bool TryGetNotificationEntryState(
+            UINotificationHandle handle,
+            out UINotificationEntryState state)
+        {
+            state = default;
+
+            return IsNotificationLifecycleInitialized &&
+                notificationService.TryGetEntryState(
+                    handle,
+                    out state);
+        }
+
         private string InitializeHudLifecycle()
         {
             if (hudRegionService != null)
@@ -552,6 +702,55 @@ namespace EchoDevGames.EchoUI
             }
 
             return string.Empty;
+        }
+
+        private static UINotificationHandle RejectNotification(
+            UINotificationRequest request,
+            string message)
+        {
+            return UINotificationHandle.Rejected(
+                new UINotificationAdmissionResult(
+                    UINotificationAdmissionStatus.Unavailable,
+                    request == null
+                        ? default
+                        : request.ChannelId,
+                    coalescingKey: request == null
+                        ? default
+                        : request.CoalescingKey,
+                    correlationId: request == null
+                        ? default
+                        : request.CorrelationId,
+                    message: message));
+        }
+
+        private void PublishNotificationChannelChanged(
+            UINotificationChannelSnapshot snapshot)
+        {
+            Action<UINotificationChannelSnapshot> handlers =
+                NotificationChannelChanged;
+
+            if (handlers == null)
+            {
+                return;
+            }
+
+            Delegate[] invocationList =
+                handlers.GetInvocationList();
+
+            for (int index = 0;
+                 index < invocationList.Length;
+                 index++)
+            {
+                try
+                {
+                    ((Action<UINotificationChannelSnapshot>)invocationList[index])(
+                        snapshot);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
         }
 
         public UISurfaceOperationResult NavigateTo(
