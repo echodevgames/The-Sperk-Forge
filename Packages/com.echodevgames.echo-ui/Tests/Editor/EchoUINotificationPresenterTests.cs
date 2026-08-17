@@ -45,6 +45,12 @@ namespace EchoDevGames.EchoUI.Tests.Editor
                 BindingFlags.Static |
                 BindingFlags.NonPublic);
 
+        private static readonly MethodInfo TryClaimAuthorityMethod =
+            typeof(EchoUIRoot).GetMethod(
+                "TryClaimAuthority",
+                BindingFlags.Instance |
+                BindingFlags.NonPublic);
+
         private static readonly MethodInfo LateUpdateMethod =
             typeof(EchoUIRoot).GetMethod(
                 "LateUpdate",
@@ -783,6 +789,8 @@ namespace EchoDevGames.EchoUI.Tests.Editor
             EchoUIRoot root =
                 rootObject.AddComponent<EchoUIRoot>();
 
+            ClaimAuthorityForTest(root);
+
             RecordingPresenter presenter =
                 new RecordingPresenter();
 
@@ -959,6 +967,13 @@ namespace EchoDevGames.EchoUI.Tests.Editor
         {
             Assert.That(ActiveRootField, Is.Not.Null);
             ActiveRootField.SetValue(null, value);
+        }
+
+        private static void ClaimAuthorityForTest(
+            EchoUIRoot value)
+        {
+            Assert.That(TryClaimAuthorityMethod, Is.Not.Null);
+            TryClaimAuthorityMethod.Invoke(value, null);
         }
     }
 }
