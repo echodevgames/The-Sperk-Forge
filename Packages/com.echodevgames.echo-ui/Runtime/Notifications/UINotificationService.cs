@@ -5,8 +5,8 @@ namespace EchoDevGames.EchoUI
 {
     /// <summary>
     /// Root-owned bounded notification admission and channel state.
-    /// Authored overflow alternatives, automatic lifetime, owner cleanup,
-    /// events, and root wiring are added by later EUI-M4-02 slices.
+    /// Automatic lifetime, owner cleanup, events, and root wiring are added by
+    /// later EUI-M4-02 slices.
     /// </summary>
     public sealed class UINotificationService
     {
@@ -196,11 +196,10 @@ namespace EchoDevGames.EchoUI
             if (!hasVisibleCapacity &&
                 !hasPendingCapacity)
             {
-                return Reject(
+                return ApplyOverflow(
+                    channel,
                     request,
-                    generation,
-                    UINotificationAdmissionStatus.CapacityExceeded,
-                    "Notification channel visible and pending capacity is full.");
+                    generation);
             }
 
             long admissionSequence =
@@ -231,6 +230,128 @@ namespace EchoDevGames.EchoUI
             else
             {
                 channel.Pending.Add(entry);
+            }
+
+            return handle;
+        }
+
+        private UINotificationHandle ApplyOverflow(
+            ChannelState channel,
+            UINotificationRequest request,
+            long generation)
+        {
+            if (channel.Definition.OverflowPolicy ==
+                UINotificationOverflowPolicy.RejectNewest)
+            {
+                return Reject(
+                    request,
+                    generation,
+                    UINotificationAdmissionStatus.CapacityExceeded,
+                    "Notification channel visible and pending capacity is full.");
+            }
+
+            if (channel.Pending.Count == 0)
+            {
+                return Reject(
+                    request,
+                    generation,
+                    UINotificationAdmissionStatus.CapacityExceeded,
+                    "Notification channel has no pending entry eligible for overflow replacement.");
+            }
+
+            switch (channel.Definition.OverflowPolicy)
+            {
+                case UINotificationOverflowPolicy.DropOldestPending:
+                    return AdmitByEvictingPending(
+                        channel,
+                        request,
+                        generation,
+                        FindOldestPendingIndex(channel.Pending),
+                        "Oldest pending notification was evicted by channel overflow policy.");
+
+                case UINotificationOverflowPolicy.ReplaceLowestPriorityPending:
+                    int victimIndex =
+                        FindLowestRankedPendingIndex(
+                            channel.Pending);
+
+                    Entry victim =
+                        channel.Pending[victimIndex];
+
+                    if (request.Priority <= victim.Priority)
+                    {
+                        return Reject(
+                            request,
+                            generation,
+                            UINotificationAdmissionStatus.InsufficientPriority,
+                            "Incoming notification must strictly outrank the lowest-priority pending entry.");
+                    }
+
+                    return AdmitByEvictingPending(
+                        channel,
+                        request,
+                        generation,
+                        victimIndex,
+                        "Lowest-priority pending notification was evicted by channel overflow policy.");
+
+                default:
+                    return Reject(
+                        request,
+                        generation,
+                        UINotificationAdmissionStatus.Unavailable,
+                        "Notification channel uses an unsupported overflow policy.");
+            }
+        }
+
+        private UINotificationHandle AdmitByEvictingPending(
+            ChannelState channel,
+            UINotificationRequest request,
+            long generation,
+            int victimIndex,
+            string victimMessage)
+        {
+            long admissionSequence =
+                ++nextAdmissionSequence;
+
+            UINotificationAdmissionResult admission =
+                new UINotificationAdmissionResult(
+                    UINotificationAdmissionStatus.Admitted,
+                    request.ChannelId,
+                    generation,
+                    request.CoalescingKey,
+                    request.CorrelationId,
+                    "Notification generation admitted through pending overflow policy.");
+
+            UINotificationHandle handle =
+                new UINotificationHandle(admission);
+
+            Entry replacement =
+                new Entry(
+                    request,
+                    handle,
+                    admissionSequence);
+
+            Entry victim =
+                channel.Pending[victimIndex];
+
+            mutationInProgress = true;
+
+            try
+            {
+                victim.Handle.TryComplete(
+                    new UINotificationResult(
+                        UINotificationOutcome.OverflowEvicted,
+                        victim.Request.ChannelId,
+                        victim.Handle.Generation,
+                        victim.Request.CoalescingKey,
+                        victim.Request.CorrelationId,
+                        victimMessage));
+
+                channel.Pending[victimIndex] =
+                    replacement;
+            }
+            finally
+            {
+                mutationInProgress = false;
             }
 
             return handle;
@@ -613,6 +734,54 @@ namespace EchoDevGames.EchoUI
             }
 
             return false;
+        }
+
+        private static int FindOldestPendingIndex(
+            List<Entry> pending)
+        {
+            int oldestIndex = 0;
+
+            for (int index = 1;
+                 index < pending.Count;
+                 index++)
+            {
+                if (pending[index].AdmissionSequence <
+                    pending[oldestIndex].AdmissionSequence)
+                {
+                    oldestIndex = index;
+                }
+            }
+
+            return oldestIndex;
+        }
+
+        private static int FindLowestRankedPendingIndex(
+            List<Entry> pending)
+        {
+            // Equal lowest priorities evict the newest entry so the earlier
+            // entry retains its established FIFO precedence.
+            int lowestIndex = 0;
+
+            for (int index = 1;
+                 index < pending.Count;
+                 index++)
+            {
+                Entry lowest =
+                    pending[lowestIndex];
+
+                Entry candidate =
+                    pending[index];
+
+                if (candidate.Priority < lowest.Priority ||
+                    candidate.Priority == lowest.Priority &&
+                    candidate.AdmissionSequence >
+                    lowest.AdmissionSequence)
+                {
+                    lowestIndex = index;
+                }
+            }
+
+            return lowestIndex;
         }
 
         private static void Promote(
