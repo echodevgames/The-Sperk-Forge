@@ -5,8 +5,8 @@ namespace EchoDevGames.EchoUI
 {
     /// <summary>
     /// Root-owned bounded notification admission and channel state.
-    /// Automatic lifetime, owner cleanup, events, and root wiring are added by
-    /// later EUI-M4-02 slices.
+    /// Owner cleanup, events, and root wiring are added by later EUI-M4-02
+    /// slices.
     /// </summary>
     public sealed class UINotificationService
     {
@@ -15,11 +15,13 @@ namespace EchoDevGames.EchoUI
             public Entry(
                 UINotificationRequest request,
                 UINotificationHandle handle,
-                long admissionSequence)
+                long admissionSequence,
+                double lifetimeSeconds)
             {
                 Request = request;
                 Handle = handle;
                 AdmissionSequence = admissionSequence;
+                LifetimeSeconds = lifetimeSeconds;
             }
 
             public UINotificationRequest Request { get; }
@@ -28,8 +30,38 @@ namespace EchoDevGames.EchoUI
 
             public long AdmissionSequence { get; }
 
+            public double LifetimeSeconds { get; }
+
+            public bool HasVisibleLifetimeStart { get; private set; }
+
+            public double VisibleSinceSeconds { get; private set; }
+
             public int Priority =>
                 Request.Priority;
+
+            public bool UsesAutomaticLifetime =>
+                Request.LifetimeMode ==
+                UINotificationLifetimeMode.Automatic;
+
+            public void BeginVisibleLifetime(
+                double nowSeconds)
+            {
+                if (!UsesAutomaticLifetime ||
+                    HasVisibleLifetimeStart)
+                {
+                    return;
+                }
+
+                VisibleSinceSeconds = nowSeconds;
+                HasVisibleLifetimeStart = true;
+            }
+
+            public bool IsExpired(
+                double nowSeconds) =>
+                UsesAutomaticLifetime &&
+                HasVisibleLifetimeStart &&
+                nowSeconds - VisibleSinceSeconds >=
+                LifetimeSeconds;
         }
 
         private sealed class ChannelState
@@ -58,14 +90,39 @@ namespace EchoDevGames.EchoUI
             new Dictionary<string, ChannelState>(
                 StringComparer.Ordinal);
 
+        private readonly IUINotificationClock clock;
+
         private long nextGeneration;
         private long nextAdmissionSequence;
+        private double lastObservedNowSeconds;
         private bool mutationInProgress;
 
         public UINotificationService(
             IEnumerable<UINotificationChannelDefinition> definitions,
             out string validationError)
+            : this(
+                definitions,
+                UnityUINotificationClock.Shared,
+                out validationError)
         {
+        }
+
+        public UINotificationService(
+            IEnumerable<UINotificationChannelDefinition> definitions,
+            IUINotificationClock clock,
+            out string validationError)
+        {
+            this.clock = clock;
+
+            if (!TryReadInitialClock(
+                    clock,
+                    out lastObservedNowSeconds))
+            {
+                validationError =
+                    "Notification clock must supply finite nonnegative monotonic seconds.";
+                return;
+            }
+
             validationError =
                 ValidateAndSnapshotDefinitions(definitions);
         }
@@ -221,10 +278,16 @@ namespace EchoDevGames.EchoUI
                 new Entry(
                     request,
                     handle,
-                    admissionSequence);
+                    admissionSequence,
+                    ResolveLifetimeSeconds(
+                        channel,
+                        request));
 
             if (hasVisibleCapacity)
             {
+                entry.BeginVisibleLifetime(
+                    ObserveNowOrLast());
+
                 channel.Visible.Add(entry);
             }
             else
@@ -233,6 +296,67 @@ namespace EchoDevGames.EchoUI
             }
 
             return handle;
+        }
+
+        /// <summary>
+        /// Settles every visible automatic entry whose unscaled lifetime has
+        /// elapsed, then promotes pending work deterministically.
+        /// </summary>
+        public int Tick()
+        {
+            if (!IsValid ||
+                mutationInProgress ||
+                !TryObserveNow(
+                    out double nowSeconds))
+            {
+                return 0;
+            }
+
+            int expiredCount = 0;
+            mutationInProgress = true;
+
+            try
+            {
+                foreach (ChannelState channel in channels.Values)
+                {
+                    int index = 0;
+
+                    while (index < channel.Visible.Count)
+                    {
+                        Entry entry =
+                            channel.Visible[index];
+
+                        if (!entry.IsExpired(nowSeconds))
+                        {
+                            index++;
+                            continue;
+                        }
+
+                        channel.Visible.RemoveAt(index);
+
+                        entry.Handle.TryComplete(
+                            new UINotificationResult(
+                                UINotificationOutcome.Expired,
+                                entry.Request.ChannelId,
+                                entry.Handle.Generation,
+                                entry.Request.CoalescingKey,
+                                entry.Request.CorrelationId,
+                                "Notification generation reached its visible automatic lifetime."));
+
+                        expiredCount++;
+                    }
+
+                    Promote(
+                        channel,
+                        nowSeconds);
+                }
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return expiredCount;
         }
 
         private UINotificationHandle ApplyOverflow(
@@ -328,7 +452,10 @@ namespace EchoDevGames.EchoUI
                 new Entry(
                     request,
                     handle,
-                    admissionSequence);
+                    admissionSequence,
+                    ResolveLifetimeSeconds(
+                        channel,
+                        request));
 
             Entry victim =
                 channel.Pending[victimIndex];
@@ -435,7 +562,9 @@ namespace EchoDevGames.EchoUI
             {
                 entry = channel.Visible[visibleIndex];
                 channel.Visible.RemoveAt(visibleIndex);
-                Promote(channel);
+                Promote(
+                    channel,
+                    ObserveNowOrLast());
             }
             else
             {
@@ -619,7 +748,16 @@ namespace EchoDevGames.EchoUI
                 new Entry(
                     request,
                     handle,
-                    prior.AdmissionSequence);
+                    prior.AdmissionSequence,
+                    ResolveLifetimeSeconds(
+                        channel,
+                        request));
+
+            if (isVisible)
+            {
+                replacement.BeginVisibleLifetime(
+                    ObserveNowOrLast());
+            }
 
             mutationInProgress = true;
 
@@ -784,8 +922,84 @@ namespace EchoDevGames.EchoUI
             return lowestIndex;
         }
 
+        private static double ResolveLifetimeSeconds(
+            ChannelState channel,
+            UINotificationRequest request)
+        {
+            if (request.LifetimeMode ==
+                UINotificationLifetimeMode.Manual)
+            {
+                return 0d;
+            }
+
+            return request.DurationSeconds > 0f
+                ? request.DurationSeconds
+                : channel.Definition.DefaultLifetimeSeconds;
+        }
+
+        private static bool TryReadInitialClock(
+            IUINotificationClock clock,
+            out double nowSeconds)
+        {
+            nowSeconds = 0d;
+
+            if (clock == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                nowSeconds = clock.NowSeconds;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return !double.IsNaN(nowSeconds) &&
+                   !double.IsInfinity(nowSeconds) &&
+                   nowSeconds >= 0d;
+        }
+
+        private bool TryObserveNow(
+            out double nowSeconds)
+        {
+            nowSeconds = lastObservedNowSeconds;
+            double candidate;
+
+            try
+            {
+                candidate = clock.NowSeconds;
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (double.IsNaN(candidate) ||
+                double.IsInfinity(candidate) ||
+                candidate < lastObservedNowSeconds)
+            {
+                return false;
+            }
+
+            lastObservedNowSeconds = candidate;
+            nowSeconds = candidate;
+            return true;
+        }
+
+        private double ObserveNowOrLast()
+        {
+            TryObserveNow(
+                out double nowSeconds);
+
+            return nowSeconds;
+        }
+
         private static void Promote(
-            ChannelState channel)
+            ChannelState channel,
+            double nowSeconds)
         {
             while (channel.Visible.Count <
                        channel.Definition.VisibleCapacity &&
@@ -816,6 +1030,10 @@ namespace EchoDevGames.EchoUI
                     channel.Pending[winnerIndex];
 
                 channel.Pending.RemoveAt(winnerIndex);
+
+                promoted.BeginVisibleLifetime(
+                    nowSeconds);
+
                 channel.Visible.Add(promoted);
             }
         }
