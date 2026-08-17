@@ -15,6 +15,8 @@ namespace EchoDevGames.EchoUI.Tests.Editor
             typeof(EchoUIRoot).GetMethod("TryClaimAuthority", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly MethodInfo LateUpdateMethod =
             typeof(EchoUIRoot).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly MethodInfo OnDestroyMethod =
+            typeof(EchoUIRoot).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
 
         private readonly List<UnityEngine.Object> created =
             new List<UnityEngine.Object>();
@@ -194,6 +196,7 @@ namespace EchoDevGames.EchoUI.Tests.Editor
             root.Initialize();
             UIMotifRegistrationHandle handle = root.RegisterMotifTarget(new RecordingTarget());
 
+            OnDestroyMethod.Invoke(root, null);
             UnityEngine.Object.DestroyImmediate(rootObject);
             rootObject = null;
             UIMotifRegistrationReleaseResult released = handle.Release();

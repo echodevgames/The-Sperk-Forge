@@ -3,7 +3,7 @@
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.9.0
-**Current checkpoint:** EUI-M4-03 Runtime Motif Foundation — ACTIVE / AUTHORIZED; Runtime not started
+**Current checkpoint:** EUI-M4-03 Runtime Motif Foundation — ACTIVE / AUTHORIZED; root test correction published next, automated rerun pending
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -15,7 +15,7 @@ EUI-M2-01 is the completed first Runtime Core slice. It implements project-defin
 
 EUI-M2-02, EUI-M3-01, EUI-M3-02, EUI-M4-01, and EUI-M4-02 are complete. EUI-M4-02 supplies project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner/presentation-loss cleanup, status/events, tests, and a replaceable project presenter seam.
 
-EUI-M4-03 is active from clean closeout `2f59251`. It authorizes only immutable project Motif definitions/tokens, detached runtime snapshots, one root-local effective/default/fallback Motif, explicit registered targets, inherit-versus-local preservation, structured fallback/failure truth, target/listener isolation, generation-safe cleanup, tests, and Laboratory proof. Runtime implementation has not started. Full accessibility policy, settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, safe area, richer Window management, peer bridges, and project-wide lifetime composition remain separately gated future work.
+EUI-M4-03 is active from clean closeout `2f59251`. Runtime is implemented through root integration: contracts `d67550d`, catalog/fallback `172d230`, session service `43da17a`, targets `efbc503`, reusable bindings `e17d816`, and root integration `ab5906c`. The reusable-binding gate is accepted at full Foundry **1433 / 1433**, EchoUI **327 / 327**, and all Motif fixtures **50 / 50**. The first root-integration run compiled and executed **1445** tests but produced **1444 passed / 1 failed** because the EditMode destruction test did not explicitly invoke the root's private `OnDestroy()` method. The bounded test-only correction is the current resume point; Runtime is unchanged. Full accessibility policy, settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, safe area, richer Window management, peer bridges, and project-wide lifetime composition remain separately gated future work.
 
 ## EUI-M4-03 declaration
 
@@ -31,7 +31,7 @@ EUI-M4-03 is active from clean closeout `2f59251`. It authorizes only immutable 
 - Registration handles are fresh, generation-safe, and idempotent; destroyed owner/target cleanup cannot remove a newer registration.
 - No TextMeshPro or peer Echo dependency is added.
 - Final warehouse-facing typography/provider schema and Editor capture/apply/preview tooling remain deferred until real primitive authoring exposes the smallest useful contract.
-- **Runtime implementation has not started at activation.**
+- **Exact resume gate:** run repaired `RootDestructionShutsDownMotifRegistrations`, then complete EditMode. Expected: root fixture **12 / 12**, all Motifs **62 / 62**, EchoUI **339 / 339**, full Foundry **1445 / 1445**, zero failed/skipped/inconclusive. Do not begin Laboratory work before acceptance.
 
 ## Retained completion evidence
 

@@ -5,19 +5,26 @@
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 17, 2026
 **Current focus:** The Looking Glass (`EchoUI`) EUI-M4-03 — Runtime Motif Foundation
-**Current checkpoint:** EUI-M4-03 — ACTIVE / AUTHORIZED; Runtime implementation has not started
+**Current checkpoint:** EUI-M4-03 — ACTIVE / AUTHORIZED; root-integration test hotfix published next, automated rerun pending
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
-## Current resume phase — Looking Glass EUI-M4-03 JIT reconciliation and activation — August 17, 2026
+## Current resume phase — Looking Glass EUI-M4-03 root-integration test correction and automated rerun — August 17, 2026
 
 - Clean activation baseline: `2f592513b6215b019ca9550fb302ab0cee6b65cc` — EUI-M4-02 documentation closeout.
 - Retained incoming evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, M4-02 Laboratory **6 / 6 PASS**, retained prior-tab smoke green, and package/imported parity verified.
 - Suite authority remains **SFGSS-000 v0.27.0**; Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.9.0**.
 - Active plan: **EUI-M4-03 — Runtime Motif Definitions, Registered Targets, Fallback, and Immutable Application**.
-- **EUI-M4-03 is explicitly ACTIVE / AUTHORIZED. Runtime implementation has not started at this activation record.**
+- **EUI-M4-03 is ACTIVE / AUTHORIZED and Runtime implementation is complete through root integration. Laboratory implementation has not started.**
+- Activation: `435fc66` from clean EUI-M4-02 closeout `2f59251`.
+- Accepted green Runtime slices: Motif contracts `d67550d` (**8 / 8**); catalog/fallback `172d230` (**17 / 17 aggregate**); session service `43da17a` (**28 / 28 aggregate**); registered targets `efbc503` (**39 / 39 aggregate**); reusable bindings `e17d816` (**50 / 50 aggregate**).
+- Root integration is published at `ab5906c`. The first full run compiled and executed **1445** tests but finished **1444 passed / 1 failed**; EchoUI was **338 / 339** and the root fixture was **11 / 12**.
+- The only failure was `RootDestructionShutsDownMotifRegistrations`: expected `Shutdown`, observed `Released`. Runtime behavior was not implicated. The EditMode fixture omitted the explicit reflected `OnDestroy()` invocation used by established root tests.
+- The bounded correction explicitly invokes `OnDestroy()` before destroying the root GameObject. It changes only `EchoUIMotifRootIntegrationTests.cs`; Runtime is unchanged.
+- **Exact resume gate:** verify live `main`, run the repaired focused test, then run complete EditMode. Expected full result is **1445 / 1445**, EchoUI **339 / 339**, all Motif fixtures **62 / 62**, zero failed/skipped/inconclusive. The three intentional isolation logs remain `motif-observer`, `motif-target`, and `root-motif-observer`.
+- Do not begin Laboratory assets until that focused/full automated gate is accepted green.
 - Motifs are project-owned reusable appearance recipes. They own colors, uGUI Selectable state recipes, sprites, and small target-understood decorative values without owning layout, navigation, content, domain commands, settings persistence, or production art.
 - Definitions/tokens remain immutable during play. Runtime resolves detached snapshots and retains only root-session effective/default/fallback truth.
 - Targets register explicitly and receive current truth immediately; no automatic hierarchy scan or per-frame application loop is permitted.
@@ -25,7 +32,7 @@
 - Valid Motif truth commits before project-target application. One target/listener failure is isolated and reported without rolling back healthy targets or authoritative service truth.
 - The first token families are colors, uGUI Selectable color-state recipes, sprites, and small numeric/decorative values. No mandatory TextMeshPro dependency is added.
 - Final Primitive Warehouse-facing typography/token schema plus Editor capture/apply/preview tooling remain deferred until real primitive authoring exposes the smallest useful contract.
-- **First implementation gate:** re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before any Runtime edit.
+- Activation baseline was re-established at EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** before Runtime edits.
 - Accessibility policy, text scaling, automatic reduced-motion policy connection, safe area, Accord/settings persistence, Motif authoring tools, Primitive Warehouse, templates/catalog/utilities, Builder, prompts/tooltips, richer Window management, bridges, integration, and release remain inactive.
 
 ## Looking Glass EUI-M4-02 final closeout — August 17, 2026

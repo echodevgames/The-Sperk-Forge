@@ -209,6 +209,12 @@ The Primitive Warehouse remains the named next program direction after the runti
 
 ## 18. Handoff
 
-EUI-M4-03 is **ACTIVE / AUTHORIZED** from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Runtime implementation has not started. The first gate is to re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before touching Runtime.
+EUI-M4-03 is **ACTIVE / AUTHORIZED** from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Activation `435fc66` re-established EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** before Runtime edits.
+
+Runtime implementation is published through root integration: contracts `d67550d`, catalog/fallback `172d230`, session service `43da17a`, registered targets `efbc503`, reusable bindings `e17d816`, and root integration `ab5906c`. Automated acceptance is green through reusable bindings at full Foundry **1433 / 1433**, EchoUI **327 / 327**, all Motif fixtures **50 / 50**.
+
+The first root-integration run executed **1445** tests and finished **1444 passed / 1 failed**. The only failure, `RootDestructionShutsDownMotifRegistrations`, was a fixture setup mismatch: it destroyed the EditMode GameObject without explicitly invoking the private root teardown used by established root tests, so the still-live registration returned `Released`. The bounded correction invokes `OnDestroy()` before destruction and changes no Runtime source.
+
+**Exact resume phase:** automated proof/correction. Verify live `main`; run the repaired focused test; then run full EditMode. Expected root **12 / 12**, aggregate Motif **62 / 62**, EchoUI **339 / 339**, full **1445 / 1445**, zero failed/skipped/inconclusive. Accept the three intentional listener/target exception logs. Laboratory implementation remains unstarted and unauthorized until this gate is green.
 
 The slice is limited to immutable project-owned Motif definitions/tokens, detached snapshots, one root-local effective/default/fallback Motif, explicit registered targets, inherit-versus-local binding preservation, structured fallback/failure truth, target/listener isolation, generation-safe cleanup, tests, and Laboratory proof. Accessibility policy, persistence, Editor capture/apply tooling, final Primitive Warehouse-facing schema, authoring libraries/Builder, prompts/tooltips, safe area, richer Window management, bridges, integration, and release remain inactive.
