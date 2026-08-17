@@ -130,6 +130,18 @@ namespace EchoDevGames.EchoUI
 
         private UINotificationService notificationService;
         private IUINotificationPresenter notificationPresenter;
+
+        [Header("M4 Motifs")]
+        [SerializeField]
+        private UIMotifCatalog motifCatalog;
+
+        [SerializeField, Min(1)]
+        private int motifDefinitionCapacity = 32;
+
+        [SerializeField, Min(1)]
+        private int motifTokenCapacityPerDefinition = 64;
+
+        private UIMotifService motifService;
         private bool processingDeferredScreenOperations;
         private bool shuttingDown;
 
@@ -248,8 +260,25 @@ namespace EchoDevGames.EchoUI
                 ? notificationService.PendingCount
                 : 0;
 
+        public bool IsMotifLifecycleInitialized =>
+            motifService != null &&
+            motifService.IsValid;
+
+        public UIMotifId EffectiveMotifId =>
+            IsMotifLifecycleInitialized
+                ? motifService.EffectiveMotifId
+                : default;
+
+        public int RegisteredMotifTargetCount =>
+            IsMotifLifecycleInitialized
+                ? motifService.RegisteredTargetCount
+                : 0;
+
         public event Action<UINotificationChannelSnapshot>
             NotificationChannelChanged;
+
+        public event Action<UIMotifServiceSnapshot>
+            MotifChanged;
 
         private void Awake()
         {
@@ -280,6 +309,11 @@ namespace EchoDevGames.EchoUI
                 notificationService.RefreshDestroyedOwners();
                 notificationService.RefreshDestroyedPresentations();
                 notificationService.Tick();
+            }
+
+            if (motifService != null)
+            {
+                motifService.RefreshDestroyedTargets();
             }
         }
 
@@ -319,9 +353,16 @@ namespace EchoDevGames.EchoUI
                 notificationService = null;
             }
 
+            if (motifService != null)
+            {
+                motifService.Shutdown();
+                motifService = null;
+            }
+
             notificationPresenter = null;
 
             NotificationChannelChanged = null;
+            MotifChanged = null;
 
             if (deferredScreenOperationQueue != null)
             {
@@ -469,6 +510,31 @@ namespace EchoDevGames.EchoUI
                         notificationValidationError);
             }
 
+            UIMotifService pendingMotifService = null;
+            if (motifCatalog != null)
+            {
+                UIMotifCatalogResult motifResult =
+                    motifCatalog.CreateSnapshot(
+                        motifDefinitionCapacity,
+                        motifTokenCapacityPerDefinition);
+
+                if (!motifResult.Succeeded)
+                {
+                    pendingNotificationService.Shutdown();
+                    return new UISurfaceOperationResult(
+                        UISurfaceOperationStatus.InvalidDefinition,
+                        message:
+                            "Motif catalog validation failed: " +
+                            motifResult.Status +
+                            (string.IsNullOrWhiteSpace(motifResult.Message)
+                                ? string.Empty
+                                : " — " + motifResult.Message));
+                }
+
+                pendingMotifService =
+                    new UIMotifService(motifResult.Snapshot);
+            }
+
             surfaces.Clear();
             currentScreenByScope.Clear();
             historyByScope.Clear();
@@ -502,6 +568,10 @@ namespace EchoDevGames.EchoUI
                     hudInitializationError))
             {
                 pendingNotificationService.Shutdown();
+                if (pendingMotifService != null)
+                {
+                    pendingMotifService.Shutdown();
+                }
 
                 return new UISurfaceOperationResult(
                     UISurfaceOperationStatus.InvalidDefinition,
@@ -522,6 +592,18 @@ namespace EchoDevGames.EchoUI
             notificationService.SetPresenter(
                 notificationPresenter);
 
+            if (motifService != null)
+            {
+                motifService.Shutdown();
+            }
+
+            motifService = pendingMotifService;
+            if (motifService != null)
+            {
+                motifService.Changed +=
+                    PublishMotifChanged;
+            }
+
             IsInitialized = true;
 
             for (int index = 0;
@@ -537,6 +619,62 @@ namespace EchoDevGames.EchoUI
 
             return UISurfaceOperationResult.Success(
                 message: "Looking Glass surface registry initialized.");
+        }
+
+        public UIMotifSwitchResult SwitchMotif(
+            UIMotifId motifId)
+        {
+            if (!IsMotifLifecycleInitialized)
+            {
+                return new UIMotifSwitchResult(
+                    UIMotifSwitchStatus.Unavailable,
+                    motifId,
+                    message: "Looking Glass Motif lifecycle is not initialized.");
+            }
+
+            return motifService.Switch(motifId);
+        }
+
+        public UIMotifSwitchResult ResetMotif()
+        {
+            if (!IsMotifLifecycleInitialized)
+            {
+                return new UIMotifSwitchResult(
+                    UIMotifSwitchStatus.Unavailable,
+                    message: "Looking Glass Motif lifecycle is not initialized.");
+            }
+
+            return motifService.Reset();
+        }
+
+        public UIMotifRegistrationHandle RegisterMotifTarget(
+            IUIMotifTarget target,
+            UnityEngine.Object owner = null)
+        {
+            if (!IsMotifLifecycleInitialized)
+            {
+                UIMotifRegistrationResult result =
+                    new UIMotifRegistrationResult(
+                        UIMotifRegistrationStatus.Unavailable,
+                        message: "Looking Glass Motif lifecycle is not initialized.");
+                return new UIMotifRegistrationHandle(
+                    service: null,
+                    generation: 0,
+                    result: result);
+            }
+
+            return motifService.RegisterTarget(target, owner);
+        }
+
+        public bool TryGetMotifSnapshot(
+            out UIMotifServiceSnapshot snapshot)
+        {
+            snapshot = default;
+            if (!IsMotifLifecycleInitialized)
+                return false;
+
+            snapshot = motifService.GetSnapshot();
+            return true;
         }
 
         public UIHudWidgetHandle RegisterHudWidget(
@@ -775,6 +913,34 @@ namespace EchoDevGames.EchoUI
                 try
                 {
                     ((Action<UINotificationChannelSnapshot>)invocationList[index])(
+                        snapshot);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
+                }
+            }
+        }
+
+        private void PublishMotifChanged(
+            UIMotifServiceSnapshot snapshot)
+        {
+            Action<UIMotifServiceSnapshot> handlers =
+                MotifChanged;
+
+            if (handlers == null)
+                return;
+
+            Delegate[] invocationList =
+                handlers.GetInvocationList();
+
+            for (int index = 0;
+                 index < invocationList.Length;
+                 index++)
+            {
+                try
+                {
+                    ((Action<UIMotifServiceSnapshot>)invocationList[index])(
                         snapshot);
                 }
                 catch (Exception exception)
