@@ -2,8 +2,8 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.7.0
-**Current checkpoint:** None active; EUI-M4-01 is COMPLETE / CLOSED at implementation/Laboratory seal `29573ef`
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
+**Current checkpoint:** EUI-M4-02 — ACTIVE / AUTHORIZED; notification Runtime implementation not started
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02, EUI-M3-01, EUI-M3-02, and EUI-M4-01 are complete. EUI-M4-01 supplies named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, status/events, tests, and Laboratory proof. Motif/accessibility, notifications/prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02, EUI-M3-01, EUI-M3-02, and EUI-M4-01 are complete. EUI-M4-02 is ACTIVE / AUTHORIZED for project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner-loss cleanup, status/events, tests, and Laboratory proof. Motif/accessibility implementation, prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -185,4 +185,19 @@ The Laboratory-discovered synchronous cancellation race is corrected by guarding
 - Package/imported Laboratory README, driver, and scene parity: **VERIFIED**.
 - Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, domain-truth, or project-lifetime authority.
 - Package authority remains SFGSS-PKG-ECHOUI-001 v1.7.0 under SFGSS-000 v0.27.0; no new ADR is required.
-- **Exact resume phase:** stop at completed EUI-M4-01. EUI-M4-02 remains inactive and requires its own visible activation slice.
+- **Historical EUI-M4-01 stop point:** EUI-M4-02 was inactive at closeout; the later EUI-M4-02 declaration below supersedes that status.
+
+## EUI-M4-02 declaration
+
+- Baseline `5e7ad92`; authority SFGSS-PKG-ECHOUI-001 v1.8.0 under unchanged SFGSS-000 v0.27.0.
+- Retained EUI-M4-01 proof: automated focused/full gate user-confirmed green; manual HUD Laboratory **5 / 5 PASS**; retained prior-tab smoke green; package/imported parity verified.
+- Exact post-M4 NUnit totals were not captured. The first EUI-M4-02 gate records the current EchoUI/full EditMode baseline before Runtime edits; retained `1246 / 1246` remains pre-M4 history.
+- Channels are project-defined, variable-count, stable-ID-addressed, and independently bounded.
+- Higher priority promotes first; equal priority is FIFO; visible entries do not preempt.
+- Coalescing is opt-in and channel-scoped. Replacement uses a fresh generation, restarts lifetime by default, and makes the old handle stale.
+- Pending overflow defaults to `RejectNewest`, with authored `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending` alternatives.
+- Automatic lifetime uses unscaled monotonic time; manual lifetime requires explicit/structural dismissal.
+- Notifications remain transient presentation and cannot own durable history, localization/audio/analytics, gameplay/domain truth, input, pause/time scale, cursor, persistence, or project lifetime.
+- Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain excluded.
+- **EUI-M4-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
+- **First gate:** run EchoUI Editor and full Foundry EditMode on the activation commit and record exact totals before Runtime edits.

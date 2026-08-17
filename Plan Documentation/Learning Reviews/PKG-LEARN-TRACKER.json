@@ -1,8 +1,8 @@
 {
   "documentId": "SFGSS-PKG-LEARN-TRACKER",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "status": "Active learning tracker",
-  "updated": "2026-08-16",
+  "updated": "2026-08-17",
   "authority": "Navigation and learning status only",
   "totalReviews": 28,
   "completeReviews": 3,
@@ -412,8 +412,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "EUI-M4-01 Laboratory/manual proof and closeout are next; later package reviews remain just-in-time",
+  "nextReviewTrigger": "EUI-M4-02 is active after the bounded PKG-LEARN-008 notification revisit; later package reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": "EUI-M4-01",
-  "implementationProgramStatus": "Looking Glass EUI-M3-02 complete at 0affb7d; EUI-M4-01 active under Green Path with Runtime/tests green through e47d43b; Laboratory/manual proof and closeout pending"
+  "activeImplementationCheckpoint": "EUI-M4-02",
+  "implementationProgramStatus": "Looking Glass EUI-M4-01 complete at 5e7ad92; EUI-M4-02 active under Green Path for bounded notification channels"
 }

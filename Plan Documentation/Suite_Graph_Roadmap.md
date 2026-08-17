@@ -4,7 +4,7 @@ tags:
   - sfgss/roadmap
   - sfgss/graph
 status: active
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # The Sperk’s Forge — Suite Graph Roadmap
@@ -12,7 +12,7 @@ updated: 2026-08-16
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** None active for The Looking Glass; EUI-M4-01 is COMPLETE / CLOSED at implementation/Laboratory seal `29573ef`
+**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-02 — ACTIVE / AUTHORIZED; notification Runtime not started
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,12 +20,12 @@ updated: 2026-08-16
 
 ## Current frontier — August 17, 2026
 
-- **Looking Glass:** EUI-M4-01 is **COMPLETE / CLOSED** under package authority v1.7.0. Activation is `ce30ac6`; Runtime/tests are `df9e2be`; bounded corrections run through `e47d43b`; implementation/Laboratory seal is `29573ef`.
-- The requested focused/full automated gate is user-confirmed green. Exact post-M4 NUnit totals were not captured; retained `1246 / 1246` remains the pre-M4 floor.
-- Manual HUD Laboratory is **5 / 5 PASS**; retained M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green; package/imported parity is verified.
+- **Looking Glass:** EUI-M4-01 is **COMPLETE / CLOSED** at documentation closeout `5e7ad92`; implementation/Laboratory seal is `29573ef`.
+- EUI-M4-02 is **ACTIVE / AUTHORIZED** under package authority v1.8.0 for project-defined bounded notification channels, deterministic priority/FIFO promotion, non-preemptive visible entries, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, owner cleanup, status/events, tests, and Laboratory proof.
+- Runtime implementation has not started. First gate: record exact EchoUI Editor and full Foundry EditMode totals on the activation commit before Runtime edits. Retained `1246 / 1246` remains pre-M4 history.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- No Looking Glass checkpoint is active. EUI-M4-02 notifications and every later capability remain separately gated and inactive.
+- Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain gated.
 
 
 ## How to use this in Obsidian
@@ -377,4 +377,8 @@ EUI-M3-02 is complete at closeout `0affb7d` with implementation `c919238`, full 
 
 ## 2026-08-17 Looking Glass EUI-M4-01 closeout
 
-EUI-M4-01 is Complete. Activation `ce30ac6`; Runtime/tests `df9e2be`; bounded corrections `dbdf6bd`, `81f9625`, `3992bbc`, and `e47d43b`; implementation/Laboratory seal `29573ef`. The requested automated gate is user-confirmed green, exact post-M4 NUnit totals were not captured, manual HUD Laboratory is **5 / 5 PASS**, retained prior-tab smoke is green, and package/imported parity is verified. EUI-M4-02 and all adjacent work remain gated.
+EUI-M4-01 is Complete. Activation `ce30ac6`; Runtime/tests `df9e2be`; bounded corrections `dbdf6bd`, `81f9625`, `3992bbc`, and `e47d43b`; implementation/Laboratory seal `29573ef`. The requested automated gate is user-confirmed green, exact post-M4 NUnit totals were not captured, manual HUD Laboratory is **5 / 5 PASS**, retained prior-tab smoke is green, and package/imported parity is verified. At that closeout EUI-M4-02 remained gated; the later activation entry below supersedes that status.
+
+## 2026-08-17 Looking Glass EUI-M4-02 activation
+
+EUI-M4-02 is ACTIVE / AUTHORIZED from clean EUI-M4-01 closeout baseline `5e7ad92` under package authority v1.8.0. The slice is limited to project-defined stable notification channels, independent visible/pending bounds, priority/FIFO promotion, non-preemptive visible entries, opt-in fresh-generation coalescing, deterministic pending overflow, unscaled/manual lifetime, generation-safe dismissal/owner cleanup, status/events, tests, and Laboratory proof. Runtime implementation has not started. The first gate records exact current EchoUI/full EditMode totals before Runtime edits.

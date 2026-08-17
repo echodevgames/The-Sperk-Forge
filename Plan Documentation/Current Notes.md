@@ -4,14 +4,26 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 17, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-01 — COMPLETE / CLOSED; implementation and Laboratory sealed at `29573ef`
-**Current checkpoint:** None active; EUI-M4-02 is named direction only and remains unactivated
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-02 — ACTIVE / AUTHORIZED; notification Runtime implementation not started
+**Current checkpoint:** EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime — ACTIVE / AUTHORIZED
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
-## Current resume phase — Looking Glass EUI-M4-01 final closeout — August 17, 2026
+## Current resume phase — Looking Glass EUI-M4-02 activation — August 17, 2026
+
+- Clean activation baseline: `5e7ad9211a66ba3dc9f26c4a268febe4ba9c9d3d` — EUI-M4-01 documentation closeout.
+- Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.8.0**; suite authority remains **SFGSS-000 v0.27.0**.
+- **EUI-M4-02 is ACTIVE / AUTHORIZED. Runtime implementation has not started.**
+- Authorized: project-defined stable notification channels; bounded visible/pending capacity; priority with FIFO ties; no visible preemption; opt-in fresh-generation coalescing; deterministic pending overflow; unscaled/manual lifetime; owner-loss/shutdown cleanup; status/events; tests; and Laboratory proof.
+- Default overflow is `RejectNewest`; authored alternatives are `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending`.
+- Notifications remain transient presentation and own no durable history, localization/audio/analytics, game truth, input, pause/time scale, cursor, persistence, or project lifetime.
+- Exact post-M4 NUnit totals were not captured during EUI-M4-01. Retained `1246 / 1246` is pre-M4 evidence only.
+- **Exact resume phase:** run EchoUI Editor and full Foundry EditMode on the activation commit; record exact current totals before any Runtime edit.
+- Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain inactive.
+
+## Looking Glass EUI-M4-01 final closeout — August 17, 2026
 
 - Closeout parent and implementation/Laboratory seal: `29573efc7fb589c86cbb35eba588c366b24edd2d`.
 - Activation: `ce30ac6`; retained-floor timing stabilization: `dbdf6bd`; Runtime/tests: `df9e2be`; bounded corrections: `81f9625`, `3992bbc`, and `e47d43b`.
@@ -20,9 +32,7 @@
 - Check 5 retained regions `2 -> 2`, widgets `3 -> 3`, leases `0 -> 0`, transitions `0 -> 0`, stable snapshots, and unchanged Screen/Modal/Window state.
 - Jesse's final `green` confirms the requested retained M3-02/M3-01/M2-02/M2-01/M1 smoke gate; exact per-tab observation strings were not separately supplied.
 - Package/imported Laboratory README, driver, and scene parity: **VERIFIED**.
-- **EUI-M4-01 is COMPLETE / CLOSED.** No Looking Glass checkpoint is active.
-- **Exact resume phase:** stop at the closed checkpoint. Present EUI-M4-02 as a bounded activation proposal only when Jesse asks to continue; do not implement it under this closeout.
-- EUI-M4-02 remains named direction only and is **not activated**. No notification, prompt, tooltip, Motif/accessibility, Window-management, authoring-library, Builder, bridge, integration, or release slice is authorized.
+- **EUI-M4-01 is COMPLETE / CLOSED.**
 
 ## Looking Glass EUI-M3-02 JIT Reconciliation and Activation — August 15, 2026
 - Incoming clean repository baseline: `0c58240` — EUI-M3-01 final closeout.

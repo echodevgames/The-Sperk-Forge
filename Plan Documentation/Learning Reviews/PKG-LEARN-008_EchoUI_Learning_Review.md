@@ -517,4 +517,57 @@ HUD regions are persistent/reactive presentation addresses, not owners of health
 
 ### 19.3 Authorization and current proof phase
 
-EUI-M4-01 is ACTIVE / AUTHORIZED from closeout baseline `0affb7d` under package authority v1.7.0. Activation landed at `ce30ac6`; Runtime and focused tests at `df9e2be`; bounded compile/test corrections run through `e47d43b`. Jesse confirmed the requested focused/full automated gate green. The remaining authorized phase is Laboratory/manual proof and closeout; EUI-M4-02 is not activated.
+Historical EUI-M4-01 phase: activation landed at `ce30ac6`; Runtime and focused tests at `df9e2be`; bounded compile/test corrections ran through `e47d43b`; Laboratory/manual proof and closeout later completed. EUI-M4-02 was not activated at that phase; Section 20 below supersedes that status.
+
+## 20. EUI-M4-02 bounded JIT revisit — August 17, 2026
+
+After EUI-M4-01 closed at documentation commit `5e7ad92` with implementation/Laboratory seal `29573ef`, automated focused/full gate user-confirmed green, manual HUD Laboratory **5 / 5 PASS**, retained smoke green, and package/imported parity verified, Jesse approved the bounded notification-channel intake.
+
+### 20.1 Learned boundary
+
+Notifications are transient presentation. Looking Glass may own admission, ordering, visible/pending lifecycle, dismissal, expiry, ownership cleanup, and structured results, but it does not own the durable event/history source, project domain meaning, localization content, audio/analytics, gameplay commands, persistence, or pause truth.
+
+### 20.2 Channel and ordering declaration
+
+- Channel topology is project-defined, variable-count, stable-ID-addressed, and immutable during play.
+- Each channel has independent visible and pending capacities.
+- Pending promotion is higher-priority-first with strict FIFO ties.
+- A later higher-priority request does not silently preempt an already visible entry.
+- Channels do not borrow capacity or reorder one another.
+
+### 20.3 Coalescing and generation declaration
+
+- Coalescing is opt-in through a nonempty stable key scoped to one channel.
+- A match may be pending or visible, but it remains one logical slot rather than multiplying entries.
+- Replacement creates a fresh authoritative generation, settles the prior generation, and makes old handles stale.
+- The default coalescing lifetime behavior restarts the replacement's authored duration.
+- Status/diagnostics expose stable identity and counts without retaining arbitrary visible text or project payloads.
+
+### 20.4 Overflow declaration
+
+- Overflow applies only when pending capacity is full.
+- Default policy is `RejectNewest`.
+- Authored alternatives are `DropOldestPending` and `ReplaceLowestPriorityPending`.
+- Lowest-priority replacement requires the incoming priority to be strictly higher; equal/lower priority rejects.
+- Visible entries are not silently evicted by these pending-overflow policies.
+- Every rejection/eviction/replacement result is structured and observable.
+
+### 20.5 Lifetime and ownership declaration
+
+- Automatic duration begins when an entry becomes visible and uses an injected unscaled monotonic clock.
+- Manual duration remains until explicit dismissal or structural cleanup.
+- The manual seam does not activate the broader Motif/accessibility service.
+- Handles are generation-safe and idempotent; owner loss, reset, and shutdown settle only matching live generations exactly once.
+- Looking Glass does not set `Time.timeScale`, control the cursor, switch input maps, or persist notification history.
+
+### 20.6 Checkpoint boundary
+
+The reconciled checkpoint is:
+
+**EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime**
+
+It proves project-defined channels, bounded visible/pending capacity, deterministic priority/FIFO promotion, non-preemptive visibility, opt-in fresh-generation coalescing, deterministic pending overflow, unscaled/manual lifetime, owner-loss/stale-handle safety, structured status/events, Laboratory proof, and retained EUI-M1 through EUI-M4-01 behavior.
+
+Prompts, tooltips, Motifs/accessibility implementation, safe-area placement, full Window management, persistence, localization/audio/analytics, domain authority, peer bridges, authoring libraries/Builder, integration, and release remain outside EUI-M4-02.
+
+Exact post-M4 automated counts were not captured during EUI-M4-01. The first EUI-M4-02 gate is therefore to run EchoUI Editor and full Foundry EditMode on the activation commit and record the exact current baseline before any Runtime edit.

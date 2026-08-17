@@ -1,7 +1,7 @@
 # The Looking Glass – UI Framework Package Specification
 
 **Working document ID:** SFGSS-PKG-ECHOUI-001
-**Specification version:** 1.7.0
+**Specification version:** 1.8.0
 **Status:** Approved
 **Technical package name:** EchoUI
 **Public title:** The Looking Glass – UI Framework
@@ -20,7 +20,7 @@
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-01 JIT revisit. EUI-M1 through EUI-M4-01 are complete. No Looking Glass checkpoint is active; EUI-M4-02 and adjacent capabilities require their own visible activation slice under SFGSS-005.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-02 JIT revisit. EUI-M1 through EUI-M4-01 are complete. EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M4-01 closeout baseline `5e7ad92`; Runtime implementation has not started.
 
 ---
 
@@ -39,6 +39,7 @@
 | 1.5.0 | 2026-08-15 | Approved | EUI-M3-01 JIT reconciliation: explicit/non-destructive EventSystem coordination; per-entry focus memory with optional transient stable-surface session memory; policy-aware restoration/fallback/no-focus; pointer/navigation behavior; blocking-Modal focus containment; independent Window focus memory without a full Window manager; event-driven focus maintenance with explicit revalidation; stale-request protection; and optional use of the suite Unity-default input compatibility profile without transferring input ownership. Activates EUI-M3-01 while transitions, Motifs/accessibility presentation, HUD/transients, Window LIFO/pinning/layout, persistence, peer bridges, Builder, and primitive/9-slice work remain separately gated. | Jesse “Echo” Adams |
 | 1.6.0 | 2026-08-15 | Approved | EUI-M3-02 JIT reconciliation: authoritative view lifecycle now includes replaceable transition execution inside admitted structural operations; drivers remain presentation-only, fresh-operation, unscaled-time, hard-bounded, generation-protected, and cancellable where possible; enter failure restores prior stable UI while exit failure forces deterministic closed/released state; project/default, per-definition, and transient operation override layers are supported; Immediate and CanvasGroup Fade are the built-in reference drivers while professional custom drivers retain curve/easing/timing and reduced-motion substitution seams. Also explicitly separates the future Primitive Warehouse, editable Panel/Menu Template Library, stable-ID Template Catalog, and Assembly Utilities from the later full Builder/Composer so snap-together UI authoring cannot disappear behind Builder scope. Activates EUI-M3-02 while Motifs/accessibility implementation, HUD/transients, full Window management, persistence, peer bridges, primitive/template implementation, Builder implementation, and polished showcase art remain later gated work. | Jesse “Echo” Adams |
 | 1.7.0 | 2026-08-16 | Approved | EUI-M4-01 JIT reconciliation: activates named project-defined HUD regions, generation-safe widget leases, reason/owner visibility leases, deterministic effective visibility, bounded capacity, owner-loss cleanup, and retained Screen/Modal/Window independence. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, authoring libraries, Builder, peer bridges, and release work remain separately gated. | Jesse “Echo” Adams |
+| 1.8.0 | 2026-08-17 | Approved | EUI-M4-02 JIT reconciliation: activates project-defined bounded notification channels; priority with FIFO ties; non-preemptive visible entries; opt-in fresh-generation coalescing; reject-newest, drop-oldest-pending, and strict-outrank replace-lowest-priority-pending policies; unscaled/manual lifetime; generation-safe dismissal and owner cleanup; status/events; tests; and Laboratory proof. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain gated. | Jesse “Echo” Adams |
 
 ---
 
@@ -2132,7 +2133,17 @@ Durable evidence:
 - retained M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green;
 - package/imported Laboratory parity verified.
 
-The completed slice supplies stable named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, and structured status/events without changing Screen/Modal/Window authority or claiming gameplay truth. Notifications, prompts, tooltips, Motifs/accessibility, full Window management, persistence, peer bridges, Primitive/Template/Assembly/Builder authoring, integration, and release remain inactive.
+The completed slice supplies stable named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, and structured status/events without changing Screen/Modal/Window authority or claiming gameplay truth. At the EUI-M4-01 closeout boundary, notifications and all later capabilities remained inactive; the EUI-M4-02 activation below supersedes notification status only.
+
+### 28.10 Active implementation checkpoint — EUI-M4-02
+
+**EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime** is **ACTIVE / AUTHORIZED** from clean EUI-M4-01 closeout baseline `5e7ad92`.
+
+The slice owns project-defined stable channels, independent visible/pending bounds, higher-priority/FIFO-tie pending promotion, non-preemptive visible entries, opt-in fresh-generation coalescing with default lifetime restart, explicit pending overflow policies, unscaled/manual lifetime, generation-safe handles, owner-loss/reset/shutdown settlement, status/events, focused tests, and Laboratory proof.
+
+Default overflow is `RejectNewest`; authored alternatives are `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending`. Notifications remain transient presentation and cannot own durable history, localization/audio/analytics, gameplay/domain truth, input, pause/time scale, cursor, persistence, or project lifetime composition.
+
+Exact post-M4 NUnit totals were not captured during EUI-M4-01, so the first gate records the current EchoUI/full EditMode baseline before Runtime edits. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
 
 ---
 
@@ -2143,23 +2154,27 @@ Continue The Sperk's Forge from the latest live main and verify the branch head.
 
 Authority:
 - SFGSS-000 v0.27.0
-- The Looking Glass package specification v1.7.0
+- The Looking Glass package specification v1.8.0
 - SFGSS-005 v1.7.0 and SFGSS-ADR-007 v1.1.0
+- Active plan: EUI-M4-02
 
 Completed:
 - EUI-M1 through EUI-M4-01
-- EUI-M4-01 activation ce30ac6
-- Runtime/tests df9e2be
-- bounded corrections dbdf6bd, 81f9625, 3992bbc, e47d43b
-- implementation/Laboratory seal 29573ef
+- EUI-M4-01 documentation closeout 5e7ad92
+- EUI-M4-01 implementation/Laboratory seal 29573ef
 - automated gate user-confirmed green; exact post-M4 totals not captured
 - manual HUD Laboratory 5 / 5 PASS
-- retained prior-tab smoke user-confirmed green
-- package/imported Laboratory parity verified
+- retained prior-tab smoke green; package/imported parity verified
 
-No Looking Glass checkpoint is active. Stop at the completed EUI-M4-01
-boundary. Present EUI-M4-02 as a bounded activation proposal only when Jesse
-asks to continue; do not implement it under the closed plan.
+Active phase:
+- EUI-M4-02 JIT reconciliation and activation
+- Runtime implementation has not started
+- first gate is exact EchoUI Editor and full Foundry EditMode baseline capture
+  on the activation commit before Runtime edits
+
+Resume only the EUI-M4-02 baseline-test gate. Do not begin prompts, tooltips,
+Motifs/accessibility, safe area, full Window management, persistence, bridges,
+authoring libraries/Builder, integration, or release work.
 ```
 
 ### 29.1 Current status record
@@ -2167,15 +2182,16 @@ asks to continue; do not implement it under the closed plan.
 | Field | Current value |
 |---|---|
 | Runtime package version | `0.1.0` |
-| Package authority | SFGSS-PKG-ECHOUI-001 v1.7.0 Approved |
+| Package authority | SFGSS-PKG-ECHOUI-001 v1.8.0 Approved |
 | Suite authority | SFGSS-000 v0.27.0 Approved |
 | Completed implementation checkpoints | EUI-M1-01 through EUI-M4-01 |
 | EUI-M3-02 retained evidence | Activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14** |
-| Active implementation checkpoint | None |
-| EUI-M4-01 completion evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections `dbdf6bd`, `81f9625`, `3992bbc`, `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate user-confirmed green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
+| EUI-M4-01 completion evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
+| Active implementation checkpoint | EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime |
+| Active phase | JIT reconciliation/activation complete; Runtime implementation not started |
 | Missing numeric evidence | Exact post-M4 NUnit totals were not captured; `1246 / 1246` remains the pre-M4 floor |
-| Exact resume phase | Stop at completed EUI-M4-01; next work requires a separate visible activation |
-| Excluded next work | EUI-M4-02 and all adjacent M4/later capabilities remain inactive |
+| Exact resume phase | Run EchoUI Editor and full Foundry EditMode on the activation commit; record exact totals before Runtime edits |
+| Excluded next work | Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive |
 
 ---
 
@@ -2199,13 +2215,14 @@ asks to continue; do not implement it under the closed plan.
 - [x] Immediate/CanvasGroup Fade reference drivers do not cap professional custom transition drivers or introduce a mandatory tween dependency.
 - [x] Reduced-motion substitution is architecturally available without prematurely implementing the Motif/accessibility service.
 - [x] Primitive Warehouse, editable Panel/Menu Templates, stable-ID Template Catalog, and Assembly Utilities are explicitly preserved as durable authoring capabilities distinct from the full Builder/Composer.
-- [x] PKG-LEARN-008 bounded EUI-M4-01 revisit is complete.
+- [x] PKG-LEARN-008 bounded EUI-M4-02 notification revisit is complete.
 - [x] EUI-M3-02 is complete and closed at `0affb7d`.
 - [x] EUI-M4-01 is COMPLETE / CLOSED with automated gate green, manual HUD Laboratory 5 / 5 PASS, retained smoke green, and package/imported parity verified.
+- [x] EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan; Runtime implementation has not started.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M4-01 complete; no active successor
+**Decision:** Approved / EUI-M4-02 reconciled and active
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
@@ -2215,7 +2232,8 @@ asks to continue; do not implement it under the closed plan.
 **EUI-M3-01 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M3-02 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M4-01 JIT reconciliation and explicit authorization date:** August 16, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef` with the requested automated and manual gates user-confirmed green. Exact post-M4 NUnit totals were not captured and must not be inferred from the retained `1246 / 1246` pre-M4 floor. The Assembly Library promise remains durable authority, but its Primitive Warehouse/template/catalog/utility/Builder implementation remains outside completed EUI-M4-01. EUI-M4-02 and any other successor require a separate visible activation. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
+**EUI-M4-02 JIT reconciliation and explicit authorization date:** August 17, 2026
+**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef`. EUI-M4-02 is authorized only within its active Checkpoint Build Plan from baseline `5e7ad92`; Runtime edits remain locked until the exact current EchoUI/full EditMode baseline is recorded. Retained `1246 / 1246` is pre-M4 evidence and must not be relabeled. The Assembly Library promise remains durable authority, but Primitive Warehouse/template/catalog/utility/Builder implementation remains outside EUI-M4-02. Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, integration, and release remain inactive. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 
