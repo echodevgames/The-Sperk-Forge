@@ -5,8 +5,7 @@ namespace EchoDevGames.EchoUI
 {
     /// <summary>
     /// Root-owned bounded notification admission and channel state.
-    /// Owner cleanup, events, and root wiring are added by later EUI-M4-02
-    /// slices.
+    /// Events and root wiring are added by later EUI-M4-02 slices.
     /// </summary>
     public sealed class UINotificationService
     {
@@ -42,6 +41,10 @@ namespace EchoDevGames.EchoUI
             public bool UsesAutomaticLifetime =>
                 Request.LifetimeMode ==
                 UINotificationLifetimeMode.Automatic;
+
+            public bool HasLostOwner =>
+                Request.HasOwner &&
+                Request.Owner == null;
 
             public void BeginVisibleLifetime(
                 double nowSeconds)
@@ -96,6 +99,7 @@ namespace EchoDevGames.EchoUI
         private long nextAdmissionSequence;
         private double lastObservedNowSeconds;
         private bool mutationInProgress;
+        private bool shutdown;
 
         public UINotificationService(
             IEnumerable<UINotificationChannelDefinition> definitions,
@@ -128,6 +132,9 @@ namespace EchoDevGames.EchoUI
         }
 
         public bool IsValid { get; private set; }
+
+        public bool IsShutdown =>
+            shutdown;
 
         public int ChannelCount =>
             channels.Count;
@@ -167,6 +174,15 @@ namespace EchoDevGames.EchoUI
         {
             long generation =
                 ++nextGeneration;
+
+            if (shutdown)
+            {
+                return Reject(
+                    request,
+                    generation,
+                    UINotificationAdmissionStatus.Shutdown,
+                    "Notification service is shut down.");
+            }
 
             if (mutationInProgress)
             {
@@ -304,7 +320,8 @@ namespace EchoDevGames.EchoUI
         /// </summary>
         public int Tick()
         {
-            if (!IsValid ||
+            if (shutdown ||
+                !IsValid ||
                 mutationInProgress ||
                 !TryObserveNow(
                     out double nowSeconds))
@@ -357,6 +374,135 @@ namespace EchoDevGames.EchoUI
             }
 
             return expiredCount;
+        }
+
+        /// <summary>
+        /// Settles generations whose captured Unity owner was destroyed, then
+        /// promotes pending work independently within each affected channel.
+        /// </summary>
+        public int RefreshDestroyedOwners()
+        {
+            if (shutdown ||
+                !IsValid ||
+                mutationInProgress)
+            {
+                return 0;
+            }
+
+            double nowSeconds =
+                ObserveNowOrLast();
+
+            List<Entry> lostEntries =
+                new List<Entry>();
+
+            mutationInProgress = true;
+
+            try
+            {
+                foreach (ChannelState channel in channels.Values)
+                {
+                    RemoveLostOwners(
+                        channel.Visible,
+                        lostEntries);
+
+                    RemoveLostOwners(
+                        channel.Pending,
+                        lostEntries);
+
+                    Promote(
+                        channel,
+                        nowSeconds);
+                }
+
+                CompleteEntries(
+                    lostEntries,
+                    UINotificationOutcome.OwnerLost,
+                    "Notification generation owner was destroyed.");
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return lostEntries.Count;
+        }
+
+        /// <summary>
+        /// Settles all live generations while preserving immutable channel
+        /// definitions and monotonic generation identity for reuse.
+        /// </summary>
+        public int Reset()
+        {
+            if (shutdown ||
+                !IsValid ||
+                mutationInProgress)
+            {
+                return 0;
+            }
+
+            List<Entry> resetEntries =
+                new List<Entry>(
+                    VisibleCount + PendingCount);
+
+            mutationInProgress = true;
+
+            try
+            {
+                DrainAllEntries(
+                    resetEntries);
+
+                CompleteEntries(
+                    resetEntries,
+                    UINotificationOutcome.Reset,
+                    "Notification generation was settled by service reset.");
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return resetEntries.Count;
+        }
+
+        /// <summary>
+        /// Settles all live generations exactly once, releases channel state,
+        /// and permanently rejects further mutation.
+        /// </summary>
+        public int Shutdown()
+        {
+            if (shutdown ||
+                !IsValid ||
+                mutationInProgress)
+            {
+                return 0;
+            }
+
+            List<Entry> shutdownEntries =
+                new List<Entry>(
+                    VisibleCount + PendingCount);
+
+            shutdown = true;
+            mutationInProgress = true;
+
+            try
+            {
+                DrainAllEntries(
+                    shutdownEntries);
+
+                channels.Clear();
+                IsValid = false;
+
+                CompleteEntries(
+                    shutdownEntries,
+                    UINotificationOutcome.Shutdown,
+                    "Notification generation was settled by service shutdown.");
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return shutdownEntries.Count;
         }
 
         private UINotificationHandle ApplyOverflow(
@@ -487,18 +633,19 @@ namespace EchoDevGames.EchoUI
         public UINotificationOperationResult Dismiss(
             UINotificationHandle handle)
         {
-            if (!IsValid)
-            {
-                return new UINotificationOperationResult(
-                    UINotificationOperationStatus.Unavailable,
-                    message: "Notification service is unavailable.");
-            }
-
             if (handle == null)
             {
                 return new UINotificationOperationResult(
-                    UINotificationOperationStatus.Invalid,
-                    message: "Notification handle is missing.");
+                    shutdown
+                        ? UINotificationOperationStatus.Shutdown
+                        : IsValid
+                            ? UINotificationOperationStatus.Invalid
+                            : UINotificationOperationStatus.Unavailable,
+                    message: shutdown
+                        ? "Notification service is shut down."
+                        : IsValid
+                            ? "Notification handle is missing."
+                            : "Notification service is unavailable.");
             }
 
             if (handle.IsCompleted)
@@ -516,6 +663,22 @@ namespace EchoDevGames.EchoUI
                     completedStatus == UINotificationOperationStatus.Stale
                         ? "Notification generation was superseded by a replacement."
                         : "Notification generation is already settled.");
+            }
+
+            if (shutdown)
+            {
+                return new UINotificationOperationResult(
+                    UINotificationOperationStatus.Shutdown,
+                    handle.ChannelId,
+                    handle.Generation,
+                    "Notification service is shut down.");
+            }
+
+            if (!IsValid)
+            {
+                return new UINotificationOperationResult(
+                    UINotificationOperationStatus.Unavailable,
+                    message: "Notification service is unavailable.");
             }
 
             if (mutationInProgress)
@@ -835,6 +998,67 @@ namespace EchoDevGames.EchoUI
             }
 
             return -1;
+        }
+
+        private static void RemoveLostOwners(
+            List<Entry> entries,
+            List<Entry> lostEntries)
+        {
+            int index = 0;
+
+            while (index < entries.Count)
+            {
+                Entry entry =
+                    entries[index];
+
+                if (!entry.HasLostOwner)
+                {
+                    index++;
+                    continue;
+                }
+
+                entries.RemoveAt(index);
+                lostEntries.Add(entry);
+            }
+        }
+
+        private void DrainAllEntries(
+            List<Entry> entries)
+        {
+            foreach (ChannelState channel in channels.Values)
+            {
+                entries.AddRange(
+                    channel.Visible);
+
+                entries.AddRange(
+                    channel.Pending);
+
+                channel.Visible.Clear();
+                channel.Pending.Clear();
+            }
+        }
+
+        private static void CompleteEntries(
+            List<Entry> entries,
+            UINotificationOutcome outcome,
+            string message)
+        {
+            for (int index = 0;
+                 index < entries.Count;
+                 index++)
+            {
+                Entry entry =
+                    entries[index];
+
+                entry.Handle.TryComplete(
+                    new UINotificationResult(
+                        outcome,
+                        entry.Request.ChannelId,
+                        entry.Handle.Generation,
+                        entry.Request.CoalescingKey,
+                        entry.Request.CorrelationId,
+                        message));
+            }
         }
 
         private static bool TryFindCoalescingEntry(
