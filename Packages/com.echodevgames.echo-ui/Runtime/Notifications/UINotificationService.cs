@@ -5,8 +5,8 @@ namespace EchoDevGames.EchoUI
 {
     /// <summary>
     /// Root-owned bounded notification admission and channel state.
-    /// Coalescing, authored overflow alternatives, automatic lifetime, owner
-    /// cleanup, events, and root wiring are added by later EUI-M4-02 slices.
+    /// Authored overflow alternatives, automatic lifetime, owner cleanup,
+    /// events, and root wiring are added by later EUI-M4-02 slices.
     /// </summary>
     public sealed class UINotificationService
     {
@@ -60,6 +60,7 @@ namespace EchoDevGames.EchoUI
 
         private long nextGeneration;
         private long nextAdmissionSequence;
+        private bool mutationInProgress;
 
         public UINotificationService(
             IEnumerable<UINotificationChannelDefinition> definitions,
@@ -109,6 +110,15 @@ namespace EchoDevGames.EchoUI
         {
             long generation =
                 ++nextGeneration;
+
+            if (mutationInProgress)
+            {
+                return Reject(
+                    request,
+                    generation,
+                    UINotificationAdmissionStatus.Unavailable,
+                    "Notification mutation is already settling committed state.");
+            }
 
             if (!IsValid)
             {
@@ -160,13 +170,19 @@ namespace EchoDevGames.EchoUI
                     requestError);
             }
 
-            if (request.CoalescingKey.IsValid)
+            if (request.CoalescingKey.IsValid &&
+                TryFindCoalescingEntry(
+                    channel,
+                    request.CoalescingKey,
+                    out bool coalescingVisible,
+                    out int coalescingIndex))
             {
-                return Reject(
+                return Coalesce(
+                    channel,
                     request,
                     generation,
-                    UINotificationAdmissionStatus.Unavailable,
-                    "Keyed notification admission remains unavailable until the coalescing slice.");
+                    coalescingVisible,
+                    coalescingIndex);
             }
 
             bool hasVisibleCapacity =
@@ -239,11 +255,26 @@ namespace EchoDevGames.EchoUI
 
             if (handle.IsCompleted)
             {
+                UINotificationOperationStatus completedStatus =
+                    handle.Result.Outcome ==
+                        UINotificationOutcome.Superseded
+                        ? UINotificationOperationStatus.Stale
+                        : UINotificationOperationStatus.AlreadySettled;
+
                 return new UINotificationOperationResult(
-                    UINotificationOperationStatus.AlreadySettled,
+                    completedStatus,
                     handle.ChannelId,
                     handle.Generation,
-                    "Notification generation is already settled.");
+                    completedStatus == UINotificationOperationStatus.Stale
+                        ? "Notification generation was superseded by a replacement."
+                        : "Notification generation is already settled.");
+            }
+
+            if (mutationInProgress)
+            {
+                return new UINotificationOperationResult(
+                    UINotificationOperationStatus.Unavailable,
+                    message: "Notification mutation is already settling committed state.");
             }
 
             if (!channels.TryGetValue(
@@ -436,6 +467,62 @@ namespace EchoDevGames.EchoUI
                     message));
         }
 
+        private UINotificationHandle Coalesce(
+            ChannelState channel,
+            UINotificationRequest request,
+            long generation,
+            bool isVisible,
+            int index)
+        {
+            List<Entry> collection =
+                isVisible
+                    ? channel.Visible
+                    : channel.Pending;
+
+            Entry prior =
+                collection[index];
+
+            UINotificationAdmissionResult admission =
+                new UINotificationAdmissionResult(
+                    UINotificationAdmissionStatus.Coalesced,
+                    request.ChannelId,
+                    generation,
+                    request.CoalescingKey,
+                    request.CorrelationId,
+                    "Notification generation replaced a matching live entry.");
+
+            UINotificationHandle handle =
+                new UINotificationHandle(admission);
+
+            Entry replacement =
+                new Entry(
+                    request,
+                    handle,
+                    prior.AdmissionSequence);
+
+            mutationInProgress = true;
+
+            try
+            {
+                prior.Handle.TryComplete(
+                    new UINotificationResult(
+                        UINotificationOutcome.Superseded,
+                        prior.Request.ChannelId,
+                        prior.Handle.Generation,
+                        prior.Request.CoalescingKey,
+                        prior.Request.CorrelationId,
+                        "Notification generation was superseded by a coalesced replacement."));
+
+                collection[index] = replacement;
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return handle;
+        }
+
         private static string ValidateRequest(
             UINotificationRequest request)
         {
@@ -489,6 +576,43 @@ namespace EchoDevGames.EchoUI
             }
 
             return -1;
+        }
+
+        private static bool TryFindCoalescingEntry(
+            ChannelState channel,
+            UINotificationCoalescingKey key,
+            out bool isVisible,
+            out int index)
+        {
+            isVisible = false;
+            index = -1;
+
+            for (int visibleIndex = 0;
+                 visibleIndex < channel.Visible.Count;
+                 visibleIndex++)
+            {
+                if (channel.Visible[visibleIndex]
+                        .Request.CoalescingKey == key)
+                {
+                    isVisible = true;
+                    index = visibleIndex;
+                    return true;
+                }
+            }
+
+            for (int pendingIndex = 0;
+                 pendingIndex < channel.Pending.Count;
+                 pendingIndex++)
+            {
+                if (channel.Pending[pendingIndex]
+                        .Request.CoalescingKey == key)
+                {
+                    index = pendingIndex;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void Promote(

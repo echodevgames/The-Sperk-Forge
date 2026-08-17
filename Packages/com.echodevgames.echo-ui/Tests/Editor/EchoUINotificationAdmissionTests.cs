@@ -277,7 +277,7 @@ namespace EchoDevGames.EchoUI.Tests.Editor
         }
 
         [Test]
-        public void KeyedRequestRejectsSafelyUntilCoalescingSlice()
+        public void FirstKeyedRequestAdmitsWithoutMatchingLiveEntry()
         {
             UINotificationService service =
                 CreateService();
@@ -289,13 +289,18 @@ namespace EchoDevGames.EchoUI.Tests.Editor
                         new object(),
                         coalescingKey: "objective.updated"));
 
-            Assert.That(handle.Accepted, Is.False);
+            Assert.That(handle.Accepted, Is.True);
             Assert.That(
                 handle.Admission.Status,
                 Is.EqualTo(
-                    UINotificationAdmissionStatus.Unavailable));
+                    UINotificationAdmissionStatus.Admitted));
 
-            AssertCounts(service, visible: 0, pending: 0);
+            AssertState(
+                service,
+                handle,
+                UINotificationEntryState.Visible);
+
+            AssertCounts(service, visible: 1, pending: 0);
         }
 
         [Test]
