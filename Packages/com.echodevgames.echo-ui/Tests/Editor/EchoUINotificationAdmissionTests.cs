@@ -195,7 +195,10 @@ namespace EchoDevGames.EchoUI.Tests.Editor
                 Admit(service, "pending");
 
             UINotificationHandle rejected =
-                Admit(service, "rejected");
+                service.Admit(
+                    new UINotificationRequest(
+                        ChannelId,
+                        "rejected"));
 
             Assert.That(rejected.Accepted, Is.False);
             Assert.That(rejected.IsCompleted, Is.True);
@@ -372,7 +375,10 @@ namespace EchoDevGames.EchoUI.Tests.Editor
                 Admit(service, "accepted");
 
             UINotificationHandle rejected =
-                Admit(service, "rejected");
+                service.Admit(
+                    new UINotificationRequest(
+                        ChannelId,
+                        "rejected"));
 
             service.Dismiss(accepted);
 
