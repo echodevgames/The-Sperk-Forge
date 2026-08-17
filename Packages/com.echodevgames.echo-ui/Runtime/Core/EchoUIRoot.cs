@@ -129,6 +129,7 @@ namespace EchoDevGames.EchoUI
                 };
 
         private UINotificationService notificationService;
+        private IUINotificationPresenter notificationPresenter;
         private bool processingDeferredScreenOperations;
         private bool shuttingDown;
 
@@ -277,6 +278,7 @@ namespace EchoDevGames.EchoUI
             if (notificationService != null)
             {
                 notificationService.RefreshDestroyedOwners();
+                notificationService.RefreshDestroyedPresentations();
                 notificationService.Tick();
             }
         }
@@ -316,6 +318,8 @@ namespace EchoDevGames.EchoUI
                 notificationService.Shutdown();
                 notificationService = null;
             }
+
+            notificationPresenter = null;
 
             NotificationChannelChanged = null;
 
@@ -515,6 +519,9 @@ namespace EchoDevGames.EchoUI
             notificationService.ChannelChanged +=
                 PublishNotificationChannelChanged;
 
+            notificationService.SetPresenter(
+                notificationPresenter);
+
             IsInitialized = true;
 
             for (int index = 0;
@@ -629,6 +636,30 @@ namespace EchoDevGames.EchoUI
             return IsNotificationLifecycleInitialized
                 ? notificationService.Reset()
                 : 0;
+        }
+
+        /// <summary>
+        /// Attaches or replaces the project-owned notification presenter.
+        /// Pre-initialization attachment is retained for initial synchronization.
+        /// </summary>
+        public bool SetNotificationPresenter(
+            IUINotificationPresenter presenter)
+        {
+            if (shuttingDown)
+            {
+                return false;
+            }
+
+            if (notificationService != null &&
+                notificationService.IsValid &&
+                !notificationService.SetPresenter(
+                    presenter))
+            {
+                return false;
+            }
+
+            notificationPresenter = presenter;
+            return true;
         }
 
         public bool TryGetNotificationChannelDefinition(

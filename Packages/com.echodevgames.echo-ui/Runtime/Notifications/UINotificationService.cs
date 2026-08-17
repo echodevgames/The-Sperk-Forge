@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace EchoDevGames.EchoUI
 {
     /// <summary>
-    /// Root-owned bounded notification admission and channel state.
-    /// Events and root wiring are added by later EUI-M4-02 slices.
+    /// Root-owned bounded notification admission, channel state, and
+    /// replaceable project presentation boundary.
     /// </summary>
     public sealed class UINotificationService
     {
@@ -45,6 +45,10 @@ namespace EchoDevGames.EchoUI
             public bool HasLostOwner =>
                 Request.HasOwner &&
                 Request.Owner == null;
+
+            public bool HasLostPresentation =>
+                IsDestroyedUnityPresentation(
+                    Request.Presentation);
 
             public void BeginVisibleLifetime(
                 double nowSeconds)
@@ -93,6 +97,9 @@ namespace EchoDevGames.EchoUI
             new Dictionary<string, ChannelState>(
                 StringComparer.Ordinal);
 
+        private readonly List<ChannelState> channelOrder =
+            new List<ChannelState>();
+
         private readonly IUINotificationClock clock;
 
         private long nextGeneration;
@@ -100,6 +107,7 @@ namespace EchoDevGames.EchoUI
         private double lastObservedNowSeconds;
         private bool mutationInProgress;
         private bool shutdown;
+        private IUINotificationPresenter presenter;
 
         public UINotificationService(
             IEnumerable<UINotificationChannelDefinition> definitions,
@@ -145,7 +153,7 @@ namespace EchoDevGames.EchoUI
             {
                 int count = 0;
 
-                foreach (ChannelState channel in channels.Values)
+                foreach (ChannelState channel in channelOrder)
                 {
                     count += channel.Visible.Count;
                 }
@@ -160,7 +168,7 @@ namespace EchoDevGames.EchoUI
             {
                 int count = 0;
 
-                foreach (ChannelState channel in channels.Values)
+                foreach (ChannelState channel in channelOrder)
                 {
                     count += channel.Pending.Count;
                 }
@@ -169,11 +177,75 @@ namespace EchoDevGames.EchoUI
             }
         }
 
+        public bool HasPresenter =>
+            presenter != null;
+
         /// <summary>
         /// Publishes payload-free channel truth after an accepted mutation has
         /// fully committed. No event history is retained by the service.
         /// </summary>
         public event Action<UINotificationChannelSnapshot> ChannelChanged;
+
+        /// <summary>
+        /// Replaces the project-owned presenter. The outgoing presenter first
+        /// receives empty channel snapshots, then the incoming presenter
+        /// receives current committed truth. Presenter failures are isolated.
+        /// </summary>
+        public bool SetPresenter(
+            IUINotificationPresenter value)
+        {
+            if (shutdown ||
+                !IsValid ||
+                mutationInProgress)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(
+                    presenter,
+                    value))
+            {
+                return true;
+            }
+
+            mutationInProgress = true;
+
+            try
+            {
+                IUINotificationPresenter outgoing =
+                    presenter;
+
+                if (outgoing != null)
+                {
+                    foreach (ChannelState channel in channelOrder)
+                    {
+                        ApplyPresenter(
+                            outgoing,
+                            CreateEmptyPresentationSnapshot(
+                                channel));
+                    }
+                }
+
+                presenter = value;
+
+                if (presenter != null)
+                {
+                    foreach (ChannelState channel in channelOrder)
+                    {
+                        ApplyPresenter(
+                            presenter,
+                            CreatePresentationSnapshot(
+                                channel));
+                    }
+                }
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return true;
+        }
 
         public UINotificationHandle Admit(
             UINotificationRequest request)
@@ -354,7 +426,7 @@ namespace EchoDevGames.EchoUI
 
             try
             {
-                foreach (ChannelState channel in channels.Values)
+                foreach (ChannelState channel in channelOrder)
                 {
                     List<Entry> expiredEntries =
                         null;
@@ -437,7 +509,7 @@ namespace EchoDevGames.EchoUI
 
             try
             {
-                foreach (ChannelState channel in channels.Values)
+                foreach (ChannelState channel in channelOrder)
                 {
                     int removedCount =
                         RemoveLostOwners(
@@ -496,6 +568,90 @@ namespace EchoDevGames.EchoUI
         }
 
         /// <summary>
+        /// Settles generations whose presentation payload was a Unity object
+        /// that has since been destroyed. Non-Unity payloads are unaffected.
+        /// </summary>
+        public int RefreshDestroyedPresentations()
+        {
+            if (shutdown ||
+                !IsValid ||
+                mutationInProgress)
+            {
+                return 0;
+            }
+
+            double nowSeconds =
+                ObserveNowOrLast();
+
+            List<Entry> lostEntries =
+                null;
+
+            List<ChannelState> changedChannels =
+                null;
+
+            mutationInProgress = true;
+
+            try
+            {
+                foreach (ChannelState channel in channelOrder)
+                {
+                    int removedCount =
+                        RemoveLostPresentations(
+                            channel.Visible,
+                            ref lostEntries);
+
+                    removedCount +=
+                        RemoveLostPresentations(
+                            channel.Pending,
+                            ref lostEntries);
+
+                    if (removedCount == 0)
+                    {
+                        continue;
+                    }
+
+                    Promote(
+                        channel,
+                        nowSeconds);
+
+                    if (changedChannels == null)
+                    {
+                        changedChannels =
+                            new List<ChannelState>();
+                    }
+
+                    changedChannels.Add(channel);
+                }
+
+                if (lostEntries == null)
+                {
+                    return 0;
+                }
+
+                CompleteEntries(
+                    lostEntries,
+                    UINotificationOutcome.PresentationLost,
+                    "Notification generation presentation was destroyed.");
+
+                for (int index = 0;
+                     index < changedChannels.Count;
+                     index++)
+                {
+                    Publish(
+                        changedChannels[index]);
+                }
+            }
+            finally
+            {
+                mutationInProgress = false;
+            }
+
+            return lostEntries == null
+                ? 0
+                : lostEntries.Count;
+        }
+
+        /// <summary>
         /// Settles all live generations while preserving immutable channel
         /// definitions and monotonic generation identity for reuse.
         /// </summary>
@@ -523,7 +679,7 @@ namespace EchoDevGames.EchoUI
             List<ChannelState> changedChannels =
                 new List<ChannelState>();
 
-            foreach (ChannelState channel in channels.Values)
+            foreach (ChannelState channel in channelOrder)
             {
                 if (channel.Visible.Count > 0 ||
                     channel.Pending.Count > 0)
@@ -579,7 +735,7 @@ namespace EchoDevGames.EchoUI
 
             List<ChannelState> shutdownChannels =
                 new List<ChannelState>(
-                    channels.Values);
+                    channelOrder);
 
             shutdown = true;
             mutationInProgress = true;
@@ -605,7 +761,9 @@ namespace EchoDevGames.EchoUI
                         shutdownChannels[index]);
                 }
 
+                channelOrder.Clear();
                 ChannelChanged = null;
+                presenter = null;
             }
             finally
             {
@@ -977,36 +1135,92 @@ namespace EchoDevGames.EchoUI
                 definition.OverflowPolicy);
         }
 
+        private static UINotificationPresentationSnapshot
+            CreatePresentationSnapshot(
+                ChannelState channel)
+        {
+            UINotificationPresentationEntry[] entries =
+                new UINotificationPresentationEntry[
+                    channel.Visible.Count];
+
+            for (int index = 0;
+                 index < entries.Length;
+                 index++)
+            {
+                Entry entry =
+                    channel.Visible[index];
+
+                entries[index] =
+                    new UINotificationPresentationEntry(
+                        entry.Handle,
+                        entry.Request.Presentation,
+                        entry.Priority,
+                        entry.Request.CoalescingKey,
+                        entry.Request.CorrelationId);
+            }
+
+            return new UINotificationPresentationSnapshot(
+                channel.Definition.ChannelId,
+                entries);
+        }
+
+        private static UINotificationPresentationSnapshot
+            CreateEmptyPresentationSnapshot(
+                ChannelState channel) =>
+                new UINotificationPresentationSnapshot(
+                    channel.Definition.ChannelId,
+                    Array.Empty<UINotificationPresentationEntry>());
+
         private void Publish(
             ChannelState channel)
         {
             Action<UINotificationChannelSnapshot> handlers =
                 ChannelChanged;
 
-            if (handlers == null)
-            {
-                return;
-            }
-
             UINotificationChannelSnapshot snapshot =
                 CreateSnapshot(channel);
 
-            Delegate[] invocationList =
-                handlers.GetInvocationList();
-
-            for (int index = 0;
-                 index < invocationList.Length;
-                 index++)
+            if (handlers != null)
             {
-                try
+                Delegate[] invocationList =
+                    handlers.GetInvocationList();
+
+                for (int index = 0;
+                     index < invocationList.Length;
+                     index++)
                 {
-                    ((Action<UINotificationChannelSnapshot>)invocationList[index])(
-                        snapshot);
+                    try
+                    {
+                        ((Action<UINotificationChannelSnapshot>)invocationList[index])(
+                            snapshot);
+                    }
+                    catch (Exception exception)
+                    {
+                        UnityEngine.Debug.LogException(exception);
+                    }
                 }
-                catch (Exception exception)
-                {
-                    UnityEngine.Debug.LogException(exception);
-                }
+            }
+
+            if (presenter != null)
+            {
+                ApplyPresenter(
+                    presenter,
+                    CreatePresentationSnapshot(
+                        channel));
+            }
+        }
+
+        private static void ApplyPresenter(
+            IUINotificationPresenter target,
+            UINotificationPresentationSnapshot snapshot)
+        {
+            try
+            {
+                target.ApplyChannel(snapshot);
+            }
+            catch (Exception exception)
+            {
+                UnityEngine.Debug.LogException(exception);
             }
         }
 
@@ -1111,7 +1325,9 @@ namespace EchoDevGames.EchoUI
         private static string ValidateRequest(
             UINotificationRequest request)
         {
-            if (request.Presentation == null)
+            if (request.Presentation == null ||
+                IsDestroyedUnityPresentation(
+                    request.Presentation))
             {
                 return
                     "Notification request requires a presentation payload.";
@@ -1137,6 +1353,18 @@ namespace EchoDevGames.EchoUI
             }
 
             return string.Empty;
+        }
+
+        private static bool IsDestroyedUnityPresentation(
+            object value)
+        {
+            UnityEngine.Object unityValue =
+                value as UnityEngine.Object;
+
+            return !ReferenceEquals(
+                       unityValue,
+                       null) &&
+                   unityValue == null;
         }
 
         private static int FindEntryIndex(
@@ -1196,10 +1424,43 @@ namespace EchoDevGames.EchoUI
             return removedCount;
         }
 
+        private static int RemoveLostPresentations(
+            List<Entry> entries,
+            ref List<Entry> lostEntries)
+        {
+            int index = 0;
+            int removedCount = 0;
+
+            while (index < entries.Count)
+            {
+                Entry entry =
+                    entries[index];
+
+                if (!entry.HasLostPresentation)
+                {
+                    index++;
+                    continue;
+                }
+
+                entries.RemoveAt(index);
+
+                if (lostEntries == null)
+                {
+                    lostEntries =
+                        new List<Entry>();
+                }
+
+                lostEntries.Add(entry);
+                removedCount++;
+            }
+
+            return removedCount;
+        }
+
         private void DrainAllEntries(
             List<Entry> entries)
         {
-            foreach (ChannelState channel in channels.Values)
+            foreach (ChannelState channel in channelOrder)
             {
                 entries.AddRange(
                     channel.Visible);
@@ -1449,6 +1710,9 @@ namespace EchoDevGames.EchoUI
                 new Dictionary<string, ChannelState>(
                     StringComparer.Ordinal);
 
+            List<ChannelState> candidatesInOrder =
+                new List<ChannelState>();
+
             foreach (UINotificationChannelDefinition authored in source)
             {
                 string validationError =
@@ -1470,9 +1734,14 @@ namespace EchoDevGames.EchoUI
                         definition.ChannelId.Value;
                 }
 
+                ChannelState state =
+                    new ChannelState(definition);
+
                 candidates.Add(
                     definition.ChannelId.Value,
-                    new ChannelState(definition));
+                    state);
+
+                candidatesInOrder.Add(state);
             }
 
             if (candidates.Count == 0)
@@ -1481,11 +1750,18 @@ namespace EchoDevGames.EchoUI
                     "At least one notification channel definition is required.";
             }
 
-            foreach (KeyValuePair<string, ChannelState> candidate in candidates)
+            for (int index = 0;
+                 index < candidatesInOrder.Count;
+                 index++)
             {
+                ChannelState candidate =
+                    candidatesInOrder[index];
+
                 channels.Add(
-                    candidate.Key,
-                    candidate.Value);
+                    candidate.Definition.ChannelId.Value,
+                    candidate);
+
+                channelOrder.Add(candidate);
             }
 
             IsValid = true;
