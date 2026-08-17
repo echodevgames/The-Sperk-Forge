@@ -4,25 +4,29 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 17, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-02 — Runtime/presenter automated-green; Laboratory implementation ready for manual acceptance
-**Current checkpoint:** EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime — ACTIVE / AUTHORIZED
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-02 — COMPLETE / CLOSED
+**Current checkpoint:** None — EUI-M4-02 is closed; no successor checkpoint is activated
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
-## Current resume phase — Looking Glass EUI-M4-02 Laboratory acceptance — August 17, 2026
+## Current resume phase — Looking Glass EUI-M4-02 final closeout — August 17, 2026
 
 - Clean activation baseline: `5e7ad9211a66ba3dc9f26c4a268febe4ba9c9d3d` — EUI-M4-01 documentation closeout.
 - Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.8.0**; suite authority remains **SFGSS-000 v0.27.0**.
-- **EUI-M4-02 is ACTIVE / AUTHORIZED. Runtime, root integration, presenter seam, and automated proof are implemented through `d93d0bd`.**
+- **EUI-M4-02 is COMPLETE / CLOSED.** Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`; mirrored Laboratory implementation is `bde34f2`.
 - Authorized: project-defined stable notification channels; bounded visible/pending capacity; priority with FIFO ties; no visible preemption; opt-in fresh-generation coalescing; deterministic pending overflow; unscaled/manual lifetime; owner-loss/shutdown cleanup; status/events; tests; and Laboratory proof.
 - Default overflow is `RejectNewest`; authored alternatives are `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending`.
 - Notifications remain transient presentation and own no durable history, localization/audio/analytics, game truth, input, pause/time scale, cursor, persistence, or project lifetime.
 - The activation baseline was recorded before Runtime edits: full Foundry EditMode **1258 / 1258**, EchoUI Editor **152 / 152**, zero failed.
 - Final accepted automated evidence after the presenter correction: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, zero failed/skipped/inconclusive.
-- The mirrored M4-02 Laboratory adds three authored channels, a sample-owned reference presenter, six bounded checks, retained tabs, and package/imported parity.
-- **Exact resume phase:** open the Laboratory in Unity, run M4-02 checks 1-6, then run one retained happy-path smoke check on M4-01/M3-02/M3-01/M2-02/M2-01/M1. Do not close the checkpoint until those observations are green.
+- Manual M4-02 Laboratory: **6 / 6 PASS**. Baseline was ready; channels/priority/FIFO, coalescing/lifetime restart, all overflow policies, paused unscaled/manual lifetime, owner/presentation loss plus stale/reset safety, and 180-frame idle quiescence all passed with structural truth unchanged.
+- Check 6 retained channels `3 -> 3`, visible `0 -> 0`, pending `0 -> 0`, presenter-visible `0 -> 0`, presenter apply count `50 -> 50`, stable snapshots, and unchanged structural truth.
+- Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab observation strings were not separately supplied.
+- Submitted Unity screenshots confirm Check 1 PASS, sample-owned presenter output, zero Console errors/warnings, and the retained **1383-test** green runner.
+- Package/imported Laboratory parity: **VERIFIED**.
+- **Exact resume phase:** stop. No successor Looking Glass checkpoint is active. Prompt, tooltip, Motif/accessibility, safe-area, Window-management, authoring-library/Builder, bridge, integration, and release work require separate activation.
 - Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain inactive.
 
 ## Looking Glass EUI-M4-01 final closeout — August 17, 2026

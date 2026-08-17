@@ -3,7 +3,7 @@
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
 **Authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
-**Current checkpoint:** EUI-M4-02 — Runtime/presenter automated-green; Laboratory implementation ready for manual acceptance
+**Current checkpoint:** None — EUI-M4-02 COMPLETE / CLOSED; no successor activated
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,7 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02, EUI-M3-01, EUI-M3-02, and EUI-M4-01 are complete. EUI-M4-02 is ACTIVE / AUTHORIZED for project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner-loss cleanup, status/events, tests, and Laboratory proof. Motif/accessibility implementation, prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02, EUI-M3-01, EUI-M3-02, EUI-M4-01, and EUI-M4-02 are complete. EUI-M4-02 supplies project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner/presentation-loss cleanup, status/events, tests, and a replaceable project presenter seam. Motif/accessibility implementation, prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
 
 ## Retained completion evidence
 
@@ -202,5 +202,20 @@ The Laboratory-discovered synchronous cancellation race is corrected by guarding
 - **Activation baseline:** full Foundry EditMode **1258 / 1258**; EchoUI Editor **152 / 152**; zero failed before Runtime edits.
 - **Implemented through `d93d0bd`:** contracts, bounded channel state, admission/promotion, coalescing, overflow, unscaled/manual lifetime, cleanup, status/events, root integration, and the replaceable presenter seam.
 - **Final accepted automated evidence:** full Foundry EditMode **1383 / 1383**; EchoUI Editor **277 / 277**; aggregate notification fixtures **125 / 125**; presenter fixture **17 / 17**; zero failed/skipped/inconclusive.
-- **Current Laboratory slice:** mirrored three-channel scene configuration, sample-owned plain presenter, checks 1-6, retained tabs, and package/imported parity.
-- **Exact resume phase:** run the M4-02 Unity Laboratory checks 1-6 and retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke. Closeout remains pending that user-confirmed manual evidence.
+- **Laboratory implementation:** `bde34f2` adds mirrored three-channel scene configuration, sample-owned plain presenter, checks 1-6, retained tabs, and package/imported parity.
+
+## EUI-M4-02 FINAL CLOSEOUT COMPLETE
+
+- Activation: `fd8256f`; Runtime/root/presenter implementation accepted through `d93d0bd`; Laboratory implementation `bde34f2`.
+- Manual notification Laboratory: **6 / 6 PASS** with baseline ready and unchanged Screen/Modal/Window/HUD/transition truth.
+- Check 1 proved independent channels, bounded visible state, no visible preemption, priority/FIFO promotion, and secondary-channel independence.
+- Check 2 proved visible/pending coalescing, fresh generations, stale old handles, pending promotion, visible lifetime restart, and expiry.
+- Check 3 proved all three overflow policies with exact bounds and no unrelated mutation.
+- Check 4 proved unscaled automatic expiry at `Time.timeScale == 0`, manual retention/dismissal, exact time-scale restoration, and unchanged structural truth.
+- Check 5 proved owner/presentation loss, deterministic promotion, stale-generation safety, exact three-entry reset, fresh post-reset generation, and final empty baseline.
+- Check 6 proved 180-frame quiescence: channels `3 -> 3`, visible `0 -> 0`, pending `0 -> 0`, presenter-visible `0 -> 0`, presenter apply count `50 -> 50`, stable snapshots, and unchanged structural truth.
+- Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab strings were not separately supplied.
+- Submitted Unity screenshots show the sample-owned presenter, Check 1 PASS, zero Console errors/warnings, and the retained **1383-test** green runner.
+- Package/imported Laboratory parity: **VERIFIED**.
+- Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, domain-truth, localization/audio/analytics, or project-lifetime authority.
+- **EUI-M4-02 is COMPLETE / CLOSED. No successor Looking Glass checkpoint is active.**

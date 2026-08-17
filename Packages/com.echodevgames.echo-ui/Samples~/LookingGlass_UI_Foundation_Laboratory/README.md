@@ -165,6 +165,23 @@ After checks 1-6 pass, visit:
 
 Run one representative happy-path check on each retained tab. EUI-M4-02 must not alter prior structural, focus, transition, context, HUD, gameplay, persistence, or project-domain authority.
 
+## EUI-M4-02 accepted evidence — August 17, 2026
+
+Jesse confirmed the complete requested gate green.
+
+- Baseline READY: exactly three authored channels, presenter synchronized to all three channels, and visible/pending state `0 / 0`.
+- Check 1 PASS: all admissions succeeded; visible entries were not preempted; equal-priority pending generations promoted FIFO; the lower-priority generation remained pending; the secondary channel remained independent; structural truth did not change.
+- Check 2 PASS: visible and pending prior generations settled `Superseded`; replacements admitted `Coalesced`; old-handle dismissal returned `Stale`; pending replacement promoted; lifetime restarted and later settled `Expired`; structural truth did not change.
+- Check 3 PASS: newest rejection returned `CapacityExceeded`; drop-oldest and strict-outrank victims settled `OverflowEvicted`; valid replacements admitted; equal-lowest candidate returned `InsufficientPriority`; bounds and structural truth remained stable.
+- Check 4 PASS: automatic lifetime expired while `Time.timeScale == 0`; manual lifetime remained until dismissal `Completed`; time scale restored to `1`; structural truth did not change.
+- Check 5 PASS: owner and presentation loss settled `OwnerLost` and `PresentationLost`; stale dismissal returned `Stale`; replacement survived; reset settled exactly three entries; a fresh generation admitted/dismissed; final baseline restored; structural truth did not change.
+- Check 6 PASS: 180 idle frames retained channels `3 -> 3`, visible `0 -> 0`, pending `0 -> 0`, presenter-visible `0 -> 0`, presenter apply count `50 -> 50`, stable snapshots, and unchanged structural truth.
+- Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab observation strings were not separately supplied.
+- Submitted Unity screenshots confirm Check 1 PASS, sample-owned presenter output, zero Console errors/warnings, and the retained **1383-test** green runner.
+- Package/imported README, driver, presenter, proof, metadata, and scene parity: **VERIFIED** at Laboratory implementation `bde34f2`.
+
+EUI-M4-02 is **COMPLETE / CLOSED**. No successor Looking Glass checkpoint is active.
+
 
 # EUI-M4-01 manual acceptance
 
@@ -275,7 +292,7 @@ Jesse confirmed the complete requested gate green.
 - Requested focused/full automated gate: user-confirmed green after `e47d43b`; exact post-M4 NUnit totals were not captured, and retained `1246 / 1246` remains the pre-M4 floor.
 - Package/imported README, driver, and scene parity: verified at implementation seal `29573ef`.
 
-EUI-M4-01 is complete. EUI-M4-02 is active/authorized and its automated runtime/presenter gate is green; M4-02 Laboratory acceptance remains in progress.
+EUI-M4-01 and EUI-M4-02 are complete. No successor Looking Glass checkpoint is active.
 
 # EUI-M3-02 manual acceptance
 

@@ -2,7 +2,7 @@
 
 **Package:** The Looking Glass (`EchoUI`)
 **Milestone:** M4 — Complete MVP Surfaces
-**Status:** ACTIVE / LABORATORY IMPLEMENTED — MANUAL ACCEPTANCE PENDING
+**Status:** COMPLETE / CLOSED
 **Activation baseline:** `5e7ad9211a66ba3dc9f26c4a268febe4ba9c9d3d`
 **Suite authority:** SFGSS-000 v0.27.0
 **Package authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
@@ -179,6 +179,18 @@ Prompt and tooltip work remains a named package capability, but this activation 
 
 ## 18. Handoff
 
-EUI-M4-02 is ACTIVE / AUTHORIZED from `5e7ad92` under package authority v1.8.0. Runtime, root integration, presenter seam, and automated proof are implemented through `d93d0bd`. The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Final accepted automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive.
+EUI-M4-02 is **COMPLETE / CLOSED** under package authority v1.8.0. Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`; mirrored Laboratory implementation is `bde34f2`. The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Final accepted automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive.
 
-The mirrored M4-02 Laboratory now supplies three authored channels, a sample-owned plain presenter, checks 1-6, and all retained tabs. Resume only the required Unity manual acceptance and retained smoke. After user-confirmed green, reconcile closeout documentation, commit/push the closeout, and stop. Do not begin prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, or release work.
+Manual Laboratory evidence is **6 / 6 PASS**, the 180-frame idle probe is stable, retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green, package/imported parity is verified, and submitted Unity screenshots show zero Console errors/warnings. Stop here. No successor Looking Glass checkpoint is active. Do not begin prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, or release work without separate activation.
+
+## 19. Closeout record — August 17, 2026
+
+- Baseline ready with exactly three authored channels and zero live entries.
+- Check 1 PASS: independent channels, bounded visible state, no preemption, priority promotion, FIFO ties, and unchanged structural truth.
+- Check 2 PASS: visible/pending coalescing, superseded old generations, stale old handle, pending promotion, lifetime restart, and expiry.
+- Check 3 PASS: `CapacityExceeded`, `DropOldestPending`, strict-outrank replacement, `InsufficientPriority`, exact bounds, and no structural mutation.
+- Check 4 PASS: automatic notification expired at `Time.timeScale == 0`, manual notification remained until completed dismissal, time scale restored to `1`, and structural truth remained unchanged.
+- Check 5 PASS: `OwnerLost`, `PresentationLost`, stale-handle safety, replacement survival, exact three-entry reset, fresh post-reset generation, and final empty baseline.
+- Check 6 PASS: 180 idle frames retained channels `3 -> 3`, visible `0 -> 0`, pending `0 -> 0`, presenter-visible `0 -> 0`, presenter apply count `50 -> 50`, stable snapshots, and unchanged structural truth.
+- Retained prior-tab smoke: user-confirmed green; exact per-tab strings not separately supplied.
+- Final decision: **EUI-M4-02 COMPLETE / CLOSED**. No successor checkpoint activated.

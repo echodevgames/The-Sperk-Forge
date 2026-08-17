@@ -3,7 +3,7 @@ tags:
   - sfgss/learning
   - sfgss/navigation
 status: active
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # Package Learning Reviews
@@ -75,5 +75,5 @@ A review may use diagrams, examples, and tiny pseudocode for teaching. The compl
 - PKG-LEARN-002 remains paused until EchoDiagnostics implementation approaches.
 - PKG-LEARN-009 – The Chronicle (`EchoSave`) is complete.
 - PKG-LEARN-008 – The Looking Glass (`EchoUI`) is complete through Learn → Declare → Authorize.
-- `EUI-M4-02` is active / authorized under Green Path; Runtime/root/presenter implementation is automated-green through `d93d0bd`, with the mirrored Laboratory implemented and manual acceptance pending.
+- `EUI-M4-02` is COMPLETE / CLOSED under Green Path; Runtime/root/presenter is accepted through `d93d0bd`, Laboratory implementation is `bde34f2`, full automated proof is **1383 / 1383**, manual Laboratory is **6 / 6 PASS**, retained smoke is green, and package/imported parity is verified.
 - Other packages remain independently gated by their own reviews.

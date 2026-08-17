@@ -412,8 +412,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "EUI-M4-02 is active after the bounded PKG-LEARN-008 notification revisit; later package reviews remain just-in-time",
+  "nextReviewTrigger": "Selected deliberately after EUI-M4-02 closeout; later package reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": "EUI-M4-02",
-  "implementationProgramStatus": "Looking Glass EUI-M4-01 complete at 5e7ad92; EUI-M4-02 active under Green Path for bounded notification channels"
+  "activeImplementationCheckpoint": null,
+  "implementationProgramStatus": "Looking Glass EUI-M4-02 complete and closed; no successor Looking Glass checkpoint active"
 }

@@ -20,7 +20,7 @@
 
 > “Let the game be seen clearly without mistaking the reflection for the world.”
 
-> **Approval rule:** This specification is the package authority. PKG-LEARN-008 is complete through the bounded EUI-M4-02 JIT revisit. EUI-M1 through EUI-M4-01 are complete. EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 from clean EUI-M4-01 closeout baseline `5e7ad92`; Runtime/root/presenter implementation is automated-green through `d93d0bd`, and Laboratory manual acceptance remains pending.
+> **Approval rule:** This specification is the package authority. PKG-LEARN-008 and EUI-M1 through EUI-M4-02 are complete. EUI-M4-02 closed under SFGSS-005 with Runtime/root/presenter implementation accepted through `d93d0bd`, Laboratory implementation `bde34f2`, automated **1383 / 1383**, manual Laboratory **6 / 6 PASS**, retained smoke green, and package/imported parity verified. No successor Looking Glass checkpoint is active.
 
 ---
 
@@ -2135,15 +2135,17 @@ Durable evidence:
 
 The completed slice supplies stable named HUD regions, bounded widget registration, generation-safe widget/visibility leases, deterministic effective visibility, owner-loss/shutdown cleanup, and structured status/events without changing Screen/Modal/Window authority or claiming gameplay truth. At the EUI-M4-01 closeout boundary, notifications and all later capabilities remained inactive; the EUI-M4-02 activation below supersedes notification status only.
 
-### 28.10 Active implementation checkpoint — EUI-M4-02
+### 28.10 Completed implementation checkpoint — EUI-M4-02
 
-**EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime** is **ACTIVE / AUTHORIZED** from clean EUI-M4-01 closeout baseline `5e7ad92`.
+**EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime** is **COMPLETE / CLOSED** from clean EUI-M4-01 closeout baseline `5e7ad92`.
 
 The slice owns project-defined stable channels, independent visible/pending bounds, higher-priority/FIFO-tie pending promotion, non-preemptive visible entries, opt-in fresh-generation coalescing with default lifetime restart, explicit pending overflow policies, unscaled/manual lifetime, generation-safe handles, owner-loss/reset/shutdown settlement, status/events, focused tests, and Laboratory proof.
 
 Default overflow is `RejectNewest`; authored alternatives are `DropOldestPending` and strict-outrank `ReplaceLowestPriorityPending`. Notifications remain transient presentation and cannot own durable history, localization/audio/analytics, gameplay/domain truth, input, pause/time scale, cursor, persistence, or project lifetime composition.
 
-The activation baseline was recorded before Runtime edits at full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Runtime/root/presenter implementation is accepted through `d93d0bd`. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive. The mirrored Laboratory now implements three authored channels, a sample-owned plain presenter, six bounded checks, and retained tabs; Unity manual acceptance and retained smoke remain pending. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
+The activation baseline was recorded before Runtime edits at full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Runtime/root/presenter implementation is accepted through `d93d0bd`. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive. Mirrored Laboratory implementation `bde34f2` supplies three authored channels, a sample-owned plain presenter, six bounded checks, and retained tabs.
+
+Manual Laboratory is **6 / 6 PASS**. The checks prove independent bounded channels and priority/FIFO promotion without preemption; visible/pending coalescing with fresh generations, stale-handle safety, and lifetime restart; all three overflow policies; unscaled automatic expiry while scaled time is paused plus manual retention; owner/presentation-loss cleanup, exact reset, and fresh post-reset state; and 180-frame idle quiescence with structural truth unchanged. Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green, submitted Unity screenshots show zero Console errors/warnings, and package/imported parity is verified. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
 
 ---
 
@@ -2156,24 +2158,26 @@ Authority:
 - SFGSS-000 v0.27.0
 - The Looking Glass package specification v1.8.0
 - SFGSS-005 v1.7.0 and SFGSS-ADR-007 v1.1.0
-- Active plan: EUI-M4-02
+- Active plan: none; EUI-M4-02 is complete and closed
 
 Completed:
-- EUI-M1 through EUI-M4-01
+- EUI-M1 through EUI-M4-02
 - EUI-M4-01 documentation closeout 5e7ad92
 - EUI-M4-01 implementation/Laboratory seal 29573ef
 - automated gate user-confirmed green; exact post-M4 totals not captured
 - manual HUD Laboratory 5 / 5 PASS
 - retained prior-tab smoke green; package/imported parity verified
+- EUI-M4-02 activation fd8256f
+- EUI-M4-02 Runtime/root/presenter accepted through d93d0bd
+- EUI-M4-02 Laboratory implementation bde34f2
+- EUI-M4-02 automated 1383 / 1383 full and 277 / 277 EchoUI
+- EUI-M4-02 manual Laboratory 6 / 6 PASS; retained smoke green
 
 Active phase:
-- EUI-M4-02 Runtime/root/presenter implementation accepted through d93d0bd
-- final automated gate: 1383 / 1383 full Foundry EditMode; 277 / 277 EchoUI
-- mirrored M4-02 Laboratory implemented with three channels and checks 1-6
-- Unity manual checks 1-6 and retained prior-tab smoke are pending
+- none; EUI-M4-02 is COMPLETE / CLOSED
+- no successor Looking Glass checkpoint is activated
 
-Resume only the EUI-M4-02 Unity Laboratory acceptance and retained smoke. After
-user-confirmed green, reconcile and publish final closeout documentation. Do not begin prompts, tooltips,
+Stop. Select and explicitly activate the next bounded checkpoint before implementation. Do not begin prompts, tooltips,
 Motifs/accessibility, safe area, full Window management, persistence, bridges,
 authoring libraries/Builder, integration, or release work.
 ```
@@ -2185,13 +2189,14 @@ authoring libraries/Builder, integration, or release work.
 | Runtime package version | `0.1.0` |
 | Package authority | SFGSS-PKG-ECHOUI-001 v1.8.0 Approved |
 | Suite authority | SFGSS-000 v0.27.0 Approved |
-| Completed implementation checkpoints | EUI-M1-01 through EUI-M4-01; EUI-M4-02 Runtime/root/presenter automated implementation complete, checkpoint not yet closed |
+| Completed implementation checkpoints | EUI-M1-01 through EUI-M4-02 |
 | EUI-M3-02 retained evidence | Activation `ee9d3ff`; implementation `c919238`; closeout `0affb7d`; full EditMode **1246 / 1246**; EchoUI Editor **140 / 140**; Laboratory **14 / 14** |
 | EUI-M4-01 completion evidence | Activation `ce30ac6`; Runtime/tests `df9e2be`; corrections through `e47d43b`; implementation/Laboratory seal `29573ef`; automated gate green; manual HUD Laboratory **5 / 5 PASS**; retained smoke green; parity verified |
-| Active implementation checkpoint | EUI-M4-02 — Bounded Notification Channels, Priority, Coalescing, Overflow, and Unscaled Lifetime |
-| Active phase | Mirrored M4-02 Laboratory implemented; Unity manual acceptance and retained smoke pending |
+| EUI-M4-02 completion evidence | Activation `fd8256f`; Runtime/root/presenter through `d93d0bd`; Laboratory `bde34f2`; manual **6 / 6 PASS**; retained smoke green; parity verified |
+| Active implementation checkpoint | None |
+| Active phase | Stop; no successor Looking Glass checkpoint is activated |
 | EUI-M4-02 automated evidence | Activation baseline **1258 / 1258** full and **152 / 152** EchoUI; final **1383 / 1383** full, **277 / 277** EchoUI, **125 / 125** notification, **17 / 17** presenter; zero failed/skipped/inconclusive |
-| Exact resume phase | Run M4-02 Laboratory checks 1-6 and retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke; then reconcile closeout |
+| Exact resume phase | Select, reconcile, and explicitly activate the next bounded checkpoint before implementation |
 | Excluded next work | Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive |
 
 ---
@@ -2219,11 +2224,11 @@ authoring libraries/Builder, integration, or release work.
 - [x] PKG-LEARN-008 bounded EUI-M4-02 notification revisit is complete.
 - [x] EUI-M3-02 is complete and closed at `0affb7d`.
 - [x] EUI-M4-01 is COMPLETE / CLOSED with automated gate green, manual HUD Laboratory 5 / 5 PASS, retained smoke green, and package/imported parity verified.
-- [x] EUI-M4-02 is package-locally ACTIVE / AUTHORIZED under SFGSS-005 and its exact Checkpoint Build Plan; Runtime/root/presenter implementation is automated-green through `d93d0bd`, with Laboratory manual acceptance pending.
+- [x] EUI-M4-02 is COMPLETE / CLOSED under SFGSS-005 with automated **1383 / 1383**, manual Laboratory **6 / 6 PASS**, retained smoke green, and package/imported parity verified.
 
 ### 30.2 Approval record
 
-**Decision:** Approved / EUI-M4-02 reconciled and active
+**Decision:** Approved / EUI-M4-02 complete and closed
 **Approved by:** Jesse “Echo” Adams
 **Original approval date:** August 3, 2026
 **JIT EUI-M1-01 rebaseline date:** August 13, 2026
@@ -2234,7 +2239,7 @@ authoring libraries/Builder, integration, or release work.
 **EUI-M3-02 JIT reconciliation and explicit authorization date:** August 15, 2026
 **EUI-M4-01 JIT reconciliation and explicit authorization date:** August 16, 2026
 **EUI-M4-02 JIT reconciliation and explicit authorization date:** August 17, 2026
-**Conditions:** Package architecture remains authoritative. EUI-M4-01 is complete at implementation/Laboratory seal `29573ef`. EUI-M4-02 is authorized only within its active Checkpoint Build Plan from baseline `5e7ad92`; its activation baseline and final automated evidence are recorded above, Runtime/root/presenter implementation is accepted through `d93d0bd`, and manual Laboratory acceptance remains required before closeout. The Assembly Library promise remains durable authority, but Primitive Warehouse/template/catalog/utility/Builder implementation remains outside EUI-M4-02. Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, integration, and release remain inactive. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
+**Conditions:** Package architecture remains authoritative. EUI-M4-02 is complete with its activation baseline and final automated/manual evidence recorded above, Runtime/root/presenter implementation accepted through `d93d0bd`, Laboratory implementation `bde34f2`, retained smoke green, and package/imported parity verified. No successor Looking Glass checkpoint is active. The Assembly Library promise remains durable authority, but Primitive Warehouse/template/catalog/utility/Builder implementation remains separately gated. Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, integration, and release remain inactive. Any discovery that changes package ownership, peer dependencies, serialized compatibility, public contracts, or suite authority stops the Green Path and returns to the owning authority.
 
 ---
 
@@ -2286,5 +2291,4 @@ The original parent-authority header remains approval provenance. This addendum 
 - [[Echo_Game_Systems_Suite_Bible|SFGSS-000 Suite Bible]]
 - [[SFGSS-001_Package_Specification_Template|SFGSS-001 Package Template]]
 - [[Package_Learning_Review_Catalog|Package Learning Review Catalog]]
-
 

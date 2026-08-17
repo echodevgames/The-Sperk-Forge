@@ -65,7 +65,7 @@
 - Manual HUD Laboratory **5 / 5 PASS**, retained M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green, and package/imported parity verified.
 - EUI-M4-01 is complete. Its historical stop point did not activate EUI-M4-02; the later EUI-M4-02 section supersedes that status.
 
-## EUI-M4-02 ACTIVE — LABORATORY ACCEPTANCE PENDING
+## EUI-M4-02 FINAL CLOSEOUT COMPLETE
 
 - Added project-defined stable notification channels with independent visible/pending bounds.
 - Added deterministic higher-priority/FIFO-tie pending promotion without visible preemption.
@@ -75,5 +75,7 @@
 - Runtime/root/presenter implementation is accepted through `d93d0bd`.
 - Activation baseline: full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**.
 - Final automated evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, zero failed/skipped/inconclusive.
-- Added mirrored Laboratory configuration, a sample-owned plain reference presenter, and six bounded manual checks while retaining all prior tabs.
-- Unity manual acceptance, retained smoke, and final documentation closeout remain pending.
+- Added mirrored Laboratory configuration and a sample-owned plain reference presenter at `bde34f2`, with six bounded manual checks and all retained tabs.
+- Manual notification Laboratory **6 / 6 PASS**; 180-frame idle notification/presenter quiescence PASS; structural UI truth unchanged.
+- Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green; package/imported parity verified; submitted Unity screenshots show zero Console errors/warnings.
+- EUI-M4-02 is complete. No successor Looking Glass checkpoint is activated.

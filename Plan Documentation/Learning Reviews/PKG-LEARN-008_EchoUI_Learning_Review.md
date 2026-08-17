@@ -17,7 +17,7 @@ updated: 2026-08-17
 **Started:** 2026-08-13
 **Completed:** 2026-08-15
 **Package authority version reviewed/reconciled:** 1.8.0
-**Implementation authorization:** `EUI-M4-02` ACTIVE / AUTHORIZED after the bounded notification JIT revisit; EUI-M1 through EUI-M4-01 complete; Runtime/root/presenter automated-green through `d93d0bd`; mirrored Laboratory implemented; manual acceptance pending
+**Implementation authorization:** `EUI-M4-02` COMPLETE / CLOSED after the bounded notification JIT revisit; EUI-M1 through EUI-M4-02 complete; no successor Looking Glass checkpoint active
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,14 +25,14 @@ updated: 2026-08-17
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.7.0 Approved | Owns completed M1-M3 Runtime Core, the active EUI-M4-01 named HUD-region/widget/visibility contract, and the durable Assembly Library authoring promise |
+| Looking Glass package authority | v1.8.0 Approved | Owns completed EUI-M1 through EUI-M4-02 contracts and the durable Assembly Library authoring promise |
 | SFGSS-000 | v0.27.0 Approved | Owns suite authority, package independence, project composition, persistence/lifetime boundaries, and the additive Unity-default Input Actions compatibility profile |
-| SFGSS-005 | v1.6.0 Approved | Owns Learn → Declare → Authorize and Green Path execution |
+| SFGSS-005 | v1.7.0 Approved | Owns Learn → Declare → Authorize, Green Path execution, connected-repository rehydration, and the visible slice loop |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
 | SFGSS-ADR-006 | Accepted | Keeps Unity object lifetime/project composition outside UI authority |
 | SFGSS-ADR-007 | Accepted | Owns Green Path self-validating execution |
 | Project manifest | Unity 6000.3.8f1; uGUI 2.0.0; Input System 1.18.0 | Verifies the actual current Unity dependency baseline |
-| Current Notes / Suite Health | 2026-08-16 reconciliation | Supplies active handoff context only |
+| Current Notes / Suite Health | 2026-08-17 reconciliation | Supplies current handoff context only |
 
 **External research boundary:** official Unity documentation was consulted only for the immediate focus/visibility mental model. `EventSystem.SetSelectedGameObject` changes the EventSystem-selected GameObject and sends deselect/select callbacks; CanvasGroup can affect child alpha/interactability/raycast blocking; Unity input modules translate pointer/navigation-style input into UI events. These mechanisms inform Looking Glass but do not grant it input/game-state authority.
 
@@ -572,10 +572,14 @@ Prompts, tooltips, Motifs/accessibility implementation, safe-area placement, ful
 
 Exact post-M4 automated counts were not captured during EUI-M4-01. The first EUI-M4-02 gate is therefore to run EchoUI Editor and full Foundry EditMode on the activation commit and record the exact current baseline before any Runtime edit.
 
-### 20.7 Implementation evidence and exact resume phase
+### 20.7 Implementation and closeout evidence
 
 - Activation baseline before Runtime edits: full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**, zero failed.
 - Runtime/root/presenter implementation is accepted through `d93d0bd`.
 - Final automated evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, zero failed/skipped/inconclusive.
-- The mirrored Laboratory implements three authored channels, a sample-owned plain presenter, six bounded checks, and all retained tabs.
-- Exact resume phase: Unity manual M4-02 checks 1-6 plus retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke. Final closeout is not yet claimed.
+- Mirrored Laboratory implementation `bde34f2` supplies three authored channels, a sample-owned plain presenter, six bounded checks, and all retained tabs.
+- Manual Laboratory: **6 / 6 PASS**; baseline ready; every check preserved structural truth; 180-frame notification/presenter quiescence PASS.
+- Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab strings not separately supplied.
+- Submitted Unity screenshots confirm Check 1 PASS, zero Console errors/warnings, and the retained **1383-test** green runner.
+- Package/imported Laboratory parity: **VERIFIED**.
+- Final state: **EUI-M4-02 COMPLETE / CLOSED**. No successor Looking Glass checkpoint is active.

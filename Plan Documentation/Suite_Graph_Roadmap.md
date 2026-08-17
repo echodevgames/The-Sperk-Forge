@@ -12,7 +12,7 @@ updated: 2026-08-17
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** The Looking Glass (`EchoUI`) EUI-M4-02 — Runtime/presenter automated-green; Laboratory manual acceptance pending
+**Current work item:** None — Looking Glass EUI-M4-02 is COMPLETE / CLOSED; no successor activated
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,9 +20,9 @@ updated: 2026-08-17
 
 ## Current frontier — August 17, 2026
 
-- **Looking Glass:** EUI-M4-01 is **COMPLETE / CLOSED** at documentation closeout `5e7ad92`; implementation/Laboratory seal is `29573ef`.
-- EUI-M4-02 is **ACTIVE / AUTHORIZED** under package authority v1.8.0 for project-defined bounded notification channels, deterministic priority/FIFO promotion, non-preemptive visible entries, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, owner cleanup, status/events, tests, and Laboratory proof.
-- Runtime/root/presenter implementation is accepted through `d93d0bd`. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, and presenter fixture **17 / 17**. The mirrored Laboratory is implemented; manual checks 1-6 and retained smoke are pending.
+- **Looking Glass:** EUI-M4-02 is **COMPLETE / CLOSED** under package authority v1.8.0. Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`; Laboratory implementation is `bde34f2`.
+- Final evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, presenter fixture **17 / 17**, manual Laboratory **6 / 6 PASS**, retained prior-tab smoke green, and package/imported parity verified.
+- No successor Looking Glass checkpoint is active.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
 - Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain gated.
@@ -383,4 +383,8 @@ EUI-M4-01 is Complete. Activation `ce30ac6`; Runtime/tests `df9e2be`; bounded co
 
 EUI-M4-02 is ACTIVE / AUTHORIZED from clean EUI-M4-01 closeout baseline `5e7ad92` under package authority v1.8.0. The slice is limited to project-defined stable notification channels, independent visible/pending bounds, priority/FIFO promotion, non-preemptive visible entries, opt-in fresh-generation coalescing, deterministic pending overflow, unscaled/manual lifetime, generation-safe dismissal/owner cleanup, status/events, tests, and Laboratory proof.
 
-The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Runtime/root/presenter implementation is accepted through `d93d0bd`; final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, and presenter fixture **17 / 17**. The mirrored Laboratory is implemented with three authored channels, a sample-owned presenter, and six bounded checks. Resume at Unity manual acceptance plus retained smoke; closeout remains pending.
+The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Runtime/root/presenter implementation is accepted through `d93d0bd`; final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, and presenter fixture **17 / 17**. The mirrored Laboratory is implemented at `bde34f2` with three authored channels, a sample-owned presenter, and six bounded checks.
+
+## 2026-08-17 Looking Glass EUI-M4-02 closeout
+
+EUI-M4-02 is COMPLETE / CLOSED. Manual Laboratory is **6 / 6 PASS**: independent channels/priority/FIFO/no-preemption; coalescing plus lifetime restart; all overflow policies; paused unscaled/manual lifetime; owner/presentation loss plus stale/reset safety; and 180-frame idle quiescence all passed with structural truth unchanged. Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green, submitted Unity screenshots show zero Console errors/warnings, and package/imported parity is verified. No successor Looking Glass checkpoint is activated.
