@@ -4,14 +4,31 @@
 **Authority:** Working context only
 **Owner:** Jesse “Echo” Adams / EchoDevGames
 **Last reconciled:** August 17, 2026
-**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-02 — COMPLETE / CLOSED
-**Current checkpoint:** None — EUI-M4-02 is closed; no successor checkpoint is activated
+**Current focus:** The Looking Glass (`EchoUI`) EUI-M4-03 — Runtime Motif Foundation
+**Current checkpoint:** EUI-M4-03 — ACTIVE / AUTHORIZED; Runtime implementation has not started
 
 > Durable First Light decisions live in SFGSS-PKG-ECHOLAUNCH-001 v1.17.0 and the committed checkpoint/amendment records. Git history preserves the longer working trail.
 
 ---
 
-## Current resume phase — Looking Glass EUI-M4-02 final closeout — August 17, 2026
+## Current resume phase — Looking Glass EUI-M4-03 JIT reconciliation and activation — August 17, 2026
+
+- Clean activation baseline: `2f592513b6215b019ca9550fb302ab0cee6b65cc` — EUI-M4-02 documentation closeout.
+- Retained incoming evidence: full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, presenter fixture **17 / 17**, M4-02 Laboratory **6 / 6 PASS**, retained prior-tab smoke green, and package/imported parity verified.
+- Suite authority remains **SFGSS-000 v0.27.0**; Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.9.0**.
+- Active plan: **EUI-M4-03 — Runtime Motif Definitions, Registered Targets, Fallback, and Immutable Application**.
+- **EUI-M4-03 is explicitly ACTIVE / AUTHORIZED. Runtime implementation has not started at this activation record.**
+- Motifs are project-owned reusable appearance recipes. They own colors, uGUI Selectable state recipes, sprites, and small target-understood decorative values without owning layout, navigation, content, domain commands, settings persistence, or production art.
+- Definitions/tokens remain immutable during play. Runtime resolves detached snapshots and retains only root-session effective/default/fallback truth.
+- Targets register explicitly and receive current truth immediately; no automatic hierarchy scan or per-frame application loop is permitted.
+- Per-binding Motif inheritance versus local preservation is required. Unknown requested IDs use the authored fallback without rewriting external preference data; absent fallback retains last known-good appearance.
+- Valid Motif truth commits before project-target application. One target/listener failure is isolated and reported without rolling back healthy targets or authoritative service truth.
+- The first token families are colors, uGUI Selectable color-state recipes, sprites, and small numeric/decorative values. No mandatory TextMeshPro dependency is added.
+- Final Primitive Warehouse-facing typography/token schema plus Editor capture/apply/preview tooling remain deferred until real primitive authoring exposes the smallest useful contract.
+- **First implementation gate:** re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before any Runtime edit.
+- Accessibility policy, text scaling, automatic reduced-motion policy connection, safe area, Accord/settings persistence, Motif authoring tools, Primitive Warehouse, templates/catalog/utilities, Builder, prompts/tooltips, richer Window management, bridges, integration, and release remain inactive.
+
+## Looking Glass EUI-M4-02 final closeout — August 17, 2026
 
 - Clean activation baseline: `5e7ad9211a66ba3dc9f26c4a268febe4ba9c9d3d` — EUI-M4-01 documentation closeout.
 - Looking Glass authority advances to **SFGSS-PKG-ECHOUI-001 v1.8.0**; suite authority remains **SFGSS-000 v0.27.0**.
@@ -26,8 +43,8 @@
 - Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab observation strings were not separately supplied.
 - Submitted Unity screenshots confirm Check 1 PASS, sample-owned presenter output, zero Console errors/warnings, and the retained **1383-test** green runner.
 - Package/imported Laboratory parity: **VERIFIED**.
-- **Exact resume phase:** stop. No successor Looking Glass checkpoint is active. Prompt, tooltip, Motif/accessibility, safe-area, Window-management, authoring-library/Builder, bridge, integration, and release work require separate activation.
-- Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain inactive.
+- **Historical stop point satisfied:** EUI-M4-02 closed cleanly before the separate EUI-M4-03 activation above.
+- Prompts, tooltips, full accessibility policy, safe area, full Window management, authoring libraries/Builder, bridges, integration, and release remain inactive.
 
 ## Looking Glass EUI-M4-01 final closeout — August 17, 2026
 

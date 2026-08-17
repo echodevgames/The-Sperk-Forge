@@ -2,8 +2,8 @@
 
 **Package:** `com.echodevgames.echo-ui`
 **Package version:** 0.1.0
-**Authority:** SFGSS-PKG-ECHOUI-001 v1.8.0
-**Current checkpoint:** None — EUI-M4-02 COMPLETE / CLOSED; no successor activated
+**Authority:** SFGSS-PKG-ECHOUI-001 v1.9.0
+**Current checkpoint:** EUI-M4-03 Runtime Motif Foundation — ACTIVE / AUTHORIZED; Runtime not started
 **Unity baseline:** 6000.3.8f1
 **uGUI:** 2.0.0
 
@@ -13,7 +13,25 @@ EUI-M1-01 and EUI-M1-02 are complete. The retained foundation provides package-l
 
 EUI-M2-01 is the completed first Runtime Core slice. It implements project-defined ordered layer topology, explicit Screen lifecycle/ownership, designer-controlled suspension visibility with scope-enforced noninteraction, and bounded strict-FIFO structural Screen operations.
 
-EUI-M2-02, EUI-M3-01, EUI-M3-02, EUI-M4-01, and EUI-M4-02 are complete. EUI-M4-02 supplies project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner/presentation-loss cleanup, status/events, tests, and a replaceable project presenter seam. Motif/accessibility implementation, prompts/tooltips, full Window management, persistence, peer bridges, Assembly Library implementation, Builder implementation, and project-wide lifetime composition remain separately gated future work.
+EUI-M2-02, EUI-M3-01, EUI-M3-02, EUI-M4-01, and EUI-M4-02 are complete. EUI-M4-02 supplies project-defined bounded notification channels, priority/FIFO ordering, opt-in coalescing, pending-overflow policies, unscaled/manual lifetime, generation-safe handles, owner/presentation-loss cleanup, status/events, tests, and a replaceable project presenter seam.
+
+EUI-M4-03 is active from clean closeout `2f59251`. It authorizes only immutable project Motif definitions/tokens, detached runtime snapshots, one root-local effective/default/fallback Motif, explicit registered targets, inherit-versus-local preservation, structured fallback/failure truth, target/listener isolation, generation-safe cleanup, tests, and Laboratory proof. Runtime implementation has not started. Full accessibility policy, settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, safe area, richer Window management, peer bridges, and project-wide lifetime composition remain separately gated future work.
+
+## EUI-M4-03 declaration
+
+- **Planning baseline:** `2f59251` — clean synchronized EUI-M4-02 final closeout.
+- **Authority:** SFGSS-PKG-ECHOUI-001 v1.9.0 under unchanged SFGSS-000 v0.27.0.
+- **Incoming floor to re-establish before Runtime edits:** full Foundry EditMode **1383 / 1383** and EchoUI Editor **277 / 277**, zero failed.
+- Motifs own reusable appearance recipes only: initial typed tokens are colors, uGUI Selectable state-color recipes, sprites, and small target-understood decorative/numeric values.
+- Definitions remain immutable; runtime consumes detached snapshots and never writes effective selection or target state back into ScriptableObjects.
+- Root default applies at initialization. Explicitly registered targets receive current effective truth immediately; there is no hierarchy scan or per-frame reapply loop.
+- Target bindings preserve an explicit local value when authored to do so.
+- Unknown requested IDs resolve to the valid authored fallback without rewriting external preference input; absent fallback preserves last known-good appearance.
+- Valid Motif truth commits before project-target application; failed targets/listeners are isolated and reported without fabricated rollback.
+- Registration handles are fresh, generation-safe, and idempotent; destroyed owner/target cleanup cannot remove a newer registration.
+- No TextMeshPro or peer Echo dependency is added.
+- Final warehouse-facing typography/provider schema and Editor capture/apply/preview tooling remain deferred until real primitive authoring exposes the smallest useful contract.
+- **Runtime implementation has not started at activation.**
 
 ## Retained completion evidence
 
@@ -218,4 +236,4 @@ The Laboratory-discovered synchronous cancellation race is corrected by guarding
 - Submitted Unity screenshots show the sample-owned presenter, Check 1 PASS, zero Console errors/warnings, and the retained **1383-test** green runner.
 - Package/imported Laboratory parity: **VERIFIED**.
 - Runtime retains zero hard peer Echo dependency and claims no gameplay-input, pause/time-scale, cursor, persistence, domain-truth, localization/audio/analytics, or project-lifetime authority.
-- **EUI-M4-02 is COMPLETE / CLOSED. No successor Looking Glass checkpoint is active.**
+- **EUI-M4-02 is COMPLETE / CLOSED.** Its no-successor stop point was satisfied before the separate EUI-M4-03 activation recorded above.

@@ -12,7 +12,7 @@ updated: 2026-08-17
 **Document role:** Obsidian navigation hub and visual roadmap
 **Authority:** Navigation only; it does not override SFGSS-000, package specifications, ADRs, standards, or integration specifications
 **Owner:** Jesse “Echo” Adams / EchoDevGames
-**Current work item:** None — Looking Glass EUI-M4-02 is COMPLETE / CLOSED; no successor activated
+**Current work item:** Looking Glass EUI-M4-03 Runtime Motif Foundation — ACTIVE / AUTHORIZED; Runtime not started
 **Completed collision reviews:** Foundation, Expansion, and Advanced
 
 > This note is the map room. The linked documents remain the territory.
@@ -20,12 +20,12 @@ updated: 2026-08-17
 
 ## Current frontier — August 17, 2026
 
-- **Looking Glass:** EUI-M4-02 is **COMPLETE / CLOSED** under package authority v1.8.0. Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`; Laboratory implementation is `bde34f2`.
-- Final evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, presenter fixture **17 / 17**, manual Laboratory **6 / 6 PASS**, retained prior-tab smoke green, and package/imported parity verified.
-- No successor Looking Glass checkpoint is active.
+- **Looking Glass:** EUI-M4-03 Runtime Motif Foundation is **ACTIVE / AUTHORIZED** from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Runtime implementation has not started.
+- Retained incoming evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, notification fixtures **125 / 125**, presenter fixture **17 / 17**, manual M4-02 Laboratory **6 / 6 PASS**, retained prior-tab smoke green, and package/imported parity verified.
+- M4-03 is limited to immutable project Motif definitions/tokens, detached snapshots, root-local effective/default/fallback state, explicit targets, local preservation, deterministic fallback/failure truth, generation-safe cleanup, tests, and Laboratory proof.
 - **First Light:** FL-M5-R1 remains sealed/frozen for the current pass.
 - **Chronicle:** M5 remains complete; M6 First Integration is not activated by the Looking Glass checkpoint.
-- Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain gated.
+- Full accessibility policy, Motif authoring tools, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, safe area, Window management, persistence, bridges, integration, and release remain gated.
 
 
 ## How to use this in Obsidian
@@ -387,4 +387,8 @@ The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Edi
 
 ## 2026-08-17 Looking Glass EUI-M4-02 closeout
 
-EUI-M4-02 is COMPLETE / CLOSED. Manual Laboratory is **6 / 6 PASS**: independent channels/priority/FIFO/no-preemption; coalescing plus lifetime restart; all overflow policies; paused unscaled/manual lifetime; owner/presentation loss plus stale/reset safety; and 180-frame idle quiescence all passed with structural truth unchanged. Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green, submitted Unity screenshots show zero Console errors/warnings, and package/imported parity is verified. No successor Looking Glass checkpoint is activated.
+EUI-M4-02 is COMPLETE / CLOSED. Manual Laboratory is **6 / 6 PASS**: independent channels/priority/FIFO/no-preemption; coalescing plus lifetime restart; all overflow policies; paused unscaled/manual lifetime; owner/presentation loss plus stale/reset safety; and 180-frame idle quiescence all passed with structural truth unchanged. Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is user-confirmed green, submitted Unity screenshots show zero Console errors/warnings, and package/imported parity is verified. At that closeout no successor was active; the separate EUI-M4-03 activation below supersedes that stop-state statement.
+
+## 2026-08-17 Looking Glass EUI-M4-03 activation
+
+EUI-M4-03 is ACTIVE / AUTHORIZED from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. The slice is limited to immutable project-owned Motif definitions and typed appearance tokens; detached snapshots; one root-local effective/default/fallback Motif; explicit registered targets; inherit-versus-local binding preservation; deterministic switching, fallback, and last-known-good behavior; target/listener isolation; generation-safe cleanup; status/events; focused tests; and Laboratory proof. Runtime implementation has not started. The first gate is to re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** before Runtime edits. Full accessibility policy, settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, authoring libraries/Builder, prompts/tooltips, safe area, richer Window management, bridges, integration, and release remain inactive.

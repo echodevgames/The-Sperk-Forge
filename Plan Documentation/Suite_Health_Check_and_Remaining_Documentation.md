@@ -2,7 +2,7 @@
 
 **Updated:** August 17, 2026
 **Completed package checkpoint:** Chronicle M5 complete; First Light FL-M5-R1 sealed; Looking Glass EUI-M4-02 complete
-**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M4-02 COMPLETE / CLOSED; no successor Looking Glass checkpoint active
+**Current implementation state:** First Light sealed at FL-M5-R1; Chronicle M5 complete; Looking Glass EUI-M4-03 ACTIVE / AUTHORIZED; Runtime not started
 
 ## Current health
 
@@ -22,16 +22,27 @@
 | First Light showcase separation | **Complete** — package Laboratory separate; UMBRA retained as project-owned First Light showcase |
 | Clean-project reproduction | Not run in FL-M6-01 closeout |
 | Release qualification/private beta | Not run |
-| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded JIT revisits cover the completed EUI-M4-02 notification-channel contract under package authority v1.8.0 |
-| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.8.0 Approved** |
+| Looking Glass learning | **PKG-LEARN-008 Complete** — bounded JIT revisits cover completed EUI-M4-02 and active EUI-M4-03 Runtime Motif contract under package authority v1.9.0 |
+| Looking Glass authority | **SFGSS-PKG-ECHOUI-001 v1.9.0 Approved** |
 | Looking Glass completed checkpoint | **EUI-M4-02 COMPLETE / CLOSED** — activation `fd8256f`; Runtime/root/presenter through `d93d0bd`; Laboratory `bde34f2`; automated **1383 / 1383**; manual **6 / 6 PASS**; retained smoke green; parity verified |
-| Looking Glass active checkpoint | **None** — no successor Looking Glass checkpoint is activated |
+| Looking Glass active checkpoint | **EUI-M4-03 ACTIVE / AUTHORIZED** — Runtime Motif foundation; Runtime implementation has not started |
 | Chronicle implementation | **M4 and M5 complete; ESV-M5-01 through M5-06 complete; implementation `4bcfbf1`; final focused Chronicle `761 / 761`; M6 not activated** |
 | Game Shell initiative | Chronicle → Accord → Resonance → Looking Glass; sequence is planning, not a hard dependency chain |
 | Other package implementations | No additional package checkpoint activated by Looking Glass learning |
 | Release-blocking architecture conflicts | None recorded by FL-M6-01 |
 
-## Current Looking Glass EUI-M4-02 completion health
+## Current Looking Glass EUI-M4-03 activation health
+
+- Clean activation baseline: EUI-M4-02 documentation closeout `2f59251`.
+- Retained evidence entering activation: full Foundry EditMode **1383 / 1383**; EchoUI Editor **277 / 277**; notification fixtures **125 / 125**; presenter fixture **17 / 17**; manual M4-02 Laboratory **6 / 6 PASS**; retained smoke green; package/imported parity verified.
+- Package authority advances to **SFGSS-PKG-ECHOUI-001 v1.9.0** under unchanged **SFGSS-000 v0.27.0**.
+- Authorized: immutable project Motif definitions/tokens; detached runtime snapshots; one root-local effective/default/fallback Motif; explicit registered targets; inherit-versus-local binding preservation; deterministic switching/fallback; last-known-good safety; target/listener isolation; generation-safe cleanup; status/events; tests; and Laboratory proof.
+- Initial tokens are colors, uGUI Selectable state-color recipes, sprites, and small target-understood numeric/decorative values. No mandatory TextMeshPro or peer Echo dependency is added.
+- Runtime implementation has not started.
+- First gate: re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** before Runtime edits.
+- Full accessibility policy, settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, safe area, richer Window management, bridges, integration, and release remain inactive.
+
+## Historical Looking Glass EUI-M4-02 completion health
 
 - Clean activation baseline: EUI-M4-01 documentation closeout `5e7ad92`.
 - Package authority: **SFGSS-PKG-ECHOUI-001 v1.8.0** under unchanged **SFGSS-000 v0.27.0**.
@@ -43,8 +54,8 @@
 - Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab observation strings not separately supplied.
 - Submitted Unity screenshots confirm Check 1 PASS, sample-owned presenter output, zero Console errors/warnings, and the retained **1383-test** green runner.
 - Package/imported Laboratory parity: **VERIFIED**.
-- **EUI-M4-02 is COMPLETE / CLOSED. No successor Looking Glass checkpoint is active.**
-- Prompts, tooltips, Motifs/accessibility, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
+- **EUI-M4-02 is COMPLETE / CLOSED.** Its historical stop point was satisfied before the separate EUI-M4-03 activation above.
+- Prompts, tooltips, full accessibility policy, safe area, Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain inactive.
 
 ## Historical Looking Glass EUI-M4-01 completion health
 
@@ -514,4 +525,4 @@ This follows the existing suite requirement that release-ready scene-visible pac
 
 ## Looking Glass current frontier — August 17, 2026
 
-EUI-M4-02 is COMPLETE / CLOSED. Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`; Laboratory implementation is `bde34f2`; full Foundry EditMode is **1383 / 1383**; EchoUI Editor is **277 / 277**; manual Laboratory is **6 / 6 PASS**; retained smoke is green; package/imported parity is verified. No successor Looking Glass checkpoint is active. Adjacent M4 transients and later package capabilities remain separately gated.
+EUI-M4-03 Runtime Motif Foundation is ACTIVE / AUTHORIZED from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Runtime implementation has not started. Retained incoming evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, manual M4-02 Laboratory **6 / 6 PASS**, retained smoke green, and package/imported parity verified. The first gate is to re-establish **277 / 277** EchoUI and **1383 / 1383** full EditMode before Runtime edits. Adjacent accessibility, authoring, transient, Window, bridge, integration, and release capabilities remain separately gated.

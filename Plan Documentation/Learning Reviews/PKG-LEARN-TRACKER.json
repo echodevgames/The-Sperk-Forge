@@ -412,8 +412,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "Selected deliberately after EUI-M4-02 closeout; later package reviews remain just-in-time",
+  "nextReviewTrigger": "After active EUI-M4-03 closes; later package reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": null,
-  "implementationProgramStatus": "Looking Glass EUI-M4-02 complete and closed; no successor Looking Glass checkpoint active"
+  "activeImplementationCheckpoint": "EUI-M4-03 — Looking Glass Runtime Motif Definitions, Registered Targets, Fallback, and Immutable Application",
+  "implementationProgramStatus": "Looking Glass EUI-M4-03 active and authorized from closeout 2f59251; Runtime implementation not started"
 }

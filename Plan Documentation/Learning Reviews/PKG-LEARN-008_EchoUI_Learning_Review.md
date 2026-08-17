@@ -16,8 +16,8 @@ updated: 2026-08-17
 **Reviewer:** Jesse “Echo” Adams / EchoDevGames
 **Started:** 2026-08-13
 **Completed:** 2026-08-15
-**Package authority version reviewed/reconciled:** 1.8.0
-**Implementation authorization:** `EUI-M4-02` COMPLETE / CLOSED after the bounded notification JIT revisit; EUI-M1 through EUI-M4-02 complete; no successor Looking Glass checkpoint active
+**Package authority version reviewed/reconciled:** 1.9.0
+**Implementation authorization:** `EUI-M4-03` Runtime Motif Foundation ACTIVE / AUTHORIZED after bounded JIT revisit; Runtime implementation not started
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,7 +25,7 @@ updated: 2026-08-17
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.8.0 Approved | Owns completed EUI-M1 through EUI-M4-02 contracts and the durable Assembly Library authoring promise |
+| Looking Glass package authority | v1.9.0 Approved | Owns completed EUI-M1 through EUI-M4-02 contracts, active EUI-M4-03 Runtime Motif contract, and the durable Assembly Library authoring promise |
 | SFGSS-000 | v0.27.0 Approved | Owns suite authority, package independence, project composition, persistence/lifetime boundaries, and the additive Unity-default Input Actions compatibility profile |
 | SFGSS-005 | v1.7.0 Approved | Owns Learn → Declare → Authorize, Green Path execution, connected-repository rehydration, and the visible slice loop |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
@@ -582,4 +582,51 @@ Exact post-M4 automated counts were not captured during EUI-M4-01. The first EUI
 - Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke: user-confirmed green; exact per-tab strings not separately supplied.
 - Submitted Unity screenshots confirm Check 1 PASS, zero Console errors/warnings, and the retained **1383-test** green runner.
 - Package/imported Laboratory parity: **VERIFIED**.
-- Final state: **EUI-M4-02 COMPLETE / CLOSED**. No successor Looking Glass checkpoint is active.
+- Final state: **EUI-M4-02 COMPLETE / CLOSED**. Its no-successor stop point was satisfied before the separate Section 21 EUI-M4-03 activation.
+
+## 21. EUI-M4-03 bounded JIT revisit — August 17, 2026
+
+After EUI-M4-02 closed at documentation commit `2f59251` with final automated **1383 / 1383** full and **277 / 277** EchoUI, manual Laboratory **6 / 6 PASS**, retained smoke green, and package/imported parity verified, Jesse approved the bounded Runtime Motif intake.
+
+### 21.1 Learned boundary
+
+A Motif is a reusable project-owned appearance recipe. Looking Glass may own stable token resolution, one effective root-session selection, explicit target application, fallback, cleanup, and structured reports. It does not own layout, navigation, content, domain commands, production art, durable settings preference, accessibility truth, project lifetime, or destructive edit-time prefab restyling.
+
+Motif definitions are authored configuration and must remain immutable during play. Runtime application consumes detached snapshots. The absence of real Primitive Warehouse families means M4-03 must not prematurely lock the final warehouse-facing typography/provider schema or full Editor capture/local-override authoring representation.
+
+### 21.2 Token and target declaration
+
+- Motifs and tokens use normalized stable IDs.
+- Initial typed token families are colors, uGUI `Selectable` state-color recipes, sprites, and small numeric/decorative values understood by a target.
+- No mandatory TextMeshPro or peer Echo dependency is introduced.
+- Targets register explicitly; no automatic scene/hierarchy scan or per-frame polling is authorized.
+- Late registration immediately receives current effective truth.
+- Registered-target capacity is configured and bounded; duplicate/full registration rejects without mutation.
+- Missing Motif configuration degrades only Motif capability and does not block retained root/services.
+- Each target binding may inherit from the Motif or preserve an authored local value.
+- Production projects remain free to implement custom targets while the Laboratory supplies plain sample-owned uGUI adapters.
+
+### 21.3 Effective state, fallback, and failure declaration
+
+- The root owns one effective Motif for its current session and applies an authored default during initialization.
+- Unknown requested IDs use the authored fallback and report fallback without rewriting the caller's external preference/source ID.
+- If no requested/fallback Motif is valid, the service retains last known-good appearance and reports unavailable before partial definition commit.
+- Once a valid effective Motif commits, one target or listener failure is isolated and reported. Healthy targets continue, and committed service truth is not rolled back through fake atomicity.
+- Registration handles are fresh, generation-safe, and idempotent; stale release or destroyed-owner cleanup cannot remove a newer registration.
+- Reset restores authored default/fallback behavior with a fresh generation; shutdown releases state and rejects new work.
+
+### 21.4 Checkpoint boundary
+
+The reconciled checkpoint is:
+
+**EUI-M4-03 — Runtime Motif Definitions, Registered Targets, Fallback, and Immutable Application**
+
+It proves immutable project Motif definitions/tokens, detached snapshots, root-local effective/default/fallback state, explicit target registration, inherit-versus-local preservation, deterministic switching/fallback, target/listener isolation, generation-safe cleanup, Laboratory proof, and retained EUI-M1 through EUI-M4-02 behavior.
+
+Full accessibility policy, text scaling, focus-indicator policy, automatic reduced-motion policy connection, safe area, Accord/settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, richer Window management, bridges, integration, and release remain outside EUI-M4-03.
+
+The first gate is to re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before any Runtime edit.
+
+### 21.5 Authorization state
+
+EUI-M4-03 is **ACTIVE / AUTHORIZED** from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Runtime implementation has not started. The Primitive Warehouse remains named next direction only and is not activated.
