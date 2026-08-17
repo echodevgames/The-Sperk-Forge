@@ -109,6 +109,12 @@ namespace EchoDevGames.EchoUI
         Shutdown = 6
     }
 
+    public enum UINotificationEntryState
+    {
+        Visible = 0,
+        Pending = 1
+    }
+
     public readonly struct UINotificationOperationResult
     {
         public UINotificationOperationResult(
