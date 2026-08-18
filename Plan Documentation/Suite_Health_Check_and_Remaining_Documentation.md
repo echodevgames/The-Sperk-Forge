@@ -5,9 +5,9 @@
 **Workflow authority:** SFGSS-005 v1.7.0
 **Current Looking Glass authority:** SFGSS-PKG-ECHOUI-001 v1.9.0
 **Completed Looking Glass checkpoint:** EUI-M4-03 — Runtime Motif Foundation
-**Active Looking Glass checkpoint:** None
+**Active Looking Glass checkpoint:** EUI-M5-01 — Primitive Warehouse Foundation
 
-> This file is a current health/frontier summary. Durable behavior remains governed by the package/suite authorities, accepted decisions, checkpoint records, learning reviews, and tests.
+> This file is a current health/frontier summary. Durable behavior remains governed by the package/suite authorities, accepted decisions, checkpoint plans, learning records, and tests.
 
 ## Executive health summary
 
@@ -15,72 +15,75 @@
 |---|---|---|
 | Suite architecture | Healthy | Package independence and persistence/runtime/lifetime separation retained |
 | Green Path workflow | Healthy | Learn → Declare → Authorize and bounded-slice proof loop retained |
-| First Light | Stable / frozen for current pass | Package sample and in-repository showcase retained; later distribution/release gates separate |
-| Chronicle | M5 complete | Chronicle Save Laboratory complete; retained focused Editor 761 / 761; M6 not automatically active |
-| Looking Glass | **Healthy / EUI-M4-03 closed** | Final Foundry 1445 / 1445; EchoUI 339 / 339; Motifs 62 / 62; root 12 / 12; Lab 6 / 6; retained smoke green |
-| Looking Glass successor | **Not active** | Primitive Warehouse is named direction only |
+| First Light | Stable / frozen for current pass | Later distribution/release gates remain separate |
+| Chronicle | M5 complete | Retained focused Editor 761 / 761; M6 not automatically active |
+| Looking Glass retained Runtime | **Healthy** | EUI-M4-03 final/post-closeout Foundry 1445 / 1445; EchoUI 339 / 339; Motifs 62 / 62; root 12 / 12 |
+| Looking Glass active frontier | **EUI-M5-01 ACTIVE / AUTHORIZED** | Documentation-only activation; Warehouse implementation not started |
 
-## Looking Glass EUI-M4-03 completion health
+## EUI-M5-01 activation health
 
-### Authority and scope
+### Parent and evidence
 
-- Incoming clean closeout: `2f59251` EUI-M4-02.
-- Activation: `435fc66`.
-- Package authority: **SFGSS-PKG-ECHOUI-001 v1.9.0**.
-- Runtime package version remains `0.1.0`.
-- Recorded Unity baseline remains **6000.3.8f1** with `com.unity.ugui` **2.0.0**.
-- EUI-M4-03 introduced no hard peer Echo dependency and no mandatory TextMeshPro package dependency.
+- Clean activation parent: `a8f70f855715bcf48be1e96fb694c41867282125` — EUI-M4-03 final closeout.
+- Final Unity proof on the activation parent: full Foundry **1445 / 1445**, EchoUI **339 / 339**, Motifs **62 / 62**, root **12 / 12**, failed/skipped/inconclusive **0 / 0 / 0**.
+- Manual EUI-M4-03 Motif Lab **6 / 6 PASS**; 180-frame quiescence PASS; retained M4-02 through M1 smoke user-confirmed green; package/imported parity verified.
 
-### Implemented Motif boundary
+### Authority decision
 
-Completed capability includes:
+Package authority remains **SFGSS-PKG-ECHOUI-001 v1.9.0**.
 
-- immutable project-owned Motif definitions and normalized stable Motif/token IDs;
-- detached immutable Runtime snapshots;
-- color, uGUI Selectable state-color, sprite, and small numeric/decorative token families;
-- one root-local effective/default/fallback session Motif;
-- explicit bounded registered targets and immediate application;
-- reusable `UseMotif` / `KeepLocal` bindings;
-- missing-token safe-prior behavior;
-- generation-safe/idempotent release and destroyed target/owner cleanup;
-- deterministic switch/reset/shutdown;
-- target/listener isolation after committed Motif truth;
-- root facade integration and bounded status/snapshots;
-- no automatic hierarchy scan or recurring per-frame application loop.
+No authority version bump is required for EUI-M5-01 because v1.9.0 already preserves:
 
-### Durable implementation chain
+- standardized Lego-like primitive prefab families;
+- ordinary editable Panel/Menu template compositions;
+- project-owned final screen composition;
+- Motifs as reusable appearance recipes rather than domain/layout authority;
+- later project-extensible Template Catalogs;
+- Assembly Utilities independent of the full Builder;
+- a later Builder/Composer that consumes the same ordinary editable assets.
 
-`435fc66` activation → `d67550d` contracts → `172d230` catalog/fallback → `43da17a` service → `efbc503` targets → `e17d816` bindings → `ab5906c` root → `d291885` test-only teardown correction → `b48eae68` Laboratory → `7f9272bd` Check 3 correction → `8188b91c` Check 4 correction.
+EUI-M5-01 is a bounded Level-4 implementation of that approved direction. Any discovery requiring a new Runtime registration model, hard dependency, serialized public contract, or changed ownership boundary stops the checkpoint and returns to package authority.
 
-### Final automated evidence
+### Authorized Warehouse taxonomy
 
-`TestResults_20260818_060619.xml` proves:
+```text
+Screens / Screen Templates
+    built from Panels and Primitives
 
-- full Foundry EditMode **1445 / 1445 PASS**;
-- EchoUI Editor **339 / 339 PASS**;
-- aggregate Motif fixtures **62 / 62 PASS**;
-- root fixture **12 / 12 PASS**;
-- failed / skipped / inconclusive **0 / 0 / 0**.
+Panels / Panel Modules
+    built from Primitives and optionally other Panels
 
-The earlier root-integration run was **1444 / 1445** with one EditMode fixture mismatch. `d291885` explicitly invokes the root's private teardown before GameObject destruction and changes no Runtime source. Final evidence supersedes the intermediate failure.
+Primitives
+    focused reusable pieces
+```
 
-The intentional `motif-observer`, `motif-target`, and `root-motif-observer` exception logs are accepted passing isolation proofs.
+Motifs apply across participating assets in all three tiers and are not a fourth construction tier.
 
-### Final manual evidence
+The primary workflow is direct package-folder browsing and normal Unity prefab drag-and-drop. Warehouse assets remain editable with standard prefab overrides, variants, unpacking, copying, reparenting, and project-owned customization.
 
-- Motif Check 1: **PASS**.
-- Motif Check 2: **PASS**.
-- Motif Check 3: **PASS** after proof assertion correction.
-- Motif Check 4: **PASS** after proof sequencing correction.
-- Motif Check 5: **PASS**; two caught target exception logs are intentional because the deliberately broken target is exercised at registration and again during switch.
-- Motif Check 6 / 180-frame idle: **PASS**.
-- Authored Motif asset immutability: **PASS**.
-- Retained M4-02/M4-01/M3-02/M3-01/M2-02/M2-01/M1 representative smoke: **user-confirmed green**; exact per-tab observation strings were not separately supplied.
-- Package/imported Motif proof source parity: **VERIFIED**.
+The Warehouse is intentionally allowed to become very large over time. Organic growth from real project needs is a feature, provided each package addition is deliberately cleaned and validated before promotion.
 
-### EUI-M4-03 health decision
+### First bounded starter family
 
-**HEALTHY / COMPLETE / CLOSED.** No Runtime, test, Laboratory, dependency, or evidence blocker remains inside the authorized EUI-M4-03 boundary.
+Only these five roles are active:
+
+1. default square Button Primitive;
+2. square Close Button visual Primitive;
+3. default panel-surface Image Primitive;
+4. Button Group Panel;
+5. Basic Menu Screen Template.
+
+The implementation plan expects these under `Runtime/Prefabs/Warehouse/{Primitives,Panels,Screens}`, with stable committed `.meta` identities, one focused 8-test Editor fixture, and a bounded Warehouse user guide.
+
+### Dependency and Motif health
+
+- Runtime package remains `0.1.0`.
+- Unity baseline remains 6000.3.8f1 with uGUI 2.0.0.
+- No hard peer Echo dependency is authorized.
+- No mandatory TextMeshPro dependency is authorized.
+- The first family may use existing EUI-M4-03 `UseMotif` / `KeepLocal` binding behavior where useful.
+- No automatic scene scan, new Motif registration authority, Motif Palette, or Motif capture/apply/preview tool is active.
+- The first family should avoid prematurely fixing the final typography/provider contract.
 
 ## Retained Looking Glass regression ladder
 
@@ -92,65 +95,52 @@ The intentional `motif-observer`, `motif-target`, and `root-motif-observer` exce
 | EUI-M2-02 | full 1181 / 1181; EchoUI 75 / 75; focused 28 / 28; Lab 12 / 12 |
 | EUI-M3-01 | full 1205 / 1205; EchoUI 99 / 99; focused 24 / 24; Lab 12 / 12 |
 | EUI-M3-02 | full 1246 / 1246; EchoUI 140 / 140; Lab 14 / 14 |
-| EUI-M4-01 | manual HUD Lab 5 / 5; retained smoke green; exact post-M4 aggregate not separately captured |
+| EUI-M4-01 | manual HUD Lab 5 / 5; retained smoke green |
 | EUI-M4-02 | full 1383 / 1383; EchoUI 277 / 277; notifications 125 / 125; presenter 17 / 17; Lab 6 / 6 |
-| EUI-M4-03 | **full 1445 / 1445; EchoUI 339 / 339; Motifs 62 / 62; root 12 / 12; Lab 6 / 6** |
+| EUI-M4-03 | full 1445 / 1445; EchoUI 339 / 339; Motifs 62 / 62; root 12 / 12; Lab 6 / 6 |
+| EUI-M5-01 | **Active; implementation/evidence not started** |
 
-## Deferred Looking Glass obligations
+## Explicitly deferred Looking Glass work
 
-The following remain intentionally **not active** and are not health defects in EUI-M4-03:
+These are not EUI-M5-01 defects and remain inactive:
 
-- full accessibility policy, text scaling, contrast/focus-indicator policy;
-- automatic reduced-motion policy connection beyond the existing transition seam;
-- Accord/settings persistence of Motif/accessibility preference IDs;
-- Motif Editor create/capture/apply/preview tooling;
-- final Primitive Warehouse-facing typography/provider/token authoring schema;
-- Primitive Warehouse prefab families and 9-slice assets;
-- Panel/Menu Template Library;
+- Motif Palette;
+- Motif capture/apply/preview Editor tooling;
 - Stable-ID Template Catalog;
 - Assembly Utilities;
 - Builder/Composer;
+- automatic project-to-package promotion;
+- Creator Lab/community contribution ingestion;
+- broad Warehouse population beyond the five starter roles;
+- production/final 9-slice visual families;
+- final typography/provider schema;
+- full accessibility policy;
 - prompts/tooltips;
 - safe-area adaptation;
 - richer independent Window LIFO/pin/drag/resize/layout management;
-- generalized dim/blur;
+- persistence;
 - peer bridges and project integration;
-- polished Reference Showcase work tied to later Looking Glass capabilities;
-- clean-project reproduction, distribution/release qualification, and external adoption.
+- polished showcase work;
+- clean-project reproduction, distribution, and release qualification.
 
 ## Package independence health
 
-Looking Glass continues to coordinate UI presentation without owning:
+Looking Glass still does not own gameplay/controller truth, input-map state, pause/time scale, scene travel, save/settings persistence, audio/localization/analytics, or project-wide Unity lifetime composition.
 
-- gameplay/controller truth;
-- project action-map enable/disable policy;
-- pause/time scale or cursor policy;
-- scene-flow authority;
-- save/settings persistence;
-- audio/localization/analytics;
-- project-wide `DontDestroyOnLoad` composition;
-- a universal service locator.
+A future project may assemble a large Looking Glass hierarchy containing Save/Load, Settings, Loading, HUD, Inventory, or other Screen/Panel templates. Chronicle, Accord, Passage, Resonance, Will, Pulse, and other packages remain the authorities behind that presentation through project-owned presenters/optional bridges.
 
-Future cross-package persistence/input/settings/audio behaviors belong in optional bridges/adapters or project composition.
+## Documentation status at activation
 
-## Documentation health at EUI-M4-03 closeout
+EUI-M5-01 activation reconciles:
 
-Reconciled closeout set:
-
-- EUI-M4-03 checkpoint plan;
-- suite `Current Notes.md`;
+- the new Checkpoint Build Plan;
+- suite Current Notes;
 - package Developer Current Notes;
-- PKG-LEARN-008 and tracker;
-- Looking Glass package specification closeout status;
 - Suite Graph Roadmap;
-- this Suite Health file;
-- package README and CHANGELOG;
-- mirrored Laboratory proof wording for the two intentional Check 5 target exceptions.
+- this Suite Health frontier.
 
-The evidence record must continue to distinguish user-confirmed retained smoke from exact per-tab observation strings that were not separately supplied.
+The package specification remains v1.9.0 because its existing durable Assembly Library decisions already authorize the bounded direction. PKG-LEARN-008 remains complete rather than being reopened; this checkpoint plan contains the bounded Learn → Declare → Authorize revisit.
 
-## Current frontier
+## Exact next gate
 
-**Looking Glass EUI-M4-03 is complete. No successor checkpoint is active.**
-
-The **Primitive Warehouse** is the named next Looking Glass direction only. Before any work begins, rehydrate the live repository, run the bounded JIT learning/authority revisit, define the smallest useful primitive slice, present its exclusions, and obtain explicit activation. Do not infer authorization from this health document.
+**Do not create Warehouse prefab/test assets yet.** Present the first five-role implementation slice and exclusions, then wait for Jesse's explicit `go`.
