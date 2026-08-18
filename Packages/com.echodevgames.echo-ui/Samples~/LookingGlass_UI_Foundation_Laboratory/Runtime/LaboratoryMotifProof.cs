@@ -173,11 +173,12 @@ namespace EchoDevGames.EchoUI.Samples
 
         private void Check4()
         {
+            UIMotifSwitchResult reset = root.ResetMotif();
             UIMotifId requested = new UIMotifId(UnknownId);
             UIMotifSwitchResult r = root.SwitchMotif(requested);
-            bool pass = r.Status == UIMotifSwitchStatus.FallbackApplied && r.RequestedMotifId == requested &&
+            bool pass = reset.Succeeded && r.Status == UIMotifSwitchStatus.FallbackApplied && r.RequestedMotifId == requested &&
                 r.EffectiveMotifId.Value == SecondId && root.EffectiveMotifId.Value == SecondId;
-            observed = Result(pass) + " | requested=" + r.RequestedMotifId + " | effective=" + r.EffectiveMotifId;
+            observed = Result(pass) + " | reset=" + reset.Status + " | requested=" + r.RequestedMotifId + " | effective=" + r.EffectiveMotifId;
         }
 
         private IEnumerator Check5()
