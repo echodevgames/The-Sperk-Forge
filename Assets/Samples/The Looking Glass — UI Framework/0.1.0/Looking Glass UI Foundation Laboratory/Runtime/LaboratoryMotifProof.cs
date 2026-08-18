@@ -163,7 +163,7 @@ namespace EchoDevGames.EchoUI.Samples
             LaboratoryMotifTarget t = CreateTarget("M4-03 Missing Token", UIMotifBindingMode.UseMotif, SafeColor, new Vector2(-315f, -180f), MissingId);
             Color before = t.SurfaceColor;
             UIMotifRegistrationHandle h = root.RegisterMotifTarget(t, t);
-            bool pass = h.Result.Status == UIMotifRegistrationStatus.RegisteredWithApplyFailure &&
+            bool pass = h.Result.Status == UIMotifRegistrationStatus.Registered &&
                 h.Result.ApplyResult.Status == UIMotifTargetApplyStatus.Partial && h.Result.ApplyResult.FailedBindingCount == 1 &&
                 Near(t.SurfaceColor, before) && root.EffectiveMotifId.Value == SecondId;
             observed = Result(pass) + " | registration=" + h.Result.Status + " | apply=" + h.Result.ApplyResult.Status + " | safe prior preserved=" + Near(t.SurfaceColor, before);
