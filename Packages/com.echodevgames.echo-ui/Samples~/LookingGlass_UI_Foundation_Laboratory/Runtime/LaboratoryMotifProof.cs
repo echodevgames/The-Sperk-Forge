@@ -130,7 +130,7 @@ namespace EchoDevGames.EchoUI.Samples
             if (GUILayout.Button("Run Check 6: 180-Frame Idle")) StartCoroutine(Check6());
             GUI.enabled = priorEnabled;
             GUILayout.Space(8f);
-            GUILayout.Label("Check 5 intentionally logs one target exception. It is the isolation proof.");
+            GUILayout.Label("Check 5 intentionally logs two target exceptions. They are the isolation proof.");
             GUILayout.Label("After Check 6, smoke M4-02 through M1 in the retained console.");
             GUILayout.EndScrollView();
             GUILayout.EndArea();

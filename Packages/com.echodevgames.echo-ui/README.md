@@ -33,7 +33,6 @@ The second bounded implementation adds:
 
 Pause, cinematic, loading, and input modality remain external project/system truth. Looking Glass only decides how each surface responds to supplied truth.
 
-
 ## EUI-M2-01 screen lifecycle runtime core
 
 The first Runtime Core slice adds:
@@ -108,7 +107,36 @@ The completed M4-02 slice adds project-defined independently bounded notificatio
 
 Activation is `fd8256f`; Runtime/root/presenter implementation is accepted through `d93d0bd`. The activation baseline was full Foundry EditMode **1258 / 1258** and EchoUI Editor **152 / 152**. Final automated evidence is full Foundry EditMode **1383 / 1383**, EchoUI Editor **277 / 277**, aggregate notification fixtures **125 / 125**, and presenter fixture **17 / 17**, with zero failed/skipped/inconclusive.
 
-Mirrored Laboratory implementation is `bde34f2`. Manual Laboratory is **6 / 6 PASS**, the 180-frame idle probe is stable, retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is green, and package/imported parity is verified. EUI-M4-02 is complete and no successor Looking Glass checkpoint is active. Prompts, tooltips, Motifs/accessibility implementation, safe area, full Window management, persistence, bridges, authoring libraries/Builder, integration, and release remain separately gated.
+Mirrored Laboratory implementation is `bde34f2`. Manual Laboratory is **6 / 6 PASS**, the 180-frame idle probe is stable, retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke is green, and package/imported parity is verified. EUI-M4-02 is complete.
+
+## EUI-M4-03 runtime Motifs — complete
+
+The completed M4-03 slice adds a bounded Runtime Motif foundation:
+
+- normalized stable `UIMotifId` and `UIMotifTokenId` values;
+- immutable project-owned Motif definitions and detached snapshots;
+- color, uGUI `Selectable` color-state, sprite, and small numeric/decorative token families;
+- authored default/fallback resolution and one root-local effective session Motif;
+- explicit bounded target registration with immediate application, generation-safe release, stale-handle safety, and destroyed-owner/target cleanup;
+- reusable `UseMotif` / `KeepLocal` bindings;
+- safe prior/local presentation for missing tokens;
+- deterministic switch/reset/shutdown plus structured result truth;
+- target/listener failure isolation after committed Motif truth;
+- no scene-wide/per-frame target scan or recurring application loop.
+
+Activation is `435fc66`. Runtime implementation proceeds through `d67550d`, `172d230`, `43da17a`, `efbc503`, `e17d816`, and root integration `ab5906c`. The test-only root teardown correction is `d291885` and changes no Runtime source.
+
+The mirrored Laboratory proof landed at `b48eae68`. `7f9272bd` corrected the missing-token proof's registration expectation; `8188b91c` corrected unknown-fallback proof sequencing by resetting to the authored default before requesting the unknown ID. Neither correction changes Runtime authority or behavior.
+
+Final accepted automated evidence from `TestResults_20260818_060619.xml` is full Foundry EditMode **1445 / 1445**, EchoUI Editor **339 / 339**, aggregate Motif fixtures **62 / 62**, root integration **12 / 12**, and zero failed/skipped/inconclusive.
+
+Manual Motif Laboratory is **6 / 6 PASS**, including authored-asset immutability and **180-frame idle quiescence**. Retained M4-02/M4-01/M3-02/M3-01/M2-02/M2-01/M1 representative smoke is user-confirmed green. Package/imported Motif proof parity is verified.
+
+Check 5 deliberately injects one broken target and therefore intentionally logs two caught target exceptions: one during immediate registration application and one during the following switch. These are isolation evidence, not failures.
+
+EUI-M4-03 adds no hard peer Echo dependency, no mandatory TextMeshPro package dependency, no persistence authority, and no global accessibility/settings ownership.
+
+**EUI-M4-03 is COMPLETE / CLOSED. No successor Looking Glass checkpoint is active.** The **Primitive Warehouse** is the named next direction only and requires separate activation.
 
 ## Hierarchy convention
 

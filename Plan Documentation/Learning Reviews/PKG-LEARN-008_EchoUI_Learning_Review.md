@@ -4,7 +4,7 @@ tags:
   - sfgss/wave/foundation
   - sfgss/ui
 status: complete
-updated: 2026-08-17
+updated: 2026-08-18
 ---
 
 # PKG-LEARN-008 – The Looking Glass (`EchoUI`) Learning Review
@@ -17,7 +17,7 @@ updated: 2026-08-17
 **Started:** 2026-08-13
 **Completed:** 2026-08-15
 **Package authority version reviewed/reconciled:** 1.9.0
-**Implementation authorization:** `EUI-M4-03` Runtime Motif Foundation ACTIVE / AUTHORIZED after bounded JIT revisit; Runtime implementation not started
+**Implementation authorization:** `EUI-M4-03` Runtime Motif Foundation COMPLETE / CLOSED; no successor Looking Glass checkpoint is active
 
 > This review teaches the architecture and captures designer intent. It does not replace the package authority.
 
@@ -25,14 +25,14 @@ updated: 2026-08-17
 
 | Source | Version/status | Why it is needed |
 |---|---|---|
-| Looking Glass package authority | v1.9.0 Approved | Owns completed EUI-M1 through EUI-M4-02 contracts, active EUI-M4-03 Runtime Motif contract, and the durable Assembly Library authoring promise |
+| Looking Glass package authority | v1.9.0 Approved | Owns completed EUI-M1 through EUI-M4-03 contracts and the durable Assembly Library authoring promise |
 | SFGSS-000 | v0.27.0 Approved | Owns suite authority, package independence, project composition, persistence/lifetime boundaries, and the additive Unity-default Input Actions compatibility profile |
 | SFGSS-005 | v1.7.0 Approved | Owns Learn → Declare → Authorize, Green Path execution, connected-repository rehydration, and the visible slice loop |
 | SFGSS-ADR-004 | Accepted / revised 2026-08-13 | Owns just-in-time package learning gate |
 | SFGSS-ADR-006 | Accepted | Keeps Unity object lifetime/project composition outside UI authority |
 | SFGSS-ADR-007 | Accepted | Owns Green Path self-validating execution |
 | Project manifest | Unity 6000.3.8f1; uGUI 2.0.0; Input System 1.18.0 | Verifies the actual current Unity dependency baseline |
-| Current Notes / Suite Health | 2026-08-17 reconciliation | Supplies current handoff context only |
+| Current Notes / Suite Health | 2026-08-18 reconciliation | Supplies current handoff context only |
 
 **External research boundary:** official Unity documentation was consulted only for the immediate focus/visibility mental model. `EventSystem.SetSelectedGameObject` changes the EventSystem-selected GameObject and sends deselect/select callbacks; CanvasGroup can affect child alpha/interactability/raycast blocking; Unity input modules translate pointer/navigation-style input into UI events. These mechanisms inform Looking Glass but do not grant it input/game-state authority.
 
@@ -199,8 +199,8 @@ The review was completed conversationally through concrete design examples. Jess
 | Source conflict unresolved | NO |
 
 **Decision:** Complete
-**Next implementation gate:** `EUI-M2-02` is explicitly ACTIVE / AUTHORIZED after the bounded revisit below and the completed EUI-M2-01 proof
-**Notes promoted to:** Looking Glass specification v1.4.1; active EUI-M2-02 Checkpoint Build Plan; Current Notes; Suite Health; Suite Graph Roadmap
+**Current implementation gate:** none for Looking Glass after EUI-M4-03 closeout
+**Notes promoted to:** Looking Glass specification v1.9.0; EUI-M4-03 checkpoint closeout; Current Notes; Suite Health; Suite Graph Roadmap
 
 ## 14. EUI-M1-02 bounded JIT revisit — August 13, 2026
 
@@ -341,7 +341,6 @@ After EUI-M2-02 activation and before any Runtime edit, Jesse clarified an EverQ
 - Designers may author Windows that never participate in automatic Back/Escape dismissal, and runtime users may later pin/lock eligible Windows out of that dismissal history.
 - Durable pin/layout persistence, dragging/resizing, focused-window arbitration, and the Window dismissal manager remain future separately gated capabilities.
 - EUI-M2-02 remains bounded to blocking Modal lifecycle and exact-once results; this clarification exists so its implementation does not accidentally consume or constrain the future independent-Window design space.
-
 
 ## 17. EUI-M3-01 bounded JIT revisit — August 15, 2026
 
@@ -625,8 +624,26 @@ It proves immutable project Motif definitions/tokens, detached snapshots, root-l
 
 Full accessibility policy, text scaling, focus-indicator policy, automatic reduced-motion policy connection, safe area, Accord/settings persistence, Motif capture/apply/preview tooling, final Primitive Warehouse-facing schema, Primitive Warehouse/templates/catalog/utilities, Builder, prompts/tooltips, richer Window management, bridges, integration, and release remain outside EUI-M4-03.
 
-The first gate is to re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before any Runtime edit.
+The first gate was to re-establish EchoUI Editor **277 / 277** and full Foundry EditMode **1383 / 1383** on the activation commit before any Runtime edit; that gate passed before implementation.
 
 ### 21.5 Authorization state
 
-EUI-M4-03 is **ACTIVE / AUTHORIZED** from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. Runtime implementation has not started. The Primitive Warehouse remains named next direction only and is not activated.
+EUI-M4-03 was activated from clean EUI-M4-02 closeout `2f59251` under package authority v1.9.0. The authorized boundary remained unchanged through implementation and Laboratory correction.
+
+### 21.6 Implementation and closeout evidence — August 18, 2026
+
+- Activation: `435fc66`.
+- Runtime slices: contracts `d67550d`; catalog/fallback `172d230`; session service `43da17a`; registered targets `efbc503`; reusable bindings `e17d816`; root integration `ab5906c`.
+- Root teardown fixture correction: `d291885`; test-only, no Runtime source change.
+- Mirrored Motif Laboratory: `b48eae68`.
+- Check 3 proof assertion correction: `7f9272bd`.
+- Check 4 proof sequencing correction and accepted Laboratory implementation head: `8188b91c`.
+- Final automated evidence `TestResults_20260818_060619.xml`: full Foundry EditMode **1445 / 1445**, EchoUI Editor **339 / 339**, all Motif fixtures **62 / 62**, root fixture **12 / 12**, failed/skipped/inconclusive **0 / 0 / 0**.
+- Manual Motif Laboratory **6 / 6 PASS**.
+- 180-frame settled Motif quiescence **PASS** and authored Motif assets remained unchanged.
+- Retained M4-02/M4-01/M3-02/M3-01/M2-02/M2-01/M1 representative smoke: **user-confirmed green**; exact per-tab strings were not separately supplied.
+- Check 5 intentionally emitted two caught target exceptions because the deliberately broken target is exercised at immediate registration and again during the subsequent switch. Those logs are accepted isolation evidence.
+- Package/imported Motif proof source parity: **VERIFIED**.
+- Runtime remains `0.1.0` with the recorded uGUI `2.0.0` dependency boundary and no hard peer Echo or mandatory TextMeshPro package dependency added by M4-03.
+
+**Final state:** **EUI-M4-03 COMPLETE / CLOSED.** No successor Looking Glass checkpoint is active. The **Primitive Warehouse** remains the named next direction only and requires a separate bounded JIT review/activation.

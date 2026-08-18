@@ -2,7 +2,7 @@
   "documentId": "SFGSS-PKG-LEARN-TRACKER",
   "version": "1.9.0",
   "status": "Active learning tracker",
-  "updated": "2026-08-17",
+  "updated": "2026-08-18",
   "authority": "Navigation and learning status only",
   "totalReviews": 28,
   "completeReviews": 3,
@@ -123,7 +123,8 @@
       "example": "A Main Menu navigates to Settings and Back while an independent Inventory-style window can coexist; later a registry-driven Menu for Menus can toggle authored surfaces by stable ID.",
       "status": "Complete",
       "reviewPath": "Learning Reviews/PKG-LEARN-008_EchoUI_Learning_Review.md",
-      "completed": "2026-08-13"
+      "completed": "2026-08-13",
+      "completionNote": "Teach-back is complete. Bounded JIT reconciliations continued through EUI-M4-03. Runtime Motif Foundation closed August 18, 2026 with Foundry EditMode 1445 / 1445, EchoUI 339 / 339, Motif 62 / 62, root 12 / 12, manual Motif Laboratory 6 / 6 PASS, 180-frame quiescence PASS, retained smoke green, and package/imported parity verified. No successor checkpoint is active."
     },
     {
       "sequence": 9,
@@ -412,8 +413,8 @@
   "gateMode": "Just-in-time before each package implementation",
   "initialImplementationGate": "SUITE-DOC-33",
   "firstImplementationPackage": "EchoLaunch",
-  "nextReviewTrigger": "After active EUI-M4-03 closes; later package reviews remain just-in-time",
+  "nextReviewTrigger": "Before the next explicitly activated package or Looking Glass checkpoint; later reviews remain just-in-time",
   "initialImplementationGateStatus": "Passed with advisory",
-  "activeImplementationCheckpoint": "EUI-M4-03 — Looking Glass Runtime Motif Definitions, Registered Targets, Fallback, and Immutable Application",
-  "implementationProgramStatus": "Looking Glass EUI-M4-03 active and authorized from closeout 2f59251; Runtime implementation not started"
+  "activeImplementationCheckpoint": null,
+  "implementationProgramStatus": "Looking Glass EUI-M4-03 complete and closed; Primitive Warehouse is named next direction only and no successor checkpoint is active"
 }

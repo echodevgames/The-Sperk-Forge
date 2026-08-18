@@ -41,7 +41,6 @@
 - Twenty-four focused EUI-M3-01 tests, bringing the EchoUI EditMode assembly to 99 / 99 and the final Foundry EditMode floor to 1205 / 1205.
 - Expanded Laboratory proof with 12 / 12 manual focus/EventSystem acceptance, bounded idle performance evidence, retained M2-02/M2-01/M1 smoke checks, and synchronized package/imported Laboratory parity.
 
-
 ## EUI-M3-02 FINAL CLOSEOUT COMPLETE
 
 - Added replaceable authoritative enter/exit transition drivers for Screens, blocking Modals, and independent Windows.
@@ -79,3 +78,22 @@
 - Manual notification Laboratory **6 / 6 PASS**; 180-frame idle notification/presenter quiescence PASS; structural UI truth unchanged.
 - Retained M4-01/M3-02/M3-01/M2-02/M2-01/M1 smoke user-confirmed green; package/imported parity verified; submitted Unity screenshots show zero Console errors/warnings.
 - EUI-M4-02 is complete. No successor Looking Glass checkpoint is activated.
+
+## EUI-M4-03 FINAL CLOSEOUT COMPLETE
+
+- Added immutable project-owned Motif definitions with normalized stable Motif/token IDs and detached runtime snapshots.
+- Added color, uGUI `Selectable` state-color, sprite, and small numeric/decorative token families without adding a mandatory TextMeshPro package dependency.
+- Added deterministic authored default/fallback resolution, last-known-good behavior, one root-session effective Motif, and structured switch/reset/shutdown truth.
+- Added explicit bounded registered targets, immediate current-Motif application, generation-safe/idempotent release, destroyed-owner/target cleanup, and stale-handle protection.
+- Added reusable `UseMotif` / `KeepLocal` bindings and safe prior presentation when a token is unavailable.
+- Added target/listener exception isolation after committed Motif truth and retained Screen/Modal/Window/HUD/notification/focus/transition authority.
+- Runtime implementation chain: `d67550d`, `172d230`, `43da17a`, `efbc503`, `e17d816`, and root integration `ab5906c`; activation `435fc66`.
+- `d291885` corrected only the EditMode root-destruction fixture by explicitly invoking the private `EchoUIRoot.OnDestroy()` path before GameObject destruction; Runtime source did not change.
+- Mirrored Laboratory proof landed at `b48eae68`. `7f9272bd` corrected Check 3's registration-status expectation for successful `Partial` target truth. `8188b91c` reset before Check 4's unknown-ID request so the proof exercises a real fallback transition rather than legitimate same-effective `Unchanged` truth.
+- Final automated evidence from `TestResults_20260818_060619.xml`: full Foundry EditMode **1445 / 1445**, EchoUI Editor **339 / 339**, aggregate Motif fixtures **62 / 62**, root fixture **12 / 12**, and **0 / 0 / 0** failed/skipped/inconclusive.
+- Manual Motif Laboratory **6 / 6 PASS**, including authored-asset immutability and 180-frame idle quiescence.
+- Check 5 intentionally emits two caught target exceptions: one during immediate registration application and one during the following switch. Those logs are accepted isolation evidence.
+- Retained M4-02/M4-01/M3-02/M3-01/M2-02/M2-01/M1 representative smoke is user-confirmed green; exact per-tab observation strings were not separately supplied.
+- Package/imported Motif proof source parity verified at closeout.
+- Runtime remains `0.1.0`, retains only the `com.unity.ugui` `2.0.0` required Unity dependency for this checkpoint, and adds no hard peer Echo dependency.
+- **EUI-M4-03 is COMPLETE / CLOSED. No successor Looking Glass checkpoint is activated.** Primitive Warehouse remains the named next direction only.
